@@ -60,7 +60,7 @@ class _PrivateAPIPanelState extends CustomState<PrivateAPIPanel, void, PrivateAP
   Widget build(BuildContext context) {
     return SettingsScaffold(
         title: "Private API Features",
-        initialHeader: "Private API",
+        initialHeader: usingRustPush ? null : "Private API",
         iosSubtitle: iosSubtitle,
         materialSubtitle: materialSubtitle,
         tileColor: tileColor,
@@ -69,6 +69,7 @@ class _PrivateAPIPanelState extends CustomState<PrivateAPIPanel, void, PrivateAP
           SliverList(
             delegate: SliverChildListDelegate(
               <Widget>[
+                if (!usingRustPush)
                 Obx(
                   () => SettingsSection(
                     backgroundColor: tileColor,

@@ -193,6 +193,11 @@ dependencies:
   in_app_review: ^2.0.9
   pull_down_button: ^0.10.1
   app_install_date: ^0.1.5
+  ffi: ^2.1.0
+  flutter_rust_bridge: 2.0.0-dev.28
+  rust_lib_bluebubbles:
+    path: rust_builder
+  freezed_annotation: ^2.4.1
 
 dependency_overrides:
   # overrides for packages stuck on outdated versions
@@ -219,6 +224,9 @@ dev_dependencies:
   peanut: ^5.0.0
   objectbox_generator: any
   flutter_test:
+    sdk: flutter
+  freezed: ^2.4.1
+  integration_test:
     sdk: flutter
 
 flutter_icons:

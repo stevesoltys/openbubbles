@@ -1,0 +1,49 @@
+use std::sync::{Arc, RwLock};
+
+use rustpush::init_logger;
+use tokio::runtime::Runtime;
+
+use crate::api::{PushState, InnerPushState, restore, new_push, save_push, recv_wait};
+
+#[derive(uniffi::Object)] 
+pub struct NativePushState {
+    state: Arc<PushState>
+}
+
+#[uniffi::export]
+impl NativePushState {
+    #[uniffi::constructor]
+    pub fn new() -> Arc<NativePushState> {
+        init_logger();
+        Arc::new(NativePushState {
+            state: Arc::new(PushState(RwLock::new(InnerPushState {
+                conn: None,
+                users: vec![],
+                client: None
+            }), RwLock::new(Runtime::new().unwrap())))
+        })
+    }
+
+    pub fn restore(self: Arc<NativePushState>, data: String) {
+        restore(self.state.clone().into(), data).unwrap();
+    }
+    
+    pub fn new_push(self: Arc<NativePushState>) {
+        new_push(self.state.clone().into()).unwrap();
+    }
+
+    pub fn save_push(self: Arc<NativePushState>) -> String {
+        save_push(self.state.clone().into())
+    }
+
+    pub fn get_state(self: Arc<NativePushState>) -> u64 {
+        Arc::into_raw(self.state.clone()) as u64
+    }
+
+    pub fn recv_wait(self: Arc<NativePushState>) -> u64 {
+        let Some(msg) = recv_wait(self.state.clone().into()) else {
+            return 0
+        };
+        Box::into_raw(Box::new(msg)) as u64
+    }
+}

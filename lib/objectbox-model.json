@@ -89,7 +89,7 @@
     },
     {
       "id": "3:9017250848141753702",
-      "lastPropertyId": "28:3841196368520260614",
+      "lastPropertyId": "31:2890558203307402859",
       "name": "Chat",
       "properties": [
         {
@@ -203,6 +203,21 @@
         {
           "id": "28:3841196368520260614",
           "name": "lastReadMessageGuid",
+          "type": 9
+        },
+        {
+          "id": "29:419554443603699639",
+          "name": "groupVersion",
+          "type": 6
+        },
+        {
+          "id": "30:4623900363927990505",
+          "name": "usingHandle",
+          "type": 9
+        },
+        {
+          "id": "31:2890558203307402859",
+          "name": "apnTitle",
           "type": 9
         }
       ],

@@ -1,0 +1,27 @@
+[package]
+name = "rust_lib_bluebubbles"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "staticlib"]
+
+[dependencies]
+flutter_rust_bridge = "=2.0.0-dev.28"
+rustpush = { path = "/home/tae/Documents/GitHub/rustpush" }
+plist = "1.5.0"
+tokio = { version = "1", features = ["full"] }
+serde = { version = "1.0", features = ["derive"] }
+anyhow = "1.0.75"
+phonenumber = "0.3.2"
+uniffi = { git = "https://github.com/mozilla/uniffi-rs", features = [ "cli" ] }
+async-recursion = "1.0.5"
+icloud_auth = { path = "/home/tae/Documents/GitHub/apple-private-apis/icloud-auth" }
+
+[build-dependencies]
+uniffi = { git = "https://github.com/mozilla/uniffi-rs", features = [ "build" ] }
+
+[[bin]]
+# This can be whatever name makes sense for your project, but the rest of this tutorial assumes uniffi-bindgen.
+name = "uniffi-bindgen"
+path = "uniffi-bindgen.rs"

@@ -25,6 +25,8 @@ class StartupTasks {
 
   static Future<void> initStartupServices({bool isBubble = false}) async {
     debugPrint("Initializing startup services...");
+
+    await RustLib.init();
     
     // First, initialize the filesystem service as it's used by other necessary services
     await fs.init();

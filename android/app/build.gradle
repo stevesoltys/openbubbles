@@ -113,7 +113,7 @@ android {
         release {
             productFlavors.joel.signingConfig signingConfigs.debug
             productFlavors.tanay.signingConfig signingConfigs.debug
-            productFlavors.alpha.signingConfig signingConfigs.release
+            productFlavors.alpha.signingConfig signingConfigs.debug
             productFlavors.beta.signingConfig signingConfigs.release
             productFlavors.prod.signingConfig signingConfigs.release
             minifyEnabled false
@@ -138,6 +138,13 @@ configurations.all {
     resolutionStrategy {
         force 'com.squareup.okhttp:okhttp:2.7.5'
         force 'com.squareup.okio:okio:1.17.5'
+    }
+}
+
+// that is added by objectbox_flutter_libs for debug builds.
+configurations {
+    debugImplementation {
+        exclude group: 'io.objectbox', module: 'objectbox-android'
     }
 }
 

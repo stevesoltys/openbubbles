@@ -6,6 +6,7 @@ import 'package:bluebubbles/database/database.dart';
 import 'package:bluebubbles/utils/logger/logger.dart';
 import 'package:bluebubbles/helpers/helpers.dart';
 import 'package:bluebubbles/database/models.dart';
+import 'package:bluebubbles/services/rustpush/rustpush_service.dart';
 import 'package:bluebubbles/services/services.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -52,6 +53,10 @@ class MethodChannelService extends GetxService {
     // Future.value(true) will have the engine stop trying to call the method
     
     switch (call.method) {
+      case "APNMsg":
+        String pointer = call.arguments.toString();
+        await pushService.recievedMsgPointer(pointer);
+        return true;
       case "NewServerUrl":
         if (arguments == null) return Future.value(false);
         await Database.waitForInit();

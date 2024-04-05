@@ -45,7 +45,7 @@ class _ChatInfoState extends OptimizedState<ChatInfo> {
               children: [
                 if (ss.settings.enablePrivateAPI.value && chat.isIMessage)
                   Text(
-                      "Local - Changes only apply to this device.\nPrivate API - Changes will apply to everyone's devices.",
+                      "Local - Changes only apply to this device.\nEveryone - Changes will apply to everyone's devices.",
                       style: context.theme.textTheme.bodyLarge),
               ],
             ),
@@ -57,7 +57,7 @@ class _ChatInfoState extends OptimizedState<ChatInfo> {
                     Navigator.of(context).pop(false);
                   }),
               TextButton(
-                  child: Text("Private API",
+                  child: Text("Everyone",
                       style: context.theme.textTheme.bodyLarge!.copyWith(color: context.theme.colorScheme.primary)),
                   onPressed: () {
                     Navigator.of(context).pop(true);

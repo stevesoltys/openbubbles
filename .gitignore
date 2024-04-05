@@ -52,3 +52,6 @@ pubspeck.lock
 *.env
 .vscode/launch.json
 /lib/models/html/giphy.dart
+
+#native-lib
+native-lib/target/**
