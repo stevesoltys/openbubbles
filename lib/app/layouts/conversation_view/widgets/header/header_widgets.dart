@@ -10,6 +10,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:universal_io/io.dart';
+import 'package:bluebubbles/services/network/backend_service.dart';
 
 class ManualMark extends StatefulWidget {
   const ManualMark({required this.controller});
@@ -64,9 +65,9 @@ class ManualMarkState extends OptimizedState<ManualMark> {
                 marking = true;
               });
               if (!marked) {
-                await http.markChatRead(chat.guid);
+                await backend.markRead(chat);
               } else {
-                await http.markChatUnread(chat.guid);
+                await backend.getRemoteService()?.markChatUnread(chat.guid);
               }
               setState(() {
                 marking = false;

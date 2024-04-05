@@ -18,6 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart';
 import 'package:get/get.dart';
 import 'package:pull_down_button/pull_down_button.dart';
+import 'package:bluebubbles/services/network/backend_service.dart';
 
 class HeaderText extends StatelessWidget {
   const HeaderText({Key? key, required this.controller, this.fontSize});
@@ -143,7 +144,7 @@ class MaterialOverflowMenu extends StatelessWidget {
                 style: context.textTheme.bodyLarge!.apply(color: context.theme.colorScheme.properOnSurface),
               ),
             ),
-          if (ss.isMinCatalinaSync)
+          if (backend.supportsFindMy())
             PopupMenuItem(
               value: 5,
               child: Text(

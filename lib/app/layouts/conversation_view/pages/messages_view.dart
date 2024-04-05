@@ -7,6 +7,7 @@ import 'package:bluebubbles/app/layouts/conversation_view/widgets/message/typing
 import 'package:bluebubbles/database/database.dart';
 import 'package:bluebubbles/utils/logger/logger.dart';
 import 'package:bluebubbles/helpers/helpers.dart';
+import 'package:bluebubbles/services/network/backend_service.dart';
 import 'package:bluebubbles/app/wrappers/scrollbar_wrapper.dart';
 import 'package:bluebubbles/app/components/avatars/contact_avatar_widget.dart';
 import 'package:bluebubbles/app/wrappers/theme_switcher.dart';
@@ -142,7 +143,7 @@ class MessagesViewState extends OptimizedState<MessagesView> {
   }
 
   void getFocusState() {
-    if (!ss.isMinMontereySync) return;
+    if (!backend.supportsFocusStates()) return;
     final recipient = chat.participants.firstOrNull;
     if (recipient != null) {
       http.handleFocusState(recipient.address).then((response) {

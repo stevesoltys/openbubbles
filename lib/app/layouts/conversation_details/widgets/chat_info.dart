@@ -14,6 +14,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:universal_io/io.dart';
+import 'package:bluebubbles/services/network/backend_service.dart';
 
 class ChatInfo extends StatefulWidget {
   const ChatInfo({super.key, required this.chat});
@@ -80,11 +81,7 @@ class _ChatInfoState extends OptimizedState<ChatInfo> {
     if (result != null) {
       chat.customAvatarPath = result;
     }
-    if (papi &&
-        ss.settings.enablePrivateAPI.value &&
-        result != null &&
-        (await ss.isMinBigSur) &&
-        ss.serverDetailsSync().item4 >= 226) {
+    if (papi && ss.settings.enablePrivateAPI.value && result != null && await backend.canUploadGroupPhotos()) {
       showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -104,9 +101,10 @@ class _ChatInfoState extends OptimizedState<ChatInfo> {
                 ),
               ),
             );
-          });
-      final response = await http.setChatIcon(chat.guid, chat.customAvatarPath!);
-      if (response.statusCode == 200) {
+          }
+      );
+      final response = await backend.setChatIcon(chat, chat.customAvatarPath!);
+      if (response) {
         Get.back();
         showSnackbar("Notice", "Updated group photo successfully!");
       } else {
@@ -122,15 +120,11 @@ class _ChatInfoState extends OptimizedState<ChatInfo> {
       papi = await showMethodDialog("Group Icon Deletion Method");
     }
     if (papi == null) return;
-    try {
-      File file = File(chat.customAvatarPath!);
-      file.delete();
-    } catch (_) {}
-    chat.customAvatarPath = null;
+    chat.removeProfilePhoto();
     chat.save(updateCustomAvatarPath: true);
-    if (papi && ss.settings.enablePrivateAPI.value && (await ss.isMinBigSur) && ss.serverDetailsSync().item4 >= 226) {
-      final response = await http.deleteChatIcon(chat.guid);
-      if (response.statusCode == 200) {
+    if (papi && ss.settings.enablePrivateAPI.value && await backend.canUploadGroupPhotos()) {
+      final response = await backend.deleteChatIcon(chat);
+      if (response) {
         showSnackbar("Notice", "Deleted group photo successfully!");
       } else {
         showSnackbar("Error", "Failed to delete group photo!");

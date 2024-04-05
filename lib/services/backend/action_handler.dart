@@ -5,6 +5,7 @@ import 'package:bluebubbles/database/models.dart';
 import 'package:bluebubbles/services/services.dart';
 import 'package:bluebubbles/helpers/helpers.dart';
 import 'package:bluebubbles/utils/file_utils.dart';
+import 'package:bluebubbles/services/network/backend_service.dart';
 import 'package:bluebubbles/utils/logger/logger.dart';
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
@@ -147,23 +148,7 @@ class ActionHandler extends GetxService {
   Future<void> sendMessage(Chat c, Message m, Message? selected, String? r) async {
     final completer = Completer<void>();
     if (r == null) {
-      http.sendMessage(
-        c.guid,
-        m.guid!,
-        m.text!,
-        subject: m.subject,
-        method: (ss.settings.enablePrivateAPI.value
-            && ss.settings.privateAPISend.value)
-            || (m.subject?.isNotEmpty ?? false)
-            || m.threadOriginatorGuid != null
-            || m.expressiveSendStyleId != null
-            ? "private-api" : "apple-script",
-        selectedMessageGuid: m.threadOriginatorGuid,
-        effectId: m.expressiveSendStyleId,
-        partIndex: int.tryParse(m.threadOriginatorPart?.split(":").firstOrNull ?? ""),
-        ddScan: !ss.isMinSonomaSync && m.text!.hasUrl,
-      ).then((response) async {
-        final newMessage = Message.fromMap(response.data['data']);
+      backend.sendMessage(c, m).then((newMessage) async {
         try {
           await matchMessageWithExisting(c, m.guid!, newMessage, existing: m);
         } catch (ex) {
@@ -184,8 +169,7 @@ class ActionHandler extends GetxService {
         completer.completeError(error);
       });
     } else {
-      http.sendTapback(c.guid, selected!.text ?? "", selected.guid!, r, partIndex: m.associatedMessagePart).then((response) async {
-        final newMessage = Message.fromMap(response.data['data']);
+      backend.sendTapback(c, selected!, r, m.associatedMessagePart).then((newMessage) async {
         try {
           await matchMessageWithExisting(c, m.guid!, newMessage, existing: m);
         } catch (ex) {
@@ -273,25 +257,11 @@ class ActionHandler extends GetxService {
     final progress = attachmentProgress.firstWhere((e) => e.item1 == attachment.guid);
     final completer = Completer<void>();
     latestCancelToken = CancelToken();
-    http.sendAttachment(
-      c.guid,
-      attachment.guid!,
-      PlatformFile(name: attachment.transferName!, bytes: attachment.bytes, path: kIsWeb ? null : attachment.path, size: attachment.totalBytes ?? 0),
-      onSendProgress: (count, total) => progress.item2.value = count / attachment.bytes!.length,
-      method: (ss.settings.enablePrivateAPI.value
-          && ss.settings.privateAPIAttachmentSend.value)
-          || (m.subject?.isNotEmpty ?? false)
-          || m.threadOriginatorGuid != null
-          || m.expressiveSendStyleId != null
-          ? "private-api" : "apple-script",
-      selectedMessageGuid: m.threadOriginatorGuid,
-      effectId: m.expressiveSendStyleId,
-      partIndex: int.tryParse(m.threadOriginatorPart?.split(":").firstOrNull ?? ""),
-      isAudioMessage: isAudioMessage,
+    backend.sendAttachment(
+      c, m, isAudioMessage, attachment, onSendProgress: (count, total) => progress.item2.value = count / attachment.bytes!.length,
       cancelToken: latestCancelToken,
-    ).then((response) async {
+    ).then((newMessage) async {
       latestCancelToken = null;
-      final newMessage = Message.fromMap(response.data['data']);
 
       for (Attachment? a in newMessage.attachments) {
         if (a == null) continue;

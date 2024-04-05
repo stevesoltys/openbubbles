@@ -7,6 +7,7 @@ import 'package:bluebubbles/helpers/helpers.dart';
 import 'package:bluebubbles/services/network/http_overrides.dart';
 import 'package:bluebubbles/utils/logger/logger.dart';
 import 'package:bluebubbles/services/services.dart';
+import 'package:bluebubbles/services/network/backend_service.dart';
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
@@ -29,6 +30,9 @@ class SyncService extends GetxService {
   Future<void> startFullSync() async {
     // Set the last sync date (for incremental, even though this isn't incremental)
     // We won't try an incremental sync until the last (full) sync date is set
+    if (backend.getRemoteService() == null) {
+      return; // no syncing if no remote
+    }
     ss.settings.lastIncrementalSync.value = DateTime.now().millisecondsSinceEpoch;
     await ss.saveSettings();
 
@@ -41,6 +45,10 @@ class SyncService extends GetxService {
   }
 
   Future<void> startIncrementalSync() async {
+    if (backend.getRemoteService() == null) {
+      await chats.init();
+      return; // no syncing if no remote
+    }
     isIncrementalSyncing.value = true;
 
     final contacts = <Contact>[];

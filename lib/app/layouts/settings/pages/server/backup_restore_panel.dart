@@ -21,6 +21,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:universal_io/io.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:bluebubbles/services/network/backend_service.dart';
 
 class BackupRestorePanel extends StatefulWidget {
   BackupRestorePanel({
@@ -43,6 +44,12 @@ class _BackupRestorePanelState extends OptimizedState<BackupRestorePanel> {
   }
 
   void getBackups() async {
+    if (backend.getRemoteService() == null) {
+      setState(() {
+        fetching = false;
+      });
+      return;
+    }
     final response1 = await http.getSettings().catchError((_) {
       setState(() {
         fetching = null;
@@ -102,6 +109,9 @@ class _BackupRestorePanelState extends OptimizedState<BackupRestorePanel> {
   }
 
   Future<bool?> showMethodDialog() async {
+    if (backend.getRemoteService() == null) {
+      return false;
+    }
     return await showDialog<bool>(
         context: context,
         builder: (BuildContext context) {

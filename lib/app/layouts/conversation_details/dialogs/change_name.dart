@@ -4,6 +4,8 @@ import 'package:bluebubbles/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'package:bluebubbles/services/network/backend_service.dart';
+
 void showChangeName(Chat chat, String method, BuildContext context) {
   final controller = TextEditingController(text: chat.displayName);
   final node = FocusNode();
@@ -39,8 +41,8 @@ void showChangeName(Chat chat, String method, BuildContext context) {
                     );
                   }
                 );
-                final response = await http.updateChat(chat.guid, controller.text);
-                if (response.statusCode == 200) {
+                final response = await backend.renameChat(chat, controller.text);
+                if (response) {
                   Get.back();
                   Get.back();
                   chat.changeName(controller.text);

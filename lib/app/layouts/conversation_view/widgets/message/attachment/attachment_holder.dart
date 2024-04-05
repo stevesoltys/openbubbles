@@ -19,6 +19,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:tuple/tuple.dart';
+import 'package:bluebubbles/services/network/backend_service.dart';
 
 class AttachmentHolder extends CustomStateful<MessageWidgetController> {
   AttachmentHolder({
@@ -165,7 +166,7 @@ class _AttachmentHolderState extends CustomState<AttachmentHolder, void, Message
                                       overflow: TextOverflow.ellipsis,
                                       textAlign: TextAlign.center,
                                     ),
-                                    if (message.error == 0)
+                                    if (message.error == 0 && backend.canCancelUploads())
                                       TextButton(
                                         style: TextButton.styleFrom(
                                           visualDensity: VisualDensity.compact,

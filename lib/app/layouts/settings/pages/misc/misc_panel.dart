@@ -12,6 +12,7 @@ import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:secure_application/secure_application.dart';
 import 'package:universal_io/io.dart';
+import 'package:bluebubbles/services/network/backend_service.dart';
 
 class MiscPanel extends StatefulWidget {
   @override
@@ -221,7 +222,12 @@ class _MiscPanelState extends OptimizedState<MiscPanel> {
                   }),
                 ],
               ),
-              SettingsHeader(iosSubtitle: iosSubtitle, materialSubtitle: materialSubtitle, text: "Networking"),
+              if (backend.getRemoteService() != null)
+              SettingsHeader(
+                  iosSubtitle: iosSubtitle,
+                  materialSubtitle: materialSubtitle,
+                  text: "Networking"),
+              if (backend.getRemoteService() != null)
               SettingsSection(
                 backgroundColor: tileColor,
                 children: [

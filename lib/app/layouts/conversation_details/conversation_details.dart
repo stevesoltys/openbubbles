@@ -22,6 +22,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:bluebubbles/services/network/backend_service.dart';
 
 class ConversationDetails extends StatefulWidget {
   final Chat chat;
@@ -278,7 +279,7 @@ class _ConversationDetailsState extends OptimizedState<ConversationDetails> with
                   );
                 }, childCount: clippedParticipants.length + 2),
               ),
-            if (chat.participants.length > 2 && ss.settings.enablePrivateAPI.value && ss.serverDetailsSync().item4 >= 226)
+            if (chat.participants.length > 2 && ss.settings.enablePrivateAPI.value && backend.canLeaveChat())
               SliverToBoxAdapter(
                 child: Builder(
                   builder: (context) {
@@ -321,8 +322,8 @@ class _ConversationDetailsState extends OptimizedState<ConversationDetails> with
                             );
                           }
                         );
-                        final response = await http.leaveChat(chat.guid);
-                        if (response.statusCode == 200) {
+                        final response = await backend.leaveChat(chat);
+                        if (response) {
                           Get.back();
                           showSnackbar("Notice", "Left chat successfully!");
                         } else {

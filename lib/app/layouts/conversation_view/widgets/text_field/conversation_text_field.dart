@@ -15,6 +15,7 @@ import 'package:bluebubbles/app/wrappers/stateful_boilerplate.dart';
 import 'package:bluebubbles/helpers/helpers.dart';
 import 'package:bluebubbles/database/models.dart';
 import 'package:bluebubbles/services/services.dart';
+import 'package:bluebubbles/services/network/backend_service.dart';
 import 'package:bluebubbles/utils/emoji.dart';
 import 'package:bluebubbles/utils/logger/logger.dart';
 import 'package:bluebubbles/utils/share.dart';
@@ -247,10 +248,10 @@ class ConversationTextFieldState extends CustomState<ConversationTextField, void
       // don't send a bunch of duplicate events for every typing change
       if (ss.settings.enablePrivateAPI.value && (chat.autoSendTypingIndicators ?? ss.settings.privateSendTypingIndicators.value)) {
         if (_debounceTyping == null) {
-          socket.sendMessage("started-typing", {"chatGuid": chatGuid});
+          backend.startedTyping(chat);
         }
         _debounceTyping = Timer(const Duration(seconds: 3), () {
-          socket.sendMessage("stopped-typing", {"chatGuid": chatGuid});
+          backend.stoppedTyping(chat);
           _debounceTyping = null;
         });
       }
@@ -367,7 +368,7 @@ class ConversationTextFieldState extends CustomState<ConversationTextField, void
     controller.subjectTextController.dispose();
     recorderController?.dispose();
     if (chat.autoSendTypingIndicators ?? ss.settings.privateSendTypingIndicators.value) {
-      socket.sendMessage("stopped-typing", {"chatGuid": chatGuid});
+      backend.stoppedTyping(chat);
     }
 
     super.dispose();

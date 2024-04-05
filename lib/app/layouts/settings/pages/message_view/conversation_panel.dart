@@ -5,6 +5,7 @@ import 'package:bluebubbles/helpers/helpers.dart';
 import 'package:bluebubbles/app/layouts/settings/widgets/settings_widgets.dart';
 import 'package:bluebubbles/app/wrappers/stateful_boilerplate.dart';
 import 'package:bluebubbles/database/models.dart' hide PlatformFile;
+import 'package:bluebubbles/services/network/backend_service.dart';
 import 'package:bluebubbles/services/services.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
@@ -137,9 +138,9 @@ class _ConversationPanelState extends OptimizedState<ConversationPanel> {
                       },
                       trailing: const NextButton(),
                     ),
-                  if (!kIsWeb)
+                  if (!kIsWeb && backend.getRemoteService() != null)
                     const SettingsDivider(padding: EdgeInsets.only(left: 16.0)),
-                  if (!kIsWeb)
+                  if (!kIsWeb && backend.getRemoteService() != null)
                     SettingsTile(
                       title: "Sync Group Chat Icons",
                       trailing: Obx(() => gettingIcons.value == null
@@ -164,7 +165,7 @@ class _ConversationPanelState extends OptimizedState<ConversationPanel> {
                       },
                       subtitle: "Get iMessage group chat icons from the server",
                     ),
-                  if (!kIsWeb)
+                  if (!kIsWeb && backend.getRemoteService() != null)
                     const SettingsSubtitle(
                       subtitle: "Note: Overrides any custom avatars set for group chats.",
                     ),

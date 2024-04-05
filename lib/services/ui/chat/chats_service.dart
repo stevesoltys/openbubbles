@@ -6,6 +6,7 @@ import 'package:bluebubbles/helpers/backend/startup_tasks.dart';
 import 'package:bluebubbles/helpers/helpers.dart';
 import 'package:bluebubbles/database/models.dart';
 import 'package:bluebubbles/services/services.dart';
+import 'package:bluebubbles/services/network/backend_service.dart';
 import 'package:bluebubbles/utils/logger/logger.dart';
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
@@ -62,13 +63,10 @@ class ChatsService extends GetxService {
   Future<void> init({bool force = false}) async {
     if (!force && !ss.settings.finishedSetup.value) return;
     Logger.info("Fetching chats...", tag: "ChatBloc");
-    currentCount = Chat.count() ??
-        (await http.chatCount().catchError((err) {
-          Logger.info("Error when fetching chat count!", tag: "ChatBloc");
-          return Response(requestOptions: RequestOptions(path: ''));
-        }))
-            .data['data']['total'] ??
-        0;
+    currentCount = Chat.count() ?? (await backend.getRemoteService()?.chatCount().catchError((err) {
+      Logger.info("Error when fetching chat count!", tag: "ChatBloc");
+      return Response(requestOptions: RequestOptions(path: ''));
+    }))?.data['data']['total'] ?? 0;
     loadedAllChats = Completer();
     if (currentCount != 0) {
       hasChats.value = true;
@@ -191,7 +189,7 @@ class ChatsService extends GetxService {
         }
       );
       if (ss.settings.enablePrivateAPI.value && ss.settings.privateMarkChatAsRead.value) {
-        http.markChatRead(c.guid);
+        backend.markRead(c);
       }
     }
     Database.chats.putMany(_chats);

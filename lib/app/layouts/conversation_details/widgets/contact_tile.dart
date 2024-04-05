@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:universal_io/io.dart';
+import 'package:bluebubbles/services/network/backend_service.dart';
 
 class ContactTile extends StatelessWidget {
   final Handle handle;
@@ -170,7 +171,7 @@ class ContactTile extends StatelessWidget {
                 }
               );
 
-              http.chatParticipant("remove", chat.guid, handle.address).then((response) async {
+              backend.chatParticipant(ParticipantOp.Remove, chat, handle.address).then((response) async {
                 Get.back();
                 Logger.info("Removed participant ${handle.address}");
                 showSnackbar("Notice", "Removed participant from chat!");

@@ -30,6 +30,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:tuple/tuple.dart';
 import 'package:universal_io/io.dart';
+import 'package:bluebubbles/services/network/backend_service.dart';
 
 class MessageHolder extends CustomStateful<MessageWidgetController> {
   MessageHolder({
@@ -153,9 +154,8 @@ class _MessageHolderState extends CustomState<MessageHolder, void, MessageWidget
           );
         }
       );
-      final response = await http.edit(message.guid!, newEdit, "Edited to: “$newEdit”", partIndex: part);
-      if (response.statusCode == 200) {
-        final updatedMessage = Message.fromMap(response.data['data']);
+      final updatedMessage = await backend.edit(message, newEdit, part);
+      if (updatedMessage != null) {
         ah.handleUpdatedMessage(chat, updatedMessage, null);
       }
       if (ns.isTabletMode(context)) {

@@ -5,6 +5,7 @@ import 'package:bluebubbles/helpers/helpers.dart';
 import 'package:bluebubbles/app/layouts/settings/pages/conversation_list/pinned_order_panel.dart';
 import 'package:bluebubbles/app/layouts/settings/widgets/settings_widgets.dart';
 import 'package:bluebubbles/app/wrappers/stateful_boilerplate.dart';
+import 'package:bluebubbles/services/network/backend_service.dart';
 import 'package:bluebubbles/services/services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -43,7 +44,9 @@ class _ChatListPanelState extends OptimizedState<ChatListPanel> {
                           subtitle: "Show a visual status indicator when the app is not connected to the server",
                           backgroundColor: tileColor,
                         )),
+                    if (backend.getRemoteService() != null)
                     const SettingsDivider(padding: EdgeInsets.only(left: 16.0)),
+                    if (backend.getRemoteService() != null)
                     Obx(() => SettingsSwitch(
                           onChanged: (bool val) {
                             ss.settings.showSyncIndicator.value = val;

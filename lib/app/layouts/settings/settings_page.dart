@@ -35,6 +35,7 @@ import 'package:flutter/services.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:get/get.dart' hide Response;
 import 'package:universal_io/io.dart';
+import 'package:bluebubbles/services/network/backend_service.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -58,7 +59,7 @@ class _SettingsPageState extends OptimizedState<SettingsPage> {
   void initState() {
     super.initState();
 
-    if (showAltLayoutContextless) {
+    if (showAltLayoutContextless && backend.getRemoteService() != null) {
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         ns.pushAndRemoveSettingsUntil(
           context,
