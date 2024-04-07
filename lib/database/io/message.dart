@@ -361,6 +361,7 @@ class Message {
     this.didNotifyRecipient = false,
     this.isBookmarked = false,
   }) {
+      if (handle != null && handleId == null) handleId = handle!.originalROWID;
       if (error != null) _error.value = error;
       if (dateRead != null) _dateRead.value = dateRead;
       if (dateDelivered != null) _dateDelivered.value = dateDelivered;
