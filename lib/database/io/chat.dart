@@ -958,6 +958,9 @@ class Chat {
   }
 
   static Future<Chat> findByRust(api.DartConversationData data) async {
+    if (data.participants.isEmpty) {
+      throw Exception("empty participants!??");
+    }
     final name = data.cvName;
     var dartParticipants = await RustPushBBUtils.rustParticipantsToBB(data.participants);
 
