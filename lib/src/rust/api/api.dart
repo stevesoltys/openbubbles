@@ -11,15 +11,18 @@ part 'api.freezed.dart';
 // The type `InnerPushState` is not used by any `pub` functions, thus it is ignored.
 // The type `SavedState` is not used by any `pub` functions, thus it is ignored.
 
-Future<PushState> newPushState({required String dir, dynamic hint}) =>
+Future<ArcPushState> newPushState({required String dir, dynamic hint}) =>
     RustLib.instance.api.newPushState(dir: dir, hint: hint);
 
+Future<ArcPushState> serviceFromPtr({required String ptr, dynamic hint}) =>
+    RustLib.instance.api.serviceFromPtr(ptr: ptr, hint: hint);
+
 Future<DartSupportAlert?> registerIds(
-        {required PushState state, dynamic hint}) =>
+        {required ArcPushState state, dynamic hint}) =>
     RustLib.instance.api.registerIds(state: state, hint: hint);
 
 Future<void> configureMacos(
-        {required PushState state,
+        {required ArcPushState state,
         required MacOsConfig config,
         dynamic hint}) =>
     RustLib.instance.api
@@ -30,7 +33,7 @@ Future<MacOsConfig> configFromValidationData(
     RustLib.instance.api
         .configFromValidationData(data: data, extra: extra, hint: hint);
 
-Future<DartRecievedMessage> ptrToDart({required String ptr, dynamic hint}) =>
+Future<DartIMessage> ptrToDart({required String ptr, dynamic hint}) =>
     RustLib.instance.api.ptrToDart(ptr: ptr, hint: hint);
 
 Future<String> formatE164(
@@ -38,19 +41,20 @@ Future<String> formatE164(
     RustLib.instance.api
         .formatE164(number: number, country: country, hint: hint);
 
-Future<DartRecievedMessage?> recvWait(
-        {required PushState state, dynamic hint}) =>
+Future<DartIMessage?> recvWait({required ArcPushState state, dynamic hint}) =>
     RustLib.instance.api.recvWait(state: state, hint: hint);
 
 Future<void> send(
-        {required PushState state, required DartIMessage msg, dynamic hint}) =>
+        {required ArcPushState state,
+        required DartIMessage msg,
+        dynamic hint}) =>
     RustLib.instance.api.send(state: state, msg: msg, hint: hint);
 
-Future<List<String>> getHandles({required PushState state, dynamic hint}) =>
+Future<List<String>> getHandles({required ArcPushState state, dynamic hint}) =>
     RustLib.instance.api.getHandles(state: state, hint: hint);
 
 Future<DartIMessage> newMsg(
-        {required PushState state,
+        {required ArcPushState state,
         required DartConversationData conversation,
         required String sender,
         required DartMessage message,
@@ -63,18 +67,19 @@ Future<DartIMessage> newMsg(
         hint: hint);
 
 Future<List<String>> validateTargets(
-        {required PushState state,
+        {required ArcPushState state,
         required List<String> targets,
         required String sender,
         dynamic hint}) =>
     RustLib.instance.api.validateTargets(
         state: state, targets: targets, sender: sender, hint: hint);
 
-Future<RegistrationPhase> getPhase({required PushState state, dynamic hint}) =>
+Future<RegistrationPhase> getPhase(
+        {required ArcPushState state, dynamic hint}) =>
     RustLib.instance.api.getPhase(state: state, hint: hint);
 
 Stream<TransferProgress> downloadAttachment(
-        {required PushState state,
+        {required ArcPushState state,
         required DartAttachment attachment,
         required String path,
         dynamic hint}) =>
@@ -82,7 +87,7 @@ Stream<TransferProgress> downloadAttachment(
         state: state, attachment: attachment, path: path, hint: hint);
 
 Stream<TransferProgress> downloadMmcs(
-        {required PushState state,
+        {required ArcPushState state,
         required DartMMCSFile attachment,
         required String path,
         dynamic hint}) =>
@@ -90,11 +95,11 @@ Stream<TransferProgress> downloadMmcs(
         state: state, attachment: attachment, path: path, hint: hint);
 
 Stream<MMCSTransferProgress> uploadMmcs(
-        {required PushState state, required String path, dynamic hint}) =>
+        {required ArcPushState state, required String path, dynamic hint}) =>
     RustLib.instance.api.uploadMmcs(state: state, path: path, hint: hint);
 
 Stream<TransferProgress> uploadAttachment(
-        {required PushState state,
+        {required ArcPushState state,
         required String path,
         required String mime,
         required String uti,
@@ -104,7 +109,7 @@ Stream<TransferProgress> uploadAttachment(
         state: state, path: path, mime: mime, uti: uti, name: name, hint: hint);
 
 Future<DartLoginState> tryAuth(
-        {required PushState state,
+        {required ArcPushState state,
         required String username,
         required String password,
         dynamic hint}) =>
@@ -112,28 +117,54 @@ Future<DartLoginState> tryAuth(
         state: state, username: username, password: password, hint: hint);
 
 Future<DartLoginState> send2FaToDevices(
-        {required PushState state, dynamic hint}) =>
+        {required ArcPushState state, dynamic hint}) =>
     RustLib.instance.api.send2FaToDevices(state: state, hint: hint);
 
 Future<DartLoginState> verify2Fa(
-        {required PushState state, required String code, dynamic hint}) =>
+        {required ArcPushState state, required String code, dynamic hint}) =>
     RustLib.instance.api.verify2Fa(state: state, code: code, hint: hint);
 
 Future<List<DartTrustedPhoneNumber>> get2FaSmsOpts(
-        {required PushState state, dynamic hint}) =>
+        {required ArcPushState state, dynamic hint}) =>
     RustLib.instance.api.get2FaSmsOpts(state: state, hint: hint);
 
 Future<DartLoginState> send2FaSms(
-        {required PushState state, required int phoneId, dynamic hint}) =>
+        {required ArcPushState state, required int phoneId, dynamic hint}) =>
     RustLib.instance.api.send2FaSms(state: state, phoneId: phoneId, hint: hint);
 
 Future<DartLoginState> verify2FaSms(
-        {required PushState state,
+        {required ArcPushState state,
         required VerifyBody body,
         required String code,
         dynamic hint}) =>
     RustLib.instance.api
         .verify2FaSms(state: state, body: body, code: code, hint: hint);
+
+Future<String> getUserName({required ArcPushState state, dynamic hint}) =>
+    RustLib.instance.api.getUserName(state: state, hint: hint);
+
+Future<DartRegisterState> getRegstate(
+        {required ArcPushState state, dynamic hint}) =>
+    RustLib.instance.api.getRegstate(state: state, hint: hint);
+
+// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::rust_async::RwLock<Arc < PushState >>>
+@sealed
+class ArcPushState extends RustOpaque {
+  ArcPushState.dcoDecode(List<dynamic> wire)
+      : super.dcoDecode(wire, _kStaticData);
+
+  ArcPushState.sseDecode(int ptr, int externalSizeOnNative)
+      : super.sseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount:
+        RustLib.instance.api.rust_arc_increment_strong_count_ArcPushState,
+    rustArcDecrementStrongCount:
+        RustLib.instance.api.rust_arc_decrement_strong_count_ArcPushState,
+    rustArcDecrementStrongCountPtr:
+        RustLib.instance.api.rust_arc_decrement_strong_count_ArcPushStatePtr,
+  );
+}
 
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::rust_async::RwLock<MacOSConfig>>
 @sealed
@@ -151,24 +182,6 @@ class MacOsConfig extends RustOpaque {
         RustLib.instance.api.rust_arc_decrement_strong_count_MacOsConfig,
     rustArcDecrementStrongCountPtr:
         RustLib.instance.api.rust_arc_decrement_strong_count_MacOsConfigPtr,
-  );
-}
-
-// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::rust_async::RwLock<PushState>>
-@sealed
-class PushState extends RustOpaque {
-  PushState.dcoDecode(List<dynamic> wire) : super.dcoDecode(wire, _kStaticData);
-
-  PushState.sseDecode(int ptr, int externalSizeOnNative)
-      : super.sseDecode(ptr, externalSizeOnNative, _kStaticData);
-
-  static final _kStaticData = RustArcStaticData(
-    rustArcIncrementStrongCount:
-        RustLib.instance.api.rust_arc_increment_strong_count_PushState,
-    rustArcDecrementStrongCount:
-        RustLib.instance.api.rust_arc_decrement_strong_count_PushState,
-    rustArcDecrementStrongCountPtr:
-        RustLib.instance.api.rust_arc_decrement_strong_count_PushStatePtr,
   );
 }
 
@@ -654,10 +667,13 @@ enum DartReaction {
 }
 
 @freezed
-sealed class DartRecievedMessage with _$DartRecievedMessage {
-  const factory DartRecievedMessage.message({
-    required DartIMessage msg,
-  }) = DartRecievedMessage_Message;
+sealed class DartRegisterState with _$DartRegisterState {
+  const factory DartRegisterState.registered() = DartRegisterState_Registered;
+  const factory DartRegisterState.registering() = DartRegisterState_Registering;
+  const factory DartRegisterState.failed({
+    required int retryWait,
+    required String error,
+  }) = DartRegisterState_Failed;
 }
 
 class DartRenameMessage {

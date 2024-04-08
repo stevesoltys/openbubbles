@@ -226,7 +226,7 @@ fn wire_configure_macos_impl(
             let mut deserializer =
                 flutter_rust_bridge::for_generated::SseDeserializer::new(message);
             let api_state = <RustOpaqueMoi<
-                flutter_rust_bridge::for_generated::rust_async::RwLock<PushState>,
+                flutter_rust_bridge::for_generated::rust_async::RwLock<Arc<PushState>>,
             >>::sse_decode(&mut deserializer);
             let api_config = <MacOSConfig>::sse_decode(&mut deserializer);
             deserializer.end();
@@ -265,7 +265,7 @@ fn wire_download_attachment_impl(
             let mut deserializer =
                 flutter_rust_bridge::for_generated::SseDeserializer::new(message);
             let api_state = <RustOpaqueMoi<
-                flutter_rust_bridge::for_generated::rust_async::RwLock<PushState>,
+                flutter_rust_bridge::for_generated::rust_async::RwLock<Arc<PushState>>,
             >>::sse_decode(&mut deserializer);
             let api_attachment = <crate::api::api::DartAttachment>::sse_decode(&mut deserializer);
             let api_path = <String>::sse_decode(&mut deserializer);
@@ -315,7 +315,7 @@ fn wire_download_mmcs_impl(
             let mut deserializer =
                 flutter_rust_bridge::for_generated::SseDeserializer::new(message);
             let api_state = <RustOpaqueMoi<
-                flutter_rust_bridge::for_generated::rust_async::RwLock<PushState>,
+                flutter_rust_bridge::for_generated::rust_async::RwLock<Arc<PushState>>,
             >>::sse_decode(&mut deserializer);
             let api_attachment = <crate::api::api::DartMMCSFile>::sse_decode(&mut deserializer);
             let api_path = <String>::sse_decode(&mut deserializer);
@@ -398,7 +398,7 @@ fn wire_get_2fa_sms_opts_impl(
             let mut deserializer =
                 flutter_rust_bridge::for_generated::SseDeserializer::new(message);
             let api_state = <RustOpaqueMoi<
-                flutter_rust_bridge::for_generated::rust_async::RwLock<PushState>,
+                flutter_rust_bridge::for_generated::rust_async::RwLock<Arc<PushState>>,
             >>::sse_decode(&mut deserializer);
             deserializer.end();
             move |context| async move {
@@ -436,7 +436,7 @@ fn wire_get_handles_impl(
             let mut deserializer =
                 flutter_rust_bridge::for_generated::SseDeserializer::new(message);
             let api_state = <RustOpaqueMoi<
-                flutter_rust_bridge::for_generated::rust_async::RwLock<PushState>,
+                flutter_rust_bridge::for_generated::rust_async::RwLock<Arc<PushState>>,
             >>::sse_decode(&mut deserializer);
             deserializer.end();
             move |context| async move {
@@ -474,7 +474,7 @@ fn wire_get_phase_impl(
             let mut deserializer =
                 flutter_rust_bridge::for_generated::SseDeserializer::new(message);
             let api_state = <RustOpaqueMoi<
-                flutter_rust_bridge::for_generated::rust_async::RwLock<PushState>,
+                flutter_rust_bridge::for_generated::rust_async::RwLock<Arc<PushState>>,
             >>::sse_decode(&mut deserializer);
             deserializer.end();
             move |context| async move {
@@ -482,6 +482,82 @@ fn wire_get_phase_impl(
                     (move || async move {
                         let api_state = api_state.rust_auto_opaque_decode_ref();
                         Result::<_, ()>::Ok(crate::api::api::get_phase(&api_state).await)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
+fn wire_get_regstate_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "get_regstate",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_state = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::rust_async::RwLock<Arc<PushState>>,
+            >>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse(
+                    (move || async move {
+                        let api_state = api_state.rust_auto_opaque_decode_ref();
+                        crate::api::api::get_regstate(&api_state).await
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
+fn wire_get_user_name_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "get_user_name",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_state = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::rust_async::RwLock<Arc<PushState>>,
+            >>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse(
+                    (move || async move {
+                        let api_state = api_state.rust_auto_opaque_decode_ref();
+                        crate::api::api::get_user_name(&api_state).await
                     })()
                     .await,
                 )
@@ -512,7 +588,7 @@ fn wire_new_msg_impl(
             let mut deserializer =
                 flutter_rust_bridge::for_generated::SseDeserializer::new(message);
             let api_state = <RustOpaqueMoi<
-                flutter_rust_bridge::for_generated::rust_async::RwLock<PushState>,
+                flutter_rust_bridge::for_generated::rust_async::RwLock<Arc<PushState>>,
             >>::sse_decode(&mut deserializer);
             let api_conversation =
                 <crate::api::api::DartConversationData>::sse_decode(&mut deserializer);
@@ -626,7 +702,7 @@ fn wire_recv_wait_impl(
             let mut deserializer =
                 flutter_rust_bridge::for_generated::SseDeserializer::new(message);
             let api_state = <RustOpaqueMoi<
-                flutter_rust_bridge::for_generated::rust_async::RwLock<PushState>,
+                flutter_rust_bridge::for_generated::rust_async::RwLock<Arc<PushState>>,
             >>::sse_decode(&mut deserializer);
             deserializer.end();
             move |context| async move {
@@ -664,7 +740,7 @@ fn wire_register_ids_impl(
             let mut deserializer =
                 flutter_rust_bridge::for_generated::SseDeserializer::new(message);
             let api_state = <RustOpaqueMoi<
-                flutter_rust_bridge::for_generated::rust_async::RwLock<PushState>,
+                flutter_rust_bridge::for_generated::rust_async::RwLock<Arc<PushState>>,
             >>::sse_decode(&mut deserializer);
             deserializer.end();
             move |context| async move {
@@ -702,7 +778,7 @@ fn wire_send_impl(
             let mut deserializer =
                 flutter_rust_bridge::for_generated::SseDeserializer::new(message);
             let api_state = <RustOpaqueMoi<
-                flutter_rust_bridge::for_generated::rust_async::RwLock<PushState>,
+                flutter_rust_bridge::for_generated::rust_async::RwLock<Arc<PushState>>,
             >>::sse_decode(&mut deserializer);
             let api_msg = <crate::api::api::DartIMessage>::sse_decode(&mut deserializer);
             deserializer.end();
@@ -741,7 +817,7 @@ fn wire_send_2fa_sms_impl(
             let mut deserializer =
                 flutter_rust_bridge::for_generated::SseDeserializer::new(message);
             let api_state = <RustOpaqueMoi<
-                flutter_rust_bridge::for_generated::rust_async::RwLock<PushState>,
+                flutter_rust_bridge::for_generated::rust_async::RwLock<Arc<PushState>>,
             >>::sse_decode(&mut deserializer);
             let api_phone_id = <u32>::sse_decode(&mut deserializer);
             deserializer.end();
@@ -780,7 +856,7 @@ fn wire_send_2fa_to_devices_impl(
             let mut deserializer =
                 flutter_rust_bridge::for_generated::SseDeserializer::new(message);
             let api_state = <RustOpaqueMoi<
-                flutter_rust_bridge::for_generated::rust_async::RwLock<PushState>,
+                flutter_rust_bridge::for_generated::rust_async::RwLock<Arc<PushState>>,
             >>::sse_decode(&mut deserializer);
             deserializer.end();
             move |context| async move {
@@ -791,6 +867,38 @@ fn wire_send_2fa_to_devices_impl(
                     })()
                     .await,
                 )
+            }
+        },
+    )
+}
+fn wire_service_from_ptr_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::SseCodec, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "service_from_ptr",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_ptr = <String>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| {
+                transform_result_sse((move || {
+                    Result::<_, ()>::Ok(crate::api::api::service_from_ptr(api_ptr))
+                })())
             }
         },
     )
@@ -818,7 +926,7 @@ fn wire_try_auth_impl(
             let mut deserializer =
                 flutter_rust_bridge::for_generated::SseDeserializer::new(message);
             let api_state = <RustOpaqueMoi<
-                flutter_rust_bridge::for_generated::rust_async::RwLock<PushState>,
+                flutter_rust_bridge::for_generated::rust_async::RwLock<Arc<PushState>>,
             >>::sse_decode(&mut deserializer);
             let api_username = <String>::sse_decode(&mut deserializer);
             let api_password = <String>::sse_decode(&mut deserializer);
@@ -858,7 +966,7 @@ fn wire_upload_attachment_impl(
             let mut deserializer =
                 flutter_rust_bridge::for_generated::SseDeserializer::new(message);
             let api_state = <RustOpaqueMoi<
-                flutter_rust_bridge::for_generated::rust_async::RwLock<PushState>,
+                flutter_rust_bridge::for_generated::rust_async::RwLock<Arc<PushState>>,
             >>::sse_decode(&mut deserializer);
             let api_path = <String>::sse_decode(&mut deserializer);
             let api_mime = <String>::sse_decode(&mut deserializer);
@@ -912,7 +1020,7 @@ fn wire_upload_mmcs_impl(
             let mut deserializer =
                 flutter_rust_bridge::for_generated::SseDeserializer::new(message);
             let api_state = <RustOpaqueMoi<
-                flutter_rust_bridge::for_generated::rust_async::RwLock<PushState>,
+                flutter_rust_bridge::for_generated::rust_async::RwLock<Arc<PushState>>,
             >>::sse_decode(&mut deserializer);
             let api_path = <String>::sse_decode(&mut deserializer);
             deserializer.end();
@@ -960,7 +1068,7 @@ fn wire_validate_targets_impl(
             let mut deserializer =
                 flutter_rust_bridge::for_generated::SseDeserializer::new(message);
             let api_state = <RustOpaqueMoi<
-                flutter_rust_bridge::for_generated::rust_async::RwLock<PushState>,
+                flutter_rust_bridge::for_generated::rust_async::RwLock<Arc<PushState>>,
             >>::sse_decode(&mut deserializer);
             let api_targets = <Vec<String>>::sse_decode(&mut deserializer);
             let api_sender = <String>::sse_decode(&mut deserializer);
@@ -1000,7 +1108,7 @@ fn wire_verify_2fa_impl(
             let mut deserializer =
                 flutter_rust_bridge::for_generated::SseDeserializer::new(message);
             let api_state = <RustOpaqueMoi<
-                flutter_rust_bridge::for_generated::rust_async::RwLock<PushState>,
+                flutter_rust_bridge::for_generated::rust_async::RwLock<Arc<PushState>>,
             >>::sse_decode(&mut deserializer);
             let api_code = <String>::sse_decode(&mut deserializer);
             deserializer.end();
@@ -1039,7 +1147,7 @@ fn wire_verify_2fa_sms_impl(
             let mut deserializer =
                 flutter_rust_bridge::for_generated::SseDeserializer::new(message);
             let api_state = <RustOpaqueMoi<
-                flutter_rust_bridge::for_generated::rust_async::RwLock<PushState>,
+                flutter_rust_bridge::for_generated::rust_async::RwLock<Arc<PushState>>,
             >>::sse_decode(&mut deserializer);
             let api_body = <VerifyBody>::sse_decode(&mut deserializer);
             let api_code = <String>::sse_decode(&mut deserializer);
@@ -1060,10 +1168,10 @@ fn wire_verify_2fa_sms_impl(
 // Section: related_funcs
 
 flutter_rust_bridge::frb_generated_moi_arc_impl_value!(
-    flutter_rust_bridge::for_generated::rust_async::RwLock<MacOSConfig>
+    flutter_rust_bridge::for_generated::rust_async::RwLock<Arc<PushState>>
 );
 flutter_rust_bridge::frb_generated_moi_arc_impl_value!(
-    flutter_rust_bridge::for_generated::rust_async::RwLock<PushState>
+    flutter_rust_bridge::for_generated::rust_async::RwLock<MacOSConfig>
 );
 flutter_rust_bridge::frb_generated_moi_arc_impl_value!(
     flutter_rust_bridge::for_generated::rust_async::RwLock<VerifyBody>
@@ -1078,21 +1186,21 @@ impl SseDecode for flutter_rust_bridge::for_generated::anyhow::Error {
     }
 }
 
-impl SseDecode for MacOSConfig {
+impl SseDecode for Arc<PushState> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut inner = <RustOpaqueMoi<
-            flutter_rust_bridge::for_generated::rust_async::RwLock<MacOSConfig>,
+            flutter_rust_bridge::for_generated::rust_async::RwLock<Arc<PushState>>,
         >>::sse_decode(deserializer);
         return inner.rust_auto_opaque_decode_owned();
     }
 }
 
-impl SseDecode for PushState {
+impl SseDecode for MacOSConfig {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut inner = <RustOpaqueMoi<
-            flutter_rust_bridge::for_generated::rust_async::RwLock<PushState>,
+            flutter_rust_bridge::for_generated::rust_async::RwLock<MacOSConfig>,
         >>::sse_decode(deserializer);
         return inner.rust_auto_opaque_decode_owned();
     }
@@ -1109,7 +1217,7 @@ impl SseDecode for VerifyBody {
 }
 
 impl SseDecode
-    for RustOpaqueMoi<flutter_rust_bridge::for_generated::rust_async::RwLock<MacOSConfig>>
+    for RustOpaqueMoi<flutter_rust_bridge::for_generated::rust_async::RwLock<Arc<PushState>>>
 {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -1119,7 +1227,7 @@ impl SseDecode
 }
 
 impl SseDecode
-    for RustOpaqueMoi<flutter_rust_bridge::for_generated::rust_async::RwLock<PushState>>
+    for RustOpaqueMoi<flutter_rust_bridge::for_generated::rust_async::RwLock<MacOSConfig>>
 {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -1493,14 +1601,24 @@ impl SseDecode for crate::api::api::DartReaction {
     }
 }
 
-impl SseDecode for crate::api::api::DartRecievedMessage {
+impl SseDecode for crate::api::api::DartRegisterState {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut tag_ = <i32>::sse_decode(deserializer);
         match tag_ {
             0 => {
-                let mut var_msg = <crate::api::api::DartIMessage>::sse_decode(deserializer);
-                return crate::api::api::DartRecievedMessage::Message { msg: var_msg };
+                return crate::api::api::DartRegisterState::Registered;
+            }
+            1 => {
+                return crate::api::api::DartRegisterState::Registering;
+            }
+            2 => {
+                let mut var_retryWait = <u64>::sse_decode(deserializer);
+                let mut var_error = <String>::sse_decode(deserializer);
+                return crate::api::api::DartRegisterState::Failed {
+                    retry_wait: var_retryWait,
+                    error: var_error,
+                };
             }
             _ => {
                 unimplemented!("");
@@ -1692,24 +1810,22 @@ impl SseDecode for Option<crate::api::api::DartConversationData> {
     }
 }
 
-impl SseDecode for Option<crate::api::api::DartMMCSFile> {
+impl SseDecode for Option<crate::api::api::DartIMessage> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         if (<bool>::sse_decode(deserializer)) {
-            return Some(<crate::api::api::DartMMCSFile>::sse_decode(deserializer));
+            return Some(<crate::api::api::DartIMessage>::sse_decode(deserializer));
         } else {
             return None;
         }
     }
 }
 
-impl SseDecode for Option<crate::api::api::DartRecievedMessage> {
+impl SseDecode for Option<crate::api::api::DartMMCSFile> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         if (<bool>::sse_decode(deserializer)) {
-            return Some(<crate::api::api::DartRecievedMessage>::sse_decode(
-                deserializer,
-            ));
+            return Some(<crate::api::api::DartMMCSFile>::sse_decode(deserializer));
         } else {
             return None;
         }
@@ -1822,34 +1938,38 @@ fn pde_ffi_dispatcher_primary_impl(
     rust_vec_len: i32,
     data_len: i32,
 ) {
+    println!("here {func_id}");
     // Codec=Pde (Serialization + dispatch), see doc to use other codecs
     match func_id {
-        25 => wire_DartAttachment_get_size_impl(port, ptr, rust_vec_len, data_len),
-        24 => wire_DartAttachment_restore_impl(port, ptr, rust_vec_len, data_len),
-        23 => wire_DartAttachment_save_impl(port, ptr, rust_vec_len, data_len),
-        26 => wire_DartMessageParts_as_plain_impl(port, ptr, rust_vec_len, data_len),
-        4 => wire_config_from_validation_data_impl(port, ptr, rust_vec_len, data_len),
-        3 => wire_configure_macos_impl(port, ptr, rust_vec_len, data_len),
-        13 => wire_download_attachment_impl(port, ptr, rust_vec_len, data_len),
-        14 => wire_download_mmcs_impl(port, ptr, rust_vec_len, data_len),
-        6 => wire_format_e164_impl(port, ptr, rust_vec_len, data_len),
-        20 => wire_get_2fa_sms_opts_impl(port, ptr, rust_vec_len, data_len),
-        9 => wire_get_handles_impl(port, ptr, rust_vec_len, data_len),
-        12 => wire_get_phase_impl(port, ptr, rust_vec_len, data_len),
-        10 => wire_new_msg_impl(port, ptr, rust_vec_len, data_len),
+        28 => wire_DartAttachment_get_size_impl(port, ptr, rust_vec_len, data_len),
+        27 => wire_DartAttachment_restore_impl(port, ptr, rust_vec_len, data_len),
+        26 => wire_DartAttachment_save_impl(port, ptr, rust_vec_len, data_len),
+        29 => wire_DartMessageParts_as_plain_impl(port, ptr, rust_vec_len, data_len),
+        5 => wire_config_from_validation_data_impl(port, ptr, rust_vec_len, data_len),
+        4 => wire_configure_macos_impl(port, ptr, rust_vec_len, data_len),
+        14 => wire_download_attachment_impl(port, ptr, rust_vec_len, data_len),
+        15 => wire_download_mmcs_impl(port, ptr, rust_vec_len, data_len),
+        7 => wire_format_e164_impl(port, ptr, rust_vec_len, data_len),
+        21 => wire_get_2fa_sms_opts_impl(port, ptr, rust_vec_len, data_len),
+        10 => wire_get_handles_impl(port, ptr, rust_vec_len, data_len),
+        13 => wire_get_phase_impl(port, ptr, rust_vec_len, data_len),
+        25 => wire_get_regstate_impl(port, ptr, rust_vec_len, data_len),
+        24 => wire_get_user_name_impl(port, ptr, rust_vec_len, data_len),
+        11 => wire_new_msg_impl(port, ptr, rust_vec_len, data_len),
         1 => wire_new_push_state_impl(port, ptr, rust_vec_len, data_len),
-        5 => wire_ptr_to_dart_impl(port, ptr, rust_vec_len, data_len),
-        7 => wire_recv_wait_impl(port, ptr, rust_vec_len, data_len),
-        2 => wire_register_ids_impl(port, ptr, rust_vec_len, data_len),
-        8 => wire_send_impl(port, ptr, rust_vec_len, data_len),
-        21 => wire_send_2fa_sms_impl(port, ptr, rust_vec_len, data_len),
-        18 => wire_send_2fa_to_devices_impl(port, ptr, rust_vec_len, data_len),
-        17 => wire_try_auth_impl(port, ptr, rust_vec_len, data_len),
-        16 => wire_upload_attachment_impl(port, ptr, rust_vec_len, data_len),
-        15 => wire_upload_mmcs_impl(port, ptr, rust_vec_len, data_len),
-        11 => wire_validate_targets_impl(port, ptr, rust_vec_len, data_len),
-        19 => wire_verify_2fa_impl(port, ptr, rust_vec_len, data_len),
-        22 => wire_verify_2fa_sms_impl(port, ptr, rust_vec_len, data_len),
+        6 => wire_ptr_to_dart_impl(port, ptr, rust_vec_len, data_len),
+        8 => wire_recv_wait_impl(port, ptr, rust_vec_len, data_len),
+        3 => wire_register_ids_impl(port, ptr, rust_vec_len, data_len),
+        9 => wire_send_impl(port, ptr, rust_vec_len, data_len),
+        22 => wire_send_2fa_sms_impl(port, ptr, rust_vec_len, data_len),
+        19 => wire_send_2fa_to_devices_impl(port, ptr, rust_vec_len, data_len),
+        2 => wire_service_from_ptr_impl(port, ptr, rust_vec_len, data_len),
+        18 => wire_try_auth_impl(port, ptr, rust_vec_len, data_len),
+        17 => wire_upload_attachment_impl(port, ptr, rust_vec_len, data_len),
+        16 => wire_upload_mmcs_impl(port, ptr, rust_vec_len, data_len),
+        12 => wire_validate_targets_impl(port, ptr, rust_vec_len, data_len),
+        20 => wire_verify_2fa_impl(port, ptr, rust_vec_len, data_len),
+        23 => wire_verify_2fa_sms_impl(port, ptr, rust_vec_len, data_len),
         _ => unreachable!(),
     }
 }
@@ -1868,6 +1988,36 @@ fn pde_ffi_dispatcher_sync_impl(
 
 // Section: rust2dart
 
+pub struct Local_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockArcPushState(
+    Arc<PushState>,
+);
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart
+    for Local_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockArcPushState
+{
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        flutter_rust_bridge::for_generated::rust_auto_opaque_encode::<_, MoiArc<_>>(self.0)
+            .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for Local_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockArcPushState
+{
+}
+impl
+    flutter_rust_bridge::IntoIntoDart<
+        Local_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockArcPushState,
+    > for Arc<PushState>
+{
+    fn into_into_dart(
+        self,
+    ) -> Local_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockArcPushState
+    {
+        Local_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockArcPushState(
+            self,
+        )
+    }
+}
 pub struct Local_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockMacOSConfig(
     MacOSConfig,
 );
@@ -1896,33 +2046,6 @@ impl
         Local_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockMacOSConfig(
             self,
         )
-    }
-}
-pub struct Local_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockPushState(
-    PushState,
-);
-// Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart
-    for Local_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockPushState
-{
-    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
-        flutter_rust_bridge::for_generated::rust_auto_opaque_encode::<_, MoiArc<_>>(self.0)
-            .into_dart()
-    }
-}
-impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-    for Local_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockPushState
-{
-}
-impl
-    flutter_rust_bridge::IntoIntoDart<
-        Local_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockPushState,
-    > for PushState
-{
-    fn into_into_dart(
-        self,
-    ) -> Local_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockPushState {
-        Local_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockPushState(self)
     }
 }
 pub struct Local_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockVerifyBody(
@@ -2374,23 +2497,28 @@ impl flutter_rust_bridge::IntoIntoDart<crate::api::api::DartReaction>
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for crate::api::api::DartRecievedMessage {
+impl flutter_rust_bridge::IntoDart for crate::api::api::DartRegisterState {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         match self {
-            crate::api::api::DartRecievedMessage::Message { msg } => {
-                [0.into_dart(), msg.into_into_dart().into_dart()].into_dart()
-            }
+            crate::api::api::DartRegisterState::Registered => [0.into_dart()].into_dart(),
+            crate::api::api::DartRegisterState::Registering => [1.into_dart()].into_dart(),
+            crate::api::api::DartRegisterState::Failed { retry_wait, error } => [
+                2.into_dart(),
+                retry_wait.into_into_dart().into_dart(),
+                error.into_into_dart().into_dart(),
+            ]
+            .into_dart(),
         }
     }
 }
 impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-    for crate::api::api::DartRecievedMessage
+    for crate::api::api::DartRegisterState
 {
 }
-impl flutter_rust_bridge::IntoIntoDart<crate::api::api::DartRecievedMessage>
-    for crate::api::api::DartRecievedMessage
+impl flutter_rust_bridge::IntoIntoDart<crate::api::api::DartRegisterState>
+    for crate::api::api::DartRegisterState
 {
-    fn into_into_dart(self) -> crate::api::api::DartRecievedMessage {
+    fn into_into_dart(self) -> crate::api::api::DartRegisterState {
         self
     }
 }
@@ -2572,17 +2700,17 @@ impl SseEncode for flutter_rust_bridge::for_generated::anyhow::Error {
     }
 }
 
+impl SseEncode for Arc<PushState> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <RustOpaqueMoi<flutter_rust_bridge::for_generated::rust_async::RwLock<Arc < PushState >>>>::sse_encode(flutter_rust_bridge::for_generated::rust_auto_opaque_encode::<_, MoiArc<_>>(self), serializer);
+    }
+}
+
 impl SseEncode for MacOSConfig {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <RustOpaqueMoi<flutter_rust_bridge::for_generated::rust_async::RwLock<MacOSConfig>>>::sse_encode(flutter_rust_bridge::for_generated::rust_auto_opaque_encode::<_, MoiArc<_>>(self), serializer);
-    }
-}
-
-impl SseEncode for PushState {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <RustOpaqueMoi<flutter_rust_bridge::for_generated::rust_async::RwLock<PushState>>>::sse_encode(flutter_rust_bridge::for_generated::rust_auto_opaque_encode::<_, MoiArc<_>>(self), serializer);
     }
 }
 
@@ -2594,7 +2722,7 @@ impl SseEncode for VerifyBody {
 }
 
 impl SseEncode
-    for RustOpaqueMoi<flutter_rust_bridge::for_generated::rust_async::RwLock<MacOSConfig>>
+    for RustOpaqueMoi<flutter_rust_bridge::for_generated::rust_async::RwLock<Arc<PushState>>>
 {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -2605,7 +2733,7 @@ impl SseEncode
 }
 
 impl SseEncode
-    for RustOpaqueMoi<flutter_rust_bridge::for_generated::rust_async::RwLock<PushState>>
+    for RustOpaqueMoi<flutter_rust_bridge::for_generated::rust_async::RwLock<MacOSConfig>>
 {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -2896,13 +3024,20 @@ impl SseEncode for crate::api::api::DartReaction {
     }
 }
 
-impl SseEncode for crate::api::api::DartRecievedMessage {
+impl SseEncode for crate::api::api::DartRegisterState {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         match self {
-            crate::api::api::DartRecievedMessage::Message { msg } => {
+            crate::api::api::DartRegisterState::Registered => {
                 <i32>::sse_encode(0, serializer);
-                <crate::api::api::DartIMessage>::sse_encode(msg, serializer);
+            }
+            crate::api::api::DartRegisterState::Registering => {
+                <i32>::sse_encode(1, serializer);
+            }
+            crate::api::api::DartRegisterState::Failed { retry_wait, error } => {
+                <i32>::sse_encode(2, serializer);
+                <u64>::sse_encode(retry_wait, serializer);
+                <String>::sse_encode(error, serializer);
             }
         }
     }
@@ -3046,22 +3181,22 @@ impl SseEncode for Option<crate::api::api::DartConversationData> {
     }
 }
 
+impl SseEncode for Option<crate::api::api::DartIMessage> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <crate::api::api::DartIMessage>::sse_encode(value, serializer);
+        }
+    }
+}
+
 impl SseEncode for Option<crate::api::api::DartMMCSFile> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <bool>::sse_encode(self.is_some(), serializer);
         if let Some(value) = self {
             <crate::api::api::DartMMCSFile>::sse_encode(value, serializer);
-        }
-    }
-}
-
-impl SseEncode for Option<crate::api::api::DartRecievedMessage> {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <bool>::sse_encode(self.is_some(), serializer);
-        if let Some(value) = self {
-            <crate::api::api::DartRecievedMessage>::sse_encode(value, serializer);
         }
     }
 }

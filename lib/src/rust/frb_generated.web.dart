@@ -18,11 +18,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   });
 
   CrossPlatformFinalizerArg
+      get rust_arc_decrement_strong_count_ArcPushStatePtr => wire
+          .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockArcPushState;
+
+  CrossPlatformFinalizerArg
       get rust_arc_decrement_strong_count_MacOsConfigPtr => wire
           .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockMacOSConfig;
-
-  CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_PushStatePtr =>
-      wire.rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockPushState;
 
   CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_VerifyBodyPtr =>
       wire.rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockVerifyBody;
@@ -31,13 +32,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   AnyhowException dco_decode_AnyhowException(dynamic raw);
 
   @protected
-  MacOsConfig
-      dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockMacOSConfig(
+  ArcPushState
+      dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockArcPushState(
           dynamic raw);
 
   @protected
-  PushState
-      dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockPushState(
+  MacOsConfig
+      dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockMacOSConfig(
           dynamic raw);
 
   @protected
@@ -46,18 +47,18 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           dynamic raw);
 
   @protected
-  PushState
-      dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockPushState(
+  ArcPushState
+      dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockArcPushState(
+          dynamic raw);
+
+  @protected
+  ArcPushState
+      dco_decode_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockArcPushState(
           dynamic raw);
 
   @protected
   MacOsConfig
       dco_decode_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockMacOSConfig(
-          dynamic raw);
-
-  @protected
-  PushState
-      dco_decode_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockPushState(
           dynamic raw);
 
   @protected
@@ -112,9 +113,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   DartReactMessage dco_decode_box_autoadd_dart_react_message(dynamic raw);
-
-  @protected
-  DartRecievedMessage dco_decode_box_autoadd_dart_recieved_message(dynamic raw);
 
   @protected
   DartRenameMessage dco_decode_box_autoadd_dart_rename_message(dynamic raw);
@@ -187,7 +185,7 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   DartReaction dco_decode_dart_reaction(dynamic raw);
 
   @protected
-  DartRecievedMessage dco_decode_dart_recieved_message(dynamic raw);
+  DartRegisterState dco_decode_dart_register_state(dynamic raw);
 
   @protected
   DartRenameMessage dco_decode_dart_rename_message(dynamic raw);
@@ -241,11 +239,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       dynamic raw);
 
   @protected
-  DartMMCSFile? dco_decode_opt_box_autoadd_dart_mmcs_file(dynamic raw);
+  DartIMessage? dco_decode_opt_box_autoadd_dart_i_message(dynamic raw);
 
   @protected
-  DartRecievedMessage? dco_decode_opt_box_autoadd_dart_recieved_message(
-      dynamic raw);
+  DartMMCSFile? dco_decode_opt_box_autoadd_dart_mmcs_file(dynamic raw);
 
   @protected
   DartSupportAction? dco_decode_opt_box_autoadd_dart_support_action(
@@ -282,13 +279,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   AnyhowException sse_decode_AnyhowException(SseDeserializer deserializer);
 
   @protected
-  MacOsConfig
-      sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockMacOSConfig(
+  ArcPushState
+      sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockArcPushState(
           SseDeserializer deserializer);
 
   @protected
-  PushState
-      sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockPushState(
+  MacOsConfig
+      sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockMacOSConfig(
           SseDeserializer deserializer);
 
   @protected
@@ -297,18 +294,18 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           SseDeserializer deserializer);
 
   @protected
-  PushState
-      sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockPushState(
+  ArcPushState
+      sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockArcPushState(
+          SseDeserializer deserializer);
+
+  @protected
+  ArcPushState
+      sse_decode_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockArcPushState(
           SseDeserializer deserializer);
 
   @protected
   MacOsConfig
       sse_decode_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockMacOSConfig(
-          SseDeserializer deserializer);
-
-  @protected
-  PushState
-      sse_decode_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockPushState(
           SseDeserializer deserializer);
 
   @protected
@@ -372,10 +369,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   DartReactMessage sse_decode_box_autoadd_dart_react_message(
-      SseDeserializer deserializer);
-
-  @protected
-  DartRecievedMessage sse_decode_box_autoadd_dart_recieved_message(
       SseDeserializer deserializer);
 
   @protected
@@ -458,7 +451,7 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   DartReaction sse_decode_dart_reaction(SseDeserializer deserializer);
 
   @protected
-  DartRecievedMessage sse_decode_dart_recieved_message(
+  DartRegisterState sse_decode_dart_register_state(
       SseDeserializer deserializer);
 
   @protected
@@ -520,11 +513,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       SseDeserializer deserializer);
 
   @protected
-  DartMMCSFile? sse_decode_opt_box_autoadd_dart_mmcs_file(
+  DartIMessage? sse_decode_opt_box_autoadd_dart_i_message(
       SseDeserializer deserializer);
 
   @protected
-  DartRecievedMessage? sse_decode_opt_box_autoadd_dart_recieved_message(
+  DartMMCSFile? sse_decode_opt_box_autoadd_dart_mmcs_file(
       SseDeserializer deserializer);
 
   @protected
@@ -565,13 +558,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void
-      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockMacOSConfig(
-          MacOsConfig self, SseSerializer serializer);
+      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockArcPushState(
+          ArcPushState self, SseSerializer serializer);
 
   @protected
   void
-      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockPushState(
-          PushState self, SseSerializer serializer);
+      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockMacOSConfig(
+          MacOsConfig self, SseSerializer serializer);
 
   @protected
   void
@@ -580,18 +573,18 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void
-      sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockPushState(
-          PushState self, SseSerializer serializer);
+      sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockArcPushState(
+          ArcPushState self, SseSerializer serializer);
+
+  @protected
+  void
+      sse_encode_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockArcPushState(
+          ArcPushState self, SseSerializer serializer);
 
   @protected
   void
       sse_encode_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockMacOSConfig(
           MacOsConfig self, SseSerializer serializer);
-
-  @protected
-  void
-      sse_encode_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockPushState(
-          PushState self, SseSerializer serializer);
 
   @protected
   void
@@ -655,10 +648,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_box_autoadd_dart_react_message(
       DartReactMessage self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_box_autoadd_dart_recieved_message(
-      DartRecievedMessage self, SseSerializer serializer);
 
   @protected
   void sse_encode_box_autoadd_dart_rename_message(
@@ -747,8 +736,8 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_dart_reaction(DartReaction self, SseSerializer serializer);
 
   @protected
-  void sse_encode_dart_recieved_message(
-      DartRecievedMessage self, SseSerializer serializer);
+  void sse_encode_dart_register_state(
+      DartRegisterState self, SseSerializer serializer);
 
   @protected
   void sse_encode_dart_rename_message(
@@ -811,12 +800,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       DartConversationData? self, SseSerializer serializer);
 
   @protected
-  void sse_encode_opt_box_autoadd_dart_mmcs_file(
-      DartMMCSFile? self, SseSerializer serializer);
+  void sse_encode_opt_box_autoadd_dart_i_message(
+      DartIMessage? self, SseSerializer serializer);
 
   @protected
-  void sse_encode_opt_box_autoadd_dart_recieved_message(
-      DartRecievedMessage? self, SseSerializer serializer);
+  void sse_encode_opt_box_autoadd_dart_mmcs_file(
+      DartMMCSFile? self, SseSerializer serializer);
 
   @protected
   void sse_encode_opt_box_autoadd_dart_support_action(
@@ -858,6 +847,18 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 class RustLibWire implements BaseWire {
   RustLibWire.fromExternalLibrary(ExternalLibrary lib);
 
+  void rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockArcPushState(
+          dynamic ptr) =>
+      wasmModule
+          .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockArcPushState(
+              ptr);
+
+  void rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockArcPushState(
+          dynamic ptr) =>
+      wasmModule
+          .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockArcPushState(
+              ptr);
+
   void rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockMacOSConfig(
           dynamic ptr) =>
       wasmModule
@@ -868,18 +869,6 @@ class RustLibWire implements BaseWire {
           dynamic ptr) =>
       wasmModule
           .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockMacOSConfig(
-              ptr);
-
-  void rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockPushState(
-          dynamic ptr) =>
-      wasmModule
-          .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockPushState(
-              ptr);
-
-  void rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockPushState(
-          dynamic ptr) =>
-      wasmModule
-          .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockPushState(
               ptr);
 
   void rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockVerifyBody(
@@ -908,19 +897,19 @@ class RustLibWasmModule implements WasmModule {
   external RustLibWasmModule bind(dynamic thisArg, String moduleName);
 
   external void
+      rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockArcPushState(
+          dynamic ptr);
+
+  external void
+      rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockArcPushState(
+          dynamic ptr);
+
+  external void
       rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockMacOSConfig(
           dynamic ptr);
 
   external void
       rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockMacOSConfig(
-          dynamic ptr);
-
-  external void
-      rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockPushState(
-          dynamic ptr);
-
-  external void
-      rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockPushState(
           dynamic ptr);
 
   external void

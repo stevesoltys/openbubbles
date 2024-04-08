@@ -97,6 +97,7 @@ class SetupViewController extends StatefulController {
     }
     state = ret;
     if (ret is DartLoginState_LoggedIn) {
+      ss.settings.userName.value = await api.getUserName(state: pushService.state);
       var response = await api.registerIds(state: pushService.state);
       if (response != null) {
         await showDialog(

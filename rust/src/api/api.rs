@@ -1,6 +1,6 @@
 
 
-use std::{borrow::BorrowMut, io::{Cursor, Write}, path::PathBuf, str::FromStr, sync::Arc, time::Duration};
+use std::{borrow::{Borrow, BorrowMut}, io::{Cursor, Write}, path::PathBuf, str::FromStr, sync::Arc, time::Duration};
 
 use anyhow::anyhow;
 use flutter_rust_bridge::{frb, IntoDart};
@@ -11,7 +11,7 @@ pub use rustpush::{APNSState, APNSConnection, IDSAppleUser, PushError, Message, 
 
 use serde::{Serialize, Deserialize};
 use tokio::{runtime::Runtime, sync::RwLock};
-use rustpush::{init_logger, Attachment, BalloonBody, MMCSFile, MessagePart, MessageParts, OSConfig};
+use rustpush::{init_logger, Attachment, BalloonBody, MMCSFile, MessagePart, MessageParts, OSConfig, RegisterState};
 pub use rustpush::{MacOSConfig, HardwareConfig};
 use uniffi::HandleAlloc;
 use std::io::Seek;
@@ -664,4 +664,34 @@ impl PushState {
         }
         RegistrationPhase::Registered
     }
+}
+
+// NOTE, breaks linux registration for some god stupid awful reason
+// only valid before registration
+pub async fn get_user_name(state: &Arc<PushState>) -> anyhow::Result<String> {
+    let inner = state.0.read().await;
+    let (first, last) = inner.account.as_ref().unwrap().get_name();
+    Ok(format!("{first} {last}"))
+}
+
+
+pub enum DartRegisterState {
+    Registered,
+    Registering,
+    Failed {
+        retry_wait: u64,
+        error: String
+    }
+}
+
+pub async fn get_regstate(state: &Arc<PushState>) -> anyhow::Result<DartRegisterState> {
+    let inner = state.0.read().await;
+    let mutex_ref = inner.client.as_ref().unwrap().get_regstate().await;
+    let regstate = mutex_ref.lock().await;
+    Ok(match &*regstate {
+        RegisterState::Registering => DartRegisterState::Registering,
+        RegisterState::Registered => DartRegisterState::Registered,
+        RegisterState::Failed { retry_wait, error } => 
+            DartRegisterState::Failed { retry_wait: *retry_wait, error: format!("{error}") },
+    })
 }

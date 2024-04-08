@@ -1,6 +1,7 @@
 import 'package:bluebubbles/database/models.dart';
 import 'package:bluebubbles/utils/logger/logger.dart';
 import 'package:bluebubbles/services/services.dart';
+import 'package:bluebubbles/helpers/helpers.dart';
 import 'package:dio/dio.dart';
 import 'package:bluebubbles/utils/file_utils.dart';
 import 'package:flutter/foundation.dart';
@@ -24,6 +25,31 @@ class HttpBackend implements BackendService {
   @override
   void startedTyping(Chat c) {
     socket.sendMessage("started-typing", {"chatGuid": c.guid});
+  }
+
+  @override
+  Future<Map<String, dynamic>> getAccountInfo() async {
+    var result = await http.getAccountInfo();
+    if (!isNullOrEmpty(result.data.isNotEmpty)!) {
+      return result.data['data'];
+    }
+    return {};
+  }
+
+  @override
+  Future<void> setDefaultHandle(String defaultHandle) async {
+    await http.setAccountAlias(defaultHandle);
+  }
+
+  @override
+  Future<Map<String, dynamic>> getAccountContact() async {
+    if (ss.isMinBigSurSync) {
+      final result2 = await http.getAccountContact();
+      if (!isNullOrEmpty(result2.data.isNotEmpty)!) {
+        return result2.data['data'];
+      }
+    }
+    return {};
   }
 
   @override
@@ -163,8 +189,8 @@ class HttpBackend implements BackendService {
   }
 
   @override
-  Future<bool> setChatIcon(Chat chat, {void Function(int, int)? onSendProgress, CancelToken? cancelToken}) async {
-    return (await http.setChatIcon(chat.guid, chat.customAvatarPath!, onSendProgress: onSendProgress, cancelToken: cancelToken)).statusCode == 200;
+  Future<bool> setChatIcon(Chat chat, String path, {void Function(int, int)? onSendProgress, CancelToken? cancelToken}) async {
+    return (await http.setChatIcon(chat.guid, path, onSendProgress: onSendProgress, cancelToken: cancelToken)).statusCode == 200;
   }
 
   @override

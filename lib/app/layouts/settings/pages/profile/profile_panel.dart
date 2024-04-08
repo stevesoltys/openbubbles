@@ -11,6 +11,7 @@ import 'package:bluebubbles/services/services.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:bluebubbles/services/network/backend_service.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:universal_io/io.dart';
 
@@ -35,17 +36,11 @@ class _ProfilePanelState extends OptimizedState<ProfilePanel> with WidgetsBindin
 
   void getDetails() async {
     try {
-      final result = await http.getAccountInfo();
-      if (!isNullOrEmpty(result.data.isNotEmpty)) {
-        accountInfo.addAll(result.data['data']);
-      }
+      final result = await backend.getAccountInfo();
+      accountInfo.addAll(result);
       opacity.value = 1.0;
-      if (ss.isMinBigSurSync) {
-        final result2 = await http.getAccountContact();
-        if (!isNullOrEmpty(result2.data.isNotEmpty)) {
-          accountContact.addAll(result2.data['data']);
-        }
-      }
+      final result2 = await backend.getAccountContact();
+      accountContact.addAll(result2);
     } catch (_) {
 
     }
@@ -329,12 +324,17 @@ class _ProfilePanelState extends OptimizedState<ProfilePanel> with WidgetsBindin
                                   TextSpan(
                                       text: accountInfo['login_status_message']?.toUpperCase(),
                                       style: TextStyle(color: getIndicatorColor(accountInfo['login_status_message'] == "Connected" ? SocketState.connected : SocketState.disconnected))),
+                                  if (backend.supportsSmsForwarding())
                                   const TextSpan(text: "\n"),
+                                  if (backend.supportsSmsForwarding())
                                   const TextSpan(text: "SMS Forwarding Status: "),
+                                  if (backend.supportsSmsForwarding())
                                   TextSpan(
                                       text: accountInfo['sms_forwarding_enabled'] == true ? "ENABLED" : "DISABLED",
                                       style: TextStyle(color: getIndicatorColor(accountInfo['sms_forwarding_enabled'] == true ? SocketState.connected : SocketState.disconnected))),
+                                  if (backend.supportsSmsForwarding())
                                   const TextSpan(text: "  |  "),
+                                  if (backend.supportsSmsForwarding())
                                   TextSpan(
                                       text: accountInfo['sms_forwarding_capable'] == true ? "CAPABLE" : "INCAPABLE",
                                       style: TextStyle(color: getIndicatorColor(accountInfo['sms_forwarding_capable'] == true ? SocketState.connected : SocketState.disconnected))),
@@ -377,7 +377,7 @@ class _ProfilePanelState extends OptimizedState<ProfilePanel> with WidgetsBindin
                             if (value == null) return;
                             accountInfo['active_alias'] = value;
                             setState(() {});
-                            await http.setAccountAlias(value);
+                            await backend.setDefaultHandle(value);
                           },
                         ),
                     ],

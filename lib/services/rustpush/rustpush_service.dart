@@ -1,7 +1,7 @@
 import 'package:async_task/async_task_extension.dart';
 import 'package:bluebubbles/src/rust/api/api.dart' as api;
 import 'package:bluebubbles/helpers/helpers.dart';
-import 'package:bluebubbles/models/models.dart';
+import 'package:bluebubbles/database/models.dart';
 import 'package:bluebubbles/services/services.dart';
 import 'package:bluebubbles/utils/logger.dart';
 import 'package:collection/collection.dart';
@@ -67,6 +67,10 @@ class RustPushBBUtils {
 class RustPushBackend implements BackendService {
   Future<String> getDefaultHandle() async {
     var myHandles = await api.getHandles(state: pushService.state);
+    var setHandle = Settings.getSettings().defaultHandle.value;
+    if (myHandles.contains(setHandle)) {
+      return setHandle;
+    }
     return myHandles[0];
   }
 
@@ -190,10 +194,39 @@ class RustPushBackend implements BackendService {
   }
 
   @override
-  Future<bool> setChatIcon(Chat chat,
+  Future<Map<String, dynamic>> getAccountInfo() async {
+    var handles = await api.getHandles(state: pushService.state);
+    return {
+      "account_name": Settings.getSettings().userName.value,
+      "apple_id": Settings.getSettings().iCloudAccount.value,
+      "login_status_message": "Connected", // TODO
+      "vetted_aliases": handles.map((e) => {
+        "Alias": e.replaceFirst("tel:", "").replaceFirst("mailto:", "")
+      }).toList(),
+      "active_alias": (await getDefaultHandle()).replaceFirst("tel:", "").replaceFirst("mailto:", "")
+    };
+  }
+
+  @override
+  Future<void> setDefaultHandle(String defaultHandle) async {
+    var ss = Settings.getSettings();
+    ss.defaultHandle.value = await RustPushBBUtils.formatAndAddPrefix(defaultHandle);
+    ss.save();
+  }
+
+  @override
+  Future<Map<String, dynamic>> getAccountContact() async {
+    return {
+      "name": Settings.getSettings().userName.value,
+      "avatar": null,
+    };
+  }
+
+  @override
+  Future<bool> setChatIcon(Chat chat, String path,
       {void Function(int p1, int p2)? onSendProgress, CancelToken? cancelToken}) async {
     chat.groupVersion = (chat.groupVersion ?? -1) + 1;
-    var mmcsStream = api.uploadMmcs(state: pushService.state, path: chat.customAvatarPath!);
+    var mmcsStream = api.uploadMmcs(state: pushService.state, path: path);
     api.DartMMCSFile? mmcs;
     await for (final event in mmcsStream) {
       if (event.file != null) {

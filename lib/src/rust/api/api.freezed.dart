@@ -3972,170 +3972,141 @@ abstract class DartMessagePart_Attachment implements DartMessagePart {
 }
 
 /// @nodoc
-mixin _$DartRecievedMessage {
-  DartIMessage get msg => throw _privateConstructorUsedError;
+mixin _$DartRegisterState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(DartIMessage msg) message,
+    required TResult Function() registered,
+    required TResult Function() registering,
+    required TResult Function(int retryWait, String error) failed,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(DartIMessage msg)? message,
+    TResult? Function()? registered,
+    TResult? Function()? registering,
+    TResult? Function(int retryWait, String error)? failed,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(DartIMessage msg)? message,
+    TResult Function()? registered,
+    TResult Function()? registering,
+    TResult Function(int retryWait, String error)? failed,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(DartRecievedMessage_Message value) message,
+    required TResult Function(DartRegisterState_Registered value) registered,
+    required TResult Function(DartRegisterState_Registering value) registering,
+    required TResult Function(DartRegisterState_Failed value) failed,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(DartRecievedMessage_Message value)? message,
+    TResult? Function(DartRegisterState_Registered value)? registered,
+    TResult? Function(DartRegisterState_Registering value)? registering,
+    TResult? Function(DartRegisterState_Failed value)? failed,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(DartRecievedMessage_Message value)? message,
+    TResult Function(DartRegisterState_Registered value)? registered,
+    TResult Function(DartRegisterState_Registering value)? registering,
+    TResult Function(DartRegisterState_Failed value)? failed,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
-
-  @JsonKey(ignore: true)
-  $DartRecievedMessageCopyWith<DartRecievedMessage> get copyWith =>
-      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $DartRecievedMessageCopyWith<$Res> {
-  factory $DartRecievedMessageCopyWith(
-          DartRecievedMessage value, $Res Function(DartRecievedMessage) then) =
-      _$DartRecievedMessageCopyWithImpl<$Res, DartRecievedMessage>;
-  @useResult
-  $Res call({DartIMessage msg});
+abstract class $DartRegisterStateCopyWith<$Res> {
+  factory $DartRegisterStateCopyWith(
+          DartRegisterState value, $Res Function(DartRegisterState) then) =
+      _$DartRegisterStateCopyWithImpl<$Res, DartRegisterState>;
 }
 
 /// @nodoc
-class _$DartRecievedMessageCopyWithImpl<$Res, $Val extends DartRecievedMessage>
-    implements $DartRecievedMessageCopyWith<$Res> {
-  _$DartRecievedMessageCopyWithImpl(this._value, this._then);
+class _$DartRegisterStateCopyWithImpl<$Res, $Val extends DartRegisterState>
+    implements $DartRegisterStateCopyWith<$Res> {
+  _$DartRegisterStateCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? msg = null,
-  }) {
-    return _then(_value.copyWith(
-      msg: null == msg
-          ? _value.msg
-          : msg // ignore: cast_nullable_to_non_nullable
-              as DartIMessage,
-    ) as $Val);
-  }
 }
 
 /// @nodoc
-abstract class _$$DartRecievedMessage_MessageImplCopyWith<$Res>
-    implements $DartRecievedMessageCopyWith<$Res> {
-  factory _$$DartRecievedMessage_MessageImplCopyWith(
-          _$DartRecievedMessage_MessageImpl value,
-          $Res Function(_$DartRecievedMessage_MessageImpl) then) =
-      __$$DartRecievedMessage_MessageImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({DartIMessage msg});
+abstract class _$$DartRegisterState_RegisteredImplCopyWith<$Res> {
+  factory _$$DartRegisterState_RegisteredImplCopyWith(
+          _$DartRegisterState_RegisteredImpl value,
+          $Res Function(_$DartRegisterState_RegisteredImpl) then) =
+      __$$DartRegisterState_RegisteredImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$DartRecievedMessage_MessageImplCopyWithImpl<$Res>
-    extends _$DartRecievedMessageCopyWithImpl<$Res,
-        _$DartRecievedMessage_MessageImpl>
-    implements _$$DartRecievedMessage_MessageImplCopyWith<$Res> {
-  __$$DartRecievedMessage_MessageImplCopyWithImpl(
-      _$DartRecievedMessage_MessageImpl _value,
-      $Res Function(_$DartRecievedMessage_MessageImpl) _then)
+class __$$DartRegisterState_RegisteredImplCopyWithImpl<$Res>
+    extends _$DartRegisterStateCopyWithImpl<$Res,
+        _$DartRegisterState_RegisteredImpl>
+    implements _$$DartRegisterState_RegisteredImplCopyWith<$Res> {
+  __$$DartRegisterState_RegisteredImplCopyWithImpl(
+      _$DartRegisterState_RegisteredImpl _value,
+      $Res Function(_$DartRegisterState_RegisteredImpl) _then)
       : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? msg = null,
-  }) {
-    return _then(_$DartRecievedMessage_MessageImpl(
-      msg: null == msg
-          ? _value.msg
-          : msg // ignore: cast_nullable_to_non_nullable
-              as DartIMessage,
-    ));
-  }
 }
 
 /// @nodoc
 
-class _$DartRecievedMessage_MessageImpl implements DartRecievedMessage_Message {
-  const _$DartRecievedMessage_MessageImpl({required this.msg});
-
-  @override
-  final DartIMessage msg;
+class _$DartRegisterState_RegisteredImpl
+    implements DartRegisterState_Registered {
+  const _$DartRegisterState_RegisteredImpl();
 
   @override
   String toString() {
-    return 'DartRecievedMessage.message(msg: $msg)';
+    return 'DartRegisterState.registered()';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$DartRecievedMessage_MessageImpl &&
-            (identical(other.msg, msg) || other.msg == msg));
+            other is _$DartRegisterState_RegisteredImpl);
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, msg);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$DartRecievedMessage_MessageImplCopyWith<_$DartRecievedMessage_MessageImpl>
-      get copyWith => __$$DartRecievedMessage_MessageImplCopyWithImpl<
-          _$DartRecievedMessage_MessageImpl>(this, _$identity);
+  int get hashCode => runtimeType.hashCode;
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(DartIMessage msg) message,
+    required TResult Function() registered,
+    required TResult Function() registering,
+    required TResult Function(int retryWait, String error) failed,
   }) {
-    return message(msg);
+    return registered();
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(DartIMessage msg)? message,
+    TResult? Function()? registered,
+    TResult? Function()? registering,
+    TResult? Function(int retryWait, String error)? failed,
   }) {
-    return message?.call(msg);
+    return registered?.call();
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(DartIMessage msg)? message,
+    TResult Function()? registered,
+    TResult Function()? registering,
+    TResult Function(int retryWait, String error)? failed,
     required TResult orElse(),
   }) {
-    if (message != null) {
-      return message(msg);
+    if (registered != null) {
+      return registered();
     }
     return orElse();
   }
@@ -4143,40 +4114,309 @@ class _$DartRecievedMessage_MessageImpl implements DartRecievedMessage_Message {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(DartRecievedMessage_Message value) message,
+    required TResult Function(DartRegisterState_Registered value) registered,
+    required TResult Function(DartRegisterState_Registering value) registering,
+    required TResult Function(DartRegisterState_Failed value) failed,
   }) {
-    return message(this);
+    return registered(this);
   }
 
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(DartRecievedMessage_Message value)? message,
+    TResult? Function(DartRegisterState_Registered value)? registered,
+    TResult? Function(DartRegisterState_Registering value)? registering,
+    TResult? Function(DartRegisterState_Failed value)? failed,
   }) {
-    return message?.call(this);
+    return registered?.call(this);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(DartRecievedMessage_Message value)? message,
+    TResult Function(DartRegisterState_Registered value)? registered,
+    TResult Function(DartRegisterState_Registering value)? registering,
+    TResult Function(DartRegisterState_Failed value)? failed,
     required TResult orElse(),
   }) {
-    if (message != null) {
-      return message(this);
+    if (registered != null) {
+      return registered(this);
     }
     return orElse();
   }
 }
 
-abstract class DartRecievedMessage_Message implements DartRecievedMessage {
-  const factory DartRecievedMessage_Message({required final DartIMessage msg}) =
-      _$DartRecievedMessage_MessageImpl;
+abstract class DartRegisterState_Registered implements DartRegisterState {
+  const factory DartRegisterState_Registered() =
+      _$DartRegisterState_RegisteredImpl;
+}
+
+/// @nodoc
+abstract class _$$DartRegisterState_RegisteringImplCopyWith<$Res> {
+  factory _$$DartRegisterState_RegisteringImplCopyWith(
+          _$DartRegisterState_RegisteringImpl value,
+          $Res Function(_$DartRegisterState_RegisteringImpl) then) =
+      __$$DartRegisterState_RegisteringImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$DartRegisterState_RegisteringImplCopyWithImpl<$Res>
+    extends _$DartRegisterStateCopyWithImpl<$Res,
+        _$DartRegisterState_RegisteringImpl>
+    implements _$$DartRegisterState_RegisteringImplCopyWith<$Res> {
+  __$$DartRegisterState_RegisteringImplCopyWithImpl(
+      _$DartRegisterState_RegisteringImpl _value,
+      $Res Function(_$DartRegisterState_RegisteringImpl) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$DartRegisterState_RegisteringImpl
+    implements DartRegisterState_Registering {
+  const _$DartRegisterState_RegisteringImpl();
 
   @override
-  DartIMessage get msg;
+  String toString() {
+    return 'DartRegisterState.registering()';
+  }
+
   @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$DartRegisterState_RegisteringImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() registered,
+    required TResult Function() registering,
+    required TResult Function(int retryWait, String error) failed,
+  }) {
+    return registering();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? registered,
+    TResult? Function()? registering,
+    TResult? Function(int retryWait, String error)? failed,
+  }) {
+    return registering?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? registered,
+    TResult Function()? registering,
+    TResult Function(int retryWait, String error)? failed,
+    required TResult orElse(),
+  }) {
+    if (registering != null) {
+      return registering();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(DartRegisterState_Registered value) registered,
+    required TResult Function(DartRegisterState_Registering value) registering,
+    required TResult Function(DartRegisterState_Failed value) failed,
+  }) {
+    return registering(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(DartRegisterState_Registered value)? registered,
+    TResult? Function(DartRegisterState_Registering value)? registering,
+    TResult? Function(DartRegisterState_Failed value)? failed,
+  }) {
+    return registering?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(DartRegisterState_Registered value)? registered,
+    TResult Function(DartRegisterState_Registering value)? registering,
+    TResult Function(DartRegisterState_Failed value)? failed,
+    required TResult orElse(),
+  }) {
+    if (registering != null) {
+      return registering(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class DartRegisterState_Registering implements DartRegisterState {
+  const factory DartRegisterState_Registering() =
+      _$DartRegisterState_RegisteringImpl;
+}
+
+/// @nodoc
+abstract class _$$DartRegisterState_FailedImplCopyWith<$Res> {
+  factory _$$DartRegisterState_FailedImplCopyWith(
+          _$DartRegisterState_FailedImpl value,
+          $Res Function(_$DartRegisterState_FailedImpl) then) =
+      __$$DartRegisterState_FailedImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({int retryWait, String error});
+}
+
+/// @nodoc
+class __$$DartRegisterState_FailedImplCopyWithImpl<$Res>
+    extends _$DartRegisterStateCopyWithImpl<$Res,
+        _$DartRegisterState_FailedImpl>
+    implements _$$DartRegisterState_FailedImplCopyWith<$Res> {
+  __$$DartRegisterState_FailedImplCopyWithImpl(
+      _$DartRegisterState_FailedImpl _value,
+      $Res Function(_$DartRegisterState_FailedImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? retryWait = null,
+    Object? error = null,
+  }) {
+    return _then(_$DartRegisterState_FailedImpl(
+      retryWait: null == retryWait
+          ? _value.retryWait
+          : retryWait // ignore: cast_nullable_to_non_nullable
+              as int,
+      error: null == error
+          ? _value.error
+          : error // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$DartRegisterState_FailedImpl implements DartRegisterState_Failed {
+  const _$DartRegisterState_FailedImpl(
+      {required this.retryWait, required this.error});
+
+  @override
+  final int retryWait;
+  @override
+  final String error;
+
+  @override
+  String toString() {
+    return 'DartRegisterState.failed(retryWait: $retryWait, error: $error)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$DartRegisterState_FailedImpl &&
+            (identical(other.retryWait, retryWait) ||
+                other.retryWait == retryWait) &&
+            (identical(other.error, error) || other.error == error));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, retryWait, error);
+
   @JsonKey(ignore: true)
-  _$$DartRecievedMessage_MessageImplCopyWith<_$DartRecievedMessage_MessageImpl>
+  @override
+  @pragma('vm:prefer-inline')
+  _$$DartRegisterState_FailedImplCopyWith<_$DartRegisterState_FailedImpl>
+      get copyWith => __$$DartRegisterState_FailedImplCopyWithImpl<
+          _$DartRegisterState_FailedImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() registered,
+    required TResult Function() registering,
+    required TResult Function(int retryWait, String error) failed,
+  }) {
+    return failed(retryWait, error);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? registered,
+    TResult? Function()? registering,
+    TResult? Function(int retryWait, String error)? failed,
+  }) {
+    return failed?.call(retryWait, error);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? registered,
+    TResult Function()? registering,
+    TResult Function(int retryWait, String error)? failed,
+    required TResult orElse(),
+  }) {
+    if (failed != null) {
+      return failed(retryWait, error);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(DartRegisterState_Registered value) registered,
+    required TResult Function(DartRegisterState_Registering value) registering,
+    required TResult Function(DartRegisterState_Failed value) failed,
+  }) {
+    return failed(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(DartRegisterState_Registered value)? registered,
+    TResult? Function(DartRegisterState_Registering value)? registering,
+    TResult? Function(DartRegisterState_Failed value)? failed,
+  }) {
+    return failed?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(DartRegisterState_Registered value)? registered,
+    TResult Function(DartRegisterState_Registering value)? registering,
+    TResult Function(DartRegisterState_Failed value)? failed,
+    required TResult orElse(),
+  }) {
+    if (failed != null) {
+      return failed(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class DartRegisterState_Failed implements DartRegisterState {
+  const factory DartRegisterState_Failed(
+      {required final int retryWait,
+      required final String error}) = _$DartRegisterState_FailedImpl;
+
+  int get retryWait;
+  String get error;
+  @JsonKey(ignore: true)
+  _$$DartRegisterState_FailedImplCopyWith<_$DartRegisterState_FailedImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

@@ -44,5 +44,8 @@ abstract class BackendService {
   void stoppedTyping(Chat c);
   void updateTypingStatus(Chat c);
   Future<bool> handleiMessageState(String address);
+  Future<Map<String, dynamic>> getAccountInfo();
+  Future<void> setDefaultHandle(String handle);
+  Future<Map<String, dynamic>> getAccountContact();
   void init();
 }

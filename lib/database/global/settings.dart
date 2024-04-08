@@ -180,7 +180,7 @@ class Settings {
   final RxBool useWindowsAccent = RxBool(false);
 
   // RustPush settings
-  final RxString rustPushState = "".obs;
+  final RxString defaultHandle = "".obs;
 
   Future<DisplayMode> getDisplayMode() async {
     List<DisplayMode> modes = await FlutterDisplayMode.supported;
@@ -366,11 +366,7 @@ class Settings {
       'windowEffectCustomOpacityLight': windowEffectCustomOpacityLight.value,
       'windowEffectCustomOpacityDark': windowEffectCustomOpacityDark.value,
       'useWindowsAccent': useWindowsAccent.value,
-      'logLevel': logLevel.value.index,
-      'hideNamesForReactions': hideNamesForReactions.value,
-      'replaceEmoticonsWithEmoji': replaceEmoticonsWithEmoji.value,
-      'lastReviewRequestTimestamp': lastReviewRequestTimestamp.value,
-      'rustPushState': rustPushState.value,
+      'defaultHandle': defaultHandle.value,
     };
     if (includeAll) {
       map.addAll({
@@ -509,11 +505,7 @@ class Settings {
     ss.settings.windowEffectCustomOpacityLight.value = map['windowEffectCustomOpacityLight']?.toDouble() ?? 0.5;
     ss.settings.windowEffectCustomOpacityDark.value = map['windowEffectCustomOpacityDark']?.toDouble() ?? 0.5;
     ss.settings.useWindowsAccent.value = map['useWindowsAccent'] ?? false;
-    ss.settings.firstFcmRegisterDate.value = map['firstFcmRegisterDate'] ?? 0;
-    ss.settings.logLevel.value = map['logLevel'] != null ? Level.values[map['logLevel']] : Level.info;
-    ss.settings.hideNamesForReactions.value = map['hideNamesForReactions'] ?? false;
-    ss.settings.replaceEmoticonsWithEmoji.value = map['replaceEmoticonsWithEmoji'] ?? false;
-    ss.settings.rustPushState.value = map['rustPushState'] ?? "";
+    ss.settings.defaultHandle.value = map['defaultHandle'] ?? "";
     ss.settings.save();
 
     eventDispatcher.emit("theme-update", null);
@@ -649,12 +641,7 @@ class Settings {
     s.windowEffectCustomOpacityLight.value = map['windowEffectCustomOpacityLight']?.toDouble() ?? 0.5;
     s.windowEffectCustomOpacityDark.value = map['windowEffectCustomOpacityDark']?.toDouble() ?? 0.5;
     s.useWindowsAccent.value = map['useWindowsAccent'] ?? false;
-    s.firstFcmRegisterDate.value = map['firstFcmRegisterDate'] ?? 0;
-    s.logLevel.value = map['logLevel'] != null ? Level.values[map['logLevel']] : Level.info;
-    s.hideNamesForReactions.value = map['hideNamesForReactions'] ?? false;
-    s.replaceEmoticonsWithEmoji.value = map['replaceEmoticonsWithEmoji'] ?? false;
-    s.lastReviewRequestTimestamp.value = map['lastReviewRequestTimestamp'] ?? 0;
-    s.rustPushState.value = map['rustPushState'] ?? "";
+    s.defaultHandle.value = map['defaultHandle'] ?? "";
     return s;
   }
 
