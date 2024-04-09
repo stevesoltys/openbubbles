@@ -7,19 +7,18 @@ use flutter_rust_bridge::{frb, IntoDart};
 use icloud_auth::{LoginState, AnisetteConfiguration, AppleAccount};
 pub use icloud_auth::{VerifyBody, TrustedPhoneNumber};
 use phonenumber::country::Id::{self, VE};
-pub use rustpush::{APNSState, APNSConnection, IDSAppleUser, PushError, Message, IDSUser, IMClient, IMessage, RecievedMessage, ConversationData, register};
+pub use rustpush::{APNSState, APNSConnection, IDSAppleUser, PushError, Message, IDSUser, IMClient, IMessage, ConversationData, register};
 
 use serde::{Serialize, Deserialize};
-use tokio::{runtime::Runtime, sync::RwLock};
+use tokio::{runtime::Runtime, select, sync::{oneshot::{self, Sender}, Mutex, RwLock}};
 use rustpush::{init_logger, Attachment, BalloonBody, MMCSFile, MessagePart, MessageParts, OSConfig, RegisterState};
 pub use rustpush::{MacOSConfig, HardwareConfig};
-use uniffi::HandleAlloc;
+use uniffi::{deps::log::info, HandleAlloc};
 use std::io::Seek;
 use async_recursion::async_recursion;
 
-use crate::frb_generated::{RustOpaque, StreamSink};
-
-// #[flutter_rust_bridge::frb(init)]
+use crate::{frb_generated::{RustOpaque, StreamSink}, runtime};
+use bincode::Options;
 
 
 #[derive(Serialize, Deserialize, Clone)]
@@ -42,12 +41,16 @@ pub struct InnerPushState {
     pub client: Option<IMClient>,
     pub conf_dir: PathBuf,
     pub os_config: Option<Arc<MacOSConfig>>,
-    pub account: Option<AppleAccount>
+    pub account: Option<AppleAccount>,
+    pub cancel_poll: Mutex<Option<Sender<()>>>
 }
 
 pub struct PushState (pub RwLock<InnerPushState>);
 
-pub async fn new_push_state(dir: String) -> anyhow::Result<PushState> {
+pub async fn new_push_state(dir: String) -> anyhow::Result<Arc<PushState>> {
+    #[cfg(target_os = "android")]
+    android_log::init("rustpush").unwrap();
+    #[cfg(not(target_os = "android"))]
     init_logger();
     let state = PushState(RwLock::new(InnerPushState {
         conn: None,
@@ -56,11 +59,21 @@ pub async fn new_push_state(dir: String) -> anyhow::Result<PushState> {
         conf_dir: PathBuf::from_str(&dir).unwrap(),
         os_config: None,
         account: None,
+        cancel_poll: Mutex::new(None)
     }));
     if PathBuf::from_str(&dir).unwrap().join("config.plist").exists() {
         restore(&state).await?;
     }
-    Ok(state)
+    Ok(Arc::new(state))
+}
+
+pub fn service_from_ptr(ptr: String) -> Arc<PushState> {
+    let pointer: u64 = ptr.parse().unwrap();
+    info!("using state {pointer}");
+    let service = unsafe {
+        Arc::from_raw(pointer as *const PushState)
+    };
+    service
 }
 
 fn plist_to_buf<T: serde::Serialize>(value: &T) -> Result<Vec<u8>, plist::Error> {
@@ -72,6 +85,13 @@ fn plist_to_buf<T: serde::Serialize>(value: &T) -> Result<Vec<u8>, plist::Error>
 
 fn plist_to_string<T: serde::Serialize>(value: &T) -> Result<String, plist::Error> {
     plist_to_buf(value).map(|val| String::from_utf8(val).unwrap())
+}
+
+fn plist_to_bin<T: serde::Serialize>(value: &T) -> Result<Vec<u8>, plist::Error> {
+    let mut buf: Vec<u8> = Vec::new();
+    let writer = Cursor::new(&mut buf);
+    plist::to_writer_binary(writer, &value)?;
+    Ok(buf)
 }
 
 async fn restore(curr_state: &PushState) -> anyhow::Result<()> {
@@ -111,7 +131,7 @@ pub struct DartSupportAlert {
     pub action: Option<DartSupportAction>,
 }
 
-pub async fn register_ids(state: &PushState) -> anyhow::Result<Option<DartSupportAlert>> {
+pub async fn register_ids(state: &Arc<PushState>) -> anyhow::Result<Option<DartSupportAlert>> {
     if !matches!(state.get_phase().await, RegistrationPhase::WantsRegister) {
         panic!("Wrong phase! (register_ids)")
     }
@@ -161,7 +181,7 @@ async fn setup_push_rec(config: &dyn OSConfig, state: Option<&APNSState>) -> Arc
     push
 }
 
-pub async fn configure_macos(state: &PushState, config: MacOSConfig) -> anyhow::Result<()> {
+pub async fn configure_macos(state: &Arc<PushState>, config: MacOSConfig) -> anyhow::Result<()> {
     if !matches!(state.get_phase().await, RegistrationPhase::WantsOSConfig) {
         panic!("Wrong phase! (new_push)")
     }
@@ -192,10 +212,33 @@ pub async fn config_from_validation_data(data: Vec<u8>, extra: DartHwExtra) -> a
     })
 }
 
-pub fn ptr_to_dart(ptr: String) -> DartRecievedMessage {
+pub struct DartDeviceInfo {
+    pub name: String,
+    pub serial: String,
+    pub os_version: String,
+    pub encoded_data: Vec<u8>,
+}
+
+pub async fn get_device_info_state(state: &Arc<PushState>) -> anyhow::Result<DartDeviceInfo> {
+    let locked = state.0.read().await;
+    get_device_info(locked.os_config.as_ref().unwrap()).await
+}
+
+pub async fn get_device_info(config: &MacOSConfig) -> anyhow::Result<DartDeviceInfo> {
+    Ok(DartDeviceInfo {
+        name: config.inner.product_name.clone(),
+        serial: config.inner.platform_serial_number.clone(),
+        os_version: config.version.clone(),
+        encoded_data: bincode::DefaultOptions::new().serialize(config).unwrap()
+    })
+}
+
+
+pub fn ptr_to_dart(ptr: String) -> DartIMessage {
     let pointer: u64 = ptr.parse().unwrap();
+    info!("using pointer {pointer}");
     let recieved = unsafe {
-        Box::from_raw(pointer as *mut DartRecievedMessage)
+        Box::from_raw(pointer as *mut DartIMessage)
     };
     *recieved
 }
@@ -448,23 +491,30 @@ impl DartIMessage {
     }
 }
 
-#[repr(C)]
-pub enum DartRecievedMessage {
-    Message {
-        msg: DartIMessage
-    }
+pub enum PollResult {
+    Stop,
+    Cont(Option<DartIMessage>),
 }
 
-pub async fn recv_wait(state: &PushState) -> Option<DartRecievedMessage> {
+pub async fn recv_wait(state: &Arc<PushState>) -> PollResult {
     if !matches!(state.get_phase().await, RegistrationPhase::Registered) {
         panic!("Wrong phase! (recv_wait)")
     }
-    state.0.read().await.client.as_ref().unwrap().recieve_wait().await.map(|msg| {
-        unsafe { std::mem::transmute(msg) }
-    })
+    let (send, recv) = oneshot::channel();
+    let recv_path = state.0.read().await;
+    *recv_path.cancel_poll.lock().await = Some(send);
+    select! {
+        msg = recv_path.client.as_ref().unwrap().recieve_wait() => {
+            *recv_path.cancel_poll.lock().await = None;
+            PollResult::Cont(unsafe { std::mem::transmute(msg) })
+        }
+        _cancel = recv => {
+            PollResult::Stop
+        }
+    }
 }
 
-pub async fn send(state: &PushState, msg: DartIMessage) -> anyhow::Result<()> {
+pub async fn send(state: &Arc<PushState>, msg: DartIMessage) -> anyhow::Result<()> {
     if !matches!(state.get_phase().await, RegistrationPhase::Registered) {
         panic!("Wrong phase! (send)")
     }
@@ -473,14 +523,14 @@ pub async fn send(state: &PushState, msg: DartIMessage) -> anyhow::Result<()> {
     Ok(())
 }
 
-pub async fn get_handles(state: &PushState) -> anyhow::Result<Vec<String>> {
+pub async fn get_handles(state: &Arc<PushState>) -> anyhow::Result<Vec<String>> {
     if !matches!(state.get_phase().await, RegistrationPhase::Registered) {
         panic!("Wrong phase! (send)")
     }
     Ok(state.0.read().await.client.as_ref().unwrap().get_handles().await.to_vec())
 }
 
-pub async fn new_msg(state: &PushState, conversation: DartConversationData, sender: String, message: DartMessage) -> DartIMessage {
+pub async fn new_msg(state: &Arc<PushState>, conversation: DartConversationData, sender: String, message: DartMessage) -> DartIMessage {
     if !matches!(state.get_phase().await, RegistrationPhase::Registered) {
         panic!("Wrong phase! (new_msg)")
     }
@@ -489,14 +539,14 @@ pub async fn new_msg(state: &PushState, conversation: DartConversationData, send
     client.new_msg(conversation.into(), &sender, message.into()).await.into()
 }
 
-pub async fn validate_targets(state: &PushState, targets: Vec<String>, sender: String) -> anyhow::Result<Vec<String>> {
+pub async fn validate_targets(state: &Arc<PushState>, targets: Vec<String>, sender: String) -> anyhow::Result<Vec<String>> {
     if !matches!(state.get_phase().await, RegistrationPhase::Registered) {
         panic!("Wrong phase! (validate_targets)")
     }
     Ok(state.0.read().await.client.as_ref().unwrap().validate_targets(&targets, &sender).await?)
 }
 
-pub async fn get_phase(state: &PushState) -> RegistrationPhase {
+pub async fn get_phase(state: &Arc<PushState>) -> RegistrationPhase {
     state.get_phase().await
 }
 
@@ -506,7 +556,7 @@ pub struct TransferProgress {
     pub attachment: Option<DartAttachment>
 }
 
-pub async fn download_attachment(sink: StreamSink<TransferProgress>, state: &PushState, attachment: DartAttachment, path: String) -> anyhow::Result<()> {
+pub async fn download_attachment(sink: StreamSink<TransferProgress>, state: &Arc<PushState>, attachment: DartAttachment, path: String) -> anyhow::Result<()> {
     let inner = state.0.read().await;
     println!("donwloading file {}", path);
     let path = std::path::Path::new(&path);
@@ -525,7 +575,7 @@ pub async fn download_attachment(sink: StreamSink<TransferProgress>, state: &Pus
     Ok(())
 }
 
-pub async fn download_mmcs(sink: StreamSink<TransferProgress>, state: &PushState, attachment: DartMMCSFile, path: String) -> anyhow::Result<()> {
+pub async fn download_mmcs(sink: StreamSink<TransferProgress>, state: &Arc<PushState>, attachment: DartMMCSFile, path: String) -> anyhow::Result<()> {
     let inner = state.0.read().await;
     let path = std::path::Path::new(&path);
     let prefix = path.parent().unwrap();
@@ -549,7 +599,7 @@ pub struct MMCSTransferProgress {
     pub file: Option<DartMMCSFile>
 }
 
-pub async fn upload_mmcs(sink: StreamSink<MMCSTransferProgress>, state: &PushState, path: String) -> anyhow::Result<()> {
+pub async fn upload_mmcs(sink: StreamSink<MMCSTransferProgress>, state: &Arc<PushState>, path: String) -> anyhow::Result<()> {
     let inner = state.0.read().await;
 
     let mut file = std::fs::File::open(path)?;
@@ -566,7 +616,7 @@ pub async fn upload_mmcs(sink: StreamSink<MMCSTransferProgress>, state: &PushSta
     Ok(())
 }
 
-pub async fn upload_attachment(sink: StreamSink<TransferProgress>, state: &PushState, path: String, mime: String, uti: String, name: String) -> anyhow::Result<()> {
+pub async fn upload_attachment(sink: StreamSink<TransferProgress>, state: &Arc<PushState>, path: String, mime: String, uti: String, name: String) -> anyhow::Result<()> {
     let inner = state.0.read().await;
 
     let mut file = std::fs::File::open(path)?;
@@ -583,7 +633,7 @@ pub async fn upload_attachment(sink: StreamSink<TransferProgress>, state: &PushS
     Ok(())
 }
 
-pub async fn try_auth(state: &PushState, username: String, password: String) -> anyhow::Result<DartLoginState> {
+pub async fn try_auth(state: &Arc<PushState>, username: String, password: String) -> anyhow::Result<DartLoginState> {
     if !matches!(state.get_phase().await, RegistrationPhase::WantsUserPass) {
         panic!("Wrong phase! (try_auth)")
     }
@@ -611,14 +661,14 @@ pub async fn try_auth(state: &PushState, username: String, password: String) -> 
     Ok(unsafe { std::mem::transmute(login_state) })
 }
 
-pub async fn send_2fa_to_devices(state: &PushState) -> anyhow::Result<DartLoginState> {
+pub async fn send_2fa_to_devices(state: &Arc<PushState>) -> anyhow::Result<DartLoginState> {
     let inner = state.0.read().await;
     let account = inner.account.as_ref().unwrap();
     Ok(unsafe { std::mem::transmute(account.send_2fa_to_devices().await?) })
     
 }
 
-pub async fn verify_2fa(state: &PushState, code: String) -> anyhow::Result<DartLoginState> {
+pub async fn verify_2fa(state: &Arc<PushState>, code: String) -> anyhow::Result<DartLoginState> {
     let inner = state.0.read().await;
     let account = inner.account.as_ref().unwrap();
     Ok(unsafe { std::mem::transmute(account.verify_2fa(code).await?) })
@@ -632,22 +682,43 @@ pub struct DartTrustedPhoneNumber {
     pub id: u32
 }
 
-pub async fn get_2fa_sms_opts(state: &PushState) -> anyhow::Result<Vec<DartTrustedPhoneNumber>> {
+pub async fn get_2fa_sms_opts(state: &Arc<PushState>) -> anyhow::Result<Vec<DartTrustedPhoneNumber>> {
     let inner = state.0.read().await;
     let account = inner.account.as_ref().unwrap();
     Ok(account.get_auth_extras().await?.trusted_phone_numbers.into_iter().map(|i| unsafe { std::mem::transmute(i) }).collect())
 }
 
-pub async fn send_2fa_sms(state: &PushState, phone_id: u32) -> anyhow::Result<DartLoginState> {
+pub async fn send_2fa_sms(state: &Arc<PushState>, phone_id: u32) -> anyhow::Result<DartLoginState> {
     let inner = state.0.read().await;
     let account = inner.account.as_ref().unwrap();
     Ok(unsafe { std::mem::transmute(account.send_sms_2fa_to_devices(phone_id).await?) })
 }
 
-pub async fn verify_2fa_sms(state: &PushState, body: VerifyBody, code: String) -> anyhow::Result<DartLoginState> {
+pub async fn verify_2fa_sms(state: &Arc<PushState>, body: VerifyBody, code: String) -> anyhow::Result<DartLoginState> {
     let inner = state.0.read().await;
     let account = inner.account.as_ref().unwrap();
     Ok(unsafe { std::mem::transmute(account.verify_sms_2fa(code, body).await?) })
+}
+
+pub async fn reset_state(state: &Arc<PushState>) -> anyhow::Result<()> {
+    // tell any poll to stop
+    let inner = state.0.read().await;
+    if let Some(cancel) = inner.cancel_poll.lock().await.take() {
+        cancel.send(()).unwrap();
+    }
+    drop(inner);
+    let mut inner = state.0.write().await;
+    let conn_state = inner.conn.as_ref().unwrap().clone();
+    inner.client = None;
+    // try deregistering from iMessage, but if it fails we don't really care
+    let _ = register(inner.os_config.as_ref().unwrap().as_ref(), &mut [], &conn_state).await;
+    inner.conn = None;
+    inner.os_config = None;
+    inner.account = None;
+    inner.users = vec![];
+    let _ = std::fs::remove_file(inner.conf_dir.join("config.plist"));
+    let _ = std::fs::remove_file(inner.conf_dir.join("id_cache.plist"));
+    Ok(())
 }
 
 impl PushState {

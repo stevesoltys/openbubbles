@@ -62,6 +62,164 @@ class RustPushBBUtils {
     var myHandles = (await api.getHandles(state: pushService.state));
     return participants.filter((e) => !myHandles.contains(e)).map((e) => rustHandleToBB(e)).toList();
   }
+
+  static Map<String, String> modelMap = {
+    "MacBookAir1,1": "MacBook Air 13\" (2008)",
+    "MacBookAir2,1": "MacBook Air 13\" (2009)",
+    "MacBookAir3,1": "MacBook Air 11\" (2010)",
+    "MacBookAir3,2": "MacBook Air 13\" (2010)",
+    "MacBookAir4,1": "MacBook Air 11\" (2011)",
+    "MacBookAir4,2": "MacBook Air 13\" (2012)",
+    "MacBookAir5,1": "MacBook Air 11\" (2012)",
+    "MacBookAir5,2": "MacBook Air 13\" (2012)",
+    "MacBookAir6,1": "MacBook Air 11\" (2014)",
+    "MacBookAir6,2": "MacBook Air 13\" (2014)",
+    "MacBookAir7,1": "MacBook Air 11\" (2015)",
+    "MacBookAir7,2": "MacBook Air 13\" (2017)",
+    "MacBookAir8,1": "MacBook Air 13\" (2018)",
+    "MacBookAir8,2": "MacBook Air 13\" (2019)",
+    "MacBookAir9,1": "MacBook Air 13\" (2020)",
+    "MacBookAir10,1": "MacBook Air 13\" (2020)",
+    "Mac14,2": "MacBook Air 13\" (2022)",
+    "Mac14,15": "MacBook Air 15\" (2023)",
+    "Mac15,12": "MacBook Air 13\" (2024)",
+    "Mac15,13": "MacBook Air 15\" (2024)",
+    "MacBookPro1,1": "MacBook Pro 15\" (2006)",
+    "MacBookPro1,2": "MacBook Pro 17\" (2006)",
+    "MacBookPro2,2": "MacBook Pro 15\" (2006)",
+    "MacBookPro2,1": "MacBook Pro 17\" (2006)",
+    "MacBookPro3,1": "MacBook Pro 17\" (2007)",
+    "MacBookPro4,1": "MacBook Pro 17\" (2008)",
+    "MacBookPro5,1": "MacBook Pro 15\" (2009)",
+    "MacBookPro5,2": "MacBook Pro 17\" (2009)",
+    "MacBookPro5,5": "MacBook Pro 13\" (2009)",
+    "MacBookPro5,4": "MacBook Pro 15\" (2009)",
+    "MacBookPro5,3": "MacBook Pro 15\" (2009)",
+    "MacBookPro7,1": "MacBook Pro 13\" (2010)",
+    "MacBookPro6,2": "MacBook Pro 15\" (2010)",
+    "MacBookPro6,1": "MacBook Pro 17\" (2010)",
+    "MacBookPro8,1": "MacBook Pro 13\" (2011)",
+    "MacBookPro8,2": "MacBook Pro 15\" (2011)",
+    "MacBookPro8,3": "MacBook Pro 17\" (2011)",
+    "MacBookPro9,2": "MacBook Pro 13\" (2012)",
+    "MacBookPro9,1": "MacBook Pro 15\" (2012)",
+    "MacBookPro10,1": "MacBook Pro 15\" (2013)",
+    "MacBookPro10,2": "MacBook Pro 13\" (2013)",
+    "MacBookPro11,1": "MacBook Pro 13\" (2014)",
+    "MacBookPro11,2": "MacBook Pro 15\" (2014)",
+    "MacBookPro11,3": "MacBook Pro 15\" (2014)",
+    "MacBookPro12,1": "MacBook Pro 13\" (2015)",
+    "MacBookPro11,4": "MacBook Pro 15\" (2015)",
+    "MacBookPro11,5": "MacBook Pro 15\" (2015)",
+    "MacBookPro13,1": "MacBook Pro 13\" (2016)",
+    "MacBookPro13,2": "MacBook Pro 13\" (2016)",
+    "MacBookPro13,3": "MacBook Pro 15\" (2016)",
+    "MacBookPro14,1": "MacBook Pro 13\" (2017)",
+    "MacBookPro14,2": "MacBook Pro 13\" (2017)",
+    "MacBookPro14,3": "MacBook Pro 15\" (2017)",
+    "MacBookPro15,2": "MacBook Pro 13\" (2019)",
+    "MacBookPro15,1": "MacBook Pro 15\" (2019)",
+    "MacBookPro15,3": "MacBook Pro 15\" (2019)",
+    "MacBookPro15,4": "MacBook Pro 13\" (2019)",
+    "MacBookPro16,1": "MacBook Pro 16\" (2019)",
+    "MacBookPro16,3": "MacBook Pro 13\" (2020)",
+    "MacBookPro16,2": "MacBook Pro 13\" (2020)",
+    "MacBookPro16,4": "MacBook Pro 16\" (2020)",
+    "MacBookPro17,1": "MacBook Pro 13\" (2020)",
+    "MacBookPro18,3": "MacBook Pro 14\" (2021)",
+    "MacBookPro18,4": "MacBook Pro 14\" (2021)",
+    "MacBookPro18,1": "MacBook Pro 16\" (2021)",
+    "MacBookPro18,2": "MacBook Pro 16\" (2021)",
+    "Mac14,7": "MacBook Pro 13\" (2022)",
+    "Mac14,9": "MacBook Pro 14\" (2023)",
+    "Mac14,5": "MacBook Pro 14\" (2023)",
+    "Mac14,10": "MacBook Pro 16\" (2023)",
+    "Mac14,6": "MacBook Pro 16\" (2023)",
+    "Mac15,3": "MacBook Pro 14\" (2023)",
+    "Mac15,6": "MacBook Pro 14\" (2023)",
+    "Mac15,10": "MacBook Pro 14\" (2023)",
+    "Mac15,8": "MacBook Pro 14\" (2023)",
+    "Mac15,7": "MacBook Pro 16\" (2023)",
+    "Mac15,11": "MacBook Pro 16\" (2023)",
+    "Mac15,9": "MacBook Pro 16\" (2023)",
+    "MacBook1,1": "MacBook 13\" (2006)",
+    "MacBook2,1": "MacBook 13\" (2007)",
+    "MacBook3,1": "MacBook 13\" (2007)",
+    "MacBook4,1": "MacBook 13\" (2008)",
+    "MacBook5,1": "MacBook 13\" (2008)",
+    "MacBook5,2": "MacBook 13\" (2009)",
+    "MacBook6,1": "MacBook 13\" (2009)",
+    "MacBook7,1": "MacBook 13\" (2010)",
+    "MacBook8,1": "MacBook 12\" (2015)",
+    "MacBook9,1": "MacBook 12\" (2016)",
+    "MacBook10,1": "MacBook 12\" (2017)",
+    "iMac4,1": "iMac 20\" (2006)",
+    "iMac4,2": "iMac 17\" (2006)",
+    "iMac5,2": "iMac 17\" (2006)",
+    "iMac5,1": "iMac 20\" (2006)",
+    "iMac6,1": "iMac 24\" (2006)",
+    "iMac7,1": "iMac 24\" (2007)",
+    "iMac8,1": "iMac 24\" (2008)",
+    "iMac9,1": "iMac 20\" (2010)",
+    "iMac10,1": "iMac 27\" (2009)",
+    "iMac11,1": "iMac 27\" (2009)",
+    "iMac11,2": "iMac 21.5\" (2010)",
+    "iMac11,3": "iMac 27\" (2010)",
+    "iMac12,1": "iMac 21.5\" (2011)",
+    "iMac12,2": "iMac 27\" (2011)",
+    "iMac13,1": "iMac 21.5\" (2013)",
+    "iMac13,2": "iMac 27\" (2012)",
+    "iMac14,1": "iMac 21.5\" (2013)",
+    "iMac14,3": "iMac 21.5\" (2013)",
+    "iMac14,2": "iMac 27\" (2013)",
+    "iMac14,4": "iMac 21.5\" (2014)",
+    "iMac15,1": "iMac 27\" (2015)",
+    "iMac16,1": "iMac 21.5\" (2015)",
+    "iMac16,2": "iMac 21.5\" (2015)",
+    "iMac17,1": "iMac 27\" (2015)",
+    "iMac18,1": "iMac 21.5\" (2017)",
+    "iMac18,2": "iMac 21.5\" (2017)",
+    "iMac18,3": "iMac 27\" (2017)",
+    "iMac19,2": "iMac 21.5\" (2019)",
+    "iMac19,1": "iMac 27\" (2019)",
+    "iMac20,1": "iMac 27\" (2020)",
+    "iMac20,2": "iMac 27\" (2020)",
+    "iMac21,2": "iMac 24\" (2021)",
+    "iMac21,1": "iMac 24\" (2021)",
+    "Mac15,4": "iMac 24\" (2023)",
+    "Mac15,5": "iMac 24\" (2023)",
+    "iMacPro1,1": "iMac Pro 27\" (2017)",
+    "Macmini1,1": "Mac mini (2006)",
+    "Macmini2,1": "Mac mini (2007)",
+    "Macmini3,1": "Mac mini (2009)",
+    "Macmini4,1": "Mac mini (2010)",
+    "Macmini5,1": "Mac mini (2011)",
+    "Macmini5,2": "Mac mini (2011)",
+    "Macmini5,3": "Mac mini (2011)",
+    "Macmini6,1": "Mac mini (2012)",
+    "Macmini6,2": "Mac mini (2012)",
+    "Macmini7,1": "Mac mini (2014)",
+    "Macmini8,1": "Mac mini (2018)",
+    "Macmini9,1": "Mac mini (2020)",
+    "Mac14,3": "Mac mini (2023)",
+    "Mac14,12": "Mac mini (2023)",
+    "MacPro1,1*": "Mac Pro (2006)",
+    "MacPro2,1": "Mac Pro (2007)",
+    "MacPro3,1": "Mac Pro (2008)",
+    "MacPro4,1": "Mac Pro (2009)",
+    "MacPro5,1": "Mac Pro (2012)",
+    "MacPro6,1": "Mac Pro (2013)",
+    "MacPro7,1": "Mac Pro (2019)",
+    "Mac14,8": "Mac Pro (2023)",
+  };
+
+  static bool isLaptop(String model) {
+    return model.contains("MacBook");
+  }
+
+  static String modelToUser(String model) {
+    return modelMap[model] ?? model;
+  }
 }
 
 class RustPushBackend implements BackendService {
@@ -196,10 +354,19 @@ class RustPushBackend implements BackendService {
   @override
   Future<Map<String, dynamic>> getAccountInfo() async {
     var handles = await api.getHandles(state: pushService.state);
+    var state = await api.getRegstate(state: pushService.state);
+    var stateStr = "";
+    if (state is api.DartRegisterState_Registered) {
+      stateStr = "Connected";
+    } else if (state is api.DartRegisterState_Registering) {
+      stateStr = "Reregistering...";
+    } else if (state is api.DartRegisterState_Failed) {
+      stateStr = "Deregistered";
+    }
     return {
       "account_name": Settings.getSettings().userName.value,
       "apple_id": Settings.getSettings().iCloudAccount.value,
-      "login_status_message": "Connected", // TODO
+      "login_status_message": stateStr,
       "vetted_aliases": handles.map((e) => {
         "Alias": e.replaceFirst("tel:", "").replaceFirst("mailto:", "")
       }).toList(),
@@ -216,10 +383,7 @@ class RustPushBackend implements BackendService {
 
   @override
   Future<Map<String, dynamic>> getAccountContact() async {
-    return {
-      "name": Settings.getSettings().userName.value,
-      "avatar": null,
-    };
+    return {};
   }
 
   @override
@@ -805,7 +969,11 @@ class RustPushService extends GetxService {
   void doPoll() async {
     while (true) {
       try {
-        var msg = await api.recvWait(state: pushService.state);
+        var msgRaw = await api.recvWait(state: pushService.state);
+        if (msgRaw is api.PollResult_Stop) {
+          break;
+        }
+        var msg = (msgRaw as api.PollResult_Cont).field0;
         if (msg == null) {
           continue;
         }
@@ -840,6 +1008,10 @@ class RustPushService extends GetxService {
       }
     })();
     await initFuture;
+  }
+
+  Future reset() async {
+    await api.resetState(state: state);
   }
 
   Future configured() async {

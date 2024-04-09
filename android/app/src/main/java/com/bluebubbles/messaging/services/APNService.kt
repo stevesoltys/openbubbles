@@ -84,6 +84,10 @@ class APNService : Service() {
         Thread {
             while (true) {
                 val recievedMsg = pushState.recvWait()
+                if (recievedMsg == ULong.MAX_VALUE) {
+                    ready = false;
+                    break
+                }
                 if (recievedMsg != 0UL) {
                     recievedMsg(recievedMsg)
                 }

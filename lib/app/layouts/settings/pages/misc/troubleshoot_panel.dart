@@ -5,6 +5,7 @@ import 'package:bluebubbles/helpers/backend/settings_helpers.dart';
 import 'package:bluebubbles/services/backend/sync/chat_sync_manager.dart';
 import 'package:bluebubbles/utils/logger/logger.dart';
 import 'package:bluebubbles/helpers/helpers.dart';
+import 'package:bluebubbles/services/network/backend_service.dart';
 import 'package:bluebubbles/app/layouts/settings/widgets/settings_widgets.dart';
 import 'package:bluebubbles/app/wrappers/stateful_boilerplate.dart';
 import 'package:bluebubbles/services/services.dart';
@@ -312,12 +313,12 @@ class _TroubleshootPanelState extends OptimizedState<TroubleshootPanel> {
                         subtitle: "Use this if you are experiencing the app opening an incorrect chat"
                     )
                   ]),
-                if (!kIsWeb)
+                if (!kIsWeb && backend.getRemoteService() != null)
                   SettingsHeader(
                       iosSubtitle: iosSubtitle,
                       materialSubtitle: materialSubtitle,
                       text: "Database Re-syncing"),
-                if (!kIsWeb)
+                if (!kIsWeb && backend.getRemoteService() != null)
                   SettingsSection(backgroundColor: tileColor, children: [
                     SettingsTile(
                         title: "Sync Handles & Contacts",

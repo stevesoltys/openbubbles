@@ -8,6 +8,8 @@ import 'package:bluebubbles/app/layouts/settings/pages/server/backup_restore_pan
 import 'package:bluebubbles/app/layouts/settings/widgets/content/next_button.dart';
 import 'package:bluebubbles/utils/logger/logger.dart';
 import 'package:bluebubbles/helpers/helpers.dart';
+import 'package:bluebubbles/services/network/backend_service.dart';
+import 'package:bluebubbles/services/rustpush/rustpush_service.dart';
 import 'package:bluebubbles/app/layouts/settings/pages/misc/about_panel.dart';
 import 'package:bluebubbles/app/layouts/settings/pages/message_view/attachment_panel.dart';
 import 'package:bluebubbles/app/layouts/settings/pages/conversation_list/chat_list_panel.dart';
@@ -34,8 +36,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:get/get.dart' hide Response;
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:universal_io/io.dart';
-import 'package:bluebubbles/services/network/backend_service.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -54,6 +56,7 @@ class _SettingsPageState extends OptimizedState<SettingsPage> {
   final RxBool uploadingContacts = false.obs;
   final RxnDouble progress = RxnDouble();
   final RxnInt totalSize = RxnInt();
+  api.DartDeviceInfo? deviceInfo;
 
   @override
   void initState() {
@@ -75,6 +78,12 @@ class _SettingsPageState extends OptimizedState<SettingsPage> {
         );
       });
     }
+
+    api.getDeviceInfoState(state: pushService.state).then((value) {
+      setState(() {
+        deviceInfo = value;
+      });
+    });
   }
 
   @override

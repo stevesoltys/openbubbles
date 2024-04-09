@@ -52,6 +52,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           dynamic raw);
 
   @protected
+  MacOsConfig
+      dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockMacOSConfig(
+          dynamic raw);
+
+  @protected
   ArcPushState
       dco_decode_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockArcPushState(
           dynamic raw);
@@ -144,6 +149,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   DartConversationData dco_decode_dart_conversation_data(dynamic raw);
+
+  @protected
+  DartDeviceInfo dco_decode_dart_device_info(dynamic raw);
 
   @protected
   DartEditMessage dco_decode_dart_edit_message(dynamic raw);
@@ -255,6 +263,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   int? dco_decode_opt_box_autoadd_usize(dynamic raw);
 
   @protected
+  PollResult dco_decode_poll_result(dynamic raw);
+
+  @protected
   RegistrationPhase dco_decode_registration_phase(dynamic raw);
 
   @protected
@@ -296,6 +307,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   ArcPushState
       sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockArcPushState(
+          SseDeserializer deserializer);
+
+  @protected
+  MacOsConfig
+      sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockMacOSConfig(
           SseDeserializer deserializer);
 
   @protected
@@ -407,6 +423,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   DartConversationData sse_decode_dart_conversation_data(
       SseDeserializer deserializer);
+
+  @protected
+  DartDeviceInfo sse_decode_dart_device_info(SseDeserializer deserializer);
 
   @protected
   DartEditMessage sse_decode_dart_edit_message(SseDeserializer deserializer);
@@ -532,6 +551,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   int? sse_decode_opt_box_autoadd_usize(SseDeserializer deserializer);
 
   @protected
+  PollResult sse_decode_poll_result(SseDeserializer deserializer);
+
+  @protected
   RegistrationPhase sse_decode_registration_phase(SseDeserializer deserializer);
 
   @protected
@@ -575,6 +597,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void
       sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockArcPushState(
           ArcPushState self, SseSerializer serializer);
+
+  @protected
+  void
+      sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockMacOSConfig(
+          MacOsConfig self, SseSerializer serializer);
 
   @protected
   void
@@ -687,6 +714,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_dart_conversation_data(
       DartConversationData self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_dart_device_info(
+      DartDeviceInfo self, SseSerializer serializer);
 
   @protected
   void sse_encode_dart_edit_message(
@@ -817,6 +848,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_opt_box_autoadd_usize(int? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_poll_result(PollResult self, SseSerializer serializer);
 
   @protected
   void sse_encode_registration_phase(

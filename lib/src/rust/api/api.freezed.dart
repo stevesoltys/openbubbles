@@ -4420,3 +4420,300 @@ abstract class DartRegisterState_Failed implements DartRegisterState {
   _$$DartRegisterState_FailedImplCopyWith<_$DartRegisterState_FailedImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
+
+/// @nodoc
+mixin _$PollResult {
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() stop,
+    required TResult Function(DartIMessage? field0) cont,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? stop,
+    TResult? Function(DartIMessage? field0)? cont,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? stop,
+    TResult Function(DartIMessage? field0)? cont,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(PollResult_Stop value) stop,
+    required TResult Function(PollResult_Cont value) cont,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(PollResult_Stop value)? stop,
+    TResult? Function(PollResult_Cont value)? cont,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(PollResult_Stop value)? stop,
+    TResult Function(PollResult_Cont value)? cont,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $PollResultCopyWith<$Res> {
+  factory $PollResultCopyWith(
+          PollResult value, $Res Function(PollResult) then) =
+      _$PollResultCopyWithImpl<$Res, PollResult>;
+}
+
+/// @nodoc
+class _$PollResultCopyWithImpl<$Res, $Val extends PollResult>
+    implements $PollResultCopyWith<$Res> {
+  _$PollResultCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+}
+
+/// @nodoc
+abstract class _$$PollResult_StopImplCopyWith<$Res> {
+  factory _$$PollResult_StopImplCopyWith(_$PollResult_StopImpl value,
+          $Res Function(_$PollResult_StopImpl) then) =
+      __$$PollResult_StopImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$PollResult_StopImplCopyWithImpl<$Res>
+    extends _$PollResultCopyWithImpl<$Res, _$PollResult_StopImpl>
+    implements _$$PollResult_StopImplCopyWith<$Res> {
+  __$$PollResult_StopImplCopyWithImpl(
+      _$PollResult_StopImpl _value, $Res Function(_$PollResult_StopImpl) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$PollResult_StopImpl implements PollResult_Stop {
+  const _$PollResult_StopImpl();
+
+  @override
+  String toString() {
+    return 'PollResult.stop()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$PollResult_StopImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() stop,
+    required TResult Function(DartIMessage? field0) cont,
+  }) {
+    return stop();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? stop,
+    TResult? Function(DartIMessage? field0)? cont,
+  }) {
+    return stop?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? stop,
+    TResult Function(DartIMessage? field0)? cont,
+    required TResult orElse(),
+  }) {
+    if (stop != null) {
+      return stop();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(PollResult_Stop value) stop,
+    required TResult Function(PollResult_Cont value) cont,
+  }) {
+    return stop(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(PollResult_Stop value)? stop,
+    TResult? Function(PollResult_Cont value)? cont,
+  }) {
+    return stop?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(PollResult_Stop value)? stop,
+    TResult Function(PollResult_Cont value)? cont,
+    required TResult orElse(),
+  }) {
+    if (stop != null) {
+      return stop(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class PollResult_Stop implements PollResult {
+  const factory PollResult_Stop() = _$PollResult_StopImpl;
+}
+
+/// @nodoc
+abstract class _$$PollResult_ContImplCopyWith<$Res> {
+  factory _$$PollResult_ContImplCopyWith(_$PollResult_ContImpl value,
+          $Res Function(_$PollResult_ContImpl) then) =
+      __$$PollResult_ContImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({DartIMessage? field0});
+}
+
+/// @nodoc
+class __$$PollResult_ContImplCopyWithImpl<$Res>
+    extends _$PollResultCopyWithImpl<$Res, _$PollResult_ContImpl>
+    implements _$$PollResult_ContImplCopyWith<$Res> {
+  __$$PollResult_ContImplCopyWithImpl(
+      _$PollResult_ContImpl _value, $Res Function(_$PollResult_ContImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? field0 = freezed,
+  }) {
+    return _then(_$PollResult_ContImpl(
+      freezed == field0
+          ? _value.field0
+          : field0 // ignore: cast_nullable_to_non_nullable
+              as DartIMessage?,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$PollResult_ContImpl implements PollResult_Cont {
+  const _$PollResult_ContImpl([this.field0]);
+
+  @override
+  final DartIMessage? field0;
+
+  @override
+  String toString() {
+    return 'PollResult.cont(field0: $field0)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$PollResult_ContImpl &&
+            (identical(other.field0, field0) || other.field0 == field0));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, field0);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$PollResult_ContImplCopyWith<_$PollResult_ContImpl> get copyWith =>
+      __$$PollResult_ContImplCopyWithImpl<_$PollResult_ContImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() stop,
+    required TResult Function(DartIMessage? field0) cont,
+  }) {
+    return cont(field0);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? stop,
+    TResult? Function(DartIMessage? field0)? cont,
+  }) {
+    return cont?.call(field0);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? stop,
+    TResult Function(DartIMessage? field0)? cont,
+    required TResult orElse(),
+  }) {
+    if (cont != null) {
+      return cont(field0);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(PollResult_Stop value) stop,
+    required TResult Function(PollResult_Cont value) cont,
+  }) {
+    return cont(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(PollResult_Stop value)? stop,
+    TResult? Function(PollResult_Cont value)? cont,
+  }) {
+    return cont?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(PollResult_Stop value)? stop,
+    TResult Function(PollResult_Cont value)? cont,
+    required TResult orElse(),
+  }) {
+    if (cont != null) {
+      return cont(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class PollResult_Cont implements PollResult {
+  const factory PollResult_Cont([final DartIMessage? field0]) =
+      _$PollResult_ContImpl;
+
+  DartIMessage? get field0;
+  @JsonKey(ignore: true)
+  _$$PollResult_ContImplCopyWith<_$PollResult_ContImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}

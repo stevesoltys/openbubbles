@@ -181,6 +181,7 @@ class Settings {
 
   // RustPush settings
   final RxString defaultHandle = "".obs;
+  final RxBool macIsMine = true.obs;
 
   Future<DisplayMode> getDisplayMode() async {
     List<DisplayMode> modes = await FlutterDisplayMode.supported;
@@ -367,6 +368,7 @@ class Settings {
       'windowEffectCustomOpacityDark': windowEffectCustomOpacityDark.value,
       'useWindowsAccent': useWindowsAccent.value,
       'defaultHandle': defaultHandle.value,
+      'macIsMine': macIsMine.value,
     };
     if (includeAll) {
       map.addAll({
@@ -506,6 +508,7 @@ class Settings {
     ss.settings.windowEffectCustomOpacityDark.value = map['windowEffectCustomOpacityDark']?.toDouble() ?? 0.5;
     ss.settings.useWindowsAccent.value = map['useWindowsAccent'] ?? false;
     ss.settings.defaultHandle.value = map['defaultHandle'] ?? "";
+    ss.settings.macIsMine.value = map['macIsMine'] ?? true;
     ss.settings.save();
 
     eventDispatcher.emit("theme-update", null);
@@ -642,6 +645,7 @@ class Settings {
     s.windowEffectCustomOpacityDark.value = map['windowEffectCustomOpacityDark']?.toDouble() ?? 0.5;
     s.useWindowsAccent.value = map['useWindowsAccent'] ?? false;
     s.defaultHandle.value = map['defaultHandle'] ?? "";
+    s.macIsMine.value = map['macIsMine'] ?? true;
     return s;
   }
 

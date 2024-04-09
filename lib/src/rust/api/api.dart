@@ -33,6 +33,14 @@ Future<MacOsConfig> configFromValidationData(
     RustLib.instance.api
         .configFromValidationData(data: data, extra: extra, hint: hint);
 
+Future<DartDeviceInfo> getDeviceInfoState(
+        {required ArcPushState state, dynamic hint}) =>
+    RustLib.instance.api.getDeviceInfoState(state: state, hint: hint);
+
+Future<DartDeviceInfo> getDeviceInfo(
+        {required MacOsConfig config, dynamic hint}) =>
+    RustLib.instance.api.getDeviceInfo(config: config, hint: hint);
+
 Future<DartIMessage> ptrToDart({required String ptr, dynamic hint}) =>
     RustLib.instance.api.ptrToDart(ptr: ptr, hint: hint);
 
@@ -41,7 +49,7 @@ Future<String> formatE164(
     RustLib.instance.api
         .formatE164(number: number, country: country, hint: hint);
 
-Future<DartIMessage?> recvWait({required ArcPushState state, dynamic hint}) =>
+Future<PollResult> recvWait({required ArcPushState state, dynamic hint}) =>
     RustLib.instance.api.recvWait(state: state, hint: hint);
 
 Future<void> send(
@@ -139,6 +147,9 @@ Future<DartLoginState> verify2FaSms(
         dynamic hint}) =>
     RustLib.instance.api
         .verify2FaSms(state: state, body: body, code: code, hint: hint);
+
+Future<void> resetState({required ArcPushState state, dynamic hint}) =>
+    RustLib.instance.api.resetState(state: state, hint: hint);
 
 Future<String> getUserName({required ArcPushState state, dynamic hint}) =>
     RustLib.instance.api.getUserName(state: state, hint: hint);
@@ -332,6 +343,37 @@ class DartConversationData {
           participants == other.participants &&
           cvName == other.cvName &&
           senderGuid == other.senderGuid;
+}
+
+class DartDeviceInfo {
+  final String name;
+  final String serial;
+  final String osVersion;
+  final Uint8List encodedData;
+
+  const DartDeviceInfo({
+    required this.name,
+    required this.serial,
+    required this.osVersion,
+    required this.encodedData,
+  });
+
+  @override
+  int get hashCode =>
+      name.hashCode ^
+      serial.hashCode ^
+      osVersion.hashCode ^
+      encodedData.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is DartDeviceInfo &&
+          runtimeType == other.runtimeType &&
+          name == other.name &&
+          serial == other.serial &&
+          osVersion == other.osVersion &&
+          encodedData == other.encodedData;
 }
 
 class DartEditMessage {
@@ -813,6 +855,14 @@ class MMCSTransferProgress {
           prog == other.prog &&
           total == other.total &&
           file == other.file;
+}
+
+@freezed
+sealed class PollResult with _$PollResult {
+  const factory PollResult.stop() = PollResult_Stop;
+  const factory PollResult.cont([
+    DartIMessage? field0,
+  ]) = PollResult_Cont;
 }
 
 enum RegistrationPhase {
