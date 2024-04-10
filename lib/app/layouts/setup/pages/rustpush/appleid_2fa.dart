@@ -24,10 +24,26 @@ class _AppleId2FAState extends OptimizedState<AppleId2FA> {
   final TextEditingController codeController = TextEditingController();
   final controller = Get.find<SetupViewController>();
   final FocusNode focusNode = FocusNode();
+  String currentCode = "";
 
   bool obscureText = true;
   bool loading = false;
   bool appleHelping = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Start listening to changes.
+    codeController.addListener(() {
+      setState(() {
+        currentCode = codeController.text;
+      });
+      if (codeController.text.length == 6) {
+        connect(codeController.text);
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,22 +77,51 @@ class _AppleId2FAState extends OptimizedState<AppleId2FA> {
                               }
                               return KeyEventResult.ignored;
                             },
-                            child: TextField(
-                              cursorColor: context.theme.colorScheme.primary,
-                              autocorrect: false,
-                              autofocus: false,
-                              controller: codeController,
-                              textInputAction: TextInputAction.next,
-                              decoration: InputDecoration(
-                                enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(color: context.theme.colorScheme.outline),
-                                    borderRadius: BorderRadius.circular(20)),
-                                focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(color: context.theme.colorScheme.primary),
-                                    borderRadius: BorderRadius.circular(20)),
-                                labelText: "Code",
-                              ),
-                            ),
+                            child: Stack(
+                              children: [
+                                Row(
+                                  children: List.generate(6, (index) {
+                                    var text = index < currentCode.length ? currentCode[index] : "";
+                                    return Expanded(child: 
+                                      Container(
+                                        decoration: index == currentCode.length ? 
+                                          BoxDecoration(
+                                            border: Border.all(
+                                              color: context.theme.colorScheme.primary,
+                                              width: 2
+                                            ),
+                                            borderRadius: const BorderRadius.all(Radius.circular(10)),
+                                          )
+                                        : BoxDecoration(
+                                          border: Border.all(
+                                            color: context.theme.colorScheme.outline,
+                                          ),
+                                          borderRadius: const BorderRadius.all(Radius.circular(10)),
+                                        ),
+                                        margin: const EdgeInsets.all(3),
+                                        height: 50,
+                                        child: Center(
+                                          child: Text(
+                                            text,
+                                            style: context.theme.textTheme.titleLarge
+                                          ),
+                                        )
+                                      )
+                                    );
+                                  }),
+                                ),
+                                Opacity(
+                                  opacity: 0,
+                                  child: TextField(
+                                    cursorColor: context.theme.colorScheme.primary,
+                                    autocorrect: false,
+                                    autofocus: false,
+                                    controller: codeController,
+                                    textInputAction: TextInputAction.next,
+                                    keyboardType: TextInputType.number,
+                                  )),
+                              ],
+                            )
                           ),
                         ),
                         const SizedBox(height: 20),

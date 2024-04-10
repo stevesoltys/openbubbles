@@ -977,6 +977,9 @@ class _SettingsPageState extends OptimizedState<SettingsPage> {
                                                   onPressed: () async {
                                                     fs.deleteDB();
                                                     socket.forgetConnection();
+                                                    if (usingRustPush) {
+                                                      await pushService.reset();
+                                                    }
                                                     ss.settings = Settings();
                                                     await ss.settings.saveAsync();
 

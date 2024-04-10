@@ -6,7 +6,6 @@ use anyhow::anyhow;
 use flutter_rust_bridge::{frb, IntoDart};
 use icloud_auth::{LoginState, AnisetteConfiguration, AppleAccount};
 pub use icloud_auth::{VerifyBody, TrustedPhoneNumber};
-use phonenumber::country::Id::{self, VE};
 pub use rustpush::{APNSState, APNSConnection, IDSAppleUser, PushError, Message, IDSUser, IMClient, IMessage, ConversationData, register};
 
 use serde::{Serialize, Deserialize};
@@ -182,9 +181,6 @@ async fn setup_push_rec(config: &dyn OSConfig, state: Option<&APNSState>) -> Arc
 }
 
 pub async fn configure_macos(state: &Arc<PushState>, config: MacOSConfig) -> anyhow::Result<()> {
-    if !matches!(state.get_phase().await, RegistrationPhase::WantsOSConfig) {
-        panic!("Wrong phase! (new_push)")
-    }
     let mut inner = state.0.write().await;
     let connection = setup_push_rec(&config, None).await;
     inner.os_config = Some(Arc::new(config));
@@ -200,7 +196,7 @@ pub struct DartHwExtra {
     pub aoskit_version: String,
 }
 
-pub async fn config_from_validation_data(data: Vec<u8>, extra: DartHwExtra) -> anyhow::Result<MacOSConfig> {
+pub fn config_from_validation_data(data: Vec<u8>, extra: DartHwExtra) -> anyhow::Result<MacOSConfig> {
     let inner = HardwareConfig::from_validation_data(&data)?;
     Ok(MacOSConfig {
         inner,
@@ -221,16 +217,20 @@ pub struct DartDeviceInfo {
 
 pub async fn get_device_info_state(state: &Arc<PushState>) -> anyhow::Result<DartDeviceInfo> {
     let locked = state.0.read().await;
-    get_device_info(locked.os_config.as_ref().unwrap()).await
+    get_device_info(locked.os_config.as_ref().unwrap())
 }
 
-pub async fn get_device_info(config: &MacOSConfig) -> anyhow::Result<DartDeviceInfo> {
+pub fn get_device_info(config: &MacOSConfig) -> anyhow::Result<DartDeviceInfo> {
     Ok(DartDeviceInfo {
         name: config.inner.product_name.clone(),
         serial: config.inner.platform_serial_number.clone(),
         os_version: config.version.clone(),
         encoded_data: bincode::DefaultOptions::new().serialize(config).unwrap()
     })
+}
+
+pub fn config_from_encoded(encoded: Vec<u8>) -> anyhow::Result<MacOSConfig> {
+    Ok(bincode::DefaultOptions::new().deserialize(&encoded)?)
 }
 
 
@@ -241,14 +241,6 @@ pub fn ptr_to_dart(ptr: String) -> DartIMessage {
         Box::from_raw(pointer as *mut DartIMessage)
     };
     *recieved
-}
-
-pub fn format_e164(number: String, country: String) -> String {
-    let id = Id::from_str(&country).unwrap();
-    let number = phonenumber::parse(Some(id), number).unwrap();
-    let formatter = number.format();
-    formatter.mode(phonenumber::Mode::E164);
-    format!("{}", formatter)
 }
 
 #[frb]

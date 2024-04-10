@@ -12,6 +12,7 @@ import 'package:universal_io/io.dart';
 import '../network/backend_service.dart';
 import 'package:dio/dio.dart';
 import 'package:uuid/uuid.dart';
+import 'package:dlibphonenumber/dlibphonenumber.dart';
 
 var uuid = const Uuid();
 RustPushService pushService =
@@ -37,7 +38,11 @@ class RustPushBBUtils {
   }
 
   static Future<String> formatAddress(String e) async {
-    return e.isEmail ? e : await api.formatE164(number: e, country: countryCode ?? "US");
+    if (e.isEmail) {
+      return e;
+    }
+    var parsed = PhoneNumberUtil.instance.parse(e, "US");
+    return PhoneNumberUtil.instance.format(parsed, PhoneNumberFormat.e164);
   }
 
   static Future<String> formatAndAddPrefix(String e) async {
@@ -1006,6 +1011,7 @@ class RustPushService extends GetxService {
           doPoll();
         }
       }
+      await cs.refreshContacts();
     })();
     await initFuture;
   }

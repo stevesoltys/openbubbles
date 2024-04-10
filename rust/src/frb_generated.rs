@@ -167,13 +167,43 @@ fn wire_DartMessageParts_as_plain_impl(
         },
     )
 }
+fn wire_config_from_encoded_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::SseCodec, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "config_from_encoded",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_encoded = <Vec<u8>>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| {
+                transform_result_sse((move || crate::api::api::config_from_encoded(api_encoded))())
+            }
+        },
+    )
+}
 fn wire_config_from_validation_data_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
     rust_vec_len_: i32,
     data_len_: i32,
 ) {
-    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::SseCodec, _, _>(
         flutter_rust_bridge::for_generated::TaskInfo {
             debug_name: "config_from_validation_data",
             port: Some(port_),
@@ -192,13 +222,10 @@ fn wire_config_from_validation_data_impl(
             let api_data = <Vec<u8>>::sse_decode(&mut deserializer);
             let api_extra = <crate::api::api::DartHwExtra>::sse_decode(&mut deserializer);
             deserializer.end();
-            move |context| async move {
-                transform_result_sse(
-                    (move || async move {
-                        crate::api::api::config_from_validation_data(api_data, api_extra).await
-                    })()
-                    .await,
-                )
+            move |context| {
+                transform_result_sse((move || {
+                    crate::api::api::config_from_validation_data(api_data, api_extra)
+                })())
             }
         },
     )
@@ -342,39 +369,6 @@ fn wire_download_mmcs_impl(
         },
     )
 }
-fn wire_format_e164_impl(
-    port_: flutter_rust_bridge::for_generated::MessagePort,
-    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
-    rust_vec_len_: i32,
-    data_len_: i32,
-) {
-    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::SseCodec, _, _>(
-        flutter_rust_bridge::for_generated::TaskInfo {
-            debug_name: "format_e164",
-            port: Some(port_),
-            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
-        },
-        move || {
-            let message = unsafe {
-                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
-                    ptr_,
-                    rust_vec_len_,
-                    data_len_,
-                )
-            };
-            let mut deserializer =
-                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
-            let api_number = <String>::sse_decode(&mut deserializer);
-            let api_country = <String>::sse_decode(&mut deserializer);
-            deserializer.end();
-            move |context| {
-                transform_result_sse((move || {
-                    Result::<_, ()>::Ok(crate::api::api::format_e164(api_number, api_country))
-                })())
-            }
-        },
-    )
-}
 fn wire_get_2fa_sms_opts_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
@@ -419,7 +413,7 @@ fn wire_get_device_info_impl(
     rust_vec_len_: i32,
     data_len_: i32,
 ) {
-    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::SseCodec, _, _>(
         flutter_rust_bridge::for_generated::TaskInfo {
             debug_name: "get_device_info",
             port: Some(port_),
@@ -439,14 +433,11 @@ fn wire_get_device_info_impl(
                 flutter_rust_bridge::for_generated::rust_async::RwLock<MacOSConfig>,
             >>::sse_decode(&mut deserializer);
             deserializer.end();
-            move |context| async move {
-                transform_result_sse(
-                    (move || async move {
-                        let api_config = api_config.rust_auto_opaque_decode_ref();
-                        crate::api::api::get_device_info(&api_config).await
-                    })()
-                    .await,
-                )
+            move |context| {
+                transform_result_sse((move || {
+                    let api_config = api_config.rust_auto_opaque_decode_ref();
+                    crate::api::api::get_device_info(&api_config)
+                })())
             }
         },
     )
@@ -2094,11 +2085,11 @@ fn pde_ffi_dispatcher_primary_impl(
         30 => wire_DartAttachment_restore_impl(port, ptr, rust_vec_len, data_len),
         29 => wire_DartAttachment_save_impl(port, ptr, rust_vec_len, data_len),
         32 => wire_DartMessageParts_as_plain_impl(port, ptr, rust_vec_len, data_len),
+        8 => wire_config_from_encoded_impl(port, ptr, rust_vec_len, data_len),
         5 => wire_config_from_validation_data_impl(port, ptr, rust_vec_len, data_len),
         4 => wire_configure_macos_impl(port, ptr, rust_vec_len, data_len),
         16 => wire_download_attachment_impl(port, ptr, rust_vec_len, data_len),
         17 => wire_download_mmcs_impl(port, ptr, rust_vec_len, data_len),
-        9 => wire_format_e164_impl(port, ptr, rust_vec_len, data_len),
         23 => wire_get_2fa_sms_opts_impl(port, ptr, rust_vec_len, data_len),
         7 => wire_get_device_info_impl(port, ptr, rust_vec_len, data_len),
         6 => wire_get_device_info_state_impl(port, ptr, rust_vec_len, data_len),
@@ -2108,7 +2099,7 @@ fn pde_ffi_dispatcher_primary_impl(
         27 => wire_get_user_name_impl(port, ptr, rust_vec_len, data_len),
         13 => wire_new_msg_impl(port, ptr, rust_vec_len, data_len),
         1 => wire_new_push_state_impl(port, ptr, rust_vec_len, data_len),
-        8 => wire_ptr_to_dart_impl(port, ptr, rust_vec_len, data_len),
+        9 => wire_ptr_to_dart_impl(port, ptr, rust_vec_len, data_len),
         10 => wire_recv_wait_impl(port, ptr, rust_vec_len, data_len),
         3 => wire_register_ids_impl(port, ptr, rust_vec_len, data_len),
         26 => wire_reset_state_impl(port, ptr, rust_vec_len, data_len),

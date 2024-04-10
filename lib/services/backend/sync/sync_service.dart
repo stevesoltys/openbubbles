@@ -31,6 +31,7 @@ class SyncService extends GetxService {
     // Set the last sync date (for incremental, even though this isn't incremental)
     // We won't try an incremental sync until the last (full) sync date is set
     if (backend.getRemoteService() == null) {
+      await cs.refreshContacts();
       return; // no syncing if no remote
     }
     ss.settings.lastIncrementalSync.value = DateTime.now().millisecondsSinceEpoch;
@@ -47,7 +48,6 @@ class SyncService extends GetxService {
   Future<void> startIncrementalSync() async {
     if (backend.getRemoteService() == null) {
       await chats.init();
-      return; // no syncing if no remote
     }
     isIncrementalSyncing.value = true;
 
@@ -77,7 +77,7 @@ class SyncService extends GetxService {
       if (result.isNotEmpty && (result.first.isNotEmpty || result.last.isNotEmpty)) {
         contacts.addAll(Contact.getContacts());
         // auto upload contacts if requested
-        if (ss.settings.syncContactsAutomatically.value) {
+        if (ss.settings.syncContactsAutomatically.value && backend.getRemoteService() != null) {
           Logger.debug("Contact changes detected, uploading to server...");
           final _contacts = <Map<String, dynamic>>[];
           for (Contact c in contacts) {
@@ -104,6 +104,12 @@ class SyncService extends GetxService {
 
 @pragma('vm:entry-point')
 Future<List<List<int>>> incrementalSyncIsolate(List? items) async {
+  if (usingRustPush) {
+    // just do contacts
+    final refreshedItems = await cs.refreshContacts();
+    Logger.info('Finished contact refresh, shouldRefresh $refreshedItems');
+    return refreshedItems;
+  }
   final SendPort? port = items?.firstOrNull;
   final String? address = items?.lastOrNull;
   try {
@@ -114,6 +120,13 @@ Future<List<List<int>>> incrementalSyncIsolate(List? items) async {
       await StartupTasks.initIncrementalSyncServices();
 
       http.originOverride = address;
+    }
+
+    if (usingRustPush) {
+      // just do contacts
+      final refreshedItems = await cs.refreshContacts();
+      Logger.info('Finished contact refresh, shouldRefresh $refreshedItems');
+      return refreshedItems;
     }
 
     int syncStart = ss.settings.lastIncrementalSync.value;

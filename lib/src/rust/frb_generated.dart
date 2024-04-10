@@ -74,6 +74,9 @@ abstract class RustLibApi extends BaseApi {
   Future<String> dartMessagePartsAsPlain(
       {required DartMessageParts that, dynamic hint});
 
+  Future<MacOsConfig> configFromEncoded(
+      {required List<int> encoded, dynamic hint});
+
   Future<MacOsConfig> configFromValidationData(
       {required List<int> data, required DartHwExtra extra, dynamic hint});
 
@@ -91,9 +94,6 @@ abstract class RustLibApi extends BaseApi {
       required DartMMCSFile attachment,
       required String path,
       dynamic hint});
-
-  Future<String> formatE164(
-      {required String number, required String country, dynamic hint});
 
   Future<List<DartTrustedPhoneNumber>> get2FaSmsOpts(
       {required ArcPushState state, dynamic hint});
@@ -313,6 +313,33 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
+  Future<MacOsConfig> configFromEncoded(
+      {required List<int> encoded, dynamic hint}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_list_prim_u_8_loose(encoded, serializer);
+        pdeCallFfi(generalizedFrbRustBinding, serializer,
+            funcId: 8, port: port_);
+      },
+      codec: SseCodec(
+        decodeSuccessData:
+            sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockMacOSConfig,
+        decodeErrorData: sse_decode_AnyhowException,
+      ),
+      constMeta: kConfigFromEncodedConstMeta,
+      argValues: [encoded],
+      apiImpl: this,
+      hint: hint,
+    ));
+  }
+
+  TaskConstMeta get kConfigFromEncodedConstMeta => const TaskConstMeta(
+        debugName: "config_from_encoded",
+        argNames: ["encoded"],
+      );
+
+  @override
   Future<MacOsConfig> configFromValidationData(
       {required List<int> data, required DartHwExtra extra, dynamic hint}) {
     return handler.executeNormal(NormalTask(
@@ -433,33 +460,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   TaskConstMeta get kDownloadMmcsConstMeta => const TaskConstMeta(
         debugName: "download_mmcs",
         argNames: ["state", "attachment", "path"],
-      );
-
-  @override
-  Future<String> formatE164(
-      {required String number, required String country, dynamic hint}) {
-    return handler.executeNormal(NormalTask(
-      callFfi: (port_) {
-        final serializer = SseSerializer(generalizedFrbRustBinding);
-        sse_encode_String(number, serializer);
-        sse_encode_String(country, serializer);
-        pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 9, port: port_);
-      },
-      codec: SseCodec(
-        decodeSuccessData: sse_decode_String,
-        decodeErrorData: null,
-      ),
-      constMeta: kFormatE164ConstMeta,
-      argValues: [number, country],
-      apiImpl: this,
-      hint: hint,
-    ));
-  }
-
-  TaskConstMeta get kFormatE164ConstMeta => const TaskConstMeta(
-        debugName: "format_e164",
-        argNames: ["number", "country"],
       );
 
   @override
@@ -716,7 +716,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_String(ptr, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 8, port: port_);
+            funcId: 9, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_dart_i_message,

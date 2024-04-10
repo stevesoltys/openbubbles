@@ -41,13 +41,12 @@ Future<DartDeviceInfo> getDeviceInfo(
         {required MacOsConfig config, dynamic hint}) =>
     RustLib.instance.api.getDeviceInfo(config: config, hint: hint);
 
+Future<MacOsConfig> configFromEncoded(
+        {required List<int> encoded, dynamic hint}) =>
+    RustLib.instance.api.configFromEncoded(encoded: encoded, hint: hint);
+
 Future<DartIMessage> ptrToDart({required String ptr, dynamic hint}) =>
     RustLib.instance.api.ptrToDart(ptr: ptr, hint: hint);
-
-Future<String> formatE164(
-        {required String number, required String country, dynamic hint}) =>
-    RustLib.instance.api
-        .formatE164(number: number, country: country, hint: hint);
 
 Future<PollResult> recvWait({required ArcPushState state, dynamic hint}) =>
     RustLib.instance.api.recvWait(state: state, hint: hint);

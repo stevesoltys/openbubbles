@@ -1,6 +1,7 @@
 import 'package:bluebubbles/app/layouts/conversation_list/pages/conversation_list.dart';
 import 'package:bluebubbles/app/layouts/setup/pages/rustpush/appleid_2fa.dart';
 import 'package:bluebubbles/app/layouts/setup/pages/rustpush/appleid_login.dart';
+import 'package:bluebubbles/app/layouts/setup/pages/rustpush/hw_inp.dart';
 import 'package:bluebubbles/app/layouts/setup/pages/rustpush/os_config.dart';
 import 'package:bluebubbles/helpers/helpers.dart';
 import 'package:bluebubbles/app/layouts/setup/pages/setup_checks/battery_optimization.dart';
@@ -35,6 +36,11 @@ class SetupViewController extends StatefulController {
   String error = "";
   bool obscurePass = true;
   RxBool isSms = false.obs;
+  int hardwareMode = 0;
+  String? asking;
+  bool preparedMine = true;
+  bool usingBeeper = false;
+  api.MacOsConfig? prepareStaging;
 
   DartLoginState state = const api.DartLoginState.needsLogin();
 
@@ -351,6 +357,8 @@ class SetupPages extends StatelessWidget {
             SyncProgress(),
           if (usingRustPush)
             OsConfig(),
+          if (usingRustPush)
+            HwInp(),
           if (usingRustPush)
             AppleIdLogin(),
           if (usingRustPush)

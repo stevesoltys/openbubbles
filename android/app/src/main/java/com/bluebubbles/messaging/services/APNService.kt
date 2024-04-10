@@ -125,7 +125,7 @@ class APNService : Service() {
     @RequiresApi(Build.VERSION_CODES.O)
     fun notifyForeground() {
         createNotificationChannel()
-        val text = "BlueBubbles stays connected directly to Apple Push Notification service to keep you up to date on your messages. Hold and turn off notifications for this channel to hide this notification."
+        val text = "Hold and turn off notifications to hide this notification"
         val notification: Notification = Notification.Builder(this, FOREGROUND_SERVICE_CHANNEL)
             .setContentTitle("Connected to APNs")
             .setContentText(text)
