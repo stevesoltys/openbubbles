@@ -150,7 +150,7 @@ pub async fn register_ids(state: &Arc<PushState>) -> anyhow::Result<Option<DartS
     let conf_path_dup = conf_path.clone();
 
     let mut state = SavedState {
-        push: inner.conn.as_ref().unwrap().state.clone(),
+        push: inner.conn.as_ref().unwrap().clone_state().await,
         users: empty_users.clone(),
         os_config: inner.os_config.as_ref().unwrap().as_ref().clone()
     };
@@ -511,7 +511,11 @@ pub async fn send(state: &Arc<PushState>, msg: DartIMessage) -> anyhow::Result<(
         panic!("Wrong phase! (send)")
     }
     let mut msg = msg.to_imsg();
-    state.0.read().await.client.as_ref().unwrap().send(&mut msg).await?;
+    println!("sending_1");
+    let inner = state.0.read().await;
+    println!("sending_2");
+    inner.client.as_ref().unwrap().send(&mut msg).await?;
+    println!("sending_3");
     Ok(())
 }
 

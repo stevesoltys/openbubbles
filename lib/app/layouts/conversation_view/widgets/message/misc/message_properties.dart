@@ -54,7 +54,7 @@ class _MessagePropertiesState extends CustomState<MessageProperties, void, Messa
           });
         }
       }
-      if (message.datePlayed == null) {
+      if (message.datePlayed == null && !(message.isFromMe ?? false)) {
         message.datePlayed = DateTime.now();
         message.save();
         var needsAlignment = stringToMessageEffect[effect] == MessageEffect.spotlight || 

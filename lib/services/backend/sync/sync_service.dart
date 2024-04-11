@@ -104,12 +104,6 @@ class SyncService extends GetxService {
 
 @pragma('vm:entry-point')
 Future<List<List<int>>> incrementalSyncIsolate(List? items) async {
-  if (usingRustPush) {
-    // just do contacts
-    final refreshedItems = await cs.refreshContacts();
-    Logger.info('Finished contact refresh, shouldRefresh $refreshedItems');
-    return refreshedItems;
-  }
   final SendPort? port = items?.firstOrNull;
   final String? address = items?.lastOrNull;
   try {
@@ -126,6 +120,7 @@ Future<List<List<int>>> incrementalSyncIsolate(List? items) async {
       // just do contacts
       final refreshedItems = await cs.refreshContacts();
       Logger.info('Finished contact refresh, shouldRefresh $refreshedItems');
+      port?.send(refreshedItems);
       return refreshedItems;
     }
 

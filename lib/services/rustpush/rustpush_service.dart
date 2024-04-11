@@ -1002,6 +1002,7 @@ class RustPushService extends GetxService {
     super.onInit();
     initFuture = (() async {
       if (Platform.isAndroid) {
+        print("tryingService");
         String result = await mcs.invokeMethod("get-native-handle");
         // TODO
         // state = await api.serviceFromPtr(ptr: result);
