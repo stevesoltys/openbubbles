@@ -6,7 +6,8 @@ use anyhow::anyhow;
 use flutter_rust_bridge::{frb, IntoDart};
 use icloud_auth::{LoginState, AnisetteConfiguration, AppleAccount};
 pub use icloud_auth::{VerifyBody, TrustedPhoneNumber};
-pub use rustpush::{APNSState, APNSConnection, IDSAppleUser, PushError, Message, IDSUser, IMClient, IMessage, ConversationData, register};
+use prost::Message;
+pub use rustpush::{APNSState, APNSConnection, IDSAppleUser, PushError, IDSUser, IMClient, IMessage, ConversationData, register};
 
 use serde::{Serialize, Deserialize};
 use tokio::{runtime::Runtime, select, sync::{oneshot::{self, Sender}, Mutex, RwLock}};
@@ -17,7 +18,6 @@ use std::io::Seek;
 use async_recursion::async_recursion;
 
 use crate::{frb_generated::{RustOpaque, StreamSink}, runtime};
-use bincode::Options;
 
 
 #[derive(Serialize, Deserialize, Clone)]
@@ -221,16 +221,63 @@ pub async fn get_device_info_state(state: &Arc<PushState>) -> anyhow::Result<Dar
 }
 
 pub fn get_device_info(config: &MacOSConfig) -> anyhow::Result<DartDeviceInfo> {
+    let copied = config.clone();
     Ok(DartDeviceInfo {
         name: config.inner.product_name.clone(),
         serial: config.inner.platform_serial_number.clone(),
         os_version: config.version.clone(),
-        encoded_data: bincode::DefaultOptions::new().serialize(config).unwrap()
+        encoded_data: crate::bbhwinfo::HwInfo {
+            inner: Some(crate::bbhwinfo::hw_info::InnerHwInfo {
+                product_name: copied.inner.product_name,
+                io_mac_address: copied.inner.io_mac_address.to_vec(),
+                platform_serial_number: copied.inner.platform_serial_number,
+                platform_uuid: copied.inner.platform_uuid,
+                root_disk_uuid: copied.inner.root_disk_uuid,
+                board_id: copied.inner.board_id,
+                os_build_num: copied.inner.os_build_num,
+                platform_serial_number_enc: copied.inner.platform_serial_number_enc,
+                platform_uuid_enc: copied.inner.platform_uuid_enc,
+                root_disk_uuid_enc: copied.inner.root_disk_uuid_enc,
+                rom: copied.inner.rom,
+                rom_enc: copied.inner.rom_enc,
+                mlb: copied.inner.mlb,
+                mlb_enc: copied.inner.mlb_enc
+            }),
+            version: copied.version,
+            protocol_version: copied.protocol_version as i32,
+            device_id: copied.device_id,
+            icloud_ua: copied.icloud_ua,
+            aoskit_version: copied.aoskit_version,
+        }.encode_to_vec()
     })
 }
 
 pub fn config_from_encoded(encoded: Vec<u8>) -> anyhow::Result<MacOSConfig> {
-    Ok(bincode::DefaultOptions::new().deserialize(&encoded)?)
+    let copied = crate::bbhwinfo::HwInfo::decode(&mut Cursor::new(encoded))?;
+    let inner = copied.inner.unwrap();
+    Ok(MacOSConfig {
+        inner: HardwareConfig {
+            product_name: inner.product_name,
+            io_mac_address: inner.io_mac_address.try_into().unwrap(),
+            platform_serial_number: inner.platform_serial_number,
+            platform_uuid: inner.platform_uuid,
+            root_disk_uuid: inner.root_disk_uuid,
+            board_id: inner.board_id,
+            os_build_num: inner.os_build_num,
+            platform_serial_number_enc: inner.platform_serial_number_enc,
+            platform_uuid_enc: inner.platform_uuid_enc,
+            root_disk_uuid_enc: inner.root_disk_uuid_enc,
+            rom: inner.rom,
+            rom_enc: inner.rom_enc,
+            mlb: inner.mlb,
+            mlb_enc: inner.mlb_enc
+        },
+        version: copied.version,
+        protocol_version: copied.protocol_version as u32,
+        device_id: copied.device_id,
+        icloud_ua: copied.icloud_ua,
+        aoskit_version: copied.aoskit_version,
+    })
 }
 
 
@@ -459,8 +506,8 @@ pub struct DartIMessage {
     pub sent_timestamp: u64
 }
 
-impl Into<Message> for DartMessage {
-    fn into(self) -> Message {
+impl Into<rustpush::Message> for DartMessage {
+    fn into(self) -> rustpush::Message {
         unsafe { std::mem::transmute(self) }
     }
 }

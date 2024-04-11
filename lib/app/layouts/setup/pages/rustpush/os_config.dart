@@ -58,13 +58,16 @@ class _OsConfigState extends OptimizedState<OsConfig> {
 
     // Open the QR Scanner and get the result
     try {
-      final String response = await Navigator.of(context).push(
+      final String? response = await Navigator.of(context).push(
         CupertinoPageRoute(
           builder: (BuildContext context) {
             return QRCodeScanner();
           },
         ),
       );
+      if (response == null) {
+        return;
+      }
       if (response.startsWith("OABS")) {
         var shared = response.codeUnits[4];
         var rawData = response.codeUnits.toList();
