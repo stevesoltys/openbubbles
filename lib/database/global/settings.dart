@@ -182,7 +182,7 @@ class Settings {
   // RustPush settings
   final RxString defaultHandle = "".obs;
   final RxBool macIsMine = true.obs;
-  final RxBool smsForwardingEnabled = true.obs;
+  final RxBool smsForwardingEnabled = false.obs;
 
   Future<DisplayMode> getDisplayMode() async {
     List<DisplayMode> modes = await FlutterDisplayMode.supported;
