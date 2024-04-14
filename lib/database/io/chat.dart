@@ -353,6 +353,7 @@ class Chat {
   final handles = ToMany<Handle>();
 
   String? usingHandle;
+  bool isRpSms;
 
   @Backlink('chat')
   final messages = ToMany<Message>();
@@ -381,6 +382,7 @@ class Chat {
     this.lockChatIcon = false,
     this.lastReadMessageGuid,
     this.usingHandle,
+    this.isRpSms = false,
   }) {
     customAvatarPath = customAvatar;
     pinIndex = pinnedIndex;
@@ -413,6 +415,7 @@ class Chat {
       lockChatIcon: json["lockChatIcon"] ?? false,
       lastReadMessageGuid: json["lastReadMessageGuid"],
       usingHandle: json["usingHandle"],
+      isRpSms: json["isRpSms"] ?? false,
     );
   }
 
@@ -452,6 +455,7 @@ class Chat {
     bool updateLastReadMessageGuid = false,
     bool updateGroupVersion = false,
     bool updateUsingHandle = false,
+    bool updateIsSms = false,
     bool updateAPNTitle = false
   }) {
     if (kIsWeb) return this;
@@ -515,6 +519,9 @@ class Chat {
       }
       if (!updateUsingHandle) {
         usingHandle = existing?.usingHandle ?? usingHandle;
+      }
+      if (!updateIsSms) {
+        isRpSms = existing?.isRpSms ?? isRpSms;
       }
 
       /// Save the chat and add the participants
@@ -1049,7 +1056,7 @@ class Chat {
     });
   }
 
-  bool get isTextForwarding => guid.startsWith("SMS");
+  bool get isTextForwarding => guid.startsWith("SMS") || isRpSms;
 
   bool get isSMS => false;
 

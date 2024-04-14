@@ -324,17 +324,12 @@ class _ProfilePanelState extends OptimizedState<ProfilePanel> with WidgetsBindin
                                   TextSpan(
                                       text: accountInfo['login_status_message']?.toUpperCase(),
                                       style: TextStyle(color: getIndicatorColor(accountInfo['login_status_message'] == "Connected" ? SocketState.connected : SocketState.disconnected))),
-                                  if (backend.supportsSmsForwarding())
                                   const TextSpan(text: "\n"),
-                                  if (backend.supportsSmsForwarding())
                                   const TextSpan(text: "SMS Forwarding Status: "),
-                                  if (backend.supportsSmsForwarding())
                                   TextSpan(
                                       text: accountInfo['sms_forwarding_enabled'] == true ? "ENABLED" : "DISABLED",
                                       style: TextStyle(color: getIndicatorColor(accountInfo['sms_forwarding_enabled'] == true ? SocketState.connected : SocketState.disconnected))),
-                                  if (backend.supportsSmsForwarding())
                                   const TextSpan(text: "  |  "),
-                                  if (backend.supportsSmsForwarding())
                                   TextSpan(
                                       text: accountInfo['sms_forwarding_capable'] == true ? "CAPABLE" : "INCAPABLE",
                                       style: TextStyle(color: getIndicatorColor(accountInfo['sms_forwarding_capable'] == true ? SocketState.connected : SocketState.disconnected))),

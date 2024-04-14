@@ -112,7 +112,7 @@ final _entities = <ModelEntity>[
   ModelEntity(
       id: const IdUid(3, 9017250848141753702),
       name: 'Chat',
-      lastPropertyId: const IdUid(31, 2890558203307402859),
+      lastPropertyId: const IdUid(32, 3790179132714024264),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
@@ -240,6 +240,11 @@ final _entities = <ModelEntity>[
             id: const IdUid(31, 2890558203307402859),
             name: 'apnTitle',
             type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(32, 3790179132714024264),
+            name: 'isRpSms',
+            type: 1,
             flags: 0)
       ],
       relations: <ModelRelation>[
@@ -1034,7 +1039,7 @@ ModelDefinition getObjectBoxModel() {
           final apnTitleOffset = object.apnTitle == null
               ? null
               : fbb.writeString(object.apnTitle!);
-          fbb.startTable(32);
+          fbb.startTable(33);
           fbb.addInt64(0, object.id ?? 0);
           fbb.addOffset(2, guidOffset);
           fbb.addOffset(4, chatIdentifierOffset);
@@ -1061,6 +1066,7 @@ ModelDefinition getObjectBoxModel() {
           fbb.addInt64(28, object.groupVersion);
           fbb.addOffset(29, usingHandleOffset);
           fbb.addOffset(30, apnTitleOffset);
+          fbb.addBool(31, object.isRpSms);
           fbb.finish(fbb.endTable());
           return object.id ?? 0;
         },
@@ -1117,6 +1123,8 @@ ModelDefinition getObjectBoxModel() {
           final usingHandleParam =
               const fb.StringReader(asciiOptimization: true)
                   .vTableGetNullable(buffer, rootOffset, 62);
+          final isRpSmsParam =
+              const fb.BoolReader().vTableGet(buffer, rootOffset, 66, false);
           final object = Chat(
               id: idParam,
               guid: guidParam,
@@ -1136,7 +1144,8 @@ ModelDefinition getObjectBoxModel() {
               lockChatName: lockChatNameParam,
               lockChatIcon: lockChatIconParam,
               lastReadMessageGuid: lastReadMessageGuidParam,
-              usingHandle: usingHandleParam)
+              usingHandle: usingHandleParam,
+              isRpSms: isRpSmsParam)
             ..dbOnlyLatestMessageDate = dbOnlyLatestMessageDateValue == null
                 ? null
                 : DateTime.fromMillisecondsSinceEpoch(
@@ -1935,6 +1944,10 @@ class Chat_ {
   /// see [Chat.apnTitle]
   static final apnTitle =
       QueryStringProperty<Chat>(_entities[1].properties[24]);
+
+  /// see [Chat.isRpSms]
+  static final isRpSms =
+      QueryBooleanProperty<Chat>(_entities[1].properties[25]);
 
   /// see [Chat.handles]
   static final handles =

@@ -558,6 +558,12 @@ sealed class DartMessage with _$DartMessage {
     DartIconChangeMessage field0,
   ) = DartMessage_IconChange;
   const factory DartMessage.stopTyping() = DartMessage_StopTyping;
+  const factory DartMessage.enableSmsActivation(
+    bool field0,
+  ) = DartMessage_EnableSmsActivation;
+  const factory DartMessage.messageReadOnDevice() =
+      DartMessage_MessageReadOnDevice;
+  const factory DartMessage.smsConfirmSent() = DartMessage_SmsConfirmSent;
 }
 
 @freezed
@@ -591,6 +597,15 @@ class DartMessageParts {
       other is DartMessageParts &&
           runtimeType == other.runtimeType &&
           field0 == other.field0;
+}
+
+@freezed
+sealed class DartMessageType with _$DartMessageType {
+  const factory DartMessageType.iMessage() = DartMessageType_IMessage;
+  const factory DartMessageType.sms({
+    required bool isPhone,
+    required String usingNumber,
+  }) = DartMessageType_SMS;
 }
 
 class DartMMCSFile {
@@ -634,6 +649,7 @@ class DartNormalMessage {
   String? effect;
   String? replyGuid;
   String? replyPart;
+  final DartMessageType service;
 
   DartNormalMessage({
     required this.parts,
@@ -641,6 +657,7 @@ class DartNormalMessage {
     this.effect,
     this.replyGuid,
     this.replyPart,
+    required this.service,
   });
 
   @override
@@ -649,7 +666,8 @@ class DartNormalMessage {
       body.hashCode ^
       effect.hashCode ^
       replyGuid.hashCode ^
-      replyPart.hashCode;
+      replyPart.hashCode ^
+      service.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -660,7 +678,8 @@ class DartNormalMessage {
           body == other.body &&
           effect == other.effect &&
           replyGuid == other.replyGuid &&
-          replyPart == other.replyPart;
+          replyPart == other.replyPart &&
+          service == other.service;
 }
 
 class DartReactMessage {

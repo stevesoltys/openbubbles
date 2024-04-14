@@ -299,6 +299,7 @@ flutter:
     - assets/badges/badge-8.ico
     - assets/badges/badge-9.ico
     - assets/badges/badge-10.ico
+    - assets/rustpush/uti-map.json
     - .env
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

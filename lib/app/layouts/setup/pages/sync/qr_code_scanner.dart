@@ -35,6 +35,10 @@ class _QRCodeScannerState extends OptimizedState<QRCodeScanner> {
               scanned = true;
               Navigator.of(context).pop(capture.barcodes.first.rawValue);
             }
+            if (!scanned && !isNullOrEmpty(capture.barcodes.first.rawBytes)!) {
+              scanned = true;
+              Navigator.of(context).pop(String.fromCharCodes(capture.barcodes.first.rawBytes!));
+            }
           },
         ),
       ),

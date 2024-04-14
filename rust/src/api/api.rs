@@ -13,7 +13,7 @@ use serde::{Serialize, Deserialize};
 use tokio::{runtime::Runtime, select, sync::{oneshot::{self, Sender}, Mutex, RwLock}};
 use rustpush::{init_logger, Attachment, BalloonBody, MMCSFile, MessagePart, MessageParts, OSConfig, RegisterState};
 pub use rustpush::{MacOSConfig, HardwareConfig};
-use uniffi::{deps::log::info, HandleAlloc};
+use uniffi::{deps::log::{info, error}, HandleAlloc};
 use std::io::Seek;
 use async_recursion::async_recursion;
 
@@ -166,8 +166,6 @@ pub async fn register_ids(state: &Arc<PushState>) -> anyhow::Result<Option<DartS
 
 async fn setup_push(config: &dyn OSConfig, state: Option<&APNSState>) -> anyhow::Result<Arc<APNSConnection>> {
     let connection = Arc::new(APNSConnection::new(config, state.cloned()).await?);
-    connection.submitter.set_state(1).await?;
-    connection.submitter.filter(&["com.apple.madrid"]).await?;
     Ok(connection)
 }
 
@@ -410,6 +408,17 @@ impl DartMessageParts {
     }
 }
 
+
+#[repr(C)]
+#[derive(PartialEq, Clone)]
+pub enum DartMessageType {
+    IMessage,
+    SMS {
+        is_phone: bool,
+        using_number: String, // prefixed with tel:
+    }
+}
+
 #[frb]
 #[repr(C)]
 pub struct DartNormalMessage {
@@ -422,7 +431,8 @@ pub struct DartNormalMessage {
     #[frb(non_final)]
     pub reply_guid: Option<String>,
     #[frb(non_final)]
-    pub reply_part: Option<String>
+    pub reply_part: Option<String>,
+    pub service: DartMessageType,
 }
 
 #[repr(C)]
@@ -486,7 +496,10 @@ pub enum DartMessage {
     Unsend(DartUnsendMessage),
     Edit(DartEditMessage),
     IconChange(DartIconChangeMessage),
-    StopTyping
+    StopTyping,
+    EnableSmsActivation(bool),
+    MessageReadOnDevice,
+    SmsConfirmSent
 }
 
 #[frb]
@@ -545,6 +558,14 @@ pub async fn recv_wait(state: &Arc<PushState>) -> PollResult {
     select! {
         msg = recv_path.client.as_ref().unwrap().recieve_wait() => {
             *recv_path.cancel_poll.lock().await = None;
+            let msg = match msg {
+                Ok(msg) => msg,
+                Err(err) => {
+                    // log and ignore for now
+                    error!("{}", err);
+                    return PollResult::Cont(None);
+                }
+            };
             PollResult::Cont(unsafe { std::mem::transmute(msg) })
         }
         _cancel = recv => {

@@ -1616,6 +1616,16 @@ impl SseDecode for crate::api::api::DartMessage {
             10 => {
                 return crate::api::api::DartMessage::StopTyping;
             }
+            11 => {
+                let mut var_field0 = <bool>::sse_decode(deserializer);
+                return crate::api::api::DartMessage::EnableSmsActivation(var_field0);
+            }
+            12 => {
+                return crate::api::api::DartMessage::MessageReadOnDevice;
+            }
+            13 => {
+                return crate::api::api::DartMessage::SmsConfirmSent;
+            }
             _ => {
                 unimplemented!("");
             }
@@ -1652,6 +1662,29 @@ impl SseDecode for crate::api::api::DartMessageParts {
     }
 }
 
+impl SseDecode for crate::api::api::DartMessageType {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut tag_ = <i32>::sse_decode(deserializer);
+        match tag_ {
+            0 => {
+                return crate::api::api::DartMessageType::IMessage;
+            }
+            1 => {
+                let mut var_isPhone = <bool>::sse_decode(deserializer);
+                let mut var_usingNumber = <String>::sse_decode(deserializer);
+                return crate::api::api::DartMessageType::SMS {
+                    is_phone: var_isPhone,
+                    using_number: var_usingNumber,
+                };
+            }
+            _ => {
+                unimplemented!("");
+            }
+        }
+    }
+}
+
 impl SseDecode for crate::api::api::DartMMCSFile {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -1678,12 +1711,14 @@ impl SseDecode for crate::api::api::DartNormalMessage {
         let mut var_effect = <Option<String>>::sse_decode(deserializer);
         let mut var_replyGuid = <Option<String>>::sse_decode(deserializer);
         let mut var_replyPart = <Option<String>>::sse_decode(deserializer);
+        let mut var_service = <crate::api::api::DartMessageType>::sse_decode(deserializer);
         return crate::api::api::DartNormalMessage {
             parts: var_parts,
             body: var_body,
             effect: var_effect,
             reply_guid: var_replyGuid,
             reply_part: var_replyPart,
+            service: var_service,
         };
     }
 }
@@ -2520,6 +2555,11 @@ impl flutter_rust_bridge::IntoDart for crate::api::api::DartMessage {
                 [9.into_dart(), field0.into_into_dart().into_dart()].into_dart()
             }
             crate::api::api::DartMessage::StopTyping => [10.into_dart()].into_dart(),
+            crate::api::api::DartMessage::EnableSmsActivation(field0) => {
+                [11.into_dart(), field0.into_into_dart().into_dart()].into_dart()
+            }
+            crate::api::api::DartMessage::MessageReadOnDevice => [12.into_dart()].into_dart(),
+            crate::api::api::DartMessage::SmsConfirmSent => [13.into_dart()].into_dart(),
         }
     }
 }
@@ -2573,6 +2613,34 @@ impl flutter_rust_bridge::IntoIntoDart<crate::api::api::DartMessageParts>
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::api::DartMessageType {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        match self {
+            crate::api::api::DartMessageType::IMessage => [0.into_dart()].into_dart(),
+            crate::api::api::DartMessageType::SMS {
+                is_phone,
+                using_number,
+            } => [
+                1.into_dart(),
+                is_phone.into_into_dart().into_dart(),
+                using_number.into_into_dart().into_dart(),
+            ]
+            .into_dart(),
+        }
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::api::api::DartMessageType
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::api::DartMessageType>
+    for crate::api::api::DartMessageType
+{
+    fn into_into_dart(self) -> crate::api::api::DartMessageType {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart for crate::api::api::DartMMCSFile {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
@@ -2602,6 +2670,7 @@ impl flutter_rust_bridge::IntoDart for crate::api::api::DartNormalMessage {
             self.effect.into_into_dart().into_dart(),
             self.reply_guid.into_into_dart().into_dart(),
             self.reply_part.into_into_dart().into_dart(),
+            self.service.into_into_dart().into_dart(),
         ]
         .into_dart()
     }
@@ -3139,6 +3208,16 @@ impl SseEncode for crate::api::api::DartMessage {
             crate::api::api::DartMessage::StopTyping => {
                 <i32>::sse_encode(10, serializer);
             }
+            crate::api::api::DartMessage::EnableSmsActivation(field0) => {
+                <i32>::sse_encode(11, serializer);
+                <bool>::sse_encode(field0, serializer);
+            }
+            crate::api::api::DartMessage::MessageReadOnDevice => {
+                <i32>::sse_encode(12, serializer);
+            }
+            crate::api::api::DartMessage::SmsConfirmSent => {
+                <i32>::sse_encode(13, serializer);
+            }
         }
     }
 }
@@ -3166,6 +3245,25 @@ impl SseEncode for crate::api::api::DartMessageParts {
     }
 }
 
+impl SseEncode for crate::api::api::DartMessageType {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        match self {
+            crate::api::api::DartMessageType::IMessage => {
+                <i32>::sse_encode(0, serializer);
+            }
+            crate::api::api::DartMessageType::SMS {
+                is_phone,
+                using_number,
+            } => {
+                <i32>::sse_encode(1, serializer);
+                <bool>::sse_encode(is_phone, serializer);
+                <String>::sse_encode(using_number, serializer);
+            }
+        }
+    }
+}
+
 impl SseEncode for crate::api::api::DartMMCSFile {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -3185,6 +3283,7 @@ impl SseEncode for crate::api::api::DartNormalMessage {
         <Option<String>>::sse_encode(self.effect, serializer);
         <Option<String>>::sse_encode(self.reply_guid, serializer);
         <Option<String>>::sse_encode(self.reply_part, serializer);
+        <crate::api::api::DartMessageType>::sse_encode(self.service, serializer);
     }
 }
 

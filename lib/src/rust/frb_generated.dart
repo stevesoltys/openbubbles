@@ -1549,6 +1549,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         );
       case 10:
         return DartMessage_StopTyping();
+      case 11:
+        return DartMessage_EnableSmsActivation(
+          dco_decode_bool(raw[1]),
+        );
+      case 12:
+        return DartMessage_MessageReadOnDevice();
+      case 13:
+        return DartMessage_SmsConfirmSent();
       default:
         throw Exception("unreachable");
     }
@@ -1583,6 +1591,22 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  DartMessageType dco_decode_dart_message_type(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    switch (raw[0]) {
+      case 0:
+        return DartMessageType_IMessage();
+      case 1:
+        return DartMessageType_SMS(
+          isPhone: dco_decode_bool(raw[1]),
+          usingNumber: dco_decode_String(raw[2]),
+        );
+      default:
+        throw Exception("unreachable");
+    }
+  }
+
+  @protected
   DartMMCSFile dco_decode_dart_mmcs_file(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
@@ -1601,14 +1625,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   DartNormalMessage dco_decode_dart_normal_message(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 5)
-      throw Exception('unexpected arr length: expect 5 but see ${arr.length}');
+    if (arr.length != 6)
+      throw Exception('unexpected arr length: expect 6 but see ${arr.length}');
     return DartNormalMessage(
       parts: dco_decode_dart_message_parts(arr[0]),
       body: dco_decode_opt_box_autoadd_dart_balloon_body(arr[1]),
       effect: dco_decode_opt_String(arr[2]),
       replyGuid: dco_decode_opt_String(arr[3]),
       replyPart: dco_decode_opt_String(arr[4]),
+      service: dco_decode_dart_message_type(arr[5]),
     );
   }
 
@@ -2323,6 +2348,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         return DartMessage_IconChange(var_field0);
       case 10:
         return DartMessage_StopTyping();
+      case 11:
+        var var_field0 = sse_decode_bool(deserializer);
+        return DartMessage_EnableSmsActivation(var_field0);
+      case 12:
+        return DartMessage_MessageReadOnDevice();
+      case 13:
+        return DartMessage_SmsConfirmSent();
       default:
         throw UnimplementedError('');
     }
@@ -2353,6 +2385,24 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  DartMessageType sse_decode_dart_message_type(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var tag_ = sse_decode_i_32(deserializer);
+    switch (tag_) {
+      case 0:
+        return DartMessageType_IMessage();
+      case 1:
+        var var_isPhone = sse_decode_bool(deserializer);
+        var var_usingNumber = sse_decode_String(deserializer);
+        return DartMessageType_SMS(
+            isPhone: var_isPhone, usingNumber: var_usingNumber);
+      default:
+        throw UnimplementedError('');
+    }
+  }
+
+  @protected
   DartMMCSFile sse_decode_dart_mmcs_file(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var var_signature = sse_decode_list_prim_u_8_strict(deserializer);
@@ -2377,12 +2427,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_effect = sse_decode_opt_String(deserializer);
     var var_replyGuid = sse_decode_opt_String(deserializer);
     var var_replyPart = sse_decode_opt_String(deserializer);
+    var var_service = sse_decode_dart_message_type(deserializer);
     return DartNormalMessage(
         parts: var_parts,
         body: var_body,
         effect: var_effect,
         replyGuid: var_replyGuid,
-        replyPart: var_replyPart);
+        replyPart: var_replyPart,
+        service: var_service);
   }
 
   @protected
@@ -3096,6 +3148,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_box_autoadd_dart_icon_change_message(field0, serializer);
       case DartMessage_StopTyping():
         sse_encode_i_32(10, serializer);
+      case DartMessage_EnableSmsActivation(field0: final field0):
+        sse_encode_i_32(11, serializer);
+        sse_encode_bool(field0, serializer);
+      case DartMessage_MessageReadOnDevice():
+        sse_encode_i_32(12, serializer);
+      case DartMessage_SmsConfirmSent():
+        sse_encode_i_32(13, serializer);
     }
   }
 
@@ -3121,6 +3180,23 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_dart_message_type(
+      DartMessageType self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    switch (self) {
+      case DartMessageType_IMessage():
+        sse_encode_i_32(0, serializer);
+      case DartMessageType_SMS(
+          isPhone: final isPhone,
+          usingNumber: final usingNumber
+        ):
+        sse_encode_i_32(1, serializer);
+        sse_encode_bool(isPhone, serializer);
+        sse_encode_String(usingNumber, serializer);
+    }
+  }
+
+  @protected
   void sse_encode_dart_mmcs_file(DartMMCSFile self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_list_prim_u_8_strict(self.signature, serializer);
@@ -3139,6 +3215,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_opt_String(self.effect, serializer);
     sse_encode_opt_String(self.replyGuid, serializer);
     sse_encode_opt_String(self.replyPart, serializer);
+    sse_encode_dart_message_type(self.service, serializer);
   }
 
   @protected

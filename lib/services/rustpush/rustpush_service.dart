@@ -1,7 +1,7 @@
 import 'package:async_task/async_task_extension.dart';
 import 'package:bluebubbles/src/rust/api/api.dart' as api;
 import 'package:bluebubbles/helpers/helpers.dart';
-import 'package:bluebubbles/database/models.dart';
+import 'package:bluebubbles/models/models.dart';
 import 'package:bluebubbles/services/services.dart';
 import 'package:bluebubbles/utils/logger.dart';
 import 'package:collection/collection.dart';
@@ -249,9 +249,14 @@ class RustPushBackend implements BackendService {
 
   @override
   bool supportsSmsForwarding() {
-    // JJTech has already reversed this, but I don't have an iPhone so cannot test,
-    // so unsupported for now
-    return false;
+    return true;
+  }
+
+  api.DartMessageType getService(bool isSms) {
+    if (isSms) {
+      return const api.DartMessageType.sms(isPhone: false, usingNumber: "");
+    }
+    return const api.DartMessageType.iMessage();
   }
 
   @override
@@ -264,7 +269,8 @@ class RustPushBackend implements BackendService {
     var chat = Chat(
       guid: uuid.v4(),
       participants: formattedHandles,
-      usingHandle: handle
+      usingHandle: handle,
+      isRpSms: service == "SMS"
     );
     if (message != null) {
       var msg = await api.newMsg(
@@ -272,7 +278,9 @@ class RustPushBackend implements BackendService {
           conversation: chat.getConversationData(),
           message: api.DartMessage.message(api.DartNormalMessage(
               parts: api.DartMessageParts(
-                  field0: [api.DartIndexedMessagePart(field0: api.DartMessagePart.text(message))]))),
+                  field0: [api.DartIndexedMessagePart(field0: api.DartMessagePart.text(message))]),
+                  service: getService(chat.isRpSms)
+                  )),
           sender: handle);
       await api.send(state: pushService.state, msg: msg);
       msg.sentTimestamp = DateTime.now().millisecondsSinceEpoch;
@@ -282,6 +290,7 @@ class RustPushBackend implements BackendService {
       newMessage.chat.target = chat;
       newMessage.save();
     }
+    await chats.addChat(chat);
     return chat;
   }
 
@@ -328,6 +337,7 @@ class RustPushBackend implements BackendService {
           replyGuid: m.threadOriginatorGuid,
           replyPart: m.threadOriginatorGuid == null ? null : "$partIndex:0:0",
           effect: m.expressiveSendStyleId,
+          service: getService(chat.isRpSms),
         )));
     await api.send(state: pushService.state, msg: msg);
     msg.sentTimestamp = DateTime.now().millisecondsSinceEpoch;
@@ -375,7 +385,9 @@ class RustPushBackend implements BackendService {
       "vetted_aliases": handles.map((e) => {
         "Alias": e.replaceFirst("tel:", "").replaceFirst("mailto:", "")
       }).toList(),
-      "active_alias": (await getDefaultHandle()).replaceFirst("tel:", "").replaceFirst("mailto:", "")
+      "active_alias": (await getDefaultHandle()).replaceFirst("tel:", "").replaceFirst("mailto:", ""),
+      "sms_forwarding_capable": true,
+      "sms_forwarding_enabled": ss.settings.smsForwardingEnabled.value,
     };
   }
 
@@ -392,10 +404,10 @@ class RustPushBackend implements BackendService {
   }
 
   @override
-  Future<bool> setChatIcon(Chat chat, String path,
+  Future<bool> setChatIcon(Chat chat,
       {void Function(int p1, int p2)? onSendProgress, CancelToken? cancelToken}) async {
     chat.groupVersion = (chat.groupVersion ?? -1) + 1;
-    var mmcsStream = api.uploadMmcs(state: pushService.state, path: path);
+    var mmcsStream = api.uploadMmcs(state: pushService.state, path: chat.customAvatarPath!);
     api.DartMMCSFile? mmcs;
     await for (final event in mmcsStream) {
       if (event.file != null) {
@@ -428,8 +440,11 @@ class RustPushBackend implements BackendService {
         replyGuid: m.threadOriginatorGuid,
         replyPart: m.threadOriginatorGuid == null ? null : "$partIndex:0:0",
         effect: m.expressiveSendStyleId,
+        service: getService(chat.isRpSms),
       )),
     );
+    m.guid = msg.id;
+    m.save(chat: chat);
     await api.send(state: pushService.state, msg: msg);
     msg.sentTimestamp = DateTime.now().millisecondsSinceEpoch;
     return await pushService.reflectMessageDyn(msg);
@@ -443,6 +458,9 @@ class RustPushBackend implements BackendService {
       return true;
     }
     var chat = await Chat.findByRust(message.conversation!);
+    if (chat.isRpSms) {
+      return true; // no delivery recipts :)
+    }
     var msg = await api.newMsg(
       state: pushService.state,
       conversation: message.conversation!,
@@ -667,7 +685,7 @@ class RustPushBackend implements BackendService {
 }
 
 class RustPushService extends GetxService {
-  late api.PushState state;
+  late api.ArcPushState state;
 
   Map<String, api.DartAttachment> attachments = {};
 
@@ -892,77 +910,87 @@ class RustPushService extends GetxService {
     throw Exception("bad message type!");
   }
 
-  Future handleMsg(api.DartRecievedMessage msg) async {
-    if (msg is api.DartRecievedMessage_Message) {
-      var myMsg = msg.msg;
-      if (myMsg.message is api.DartMessage_Delivered || myMsg.message is api.DartMessage_Read) {
-        var message = Message.findOne(guid: myMsg.id);
-        if (message == null) {
-          return;
-        }
-        var map = message.toMap();
-        map["chats"] = [message.chat.target!.toMap()];
-        if (myMsg.message is api.DartMessage_Delivered) {
-          map["dateDelivered"] = myMsg.sentTimestamp;
-        } else {
-          map["dateRead"] = myMsg.sentTimestamp;
-        }
-        inq.queue(IncomingItem.fromMap(QueueType.updatedMessage, map));
-        return;
-      }
-      var chat = await Chat.findByRust(myMsg.conversation!);
-      if (myMsg.message is api.DartMessage_RenameMessage) {
-        var msg = myMsg.message as api.DartMessage_RenameMessage;
-        if (!chat.lockChatName) {
-          chat.displayName = msg.field0.newName;
-        }
-        chat.apnTitle = msg.field0.newName;
-        myMsg.conversation?.cvName = msg.field0.newName;
-        chat = chat.save(updateDisplayName: true, updateAPNTitle: true);
-      }
-      if (myMsg.message is api.DartMessage_Typing) {
-        final controller = cvc(chat);
-        controller.showTypingIndicator.value = true;
-        var future = Future.delayed(const Duration(minutes: 1));
-        var subscription = future.asStream().listen((any) {
-          controller.showTypingIndicator.value = false;
-          controller.cancelTypingIndicator = null;
-        });
-        controller.cancelTypingIndicator = subscription;
-        return;
-      }
-      if (myMsg.message is api.DartMessage_StopTyping) {
-        final controller = cvc(chat);
-        controller.showTypingIndicator.value = false;
-        if (controller.cancelTypingIndicator != null) {
-          controller.cancelTypingIndicator!.cancel();
-          controller.cancelTypingIndicator = null;
-        }
-        return;
-      }
-      if (myMsg.message is api.DartMessage_Message) {
-        final controller = cvc(chat);
-        controller.showTypingIndicator.value = false;
-        controller.cancelTypingIndicator?.cancel();
-        controller.cancelTypingIndicator = null;
-        var msg = myMsg.message as api.DartMessage_Message;
-        if ((await msg.field0.parts.asPlain()) == "" &&
-            msg.field0.parts.field0.none((p0) => p0.field0 is api.DartMessagePart_Attachment)) {
-          return;
-        }
-      }
-      var service = backend as RustPushBackend;
-      service.markDelivered(myMsg);
-      inq.queue(IncomingItem(
-        chat: chat,
-        message: await pushService.reflectMessageDyn(myMsg),
-        type: QueueType.newMessage
-      ));
+  Future handleMsg(api.DartIMessage myMsg) async {
+    if (myMsg.message is api.DartMessage_EnableSmsActivation) {
+      var message = myMsg.message as api.DartMessage_EnableSmsActivation;
+      ss.settings.smsForwardingEnabled.value = message.field0;
+      return;
     }
+    if (myMsg.message is api.DartMessage_SmsConfirmSent) {
+      return; // not much to do for now  
+    }
+    if (myMsg.message is api.DartMessage_Delivered || myMsg.message is api.DartMessage_Read) {
+      var myHandles = (await api.getHandles(state: pushService.state));
+      if (myHandles.contains(myMsg.sender)) {
+        return; // delivered to other devices is not
+      }
+      var message = Message.findOne(guid: myMsg.id);
+      if (message == null) {
+        return;
+      }
+      var map = message.toMap();
+      map["chats"] = [message.chat.target!.toMap()];
+      if (myMsg.message is api.DartMessage_Delivered) {
+        map["dateDelivered"] = myMsg.sentTimestamp;
+      } else {
+        map["dateRead"] = myMsg.sentTimestamp;
+      }
+      inq.queue(IncomingItem.fromMap(QueueType.updatedMessage, map));
+      return;
+    }
+    var chat = await Chat.findByRust(myMsg.conversation!);
+    if (myMsg.message is api.DartMessage_RenameMessage) {
+      var msg = myMsg.message as api.DartMessage_RenameMessage;
+      if (!chat.lockChatName) {
+        chat.displayName = msg.field0.newName;
+      }
+      chat.apnTitle = msg.field0.newName;
+      myMsg.conversation?.cvName = msg.field0.newName;
+      chat = chat.save(updateDisplayName: true, updateAPNTitle: true);
+    }
+    if (myMsg.message is api.DartMessage_Typing) {
+      final controller = cvc(chat);
+      controller.showTypingIndicator.value = true;
+      var future = Future.delayed(const Duration(minutes: 1));
+      var subscription = future.asStream().listen((any) {
+        controller.showTypingIndicator.value = false;
+        controller.cancelTypingIndicator = null;
+      });
+      controller.cancelTypingIndicator = subscription;
+      return;
+    }
+    if (myMsg.message is api.DartMessage_StopTyping) {
+      final controller = cvc(chat);
+      controller.showTypingIndicator.value = false;
+      if (controller.cancelTypingIndicator != null) {
+        controller.cancelTypingIndicator!.cancel();
+        controller.cancelTypingIndicator = null;
+      }
+      return;
+    }
+    if (myMsg.message is api.DartMessage_Message) {
+      final controller = cvc(chat);
+      controller.showTypingIndicator.value = false;
+      controller.cancelTypingIndicator?.cancel();
+      controller.cancelTypingIndicator = null;
+      var msg = myMsg.message as api.DartMessage_Message;
+      if ((await msg.field0.parts.asPlain()) == "" &&
+          msg.field0.parts.field0.none((p0) => p0.field0 is api.DartMessagePart_Attachment)) {
+        return;
+      }
+    }
+    var service = backend as RustPushBackend;
+    service.markDelivered(myMsg);
+    inq.queue(IncomingItem(
+      chat: chat,
+      message: await pushService.reflectMessageDyn(myMsg),
+      type: QueueType.newMessage
+    ));
   }
 
   Future recievedMsgPointer(String pointer) async {
     var message = await api.ptrToDart(ptr: pointer);
+    await initFuture;
     try {
       await handleMsg(message);
     } catch (e, s) {
@@ -1004,8 +1032,9 @@ class RustPushService extends GetxService {
       if (Platform.isAndroid) {
         print("tryingService");
         String result = await mcs.invokeMethod("get-native-handle");
-        // TODO
-        // state = await api.serviceFromPtr(ptr: result);
+        state = await api.serviceFromPtr(ptr: result);
+        print("service");
+        await stdout.flush();
       } else {
         state = await api.newPushState(dir: fs.appDocDir.path);
         if ((await api.getPhase(state: state)) == api.RegistrationPhase.registered) {

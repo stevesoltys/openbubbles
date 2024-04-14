@@ -181,6 +181,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   DartMessageParts dco_decode_dart_message_parts(dynamic raw);
 
   @protected
+  DartMessageType dco_decode_dart_message_type(dynamic raw);
+
+  @protected
   DartMMCSFile dco_decode_dart_mmcs_file(dynamic raw);
 
   @protected
@@ -455,6 +458,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   DartMessageParts sse_decode_dart_message_parts(SseDeserializer deserializer);
+
+  @protected
+  DartMessageType sse_decode_dart_message_type(SseDeserializer deserializer);
 
   @protected
   DartMMCSFile sse_decode_dart_mmcs_file(SseDeserializer deserializer);
@@ -751,6 +757,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_dart_message_parts(
       DartMessageParts self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_dart_message_type(
+      DartMessageType self, SseSerializer serializer);
 
   @protected
   void sse_encode_dart_mmcs_file(DartMMCSFile self, SseSerializer serializer);

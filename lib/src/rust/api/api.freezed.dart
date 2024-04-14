@@ -1549,6 +1549,9 @@ mixin _$DartMessage {
     required TResult Function(DartEditMessage field0) edit,
     required TResult Function(DartIconChangeMessage field0) iconChange,
     required TResult Function() stopTyping,
+    required TResult Function(bool field0) enableSmsActivation,
+    required TResult Function() messageReadOnDevice,
+    required TResult Function() smsConfirmSent,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -1564,6 +1567,9 @@ mixin _$DartMessage {
     TResult? Function(DartEditMessage field0)? edit,
     TResult? Function(DartIconChangeMessage field0)? iconChange,
     TResult? Function()? stopTyping,
+    TResult? Function(bool field0)? enableSmsActivation,
+    TResult? Function()? messageReadOnDevice,
+    TResult? Function()? smsConfirmSent,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -1579,6 +1585,9 @@ mixin _$DartMessage {
     TResult Function(DartEditMessage field0)? edit,
     TResult Function(DartIconChangeMessage field0)? iconChange,
     TResult Function()? stopTyping,
+    TResult Function(bool field0)? enableSmsActivation,
+    TResult Function()? messageReadOnDevice,
+    TResult Function()? smsConfirmSent,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -1596,6 +1605,11 @@ mixin _$DartMessage {
     required TResult Function(DartMessage_Edit value) edit,
     required TResult Function(DartMessage_IconChange value) iconChange,
     required TResult Function(DartMessage_StopTyping value) stopTyping,
+    required TResult Function(DartMessage_EnableSmsActivation value)
+        enableSmsActivation,
+    required TResult Function(DartMessage_MessageReadOnDevice value)
+        messageReadOnDevice,
+    required TResult Function(DartMessage_SmsConfirmSent value) smsConfirmSent,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -1611,6 +1625,11 @@ mixin _$DartMessage {
     TResult? Function(DartMessage_Edit value)? edit,
     TResult? Function(DartMessage_IconChange value)? iconChange,
     TResult? Function(DartMessage_StopTyping value)? stopTyping,
+    TResult? Function(DartMessage_EnableSmsActivation value)?
+        enableSmsActivation,
+    TResult? Function(DartMessage_MessageReadOnDevice value)?
+        messageReadOnDevice,
+    TResult? Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -1626,6 +1645,11 @@ mixin _$DartMessage {
     TResult Function(DartMessage_Edit value)? edit,
     TResult Function(DartMessage_IconChange value)? iconChange,
     TResult Function(DartMessage_StopTyping value)? stopTyping,
+    TResult Function(DartMessage_EnableSmsActivation value)?
+        enableSmsActivation,
+    TResult Function(DartMessage_MessageReadOnDevice value)?
+        messageReadOnDevice,
+    TResult Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -1726,6 +1750,9 @@ class _$DartMessage_MessageImpl implements DartMessage_Message {
     required TResult Function(DartEditMessage field0) edit,
     required TResult Function(DartIconChangeMessage field0) iconChange,
     required TResult Function() stopTyping,
+    required TResult Function(bool field0) enableSmsActivation,
+    required TResult Function() messageReadOnDevice,
+    required TResult Function() smsConfirmSent,
   }) {
     return message(field0);
   }
@@ -1744,6 +1771,9 @@ class _$DartMessage_MessageImpl implements DartMessage_Message {
     TResult? Function(DartEditMessage field0)? edit,
     TResult? Function(DartIconChangeMessage field0)? iconChange,
     TResult? Function()? stopTyping,
+    TResult? Function(bool field0)? enableSmsActivation,
+    TResult? Function()? messageReadOnDevice,
+    TResult? Function()? smsConfirmSent,
   }) {
     return message?.call(field0);
   }
@@ -1762,6 +1792,9 @@ class _$DartMessage_MessageImpl implements DartMessage_Message {
     TResult Function(DartEditMessage field0)? edit,
     TResult Function(DartIconChangeMessage field0)? iconChange,
     TResult Function()? stopTyping,
+    TResult Function(bool field0)? enableSmsActivation,
+    TResult Function()? messageReadOnDevice,
+    TResult Function()? smsConfirmSent,
     required TResult orElse(),
   }) {
     if (message != null) {
@@ -1785,6 +1818,11 @@ class _$DartMessage_MessageImpl implements DartMessage_Message {
     required TResult Function(DartMessage_Edit value) edit,
     required TResult Function(DartMessage_IconChange value) iconChange,
     required TResult Function(DartMessage_StopTyping value) stopTyping,
+    required TResult Function(DartMessage_EnableSmsActivation value)
+        enableSmsActivation,
+    required TResult Function(DartMessage_MessageReadOnDevice value)
+        messageReadOnDevice,
+    required TResult Function(DartMessage_SmsConfirmSent value) smsConfirmSent,
   }) {
     return message(this);
   }
@@ -1803,6 +1841,11 @@ class _$DartMessage_MessageImpl implements DartMessage_Message {
     TResult? Function(DartMessage_Edit value)? edit,
     TResult? Function(DartMessage_IconChange value)? iconChange,
     TResult? Function(DartMessage_StopTyping value)? stopTyping,
+    TResult? Function(DartMessage_EnableSmsActivation value)?
+        enableSmsActivation,
+    TResult? Function(DartMessage_MessageReadOnDevice value)?
+        messageReadOnDevice,
+    TResult? Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
   }) {
     return message?.call(this);
   }
@@ -1821,6 +1864,11 @@ class _$DartMessage_MessageImpl implements DartMessage_Message {
     TResult Function(DartMessage_Edit value)? edit,
     TResult Function(DartMessage_IconChange value)? iconChange,
     TResult Function(DartMessage_StopTyping value)? stopTyping,
+    TResult Function(DartMessage_EnableSmsActivation value)?
+        enableSmsActivation,
+    TResult Function(DartMessage_MessageReadOnDevice value)?
+        messageReadOnDevice,
+    TResult Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
     required TResult orElse(),
   }) {
     if (message != null) {
@@ -1919,6 +1967,9 @@ class _$DartMessage_RenameMessageImpl implements DartMessage_RenameMessage {
     required TResult Function(DartEditMessage field0) edit,
     required TResult Function(DartIconChangeMessage field0) iconChange,
     required TResult Function() stopTyping,
+    required TResult Function(bool field0) enableSmsActivation,
+    required TResult Function() messageReadOnDevice,
+    required TResult Function() smsConfirmSent,
   }) {
     return renameMessage(field0);
   }
@@ -1937,6 +1988,9 @@ class _$DartMessage_RenameMessageImpl implements DartMessage_RenameMessage {
     TResult? Function(DartEditMessage field0)? edit,
     TResult? Function(DartIconChangeMessage field0)? iconChange,
     TResult? Function()? stopTyping,
+    TResult? Function(bool field0)? enableSmsActivation,
+    TResult? Function()? messageReadOnDevice,
+    TResult? Function()? smsConfirmSent,
   }) {
     return renameMessage?.call(field0);
   }
@@ -1955,6 +2009,9 @@ class _$DartMessage_RenameMessageImpl implements DartMessage_RenameMessage {
     TResult Function(DartEditMessage field0)? edit,
     TResult Function(DartIconChangeMessage field0)? iconChange,
     TResult Function()? stopTyping,
+    TResult Function(bool field0)? enableSmsActivation,
+    TResult Function()? messageReadOnDevice,
+    TResult Function()? smsConfirmSent,
     required TResult orElse(),
   }) {
     if (renameMessage != null) {
@@ -1978,6 +2035,11 @@ class _$DartMessage_RenameMessageImpl implements DartMessage_RenameMessage {
     required TResult Function(DartMessage_Edit value) edit,
     required TResult Function(DartMessage_IconChange value) iconChange,
     required TResult Function(DartMessage_StopTyping value) stopTyping,
+    required TResult Function(DartMessage_EnableSmsActivation value)
+        enableSmsActivation,
+    required TResult Function(DartMessage_MessageReadOnDevice value)
+        messageReadOnDevice,
+    required TResult Function(DartMessage_SmsConfirmSent value) smsConfirmSent,
   }) {
     return renameMessage(this);
   }
@@ -1996,6 +2058,11 @@ class _$DartMessage_RenameMessageImpl implements DartMessage_RenameMessage {
     TResult? Function(DartMessage_Edit value)? edit,
     TResult? Function(DartMessage_IconChange value)? iconChange,
     TResult? Function(DartMessage_StopTyping value)? stopTyping,
+    TResult? Function(DartMessage_EnableSmsActivation value)?
+        enableSmsActivation,
+    TResult? Function(DartMessage_MessageReadOnDevice value)?
+        messageReadOnDevice,
+    TResult? Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
   }) {
     return renameMessage?.call(this);
   }
@@ -2014,6 +2081,11 @@ class _$DartMessage_RenameMessageImpl implements DartMessage_RenameMessage {
     TResult Function(DartMessage_Edit value)? edit,
     TResult Function(DartMessage_IconChange value)? iconChange,
     TResult Function(DartMessage_StopTyping value)? stopTyping,
+    TResult Function(DartMessage_EnableSmsActivation value)?
+        enableSmsActivation,
+    TResult Function(DartMessage_MessageReadOnDevice value)?
+        messageReadOnDevice,
+    TResult Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
     required TResult orElse(),
   }) {
     if (renameMessage != null) {
@@ -2115,6 +2187,9 @@ class _$DartMessage_ChangeParticipantsImpl
     required TResult Function(DartEditMessage field0) edit,
     required TResult Function(DartIconChangeMessage field0) iconChange,
     required TResult Function() stopTyping,
+    required TResult Function(bool field0) enableSmsActivation,
+    required TResult Function() messageReadOnDevice,
+    required TResult Function() smsConfirmSent,
   }) {
     return changeParticipants(field0);
   }
@@ -2133,6 +2208,9 @@ class _$DartMessage_ChangeParticipantsImpl
     TResult? Function(DartEditMessage field0)? edit,
     TResult? Function(DartIconChangeMessage field0)? iconChange,
     TResult? Function()? stopTyping,
+    TResult? Function(bool field0)? enableSmsActivation,
+    TResult? Function()? messageReadOnDevice,
+    TResult? Function()? smsConfirmSent,
   }) {
     return changeParticipants?.call(field0);
   }
@@ -2151,6 +2229,9 @@ class _$DartMessage_ChangeParticipantsImpl
     TResult Function(DartEditMessage field0)? edit,
     TResult Function(DartIconChangeMessage field0)? iconChange,
     TResult Function()? stopTyping,
+    TResult Function(bool field0)? enableSmsActivation,
+    TResult Function()? messageReadOnDevice,
+    TResult Function()? smsConfirmSent,
     required TResult orElse(),
   }) {
     if (changeParticipants != null) {
@@ -2174,6 +2255,11 @@ class _$DartMessage_ChangeParticipantsImpl
     required TResult Function(DartMessage_Edit value) edit,
     required TResult Function(DartMessage_IconChange value) iconChange,
     required TResult Function(DartMessage_StopTyping value) stopTyping,
+    required TResult Function(DartMessage_EnableSmsActivation value)
+        enableSmsActivation,
+    required TResult Function(DartMessage_MessageReadOnDevice value)
+        messageReadOnDevice,
+    required TResult Function(DartMessage_SmsConfirmSent value) smsConfirmSent,
   }) {
     return changeParticipants(this);
   }
@@ -2192,6 +2278,11 @@ class _$DartMessage_ChangeParticipantsImpl
     TResult? Function(DartMessage_Edit value)? edit,
     TResult? Function(DartMessage_IconChange value)? iconChange,
     TResult? Function(DartMessage_StopTyping value)? stopTyping,
+    TResult? Function(DartMessage_EnableSmsActivation value)?
+        enableSmsActivation,
+    TResult? Function(DartMessage_MessageReadOnDevice value)?
+        messageReadOnDevice,
+    TResult? Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
   }) {
     return changeParticipants?.call(this);
   }
@@ -2210,6 +2301,11 @@ class _$DartMessage_ChangeParticipantsImpl
     TResult Function(DartMessage_Edit value)? edit,
     TResult Function(DartMessage_IconChange value)? iconChange,
     TResult Function(DartMessage_StopTyping value)? stopTyping,
+    TResult Function(DartMessage_EnableSmsActivation value)?
+        enableSmsActivation,
+    TResult Function(DartMessage_MessageReadOnDevice value)?
+        messageReadOnDevice,
+    TResult Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
     required TResult orElse(),
   }) {
     if (changeParticipants != null) {
@@ -2308,6 +2404,9 @@ class _$DartMessage_ReactImpl implements DartMessage_React {
     required TResult Function(DartEditMessage field0) edit,
     required TResult Function(DartIconChangeMessage field0) iconChange,
     required TResult Function() stopTyping,
+    required TResult Function(bool field0) enableSmsActivation,
+    required TResult Function() messageReadOnDevice,
+    required TResult Function() smsConfirmSent,
   }) {
     return react(field0);
   }
@@ -2326,6 +2425,9 @@ class _$DartMessage_ReactImpl implements DartMessage_React {
     TResult? Function(DartEditMessage field0)? edit,
     TResult? Function(DartIconChangeMessage field0)? iconChange,
     TResult? Function()? stopTyping,
+    TResult? Function(bool field0)? enableSmsActivation,
+    TResult? Function()? messageReadOnDevice,
+    TResult? Function()? smsConfirmSent,
   }) {
     return react?.call(field0);
   }
@@ -2344,6 +2446,9 @@ class _$DartMessage_ReactImpl implements DartMessage_React {
     TResult Function(DartEditMessage field0)? edit,
     TResult Function(DartIconChangeMessage field0)? iconChange,
     TResult Function()? stopTyping,
+    TResult Function(bool field0)? enableSmsActivation,
+    TResult Function()? messageReadOnDevice,
+    TResult Function()? smsConfirmSent,
     required TResult orElse(),
   }) {
     if (react != null) {
@@ -2367,6 +2472,11 @@ class _$DartMessage_ReactImpl implements DartMessage_React {
     required TResult Function(DartMessage_Edit value) edit,
     required TResult Function(DartMessage_IconChange value) iconChange,
     required TResult Function(DartMessage_StopTyping value) stopTyping,
+    required TResult Function(DartMessage_EnableSmsActivation value)
+        enableSmsActivation,
+    required TResult Function(DartMessage_MessageReadOnDevice value)
+        messageReadOnDevice,
+    required TResult Function(DartMessage_SmsConfirmSent value) smsConfirmSent,
   }) {
     return react(this);
   }
@@ -2385,6 +2495,11 @@ class _$DartMessage_ReactImpl implements DartMessage_React {
     TResult? Function(DartMessage_Edit value)? edit,
     TResult? Function(DartMessage_IconChange value)? iconChange,
     TResult? Function(DartMessage_StopTyping value)? stopTyping,
+    TResult? Function(DartMessage_EnableSmsActivation value)?
+        enableSmsActivation,
+    TResult? Function(DartMessage_MessageReadOnDevice value)?
+        messageReadOnDevice,
+    TResult? Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
   }) {
     return react?.call(this);
   }
@@ -2403,6 +2518,11 @@ class _$DartMessage_ReactImpl implements DartMessage_React {
     TResult Function(DartMessage_Edit value)? edit,
     TResult Function(DartMessage_IconChange value)? iconChange,
     TResult Function(DartMessage_StopTyping value)? stopTyping,
+    TResult Function(DartMessage_EnableSmsActivation value)?
+        enableSmsActivation,
+    TResult Function(DartMessage_MessageReadOnDevice value)?
+        messageReadOnDevice,
+    TResult Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
     required TResult orElse(),
   }) {
     if (react != null) {
@@ -2474,6 +2594,9 @@ class _$DartMessage_DeliveredImpl implements DartMessage_Delivered {
     required TResult Function(DartEditMessage field0) edit,
     required TResult Function(DartIconChangeMessage field0) iconChange,
     required TResult Function() stopTyping,
+    required TResult Function(bool field0) enableSmsActivation,
+    required TResult Function() messageReadOnDevice,
+    required TResult Function() smsConfirmSent,
   }) {
     return delivered();
   }
@@ -2492,6 +2615,9 @@ class _$DartMessage_DeliveredImpl implements DartMessage_Delivered {
     TResult? Function(DartEditMessage field0)? edit,
     TResult? Function(DartIconChangeMessage field0)? iconChange,
     TResult? Function()? stopTyping,
+    TResult? Function(bool field0)? enableSmsActivation,
+    TResult? Function()? messageReadOnDevice,
+    TResult? Function()? smsConfirmSent,
   }) {
     return delivered?.call();
   }
@@ -2510,6 +2636,9 @@ class _$DartMessage_DeliveredImpl implements DartMessage_Delivered {
     TResult Function(DartEditMessage field0)? edit,
     TResult Function(DartIconChangeMessage field0)? iconChange,
     TResult Function()? stopTyping,
+    TResult Function(bool field0)? enableSmsActivation,
+    TResult Function()? messageReadOnDevice,
+    TResult Function()? smsConfirmSent,
     required TResult orElse(),
   }) {
     if (delivered != null) {
@@ -2533,6 +2662,11 @@ class _$DartMessage_DeliveredImpl implements DartMessage_Delivered {
     required TResult Function(DartMessage_Edit value) edit,
     required TResult Function(DartMessage_IconChange value) iconChange,
     required TResult Function(DartMessage_StopTyping value) stopTyping,
+    required TResult Function(DartMessage_EnableSmsActivation value)
+        enableSmsActivation,
+    required TResult Function(DartMessage_MessageReadOnDevice value)
+        messageReadOnDevice,
+    required TResult Function(DartMessage_SmsConfirmSent value) smsConfirmSent,
   }) {
     return delivered(this);
   }
@@ -2551,6 +2685,11 @@ class _$DartMessage_DeliveredImpl implements DartMessage_Delivered {
     TResult? Function(DartMessage_Edit value)? edit,
     TResult? Function(DartMessage_IconChange value)? iconChange,
     TResult? Function(DartMessage_StopTyping value)? stopTyping,
+    TResult? Function(DartMessage_EnableSmsActivation value)?
+        enableSmsActivation,
+    TResult? Function(DartMessage_MessageReadOnDevice value)?
+        messageReadOnDevice,
+    TResult? Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
   }) {
     return delivered?.call(this);
   }
@@ -2569,6 +2708,11 @@ class _$DartMessage_DeliveredImpl implements DartMessage_Delivered {
     TResult Function(DartMessage_Edit value)? edit,
     TResult Function(DartMessage_IconChange value)? iconChange,
     TResult Function(DartMessage_StopTyping value)? stopTyping,
+    TResult Function(DartMessage_EnableSmsActivation value)?
+        enableSmsActivation,
+    TResult Function(DartMessage_MessageReadOnDevice value)?
+        messageReadOnDevice,
+    TResult Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
     required TResult orElse(),
   }) {
     if (delivered != null) {
@@ -2632,6 +2776,9 @@ class _$DartMessage_ReadImpl implements DartMessage_Read {
     required TResult Function(DartEditMessage field0) edit,
     required TResult Function(DartIconChangeMessage field0) iconChange,
     required TResult Function() stopTyping,
+    required TResult Function(bool field0) enableSmsActivation,
+    required TResult Function() messageReadOnDevice,
+    required TResult Function() smsConfirmSent,
   }) {
     return read();
   }
@@ -2650,6 +2797,9 @@ class _$DartMessage_ReadImpl implements DartMessage_Read {
     TResult? Function(DartEditMessage field0)? edit,
     TResult? Function(DartIconChangeMessage field0)? iconChange,
     TResult? Function()? stopTyping,
+    TResult? Function(bool field0)? enableSmsActivation,
+    TResult? Function()? messageReadOnDevice,
+    TResult? Function()? smsConfirmSent,
   }) {
     return read?.call();
   }
@@ -2668,6 +2818,9 @@ class _$DartMessage_ReadImpl implements DartMessage_Read {
     TResult Function(DartEditMessage field0)? edit,
     TResult Function(DartIconChangeMessage field0)? iconChange,
     TResult Function()? stopTyping,
+    TResult Function(bool field0)? enableSmsActivation,
+    TResult Function()? messageReadOnDevice,
+    TResult Function()? smsConfirmSent,
     required TResult orElse(),
   }) {
     if (read != null) {
@@ -2691,6 +2844,11 @@ class _$DartMessage_ReadImpl implements DartMessage_Read {
     required TResult Function(DartMessage_Edit value) edit,
     required TResult Function(DartMessage_IconChange value) iconChange,
     required TResult Function(DartMessage_StopTyping value) stopTyping,
+    required TResult Function(DartMessage_EnableSmsActivation value)
+        enableSmsActivation,
+    required TResult Function(DartMessage_MessageReadOnDevice value)
+        messageReadOnDevice,
+    required TResult Function(DartMessage_SmsConfirmSent value) smsConfirmSent,
   }) {
     return read(this);
   }
@@ -2709,6 +2867,11 @@ class _$DartMessage_ReadImpl implements DartMessage_Read {
     TResult? Function(DartMessage_Edit value)? edit,
     TResult? Function(DartMessage_IconChange value)? iconChange,
     TResult? Function(DartMessage_StopTyping value)? stopTyping,
+    TResult? Function(DartMessage_EnableSmsActivation value)?
+        enableSmsActivation,
+    TResult? Function(DartMessage_MessageReadOnDevice value)?
+        messageReadOnDevice,
+    TResult? Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
   }) {
     return read?.call(this);
   }
@@ -2727,6 +2890,11 @@ class _$DartMessage_ReadImpl implements DartMessage_Read {
     TResult Function(DartMessage_Edit value)? edit,
     TResult Function(DartMessage_IconChange value)? iconChange,
     TResult Function(DartMessage_StopTyping value)? stopTyping,
+    TResult Function(DartMessage_EnableSmsActivation value)?
+        enableSmsActivation,
+    TResult Function(DartMessage_MessageReadOnDevice value)?
+        messageReadOnDevice,
+    TResult Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
     required TResult orElse(),
   }) {
     if (read != null) {
@@ -2790,6 +2958,9 @@ class _$DartMessage_TypingImpl implements DartMessage_Typing {
     required TResult Function(DartEditMessage field0) edit,
     required TResult Function(DartIconChangeMessage field0) iconChange,
     required TResult Function() stopTyping,
+    required TResult Function(bool field0) enableSmsActivation,
+    required TResult Function() messageReadOnDevice,
+    required TResult Function() smsConfirmSent,
   }) {
     return typing();
   }
@@ -2808,6 +2979,9 @@ class _$DartMessage_TypingImpl implements DartMessage_Typing {
     TResult? Function(DartEditMessage field0)? edit,
     TResult? Function(DartIconChangeMessage field0)? iconChange,
     TResult? Function()? stopTyping,
+    TResult? Function(bool field0)? enableSmsActivation,
+    TResult? Function()? messageReadOnDevice,
+    TResult? Function()? smsConfirmSent,
   }) {
     return typing?.call();
   }
@@ -2826,6 +3000,9 @@ class _$DartMessage_TypingImpl implements DartMessage_Typing {
     TResult Function(DartEditMessage field0)? edit,
     TResult Function(DartIconChangeMessage field0)? iconChange,
     TResult Function()? stopTyping,
+    TResult Function(bool field0)? enableSmsActivation,
+    TResult Function()? messageReadOnDevice,
+    TResult Function()? smsConfirmSent,
     required TResult orElse(),
   }) {
     if (typing != null) {
@@ -2849,6 +3026,11 @@ class _$DartMessage_TypingImpl implements DartMessage_Typing {
     required TResult Function(DartMessage_Edit value) edit,
     required TResult Function(DartMessage_IconChange value) iconChange,
     required TResult Function(DartMessage_StopTyping value) stopTyping,
+    required TResult Function(DartMessage_EnableSmsActivation value)
+        enableSmsActivation,
+    required TResult Function(DartMessage_MessageReadOnDevice value)
+        messageReadOnDevice,
+    required TResult Function(DartMessage_SmsConfirmSent value) smsConfirmSent,
   }) {
     return typing(this);
   }
@@ -2867,6 +3049,11 @@ class _$DartMessage_TypingImpl implements DartMessage_Typing {
     TResult? Function(DartMessage_Edit value)? edit,
     TResult? Function(DartMessage_IconChange value)? iconChange,
     TResult? Function(DartMessage_StopTyping value)? stopTyping,
+    TResult? Function(DartMessage_EnableSmsActivation value)?
+        enableSmsActivation,
+    TResult? Function(DartMessage_MessageReadOnDevice value)?
+        messageReadOnDevice,
+    TResult? Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
   }) {
     return typing?.call(this);
   }
@@ -2885,6 +3072,11 @@ class _$DartMessage_TypingImpl implements DartMessage_Typing {
     TResult Function(DartMessage_Edit value)? edit,
     TResult Function(DartMessage_IconChange value)? iconChange,
     TResult Function(DartMessage_StopTyping value)? stopTyping,
+    TResult Function(DartMessage_EnableSmsActivation value)?
+        enableSmsActivation,
+    TResult Function(DartMessage_MessageReadOnDevice value)?
+        messageReadOnDevice,
+    TResult Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
     required TResult orElse(),
   }) {
     if (typing != null) {
@@ -2975,6 +3167,9 @@ class _$DartMessage_UnsendImpl implements DartMessage_Unsend {
     required TResult Function(DartEditMessage field0) edit,
     required TResult Function(DartIconChangeMessage field0) iconChange,
     required TResult Function() stopTyping,
+    required TResult Function(bool field0) enableSmsActivation,
+    required TResult Function() messageReadOnDevice,
+    required TResult Function() smsConfirmSent,
   }) {
     return unsend(field0);
   }
@@ -2993,6 +3188,9 @@ class _$DartMessage_UnsendImpl implements DartMessage_Unsend {
     TResult? Function(DartEditMessage field0)? edit,
     TResult? Function(DartIconChangeMessage field0)? iconChange,
     TResult? Function()? stopTyping,
+    TResult? Function(bool field0)? enableSmsActivation,
+    TResult? Function()? messageReadOnDevice,
+    TResult? Function()? smsConfirmSent,
   }) {
     return unsend?.call(field0);
   }
@@ -3011,6 +3209,9 @@ class _$DartMessage_UnsendImpl implements DartMessage_Unsend {
     TResult Function(DartEditMessage field0)? edit,
     TResult Function(DartIconChangeMessage field0)? iconChange,
     TResult Function()? stopTyping,
+    TResult Function(bool field0)? enableSmsActivation,
+    TResult Function()? messageReadOnDevice,
+    TResult Function()? smsConfirmSent,
     required TResult orElse(),
   }) {
     if (unsend != null) {
@@ -3034,6 +3235,11 @@ class _$DartMessage_UnsendImpl implements DartMessage_Unsend {
     required TResult Function(DartMessage_Edit value) edit,
     required TResult Function(DartMessage_IconChange value) iconChange,
     required TResult Function(DartMessage_StopTyping value) stopTyping,
+    required TResult Function(DartMessage_EnableSmsActivation value)
+        enableSmsActivation,
+    required TResult Function(DartMessage_MessageReadOnDevice value)
+        messageReadOnDevice,
+    required TResult Function(DartMessage_SmsConfirmSent value) smsConfirmSent,
   }) {
     return unsend(this);
   }
@@ -3052,6 +3258,11 @@ class _$DartMessage_UnsendImpl implements DartMessage_Unsend {
     TResult? Function(DartMessage_Edit value)? edit,
     TResult? Function(DartMessage_IconChange value)? iconChange,
     TResult? Function(DartMessage_StopTyping value)? stopTyping,
+    TResult? Function(DartMessage_EnableSmsActivation value)?
+        enableSmsActivation,
+    TResult? Function(DartMessage_MessageReadOnDevice value)?
+        messageReadOnDevice,
+    TResult? Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
   }) {
     return unsend?.call(this);
   }
@@ -3070,6 +3281,11 @@ class _$DartMessage_UnsendImpl implements DartMessage_Unsend {
     TResult Function(DartMessage_Edit value)? edit,
     TResult Function(DartMessage_IconChange value)? iconChange,
     TResult Function(DartMessage_StopTyping value)? stopTyping,
+    TResult Function(DartMessage_EnableSmsActivation value)?
+        enableSmsActivation,
+    TResult Function(DartMessage_MessageReadOnDevice value)?
+        messageReadOnDevice,
+    TResult Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
     required TResult orElse(),
   }) {
     if (unsend != null) {
@@ -3166,6 +3382,9 @@ class _$DartMessage_EditImpl implements DartMessage_Edit {
     required TResult Function(DartEditMessage field0) edit,
     required TResult Function(DartIconChangeMessage field0) iconChange,
     required TResult Function() stopTyping,
+    required TResult Function(bool field0) enableSmsActivation,
+    required TResult Function() messageReadOnDevice,
+    required TResult Function() smsConfirmSent,
   }) {
     return edit(field0);
   }
@@ -3184,6 +3403,9 @@ class _$DartMessage_EditImpl implements DartMessage_Edit {
     TResult? Function(DartEditMessage field0)? edit,
     TResult? Function(DartIconChangeMessage field0)? iconChange,
     TResult? Function()? stopTyping,
+    TResult? Function(bool field0)? enableSmsActivation,
+    TResult? Function()? messageReadOnDevice,
+    TResult? Function()? smsConfirmSent,
   }) {
     return edit?.call(field0);
   }
@@ -3202,6 +3424,9 @@ class _$DartMessage_EditImpl implements DartMessage_Edit {
     TResult Function(DartEditMessage field0)? edit,
     TResult Function(DartIconChangeMessage field0)? iconChange,
     TResult Function()? stopTyping,
+    TResult Function(bool field0)? enableSmsActivation,
+    TResult Function()? messageReadOnDevice,
+    TResult Function()? smsConfirmSent,
     required TResult orElse(),
   }) {
     if (edit != null) {
@@ -3225,6 +3450,11 @@ class _$DartMessage_EditImpl implements DartMessage_Edit {
     required TResult Function(DartMessage_Edit value) edit,
     required TResult Function(DartMessage_IconChange value) iconChange,
     required TResult Function(DartMessage_StopTyping value) stopTyping,
+    required TResult Function(DartMessage_EnableSmsActivation value)
+        enableSmsActivation,
+    required TResult Function(DartMessage_MessageReadOnDevice value)
+        messageReadOnDevice,
+    required TResult Function(DartMessage_SmsConfirmSent value) smsConfirmSent,
   }) {
     return edit(this);
   }
@@ -3243,6 +3473,11 @@ class _$DartMessage_EditImpl implements DartMessage_Edit {
     TResult? Function(DartMessage_Edit value)? edit,
     TResult? Function(DartMessage_IconChange value)? iconChange,
     TResult? Function(DartMessage_StopTyping value)? stopTyping,
+    TResult? Function(DartMessage_EnableSmsActivation value)?
+        enableSmsActivation,
+    TResult? Function(DartMessage_MessageReadOnDevice value)?
+        messageReadOnDevice,
+    TResult? Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
   }) {
     return edit?.call(this);
   }
@@ -3261,6 +3496,11 @@ class _$DartMessage_EditImpl implements DartMessage_Edit {
     TResult Function(DartMessage_Edit value)? edit,
     TResult Function(DartMessage_IconChange value)? iconChange,
     TResult Function(DartMessage_StopTyping value)? stopTyping,
+    TResult Function(DartMessage_EnableSmsActivation value)?
+        enableSmsActivation,
+    TResult Function(DartMessage_MessageReadOnDevice value)?
+        messageReadOnDevice,
+    TResult Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
     required TResult orElse(),
   }) {
     if (edit != null) {
@@ -3359,6 +3599,9 @@ class _$DartMessage_IconChangeImpl implements DartMessage_IconChange {
     required TResult Function(DartEditMessage field0) edit,
     required TResult Function(DartIconChangeMessage field0) iconChange,
     required TResult Function() stopTyping,
+    required TResult Function(bool field0) enableSmsActivation,
+    required TResult Function() messageReadOnDevice,
+    required TResult Function() smsConfirmSent,
   }) {
     return iconChange(field0);
   }
@@ -3377,6 +3620,9 @@ class _$DartMessage_IconChangeImpl implements DartMessage_IconChange {
     TResult? Function(DartEditMessage field0)? edit,
     TResult? Function(DartIconChangeMessage field0)? iconChange,
     TResult? Function()? stopTyping,
+    TResult? Function(bool field0)? enableSmsActivation,
+    TResult? Function()? messageReadOnDevice,
+    TResult? Function()? smsConfirmSent,
   }) {
     return iconChange?.call(field0);
   }
@@ -3395,6 +3641,9 @@ class _$DartMessage_IconChangeImpl implements DartMessage_IconChange {
     TResult Function(DartEditMessage field0)? edit,
     TResult Function(DartIconChangeMessage field0)? iconChange,
     TResult Function()? stopTyping,
+    TResult Function(bool field0)? enableSmsActivation,
+    TResult Function()? messageReadOnDevice,
+    TResult Function()? smsConfirmSent,
     required TResult orElse(),
   }) {
     if (iconChange != null) {
@@ -3418,6 +3667,11 @@ class _$DartMessage_IconChangeImpl implements DartMessage_IconChange {
     required TResult Function(DartMessage_Edit value) edit,
     required TResult Function(DartMessage_IconChange value) iconChange,
     required TResult Function(DartMessage_StopTyping value) stopTyping,
+    required TResult Function(DartMessage_EnableSmsActivation value)
+        enableSmsActivation,
+    required TResult Function(DartMessage_MessageReadOnDevice value)
+        messageReadOnDevice,
+    required TResult Function(DartMessage_SmsConfirmSent value) smsConfirmSent,
   }) {
     return iconChange(this);
   }
@@ -3436,6 +3690,11 @@ class _$DartMessage_IconChangeImpl implements DartMessage_IconChange {
     TResult? Function(DartMessage_Edit value)? edit,
     TResult? Function(DartMessage_IconChange value)? iconChange,
     TResult? Function(DartMessage_StopTyping value)? stopTyping,
+    TResult? Function(DartMessage_EnableSmsActivation value)?
+        enableSmsActivation,
+    TResult? Function(DartMessage_MessageReadOnDevice value)?
+        messageReadOnDevice,
+    TResult? Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
   }) {
     return iconChange?.call(this);
   }
@@ -3454,6 +3713,11 @@ class _$DartMessage_IconChangeImpl implements DartMessage_IconChange {
     TResult Function(DartMessage_Edit value)? edit,
     TResult Function(DartMessage_IconChange value)? iconChange,
     TResult Function(DartMessage_StopTyping value)? stopTyping,
+    TResult Function(DartMessage_EnableSmsActivation value)?
+        enableSmsActivation,
+    TResult Function(DartMessage_MessageReadOnDevice value)?
+        messageReadOnDevice,
+    TResult Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
     required TResult orElse(),
   }) {
     if (iconChange != null) {
@@ -3526,6 +3790,9 @@ class _$DartMessage_StopTypingImpl implements DartMessage_StopTyping {
     required TResult Function(DartEditMessage field0) edit,
     required TResult Function(DartIconChangeMessage field0) iconChange,
     required TResult Function() stopTyping,
+    required TResult Function(bool field0) enableSmsActivation,
+    required TResult Function() messageReadOnDevice,
+    required TResult Function() smsConfirmSent,
   }) {
     return stopTyping();
   }
@@ -3544,6 +3811,9 @@ class _$DartMessage_StopTypingImpl implements DartMessage_StopTyping {
     TResult? Function(DartEditMessage field0)? edit,
     TResult? Function(DartIconChangeMessage field0)? iconChange,
     TResult? Function()? stopTyping,
+    TResult? Function(bool field0)? enableSmsActivation,
+    TResult? Function()? messageReadOnDevice,
+    TResult? Function()? smsConfirmSent,
   }) {
     return stopTyping?.call();
   }
@@ -3562,6 +3832,9 @@ class _$DartMessage_StopTypingImpl implements DartMessage_StopTyping {
     TResult Function(DartEditMessage field0)? edit,
     TResult Function(DartIconChangeMessage field0)? iconChange,
     TResult Function()? stopTyping,
+    TResult Function(bool field0)? enableSmsActivation,
+    TResult Function()? messageReadOnDevice,
+    TResult Function()? smsConfirmSent,
     required TResult orElse(),
   }) {
     if (stopTyping != null) {
@@ -3585,6 +3858,11 @@ class _$DartMessage_StopTypingImpl implements DartMessage_StopTyping {
     required TResult Function(DartMessage_Edit value) edit,
     required TResult Function(DartMessage_IconChange value) iconChange,
     required TResult Function(DartMessage_StopTyping value) stopTyping,
+    required TResult Function(DartMessage_EnableSmsActivation value)
+        enableSmsActivation,
+    required TResult Function(DartMessage_MessageReadOnDevice value)
+        messageReadOnDevice,
+    required TResult Function(DartMessage_SmsConfirmSent value) smsConfirmSent,
   }) {
     return stopTyping(this);
   }
@@ -3603,6 +3881,11 @@ class _$DartMessage_StopTypingImpl implements DartMessage_StopTyping {
     TResult? Function(DartMessage_Edit value)? edit,
     TResult? Function(DartMessage_IconChange value)? iconChange,
     TResult? Function(DartMessage_StopTyping value)? stopTyping,
+    TResult? Function(DartMessage_EnableSmsActivation value)?
+        enableSmsActivation,
+    TResult? Function(DartMessage_MessageReadOnDevice value)?
+        messageReadOnDevice,
+    TResult? Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
   }) {
     return stopTyping?.call(this);
   }
@@ -3621,6 +3904,11 @@ class _$DartMessage_StopTypingImpl implements DartMessage_StopTyping {
     TResult Function(DartMessage_Edit value)? edit,
     TResult Function(DartMessage_IconChange value)? iconChange,
     TResult Function(DartMessage_StopTyping value)? stopTyping,
+    TResult Function(DartMessage_EnableSmsActivation value)?
+        enableSmsActivation,
+    TResult Function(DartMessage_MessageReadOnDevice value)?
+        messageReadOnDevice,
+    TResult Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
     required TResult orElse(),
   }) {
     if (stopTyping != null) {
@@ -3632,6 +3920,600 @@ class _$DartMessage_StopTypingImpl implements DartMessage_StopTyping {
 
 abstract class DartMessage_StopTyping implements DartMessage {
   const factory DartMessage_StopTyping() = _$DartMessage_StopTypingImpl;
+}
+
+/// @nodoc
+abstract class _$$DartMessage_EnableSmsActivationImplCopyWith<$Res> {
+  factory _$$DartMessage_EnableSmsActivationImplCopyWith(
+          _$DartMessage_EnableSmsActivationImpl value,
+          $Res Function(_$DartMessage_EnableSmsActivationImpl) then) =
+      __$$DartMessage_EnableSmsActivationImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({bool field0});
+}
+
+/// @nodoc
+class __$$DartMessage_EnableSmsActivationImplCopyWithImpl<$Res>
+    extends _$DartMessageCopyWithImpl<$Res,
+        _$DartMessage_EnableSmsActivationImpl>
+    implements _$$DartMessage_EnableSmsActivationImplCopyWith<$Res> {
+  __$$DartMessage_EnableSmsActivationImplCopyWithImpl(
+      _$DartMessage_EnableSmsActivationImpl _value,
+      $Res Function(_$DartMessage_EnableSmsActivationImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? field0 = null,
+  }) {
+    return _then(_$DartMessage_EnableSmsActivationImpl(
+      null == field0
+          ? _value.field0
+          : field0 // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$DartMessage_EnableSmsActivationImpl
+    implements DartMessage_EnableSmsActivation {
+  const _$DartMessage_EnableSmsActivationImpl(this.field0);
+
+  @override
+  final bool field0;
+
+  @override
+  String toString() {
+    return 'DartMessage.enableSmsActivation(field0: $field0)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$DartMessage_EnableSmsActivationImpl &&
+            (identical(other.field0, field0) || other.field0 == field0));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, field0);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$DartMessage_EnableSmsActivationImplCopyWith<
+          _$DartMessage_EnableSmsActivationImpl>
+      get copyWith => __$$DartMessage_EnableSmsActivationImplCopyWithImpl<
+          _$DartMessage_EnableSmsActivationImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(DartNormalMessage field0) message,
+    required TResult Function(DartRenameMessage field0) renameMessage,
+    required TResult Function(DartChangeParticipantMessage field0)
+        changeParticipants,
+    required TResult Function(DartReactMessage field0) react,
+    required TResult Function() delivered,
+    required TResult Function() read,
+    required TResult Function() typing,
+    required TResult Function(DartUnsendMessage field0) unsend,
+    required TResult Function(DartEditMessage field0) edit,
+    required TResult Function(DartIconChangeMessage field0) iconChange,
+    required TResult Function() stopTyping,
+    required TResult Function(bool field0) enableSmsActivation,
+    required TResult Function() messageReadOnDevice,
+    required TResult Function() smsConfirmSent,
+  }) {
+    return enableSmsActivation(field0);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(DartNormalMessage field0)? message,
+    TResult? Function(DartRenameMessage field0)? renameMessage,
+    TResult? Function(DartChangeParticipantMessage field0)? changeParticipants,
+    TResult? Function(DartReactMessage field0)? react,
+    TResult? Function()? delivered,
+    TResult? Function()? read,
+    TResult? Function()? typing,
+    TResult? Function(DartUnsendMessage field0)? unsend,
+    TResult? Function(DartEditMessage field0)? edit,
+    TResult? Function(DartIconChangeMessage field0)? iconChange,
+    TResult? Function()? stopTyping,
+    TResult? Function(bool field0)? enableSmsActivation,
+    TResult? Function()? messageReadOnDevice,
+    TResult? Function()? smsConfirmSent,
+  }) {
+    return enableSmsActivation?.call(field0);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(DartNormalMessage field0)? message,
+    TResult Function(DartRenameMessage field0)? renameMessage,
+    TResult Function(DartChangeParticipantMessage field0)? changeParticipants,
+    TResult Function(DartReactMessage field0)? react,
+    TResult Function()? delivered,
+    TResult Function()? read,
+    TResult Function()? typing,
+    TResult Function(DartUnsendMessage field0)? unsend,
+    TResult Function(DartEditMessage field0)? edit,
+    TResult Function(DartIconChangeMessage field0)? iconChange,
+    TResult Function()? stopTyping,
+    TResult Function(bool field0)? enableSmsActivation,
+    TResult Function()? messageReadOnDevice,
+    TResult Function()? smsConfirmSent,
+    required TResult orElse(),
+  }) {
+    if (enableSmsActivation != null) {
+      return enableSmsActivation(field0);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(DartMessage_Message value) message,
+    required TResult Function(DartMessage_RenameMessage value) renameMessage,
+    required TResult Function(DartMessage_ChangeParticipants value)
+        changeParticipants,
+    required TResult Function(DartMessage_React value) react,
+    required TResult Function(DartMessage_Delivered value) delivered,
+    required TResult Function(DartMessage_Read value) read,
+    required TResult Function(DartMessage_Typing value) typing,
+    required TResult Function(DartMessage_Unsend value) unsend,
+    required TResult Function(DartMessage_Edit value) edit,
+    required TResult Function(DartMessage_IconChange value) iconChange,
+    required TResult Function(DartMessage_StopTyping value) stopTyping,
+    required TResult Function(DartMessage_EnableSmsActivation value)
+        enableSmsActivation,
+    required TResult Function(DartMessage_MessageReadOnDevice value)
+        messageReadOnDevice,
+    required TResult Function(DartMessage_SmsConfirmSent value) smsConfirmSent,
+  }) {
+    return enableSmsActivation(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(DartMessage_Message value)? message,
+    TResult? Function(DartMessage_RenameMessage value)? renameMessage,
+    TResult? Function(DartMessage_ChangeParticipants value)? changeParticipants,
+    TResult? Function(DartMessage_React value)? react,
+    TResult? Function(DartMessage_Delivered value)? delivered,
+    TResult? Function(DartMessage_Read value)? read,
+    TResult? Function(DartMessage_Typing value)? typing,
+    TResult? Function(DartMessage_Unsend value)? unsend,
+    TResult? Function(DartMessage_Edit value)? edit,
+    TResult? Function(DartMessage_IconChange value)? iconChange,
+    TResult? Function(DartMessage_StopTyping value)? stopTyping,
+    TResult? Function(DartMessage_EnableSmsActivation value)?
+        enableSmsActivation,
+    TResult? Function(DartMessage_MessageReadOnDevice value)?
+        messageReadOnDevice,
+    TResult? Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
+  }) {
+    return enableSmsActivation?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(DartMessage_Message value)? message,
+    TResult Function(DartMessage_RenameMessage value)? renameMessage,
+    TResult Function(DartMessage_ChangeParticipants value)? changeParticipants,
+    TResult Function(DartMessage_React value)? react,
+    TResult Function(DartMessage_Delivered value)? delivered,
+    TResult Function(DartMessage_Read value)? read,
+    TResult Function(DartMessage_Typing value)? typing,
+    TResult Function(DartMessage_Unsend value)? unsend,
+    TResult Function(DartMessage_Edit value)? edit,
+    TResult Function(DartMessage_IconChange value)? iconChange,
+    TResult Function(DartMessage_StopTyping value)? stopTyping,
+    TResult Function(DartMessage_EnableSmsActivation value)?
+        enableSmsActivation,
+    TResult Function(DartMessage_MessageReadOnDevice value)?
+        messageReadOnDevice,
+    TResult Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
+    required TResult orElse(),
+  }) {
+    if (enableSmsActivation != null) {
+      return enableSmsActivation(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class DartMessage_EnableSmsActivation implements DartMessage {
+  const factory DartMessage_EnableSmsActivation(final bool field0) =
+      _$DartMessage_EnableSmsActivationImpl;
+
+  bool get field0;
+  @JsonKey(ignore: true)
+  _$$DartMessage_EnableSmsActivationImplCopyWith<
+          _$DartMessage_EnableSmsActivationImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$DartMessage_MessageReadOnDeviceImplCopyWith<$Res> {
+  factory _$$DartMessage_MessageReadOnDeviceImplCopyWith(
+          _$DartMessage_MessageReadOnDeviceImpl value,
+          $Res Function(_$DartMessage_MessageReadOnDeviceImpl) then) =
+      __$$DartMessage_MessageReadOnDeviceImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$DartMessage_MessageReadOnDeviceImplCopyWithImpl<$Res>
+    extends _$DartMessageCopyWithImpl<$Res,
+        _$DartMessage_MessageReadOnDeviceImpl>
+    implements _$$DartMessage_MessageReadOnDeviceImplCopyWith<$Res> {
+  __$$DartMessage_MessageReadOnDeviceImplCopyWithImpl(
+      _$DartMessage_MessageReadOnDeviceImpl _value,
+      $Res Function(_$DartMessage_MessageReadOnDeviceImpl) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$DartMessage_MessageReadOnDeviceImpl
+    implements DartMessage_MessageReadOnDevice {
+  const _$DartMessage_MessageReadOnDeviceImpl();
+
+  @override
+  String toString() {
+    return 'DartMessage.messageReadOnDevice()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$DartMessage_MessageReadOnDeviceImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(DartNormalMessage field0) message,
+    required TResult Function(DartRenameMessage field0) renameMessage,
+    required TResult Function(DartChangeParticipantMessage field0)
+        changeParticipants,
+    required TResult Function(DartReactMessage field0) react,
+    required TResult Function() delivered,
+    required TResult Function() read,
+    required TResult Function() typing,
+    required TResult Function(DartUnsendMessage field0) unsend,
+    required TResult Function(DartEditMessage field0) edit,
+    required TResult Function(DartIconChangeMessage field0) iconChange,
+    required TResult Function() stopTyping,
+    required TResult Function(bool field0) enableSmsActivation,
+    required TResult Function() messageReadOnDevice,
+    required TResult Function() smsConfirmSent,
+  }) {
+    return messageReadOnDevice();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(DartNormalMessage field0)? message,
+    TResult? Function(DartRenameMessage field0)? renameMessage,
+    TResult? Function(DartChangeParticipantMessage field0)? changeParticipants,
+    TResult? Function(DartReactMessage field0)? react,
+    TResult? Function()? delivered,
+    TResult? Function()? read,
+    TResult? Function()? typing,
+    TResult? Function(DartUnsendMessage field0)? unsend,
+    TResult? Function(DartEditMessage field0)? edit,
+    TResult? Function(DartIconChangeMessage field0)? iconChange,
+    TResult? Function()? stopTyping,
+    TResult? Function(bool field0)? enableSmsActivation,
+    TResult? Function()? messageReadOnDevice,
+    TResult? Function()? smsConfirmSent,
+  }) {
+    return messageReadOnDevice?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(DartNormalMessage field0)? message,
+    TResult Function(DartRenameMessage field0)? renameMessage,
+    TResult Function(DartChangeParticipantMessage field0)? changeParticipants,
+    TResult Function(DartReactMessage field0)? react,
+    TResult Function()? delivered,
+    TResult Function()? read,
+    TResult Function()? typing,
+    TResult Function(DartUnsendMessage field0)? unsend,
+    TResult Function(DartEditMessage field0)? edit,
+    TResult Function(DartIconChangeMessage field0)? iconChange,
+    TResult Function()? stopTyping,
+    TResult Function(bool field0)? enableSmsActivation,
+    TResult Function()? messageReadOnDevice,
+    TResult Function()? smsConfirmSent,
+    required TResult orElse(),
+  }) {
+    if (messageReadOnDevice != null) {
+      return messageReadOnDevice();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(DartMessage_Message value) message,
+    required TResult Function(DartMessage_RenameMessage value) renameMessage,
+    required TResult Function(DartMessage_ChangeParticipants value)
+        changeParticipants,
+    required TResult Function(DartMessage_React value) react,
+    required TResult Function(DartMessage_Delivered value) delivered,
+    required TResult Function(DartMessage_Read value) read,
+    required TResult Function(DartMessage_Typing value) typing,
+    required TResult Function(DartMessage_Unsend value) unsend,
+    required TResult Function(DartMessage_Edit value) edit,
+    required TResult Function(DartMessage_IconChange value) iconChange,
+    required TResult Function(DartMessage_StopTyping value) stopTyping,
+    required TResult Function(DartMessage_EnableSmsActivation value)
+        enableSmsActivation,
+    required TResult Function(DartMessage_MessageReadOnDevice value)
+        messageReadOnDevice,
+    required TResult Function(DartMessage_SmsConfirmSent value) smsConfirmSent,
+  }) {
+    return messageReadOnDevice(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(DartMessage_Message value)? message,
+    TResult? Function(DartMessage_RenameMessage value)? renameMessage,
+    TResult? Function(DartMessage_ChangeParticipants value)? changeParticipants,
+    TResult? Function(DartMessage_React value)? react,
+    TResult? Function(DartMessage_Delivered value)? delivered,
+    TResult? Function(DartMessage_Read value)? read,
+    TResult? Function(DartMessage_Typing value)? typing,
+    TResult? Function(DartMessage_Unsend value)? unsend,
+    TResult? Function(DartMessage_Edit value)? edit,
+    TResult? Function(DartMessage_IconChange value)? iconChange,
+    TResult? Function(DartMessage_StopTyping value)? stopTyping,
+    TResult? Function(DartMessage_EnableSmsActivation value)?
+        enableSmsActivation,
+    TResult? Function(DartMessage_MessageReadOnDevice value)?
+        messageReadOnDevice,
+    TResult? Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
+  }) {
+    return messageReadOnDevice?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(DartMessage_Message value)? message,
+    TResult Function(DartMessage_RenameMessage value)? renameMessage,
+    TResult Function(DartMessage_ChangeParticipants value)? changeParticipants,
+    TResult Function(DartMessage_React value)? react,
+    TResult Function(DartMessage_Delivered value)? delivered,
+    TResult Function(DartMessage_Read value)? read,
+    TResult Function(DartMessage_Typing value)? typing,
+    TResult Function(DartMessage_Unsend value)? unsend,
+    TResult Function(DartMessage_Edit value)? edit,
+    TResult Function(DartMessage_IconChange value)? iconChange,
+    TResult Function(DartMessage_StopTyping value)? stopTyping,
+    TResult Function(DartMessage_EnableSmsActivation value)?
+        enableSmsActivation,
+    TResult Function(DartMessage_MessageReadOnDevice value)?
+        messageReadOnDevice,
+    TResult Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
+    required TResult orElse(),
+  }) {
+    if (messageReadOnDevice != null) {
+      return messageReadOnDevice(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class DartMessage_MessageReadOnDevice implements DartMessage {
+  const factory DartMessage_MessageReadOnDevice() =
+      _$DartMessage_MessageReadOnDeviceImpl;
+}
+
+/// @nodoc
+abstract class _$$DartMessage_SmsConfirmSentImplCopyWith<$Res> {
+  factory _$$DartMessage_SmsConfirmSentImplCopyWith(
+          _$DartMessage_SmsConfirmSentImpl value,
+          $Res Function(_$DartMessage_SmsConfirmSentImpl) then) =
+      __$$DartMessage_SmsConfirmSentImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$DartMessage_SmsConfirmSentImplCopyWithImpl<$Res>
+    extends _$DartMessageCopyWithImpl<$Res, _$DartMessage_SmsConfirmSentImpl>
+    implements _$$DartMessage_SmsConfirmSentImplCopyWith<$Res> {
+  __$$DartMessage_SmsConfirmSentImplCopyWithImpl(
+      _$DartMessage_SmsConfirmSentImpl _value,
+      $Res Function(_$DartMessage_SmsConfirmSentImpl) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$DartMessage_SmsConfirmSentImpl implements DartMessage_SmsConfirmSent {
+  const _$DartMessage_SmsConfirmSentImpl();
+
+  @override
+  String toString() {
+    return 'DartMessage.smsConfirmSent()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$DartMessage_SmsConfirmSentImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(DartNormalMessage field0) message,
+    required TResult Function(DartRenameMessage field0) renameMessage,
+    required TResult Function(DartChangeParticipantMessage field0)
+        changeParticipants,
+    required TResult Function(DartReactMessage field0) react,
+    required TResult Function() delivered,
+    required TResult Function() read,
+    required TResult Function() typing,
+    required TResult Function(DartUnsendMessage field0) unsend,
+    required TResult Function(DartEditMessage field0) edit,
+    required TResult Function(DartIconChangeMessage field0) iconChange,
+    required TResult Function() stopTyping,
+    required TResult Function(bool field0) enableSmsActivation,
+    required TResult Function() messageReadOnDevice,
+    required TResult Function() smsConfirmSent,
+  }) {
+    return smsConfirmSent();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(DartNormalMessage field0)? message,
+    TResult? Function(DartRenameMessage field0)? renameMessage,
+    TResult? Function(DartChangeParticipantMessage field0)? changeParticipants,
+    TResult? Function(DartReactMessage field0)? react,
+    TResult? Function()? delivered,
+    TResult? Function()? read,
+    TResult? Function()? typing,
+    TResult? Function(DartUnsendMessage field0)? unsend,
+    TResult? Function(DartEditMessage field0)? edit,
+    TResult? Function(DartIconChangeMessage field0)? iconChange,
+    TResult? Function()? stopTyping,
+    TResult? Function(bool field0)? enableSmsActivation,
+    TResult? Function()? messageReadOnDevice,
+    TResult? Function()? smsConfirmSent,
+  }) {
+    return smsConfirmSent?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(DartNormalMessage field0)? message,
+    TResult Function(DartRenameMessage field0)? renameMessage,
+    TResult Function(DartChangeParticipantMessage field0)? changeParticipants,
+    TResult Function(DartReactMessage field0)? react,
+    TResult Function()? delivered,
+    TResult Function()? read,
+    TResult Function()? typing,
+    TResult Function(DartUnsendMessage field0)? unsend,
+    TResult Function(DartEditMessage field0)? edit,
+    TResult Function(DartIconChangeMessage field0)? iconChange,
+    TResult Function()? stopTyping,
+    TResult Function(bool field0)? enableSmsActivation,
+    TResult Function()? messageReadOnDevice,
+    TResult Function()? smsConfirmSent,
+    required TResult orElse(),
+  }) {
+    if (smsConfirmSent != null) {
+      return smsConfirmSent();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(DartMessage_Message value) message,
+    required TResult Function(DartMessage_RenameMessage value) renameMessage,
+    required TResult Function(DartMessage_ChangeParticipants value)
+        changeParticipants,
+    required TResult Function(DartMessage_React value) react,
+    required TResult Function(DartMessage_Delivered value) delivered,
+    required TResult Function(DartMessage_Read value) read,
+    required TResult Function(DartMessage_Typing value) typing,
+    required TResult Function(DartMessage_Unsend value) unsend,
+    required TResult Function(DartMessage_Edit value) edit,
+    required TResult Function(DartMessage_IconChange value) iconChange,
+    required TResult Function(DartMessage_StopTyping value) stopTyping,
+    required TResult Function(DartMessage_EnableSmsActivation value)
+        enableSmsActivation,
+    required TResult Function(DartMessage_MessageReadOnDevice value)
+        messageReadOnDevice,
+    required TResult Function(DartMessage_SmsConfirmSent value) smsConfirmSent,
+  }) {
+    return smsConfirmSent(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(DartMessage_Message value)? message,
+    TResult? Function(DartMessage_RenameMessage value)? renameMessage,
+    TResult? Function(DartMessage_ChangeParticipants value)? changeParticipants,
+    TResult? Function(DartMessage_React value)? react,
+    TResult? Function(DartMessage_Delivered value)? delivered,
+    TResult? Function(DartMessage_Read value)? read,
+    TResult? Function(DartMessage_Typing value)? typing,
+    TResult? Function(DartMessage_Unsend value)? unsend,
+    TResult? Function(DartMessage_Edit value)? edit,
+    TResult? Function(DartMessage_IconChange value)? iconChange,
+    TResult? Function(DartMessage_StopTyping value)? stopTyping,
+    TResult? Function(DartMessage_EnableSmsActivation value)?
+        enableSmsActivation,
+    TResult? Function(DartMessage_MessageReadOnDevice value)?
+        messageReadOnDevice,
+    TResult? Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
+  }) {
+    return smsConfirmSent?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(DartMessage_Message value)? message,
+    TResult Function(DartMessage_RenameMessage value)? renameMessage,
+    TResult Function(DartMessage_ChangeParticipants value)? changeParticipants,
+    TResult Function(DartMessage_React value)? react,
+    TResult Function(DartMessage_Delivered value)? delivered,
+    TResult Function(DartMessage_Read value)? read,
+    TResult Function(DartMessage_Typing value)? typing,
+    TResult Function(DartMessage_Unsend value)? unsend,
+    TResult Function(DartMessage_Edit value)? edit,
+    TResult Function(DartMessage_IconChange value)? iconChange,
+    TResult Function(DartMessage_StopTyping value)? stopTyping,
+    TResult Function(DartMessage_EnableSmsActivation value)?
+        enableSmsActivation,
+    TResult Function(DartMessage_MessageReadOnDevice value)?
+        messageReadOnDevice,
+    TResult Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
+    required TResult orElse(),
+  }) {
+    if (smsConfirmSent != null) {
+      return smsConfirmSent(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class DartMessage_SmsConfirmSent implements DartMessage {
+  const factory DartMessage_SmsConfirmSent() = _$DartMessage_SmsConfirmSentImpl;
 }
 
 /// @nodoc
@@ -3969,6 +4851,318 @@ abstract class DartMessagePart_Attachment implements DartMessagePart {
   @JsonKey(ignore: true)
   _$$DartMessagePart_AttachmentImplCopyWith<_$DartMessagePart_AttachmentImpl>
       get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+mixin _$DartMessageType {
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() iMessage,
+    required TResult Function(bool isPhone, String usingNumber) sms,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? iMessage,
+    TResult? Function(bool isPhone, String usingNumber)? sms,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? iMessage,
+    TResult Function(bool isPhone, String usingNumber)? sms,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(DartMessageType_IMessage value) iMessage,
+    required TResult Function(DartMessageType_SMS value) sms,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(DartMessageType_IMessage value)? iMessage,
+    TResult? Function(DartMessageType_SMS value)? sms,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(DartMessageType_IMessage value)? iMessage,
+    TResult Function(DartMessageType_SMS value)? sms,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $DartMessageTypeCopyWith<$Res> {
+  factory $DartMessageTypeCopyWith(
+          DartMessageType value, $Res Function(DartMessageType) then) =
+      _$DartMessageTypeCopyWithImpl<$Res, DartMessageType>;
+}
+
+/// @nodoc
+class _$DartMessageTypeCopyWithImpl<$Res, $Val extends DartMessageType>
+    implements $DartMessageTypeCopyWith<$Res> {
+  _$DartMessageTypeCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+}
+
+/// @nodoc
+abstract class _$$DartMessageType_IMessageImplCopyWith<$Res> {
+  factory _$$DartMessageType_IMessageImplCopyWith(
+          _$DartMessageType_IMessageImpl value,
+          $Res Function(_$DartMessageType_IMessageImpl) then) =
+      __$$DartMessageType_IMessageImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$DartMessageType_IMessageImplCopyWithImpl<$Res>
+    extends _$DartMessageTypeCopyWithImpl<$Res, _$DartMessageType_IMessageImpl>
+    implements _$$DartMessageType_IMessageImplCopyWith<$Res> {
+  __$$DartMessageType_IMessageImplCopyWithImpl(
+      _$DartMessageType_IMessageImpl _value,
+      $Res Function(_$DartMessageType_IMessageImpl) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$DartMessageType_IMessageImpl implements DartMessageType_IMessage {
+  const _$DartMessageType_IMessageImpl();
+
+  @override
+  String toString() {
+    return 'DartMessageType.iMessage()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$DartMessageType_IMessageImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() iMessage,
+    required TResult Function(bool isPhone, String usingNumber) sms,
+  }) {
+    return iMessage();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? iMessage,
+    TResult? Function(bool isPhone, String usingNumber)? sms,
+  }) {
+    return iMessage?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? iMessage,
+    TResult Function(bool isPhone, String usingNumber)? sms,
+    required TResult orElse(),
+  }) {
+    if (iMessage != null) {
+      return iMessage();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(DartMessageType_IMessage value) iMessage,
+    required TResult Function(DartMessageType_SMS value) sms,
+  }) {
+    return iMessage(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(DartMessageType_IMessage value)? iMessage,
+    TResult? Function(DartMessageType_SMS value)? sms,
+  }) {
+    return iMessage?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(DartMessageType_IMessage value)? iMessage,
+    TResult Function(DartMessageType_SMS value)? sms,
+    required TResult orElse(),
+  }) {
+    if (iMessage != null) {
+      return iMessage(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class DartMessageType_IMessage implements DartMessageType {
+  const factory DartMessageType_IMessage() = _$DartMessageType_IMessageImpl;
+}
+
+/// @nodoc
+abstract class _$$DartMessageType_SMSImplCopyWith<$Res> {
+  factory _$$DartMessageType_SMSImplCopyWith(_$DartMessageType_SMSImpl value,
+          $Res Function(_$DartMessageType_SMSImpl) then) =
+      __$$DartMessageType_SMSImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({bool isPhone, String usingNumber});
+}
+
+/// @nodoc
+class __$$DartMessageType_SMSImplCopyWithImpl<$Res>
+    extends _$DartMessageTypeCopyWithImpl<$Res, _$DartMessageType_SMSImpl>
+    implements _$$DartMessageType_SMSImplCopyWith<$Res> {
+  __$$DartMessageType_SMSImplCopyWithImpl(_$DartMessageType_SMSImpl _value,
+      $Res Function(_$DartMessageType_SMSImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? isPhone = null,
+    Object? usingNumber = null,
+  }) {
+    return _then(_$DartMessageType_SMSImpl(
+      isPhone: null == isPhone
+          ? _value.isPhone
+          : isPhone // ignore: cast_nullable_to_non_nullable
+              as bool,
+      usingNumber: null == usingNumber
+          ? _value.usingNumber
+          : usingNumber // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$DartMessageType_SMSImpl implements DartMessageType_SMS {
+  const _$DartMessageType_SMSImpl(
+      {required this.isPhone, required this.usingNumber});
+
+  @override
+  final bool isPhone;
+  @override
+  final String usingNumber;
+
+  @override
+  String toString() {
+    return 'DartMessageType.sms(isPhone: $isPhone, usingNumber: $usingNumber)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$DartMessageType_SMSImpl &&
+            (identical(other.isPhone, isPhone) || other.isPhone == isPhone) &&
+            (identical(other.usingNumber, usingNumber) ||
+                other.usingNumber == usingNumber));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, isPhone, usingNumber);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$DartMessageType_SMSImplCopyWith<_$DartMessageType_SMSImpl> get copyWith =>
+      __$$DartMessageType_SMSImplCopyWithImpl<_$DartMessageType_SMSImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() iMessage,
+    required TResult Function(bool isPhone, String usingNumber) sms,
+  }) {
+    return sms(isPhone, usingNumber);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? iMessage,
+    TResult? Function(bool isPhone, String usingNumber)? sms,
+  }) {
+    return sms?.call(isPhone, usingNumber);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? iMessage,
+    TResult Function(bool isPhone, String usingNumber)? sms,
+    required TResult orElse(),
+  }) {
+    if (sms != null) {
+      return sms(isPhone, usingNumber);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(DartMessageType_IMessage value) iMessage,
+    required TResult Function(DartMessageType_SMS value) sms,
+  }) {
+    return sms(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(DartMessageType_IMessage value)? iMessage,
+    TResult? Function(DartMessageType_SMS value)? sms,
+  }) {
+    return sms?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(DartMessageType_IMessage value)? iMessage,
+    TResult Function(DartMessageType_SMS value)? sms,
+    required TResult orElse(),
+  }) {
+    if (sms != null) {
+      return sms(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class DartMessageType_SMS implements DartMessageType {
+  const factory DartMessageType_SMS(
+      {required final bool isPhone,
+      required final String usingNumber}) = _$DartMessageType_SMSImpl;
+
+  bool get isPhone;
+  String get usingNumber;
+  @JsonKey(ignore: true)
+  _$$DartMessageType_SMSImplCopyWith<_$DartMessageType_SMSImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
