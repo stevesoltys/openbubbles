@@ -726,9 +726,9 @@ class RustPushService extends GetxService {
   };
 
   Future<(AttributedBody, String, List<Attachment>)> indexedPartsToAttributedBodyDyn(
-      List<api.DartIndexedMessagePart> parts, String msgId, Map<String, dynamic>? existingBody) async {
+      List<api.DartIndexedMessagePart> parts, String msgId, AttributedBody? existingBody) async {
     var bodyString = "";
-    List<Run> body = existingBody?["runs"] ?? [];
+    List<Run> body = existingBody?.runs.copy() ?? [];
     List<Attachment> attachments = [];
     var index = -1;
     for (var indexedParts in parts) {
@@ -906,7 +906,7 @@ class RustPushService extends GetxService {
       }
       
       var attributedBodyDataInclusive = await indexedPartsToAttributedBodyDyn(
-          msg.field0.newParts.field0, myMsg.id, msgObj.attributedBody.map((e) => e.toMap()).toList().firstOrNull);
+          msg.field0.newParts.field0, myMsg.id, msgObj.attributedBody.firstOrNull);
       var attributedBodyEdited = await indexedPartsToAttributedBodyDyn(msg.field0.newParts.field0, myMsg.id, null);
       msgObj.text = attributedBodyDataInclusive.$2;
       msgObj.dateEdited = DateTime.now();
