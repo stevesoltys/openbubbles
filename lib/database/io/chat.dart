@@ -383,7 +383,8 @@ class Chat {
     this.lastReadMessageGuid,
     this.usingHandle,
     this.isRpSms = false,
-  }) {
+    List<String>? guidRefs,
+  }) : guidRefs = guidRefs ?? [guid] {
     customAvatarPath = customAvatar;
     pinIndex = pinnedIndex;
     if (textFieldAttachments.isEmpty) textFieldAttachments = [];
@@ -416,6 +417,7 @@ class Chat {
       lastReadMessageGuid: json["lastReadMessageGuid"],
       usingHandle: json["usingHandle"],
       isRpSms: json["isRpSms"] ?? false,
+      guidRefs: json["guidRefs"] ?? [],
     );
   }
 
@@ -456,7 +458,8 @@ class Chat {
     bool updateGroupVersion = false,
     bool updateUsingHandle = false,
     bool updateIsSms = false,
-    bool updateAPNTitle = false
+    bool updateAPNTitle = false,
+    bool updateGuidRefs = false,
   }) {
     if (kIsWeb) return this;
     Database.runInTransaction(TxMode.write, () {
@@ -523,6 +526,9 @@ class Chat {
       if (!updateIsSms) {
         isRpSms = existing?.isRpSms ?? isRpSms;
       }
+      if (!updateGuidRefs) {
+        guidRefs = existing?.guidRefs ?? guidRefs;
+      }
 
       /// Save the chat and add the participants
       for (int i = 0; i < participants.length; i++) {
@@ -546,7 +552,7 @@ class Chat {
     return this;
   }
   
-  api.DartConversationData getConversationData() {
+  Future<api.DartConversationData> getConversationData() async {
     var handles = participants.map((e) {
       if (e.address.isEmail) {
         return "mailto:${e.address}";
@@ -554,6 +560,7 @@ class Chat {
         return "tel:${e.address}";
       }
     }).toList();
+    handles.add(await ensureHandle());
     return api.DartConversationData(participants: handles, cvName: apnTitle, senderGuid: guid);
   }
 
@@ -964,14 +971,36 @@ class Chat {
     return null;
   }
 
-  static Future<Chat> findByRust(api.DartConversationData data) async {
+  // if soft is false, return is never null
+  // only null if soft is true and no matching chat is found
+  static Future<Chat?> findByRust(api.DartConversationData data, {bool soft = false}) async {
     if (data.participants.isEmpty) {
       throw Exception("empty participants!??");
     }
+
+    if (data.senderGuid != null) {
+      // first find by direct GUID
+      final direct = Chat.findOne(guid: data.senderGuid);
+      if (direct != null) return direct;
+
+      // prioritize finding by related GUID
+      final query = chatBox.query(Chat_.guidRefs.containsElement(data.senderGuid!)).build();
+      final results = query.find();
+      query.close();
+      if (results.isNotEmpty) {
+        // we found one!
+        return results[0];
+      }
+    }
+
     final name = data.cvName;
     var dartParticipants = await RustPushBBUtils.rustParticipantsToBB(data.participants);
 
-    final query = (chatBox.query(name == null ? null : Chat_.apnTitle.equals(name))
+    var cond = Chat_.dateDeleted.isNull();
+    if (name != null) {
+      cond = cond.and(Chat_.apnTitle.equals(name));
+    }
+    final query = (chatBox.query(cond)
           ..linkMany(Chat_.handles, Handle_.address.oneOf(dartParticipants.map((e) => e.address).toList())))
             .build();
     final results = query.find();
@@ -988,12 +1017,16 @@ class Chat {
       }
       return participantsCopy.isEmpty;
     });
-    if (result == null) {
+    if (result == null && !soft) {
       result = await backend.createChat(dartParticipants.map((e) => e.address).toList(), null, "iMessage");
       result.displayName = data.cvName;
       result.apnTitle = data.cvName;
       result = result.save();
       chats.updateChat(result);
+    }
+    if (data.senderGuid != null && result != null) {
+      result.guidRefs.add(data.senderGuid!);
+      result.save(updateGuidRefs: true);
     }
     return result;
   }
@@ -1160,5 +1193,6 @@ class Chat {
     "lockChatName": lockChatName,
     "lockChatIcon": lockChatIcon,
     "lastReadMessageGuid": lastReadMessageGuid,
+    "guidRefs": guidRefs,
   };
 }

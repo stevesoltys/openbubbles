@@ -5,6 +5,7 @@ import 'package:bluebubbles/database/database.dart';
 import 'package:bluebubbles/models/global/platform_file.dart';
 import 'package:bluebubbles/objectbox.g.dart';
 import 'package:bluebubbles/database/io/message.dart';
+import 'package:bluebubbles/services/network/backend_service.dart';
 import 'package:bluebubbles/services/services.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
@@ -13,6 +14,7 @@ import 'package:mime_type/mime_type.dart';
 // ignore: unnecessary_import
 import 'package:objectbox/objectbox.dart';
 import 'package:universal_io/io.dart';
+import 'package:telephony_plus/src/models/attachment.dart' as TelephonyAttachment;
 
 @Entity()
 class Attachment {
@@ -94,6 +96,18 @@ class Attachment {
 
   PlatformFile getFile() {
     return PlatformFile(name: transferName!, bytes: bytes, path: kIsWeb ? null : path, size: totalBytes ?? 0);
+  }
+
+  Future<TelephonyAttachment.Attachment> toTelephony() async {
+    PlatformFile file;
+    if (getFile().exists()) {
+      file = getFile();
+    } else {
+      file = await backend.downloadAttachment(this,
+            original: true, onReceiveProgress: (count, total) => {});
+    }
+    final bytes = await file.getBytes();
+    return TelephonyAttachment.Attachment(bytes: bytes, mimeType: mimeType!, filename: transferName!);
   }
 
   /// Save a new attachment or update an existing attachment on disk

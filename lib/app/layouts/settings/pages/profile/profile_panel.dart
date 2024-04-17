@@ -9,10 +9,13 @@ import 'package:bluebubbles/app/wrappers/stateful_boilerplate.dart';
 import 'package:bluebubbles/database/models.dart';
 import 'package:bluebubbles/services/services.dart';
 import 'package:collection/collection.dart';
+import 'package:bluebubbles/services/network/backend_service.dart';
+import 'package:bluebubbles/services/rustpush/rustpush_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:bluebubbles/services/network/backend_service.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:telephony_plus/telephony_plus.dart';
 import 'package:universal_io/io.dart';
 
 class ProfilePanel extends StatefulWidget {
@@ -375,6 +378,23 @@ class _ProfilePanelState extends OptimizedState<ProfilePanel> with WidgetsBindin
                             await backend.setDefaultHandle(value);
                           },
                         ),
+                    if (usingRustPush && Platform.isAndroid)
+                      Obx(() => SettingsSwitch(
+                          onChanged: (bool val) async {
+                            if (val) {
+                              // await TelephonyPlus().requestPermissions();
+                            }
+                            (backend as RustPushBackend).broadcastSmsForwardingState(val);
+                            ss.settings.isSmsRouter.value = val;
+                            ss.settings.smsForwardingEnabled.value = val;
+                            ss.saveSettings();
+                          },
+                          initialVal: ss.settings.isSmsRouter.value,
+                          title: "Local SMS forwarding",
+                          subtitle: "Receive/Send SMS messages from other devices through this phone${accountInfo['vetted_aliases']?.any((i) => i['Alias'].contains("tel:") as bool) ?? false ? "" : ". Warning: no phone handles are registered; official Apple clients will only be able to receive forwarded SMS"}",
+                          backgroundColor: tileColor,
+                          isThreeLine: true,
+                        ))
                     ],
                   )),
                 if (!isNullOrEmpty(accountContact['name']))

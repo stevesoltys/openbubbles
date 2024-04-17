@@ -327,6 +327,7 @@ class ActionHandler extends GetxService {
     if ((!ls.isAlive || ss.settings.endpointUnifiedPush.value != "") && shouldNotify) {
       await MessageHelper.handleNotification(m, c);
     }
+    await m.forwardIfNessesary(c);
     await c.addMessage(m);
   }
 

@@ -112,7 +112,7 @@ final _entities = <ModelEntity>[
   ModelEntity(
       id: const IdUid(3, 9017250848141753702),
       name: 'Chat',
-      lastPropertyId: const IdUid(32, 3790179132714024264),
+      lastPropertyId: const IdUid(33, 7747554395546158964),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
@@ -245,6 +245,11 @@ final _entities = <ModelEntity>[
             id: const IdUid(32, 3790179132714024264),
             name: 'isRpSms',
             type: 1,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(33, 7747554395546158964),
+            name: 'guidRefs',
+            type: 30,
             flags: 0)
       ],
       relations: <ModelRelation>[
@@ -421,7 +426,7 @@ final _entities = <ModelEntity>[
   ModelEntity(
       id: const IdUid(13, 4148278195232901830),
       name: 'Message',
-      lastPropertyId: const IdUid(49, 4357660909480898880),
+      lastPropertyId: const IdUid(50, 6516059048310614016),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
@@ -620,6 +625,11 @@ final _entities = <ModelEntity>[
         ModelProperty(
             id: const IdUid(49, 4357660909480898880),
             name: 'isBookmarked',
+            type: 1,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(50, 6516059048310614016),
+            name: 'hasBeenForwarded',
             type: 1,
             flags: 0)
       ],
@@ -1039,7 +1049,9 @@ ModelDefinition getObjectBoxModel() {
           final apnTitleOffset = object.apnTitle == null
               ? null
               : fbb.writeString(object.apnTitle!);
-          fbb.startTable(33);
+          final guidRefsOffset = fbb.writeList(
+              object.guidRefs.map(fbb.writeString).toList(growable: false));
+          fbb.startTable(34);
           fbb.addInt64(0, object.id ?? 0);
           fbb.addOffset(2, guidOffset);
           fbb.addOffset(4, chatIdentifierOffset);
@@ -1067,6 +1079,7 @@ ModelDefinition getObjectBoxModel() {
           fbb.addOffset(29, usingHandleOffset);
           fbb.addOffset(30, apnTitleOffset);
           fbb.addBool(31, object.isRpSms);
+          fbb.addOffset(32, guidRefsOffset);
           fbb.finish(fbb.endTable());
           return object.id ?? 0;
         },
@@ -1125,6 +1138,10 @@ ModelDefinition getObjectBoxModel() {
                   .vTableGetNullable(buffer, rootOffset, 62);
           final isRpSmsParam =
               const fb.BoolReader().vTableGet(buffer, rootOffset, 66, false);
+          final guidRefsParam = const fb.ListReader<String>(
+                  fb.StringReader(asciiOptimization: true),
+                  lazy: false)
+              .vTableGet(buffer, rootOffset, 68, []);
           final object = Chat(
               id: idParam,
               guid: guidParam,
@@ -1145,7 +1162,8 @@ ModelDefinition getObjectBoxModel() {
               lockChatIcon: lockChatIconParam,
               lastReadMessageGuid: lastReadMessageGuidParam,
               usingHandle: usingHandleParam,
-              isRpSms: isRpSmsParam)
+              isRpSms: isRpSmsParam,
+              guidRefs: guidRefsParam)
             ..dbOnlyLatestMessageDate = dbOnlyLatestMessageDateValue == null
                 ? null
                 : DateTime.fromMillisecondsSinceEpoch(
@@ -1431,7 +1449,7 @@ ModelDefinition getObjectBoxModel() {
           final dbMetadataOffset = object.dbMetadata == null
               ? null
               : fbb.writeString(object.dbMetadata!);
-          fbb.startTable(50);
+          fbb.startTable(51);
           fbb.addInt64(0, object.id ?? 0);
           fbb.addInt64(1, object.originalROWID);
           fbb.addOffset(2, guidOffset);
@@ -1471,6 +1489,7 @@ ModelDefinition getObjectBoxModel() {
           fbb.addBool(46, object.wasDeliveredQuietly);
           fbb.addBool(47, object.didNotifyRecipient);
           fbb.addBool(48, object.isBookmarked);
+          fbb.addBool(49, object.hasBeenForwarded);
           fbb.finish(fbb.endTable());
           return object.id ?? 0;
         },
@@ -1567,6 +1586,8 @@ ModelDefinition getObjectBoxModel() {
               const fb.BoolReader().vTableGet(buffer, rootOffset, 98, false);
           final isBookmarkedParam =
               const fb.BoolReader().vTableGet(buffer, rootOffset, 100, false);
+          final hasBeenForwardedParam =
+              const fb.BoolReader().vTableGet(buffer, rootOffset, 102, false);
           final object = Message(
               id: idParam,
               originalROWID: originalROWIDParam,
@@ -1600,7 +1621,8 @@ ModelDefinition getObjectBoxModel() {
               dateEdited: dateEditedParam,
               wasDeliveredQuietly: wasDeliveredQuietlyParam,
               didNotifyRecipient: didNotifyRecipientParam,
-              isBookmarked: isBookmarkedParam)
+              isBookmarked: isBookmarkedParam,
+              hasBeenForwarded: hasBeenForwardedParam)
             ..bigEmoji =
                 const fb.BoolReader().vTableGetNullable(buffer, rootOffset, 76)
             ..dbAttributedBody = const fb.StringReader(asciiOptimization: true)
@@ -1949,6 +1971,10 @@ class Chat_ {
   static final isRpSms =
       QueryBooleanProperty<Chat>(_entities[1].properties[25]);
 
+  /// see [Chat.guidRefs]
+  static final guidRefs =
+      QueryStringVectorProperty<Chat>(_entities[1].properties[26]);
+
   /// see [Chat.handles]
   static final handles =
       QueryRelationToMany<Chat, Handle>(_entities[1].relations[0]);
@@ -2218,6 +2244,10 @@ class Message_ {
   /// see [Message.isBookmarked]
   static final isBookmarked =
       QueryBooleanProperty<Message>(_entities[5].properties[38]);
+
+  /// see [Message.hasBeenForwarded]
+  static final hasBeenForwarded =
+      QueryBooleanProperty<Message>(_entities[5].properties[39]);
 }
 
 /// [ThemeObject] entity fields to define ObjectBox queries.

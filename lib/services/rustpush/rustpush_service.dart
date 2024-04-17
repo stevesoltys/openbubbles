@@ -254,7 +254,8 @@ class RustPushBackend implements BackendService {
 
   api.DartMessageType getService(bool isSms) {
     if (isSms) {
-      return const api.DartMessageType.sms(isPhone: false, usingNumber: "");
+      // TODO get phone number
+      return api.DartMessageType.sms(isPhone: ss.settings.isSmsRouter.value, usingNumber: "");
     }
     return const api.DartMessageType.iMessage();
   }
@@ -275,7 +276,7 @@ class RustPushBackend implements BackendService {
     if (message != null) {
       var msg = await api.newMsg(
           state: pushService.state,
-          conversation: chat.getConversationData(),
+          conversation: await chat.getConversationData(),
           message: api.DartMessage.message(api.DartNormalMessage(
               parts: api.DartMessageParts(
                   field0: [api.DartIndexedMessagePart(field0: api.DartMessagePart.text(message))]),
@@ -288,6 +289,7 @@ class RustPushBackend implements BackendService {
       chat.save(); //save for reflectMessage
       final newMessage = await pushService.reflectMessageDyn(msg);
       newMessage.chat.target = chat;
+      newMessage.forwardIfNessesary(chat);
       newMessage.save();
     }
     await chats.addChat(chat);
@@ -329,7 +331,7 @@ class RustPushBackend implements BackendService {
     var partIndex = int.tryParse(m.threadOriginatorPart?.split(":").firstOrNull ?? "");
     var msg = await api.newMsg(
         state: pushService.state,
-        conversation: chat.getConversationData(),
+        conversation: await chat.getConversationData(),
         sender: await chat.ensureHandle(),
         message: api.DartMessage.message(api.DartNormalMessage(
           parts: api.DartMessageParts(
@@ -349,6 +351,29 @@ class RustPushBackend implements BackendService {
     return false;
   }
 
+  Future<void> broadcastSmsForwardingState(bool state) async {
+    var handles = await api.getHandles(state: pushService.state);
+    var useHandle = handles.firstWhereOrNull((handle) => handle.contains("tel:")) ?? handles.first;
+    var msg = await api.newMsg(
+      state: pushService.state,
+      conversation: api.DartConversationData(participants: [useHandle], cvName: null, senderGuid: null),
+      sender: useHandle,
+      message: api.DartMessage.enableSmsActivation(state),
+    );
+    await api.send(state: pushService.state, msg: msg);
+  }
+
+  Future<void> confirmSmsSent(Message m) async {
+    var msg = await api.newMsg(
+      state: pushService.state,
+      conversation: await m.getChat()!.getConversationData(),
+      sender: await m.getChat()!.ensureHandle(),
+      message: const api.DartMessage.smsConfirmSent(),
+    );
+    msg.id = m.guid!;
+    await api.send(state: pushService.state, msg: msg);
+  }
+
   @override
   Future<bool> canUploadGroupPhotos() async {
     return true;
@@ -358,7 +383,7 @@ class RustPushBackend implements BackendService {
   Future<bool> deleteChatIcon(Chat chat, {CancelToken? cancelToken}) async {
     var msg = await api.newMsg(
       state: pushService.state,
-      conversation: chat.getConversationData(),
+      conversation: await chat.getConversationData(),
       sender: await chat.ensureHandle(),
       message: api.DartMessage.iconChange(api.DartIconChangeMessage(groupVersion: chat.groupVersion!)),
     );
@@ -420,7 +445,7 @@ class RustPushBackend implements BackendService {
     }
     var msg = await api.newMsg(
       state: pushService.state,
-      conversation: chat.getConversationData(),
+      conversation: await chat.getConversationData(),
       sender: await chat.ensureHandle(),
       message: api.DartMessage.iconChange(api.DartIconChangeMessage(groupVersion: chat.groupVersion!, file: mmcs!)),
     );
@@ -433,7 +458,7 @@ class RustPushBackend implements BackendService {
     var partIndex = int.tryParse(m.threadOriginatorPart?.split(":").firstOrNull ?? "");
     var msg = await api.newMsg(
       state: pushService.state,
-      conversation: chat.getConversationData(),
+      conversation: await chat.getConversationData(),
       sender: await chat.ensureHandle(),
       message: api.DartMessage.message(api.DartNormalMessage(
         parts: api.DartMessageParts(field0: [api.DartIndexedMessagePart(field0: api.DartMessagePart.text(m.text!))]),
@@ -457,13 +482,17 @@ class RustPushBackend implements BackendService {
         message.message is api.DartMessage_Typing)) {
       return true;
     }
-    var chat = await Chat.findByRust(message.conversation!);
+    var chat = await pushService.chatForMessage(message);
     if (chat.isRpSms) {
       return true; // no delivery recipts :)
     }
     var msg = await api.newMsg(
       state: pushService.state,
-      conversation: message.conversation!,
+      conversation: api.DartConversationData(
+        participants: [message.sender!],
+        cvName: message.conversation!.cvName,
+        senderGuid: message.conversation!.senderGuid
+      ),
       sender: await chat.ensureHandle(),
       message: const api.DartMessage.delivered(),
     );
@@ -482,7 +511,7 @@ class RustPushBackend implements BackendService {
     var latestMsg = chat.latestMessage.guid;
     var msg = await api.newMsg(
         state: pushService.state,
-        conversation: chat.getConversationData(),
+        conversation: await chat.getConversationData(),
         sender: await chat.ensureHandle(),
         message: const api.DartMessage.read());
     msg.id = latestMsg!;
@@ -492,7 +521,7 @@ class RustPushBackend implements BackendService {
 
   @override
   Future<bool> renameChat(Chat chat, String newName) async {
-    var data = chat.getConversationData();
+    var data = await chat.getConversationData();
     var msg = await api.newMsg(
         state: pushService.state,
         conversation: data,
@@ -503,7 +532,6 @@ class RustPushBackend implements BackendService {
     inq.queue(IncomingItem(
       chat: chat,
       message: await pushService.reflectMessageDyn(msg),
-      tempGuid: uuid.v4(),
       type: QueueType.newMessage
     ));
     return true;
@@ -512,7 +540,7 @@ class RustPushBackend implements BackendService {
   @override
   Future<bool> chatParticipant(ParticipantOp method, Chat chat, String newName) async {
     chat.groupVersion = (chat.groupVersion ?? -1) + 1;
-    var data = chat.getConversationData();
+    var data = await chat.getConversationData();
     var newParticipants = data.participants.copy();
     if (method == ParticipantOp.Add) {
       var target = await RustPushBBUtils.formatAndAddPrefix(newName);
@@ -537,7 +565,6 @@ class RustPushBackend implements BackendService {
     inq.queue(IncomingItem(
       chat: chat,
       message: await pushService.reflectMessageDyn(msg),
-      tempGuid: uuid.v4(),
       type: QueueType.newMessage
     ));
     return true;
@@ -565,7 +592,7 @@ class RustPushBackend implements BackendService {
     reaction = enabled ? reaction : reaction.substring(1);
     var msg = await api.newMsg(
         state: pushService.state,
-        conversation: chat.getConversationData(),
+        conversation: await chat.getConversationData(),
         sender: await chat.ensureHandle(),
         message: api.DartMessage.react(api.DartReactMessage(
             toUuid: selected.guid!,
@@ -583,7 +610,7 @@ class RustPushBackend implements BackendService {
     var msg = await api.newMsg(
         state: pushService.state,
         sender: await msgObj.chat.target!.ensureHandle(),
-        conversation: msgObj.chat.target!.getConversationData(),
+        conversation: await msgObj.chat.target!.getConversationData(),
         message: api.DartMessage.unsend(api.DartUnsendMessage(tuuid: msgObj.guid!, editPart: part.part)));
     await api.send(state: pushService.state, msg: msg);
     return await pushService.reflectMessageDyn(msg);
@@ -593,7 +620,7 @@ class RustPushBackend implements BackendService {
   Future<Message?> edit(Message msgObj, String text, int part) async {
     var msg = await api.newMsg(
         state: pushService.state,
-        conversation: msgObj.chat.target!.getConversationData(),
+        conversation: await msgObj.chat.target!.getConversationData(),
         sender: await msgObj.chat.target!.ensureHandle(),
         message: api.DartMessage.edit(api.DartEditMessage(
             tuuid: msgObj.guid!,
@@ -650,7 +677,7 @@ class RustPushBackend implements BackendService {
     }
     var msg = await api.newMsg(
       state: pushService.state,
-      conversation: c.getConversationData(),
+      conversation: await c.getConversationData(),
       sender: await c.ensureHandle(),
       message: const api.DartMessage.typing()
     );
@@ -664,7 +691,7 @@ class RustPushBackend implements BackendService {
     }
     var msg = await api.newMsg(
       state: pushService.state,
-      conversation: c.getConversationData(),
+      conversation: await c.getConversationData(),
       sender: await c.ensureHandle(),
       message: const api.DartMessage.stopTyping()
     );
@@ -755,7 +782,7 @@ class RustPushService extends GetxService {
   }
 
   Future<Message> reflectMessageDyn(api.DartIMessage myMsg) async {
-    var chat = myMsg.conversation != null ? await Chat.findByRust(myMsg.conversation!) : null;
+    var chat = myMsg.conversation != null ? await chatForMessage(myMsg) : null;
     var myHandles = (await api.getHandles(state: pushService.state));
     if (myMsg.message is api.DartMessage_Message) {
       var innerMsg = myMsg.message as api.DartMessage_Message;
@@ -787,10 +814,15 @@ class RustPushService extends GetxService {
       );
     } else if (myMsg.message is api.DartMessage_ChangeParticipants) {
       var msg = myMsg.message as api.DartMessage_ChangeParticipants;
-      var isAdd = msg.field0.newParticipants.length > chat!.participants.length;
-      var participantHandles = await RustPushBBUtils.rustParticipantsToBB(msg.field0.newParticipants);
-      var didLeave = !msg.field0.newParticipants.contains(await chat.ensureHandle());
-      var changed = didLeave
+      var didILeave = !msg.field0.newParticipants.contains(await chat!.ensureHandle());
+      var didIJoin = !myMsg.conversation!.participants.contains(await chat.ensureHandle());
+      var newParticipants = msg.field0.newParticipants.copy();
+      if (!didILeave) {
+        newParticipants.remove(await chat.ensureHandle());
+      }
+      var isAdd = newParticipants.length > chat.participants.length || didIJoin;
+      var participantHandles = await RustPushBBUtils.rustParticipantsToBB(newParticipants);
+      var changed = didILeave || didIJoin
           ? RustPushBBUtils.rustHandleToBB(await chat.ensureHandle())
           : isAdd
               ? participantHandles
@@ -801,15 +833,17 @@ class RustPushService extends GetxService {
       chat.handles.clear();
       chat.handles.addAll(participantHandles);
       chat.handles.applyToDb();
+      chat.handlesChanged();
       chat = chat.getParticipants();
       chat.save(updateGroupVersion: true);
+      var personDidLeave = RustPushBBUtils.bbHandleToRust(changed) == myMsg.sender && !isAdd;
       return Message(
         guid: myMsg.id,
         isFromMe: myHandles.contains(myMsg.sender),
         handleId: RustPushBBUtils.rustHandleToBB(myMsg.sender!).originalROWID!,
         dateCreated: DateTime.fromMillisecondsSinceEpoch(myMsg.sentTimestamp),
-        itemType: didLeave ? 3 : 1,
-        groupActionType: isAdd || didLeave ? 0 : 1,
+        itemType: personDidLeave ? 3 : 1,
+        groupActionType: isAdd || personDidLeave ? 0 : 1,
         otherHandle: changed.originalROWID
       );
     } else if (myMsg.message is api.DartMessage_IconChange) {
@@ -910,6 +944,39 @@ class RustPushService extends GetxService {
     throw Exception("bad message type!");
   }
 
+  // finds chat for message. Use over `Chat.findByRust` for incoming messages
+  // to handle after conversation changes (renames, participants)
+  Future<Chat> chatForMessage(api.DartIMessage myMsg) async {
+    // find existing saved message and use that chat if we're getting a replay
+    var existing = Message.findOne(guid: myMsg.id);
+    if (existing?.getChat() != null) {
+      return existing!.getChat()!;
+    }
+    if (myMsg.message is api.DartMessage_RenameMessage) {
+      var found = (await Chat.findByRust(myMsg.conversation!, soft: true));
+      if (found == null) {
+        // try using the new name
+        var msg = myMsg.message as api.DartMessage_RenameMessage;
+        myMsg.conversation!.cvName = msg.field0.newName;
+        return (await Chat.findByRust(myMsg.conversation!))!;
+      } else {
+        return found;
+      }
+    }
+    if (myMsg.message is api.DartMessage_ChangeParticipants) {
+      var found = (await Chat.findByRust(myMsg.conversation!, soft: true));
+      if (found == null) {
+        // try using the new participants
+        var msg = myMsg.message as api.DartMessage_ChangeParticipants;
+        myMsg.conversation!.participants = msg.field0.newParticipants;
+        return (await Chat.findByRust(myMsg.conversation!))!;
+      } else {
+        return found;
+      }
+    }
+    return (await Chat.findByRust(myMsg.conversation!))!;
+  }
+
   Future handleMsg(api.DartIMessage myMsg) async {
     if (myMsg.message is api.DartMessage_EnableSmsActivation) {
       var message = myMsg.message as api.DartMessage_EnableSmsActivation;
@@ -938,7 +1005,7 @@ class RustPushService extends GetxService {
       inq.queue(IncomingItem.fromMap(QueueType.updatedMessage, map));
       return;
     }
-    var chat = await Chat.findByRust(myMsg.conversation!);
+    var chat = await chatForMessage(myMsg);
     if (myMsg.message is api.DartMessage_RenameMessage) {
       var msg = myMsg.message as api.DartMessage_RenameMessage;
       if (!chat.lockChatName) {

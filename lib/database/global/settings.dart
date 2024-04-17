@@ -183,6 +183,7 @@ class Settings {
   final RxString defaultHandle = "".obs;
   final RxBool macIsMine = true.obs;
   final RxBool smsForwardingEnabled = false.obs;
+  final RxBool isSmsRouter = false.obs; // true if we can send/recieve from the app, and via sms forwarding over APNs
 
   Future<DisplayMode> getDisplayMode() async {
     List<DisplayMode> modes = await FlutterDisplayMode.supported;
@@ -371,6 +372,7 @@ class Settings {
       'defaultHandle': defaultHandle.value,
       'macIsMine': macIsMine.value,
       'smsForwardingEnabled': smsForwardingEnabled.value,
+      'isSmsRouter': isSmsRouter.value,
     };
     if (includeAll) {
       map.addAll({
@@ -511,7 +513,8 @@ class Settings {
     ss.settings.useWindowsAccent.value = map['useWindowsAccent'] ?? false;
     ss.settings.defaultHandle.value = map['defaultHandle'] ?? "";
     ss.settings.macIsMine.value = map['macIsMine'] ?? true;
-    ss.settings.smsForwardingEnabled.value = map['smsForwardingEnabled'] ?? true;
+    ss.settings.smsForwardingEnabled.value = map['smsForwardingEnabled'] ?? false;
+    ss.settings.isSmsRouter.value = map['isSmsRouter'] ?? false;
     ss.settings.save();
 
     eventDispatcher.emit("theme-update", null);
@@ -649,7 +652,8 @@ class Settings {
     s.useWindowsAccent.value = map['useWindowsAccent'] ?? false;
     s.defaultHandle.value = map['defaultHandle'] ?? "";
     s.macIsMine.value = map['macIsMine'] ?? true;
-    s.smsForwardingEnabled.value = map['smsForwardingEnabled'] ?? true;
+    s.smsForwardingEnabled.value = map['smsForwardingEnabled'] ?? false;
+    s.isSmsRouter.value = map['isSmsRouter'] ?? false;
     return s;
   }
 
