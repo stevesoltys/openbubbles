@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:async_task/async_task.dart';
 import 'package:bluebubbles/utils/logger/logger.dart';
@@ -13,12 +14,15 @@ import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart' hide Response;
 import 'package:metadata_fetch/metadata_fetch.dart';
+import 'package:mime_type/mime_type.dart';
 // (needed when generating objectbox model code)
 // ignore: unnecessary_import
 import 'package:objectbox/objectbox.dart';
 import 'package:supercharged/supercharged.dart';
+import 'package:tuple/tuple.dart';
 import 'package:universal_io/io.dart';
 
 /// Async method to get attachments from objectbox
@@ -551,6 +555,100 @@ class Chat {
     });
     return this;
   }
+
+  static Future<Chat> getChatForTel(List<String> participants) async {
+    final query = (chatBox.query(Chat_.dateDeleted.isNull())
+          ..linkMany(Chat_.handles, Handle_.address.oneOf(participants)))
+            .build();
+    final results = query.find();
+    query.close();
+
+    var result = results.firstWhereOrNull((element) {
+      var participantsCopy = [...participants];
+      for (var handle in element.handles) {
+        var included = participantsCopy.contains(handle.address);
+        if (!included) {
+          return false;
+        }
+        participantsCopy.remove(handle.address);
+      }
+      return participantsCopy.isEmpty;
+    });
+    if (result == null) {
+      result = await backend.createChat(participants, null, "SMS");
+      chats.updateChat(result);
+    }
+    return result;
+  }
+
+  Future<void> deliverSMS(String sender, List<Map<String, dynamic>> parts) async {
+    for (var part in parts) {
+      if (part["contentType"] == "text/plain") {
+        var bodyString = String.fromCharCodes(part["body"] as Uint8List);
+        if (bodyString.trim() == "") continue;
+        final _message = Message(
+          text: bodyString,
+          threadOriginatorPart: "0:0:0",
+          dateCreated: DateTime.now(),
+          hasAttachments: false,
+          isFromMe: false,
+          guid: part["id"] as String,
+          handleId: 0,
+          handle: Handle.findOne(addressAndService: Tuple2(sender, "iMessage")),
+          hasDdResults: true,
+          attributedBody: [AttributedBody(string: bodyString, runs: [Run(
+            range: [0, bodyString.length],
+            attributes: Attributes(
+              messagePart: 0,
+            )
+          )])],
+        );
+        await backend.sendMessage(this, _message);
+      } else {
+        var myUuid = "${part["id"]}_0";
+        String data = await rootBundle.loadString("assets/rustpush/uti-map.json");
+        final utiMap = jsonDecode(data);
+
+      
+        final _message = Message(
+          text: " ",
+          threadOriginatorPart: "0:0:0",
+          dateCreated: DateTime.now(),
+          hasAttachments: true,
+          isFromMe: false,
+          guid: part["id"] as String,
+          handleId: 0,
+          handle: Handle.findOne(addressAndService: Tuple2(sender, "iMessage")),
+          hasDdResults: true,
+          attributedBody: [AttributedBody(string: " ", runs: [Run(
+            range: [0, 1],
+            attributes: Attributes(
+              attachmentGuid: myUuid,
+              messagePart: 0
+            )
+          )])],
+          attachments: [
+            Attachment(
+              guid: myUuid,
+              uti: utiMap[part["contentType"] as String] ?? "public.data",
+              mimeType: part["contentType"] as String,
+              isOutgoing: false,
+              bytes: part["body"] as Uint8List,
+              totalBytes: (part["body"] as Uint8List).length,
+              transferName: "${part["id"]}.${extensionFromMime(part["contentType"] as String) ?? "bin"}"
+            )
+          ]
+        );
+        await _message.attachments.first!.writeToDisk();
+        var forwarded = await (backend as RustPushBackend).forwardMMSAttachment(this, _message, _message.attachments.first!);
+        inq.queue(IncomingItem(
+          chat: this,
+          message: forwarded,
+          type: QueueType.newMessage
+        ));
+      }
+    }
+  }
   
   Future<api.DartConversationData> getConversationData() async {
     var handles = participants.map((e) {
@@ -973,7 +1071,7 @@ class Chat {
 
   // if soft is false, return is never null
   // only null if soft is true and no matching chat is found
-  static Future<Chat?> findByRust(api.DartConversationData data, {bool soft = false}) async {
+  static Future<Chat?> findByRust(api.DartConversationData data, String service, {bool soft = false}) async {
     if (data.participants.isEmpty) {
       throw Exception("empty participants!??");
     }
@@ -1018,7 +1116,7 @@ class Chat {
       return participantsCopy.isEmpty;
     });
     if (result == null && !soft) {
-      result = await backend.createChat(dartParticipants.map((e) => e.address).toList(), null, "iMessage");
+      result = await backend.createChat(dartParticipants.map((e) => e.address).toList(), null, service);
       result.displayName = data.cvName;
       result.apnTitle = data.cvName;
       result = result.save();

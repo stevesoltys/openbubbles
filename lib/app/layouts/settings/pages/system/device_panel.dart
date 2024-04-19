@@ -4,6 +4,7 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:bluebubbles/helpers/helpers.dart';
 import 'package:bluebubbles/services/network/backend_service.dart';
 import 'package:bluebubbles/services/rustpush/rustpush_service.dart';
+import 'package:bluebubbles/utils/share.dart';
 import 'package:bluebubbles/utils/window_effects.dart';
 import 'package:bluebubbles/utils/logger.dart';
 import 'package:bluebubbles/app/layouts/settings/pages/theming/avatar/custom_avatar_color_panel.dart';
@@ -145,14 +146,29 @@ class _DevicePanelState extends CustomState<DevicePanel, void, DevicePanelContro
                           dataModuleStyle: QrDataModuleStyle(color: context.theme.colorScheme.properOnSurface),
                         ),
                       )),
+                    if (kIsDesktop)
                     SettingsTile(
                       backgroundColor: tileColor,
                       title: "Copy Activation Code",
                       onTap: () {
                         Clipboard.setData(ClipboardData(text: base64Encode(getQrInfo(controller.allowSharing.value, deviceInfo!.encodedData).codeUnits)));
                       },
+                      subtitle: controller.allowSharing.value ? "" : "Make sure you delete your code after activation to prevent sharing.",
                       trailing: Icon(
                         ss.settings.skin.value == Skins.iOS ? CupertinoIcons.doc_on_clipboard : Icons.copy
+                      ),
+                    ),
+                    if (!kIsDesktop)
+                    SettingsTile(
+                      backgroundColor: tileColor,
+                      title: "Share Activation Code",
+                      onTap: () {
+                        var code = base64Encode(getQrInfo(controller.allowSharing.value, deviceInfo!.encodedData).codeUnits);
+                        Share.text("BlueBubbles", "Text me on BlueBubbles with my activation code! $code");
+                      },
+                      subtitle: controller.allowSharing.value ? null : "Make sure you delete your code after activation to prevent sharing.",
+                      trailing: Icon(
+                        ss.settings.skin.value == Skins.iOS ? CupertinoIcons.share : Icons.share
                       ),
                     ),
                   ],

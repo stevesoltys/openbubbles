@@ -13,6 +13,7 @@ import '../network/backend_service.dart';
 import 'package:dio/dio.dart';
 import 'package:uuid/uuid.dart';
 import 'package:dlibphonenumber/dlibphonenumber.dart';
+import 'package:telephony_plus/telephony_plus.dart';
 
 var uuid = const Uuid();
 RustPushService pushService =
@@ -252,10 +253,23 @@ class RustPushBackend implements BackendService {
     return true;
   }
 
-  api.DartMessageType getService(bool isSms) {
+  Future<api.DartMessageType> getService(bool isSms, {Message? forMessage}) async {
     if (isSms) {
-      // TODO get phone number
-      return api.DartMessageType.sms(isPhone: ss.settings.isSmsRouter.value, usingNumber: "");
+      String? fromHandle;
+      if (forMessage != null && forMessage.handle != null) {
+        var myHandles = await api.getHandles(state: pushService.state);
+        var sender = RustPushBBUtils.bbHandleToRust(forMessage.handle!);
+        if (!myHandles.contains(sender)) {
+          fromHandle = sender; // this is a forwarded message
+        }
+      }
+      var number = "";
+      if (!kIsDesktop) {
+        // we don't need number on desktop, b/c it's only used for relaying messages to other devices
+        // which desktops will never do
+        number = await RustPushBBUtils.formatAddress(await TelephonyPlus().getNumber());
+      }
+      return api.DartMessageType.sms(isPhone: ss.settings.isSmsRouter.value, usingNumber: "tel:$number", fromHandle: fromHandle);
     }
     return const api.DartMessageType.iMessage();
   }
@@ -273,6 +287,7 @@ class RustPushBackend implements BackendService {
       usingHandle: handle,
       isRpSms: service == "SMS"
     );
+    chat.save(); //save for reflectMessage
     if (message != null) {
       var msg = await api.newMsg(
           state: pushService.state,
@@ -280,13 +295,12 @@ class RustPushBackend implements BackendService {
           message: api.DartMessage.message(api.DartNormalMessage(
               parts: api.DartMessageParts(
                   field0: [api.DartIndexedMessagePart(field0: api.DartMessagePart.text(message))]),
-                  service: getService(chat.isRpSms)
+                  service: await getService(chat.isRpSms)
                   )),
           sender: handle);
       await api.send(state: pushService.state, msg: msg);
       msg.sentTimestamp = DateTime.now().millisecondsSinceEpoch;
 
-      chat.save(); //save for reflectMessage
       final newMessage = await pushService.reflectMessageDyn(msg);
       newMessage.chat.target = chat;
       newMessage.forwardIfNessesary(chat);
@@ -339,7 +353,36 @@ class RustPushBackend implements BackendService {
           replyGuid: m.threadOriginatorGuid,
           replyPart: m.threadOriginatorGuid == null ? null : "$partIndex:0:0",
           effect: m.expressiveSendStyleId,
-          service: getService(chat.isRpSms),
+          service: await getService(chat.isRpSms, forMessage: m),
+        )));
+    await api.send(state: pushService.state, msg: msg);
+    msg.sentTimestamp = DateTime.now().millisecondsSinceEpoch;
+    return await pushService.reflectMessageDyn(msg);
+  }
+
+  Future<Message> forwardMMSAttachment(Chat chat, Message m, Attachment att) async {
+    api.DartAttachment? attachment = api.DartAttachment(
+      aType: api.DartAttachmentType.inline(await att.getFile().getBytes()),
+      mime: att.mimeType ?? "application/octet-stream",
+      partIdx: 0,
+      utiType: att.uti ?? "public.data",
+      name: att.transferName!,
+      iris: false,
+    );
+    print("uploaded");
+    var partIndex = int.tryParse(m.threadOriginatorPart?.split(":").firstOrNull ?? "");
+    var service = await getService(chat.isRpSms, forMessage: m);
+    var msg = await api.newMsg(
+        state: pushService.state,
+        conversation: await chat.getConversationData(),
+        sender: await chat.ensureHandle(),
+        message: api.DartMessage.message(api.DartNormalMessage(
+          parts: api.DartMessageParts(
+              field0: [api.DartIndexedMessagePart(field0: api.DartMessagePart.attachment(attachment!))]),
+          replyGuid: m.threadOriginatorGuid,
+          replyPart: m.threadOriginatorGuid == null ? null : "$partIndex:0:0",
+          effect: m.expressiveSendStyleId,
+          service: service,
         )));
     await api.send(state: pushService.state, msg: msg);
     msg.sentTimestamp = DateTime.now().millisecondsSinceEpoch;
@@ -363,11 +406,11 @@ class RustPushBackend implements BackendService {
     await api.send(state: pushService.state, msg: msg);
   }
 
-  Future<void> confirmSmsSent(Message m) async {
+  Future<void> confirmSmsSent(Message m, Chat c) async {
     var msg = await api.newMsg(
       state: pushService.state,
-      conversation: await m.getChat()!.getConversationData(),
-      sender: await m.getChat()!.ensureHandle(),
+      conversation: await c.getConversationData(),
+      sender: await c.ensureHandle(),
       message: const api.DartMessage.smsConfirmSent(),
     );
     msg.id = m.guid!;
@@ -465,7 +508,7 @@ class RustPushBackend implements BackendService {
         replyGuid: m.threadOriginatorGuid,
         replyPart: m.threadOriginatorGuid == null ? null : "$partIndex:0:0",
         effect: m.expressiveSendStyleId,
-        service: getService(chat.isRpSms),
+        service: await getService(chat.isRpSms, forMessage: m),
       )),
     );
     m.guid = msg.id;
@@ -787,12 +830,20 @@ class RustPushService extends GetxService {
     if (myMsg.message is api.DartMessage_Message) {
       var innerMsg = myMsg.message as api.DartMessage_Message;
       var attributedBodyData = await indexedPartsToAttributedBodyDyn(innerMsg.field0.parts.field0, myMsg.id, null);
+      var sender = myMsg.sender;
+      
+      if (innerMsg.field0.service is api.DartMessageType_SMS) {
+        var smsServ = innerMsg.field0.service as api.DartMessageType_SMS;
+        if (smsServ.fromHandle != null) {
+          sender = smsServ.fromHandle;
+        }
+      }
 
       return Message(
         guid: myMsg.id,
         text: attributedBodyData.$2,
-        isFromMe: myHandles.contains(myMsg.sender),
-        handle: RustPushBBUtils.rustHandleToBB(myMsg.sender!),
+        isFromMe: myHandles.contains(sender),
+        handle: RustPushBBUtils.rustHandleToBB(sender!),
         dateCreated: DateTime.fromMillisecondsSinceEpoch(myMsg.sentTimestamp),
         threadOriginatorPart: innerMsg.field0.replyPart?.toString(),
         threadOriginatorGuid: innerMsg.field0.replyGuid,
@@ -944,6 +995,16 @@ class RustPushService extends GetxService {
     throw Exception("bad message type!");
   }
 
+  String getService(api.DartIMessage msg) {
+    if (msg.message is api.DartMessage_Message) {
+      var m = msg.message as api.DartMessage_Message;
+      if (m.field0.service is api.DartMessageType_SMS) {
+        return "SMS";
+      }
+    }
+    return "iMessage";
+  }
+
   // finds chat for message. Use over `Chat.findByRust` for incoming messages
   // to handle after conversation changes (renames, participants)
   Future<Chat> chatForMessage(api.DartIMessage myMsg) async {
@@ -953,28 +1014,36 @@ class RustPushService extends GetxService {
       return existing!.getChat()!;
     }
     if (myMsg.message is api.DartMessage_RenameMessage) {
-      var found = (await Chat.findByRust(myMsg.conversation!, soft: true));
+      var found = (await Chat.findByRust(myMsg.conversation!, getService(myMsg), soft: true));
       if (found == null) {
         // try using the new name
         var msg = myMsg.message as api.DartMessage_RenameMessage;
         myMsg.conversation!.cvName = msg.field0.newName;
-        return (await Chat.findByRust(myMsg.conversation!))!;
+        return (await Chat.findByRust(myMsg.conversation!, getService(myMsg)))!;
       } else {
         return found;
       }
     }
     if (myMsg.message is api.DartMessage_ChangeParticipants) {
-      var found = (await Chat.findByRust(myMsg.conversation!, soft: true));
+      var found = (await Chat.findByRust(myMsg.conversation!, getService(myMsg), soft: true));
       if (found == null) {
         // try using the new participants
         var msg = myMsg.message as api.DartMessage_ChangeParticipants;
         myMsg.conversation!.participants = msg.field0.newParticipants;
-        return (await Chat.findByRust(myMsg.conversation!))!;
+        return (await Chat.findByRust(myMsg.conversation!, getService(myMsg)))!;
       } else {
         return found;
       }
     }
-    return (await Chat.findByRust(myMsg.conversation!))!;
+    if (myMsg.message is api.DartMessage_Message) {
+      var message = myMsg.message as api.DartMessage_Message;
+      var service = message.field0.service;
+      if (service is api.DartMessageType_SMS) {
+        // remove any potential us from the conversation it won't recognize the telephone as a "handle"
+        myMsg.conversation?.participants.remove(service.usingNumber);
+      }
+    }
+    return (await Chat.findByRust(myMsg.conversation!, getService(myMsg)))!;
   }
 
   Future handleMsg(api.DartIMessage myMsg) async {

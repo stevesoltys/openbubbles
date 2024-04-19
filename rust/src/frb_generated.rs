@@ -1673,9 +1673,11 @@ impl SseDecode for crate::api::api::DartMessageType {
             1 => {
                 let mut var_isPhone = <bool>::sse_decode(deserializer);
                 let mut var_usingNumber = <String>::sse_decode(deserializer);
+                let mut var_fromHandle = <Option<String>>::sse_decode(deserializer);
                 return crate::api::api::DartMessageType::SMS {
                     is_phone: var_isPhone,
                     using_number: var_usingNumber,
+                    from_handle: var_fromHandle,
                 };
             }
             _ => {
@@ -2620,10 +2622,12 @@ impl flutter_rust_bridge::IntoDart for crate::api::api::DartMessageType {
             crate::api::api::DartMessageType::SMS {
                 is_phone,
                 using_number,
+                from_handle,
             } => [
                 1.into_dart(),
                 is_phone.into_into_dart().into_dart(),
                 using_number.into_into_dart().into_dart(),
+                from_handle.into_into_dart().into_dart(),
             ]
             .into_dart(),
         }
@@ -3255,10 +3259,12 @@ impl SseEncode for crate::api::api::DartMessageType {
             crate::api::api::DartMessageType::SMS {
                 is_phone,
                 using_number,
+                from_handle,
             } => {
                 <i32>::sse_encode(1, serializer);
                 <bool>::sse_encode(is_phone, serializer);
                 <String>::sse_encode(using_number, serializer);
+                <Option<String>>::sse_encode(from_handle, serializer);
             }
         }
     }

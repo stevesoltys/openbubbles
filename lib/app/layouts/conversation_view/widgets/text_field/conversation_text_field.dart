@@ -1012,7 +1012,7 @@ class TextFieldComponentState extends State<TextFieldComponent> {
                         : ss.settings.recipientAsPlaceholder.value == true
                             ? isRecording ? "" : chat!.getTitle()
                             : (chat!.isTextForwarding && !isRecording)
-                                ? "Text Forwarding"
+                                ? "Text Message"
                                 : (!isRecording) // Only show iMessage when not recording
                                   ? "iMessage" : "",
                     enabledBorder: InputBorder.none,

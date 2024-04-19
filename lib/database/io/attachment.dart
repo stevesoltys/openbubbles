@@ -98,6 +98,12 @@ class Attachment {
     return PlatformFile(name: transferName!, bytes: bytes, path: kIsWeb ? null : path, size: totalBytes ?? 0);
   }
 
+  Future<void> writeToDisk() async {
+    var file = File(path);
+    await file.create(recursive: true);
+    await file.writeAsBytes(bytes!);
+  }
+
   Future<TelephonyAttachment.Attachment> toTelephony() async {
     PlatformFile file;
     if (getFile().exists()) {

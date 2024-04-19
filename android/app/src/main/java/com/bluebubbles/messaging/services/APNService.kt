@@ -17,7 +17,15 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import com.bluebubbles.messaging.MainActivity
 import com.bluebubbles.messaging.R
-import uniffi.native_lib.NativePushState
+import com.bluebubbles.messaging.services.backend_ui_interop.DartWorkManager
+import com.bluebubbles.messaging.services.backend_ui_interop.MethodCallHandler
+import com.bluebubbles.telephony_plus.receive.SMSObserver
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
+import uniffi.rust_lib_bluebubbles.NativePushState
+import uniffi.rust_lib_bluebubbles.initNative
 
 const val APNS_PREFS = "APNS_PREFS"
 const val APNS_STATE = "state"
@@ -96,11 +104,10 @@ class APNService : Service() {
     }
     fun launchAgent() {
         Log.i("launching agent", "herer")
-        Thread {
-            val sharedPrefs =
-                applicationContext.getSharedPreferences(APNS_PREFS, Context.MODE_PRIVATE)
-            if (sharedPrefs.contains(APNS_STATE)) {
-                pushState.restore(sharedPrefs.getString(APNS_STATE, "")!!)
+        SMSObserver.init(applicationContext)
+        scope.launch {
+            pushState = initNative(applicationContext.filesDir.path)
+            if (pushState.getReady()) {
                 listenLoop()
             } else {
                 pushState.newPush()

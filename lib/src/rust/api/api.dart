@@ -605,6 +605,7 @@ sealed class DartMessageType with _$DartMessageType {
   const factory DartMessageType.sms({
     required bool isPhone,
     required String usingNumber,
+    String? fromHandle,
   }) = DartMessageType_SMS;
 }
 

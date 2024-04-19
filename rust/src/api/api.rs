@@ -51,6 +51,7 @@ pub async fn new_push_state(dir: String) -> anyhow::Result<Arc<PushState>> {
     android_log::init("rustpush").unwrap();
     #[cfg(not(target_os = "android"))]
     init_logger();
+    // flutter_rust_bridge::setup_default_user_utils();
     let state = PushState(RwLock::new(InnerPushState {
         conn: None,
         users: vec![],
@@ -416,6 +417,7 @@ pub enum DartMessageType {
     SMS {
         is_phone: bool,
         using_number: String, // prefixed with tel:
+        from_handle: Option<String>,
     }
 }
 

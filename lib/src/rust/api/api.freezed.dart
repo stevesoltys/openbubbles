@@ -4858,19 +4858,22 @@ mixin _$DartMessageType {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() iMessage,
-    required TResult Function(bool isPhone, String usingNumber) sms,
+    required TResult Function(
+            bool isPhone, String usingNumber, String? fromHandle)
+        sms,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? iMessage,
-    TResult? Function(bool isPhone, String usingNumber)? sms,
+    TResult? Function(bool isPhone, String usingNumber, String? fromHandle)?
+        sms,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? iMessage,
-    TResult Function(bool isPhone, String usingNumber)? sms,
+    TResult Function(bool isPhone, String usingNumber, String? fromHandle)? sms,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -4955,7 +4958,9 @@ class _$DartMessageType_IMessageImpl implements DartMessageType_IMessage {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() iMessage,
-    required TResult Function(bool isPhone, String usingNumber) sms,
+    required TResult Function(
+            bool isPhone, String usingNumber, String? fromHandle)
+        sms,
   }) {
     return iMessage();
   }
@@ -4964,7 +4969,8 @@ class _$DartMessageType_IMessageImpl implements DartMessageType_IMessage {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? iMessage,
-    TResult? Function(bool isPhone, String usingNumber)? sms,
+    TResult? Function(bool isPhone, String usingNumber, String? fromHandle)?
+        sms,
   }) {
     return iMessage?.call();
   }
@@ -4973,7 +4979,7 @@ class _$DartMessageType_IMessageImpl implements DartMessageType_IMessage {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? iMessage,
-    TResult Function(bool isPhone, String usingNumber)? sms,
+    TResult Function(bool isPhone, String usingNumber, String? fromHandle)? sms,
     required TResult orElse(),
   }) {
     if (iMessage != null) {
@@ -5024,7 +5030,7 @@ abstract class _$$DartMessageType_SMSImplCopyWith<$Res> {
           $Res Function(_$DartMessageType_SMSImpl) then) =
       __$$DartMessageType_SMSImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({bool isPhone, String usingNumber});
+  $Res call({bool isPhone, String usingNumber, String? fromHandle});
 }
 
 /// @nodoc
@@ -5040,6 +5046,7 @@ class __$$DartMessageType_SMSImplCopyWithImpl<$Res>
   $Res call({
     Object? isPhone = null,
     Object? usingNumber = null,
+    Object? fromHandle = freezed,
   }) {
     return _then(_$DartMessageType_SMSImpl(
       isPhone: null == isPhone
@@ -5050,6 +5057,10 @@ class __$$DartMessageType_SMSImplCopyWithImpl<$Res>
           ? _value.usingNumber
           : usingNumber // ignore: cast_nullable_to_non_nullable
               as String,
+      fromHandle: freezed == fromHandle
+          ? _value.fromHandle
+          : fromHandle // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -5058,16 +5069,18 @@ class __$$DartMessageType_SMSImplCopyWithImpl<$Res>
 
 class _$DartMessageType_SMSImpl implements DartMessageType_SMS {
   const _$DartMessageType_SMSImpl(
-      {required this.isPhone, required this.usingNumber});
+      {required this.isPhone, required this.usingNumber, this.fromHandle});
 
   @override
   final bool isPhone;
   @override
   final String usingNumber;
+  @override
+  final String? fromHandle;
 
   @override
   String toString() {
-    return 'DartMessageType.sms(isPhone: $isPhone, usingNumber: $usingNumber)';
+    return 'DartMessageType.sms(isPhone: $isPhone, usingNumber: $usingNumber, fromHandle: $fromHandle)';
   }
 
   @override
@@ -5077,11 +5090,14 @@ class _$DartMessageType_SMSImpl implements DartMessageType_SMS {
             other is _$DartMessageType_SMSImpl &&
             (identical(other.isPhone, isPhone) || other.isPhone == isPhone) &&
             (identical(other.usingNumber, usingNumber) ||
-                other.usingNumber == usingNumber));
+                other.usingNumber == usingNumber) &&
+            (identical(other.fromHandle, fromHandle) ||
+                other.fromHandle == fromHandle));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, isPhone, usingNumber);
+  int get hashCode =>
+      Object.hash(runtimeType, isPhone, usingNumber, fromHandle);
 
   @JsonKey(ignore: true)
   @override
@@ -5094,29 +5110,32 @@ class _$DartMessageType_SMSImpl implements DartMessageType_SMS {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() iMessage,
-    required TResult Function(bool isPhone, String usingNumber) sms,
+    required TResult Function(
+            bool isPhone, String usingNumber, String? fromHandle)
+        sms,
   }) {
-    return sms(isPhone, usingNumber);
+    return sms(isPhone, usingNumber, fromHandle);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? iMessage,
-    TResult? Function(bool isPhone, String usingNumber)? sms,
+    TResult? Function(bool isPhone, String usingNumber, String? fromHandle)?
+        sms,
   }) {
-    return sms?.call(isPhone, usingNumber);
+    return sms?.call(isPhone, usingNumber, fromHandle);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? iMessage,
-    TResult Function(bool isPhone, String usingNumber)? sms,
+    TResult Function(bool isPhone, String usingNumber, String? fromHandle)? sms,
     required TResult orElse(),
   }) {
     if (sms != null) {
-      return sms(isPhone, usingNumber);
+      return sms(isPhone, usingNumber, fromHandle);
     }
     return orElse();
   }
@@ -5156,10 +5175,12 @@ class _$DartMessageType_SMSImpl implements DartMessageType_SMS {
 abstract class DartMessageType_SMS implements DartMessageType {
   const factory DartMessageType_SMS(
       {required final bool isPhone,
-      required final String usingNumber}) = _$DartMessageType_SMSImpl;
+      required final String usingNumber,
+      final String? fromHandle}) = _$DartMessageType_SMSImpl;
 
   bool get isPhone;
   String get usingNumber;
+  String? get fromHandle;
   @JsonKey(ignore: true)
   _$$DartMessageType_SMSImplCopyWith<_$DartMessageType_SMSImpl> get copyWith =>
       throw _privateConstructorUsedError;

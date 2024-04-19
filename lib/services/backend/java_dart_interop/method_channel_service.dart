@@ -53,6 +53,20 @@ class MethodChannelService extends GetxService {
     // Future.value(true) will have the engine stop trying to call the method
     
     switch (call.method) {
+      case "SMSMsg":
+        try {
+          List<Object?> addresses = call.arguments["addresses"];
+          String sender = call.arguments["sender"];
+          List<Object?> body = call.arguments["body"];
+          List<Map<String, dynamic>> mapped = body.map((e) => (e as Map<Object?, Object?>).cast<String, dynamic>()).toList();
+          Chat chat = await Chat.getChatForTel(addresses.map((e) => e as String).toList());
+          await chat.deliverSMS(sender, mapped);
+        } catch (e, s) {
+          print(e);
+          print(s);
+          rethrow;
+        }
+        return true;
       case "APNMsg":
         String pointer = call.arguments.toString();
         await pushService.recievedMsgPointer(pointer);

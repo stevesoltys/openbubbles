@@ -1600,6 +1600,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         return DartMessageType_SMS(
           isPhone: dco_decode_bool(raw[1]),
           usingNumber: dco_decode_String(raw[2]),
+          fromHandle: dco_decode_opt_String(raw[3]),
         );
       default:
         throw Exception("unreachable");
@@ -2395,8 +2396,11 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       case 1:
         var var_isPhone = sse_decode_bool(deserializer);
         var var_usingNumber = sse_decode_String(deserializer);
+        var var_fromHandle = sse_decode_opt_String(deserializer);
         return DartMessageType_SMS(
-            isPhone: var_isPhone, usingNumber: var_usingNumber);
+            isPhone: var_isPhone,
+            usingNumber: var_usingNumber,
+            fromHandle: var_fromHandle);
       default:
         throw UnimplementedError('');
     }
@@ -3188,11 +3192,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_i_32(0, serializer);
       case DartMessageType_SMS(
           isPhone: final isPhone,
-          usingNumber: final usingNumber
+          usingNumber: final usingNumber,
+          fromHandle: final fromHandle
         ):
         sse_encode_i_32(1, serializer);
         sse_encode_bool(isPhone, serializer);
         sse_encode_String(usingNumber, serializer);
+        sse_encode_opt_String(fromHandle, serializer);
     }
   }
 

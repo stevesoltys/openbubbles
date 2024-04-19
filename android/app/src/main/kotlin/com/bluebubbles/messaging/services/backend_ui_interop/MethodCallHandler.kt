@@ -3,6 +3,7 @@ package com.bluebubbles.messaging.services.backend_ui_interop
 import android.content.Context
 import android.util.Log
 import com.bluebubbles.messaging.Constants
+import com.bluebubbles.messaging.MainActivity
 import com.bluebubbles.messaging.MainActivity.Companion.engine
 import com.bluebubbles.messaging.services.filesystem.GetContentUriPathHandler
 import com.bluebubbles.messaging.services.firebase.FirebaseAuthHandler
@@ -26,12 +27,24 @@ import com.bluebubbles.messaging.services.system.PushShareTargetsHandler
 import com.bluebubbles.messaging.services.system.StartGoogleDuoRequestHandler
 import com.bluebubbles.messaging.services.foreground.StartForegroundServiceHandler
 import com.bluebubbles.messaging.services.foreground.StopForegroundServiceHandler
+import com.bluebubbles.telephony_plus.receive.SMSObserver
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 
 class MethodCallHandler {
     companion object {
         var getNotificationListenerResult: MethodChannel.Result? = null
+
+        init {
+            SMSObserver.listener = listener@{ context, map ->
+                if (MainActivity.engine != null) {
+                    // app is alive, deliver directly there
+                    invokeMethod("SMSMsg", map)
+                    return@listener
+                }
+                DartWorkManager.createWorker(context, "SMSMsg", HashMap(map.map { e -> e.key to e.value as Any? }.toMap())) {}
+            }
+        }
 
         /// Send a method call back to Dart (app must be launched, otherwise use the DartWorker!)
         fun invokeMethod(method: String, arguments: Map<String, Any>) {
