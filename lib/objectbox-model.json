@@ -89,7 +89,7 @@
     },
     {
       "id": "3:9017250848141753702",
-      "lastPropertyId": "33:7747554395546158964",
+      "lastPropertyId": "34:6743935942891315857",
       "name": "Chat",
       "properties": [
         {
@@ -229,6 +229,11 @@
           "id": "33:7747554395546158964",
           "name": "guidRefs",
           "type": 30
+        },
+        {
+          "id": "34:6743935942891315857",
+          "name": "telephonyId",
+          "type": 6
         }
       ],
       "relations": [

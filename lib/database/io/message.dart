@@ -328,24 +328,31 @@ class Message {
 
 
   Future<void> forwardIfNessesary(Chat chat) async {
-    if (hasBeenForwarded || !ss.settings.smsForwardingEnabled.value || !chat.isTextForwarding) return;
+    if (hasBeenForwarded || !ss.settings.smsForwardingEnabled.value || !chat.isTextForwarding || !(isFromMe ?? true)) return;
     hasBeenForwarded = true;
     save();
     var attachments = fetchAttachments()!;
     bool useMMS = chat.participants.length > 1 || attachments.isNotEmpty;
+    int status;
     if (useMMS) {
-      await TelephonyPlus().sendMMS(
+      status = await TelephonyPlus().sendMMS(
         addresses: chat.participants.map((e) => e.address).filter((e) => e.isPhoneNumber).toList(),
         message: text?.trim() == "" ? null : text,
+        threadId: chat.telephonyId,
         attachments: await Future.wait(attachments.map((e) => e!.toTelephony()).toList())
       );
     } else {
-      await TelephonyPlus().sendSMS(
+      status = await TelephonyPlus().sendSMS(
         address: chat.participants.first.address,
+        threadId: chat.telephonyId,
         message: text!,
       );
     }
+    if (status != -1) {
+      throw Exception("failed to send sms with status $status!");
+    }
     if (guid?.contains("error") ?? true) return; // we weren't forwarded successfully
+    if (guid?.contains("temp") ?? true) return; // we weren't forwarded successfully
     (backend as RustPushBackend).confirmSmsSent(this, chat);
   }
 

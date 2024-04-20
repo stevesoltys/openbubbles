@@ -55,11 +55,15 @@ class MethodChannelService extends GetxService {
     switch (call.method) {
       case "SMSMsg":
         try {
-          List<Object?> addresses = call.arguments["addresses"];
+          List<Object?> addresses = call.arguments["recipients"];
           String sender = call.arguments["sender"];
           List<Object?> body = call.arguments["body"];
+          int threadId = call.arguments["thread_id"];
           List<Map<String, dynamic>> mapped = body.map((e) => (e as Map<Object?, Object?>).cast<String, dynamic>()).toList();
-          Chat chat = await Chat.getChatForTel(addresses.map((e) => e as String).toList());
+          Chat chat = await Chat.getChatForTel(threadId, addresses.map((e) {
+            var map = (e as Map<Object?, Object?>).cast<String, dynamic>();
+            return map["address"] as String;
+          }).toList());
           await chat.deliverSMS(sender, mapped);
         } catch (e, s) {
           print(e);

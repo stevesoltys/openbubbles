@@ -66,6 +66,10 @@
         android:usesCleartextTraffic="true"
         android:extractNativeLibs="true">
 
+        <receiver
+            android:name="com.bluebubbles.telephony_plus.send.MySentReceiver"
+            android:taskAffinity="com.bluebubbles.messaging.SMS_SENT1"/>
+
         <service
             android:name=".services.rustpush.APNService"
             android:exported="false" />

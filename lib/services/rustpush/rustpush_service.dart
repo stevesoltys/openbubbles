@@ -551,6 +551,7 @@ class RustPushBackend implements BackendService {
 
   @override
   Future<bool> markRead(Chat chat, bool notifyOthers) async {
+    if (chat.isRpSms) return true;
     var latestMsg = chat.latestMessage.guid;
     var data = await chat.getConversationData();
     if (!notifyOthers) {
@@ -734,6 +735,7 @@ class RustPushBackend implements BackendService {
 
   @override
   void startedTyping(Chat c) async {
+    if (c.isRpSms) return;
     if (c.participants.length > 1) {
       return; // no typing indicators for multiple chats
     }
@@ -748,6 +750,7 @@ class RustPushBackend implements BackendService {
 
   @override
   void stoppedTyping(Chat c) async {
+    if (c.isRpSms) return;
     if (c.participants.length > 1) {
       return; // no typing indicators for multiple chats
     }

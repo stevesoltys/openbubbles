@@ -112,7 +112,7 @@ final _entities = <ModelEntity>[
   ModelEntity(
       id: const IdUid(3, 9017250848141753702),
       name: 'Chat',
-      lastPropertyId: const IdUid(33, 7747554395546158964),
+      lastPropertyId: const IdUid(34, 6743935942891315857),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
@@ -250,6 +250,11 @@ final _entities = <ModelEntity>[
             id: const IdUid(33, 7747554395546158964),
             name: 'guidRefs',
             type: 30,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(34, 6743935942891315857),
+            name: 'telephonyId',
+            type: 6,
             flags: 0)
       ],
       relations: <ModelRelation>[
@@ -1051,7 +1056,7 @@ ModelDefinition getObjectBoxModel() {
               : fbb.writeString(object.apnTitle!);
           final guidRefsOffset = fbb.writeList(
               object.guidRefs.map(fbb.writeString).toList(growable: false));
-          fbb.startTable(34);
+          fbb.startTable(35);
           fbb.addInt64(0, object.id ?? 0);
           fbb.addOffset(2, guidOffset);
           fbb.addOffset(4, chatIdentifierOffset);
@@ -1080,6 +1085,7 @@ ModelDefinition getObjectBoxModel() {
           fbb.addOffset(30, apnTitleOffset);
           fbb.addBool(31, object.isRpSms);
           fbb.addOffset(32, guidRefsOffset);
+          fbb.addInt64(33, object.telephonyId);
           fbb.finish(fbb.endTable());
           return object.id ?? 0;
         },
@@ -1138,6 +1144,8 @@ ModelDefinition getObjectBoxModel() {
                   .vTableGetNullable(buffer, rootOffset, 62);
           final isRpSmsParam =
               const fb.BoolReader().vTableGet(buffer, rootOffset, 66, false);
+          final telephonyIdParam =
+              const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 70);
           final guidRefsParam = const fb.ListReader<String>(
                   fb.StringReader(asciiOptimization: true),
                   lazy: false)
@@ -1163,6 +1171,7 @@ ModelDefinition getObjectBoxModel() {
               lastReadMessageGuid: lastReadMessageGuidParam,
               usingHandle: usingHandleParam,
               isRpSms: isRpSmsParam,
+              telephonyId: telephonyIdParam,
               guidRefs: guidRefsParam)
             ..dbOnlyLatestMessageDate = dbOnlyLatestMessageDateValue == null
                 ? null
@@ -1974,6 +1983,10 @@ class Chat_ {
   /// see [Chat.guidRefs]
   static final guidRefs =
       QueryStringVectorProperty<Chat>(_entities[1].properties[26]);
+
+  /// see [Chat.telephonyId]
+  static final telephonyId =
+      QueryIntegerProperty<Chat>(_entities[1].properties[27]);
 
   /// see [Chat.handles]
   static final handles =
