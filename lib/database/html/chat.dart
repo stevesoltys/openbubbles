@@ -287,12 +287,10 @@ class Chat {
     }
 
     try {
-      if (privateMark && ss.settings.enablePrivateAPI.value && ss.settings.privateMarkChatAsRead.value) {
-        if (!hasUnread && autoSendReadReceipts!) {
-          backend.markRead(this);
-        } else if (hasUnread) {
-          backend.getRemoteService()?.markChatUnread(guid);
-        }
+      if (!hasUnread && autoSendReadReceipts!) {
+        backend.markRead(this, privateMark && ss.settings.enablePrivateAPI.value && ss.settings.privateMarkChatAsRead.value);
+      } else if (hasUnread) {
+        backend.markUnread(this);
       }
     } catch (_) {}
 
@@ -453,7 +451,7 @@ class Chat {
     this.autoSendReadReceipts = autoSendReadReceipts;
     save(updateAutoSendReadReceipts: true);
     if (autoSendReadReceipts ?? ss.settings.privateMarkChatAsRead.value) {
-      backend.markRead(this);
+      backend.markRead(this, ss.settings.privateMarkChatAsRead.value);
     }
     return this;
   }

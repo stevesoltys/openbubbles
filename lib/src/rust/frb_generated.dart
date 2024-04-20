@@ -1557,6 +1557,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         return DartMessage_MessageReadOnDevice();
       case 13:
         return DartMessage_SmsConfirmSent();
+      case 14:
+        return DartMessage_MarkUnread();
       default:
         throw Exception("unreachable");
     }
@@ -2356,6 +2358,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         return DartMessage_MessageReadOnDevice();
       case 13:
         return DartMessage_SmsConfirmSent();
+      case 14:
+        return DartMessage_MarkUnread();
       default:
         throw UnimplementedError('');
     }
@@ -3159,6 +3163,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_i_32(12, serializer);
       case DartMessage_SmsConfirmSent():
         sse_encode_i_32(13, serializer);
+      case DartMessage_MarkUnread():
+        sse_encode_i_32(14, serializer);
     }
   }
 

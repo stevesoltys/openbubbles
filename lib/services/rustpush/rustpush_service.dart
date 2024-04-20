@@ -511,9 +511,9 @@ class RustPushBackend implements BackendService {
         service: await getService(chat.isRpSms, forMessage: m),
       )),
     );
+    await api.send(state: pushService.state, msg: msg);
     m.guid = msg.id;
     m.save(chat: chat);
-    await api.send(state: pushService.state, msg: msg);
     msg.sentTimestamp = DateTime.now().millisecondsSinceEpoch;
     return await pushService.reflectMessageDyn(msg);
   }
@@ -550,13 +550,32 @@ class RustPushBackend implements BackendService {
   }
 
   @override
-  Future<bool> markRead(Chat chat) async {
+  Future<bool> markRead(Chat chat, bool notifyOthers) async {
     var latestMsg = chat.latestMessage.guid;
+    var data = await chat.getConversationData();
+    if (!notifyOthers) {
+      data.participants = [await chat.ensureHandle()];
+    }
     var msg = await api.newMsg(
         state: pushService.state,
-        conversation: await chat.getConversationData(),
+        conversation: data,
         sender: await chat.ensureHandle(),
         message: const api.DartMessage.read());
+    msg.id = latestMsg!;
+    await api.send(state: pushService.state, msg: msg);
+    return true;
+  }
+
+  @override
+  Future<bool> markUnread(Chat chat) async {
+    var latestMsg = chat.latestMessage.guid;
+    var data = await chat.getConversationData();
+    data.participants = [await chat.ensureHandle()];
+    var msg = await api.newMsg(
+        state: pushService.state,
+        conversation: data,
+        sender: await chat.ensureHandle(),
+        message: const api.DartMessage.markUnread());
     msg.id = latestMsg!;
     await api.send(state: pushService.state, msg: msg);
     return true;
@@ -1057,12 +1076,17 @@ class RustPushService extends GetxService {
     }
     if (myMsg.message is api.DartMessage_Delivered || myMsg.message is api.DartMessage_Read) {
       var myHandles = (await api.getHandles(state: pushService.state));
-      if (myHandles.contains(myMsg.sender)) {
-        return; // delivered to other devices is not
-      }
       var message = Message.findOne(guid: myMsg.id);
       if (message == null) {
         return;
+      }
+      if (myHandles.contains(myMsg.sender)) {
+        if (myMsg.message is api.DartMessage_Read) {
+          var chat = message.chat.target!;
+          chat.hasUnreadMessage = false;
+          chat.save(updateHasUnreadMessage: true);
+        }
+        return; // delivered to other devices is not
       }
       var map = message.toMap();
       map["chats"] = [message.chat.target!.toMap()];
@@ -1083,6 +1107,11 @@ class RustPushService extends GetxService {
       chat.apnTitle = msg.field0.newName;
       myMsg.conversation?.cvName = msg.field0.newName;
       chat = chat.save(updateDisplayName: true, updateAPNTitle: true);
+    }
+    if (myMsg.message is api.DartMessage_MarkUnread) {
+      chat.hasUnreadMessage = true;
+      chat.save(updateHasUnreadMessage: true);
+      return;
     }
     if (myMsg.message is api.DartMessage_Typing) {
       final controller = cvc(chat);

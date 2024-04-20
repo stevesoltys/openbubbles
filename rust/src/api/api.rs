@@ -501,7 +501,8 @@ pub enum DartMessage {
     StopTyping,
     EnableSmsActivation(bool),
     MessageReadOnDevice,
-    SmsConfirmSent
+    SmsConfirmSent,
+    MarkUnread, // send for last message from other participant
 }
 
 #[frb]

@@ -65,9 +65,9 @@ class ManualMarkState extends OptimizedState<ManualMark> {
                 marking = true;
               });
               if (!marked) {
-                await backend.markRead(chat);
+                await backend.markRead(chat, ss.settings.privateMarkChatAsRead.value);
               } else {
-                await backend.getRemoteService()?.markChatUnread(chat.guid);
+                await backend.markUnread(chat);
               }
               setState(() {
                 marking = false;

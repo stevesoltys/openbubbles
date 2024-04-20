@@ -188,9 +188,7 @@ class ChatsService extends GetxService {
           "tag": NotificationsService.NEW_MESSAGE_TAG
         }
       );
-      if (ss.settings.enablePrivateAPI.value && ss.settings.privateMarkChatAsRead.value) {
-        backend.markRead(c);
-      }
+      backend.markRead(c, ss.settings.enablePrivateAPI.value && ss.settings.privateMarkChatAsRead.value);
     }
     Database.chats.putMany(_chats);
   }

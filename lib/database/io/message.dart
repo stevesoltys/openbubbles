@@ -345,6 +345,7 @@ class Message {
         message: text!,
       );
     }
+    if (guid?.contains("error") ?? true) return; // we weren't forwarded successfully
     (backend as RustPushBackend).confirmSmsSent(this, chat);
   }
 

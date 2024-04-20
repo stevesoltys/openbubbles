@@ -1626,6 +1626,9 @@ impl SseDecode for crate::api::api::DartMessage {
             13 => {
                 return crate::api::api::DartMessage::SmsConfirmSent;
             }
+            14 => {
+                return crate::api::api::DartMessage::MarkUnread;
+            }
             _ => {
                 unimplemented!("");
             }
@@ -2562,6 +2565,7 @@ impl flutter_rust_bridge::IntoDart for crate::api::api::DartMessage {
             }
             crate::api::api::DartMessage::MessageReadOnDevice => [12.into_dart()].into_dart(),
             crate::api::api::DartMessage::SmsConfirmSent => [13.into_dart()].into_dart(),
+            crate::api::api::DartMessage::MarkUnread => [14.into_dart()].into_dart(),
         }
     }
 }
@@ -3221,6 +3225,9 @@ impl SseEncode for crate::api::api::DartMessage {
             }
             crate::api::api::DartMessage::SmsConfirmSent => {
                 <i32>::sse_encode(13, serializer);
+            }
+            crate::api::api::DartMessage::MarkUnread => {
+                <i32>::sse_encode(14, serializer);
             }
         }
     }

@@ -103,8 +103,13 @@ class HttpBackend implements BackendService {
   }
   
   @override
-  Future<bool> markRead(Chat chat) async {
+  Future<bool> markRead(Chat chat, bool notifyOthers) async {
     return (await http.markChatRead(chat.guid)).statusCode == 200;
+  }
+
+  @override
+  Future<bool> markUnread(Chat chat) async {
+    return (await http.markChatUnread(chat.guid)).statusCode == 200;
   }
 
   @override

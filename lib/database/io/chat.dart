@@ -603,7 +603,16 @@ class Chat {
             )
           )])],
         );
-        await backend.sendMessage(this, _message);
+        try {
+          await backend.sendMessage(this, _message);
+        } catch (e) {
+          print("Failed to forward sms! $e");
+          inq.queue(IncomingItem(
+            chat: this,
+            message: _message,
+            type: QueueType.newMessage
+          ));
+        }
       } else {
         var myUuid = "${part["id"]}_0";
         String data = await rootBundle.loadString("assets/rustpush/uti-map.json");
@@ -640,12 +649,23 @@ class Chat {
           ]
         );
         await _message.attachments.first!.writeToDisk();
-        var forwarded = await (backend as RustPushBackend).forwardMMSAttachment(this, _message, _message.attachments.first!);
-        inq.queue(IncomingItem(
-          chat: this,
-          message: forwarded,
-          type: QueueType.newMessage
-        ));
+        try {
+          var forwarded = await (backend as RustPushBackend).forwardMMSAttachment(this, _message, _message.attachments.first!);
+          inq.queue(IncomingItem(
+            chat: this,
+            message: forwarded,
+            type: QueueType.newMessage
+          ));
+        } catch (e) {
+          // TODO resend later
+          print("Failed to forward mms! $e");
+          inq.queue(IncomingItem(
+            chat: this,
+            message: _message,
+            type: QueueType.newMessage
+          ));
+        }
+        
       }
     }
   }
@@ -830,12 +850,10 @@ class Chat {
           }
         );
       }
-      if (privateMark && ss.settings.enablePrivateAPI.value && (autoSendReadReceipts ?? ss.settings.privateMarkChatAsRead.value)) {
-        if (!hasUnread) {
-          backend.markRead(this);
-        } else if (hasUnread) {
-          backend.getRemoteService()?.markChatUnread(guid);
-        }
+      if (!hasUnread) {
+        backend.markRead(this, privateMark && ss.settings.enablePrivateAPI.value && (autoSendReadReceipts ?? ss.settings.privateMarkChatAsRead.value));
+      } else if (hasUnread) {
+        backend.markUnread(this);
       }
     } catch (_) {}
 
@@ -1048,9 +1066,7 @@ class Chat {
     if (id == null) return this;
     this.autoSendReadReceipts = autoSendReadReceipts;
     save(updateAutoSendReadReceipts: true);
-    if (autoSendReadReceipts ?? ss.settings.privateMarkChatAsRead.value) {
-      backend.markRead(this);
-    }
+    backend.markRead(this, autoSendReadReceipts ?? ss.settings.privateMarkChatAsRead.value);
     return this;
   }
 

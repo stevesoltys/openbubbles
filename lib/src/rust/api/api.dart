@@ -564,6 +564,7 @@ sealed class DartMessage with _$DartMessage {
   const factory DartMessage.messageReadOnDevice() =
       DartMessage_MessageReadOnDevice;
   const factory DartMessage.smsConfirmSent() = DartMessage_SmsConfirmSent;
+  const factory DartMessage.markUnread() = DartMessage_MarkUnread;
 }
 
 @freezed
