@@ -864,10 +864,12 @@ class Chat {
           }
         );
       }
-      if (!hasUnread) {
-        backend.markRead(this, privateMark && ss.settings.enablePrivateAPI.value && (autoSendReadReceipts ?? ss.settings.privateMarkChatAsRead.value));
-      } else if (hasUnread) {
-        backend.markUnread(this);
+      if (privateMark) {
+        if (!hasUnread) {
+          backend.markRead(this, ss.settings.enablePrivateAPI.value && (autoSendReadReceipts ?? ss.settings.privateMarkChatAsRead.value));
+        } else if (hasUnread) {
+          backend.markUnread(this);
+        }
       }
     } catch (_) {}
 

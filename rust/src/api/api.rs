@@ -390,7 +390,8 @@ impl From<Attachment> for DartAttachment {
 #[repr(C)]
 pub enum DartMessagePart {
     Text(String),
-    Attachment(DartAttachment)
+    Attachment(DartAttachment),
+    Mention(String, String),
 }
 
 #[repr(C)]
@@ -501,7 +502,7 @@ pub enum DartMessage {
     StopTyping,
     EnableSmsActivation(bool),
     MessageReadOnDevice,
-    SmsConfirmSent,
+    SmsConfirmSent(bool),
     MarkUnread, // send for last message from other participant
 }
 

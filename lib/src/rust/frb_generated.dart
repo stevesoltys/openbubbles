@@ -1556,7 +1556,9 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       case 12:
         return DartMessage_MessageReadOnDevice();
       case 13:
-        return DartMessage_SmsConfirmSent();
+        return DartMessage_SmsConfirmSent(
+          dco_decode_bool(raw[1]),
+        );
       case 14:
         return DartMessage_MarkUnread();
       default:
@@ -1575,6 +1577,11 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       case 1:
         return DartMessagePart_Attachment(
           dco_decode_box_autoadd_dart_attachment(raw[1]),
+        );
+      case 2:
+        return DartMessagePart_Mention(
+          dco_decode_String(raw[1]),
+          dco_decode_String(raw[2]),
         );
       default:
         throw Exception("unreachable");
@@ -2357,7 +2364,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       case 12:
         return DartMessage_MessageReadOnDevice();
       case 13:
-        return DartMessage_SmsConfirmSent();
+        var var_field0 = sse_decode_bool(deserializer);
+        return DartMessage_SmsConfirmSent(var_field0);
       case 14:
         return DartMessage_MarkUnread();
       default:
@@ -2377,6 +2385,10 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       case 1:
         var var_field0 = sse_decode_box_autoadd_dart_attachment(deserializer);
         return DartMessagePart_Attachment(var_field0);
+      case 2:
+        var var_field0 = sse_decode_String(deserializer);
+        var var_field1 = sse_decode_String(deserializer);
+        return DartMessagePart_Mention(var_field0, var_field1);
       default:
         throw UnimplementedError('');
     }
@@ -3161,8 +3173,9 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_bool(field0, serializer);
       case DartMessage_MessageReadOnDevice():
         sse_encode_i_32(12, serializer);
-      case DartMessage_SmsConfirmSent():
+      case DartMessage_SmsConfirmSent(field0: final field0):
         sse_encode_i_32(13, serializer);
+        sse_encode_bool(field0, serializer);
       case DartMessage_MarkUnread():
         sse_encode_i_32(14, serializer);
     }
@@ -3179,6 +3192,10 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       case DartMessagePart_Attachment(field0: final field0):
         sse_encode_i_32(1, serializer);
         sse_encode_box_autoadd_dart_attachment(field0, serializer);
+      case DartMessagePart_Mention(field0: final field0, field1: final field1):
+        sse_encode_i_32(2, serializer);
+        sse_encode_String(field0, serializer);
+        sse_encode_String(field1, serializer);
     }
   }
 

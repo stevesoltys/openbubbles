@@ -282,6 +282,7 @@ class Message {
   bool isBookmarked;
 
   bool hasBeenForwarded; // local SMS forwarding, used to keep track of this message needs to be sent
+  String? stagingGuid;
 
   final RxInt _error = RxInt(0);
   int get error => _error.value;
@@ -327,10 +328,10 @@ class Message {
       ? null : jsonDecode(json) as Map<String, dynamic>;
 
 
-  Future<void> forwardIfNessesary(Chat chat) async {
+  Future<void> forwardIfNessesary(Chat chat, {bool markFailed = false}) async {
     if (hasBeenForwarded || !ss.settings.smsForwardingEnabled.value || !chat.isTextForwarding || !(isFromMe ?? true)) return;
     hasBeenForwarded = true;
-    save();
+    save(chat: chat);
     var attachments = fetchAttachments()!;
     bool useMMS = chat.participants.length > 1 || attachments.isNotEmpty;
     int status;
@@ -349,11 +350,28 @@ class Message {
       );
     }
     if (status != -1) {
-      throw Exception("failed to send sms with status $status!");
+      await (backend as RustPushBackend).confirmSmsSent(this, chat, false);
+      hasBeenForwarded = false;
+      save(chat: chat);
+      if (markFailed) {
+        final tempGuid = guid;
+        var newMsg = handleSendError(Exception("failed to send sms with status $status!"), this);
+
+        if (!ls.isAlive || !(cm.getChatController(chat.guid)?.isAlive ?? false)) {
+          await notif.createFailedToSend(chat);
+        }
+        await Message.replaceMessage(tempGuid, newMsg);
+        return;
+      } else {
+        throw Exception("failed to send sms with status $status!");
+      }
     }
-    if (guid?.contains("error") ?? true) return; // we weren't forwarded successfully
-    if (guid?.contains("temp") ?? true) return; // we weren't forwarded successfully
-    (backend as RustPushBackend).confirmSmsSent(this, chat);
+    if (stagingGuid == null) return; // we weren't forwarded successfully
+    var tempGuid = guid;
+    guid = stagingGuid;
+    stagingGuid = null;
+    await Message.replaceMessage(tempGuid, this);
+    await (backend as RustPushBackend).confirmSmsSent(this, chat, true);
   }
 
   Message({
@@ -399,6 +417,7 @@ class Message {
     this.didNotifyRecipient = false,
     this.isBookmarked = false,
     this.hasBeenForwarded = false,
+    this.stagingGuid,
   }) {
       if (handle != null && handleId == null) handleId = handle!.originalROWID;
       if (error != null) _error.value = error;
@@ -494,6 +513,7 @@ class Message {
       didNotifyRecipient: json['didNotifyRecipient'] ?? false,
       isBookmarked: json['isBookmarked'] ?? false,
       hasBeenForwarded: json['hasBeenForwarded'] ?? false,
+      stagingGuid: json['stagingGuid']
     );
   }
 
@@ -629,14 +649,13 @@ class Message {
     existing.wasDeliveredQuietly = newMessage.wasDeliveredQuietly ? newMessage.wasDeliveredQuietly : existing.wasDeliveredQuietly;
     existing.didNotifyRecipient = newMessage.didNotifyRecipient ? newMessage.didNotifyRecipient : existing.didNotifyRecipient;
     existing._error.value = newMessage._error.value;
+    existing.stagingGuid = newMessage.stagingGuid;
 
     try {
       Database.messages.put(existing, mode: PutMode.update);
     } catch (ex, stack) {
       Logger.error('Failed to replace message! This is likely due to a unique constraint being violated.', error: ex, trace: stack);
     }
-
-    existing.forwardIfNessesary(existing.getChat()!);
     return existing;
   }
 
@@ -702,6 +721,14 @@ class Message {
       final result = query.findFirst();
       query.close();
       result?.handle = result.getHandle();
+      if (result == null) {
+        final query = messageBox.query(Message_.stagingGuid.equals(guid)).build();
+        query.limit = 1;
+        final result = query.findFirst();
+        query.close();
+        result?.handle = result.getHandle();
+        return result;
+      }
       return result;
     } else if (associatedMessageGuid != null) {
       final query = Database.messages.query(Message_.associatedMessageGuid.equals(associatedMessageGuid)).build();
@@ -1143,6 +1170,7 @@ class Message {
     existing.isBookmarked = newMessage.isBookmarked;
 
     existing.hasBeenForwarded = newMessage.hasBeenForwarded;
+    newMessage.stagingGuid = existing.stagingGuid;
 
     return existing;
   }
@@ -1237,6 +1265,7 @@ class Message {
       "didNotifyRecipient": didNotifyRecipient,
       "isBookmarked": isBookmarked,
       "hasBeenForwarded": hasBeenForwarded,
+      "stagingGuid": stagingGuid,
     };
     if (includeObjects) {
       map['attachments'] = (attachments).map((e) => e!.toMap()).toList();

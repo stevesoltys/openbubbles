@@ -411,7 +411,7 @@
     },
     {
       "id": "13:4148278195232901830",
-      "lastPropertyId": "50:6516059048310614016",
+      "lastPropertyId": "51:2206983384887094884",
       "name": "Message",
       "properties": [
         {
@@ -619,6 +619,11 @@
           "id": "50:6516059048310614016",
           "name": "hasBeenForwarded",
           "type": 1
+        },
+        {
+          "id": "51:2206983384887094884",
+          "name": "stagingGuid",
+          "type": 9
         }
       ],
       "relations": []

@@ -431,7 +431,7 @@ final _entities = <ModelEntity>[
   ModelEntity(
       id: const IdUid(13, 4148278195232901830),
       name: 'Message',
-      lastPropertyId: const IdUid(50, 6516059048310614016),
+      lastPropertyId: const IdUid(51, 2206983384887094884),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
@@ -636,6 +636,11 @@ final _entities = <ModelEntity>[
             id: const IdUid(50, 6516059048310614016),
             name: 'hasBeenForwarded',
             type: 1,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(51, 2206983384887094884),
+            name: 'stagingGuid',
+            type: 9,
             flags: 0)
       ],
       relations: <ModelRelation>[],
@@ -1458,7 +1463,10 @@ ModelDefinition getObjectBoxModel() {
           final dbMetadataOffset = object.dbMetadata == null
               ? null
               : fbb.writeString(object.dbMetadata!);
-          fbb.startTable(51);
+          final stagingGuidOffset = object.stagingGuid == null
+              ? null
+              : fbb.writeString(object.stagingGuid!);
+          fbb.startTable(52);
           fbb.addInt64(0, object.id ?? 0);
           fbb.addInt64(1, object.originalROWID);
           fbb.addOffset(2, guidOffset);
@@ -1499,6 +1507,7 @@ ModelDefinition getObjectBoxModel() {
           fbb.addBool(47, object.didNotifyRecipient);
           fbb.addBool(48, object.isBookmarked);
           fbb.addBool(49, object.hasBeenForwarded);
+          fbb.addOffset(50, stagingGuidOffset);
           fbb.finish(fbb.endTable());
           return object.id ?? 0;
         },
@@ -1597,6 +1606,9 @@ ModelDefinition getObjectBoxModel() {
               const fb.BoolReader().vTableGet(buffer, rootOffset, 100, false);
           final hasBeenForwardedParam =
               const fb.BoolReader().vTableGet(buffer, rootOffset, 102, false);
+          final stagingGuidParam =
+              const fb.StringReader(asciiOptimization: true)
+                  .vTableGetNullable(buffer, rootOffset, 104);
           final object = Message(
               id: idParam,
               originalROWID: originalROWIDParam,
@@ -1631,7 +1643,8 @@ ModelDefinition getObjectBoxModel() {
               wasDeliveredQuietly: wasDeliveredQuietlyParam,
               didNotifyRecipient: didNotifyRecipientParam,
               isBookmarked: isBookmarkedParam,
-              hasBeenForwarded: hasBeenForwardedParam)
+              hasBeenForwarded: hasBeenForwardedParam,
+              stagingGuid: stagingGuidParam)
             ..bigEmoji =
                 const fb.BoolReader().vTableGetNullable(buffer, rootOffset, 76)
             ..dbAttributedBody = const fb.StringReader(asciiOptimization: true)
@@ -2261,6 +2274,10 @@ class Message_ {
   /// see [Message.hasBeenForwarded]
   static final hasBeenForwarded =
       QueryBooleanProperty<Message>(_entities[5].properties[39]);
+
+  /// see [Message.stagingGuid]
+  static final stagingGuid =
+      QueryStringProperty<Message>(_entities[5].properties[40]);
 }
 
 /// [ThemeObject] entity fields to define ObjectBox queries.

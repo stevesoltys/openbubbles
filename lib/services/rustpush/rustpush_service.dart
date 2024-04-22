@@ -303,7 +303,7 @@ class RustPushBackend implements BackendService {
 
       final newMessage = await pushService.reflectMessageDyn(msg);
       newMessage.chat.target = chat;
-      newMessage.forwardIfNessesary(chat);
+      await newMessage.forwardIfNessesary(chat);
       newMessage.save();
     }
     await chats.addChat(chat);
@@ -355,7 +355,14 @@ class RustPushBackend implements BackendService {
           effect: m.expressiveSendStyleId,
           service: await getService(chat.isRpSms, forMessage: m),
         )));
+    if (m.stagingGuid != null) {
+      msg.id = m.stagingGuid!;
+    }
     await api.send(state: pushService.state, msg: msg);
+    if (chat.isRpSms) {
+      m.stagingGuid = msg.id;
+    }
+    m.save(chat: chat);
     msg.sentTimestamp = DateTime.now().millisecondsSinceEpoch;
     return await pushService.reflectMessageDyn(msg);
   }
@@ -384,6 +391,9 @@ class RustPushBackend implements BackendService {
           effect: m.expressiveSendStyleId,
           service: service,
         )));
+    if (m.stagingGuid != null) {
+      msg.id = m.stagingGuid!;
+    }
     await api.send(state: pushService.state, msg: msg);
     msg.sentTimestamp = DateTime.now().millisecondsSinceEpoch;
     return await pushService.reflectMessageDyn(msg);
@@ -406,14 +416,14 @@ class RustPushBackend implements BackendService {
     await api.send(state: pushService.state, msg: msg);
   }
 
-  Future<void> confirmSmsSent(Message m, Chat c) async {
+  Future<void> confirmSmsSent(Message m, Chat c, bool success) async {
     var msg = await api.newMsg(
       state: pushService.state,
       conversation: await c.getConversationData(),
       sender: await c.ensureHandle(),
-      message: const api.DartMessage.smsConfirmSent(),
+      message: api.DartMessage.smsConfirmSent(success),
     );
-    msg.id = m.guid!;
+    msg.id = m.stagingGuid ?? m.guid!;
     await api.send(state: pushService.state, msg: msg);
   }
 
@@ -499,20 +509,45 @@ class RustPushBackend implements BackendService {
   @override
   Future<Message> sendMessage(Chat chat, Message m, {CancelToken? cancelToken}) async {
     var partIndex = int.tryParse(m.threadOriginatorPart?.split(":").firstOrNull ?? "");
+    api.DartMessageParts parts;
+    if (m.attributedBody.isNotEmpty) {
+      parts = api.DartMessageParts(field0: m.attributedBody.first.runs.map((e) {
+        var text = m.attributedBody.first.string.substring(e.range.first, e.range.first + e.range.last);
+        return api.DartIndexedMessagePart(field0: e.hasMention ? 
+          api.DartMessagePart.mention(e.attributes!.mention!, text) : 
+          api.DartMessagePart.text(text));
+      }).toList());
+    } else {
+      parts = api.DartMessageParts(field0: [api.DartIndexedMessagePart(field0: api.DartMessagePart.text(m.text!))]);
+    }
     var msg = await api.newMsg(
       state: pushService.state,
       conversation: await chat.getConversationData(),
       sender: await chat.ensureHandle(),
       message: api.DartMessage.message(api.DartNormalMessage(
-        parts: api.DartMessageParts(field0: [api.DartIndexedMessagePart(field0: api.DartMessagePart.text(m.text!))]),
+        parts: parts,
         replyGuid: m.threadOriginatorGuid,
         replyPart: m.threadOriginatorGuid == null ? null : "$partIndex:0:0",
         effect: m.expressiveSendStyleId,
         service: await getService(chat.isRpSms, forMessage: m),
       )),
     );
-    await api.send(state: pushService.state, msg: msg);
-    m.guid = msg.id;
+    if (m.stagingGuid != null) {
+      msg.id = m.stagingGuid!;
+    }
+    try {
+      await api.send(state: pushService.state, msg: msg);
+    } catch (e) {
+      if (!chat.isRpSms) {
+        rethrow; // APN errors are fatal for non-SMS messages
+      }
+    }
+    if (chat.isRpSms) {
+      m.stagingGuid = msg.id;
+    } else {
+      m.guid = msg.id;
+    }
+    await m.forwardIfNessesary(chat);
     m.save(chat: chat);
     msg.sentTimestamp = DateTime.now().millisecondsSinceEpoch;
     return await pushService.reflectMessageDyn(msg);
@@ -540,6 +575,9 @@ class RustPushBackend implements BackendService {
       message: const api.DartMessage.delivered(),
     );
     msg.id = message.id;
+    if (msg.id.contains("temp") || msg.id.contains("error")) {
+      return true;
+    }
     await api.send(state: pushService.state, msg: msg);
     return true;
   }
@@ -563,6 +601,9 @@ class RustPushBackend implements BackendService {
         sender: await chat.ensureHandle(),
         message: const api.DartMessage.read());
     msg.id = latestMsg!;
+    if (msg.id.contains("temp") || msg.id.contains("error")) {
+      return true;
+    }
     await api.send(state: pushService.state, msg: msg);
     return true;
   }
@@ -578,6 +619,9 @@ class RustPushBackend implements BackendService {
         sender: await chat.ensureHandle(),
         message: const api.DartMessage.markUnread());
     msg.id = latestMsg!;
+    if (msg.id.contains("temp") || msg.id.contains("error")) {
+      return true;
+    }
     await api.send(state: pushService.state, msg: msg);
     return true;
   }
@@ -796,12 +840,16 @@ class RustPushService extends GetxService {
     List<Run> body = existingBody?.runs.copy() ?? [];
     List<Attachment> attachments = [];
     var index = -1;
+    var addedIndicies = [];
     for (var indexedParts in parts) {
       index += 1;
       var part = indexedParts.field0;
-      var fieldIdx = indexedParts.field1 ?? body.length;
+      var fieldIdx = indexedParts.field1 ?? body.count((i) => i.attributes?.attachmentGuid != null); // only count attachments increment parts by default
       // remove old elements
-      body.removeWhere((element) => element.attributes?.messagePart == fieldIdx);
+      if (!addedIndicies.contains(fieldIdx)) {
+        body.removeWhere((element) => element.attributes?.messagePart == fieldIdx);
+        addedIndicies.add(fieldIdx);
+      }
       if (part is api.DartMessagePart_Text) {
         body.add(Run(
           range: [bodyString.length, part.field0.length],
@@ -810,6 +858,15 @@ class RustPushService extends GetxService {
           )
         ));
         bodyString += part.field0;
+      } else if (part is api.DartMessagePart_Mention) {
+        body.add(Run(
+          range: [bodyString.length, part.field1.length],
+          attributes: Attributes(
+            messagePart: fieldIdx,
+            mention: part.field0
+          )
+        ));
+        bodyString += part.field1;
       } else if (part is api.DartMessagePart_Attachment) {
         if (part.field0.iris) {
           continue;
@@ -854,15 +911,25 @@ class RustPushService extends GetxService {
       var attributedBodyData = await indexedPartsToAttributedBodyDyn(innerMsg.field0.parts.field0, myMsg.id, null);
       var sender = myMsg.sender;
       
+      var staging = false;
+      var tempGuid = "temp-${randomString(8)}";
       if (innerMsg.field0.service is api.DartMessageType_SMS) {
         var smsServ = innerMsg.field0.service as api.DartMessageType_SMS;
         if (smsServ.fromHandle != null) {
           sender = smsServ.fromHandle;
         }
+        staging = myHandles.contains(sender);
+        if (staging) {
+          var found = Message.findOne(guid: myMsg.id);
+          if (found != null && found.guid != null) {
+            tempGuid = found.guid!;
+          }
+        }
       }
 
       return Message(
-        guid: myMsg.id,
+        guid: staging ? tempGuid : myMsg.id,
+        stagingGuid: staging ? myMsg.id : null,
         text: attributedBodyData.$2,
         isFromMe: myHandles.contains(sender),
         handle: RustPushBBUtils.rustHandleToBB(sender!),
@@ -1075,7 +1142,26 @@ class RustPushService extends GetxService {
       return;
     }
     if (myMsg.message is api.DartMessage_SmsConfirmSent) {
-      return; // not much to do for now  
+      var message = Message.findOne(guid: myMsg.id)!;
+      var msg = myMsg.message as api.DartMessage_SmsConfirmSent;
+      if (msg.field0) {
+        message.guid = message.stagingGuid;
+        message.stagingGuid = null;
+        message.save();
+      } else {
+        // message failed to send
+        var m = message;
+        var c = m.chat.target!;
+        var lastGuid = m.guid;
+        m = handleSendError(Exception("Failed to send SMS"), m);
+
+        if (!ls.isAlive || !(cm.getChatController(c.guid)?.isAlive ?? false)) {
+          await notif.createFailedToSend(c);
+        }
+        await Message.replaceMessage(lastGuid, m);
+        ah.attachmentProgress.removeWhere((e) => e.item1 == lastGuid || e.item2 >= 1);
+      }
+      return;
     }
     if (myMsg.message is api.DartMessage_Delivered || myMsg.message is api.DartMessage_Read) {
       var myHandles = (await api.getHandles(state: pushService.state));

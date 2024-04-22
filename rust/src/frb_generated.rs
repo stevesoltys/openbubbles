@@ -1624,7 +1624,8 @@ impl SseDecode for crate::api::api::DartMessage {
                 return crate::api::api::DartMessage::MessageReadOnDevice;
             }
             13 => {
-                return crate::api::api::DartMessage::SmsConfirmSent;
+                let mut var_field0 = <bool>::sse_decode(deserializer);
+                return crate::api::api::DartMessage::SmsConfirmSent(var_field0);
             }
             14 => {
                 return crate::api::api::DartMessage::MarkUnread;
@@ -1648,6 +1649,11 @@ impl SseDecode for crate::api::api::DartMessagePart {
             1 => {
                 let mut var_field0 = <crate::api::api::DartAttachment>::sse_decode(deserializer);
                 return crate::api::api::DartMessagePart::Attachment(var_field0);
+            }
+            2 => {
+                let mut var_field0 = <String>::sse_decode(deserializer);
+                let mut var_field1 = <String>::sse_decode(deserializer);
+                return crate::api::api::DartMessagePart::Mention(var_field0, var_field1);
             }
             _ => {
                 unimplemented!("");
@@ -2564,7 +2570,9 @@ impl flutter_rust_bridge::IntoDart for crate::api::api::DartMessage {
                 [11.into_dart(), field0.into_into_dart().into_dart()].into_dart()
             }
             crate::api::api::DartMessage::MessageReadOnDevice => [12.into_dart()].into_dart(),
-            crate::api::api::DartMessage::SmsConfirmSent => [13.into_dart()].into_dart(),
+            crate::api::api::DartMessage::SmsConfirmSent(field0) => {
+                [13.into_dart(), field0.into_into_dart().into_dart()].into_dart()
+            }
             crate::api::api::DartMessage::MarkUnread => [14.into_dart()].into_dart(),
         }
     }
@@ -2587,6 +2595,12 @@ impl flutter_rust_bridge::IntoDart for crate::api::api::DartMessagePart {
             crate::api::api::DartMessagePart::Attachment(field0) => {
                 [1.into_dart(), field0.into_into_dart().into_dart()].into_dart()
             }
+            crate::api::api::DartMessagePart::Mention(field0, field1) => [
+                2.into_dart(),
+                field0.into_into_dart().into_dart(),
+                field1.into_into_dart().into_dart(),
+            ]
+            .into_dart(),
         }
     }
 }
@@ -3223,8 +3237,9 @@ impl SseEncode for crate::api::api::DartMessage {
             crate::api::api::DartMessage::MessageReadOnDevice => {
                 <i32>::sse_encode(12, serializer);
             }
-            crate::api::api::DartMessage::SmsConfirmSent => {
+            crate::api::api::DartMessage::SmsConfirmSent(field0) => {
                 <i32>::sse_encode(13, serializer);
+                <bool>::sse_encode(field0, serializer);
             }
             crate::api::api::DartMessage::MarkUnread => {
                 <i32>::sse_encode(14, serializer);
@@ -3244,6 +3259,11 @@ impl SseEncode for crate::api::api::DartMessagePart {
             crate::api::api::DartMessagePart::Attachment(field0) => {
                 <i32>::sse_encode(1, serializer);
                 <crate::api::api::DartAttachment>::sse_encode(field0, serializer);
+            }
+            crate::api::api::DartMessagePart::Mention(field0, field1) => {
+                <i32>::sse_encode(2, serializer);
+                <String>::sse_encode(field0, serializer);
+                <String>::sse_encode(field1, serializer);
             }
         }
     }

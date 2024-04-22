@@ -563,7 +563,9 @@ sealed class DartMessage with _$DartMessage {
   ) = DartMessage_EnableSmsActivation;
   const factory DartMessage.messageReadOnDevice() =
       DartMessage_MessageReadOnDevice;
-  const factory DartMessage.smsConfirmSent() = DartMessage_SmsConfirmSent;
+  const factory DartMessage.smsConfirmSent(
+    bool field0,
+  ) = DartMessage_SmsConfirmSent;
   const factory DartMessage.markUnread() = DartMessage_MarkUnread;
 }
 
@@ -575,6 +577,10 @@ sealed class DartMessagePart with _$DartMessagePart {
   const factory DartMessagePart.attachment(
     DartAttachment field0,
   ) = DartMessagePart_Attachment;
+  const factory DartMessagePart.mention(
+    String field0,
+    String field1,
+  ) = DartMessagePart_Mention;
 }
 
 class DartMessageParts {

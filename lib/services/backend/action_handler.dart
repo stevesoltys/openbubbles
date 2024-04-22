@@ -160,21 +160,6 @@ class ActionHandler extends GetxService {
       }).catchError((error, stack) async {
         Logger.error('Failed to send message!', error: error, trace: stack);
 
-        if (ss.settings.smsForwardingEnabled.value && c.isTextForwarding) {
-          // forward to cell even if couldn't send to APNs
-          try {
-            await m.forwardIfNessesary(c);
-            await Message.replaceMessage(m.guid, m);
-            m.guid = uuid.v4(); // mark it as non-temp
-            m.save();
-            completer.complete(); // oh well, didn't get to apns, still "sent"
-            return;
-          } catch(e) {
-            error = e;
-            Logger.info("Message match failed to forward!", tag: "MessageStatus");
-          }
-        }
-
         final tempGuid = m.guid;
         m = handleSendError(error, m);
 
@@ -273,6 +258,7 @@ class ActionHandler extends GetxService {
     final progress = attachmentProgress.firstWhere((e) => e.item1 == attachment.guid);
     final completer = Completer<void>();
     latestCancelToken = CancelToken();
+    var apnsSuccess = false;
     backend.sendAttachment(
       c, m, isAudioMessage, attachment, onSendProgress: (count, total) => progress.item2.value = count / attachment.bytes!.length,
       cancelToken: latestCancelToken,
@@ -297,6 +283,8 @@ class ActionHandler extends GetxService {
       } catch (e) {
         Logger.warn("Failed to find message match for ${m.guid} -> ${newMessage.guid}!", error: e, tag: "MessageStatus");
       }
+      apnsSuccess = true;
+      await m.forwardIfNessesary(c);
       attachmentProgress.removeWhere((e) => e.item1 == m.guid || e.item2 >= 1);
 
       completer.complete();
@@ -304,7 +292,7 @@ class ActionHandler extends GetxService {
       latestCancelToken = null;
       Logger.error('Failed to send message!', error: error, trace: stack);
 
-      if (ss.settings.smsForwardingEnabled.value && c.isTextForwarding) {
+      if (ss.settings.smsForwardingEnabled.value && c.isTextForwarding && !apnsSuccess) {
         // forward to cell even if couldn't send to APNs
         try {
           await m.forwardIfNessesary(c);
@@ -373,7 +361,7 @@ class ActionHandler extends GetxService {
     if ((!ls.isAlive || ss.settings.endpointUnifiedPush.value != "") && shouldNotify) {
       await MessageHelper.handleNotification(m, c);
     }
-    await m.forwardIfNessesary(c);
+    await m.forwardIfNessesary(c, markFailed: true);
     await c.addMessage(m);
   }
 
@@ -400,7 +388,7 @@ class ActionHandler extends GetxService {
         }
       );
     }
-
+    await m.forwardIfNessesary(c, markFailed: true); // forward even if retrying
     // update the message in the DB
     await matchMessageWithExisting(c, tempGuid ?? m.guid!, m);
     eventDispatcher.emit("message-updated-${m.guid}");

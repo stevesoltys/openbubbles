@@ -64,21 +64,38 @@ class HttpBackend implements BackendService {
   
   @override
   Future<Message> sendMessage(Chat c, Message m, {CancelToken? cancelToken}) async {
-    var response = await http.sendMessage(c.guid,
+    if (m.attributedBody.isNotEmpty) {
+      var response = await http.sendMultipart(
+        c.guid,
         m.guid!,
-        m.text!,
+        m.attributedBody.first.runs.map((e) => {
+          "text": m.attributedBody.first.string.substring(e.range.first, e.range.first + e.range.last),
+          "mention": e.attributes!.mention,
+          "partIndex": e.attributes!.messagePart,
+        }).toList(),
         subject: m.subject,
-        method: (ss.settings.enablePrivateAPI.value
-            && ss.settings.privateAPISend.value)
-            || (m.subject?.isNotEmpty ?? false)
-            || m.threadOriginatorGuid != null
-            || m.expressiveSendStyleId != null
-            ? "private-api" : "apple-script",
         selectedMessageGuid: m.threadOriginatorGuid,
         effectId: m.expressiveSendStyleId,
         partIndex: int.tryParse(m.threadOriginatorPart?.split(":").firstOrNull ?? ""),
-        ddScan: m.text!.isURL, cancelToken: cancelToken);
-    return Message.fromMap(response.data["data"]);
+      );
+      return Message.fromMap(response.data["data"]);
+    } else {
+      var response = await http.sendMessage(c.guid,
+          m.guid!,
+          m.text!,
+          subject: m.subject,
+          method: (ss.settings.enablePrivateAPI.value
+              && ss.settings.privateAPISend.value)
+              || (m.subject?.isNotEmpty ?? false)
+              || m.threadOriginatorGuid != null
+              || m.expressiveSendStyleId != null
+              ? "private-api" : "apple-script",
+          selectedMessageGuid: m.threadOriginatorGuid,
+          effectId: m.expressiveSendStyleId,
+          partIndex: int.tryParse(m.threadOriginatorPart?.split(":").firstOrNull ?? ""),
+          ddScan: m.text!.isURL, cancelToken: cancelToken);
+      return Message.fromMap(response.data["data"]);
+    }
   }
   
   @override
