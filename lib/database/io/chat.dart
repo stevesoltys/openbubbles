@@ -618,7 +618,11 @@ class Chat {
           )])],
         );
         try {
-          await backend.sendMessage(this, _message);
+          inq.queue(IncomingItem(
+            chat: this,
+            message: await backend.sendMessage(this, _message),
+            type: QueueType.newMessage
+          ));
         } catch (e) {
           print("Failed to forward sms! $e");
           inq.queue(IncomingItem(
@@ -626,6 +630,9 @@ class Chat {
             message: _message,
             type: QueueType.newMessage
           ));
+        }
+        if (!ls.isAlive) {
+          await MessageHelper.handleNotification(_message, this, findExisting: false);
         }
       } else {
         var myUuid = "${part["id"]}_0";
@@ -678,6 +685,10 @@ class Chat {
             message: _message,
             type: QueueType.newMessage
           ));
+        }
+
+        if (!ls.isAlive) {
+          await MessageHelper.handleNotification(_message, this, findExisting: false);
         }
         
       }

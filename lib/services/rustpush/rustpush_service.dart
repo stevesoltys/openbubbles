@@ -542,7 +542,7 @@ class RustPushBackend implements BackendService {
         rethrow; // APN errors are fatal for non-SMS messages
       }
     }
-    if (chat.isRpSms) {
+    if (chat.isRpSms && (m.isFromMe ?? true)) {
       m.stagingGuid = msg.id;
     } else {
       m.guid = msg.id;
