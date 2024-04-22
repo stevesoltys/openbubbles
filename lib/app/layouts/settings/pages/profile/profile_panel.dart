@@ -382,7 +382,11 @@ class _ProfilePanelState extends OptimizedState<ProfilePanel> with WidgetsBindin
                       Obx(() => SettingsSwitch(
                           onChanged: (bool val) async {
                             if (val) {
-                              // await TelephonyPlus().requestPermissions();
+                              var granted = await TelephonyPlus().requestPermissions();
+                              if (!granted) {
+                                showSnackbar("SMS denied", "Please enable SMS permission in settings");
+                                return;
+                              }
                             }
                             (backend as RustPushBackend).broadcastSmsForwardingState(val);
                             ss.settings.isSmsRouter.value = val;

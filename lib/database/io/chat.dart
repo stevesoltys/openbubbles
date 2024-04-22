@@ -596,6 +596,9 @@ class Chat {
   }
 
   Future<void> deliverSMS(String sender, List<Map<String, dynamic>> parts) async {
+    if (!ss.settings.isSmsRouter.value) {
+      return; // don't deliver if not enabled :)
+    }
     for (var part in parts) {
       if (part["contentType"] == "text/plain") {
         var bodyString = String.fromCharCodes(part["body"] as Uint8List);

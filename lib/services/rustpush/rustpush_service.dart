@@ -325,6 +325,9 @@ class RustPushBackend implements BackendService {
 
   @override
   Future<Message> sendAttachment(Chat chat, Message m, bool isAudioMessage, Attachment att, {void Function(int p1, int p2)? onSendProgress, CancelToken? cancelToken}) async {
+    if (chat.isRpSms && !ss.settings.smsForwardingEnabled.value) {
+      throw Exception("SMS is not enabled (enable in settings -> user)");
+    }
     var stream = api.uploadAttachment(
         state: pushService.state,
         path: att.getFile().path!,
@@ -508,6 +511,9 @@ class RustPushBackend implements BackendService {
 
   @override
   Future<Message> sendMessage(Chat chat, Message m, {CancelToken? cancelToken}) async {
+    if (chat.isRpSms && !ss.settings.smsForwardingEnabled.value) {
+      throw Exception("SMS is not enabled (enable in settings -> user)");
+    }
     var partIndex = int.tryParse(m.threadOriginatorPart?.split(":").firstOrNull ?? "");
     api.DartMessageParts parts;
     if (m.attributedBody.isNotEmpty) {
