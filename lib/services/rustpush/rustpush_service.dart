@@ -361,9 +361,13 @@ class RustPushBackend implements BackendService {
     if (m.stagingGuid != null) {
       msg.id = m.stagingGuid!;
     }
+    m.stagingGuid = msg.id; // in case delivered comes in before sending "finishes" (also for retries, duh)
+    m.save(chat: chat);
     await api.send(state: pushService.state, msg: msg);
     if (chat.isRpSms) {
       m.stagingGuid = msg.id;
+    } else {
+      m.stagingGuid = null;
     }
     m.save(chat: chat);
     msg.sentTimestamp = DateTime.now().millisecondsSinceEpoch;
@@ -541,6 +545,8 @@ class RustPushBackend implements BackendService {
     if (m.stagingGuid != null) {
       msg.id = m.stagingGuid!;
     }
+    m.stagingGuid = msg.id; // in case delivered comes in before sending "finishes" (also for retries, duh)
+    m.save(chat: chat);
     try {
       await api.send(state: pushService.state, msg: msg);
     } catch (e) {
@@ -551,6 +557,7 @@ class RustPushBackend implements BackendService {
     if (chat.isRpSms && (m.isFromMe ?? true)) {
       m.stagingGuid = msg.id;
     } else {
+      m.stagingGuid = null;
       m.guid = msg.id;
     }
     await m.forwardIfNessesary(chat);
@@ -1183,14 +1190,17 @@ class RustPushService extends GetxService {
         }
         return; // delivered to other devices is not
       }
-      var map = message.toMap();
-      map["chats"] = [message.chat.target!.toMap()];
       if (myMsg.message is api.DartMessage_Delivered) {
-        map["dateDelivered"] = myMsg.sentTimestamp;
+        message.dateDelivered = parseDate(myMsg.sentTimestamp);
       } else {
-        map["dateRead"] = myMsg.sentTimestamp;
+        message.dateRead = parseDate(myMsg.sentTimestamp);
       }
-      inq.queue(IncomingItem.fromMap(QueueType.updatedMessage, map));
+      message.save();
+      inq.queue(IncomingItem(
+        chat: message.chat.target!,
+        message: message,
+        type: QueueType.updatedMessage
+      ));
       return;
     }
     var chat = await chatForMessage(myMsg);
