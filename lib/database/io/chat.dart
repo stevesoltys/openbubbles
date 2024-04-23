@@ -599,6 +599,17 @@ class Chat {
     if (!ss.settings.isSmsRouter.value) {
       return; // don't deliver if not enabled :)
     }
+    var handle = Handle.findOne(addressAndService: Tuple2(sender, "iMessage"));
+    if (handle == null) {
+      handle = Handle(
+        address: sender
+      );
+      handle.save();
+    }
+    if (handle.originalROWID == null) {
+      handle.originalROWID = handle.id!;
+      handle.save();
+    }
     for (var part in parts) {
       if (part["contentType"] == "text/plain") {
         var bodyString = String.fromCharCodes(part["body"] as Uint8List);
@@ -611,7 +622,7 @@ class Chat {
           isFromMe: false,
           guid: part["id"] as String,
           handleId: 0,
-          handle: Handle.findOne(addressAndService: Tuple2(sender, "iMessage")),
+          handle: handle,
           hasDdResults: true,
           attributedBody: [AttributedBody(string: bodyString, runs: [Run(
             range: [0, bodyString.length],
@@ -651,7 +662,7 @@ class Chat {
           isFromMe: false,
           guid: part["id"] as String,
           handleId: 0,
-          handle: Handle.findOne(addressAndService: Tuple2(sender, "iMessage")),
+          handle: handle,
           hasDdResults: true,
           attributedBody: [AttributedBody(string: " ", runs: [Run(
             range: [0, 1],
