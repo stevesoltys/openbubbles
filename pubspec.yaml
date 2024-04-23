@@ -181,6 +181,7 @@ dependencies:
     path: rust_builder
   freezed_annotation: ^2.4.1
   dlibphonenumber: ^1.1.12
+  vpn_connection_detector: ^1.0.6
 
 dependency_overrides:
   # overrides for packages stuck on outdated versions

@@ -5,6 +5,7 @@ import 'package:bluebubbles/models/models.dart';
 import 'package:bluebubbles/services/services.dart';
 import 'package:bluebubbles/utils/logger.dart';
 import 'package:collection/collection.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:supercharged/supercharged.dart';
 import 'package:tuple/tuple.dart';
@@ -14,6 +15,7 @@ import 'package:dio/dio.dart';
 import 'package:uuid/uuid.dart';
 import 'package:dlibphonenumber/dlibphonenumber.dart';
 import 'package:telephony_plus/telephony_plus.dart';
+import 'package:vpn_connection_detector/vpn_connection_detector.dart';
 
 var uuid = const Uuid();
 RustPushService pushService =
@@ -1295,10 +1297,39 @@ class RustPushService extends GetxService {
 
   late Future initFuture;
 
+  void tryWarnVpn() async {
+    var state = await VpnConnectionDetector.isVpnActive();
+    if (state && !ss.settings.vpnWarned.value && ls.isAlive) {
+      ss.settings.vpnWarned.value = true;
+      await ss.saveSettings();
+      await showDialog(
+        context: Get.context!,
+        barrierDismissible: false,
+        builder: (context) => AlertDialog(
+          backgroundColor: Get.theme.colorScheme.properSurface,
+          title: Text("VPN warning", style: Get.textTheme.titleLarge),
+          content: Text(
+            "It appears you are using a VPN. Apple blocks some VPN servers from using iMessage as real iDevices bypass them. Exclude BlueBubbles from your VPN app if you have trouble sending messages.",
+            style: Get.textTheme.bodyLarge,
+          ),
+          actions: [
+            TextButton(
+                onPressed: () => Get.back(),
+                child: Text("Got it", style: Get.textTheme.bodyLarge!.copyWith(color: Get.theme.colorScheme.primary)))
+          ],
+        ));
+      print("VPN connected.");
+    }
+  }
+
   @override
   Future<void> onInit() async {
     super.onInit();
     initFuture = (() async {
+      final vpnDetector = VpnConnectionDetector();
+      vpnDetector.vpnConnectionStream.listen((state) {
+        tryWarnVpn();
+      });
       if (Platform.isAndroid) {
         print("tryingService");
         String result = await mcs.invokeMethod("get-native-handle");
