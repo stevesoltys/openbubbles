@@ -115,7 +115,7 @@ class _AppleId2FAState extends OptimizedState<AppleId2FA> {
                                   child: TextField(
                                     cursorColor: context.theme.colorScheme.primary,
                                     autocorrect: false,
-                                    autofocus: false,
+                                    autofocus: controller.goingTo2fa, // if we're not going don't pop up the keyboard for a transitive state
                                     controller: codeController,
                                     textInputAction: TextInputAction.next,
                                     keyboardType: TextInputType.number,
@@ -205,16 +205,23 @@ class _AppleId2FAState extends OptimizedState<AppleId2FA> {
                                   await showCustomHeadersDialog(context);
                                   connect(codeController.text);
                                 },
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
+                                child: Stack(
+                                  alignment: Alignment.center,
                                   children: [
-                                    Text("Sign In",
-                                        style: context.theme.textTheme.bodyLarge!
-                                            .apply(fontSizeFactor: 1.1, color: Colors.white)),
-                                    const SizedBox(width: 10),
-                                    const Icon(Icons.arrow_forward, color: Colors.white, size: 20),
+                                    Opacity(opacity: loading ? 0 : 1, child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text("Sign In",
+                                            style: context.theme.textTheme.bodyLarge!
+                                                .apply(fontSizeFactor: 1.1, color: Colors.white)),
+                                        const SizedBox(width: 10),
+                                        const Icon(Icons.arrow_forward, color: Colors.white, size: 20),
+                                      ],
+                                    ),),
+                                    if (loading)
+                                    buildProgressIndicator(context, brightness: Brightness.dark),
                                   ],
-                                ),
+                                )
                               ),
                             ),
                           ],
@@ -253,7 +260,13 @@ class _AppleId2FAState extends OptimizedState<AppleId2FA> {
       loading = true;
     });
     try {
-      await controller.submitCode(code);
+      if (await controller.submitCode(code) is api.DartLoginState_LoggedIn) {
+        controller.pageController.nextPage(
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+        );
+        FocusManager.instance.primaryFocus?.unfocus();
+      }
     } catch (e) {
       if (e is AnyhowException) {
         controller.updateConnectError(e.message);

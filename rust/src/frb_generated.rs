@@ -255,13 +255,16 @@ fn wire_configure_macos_impl(
             let api_state = <RustOpaqueMoi<
                 flutter_rust_bridge::for_generated::rust_async::RwLock<Arc<PushState>>,
             >>::sse_decode(&mut deserializer);
-            let api_config = <MacOSConfig>::sse_decode(&mut deserializer);
+            let api_config = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::rust_async::RwLock<MacOSConfig>,
+            >>::sse_decode(&mut deserializer);
             deserializer.end();
             move |context| async move {
                 transform_result_sse(
                     (move || async move {
                         let api_state = api_state.rust_auto_opaque_decode_ref();
-                        crate::api::api::configure_macos(&api_state, api_config).await
+                        let api_config = api_config.rust_auto_opaque_decode_ref();
+                        crate::api::api::configure_macos(&api_state, &api_config).await
                     })()
                     .await,
                 )

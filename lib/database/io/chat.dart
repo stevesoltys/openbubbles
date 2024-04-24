@@ -564,7 +564,7 @@ class Chat {
   }
 
   static Future<Chat> getChatForTel(int tid, List<String> participants) async {
-    final query3 = chatBox.query(Chat_.telephonyId.equals(tid)).build();
+    final query3 = chatBox.query(Chat_.telephonyId.equals(tid).and(Chat_.dateDeleted.isNull())).build();
     final result4 = query3.findFirst();
     query3.close();
     if (result4 != null) return result4;
@@ -612,7 +612,7 @@ class Chat {
     }
     for (var part in parts) {
       if (part["contentType"] == "text/plain") {
-        var bodyString = String.fromCharCodes(part["body"] as Uint8List);
+        var bodyString = utf8.decode(part["body"] as Uint8List);
         if (bodyString.trim() == "") continue;
         final _message = Message(
           text: bodyString,

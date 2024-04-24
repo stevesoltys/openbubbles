@@ -37,7 +37,7 @@ class MethodCallHandler {
 
         init {
             SMSObserver.listener = listener@{ context, map ->
-                if (MainActivity.engine != null) {
+                if (engine != null) {
                     // app is alive, deliver directly there
                     invokeMethod("SMSMsg", map)
                     return@listener

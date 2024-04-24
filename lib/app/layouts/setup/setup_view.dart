@@ -42,6 +42,8 @@ class SetupViewController extends StatefulController {
   bool usingBeeper = false;
   api.MacOsConfig? prepareStaging;
 
+  bool goingTo2fa = true;
+
   DartLoginState state = const api.DartLoginState.needsLogin();
 
   Future<DartLoginState> updateLoginState(DartLoginState ret) async {

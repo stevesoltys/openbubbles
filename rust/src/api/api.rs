@@ -179,7 +179,8 @@ async fn setup_push_rec(config: &dyn OSConfig, state: Option<&APNSState>) -> Arc
     push
 }
 
-pub async fn configure_macos(state: &Arc<PushState>, config: MacOSConfig) -> anyhow::Result<()> {
+pub async fn configure_macos(state: &Arc<PushState>, config: &MacOSConfig) -> anyhow::Result<()> {
+    let config = config.clone();
     let mut inner = state.0.write().await;
     let connection = setup_push_rec(&config, None).await;
     inner.os_config = Some(Arc::new(config));
