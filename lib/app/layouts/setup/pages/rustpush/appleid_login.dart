@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge.dart';
 import 'package:get/get.dart' hide Response;
+import 'package:url_launcher/url_launcher.dart';
 
 class AppleIdLogin extends StatefulWidget {
   @override
@@ -125,6 +126,41 @@ class _AppleIdLoginState extends OptimizedState<AppleIdLogin> {
                               obscureText: obscureText,
                             ),
                           ),
+                        ),
+                        const SizedBox(height: 20),
+                        TextButton(
+                          onPressed: () async {
+                            var devInfo = await api.getDeviceInfoState(state: pushService.state);
+                            await showDialog(
+                              context: Get.context!,
+                              builder: (context) => AlertDialog(
+                                title: const Text('Create Apple ID'),
+                                content: Text(
+                                  "Visit icloud.com to create an Apple ID. You may need to contact Apple support if it won't let you.\n\n${RustPushBBUtils.modelToUser(devInfo.name)}\nS/N: ${devInfo.serial}\nmacOS ${devInfo.osVersion}",
+                                  style: Get.textTheme.bodyLarge,
+                                ),
+                                actions: <Widget>[
+                                  TextButton(
+                                          onPressed: () => Get.back(),
+                                          child: Text("Cancel", style: context.theme.textTheme.bodyLarge!.copyWith(color: context.theme.colorScheme.primary))),
+                                  TextButton(
+                                          onPressed: () async {
+                                             await launchUrl(Uri.parse("https://getsupport.apple.com"), mode: LaunchMode.externalApplication);
+                                          },
+                                          child: Text("Get Support", style: context.theme.textTheme.bodyLarge!.copyWith(color: context.theme.colorScheme.primary))),
+                                  TextButton(
+                                          onPressed: () async {
+                                             await launchUrl(Uri.parse("https://icloud.com"), mode: LaunchMode.externalApplication);
+                                          },
+                                          child: Text("Open", style: context.theme.textTheme.bodyLarge!.copyWith(color: context.theme.colorScheme.primary))),
+                                ],
+                              ),
+                            );
+                          },
+                          child: Text(
+                            "Create new Apple ID",
+                            style: context.theme.textTheme.bodyLarge!.apply(fontSizeFactor: 1.1, color: HexColor('2772C3'))
+                          )
                         ),
                         const SizedBox(height: 20),
                         Row(

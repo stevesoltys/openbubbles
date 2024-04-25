@@ -3,18 +3,22 @@ import 'dart:convert';
 
 import 'package:bluebubbles/app/layouts/settings/dialogs/custom_headers_dialog.dart';
 import 'package:bluebubbles/app/layouts/settings/widgets/layout/settings_section.dart';
+import 'package:bluebubbles/app/layouts/setup/dialogs/failed_to_scan_dialog.dart';
 import 'package:bluebubbles/app/layouts/setup/pages/page_template.dart';
+import 'package:bluebubbles/app/layouts/setup/pages/sync/qr_code_scanner.dart';
 import 'package:bluebubbles/app/layouts/setup/setup_view.dart';
 import 'package:bluebubbles/app/wrappers/stateful_boilerplate.dart';
 import 'package:bluebubbles/src/rust/api/api.dart' as api;
 import 'package:bluebubbles/helpers/helpers.dart';
 import 'package:bluebubbles/services/rustpush/rustpush_service.dart';
 import 'package:bluebubbles/services/services.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge.dart';
 import 'package:get/get.dart' hide Response;
+import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HwInp extends StatefulWidget {
@@ -34,6 +38,55 @@ class _HwInpState extends OptimizedState<HwInp> {
   api.DartDeviceInfo? stagingInfo;
   String deviceName = "";
 
+  bool stagingNonInp = false;
+  bool usingBeeper = false;
+
+  Future<void> scanQRCode() async {
+    // Make sure we have the correct permissions
+    PermissionStatus status = await Permission.camera.status;
+    if (!status.isPermanentlyDenied && !status.isGranted) {
+      final result = await Permission.camera.request();
+      if (!result.isGranted) {
+        showSnackbar("Error", "Camera permission required for QR scanning!");
+        return;
+      }
+    } else if (status.isPermanentlyDenied) {
+      showSnackbar("Error", "Camera permission permanently denied, please modify permissions from Android settings.");
+      return;
+    }
+
+    // Open the QR Scanner and get the result
+    try {
+      final String? response = await Navigator.of(context).push(
+        CupertinoPageRoute(
+          builder: (BuildContext context) {
+            return QRCodeScanner();
+          },
+        ),
+      );
+      if (response == null) {
+        return;
+      }
+      if (response.startsWith("OABS")) {
+        var shared = response.codeUnits[4];
+        var rawData = response.codeUnits.toList();
+        rawData.removeRange(0, 5);
+        
+        var parsed = await api.configFromEncoded(encoded: rawData);
+        stagingNonInp = true;
+        select(parsed, shared == 0);
+      } else { throw Exception("Bad data!"); }
+      
+    } catch (e) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return FailedToScanDialog(title: "Error", exception: e.toString());
+        },
+      );
+    }
+  }
+
   void select(api.MacOsConfig parsed, bool mine) async {
     var info = await api.getDeviceInfo(config: parsed);
     setState(() {
@@ -47,42 +100,90 @@ class _HwInpState extends OptimizedState<HwInp> {
     });
   }
 
+  Future<void> handleBeeper(String code) async {
+    try {
+      showSnackbar("Fetching validation data", "This might take a minute");
+      final response = await http.dio.post(
+        "https://registration-relay.beeper.com/api/v1/bridge/get-validation-data",
+        data: {},
+        options: Options(
+          headers: {
+            // not a secret; burner account
+            "X-Beeper-Access-Token": "5c175851953ecaf5209185d897591badb6c3e712",
+            "Authorization": "Bearer $code",
+          },
+        )
+      );
+
+      if (response.statusCode == 404) {
+        showSnackbar("Fetching validation data", "Mac Offline");
+        return;
+      }
+
+      final response2 = await http.dio.post(
+        "https://registration-relay.beeper.com/api/v1/bridge/get-version-info",
+        data: {},
+        options: Options(
+          headers: {
+            // not a secret; burner account
+            "X-Beeper-Access-Token": "5c175851953ecaf5209185d897591badb6c3e712",
+            "Authorization": "Bearer $code",
+          },
+        )
+      );
+
+      var parsed = await api.configFromValidationData(data: base64Decode(response.data["data"]), extra: api.DartHwExtra(
+        version: response2.data["versions"]["software_version"],
+        protocolVersion: 1660,
+        deviceId: response2.data["versions"]["unique_device_id"],
+        icloudUa: "com.apple.iCloudHelper/282 CFNetwork/1408.0.4 Darwin/22.5.0",
+        aoskitVersion: "com.apple.AOSKit/282 (com.apple.accountsd/113)"
+      ));
+      showSnackbar("Fetching validation data", "Done");
+      stagingNonInp = true;
+      usingBeeper = true;
+      select(parsed, true);
+    } catch (e) {
+      showSnackbar("Fetching validation data", "Failed");
+      rethrow;
+    }
+  }
+
   @override
   void initState() {
     super.initState();
 
-    if (controller.asking == null) {
-      select(controller.prepareStaging!, controller.preparedMine);
-    }
-
     // Start listening to changes.
     codeController.addListener(() async {
+      print("Here ${codeController.text}");
+      if ("-".allMatches(codeController.text).length == 3 && codeController.text.length == 19) {
+        print("here");
+        await handleBeeper(codeController.text);
+        return;
+      }
       try {
         var data = base64Decode(codeController.text);
-        if (controller.hardwareMode == 0) {
-          if (data.length == 517) {
-            var parsed = await api.configFromValidationData(data: data, extra: api.DartHwExtra(
-              version: "13.6.4",
-              protocolVersion: 1660,
-              deviceId: uuid.v4(),
-              icloudUa: "com.apple.iCloudHelper/282 CFNetwork/1408.0.4 Darwin/22.5.0",
-              aoskitVersion: "com.apple.AOSKit/282 (com.apple.accountsd/113)"
-            ));
-            select(parsed, true);
-          } else { print("resettingb"); setState(() => staging = stagingInfo = null); }
-        } else if (controller.hardwareMode == 2) {
-          // magic header
-          if (String.fromCharCodes(data).startsWith("OABS")) {
-            var shared = data[4];
-            var rawData = data.toList();
-            rawData.removeRange(0, 5);
-            
-            var parsed = await api.configFromEncoded(encoded: rawData);
-            select(parsed, shared == 0);
-          } else { print("resettingb"); setState(() => staging = stagingInfo = null); }
+        if (String.fromCharCodes(data).startsWith("OABS")) {
+          var shared = data[4];
+          var rawData = data.toList();
+          rawData.removeRange(0, 5);
+          
+          var parsed = await api.configFromEncoded(encoded: rawData);
+          select(parsed, shared == 0);
+        } else if (data.length == 517 && data[0] == 0x02) {
+          var parsed = await api.configFromValidationData(data: data, extra: api.DartHwExtra(
+            version: "13.6.4",
+            protocolVersion: 1660,
+            deviceId: uuid.v4(),
+            icloudUa: "com.apple.iCloudHelper/282 CFNetwork/1408.0.4 Darwin/22.5.0",
+            aoskitVersion: "com.apple.AOSKit/282 (com.apple.accountsd/113)"
+          ));
+          select(parsed, true);
+        } else {
+          print("resettingb");
+          setState(() => staging = stagingInfo = null);
         }
       } catch (e) {
-        print("resettinga");
         setState(() => staging = stagingInfo = null);
         rethrow;
       }
@@ -93,8 +194,8 @@ class _HwInpState extends OptimizedState<HwInp> {
   @override
   Widget build(BuildContext context) {
     return SetupPageTemplate(
-      title: staging == null ? "${controller.asking}" : stagingMine ? "My Mac" : "Shared Mac",
-      subtitle: "",
+      title: staging == null ? "Hardware info" : stagingMine ? "My Mac" : "Shared Mac",
+      subtitle: staging == null ? "To authenticate with iMessage, Apple requires hardware identifiers. If you have a Mac, download and run the QR code generator. If you don't, ask a friend who does to share their code with you. The Mac does not need to remain online. Compatible with macOS Beeper codes." : "",
       customButton: Column(
         children: [
           ErrorText(parentController: controller),
@@ -134,7 +235,7 @@ class _HwInpState extends OptimizedState<HwInp> {
                               ),
                             ],
                           ),
-                        if (controller.usingBeeper)
+                        if (usingBeeper)
                         Container(
                           child: Text(
                             "If you no longer need Beeper, you can safely turn off or disconnect your Mac now. We'll handle it from here.",
@@ -142,9 +243,9 @@ class _HwInpState extends OptimizedState<HwInp> {
                             textAlign: TextAlign.center,
                           ),
                         ),
-                        if (controller.asking != null)
+                        if (!stagingNonInp)
                         const SizedBox(height: 20),
-                        if (controller.asking != null)
+                        if (!stagingNonInp)
                         Container(
                           width: context.width * 2 / 3,
                           child: Focus(
@@ -161,7 +262,7 @@ class _HwInpState extends OptimizedState<HwInp> {
                             child: TextField(
                               cursorColor: context.theme.colorScheme.primary,
                               autocorrect: false,
-                              autofocus: true,
+                              autofocus: false,
                               controller: codeController,
                               textInputAction: TextInputAction.next,
                               decoration: InputDecoration(
@@ -171,7 +272,7 @@ class _HwInpState extends OptimizedState<HwInp> {
                                 focusedBorder: OutlineInputBorder(
                                     borderSide: BorderSide(color: context.theme.colorScheme.primary),
                                     borderRadius: BorderRadius.circular(20)),
-                                labelText: controller.asking,
+                                labelText: "Enter Code",
                               ),
                             ),
                           ),
@@ -203,26 +304,74 @@ class _HwInpState extends OptimizedState<HwInp> {
                                   minimumSize: MaterialStateProperty.all(const Size(30, 30)),
                                 ),
                                 onPressed: loading ? null : () async {
-                                  goBack();
+                                  if (stagingNonInp) {
+                                    setState(() {
+                                      stagingNonInp = false;
+                                      staging = stagingInfo = null;
+                                      codeController.clear();
+                                      usingBeeper = false;
+                                    });
+                                  } else {
+                                    goBack();
+                                  }
                                 },
                                 child: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    Icon(Icons.arrow_back, color: context.theme.colorScheme.onBackground, size: 20),
+                                    Icon(stagingNonInp ? Icons.close : Icons.arrow_back, color: context.theme.colorScheme.onBackground, size: 20),
                                     const SizedBox(width: 10),
-                                    Text("Back",
+                                    Text(stagingNonInp ? "Cancel" : "Back",
                                         style: context.theme.textTheme.bodyLarge!
                                             .apply(fontSizeFactor: 1.1, color: context.theme.colorScheme.onBackground)),
                                   ],
                                 ),
                               ),
                             ),
+                            if (staging == null)
                             Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(25),
                                 gradient: LinearGradient(
                                   begin: AlignmentDirectional.topStart,
-                                  colors: staging == null || loading ? [HexColor('777777'), HexColor('777777')] : [HexColor('2772C3'), HexColor('5CA7F8').darkenPercent(5)],
+                                  colors: [HexColor('2772C3'), HexColor('5CA7F8').darkenPercent(5)],
+                                ),
+                              ),
+                              height: 40,
+                              padding: const EdgeInsets.all(2),
+                              child: ElevatedButton(
+                                style: ButtonStyle(
+                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20.0),
+                                    ),
+                                  ),
+                                  backgroundColor: MaterialStateProperty.all(context.theme.colorScheme.background),
+                                  shadowColor: MaterialStateProperty.all(context.theme.colorScheme.background),
+                                  maximumSize: MaterialStateProperty.all(const Size(200, 36)),
+                                  minimumSize: MaterialStateProperty.all(const Size(30, 30)),
+                                ),
+                                onPressed: loading ? null : () async {
+                                  scanQRCode();
+                                },
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text("Scan Code",
+                                        style: context.theme.textTheme.bodyLarge!
+                                            .apply(fontSizeFactor: 1.1, color: context.theme.colorScheme.onBackground)),
+                                    const SizedBox(width: 10),
+                                    Icon(Icons.qr_code, color: context.theme.colorScheme.onBackground, size: 20),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            if (staging != null)
+                            Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(25),
+                                gradient: LinearGradient(
+                                  begin: AlignmentDirectional.topStart,
+                                  colors: loading ? [HexColor('777777'), HexColor('777777')] : [HexColor('2772C3'), HexColor('5CA7F8').darkenPercent(5)],
                                 ),
                               ),
                               height: 40,
@@ -243,16 +392,23 @@ class _HwInpState extends OptimizedState<HwInp> {
                                   http.onInit();
                                   connect(staging!);
                                 },
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
+                                child: Stack(
+                                  alignment: Alignment.center,
                                   children: [
-                                    Text(staging == null ? "Continue" : "Use this Mac",
-                                        style: context.theme.textTheme.bodyLarge!
-                                            .apply(fontSizeFactor: 1.1, color: Colors.white)),
-                                    const SizedBox(width: 10),
-                                    const Icon(Icons.arrow_forward, color: Colors.white, size: 20),
+                                    Opacity(opacity: loading ? 0 : 1, child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text("Use this Mac",
+                                            style: context.theme.textTheme.bodyLarge!
+                                                .apply(fontSizeFactor: 1.1, color: Colors.white)),
+                                        const SizedBox(width: 10),
+                                        const Icon(Icons.arrow_forward, color: Colors.white, size: 20),
+                                      ],
+                                    )),
+                                    if (loading)
+                                    buildProgressIndicator(context, brightness: Brightness.dark),
                                   ],
-                                ),
+                                )
                               ),
                             ),
                           ],
