@@ -728,6 +728,7 @@ class DartPrivateDeviceInfo {
   final Uint8List token;
   final bool isHsaTrusted;
   final List<String> identites;
+  final List<String> subServices;
 
   const DartPrivateDeviceInfo({
     this.uuid,
@@ -735,6 +736,7 @@ class DartPrivateDeviceInfo {
     required this.token,
     required this.isHsaTrusted,
     required this.identites,
+    required this.subServices,
   });
 
   @override
@@ -743,7 +745,8 @@ class DartPrivateDeviceInfo {
       deviceName.hashCode ^
       token.hashCode ^
       isHsaTrusted.hashCode ^
-      identites.hashCode;
+      identites.hashCode ^
+      subServices.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -754,7 +757,8 @@ class DartPrivateDeviceInfo {
           deviceName == other.deviceName &&
           token == other.token &&
           isHsaTrusted == other.isHsaTrusted &&
-          identites == other.identites;
+          identites == other.identites &&
+          subServices == other.subServices;
 }
 
 class DartReactMessage {

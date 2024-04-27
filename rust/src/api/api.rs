@@ -859,6 +859,7 @@ pub struct DartPrivateDeviceInfo {
     pub token: Vec<u8>,
     pub is_hsa_trusted: bool,
     pub identites: Vec<String>,
+    pub sub_services: Vec<String>,
 }
 
 pub async fn get_sms_targets(state: &Arc<PushState>, handle: String, refresh: bool) -> anyhow::Result<Vec<DartPrivateDeviceInfo>> {

@@ -1855,12 +1855,14 @@ impl SseDecode for crate::api::api::DartPrivateDeviceInfo {
         let mut var_token = <Vec<u8>>::sse_decode(deserializer);
         let mut var_isHsaTrusted = <bool>::sse_decode(deserializer);
         let mut var_identites = <Vec<String>>::sse_decode(deserializer);
+        let mut var_subServices = <Vec<String>>::sse_decode(deserializer);
         return crate::api::api::DartPrivateDeviceInfo {
             uuid: var_uuid,
             device_name: var_deviceName,
             token: var_token,
             is_hsa_trusted: var_isHsaTrusted,
             identites: var_identites,
+            sub_services: var_subServices,
         };
     }
 }
@@ -2943,6 +2945,7 @@ impl flutter_rust_bridge::IntoDart for crate::api::api::DartPrivateDeviceInfo {
             self.token.into_into_dart().into_dart(),
             self.is_hsa_trusted.into_into_dart().into_dart(),
             self.identites.into_into_dart().into_dart(),
+            self.sub_services.into_into_dart().into_dart(),
         ]
         .into_dart()
     }
@@ -3598,6 +3601,7 @@ impl SseEncode for crate::api::api::DartPrivateDeviceInfo {
         <Vec<u8>>::sse_encode(self.token, serializer);
         <bool>::sse_encode(self.is_hsa_trusted, serializer);
         <Vec<String>>::sse_encode(self.identites, serializer);
+        <Vec<String>>::sse_encode(self.sub_services, serializer);
     }
 }
 
