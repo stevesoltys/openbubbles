@@ -505,6 +505,13 @@ pub enum DartMessage {
     MessageReadOnDevice,
     SmsConfirmSent(bool),
     MarkUnread, // send for last message from other participant
+    PeerCacheInvalidate,
+}
+
+#[repr(C)]
+pub enum DartMessageTarget {
+    Token(Vec<u8>),
+    Uuid(String),
 }
 
 #[frb]
@@ -521,7 +528,9 @@ pub struct DartIMessage {
     #[frb(non_final)]
     pub message: DartMessage,
     #[frb(non_final)]
-    pub sent_timestamp: u64
+    pub sent_timestamp: u64,
+    #[frb(non_final)]
+    pub target: Option<Vec<DartMessageTarget>>,
 }
 
 impl Into<rustpush::Message> for DartMessage {
@@ -834,4 +843,25 @@ pub async fn get_regstate(state: &Arc<PushState>) -> anyhow::Result<DartRegister
         RegisterState::Failed { retry_wait, error } => 
             DartRegisterState::Failed { retry_wait: *retry_wait, error: format!("{error}") },
     })
+}
+
+pub async fn convert_token_to_uuid(state: &Arc<PushState>, handle: String, token: Vec<u8>) -> anyhow::Result<String> {
+    let inner = state.0.read().await;
+    let uuid = inner.client.as_ref().unwrap().token_to_uuid(&handle, &token).await?;
+    Ok(uuid)
+}
+
+#[repr(C)]
+pub struct DartPrivateDeviceInfo {
+    pub uuid: Option<String>,
+    pub device_name: Option<String>,
+    pub token: Vec<u8>,
+    pub is_hsa_trusted: bool,
+    pub identites: Vec<String>,
+}
+
+pub async fn get_sms_targets(state: &Arc<PushState>, handle: String, refresh: bool) -> anyhow::Result<Vec<DartPrivateDeviceInfo>> {
+    let inner = state.0.read().await;
+    let targets = inner.client.as_ref().unwrap().get_sms_targets(&handle, refresh).await?;
+    Ok(unsafe { std::mem::transmute(targets) })
 }

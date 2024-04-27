@@ -157,6 +157,22 @@ Future<DartRegisterState> getRegstate(
         {required ArcPushState state, dynamic hint}) =>
     RustLib.instance.api.getRegstate(state: state, hint: hint);
 
+Future<String> convertTokenToUuid(
+        {required ArcPushState state,
+        required String handle,
+        required List<int> token,
+        dynamic hint}) =>
+    RustLib.instance.api.convertTokenToUuid(
+        state: state, handle: handle, token: token, hint: hint);
+
+Future<List<DartPrivateDeviceInfo>> getSmsTargets(
+        {required ArcPushState state,
+        required String handle,
+        required bool refresh,
+        dynamic hint}) =>
+    RustLib.instance.api.getSmsTargets(
+        state: state, handle: handle, refresh: refresh, hint: hint);
+
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::rust_async::RwLock<Arc < PushState >>>
 @sealed
 class ArcPushState extends RustOpaque {
@@ -441,6 +457,7 @@ class DartIMessage {
   DartConversationData? conversation;
   DartMessage message;
   int sentTimestamp;
+  List<DartMessageTarget>? target;
 
   DartIMessage({
     required this.id,
@@ -449,6 +466,7 @@ class DartIMessage {
     this.conversation,
     required this.message,
     required this.sentTimestamp,
+    this.target,
   });
 
   @override
@@ -458,7 +476,8 @@ class DartIMessage {
       afterGuid.hashCode ^
       conversation.hashCode ^
       message.hashCode ^
-      sentTimestamp.hashCode;
+      sentTimestamp.hashCode ^
+      target.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -470,7 +489,8 @@ class DartIMessage {
           afterGuid == other.afterGuid &&
           conversation == other.conversation &&
           message == other.message &&
-          sentTimestamp == other.sentTimestamp;
+          sentTimestamp == other.sentTimestamp &&
+          target == other.target;
 }
 
 class DartIconChangeMessage {
@@ -567,6 +587,8 @@ sealed class DartMessage with _$DartMessage {
     bool field0,
   ) = DartMessage_SmsConfirmSent;
   const factory DartMessage.markUnread() = DartMessage_MarkUnread;
+  const factory DartMessage.peerCacheInvalidate() =
+      DartMessage_PeerCacheInvalidate;
 }
 
 @freezed
@@ -604,6 +626,16 @@ class DartMessageParts {
       other is DartMessageParts &&
           runtimeType == other.runtimeType &&
           field0 == other.field0;
+}
+
+@freezed
+sealed class DartMessageTarget with _$DartMessageTarget {
+  const factory DartMessageTarget.token(
+    Uint8List field0,
+  ) = DartMessageTarget_Token;
+  const factory DartMessageTarget.uuid(
+    String field0,
+  ) = DartMessageTarget_Uuid;
 }
 
 @freezed
@@ -688,6 +720,41 @@ class DartNormalMessage {
           replyGuid == other.replyGuid &&
           replyPart == other.replyPart &&
           service == other.service;
+}
+
+class DartPrivateDeviceInfo {
+  final String? uuid;
+  final String? deviceName;
+  final Uint8List token;
+  final bool isHsaTrusted;
+  final List<String> identites;
+
+  const DartPrivateDeviceInfo({
+    this.uuid,
+    this.deviceName,
+    required this.token,
+    required this.isHsaTrusted,
+    required this.identites,
+  });
+
+  @override
+  int get hashCode =>
+      uuid.hashCode ^
+      deviceName.hashCode ^
+      token.hashCode ^
+      isHsaTrusted.hashCode ^
+      identites.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is DartPrivateDeviceInfo &&
+          runtimeType == other.runtimeType &&
+          uuid == other.uuid &&
+          deviceName == other.deviceName &&
+          token == other.token &&
+          isHsaTrusted == other.isHsaTrusted &&
+          identites == other.identites;
 }
 
 class DartReactMessage {

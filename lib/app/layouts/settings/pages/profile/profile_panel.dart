@@ -15,8 +15,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:bluebubbles/services/network/backend_service.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:supercharged/supercharged.dart';
 import 'package:telephony_plus/telephony_plus.dart';
 import 'package:universal_io/io.dart';
+import 'package:bluebubbles/src/rust/api/api.dart' as api;
 
 class ProfilePanel extends StatefulWidget {
 
@@ -30,6 +32,8 @@ class _ProfilePanelState extends OptimizedState<ProfilePanel> with WidgetsBindin
   final RxDouble opacity = 1.0.obs;
   final RxMap<String, dynamic> accountInfo = RxMap({});
   final RxMap<String, dynamic> accountContact = RxMap({});
+
+  RxList<api.DartPrivateDeviceInfo> forwardingTargets = RxList([]);
 
   @override
   void initState() {
@@ -47,6 +51,12 @@ class _ProfilePanelState extends OptimizedState<ProfilePanel> with WidgetsBindin
     } catch (_) {
 
     }
+    var myHandles = (await api.getHandles(state: pushService.state));
+    List<api.DartPrivateDeviceInfo> pendingTargets = ss.settings.isSmsRouter.value ? await api.getSmsTargets(state: pushService.state, handle: myHandles.first, refresh: true) : [];
+    ss.saveSettings();
+    setState(() {
+      forwardingTargets.value = pendingTargets;
+    });
     setState(() {});
   }
 
@@ -388,17 +398,48 @@ class _ProfilePanelState extends OptimizedState<ProfilePanel> with WidgetsBindin
                                 return;
                               }
                             }
-                            (backend as RustPushBackend).broadcastSmsForwardingState(val);
+                            var myHandles = (await api.getHandles(state: pushService.state));
                             ss.settings.isSmsRouter.value = val;
-                            ss.settings.smsForwardingEnabled.value = val;
+
+                            List<api.DartPrivateDeviceInfo> pendingTargets = val ? await api.getSmsTargets(state: pushService.state, handle: myHandles.first, refresh: true) : [];
+                            if (!val) {
+                              await (backend as RustPushBackend).broadcastSmsForwardingState(false, ss.settings.smsForwardingTargets);
+                            }
+                            ss.settings.smsForwardingTargets.retainWhere((element) => pendingTargets.any((e) => e.uuid == element));
                             ss.saveSettings();
+                            setState(() {
+                              forwardingTargets.value = pendingTargets;
+                            });
                           },
                           initialVal: ss.settings.isSmsRouter.value,
                           title: "Local SMS forwarding",
                           subtitle: "Receive/Send SMS messages from other devices through this phone${accountInfo['vetted_aliases']?.any((i) => i['Alias'].contains("tel:") as bool) ?? false ? "" : ". Warning: no phone handles are registered; official Apple clients will only be able to receive forwarded SMS"}",
                           backgroundColor: tileColor,
                           isThreeLine: true,
+                        )),
+                      ...(usingRustPush && Platform.isAndroid && ss.settings.isSmsRouter.value ? 
+                        forwardingTargets.filter((target) => target.uuid != null && target.deviceName != null).map((target) => SettingsSwitch(
+                          onChanged: (bool val) async {
+                            if (!target.isHsaTrusted) {
+                              showSnackbar("Can't enable SMS forwarding!", "Re-log in with 2fa on the other device");
+                              return;
+                            }
+                            if (ss.settings.smsForwardingTargets.contains(target.uuid)) {
+                              ss.settings.smsForwardingTargets.remove(target.uuid);
+                              setState(() { });
+                              await (backend as RustPushBackend).broadcastSmsForwardingState(false, [target.uuid!]);
+                            } else {
+                              ss.settings.smsForwardingTargets.add(target.uuid!);
+                              setState(() { });                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+                              await (backend as RustPushBackend).broadcastSmsForwardingState(true, [target.uuid!]);
+                            }
+                            ss.saveSettings();
+                          },
+                          initialVal: ss.settings.smsForwardingTargets.contains(target.uuid),
+                          title: target.deviceName!,
+                          backgroundColor: tileColor,
                         ))
+                       : [])
                     ],
                   )),
                 if (!isNullOrEmpty(accountContact['name']))

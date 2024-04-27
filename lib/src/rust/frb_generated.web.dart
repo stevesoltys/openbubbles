@@ -181,6 +181,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   DartMessageParts dco_decode_dart_message_parts(dynamic raw);
 
   @protected
+  DartMessageTarget dco_decode_dart_message_target(dynamic raw);
+
+  @protected
   DartMessageType dco_decode_dart_message_type(dynamic raw);
 
   @protected
@@ -188,6 +191,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   DartNormalMessage dco_decode_dart_normal_message(dynamic raw);
+
+  @protected
+  DartPrivateDeviceInfo dco_decode_dart_private_device_info(dynamic raw);
 
   @protected
   DartReactMessage dco_decode_dart_react_message(dynamic raw);
@@ -221,6 +227,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   List<DartIndexedMessagePart> dco_decode_list_dart_indexed_message_part(
+      dynamic raw);
+
+  @protected
+  List<DartMessageTarget> dco_decode_list_dart_message_target(dynamic raw);
+
+  @protected
+  List<DartPrivateDeviceInfo> dco_decode_list_dart_private_device_info(
       dynamic raw);
 
   @protected
@@ -264,6 +277,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   int? dco_decode_opt_box_autoadd_usize(dynamic raw);
+
+  @protected
+  List<DartMessageTarget>? dco_decode_opt_list_dart_message_target(dynamic raw);
 
   @protected
   PollResult dco_decode_poll_result(dynamic raw);
@@ -460,6 +476,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   DartMessageParts sse_decode_dart_message_parts(SseDeserializer deserializer);
 
   @protected
+  DartMessageTarget sse_decode_dart_message_target(
+      SseDeserializer deserializer);
+
+  @protected
   DartMessageType sse_decode_dart_message_type(SseDeserializer deserializer);
 
   @protected
@@ -467,6 +487,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   DartNormalMessage sse_decode_dart_normal_message(
+      SseDeserializer deserializer);
+
+  @protected
+  DartPrivateDeviceInfo sse_decode_dart_private_device_info(
       SseDeserializer deserializer);
 
   @protected
@@ -506,6 +530,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   List<DartIndexedMessagePart> sse_decode_list_dart_indexed_message_part(
+      SseDeserializer deserializer);
+
+  @protected
+  List<DartMessageTarget> sse_decode_list_dart_message_target(
+      SseDeserializer deserializer);
+
+  @protected
+  List<DartPrivateDeviceInfo> sse_decode_list_dart_private_device_info(
       SseDeserializer deserializer);
 
   @protected
@@ -555,6 +587,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   int? sse_decode_opt_box_autoadd_usize(SseDeserializer deserializer);
+
+  @protected
+  List<DartMessageTarget>? sse_decode_opt_list_dart_message_target(
+      SseDeserializer deserializer);
 
   @protected
   PollResult sse_decode_poll_result(SseDeserializer deserializer);
@@ -759,6 +795,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       DartMessageParts self, SseSerializer serializer);
 
   @protected
+  void sse_encode_dart_message_target(
+      DartMessageTarget self, SseSerializer serializer);
+
+  @protected
   void sse_encode_dart_message_type(
       DartMessageType self, SseSerializer serializer);
 
@@ -768,6 +808,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_dart_normal_message(
       DartNormalMessage self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_dart_private_device_info(
+      DartPrivateDeviceInfo self, SseSerializer serializer);
 
   @protected
   void sse_encode_dart_react_message(
@@ -809,6 +853,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_list_dart_indexed_message_part(
       List<DartIndexedMessagePart> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_dart_message_target(
+      List<DartMessageTarget> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_dart_private_device_info(
+      List<DartPrivateDeviceInfo> self, SseSerializer serializer);
 
   @protected
   void sse_encode_list_dart_trusted_phone_number(
@@ -858,6 +910,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_opt_box_autoadd_usize(int? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_list_dart_message_target(
+      List<DartMessageTarget>? self, SseSerializer serializer);
 
   @protected
   void sse_encode_poll_result(PollResult self, SseSerializer serializer);

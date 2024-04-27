@@ -127,7 +127,7 @@ class _AppleIdLoginState extends OptimizedState<AppleIdLogin> {
                             ),
                           ),
                         ),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 10),
                         TextButton(
                           onPressed: () async {
                             var devInfo = await api.getDeviceInfoState(state: pushService.state);

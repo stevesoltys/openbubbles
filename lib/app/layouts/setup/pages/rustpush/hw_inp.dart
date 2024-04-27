@@ -100,7 +100,11 @@ class _HwInpState extends OptimizedState<HwInp> {
     });
   }
 
+  String lastCheckedCode = "";
+
   Future<void> handleBeeper(String code) async {
+    if (code == lastCheckedCode) return;
+    lastCheckedCode = code;
     try {
       showSnackbar("Fetching validation data", "This might take a minute");
       final response = await http.dio.post(
@@ -149,6 +153,58 @@ class _HwInpState extends OptimizedState<HwInp> {
     }
   }
 
+  Future<void> handleCode(Uint8List data) async {
+    if (String.fromCharCodes(data).startsWith("OABS")) {
+      var shared = data[4];
+      var rawData = data.toList();
+      rawData.removeRange(0, 5);
+      
+      var parsed = await api.configFromEncoded(encoded: rawData);
+      stagingNonInp = true;
+      select(parsed, shared == 0);
+    } else {
+      showSnackbar("Fetching data", "Invalid format!");
+    }
+  }
+
+  Future<void> handleOpenAbsinthe(String code) async {
+    if (code == lastCheckedCode) return;
+    lastCheckedCode = code;
+
+    if (ss.settings.cachedCodes.containsKey(code)) {
+      return handleCode(base64Decode(ss.settings.cachedCodes[code]!));
+    }
+    try {
+      var timer = Timer(const Duration(milliseconds: 500), () {
+        showSnackbar("Fetching data", "This might take a minute");
+      });
+      final response = await http.dio.get(
+        "$rpApiRoot/code/$code",
+        options: Options(
+          headers: {
+            "X-OpenBubbles-Get": ""
+          },
+        )
+      );
+      timer.cancel();
+
+      if (response.statusCode == 404) {
+        showSnackbar("Fetching data", "Invalid code");
+        return;
+      }
+
+      var data = response.data["data"];
+      
+      ss.settings.cachedCodes[code] = data;
+      ss.saveSettings();
+
+      handleCode(base64Decode(data));
+    } catch (e) {
+      showSnackbar("Fetching data", "Failed");
+      rethrow;
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -156,7 +212,18 @@ class _HwInpState extends OptimizedState<HwInp> {
     // Start listening to changes.
     codeController.addListener(() async {
       print("Here ${codeController.text}");
-      if ("-".allMatches(codeController.text).length == 3 && codeController.text.length == 19) {
+      var header = "$rpApiRoot/code/";
+      if (codeController.text.startsWith(header)) {
+        await handleOpenAbsinthe(codeController.text.replaceFirst(header, ""));
+        return;
+      }
+      var firstDashPos = codeController.text.split("-").firstOrNull?.length ?? 0;
+      if (firstDashPos == 6 && "-".allMatches(codeController.text).length == 3 && codeController.text.length == 21) {
+        print("here");
+        await handleOpenAbsinthe(codeController.text);
+        return;
+      }
+      if (firstDashPos == 4 && "-".allMatches(codeController.text).length == 3 && codeController.text.length == 19) {
         print("here");
         await handleBeeper(codeController.text);
         return;

@@ -25,6 +25,7 @@ class _AppleId2FAState extends OptimizedState<AppleId2FA> {
   final controller = Get.find<SetupViewController>();
   final FocusNode focusNode = FocusNode();
   String currentCode = "";
+  String submittedCode = "";
 
   bool obscureText = true;
   bool loading = false;
@@ -39,7 +40,8 @@ class _AppleId2FAState extends OptimizedState<AppleId2FA> {
       setState(() {
         currentCode = codeController.text;
       });
-      if (codeController.text.length == 6) {
+      if (codeController.text.length == 6 && submittedCode != codeController.text) {
+        submittedCode = codeController.text;
         connect(codeController.text);
       }
     });

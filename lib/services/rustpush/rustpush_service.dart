@@ -1,4 +1,5 @@
 import 'package:async_task/async_task_extension.dart';
+import 'package:bluebubbles/main.dart';
 import 'package:bluebubbles/src/rust/api/api.dart' as api;
 import 'package:bluebubbles/helpers/helpers.dart';
 import 'package:bluebubbles/models/models.dart';
@@ -21,6 +22,8 @@ var uuid = const Uuid();
 RustPushService pushService =
     Get.isRegistered<RustPushService>() ? Get.find<RustPushService>() : Get.put(RustPushService());
 
+
+const rpApiRoot = "http://192.168.99.43:8080";
 
 // utils for communicating between dart and rustpush.
 class RustPushBBUtils {
@@ -300,6 +303,9 @@ class RustPushBackend implements BackendService {
                   service: await getService(chat.isRpSms)
                   )),
           sender: handle);
+      if (chat.isRpSms) {
+        msg.target = getSMSTargets();
+      }
       await api.send(state: pushService.state, msg: msg);
       msg.sentTimestamp = DateTime.now().millisecondsSinceEpoch;
 
@@ -325,9 +331,13 @@ class RustPushBackend implements BackendService {
     return attachment.getFile();
   }
 
+  List<api.DartMessageTarget> getSMSTargets() {
+    return ss.settings.smsForwardingTargets.map((element) => api.DartMessageTarget.uuid(element)).toList();
+  }
+
   @override
   Future<Message> sendAttachment(Chat chat, Message m, bool isAudioMessage, Attachment att, {void Function(int p1, int p2)? onSendProgress, CancelToken? cancelToken}) async {
-    if (chat.isRpSms && !ss.settings.smsForwardingEnabled.value) {
+    if (chat.isRpSms && !smsForwardingEnabled()) {
       throw Exception("SMS is not enabled (enable in settings -> user)");
     }
     var stream = api.uploadAttachment(
@@ -362,6 +372,9 @@ class RustPushBackend implements BackendService {
         )));
     if (m.stagingGuid != null) {
       msg.id = m.stagingGuid!;
+    }
+    if (chat.isRpSms) {
+      msg.target = getSMSTargets();
     }
     m.stagingGuid = msg.id; // in case delivered comes in before sending "finishes" (also for retries, duh)
     m.save(chat: chat);
@@ -403,6 +416,7 @@ class RustPushBackend implements BackendService {
     if (m.stagingGuid != null) {
       msg.id = m.stagingGuid!;
     }
+    msg.target = getSMSTargets();
     await api.send(state: pushService.state, msg: msg);
     msg.sentTimestamp = DateTime.now().millisecondsSinceEpoch;
     return await pushService.reflectMessageDyn(msg);
@@ -413,7 +427,7 @@ class RustPushBackend implements BackendService {
     return false;
   }
 
-  Future<void> broadcastSmsForwardingState(bool state) async {
+  Future<void> broadcastSmsForwardingState(bool state, List<String> uuids) async {
     var handles = await api.getHandles(state: pushService.state);
     var useHandle = handles.firstWhereOrNull((handle) => handle.contains("tel:")) ?? handles.first;
     var msg = await api.newMsg(
@@ -422,6 +436,7 @@ class RustPushBackend implements BackendService {
       sender: useHandle,
       message: api.DartMessage.enableSmsActivation(state),
     );
+    msg.target = uuids.map((e) => api.DartMessageTarget.uuid(e)).toList();
     await api.send(state: pushService.state, msg: msg);
   }
 
@@ -433,6 +448,9 @@ class RustPushBackend implements BackendService {
       message: api.DartMessage.smsConfirmSent(success),
     );
     msg.id = m.stagingGuid ?? m.guid!;
+    if (c.isRpSms) {
+      msg.target = getSMSTargets();
+    }
     await api.send(state: pushService.state, msg: msg);
   }
 
@@ -474,7 +492,7 @@ class RustPushBackend implements BackendService {
       }).toList(),
       "active_alias": (await getDefaultHandle()).replaceFirst("tel:", "").replaceFirst("mailto:", ""),
       "sms_forwarding_capable": true,
-      "sms_forwarding_enabled": ss.settings.smsForwardingEnabled.value,
+      "sms_forwarding_enabled": smsForwardingEnabled(),
     };
   }
 
@@ -515,9 +533,26 @@ class RustPushBackend implements BackendService {
     return true;
   }
 
+  Future<void> invalidateSelf() async {
+    var handles = await api.getHandles(state: pushService.state);
+    for (var handle in handles) {
+      var msg = await api.newMsg(
+        state: pushService.state,
+        conversation: api.DartConversationData(participants: [handle]),
+        sender: handle,
+        message: const api.DartMessage.peerCacheInvalidate(),
+      );
+      await api.send(state: pushService.state, msg: msg);
+    }
+  }
+
+  bool smsForwardingEnabled() {
+    return ss.settings.isSmsRouter.value || ss.settings.smsForwardingTargets.isNotEmpty;
+  }
+
   @override
   Future<Message> sendMessage(Chat chat, Message m, {CancelToken? cancelToken}) async {
-    if (chat.isRpSms && !ss.settings.smsForwardingEnabled.value) {
+    if (chat.isRpSms && !smsForwardingEnabled()) {
       throw Exception("SMS is not enabled (enable in settings -> user)");
     }
     var partIndex = int.tryParse(m.threadOriginatorPart?.split(":").firstOrNull ?? "");
@@ -547,11 +582,15 @@ class RustPushBackend implements BackendService {
     if (m.stagingGuid != null) {
       msg.id = m.stagingGuid!;
     }
+    if (chat.isRpSms) {
+      msg.target = getSMSTargets();
+    }
     m.stagingGuid = msg.id; // in case delivered comes in before sending "finishes" (also for retries, duh)
     m.save(chat: chat);
     try {
       await api.send(state: pushService.state, msg: msg);
     } catch (e) {
+      print(e);
       if (!chat.isRpSms) {
         rethrow; // APN errors are fatal for non-SMS messages
       }
@@ -590,6 +629,7 @@ class RustPushBackend implements BackendService {
       message: const api.DartMessage.delivered(),
     );
     msg.id = message.id;
+    msg.target = message.target; // delivered is only sent to the device that sent it
     if (msg.id.contains("temp") || msg.id.contains("error")) {
       return true;
     }
@@ -636,6 +676,9 @@ class RustPushBackend implements BackendService {
     msg.id = latestMsg!;
     if (msg.id.contains("temp") || msg.id.contains("error")) {
       return true;
+    }
+    if (chat.isRpSms) {
+      msg.target = getSMSTargets();
     }
     await api.send(state: pushService.state, msg: msg);
     return true;
@@ -1153,7 +1196,44 @@ class RustPushService extends GetxService {
   Future handleMsg(api.DartIMessage myMsg) async {
     if (myMsg.message is api.DartMessage_EnableSmsActivation) {
       var message = myMsg.message as api.DartMessage_EnableSmsActivation;
-      ss.settings.smsForwardingEnabled.value = message.field0;
+      try {
+        var peerUuid = await api.convertTokenToUuid(state: pushService.state, handle: myMsg.sender!, token: (myMsg.target!.first as api.DartMessageTarget_Token).field0);
+        if (message.field0) {
+          if (!ss.settings.smsForwardingTargets.contains(peerUuid)) ss.settings.smsForwardingTargets.add(peerUuid);
+        } else {
+          ss.settings.smsForwardingTargets.remove(peerUuid);
+        }
+        ss.saveSettings();
+      } catch (e) {
+        showSnackbar("Error", "Error activating SMS forwarding");
+        rethrow;
+      }
+      return;
+    }
+    if (myMsg.message is api.DartMessage_PeerCacheInvalidate) {
+      var myHandles = (await api.getHandles(state: pushService.state));
+      if (!myHandles.contains(myMsg.sender)) return; // sanity check, shouldn't get here anyways otherwise
+      // loop through recent chats (1 day or newer)
+      Query<Chat> query = chatBox.query(Chat_.dateDeleted.isNull().and(Chat_.usingHandle.equals(myMsg.sender!)).and(Chat_.dbOnlyLatestMessageDate.greaterThan(DateTime.now().subtract(const Duration(days: 1)).millisecondsSinceEpoch)))
+          .build();
+
+      // Execute the query, then close the DB connection
+      final chats = query.find();
+      query.close();
+
+      // notify participants of these chats that my keys have changed
+      for (var chat in chats) {
+        var data = await chat.getConversationData();
+        if (data.participants.filter((element) => !myHandles.contains(element)).isEmpty) continue;
+        var msg = await api.newMsg(
+          state: pushService.state,
+          conversation: data,
+          sender: myMsg.sender!,
+          message: const api.DartMessage.peerCacheInvalidate(),
+        );
+        msg.id = myMsg.id;
+        await api.send(state: pushService.state, msg: msg);
+      }
       return;
     }
     if (myMsg.message is api.DartMessage_SmsConfirmSent) {
@@ -1245,6 +1325,16 @@ class RustPushService extends GetxService {
       controller.showTypingIndicator.value = false;
       controller.cancelTypingIndicator?.cancel();
       controller.cancelTypingIndicator = null;
+      if (chat.isRpSms) {
+        var otherIds = ss.settings.smsForwardingTargets.copy();
+        var myToken = (myMsg.target!.first as api.DartMessageTarget_Token).field0;
+        var myId = await api.convertTokenToUuid(state: pushService.state, handle: myMsg.sender!, token: myToken);
+        otherIds.remove(myId);
+        if (otherIds.isNotEmpty) {
+          myMsg.target = otherIds.map((element) => api.DartMessageTarget.uuid(element)).toList(); // forward to other devices
+          await api.send(state: pushService.state, msg: myMsg);
+        }
+      }
       var msg = myMsg.message as api.DartMessage_Message;
       if ((await msg.field0.parts.asPlain()) == "" &&
           msg.field0.parts.field0.none((p0) => p0.field0 is api.DartMessagePart_Attachment)) {
@@ -1334,11 +1424,15 @@ class RustPushService extends GetxService {
         print("tryingService");
         String result = await mcs.invokeMethod("get-native-handle");
         state = await api.serviceFromPtr(ptr: result);
+        if ((await api.getPhase(state: state)) == api.RegistrationPhase.registered) {
+          ss.settings.finishedSetup.value = true;
+        }
         print("service");
         await stdout.flush();
       } else {
         state = await api.newPushState(dir: fs.appDocDir.path);
         if ((await api.getPhase(state: state)) == api.RegistrationPhase.registered) {
+          ss.settings.finishedSetup.value = true;
           doPoll();
         }
       }
@@ -1356,6 +1450,11 @@ class RustPushService extends GetxService {
       await mcs.invokeMethod("notify-native-configured");
     } else {
       doPoll();
+    }
+    try {
+      await (backend as RustPushBackend).invalidateSelf();
+    } catch (e) {
+      // not that important
     }
   }
 

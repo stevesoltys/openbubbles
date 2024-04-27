@@ -32,7 +32,7 @@ import 'package:convert/convert.dart';
 
 class DevicePanelController extends StatefulController {
 
-  final RxBool allowSharing = true.obs;
+  final RxBool allowSharing = false.obs;
 }
 
 class DevicePanel extends CustomStateful<DevicePanelController> {
@@ -56,6 +56,51 @@ class _DevicePanelState extends CustomState<DevicePanel, void, DevicePanelContro
         deviceName = RustPushBBUtils.modelToUser(deviceInfo!.name);
       });
     });
+  }
+
+  Future<String> uploadCode() async {
+    var code = base64Encode(getQrInfo(controller.allowSharing.value, deviceInfo!.encodedData).codeUnits);
+    if (controller.allowSharing.value) {
+      return code;
+    }
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: context.theme.colorScheme.properSurface,
+          title: Text(
+            "Creating code...",
+            style: context.theme.textTheme.titleLarge,
+          ),
+          content: Container(
+            height: 70,
+            child: Center(
+              child: CircularProgressIndicator(
+                backgroundColor: context.theme.colorScheme.properSurface,
+                valueColor: AlwaysStoppedAnimation<Color>(context.theme.colorScheme.primary),
+              ),
+            ),
+          ),
+        );
+    });
+    try {
+      final response = await http.dio.post(
+        "$rpApiRoot/code",
+        data: {
+          "data": code,
+        },
+      );
+      if (response.statusCode != 200) {
+        throw Exception("bad!");
+      }
+      return response.data.toString();
+    } catch (e) {
+      showSnackbar("Error", "Couldn't create link!");
+      rethrow;
+    } finally {
+      Navigator.of(context).pop();
+    }
   }
 
   String getQrInfo(bool allowSharing, Uint8List data) {
@@ -150,8 +195,8 @@ class _DevicePanelState extends CustomState<DevicePanel, void, DevicePanelContro
                     SettingsTile(
                       backgroundColor: tileColor,
                       title: "Copy Activation Code",
-                      onTap: () {
-                        Clipboard.setData(ClipboardData(text: base64Encode(getQrInfo(controller.allowSharing.value, deviceInfo!.encodedData).codeUnits)));
+                      onTap: () async {
+                        Clipboard.setData(ClipboardData(text: await uploadCode()));
                       },
                       subtitle: controller.allowSharing.value ? "" : "Make sure you delete your code after activation to prevent sharing.",
                       trailing: Icon(
@@ -162,11 +207,14 @@ class _DevicePanelState extends CustomState<DevicePanel, void, DevicePanelContro
                     SettingsTile(
                       backgroundColor: tileColor,
                       title: "Share Activation Code",
-                      onTap: () {
-                        var code = base64Encode(getQrInfo(controller.allowSharing.value, deviceInfo!.encodedData).codeUnits);
-                        Share.text("BlueBubbles", "Text me on BlueBubbles with my activation code! $code");
+                      onTap: () async {
+                        var code = await uploadCode();
+                        if (code.length > 50) {
+                          Share.text("BlueBubbles", "Text me on BlueBubbles with my activation code! $code");
+                        } else {
+                          Share.text("BlueBubbles", "Text me on BlueBubbles with my activation code! $code $rpApiRoot/code/$code");
+                        }
                       },
-                      subtitle: controller.allowSharing.value ? null : "Make sure you delete your code after activation to prevent sharing.",
                       trailing: Icon(
                         ss.settings.skin.value == Skins.iOS ? CupertinoIcons.share : Icons.share
                       ),

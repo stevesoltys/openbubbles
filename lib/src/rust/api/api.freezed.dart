@@ -1553,6 +1553,7 @@ mixin _$DartMessage {
     required TResult Function() messageReadOnDevice,
     required TResult Function(bool field0) smsConfirmSent,
     required TResult Function() markUnread,
+    required TResult Function() peerCacheInvalidate,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -1572,6 +1573,7 @@ mixin _$DartMessage {
     TResult? Function()? messageReadOnDevice,
     TResult? Function(bool field0)? smsConfirmSent,
     TResult? Function()? markUnread,
+    TResult? Function()? peerCacheInvalidate,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -1591,6 +1593,7 @@ mixin _$DartMessage {
     TResult Function()? messageReadOnDevice,
     TResult Function(bool field0)? smsConfirmSent,
     TResult Function()? markUnread,
+    TResult Function()? peerCacheInvalidate,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -1614,6 +1617,8 @@ mixin _$DartMessage {
         messageReadOnDevice,
     required TResult Function(DartMessage_SmsConfirmSent value) smsConfirmSent,
     required TResult Function(DartMessage_MarkUnread value) markUnread,
+    required TResult Function(DartMessage_PeerCacheInvalidate value)
+        peerCacheInvalidate,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -1635,6 +1640,8 @@ mixin _$DartMessage {
         messageReadOnDevice,
     TResult? Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
     TResult? Function(DartMessage_MarkUnread value)? markUnread,
+    TResult? Function(DartMessage_PeerCacheInvalidate value)?
+        peerCacheInvalidate,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -1656,6 +1663,8 @@ mixin _$DartMessage {
         messageReadOnDevice,
     TResult Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
     TResult Function(DartMessage_MarkUnread value)? markUnread,
+    TResult Function(DartMessage_PeerCacheInvalidate value)?
+        peerCacheInvalidate,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -1760,6 +1769,7 @@ class _$DartMessage_MessageImpl implements DartMessage_Message {
     required TResult Function() messageReadOnDevice,
     required TResult Function(bool field0) smsConfirmSent,
     required TResult Function() markUnread,
+    required TResult Function() peerCacheInvalidate,
   }) {
     return message(field0);
   }
@@ -1782,6 +1792,7 @@ class _$DartMessage_MessageImpl implements DartMessage_Message {
     TResult? Function()? messageReadOnDevice,
     TResult? Function(bool field0)? smsConfirmSent,
     TResult? Function()? markUnread,
+    TResult? Function()? peerCacheInvalidate,
   }) {
     return message?.call(field0);
   }
@@ -1804,6 +1815,7 @@ class _$DartMessage_MessageImpl implements DartMessage_Message {
     TResult Function()? messageReadOnDevice,
     TResult Function(bool field0)? smsConfirmSent,
     TResult Function()? markUnread,
+    TResult Function()? peerCacheInvalidate,
     required TResult orElse(),
   }) {
     if (message != null) {
@@ -1833,6 +1845,8 @@ class _$DartMessage_MessageImpl implements DartMessage_Message {
         messageReadOnDevice,
     required TResult Function(DartMessage_SmsConfirmSent value) smsConfirmSent,
     required TResult Function(DartMessage_MarkUnread value) markUnread,
+    required TResult Function(DartMessage_PeerCacheInvalidate value)
+        peerCacheInvalidate,
   }) {
     return message(this);
   }
@@ -1857,6 +1871,8 @@ class _$DartMessage_MessageImpl implements DartMessage_Message {
         messageReadOnDevice,
     TResult? Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
     TResult? Function(DartMessage_MarkUnread value)? markUnread,
+    TResult? Function(DartMessage_PeerCacheInvalidate value)?
+        peerCacheInvalidate,
   }) {
     return message?.call(this);
   }
@@ -1881,6 +1897,8 @@ class _$DartMessage_MessageImpl implements DartMessage_Message {
         messageReadOnDevice,
     TResult Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
     TResult Function(DartMessage_MarkUnread value)? markUnread,
+    TResult Function(DartMessage_PeerCacheInvalidate value)?
+        peerCacheInvalidate,
     required TResult orElse(),
   }) {
     if (message != null) {
@@ -1983,6 +2001,7 @@ class _$DartMessage_RenameMessageImpl implements DartMessage_RenameMessage {
     required TResult Function() messageReadOnDevice,
     required TResult Function(bool field0) smsConfirmSent,
     required TResult Function() markUnread,
+    required TResult Function() peerCacheInvalidate,
   }) {
     return renameMessage(field0);
   }
@@ -2005,6 +2024,7 @@ class _$DartMessage_RenameMessageImpl implements DartMessage_RenameMessage {
     TResult? Function()? messageReadOnDevice,
     TResult? Function(bool field0)? smsConfirmSent,
     TResult? Function()? markUnread,
+    TResult? Function()? peerCacheInvalidate,
   }) {
     return renameMessage?.call(field0);
   }
@@ -2027,6 +2047,7 @@ class _$DartMessage_RenameMessageImpl implements DartMessage_RenameMessage {
     TResult Function()? messageReadOnDevice,
     TResult Function(bool field0)? smsConfirmSent,
     TResult Function()? markUnread,
+    TResult Function()? peerCacheInvalidate,
     required TResult orElse(),
   }) {
     if (renameMessage != null) {
@@ -2056,6 +2077,8 @@ class _$DartMessage_RenameMessageImpl implements DartMessage_RenameMessage {
         messageReadOnDevice,
     required TResult Function(DartMessage_SmsConfirmSent value) smsConfirmSent,
     required TResult Function(DartMessage_MarkUnread value) markUnread,
+    required TResult Function(DartMessage_PeerCacheInvalidate value)
+        peerCacheInvalidate,
   }) {
     return renameMessage(this);
   }
@@ -2080,6 +2103,8 @@ class _$DartMessage_RenameMessageImpl implements DartMessage_RenameMessage {
         messageReadOnDevice,
     TResult? Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
     TResult? Function(DartMessage_MarkUnread value)? markUnread,
+    TResult? Function(DartMessage_PeerCacheInvalidate value)?
+        peerCacheInvalidate,
   }) {
     return renameMessage?.call(this);
   }
@@ -2104,6 +2129,8 @@ class _$DartMessage_RenameMessageImpl implements DartMessage_RenameMessage {
         messageReadOnDevice,
     TResult Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
     TResult Function(DartMessage_MarkUnread value)? markUnread,
+    TResult Function(DartMessage_PeerCacheInvalidate value)?
+        peerCacheInvalidate,
     required TResult orElse(),
   }) {
     if (renameMessage != null) {
@@ -2209,6 +2236,7 @@ class _$DartMessage_ChangeParticipantsImpl
     required TResult Function() messageReadOnDevice,
     required TResult Function(bool field0) smsConfirmSent,
     required TResult Function() markUnread,
+    required TResult Function() peerCacheInvalidate,
   }) {
     return changeParticipants(field0);
   }
@@ -2231,6 +2259,7 @@ class _$DartMessage_ChangeParticipantsImpl
     TResult? Function()? messageReadOnDevice,
     TResult? Function(bool field0)? smsConfirmSent,
     TResult? Function()? markUnread,
+    TResult? Function()? peerCacheInvalidate,
   }) {
     return changeParticipants?.call(field0);
   }
@@ -2253,6 +2282,7 @@ class _$DartMessage_ChangeParticipantsImpl
     TResult Function()? messageReadOnDevice,
     TResult Function(bool field0)? smsConfirmSent,
     TResult Function()? markUnread,
+    TResult Function()? peerCacheInvalidate,
     required TResult orElse(),
   }) {
     if (changeParticipants != null) {
@@ -2282,6 +2312,8 @@ class _$DartMessage_ChangeParticipantsImpl
         messageReadOnDevice,
     required TResult Function(DartMessage_SmsConfirmSent value) smsConfirmSent,
     required TResult Function(DartMessage_MarkUnread value) markUnread,
+    required TResult Function(DartMessage_PeerCacheInvalidate value)
+        peerCacheInvalidate,
   }) {
     return changeParticipants(this);
   }
@@ -2306,6 +2338,8 @@ class _$DartMessage_ChangeParticipantsImpl
         messageReadOnDevice,
     TResult? Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
     TResult? Function(DartMessage_MarkUnread value)? markUnread,
+    TResult? Function(DartMessage_PeerCacheInvalidate value)?
+        peerCacheInvalidate,
   }) {
     return changeParticipants?.call(this);
   }
@@ -2330,6 +2364,8 @@ class _$DartMessage_ChangeParticipantsImpl
         messageReadOnDevice,
     TResult Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
     TResult Function(DartMessage_MarkUnread value)? markUnread,
+    TResult Function(DartMessage_PeerCacheInvalidate value)?
+        peerCacheInvalidate,
     required TResult orElse(),
   }) {
     if (changeParticipants != null) {
@@ -2432,6 +2468,7 @@ class _$DartMessage_ReactImpl implements DartMessage_React {
     required TResult Function() messageReadOnDevice,
     required TResult Function(bool field0) smsConfirmSent,
     required TResult Function() markUnread,
+    required TResult Function() peerCacheInvalidate,
   }) {
     return react(field0);
   }
@@ -2454,6 +2491,7 @@ class _$DartMessage_ReactImpl implements DartMessage_React {
     TResult? Function()? messageReadOnDevice,
     TResult? Function(bool field0)? smsConfirmSent,
     TResult? Function()? markUnread,
+    TResult? Function()? peerCacheInvalidate,
   }) {
     return react?.call(field0);
   }
@@ -2476,6 +2514,7 @@ class _$DartMessage_ReactImpl implements DartMessage_React {
     TResult Function()? messageReadOnDevice,
     TResult Function(bool field0)? smsConfirmSent,
     TResult Function()? markUnread,
+    TResult Function()? peerCacheInvalidate,
     required TResult orElse(),
   }) {
     if (react != null) {
@@ -2505,6 +2544,8 @@ class _$DartMessage_ReactImpl implements DartMessage_React {
         messageReadOnDevice,
     required TResult Function(DartMessage_SmsConfirmSent value) smsConfirmSent,
     required TResult Function(DartMessage_MarkUnread value) markUnread,
+    required TResult Function(DartMessage_PeerCacheInvalidate value)
+        peerCacheInvalidate,
   }) {
     return react(this);
   }
@@ -2529,6 +2570,8 @@ class _$DartMessage_ReactImpl implements DartMessage_React {
         messageReadOnDevice,
     TResult? Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
     TResult? Function(DartMessage_MarkUnread value)? markUnread,
+    TResult? Function(DartMessage_PeerCacheInvalidate value)?
+        peerCacheInvalidate,
   }) {
     return react?.call(this);
   }
@@ -2553,6 +2596,8 @@ class _$DartMessage_ReactImpl implements DartMessage_React {
         messageReadOnDevice,
     TResult Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
     TResult Function(DartMessage_MarkUnread value)? markUnread,
+    TResult Function(DartMessage_PeerCacheInvalidate value)?
+        peerCacheInvalidate,
     required TResult orElse(),
   }) {
     if (react != null) {
@@ -2628,6 +2673,7 @@ class _$DartMessage_DeliveredImpl implements DartMessage_Delivered {
     required TResult Function() messageReadOnDevice,
     required TResult Function(bool field0) smsConfirmSent,
     required TResult Function() markUnread,
+    required TResult Function() peerCacheInvalidate,
   }) {
     return delivered();
   }
@@ -2650,6 +2696,7 @@ class _$DartMessage_DeliveredImpl implements DartMessage_Delivered {
     TResult? Function()? messageReadOnDevice,
     TResult? Function(bool field0)? smsConfirmSent,
     TResult? Function()? markUnread,
+    TResult? Function()? peerCacheInvalidate,
   }) {
     return delivered?.call();
   }
@@ -2672,6 +2719,7 @@ class _$DartMessage_DeliveredImpl implements DartMessage_Delivered {
     TResult Function()? messageReadOnDevice,
     TResult Function(bool field0)? smsConfirmSent,
     TResult Function()? markUnread,
+    TResult Function()? peerCacheInvalidate,
     required TResult orElse(),
   }) {
     if (delivered != null) {
@@ -2701,6 +2749,8 @@ class _$DartMessage_DeliveredImpl implements DartMessage_Delivered {
         messageReadOnDevice,
     required TResult Function(DartMessage_SmsConfirmSent value) smsConfirmSent,
     required TResult Function(DartMessage_MarkUnread value) markUnread,
+    required TResult Function(DartMessage_PeerCacheInvalidate value)
+        peerCacheInvalidate,
   }) {
     return delivered(this);
   }
@@ -2725,6 +2775,8 @@ class _$DartMessage_DeliveredImpl implements DartMessage_Delivered {
         messageReadOnDevice,
     TResult? Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
     TResult? Function(DartMessage_MarkUnread value)? markUnread,
+    TResult? Function(DartMessage_PeerCacheInvalidate value)?
+        peerCacheInvalidate,
   }) {
     return delivered?.call(this);
   }
@@ -2749,6 +2801,8 @@ class _$DartMessage_DeliveredImpl implements DartMessage_Delivered {
         messageReadOnDevice,
     TResult Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
     TResult Function(DartMessage_MarkUnread value)? markUnread,
+    TResult Function(DartMessage_PeerCacheInvalidate value)?
+        peerCacheInvalidate,
     required TResult orElse(),
   }) {
     if (delivered != null) {
@@ -2816,6 +2870,7 @@ class _$DartMessage_ReadImpl implements DartMessage_Read {
     required TResult Function() messageReadOnDevice,
     required TResult Function(bool field0) smsConfirmSent,
     required TResult Function() markUnread,
+    required TResult Function() peerCacheInvalidate,
   }) {
     return read();
   }
@@ -2838,6 +2893,7 @@ class _$DartMessage_ReadImpl implements DartMessage_Read {
     TResult? Function()? messageReadOnDevice,
     TResult? Function(bool field0)? smsConfirmSent,
     TResult? Function()? markUnread,
+    TResult? Function()? peerCacheInvalidate,
   }) {
     return read?.call();
   }
@@ -2860,6 +2916,7 @@ class _$DartMessage_ReadImpl implements DartMessage_Read {
     TResult Function()? messageReadOnDevice,
     TResult Function(bool field0)? smsConfirmSent,
     TResult Function()? markUnread,
+    TResult Function()? peerCacheInvalidate,
     required TResult orElse(),
   }) {
     if (read != null) {
@@ -2889,6 +2946,8 @@ class _$DartMessage_ReadImpl implements DartMessage_Read {
         messageReadOnDevice,
     required TResult Function(DartMessage_SmsConfirmSent value) smsConfirmSent,
     required TResult Function(DartMessage_MarkUnread value) markUnread,
+    required TResult Function(DartMessage_PeerCacheInvalidate value)
+        peerCacheInvalidate,
   }) {
     return read(this);
   }
@@ -2913,6 +2972,8 @@ class _$DartMessage_ReadImpl implements DartMessage_Read {
         messageReadOnDevice,
     TResult? Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
     TResult? Function(DartMessage_MarkUnread value)? markUnread,
+    TResult? Function(DartMessage_PeerCacheInvalidate value)?
+        peerCacheInvalidate,
   }) {
     return read?.call(this);
   }
@@ -2937,6 +2998,8 @@ class _$DartMessage_ReadImpl implements DartMessage_Read {
         messageReadOnDevice,
     TResult Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
     TResult Function(DartMessage_MarkUnread value)? markUnread,
+    TResult Function(DartMessage_PeerCacheInvalidate value)?
+        peerCacheInvalidate,
     required TResult orElse(),
   }) {
     if (read != null) {
@@ -3004,6 +3067,7 @@ class _$DartMessage_TypingImpl implements DartMessage_Typing {
     required TResult Function() messageReadOnDevice,
     required TResult Function(bool field0) smsConfirmSent,
     required TResult Function() markUnread,
+    required TResult Function() peerCacheInvalidate,
   }) {
     return typing();
   }
@@ -3026,6 +3090,7 @@ class _$DartMessage_TypingImpl implements DartMessage_Typing {
     TResult? Function()? messageReadOnDevice,
     TResult? Function(bool field0)? smsConfirmSent,
     TResult? Function()? markUnread,
+    TResult? Function()? peerCacheInvalidate,
   }) {
     return typing?.call();
   }
@@ -3048,6 +3113,7 @@ class _$DartMessage_TypingImpl implements DartMessage_Typing {
     TResult Function()? messageReadOnDevice,
     TResult Function(bool field0)? smsConfirmSent,
     TResult Function()? markUnread,
+    TResult Function()? peerCacheInvalidate,
     required TResult orElse(),
   }) {
     if (typing != null) {
@@ -3077,6 +3143,8 @@ class _$DartMessage_TypingImpl implements DartMessage_Typing {
         messageReadOnDevice,
     required TResult Function(DartMessage_SmsConfirmSent value) smsConfirmSent,
     required TResult Function(DartMessage_MarkUnread value) markUnread,
+    required TResult Function(DartMessage_PeerCacheInvalidate value)
+        peerCacheInvalidate,
   }) {
     return typing(this);
   }
@@ -3101,6 +3169,8 @@ class _$DartMessage_TypingImpl implements DartMessage_Typing {
         messageReadOnDevice,
     TResult? Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
     TResult? Function(DartMessage_MarkUnread value)? markUnread,
+    TResult? Function(DartMessage_PeerCacheInvalidate value)?
+        peerCacheInvalidate,
   }) {
     return typing?.call(this);
   }
@@ -3125,6 +3195,8 @@ class _$DartMessage_TypingImpl implements DartMessage_Typing {
         messageReadOnDevice,
     TResult Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
     TResult Function(DartMessage_MarkUnread value)? markUnread,
+    TResult Function(DartMessage_PeerCacheInvalidate value)?
+        peerCacheInvalidate,
     required TResult orElse(),
   }) {
     if (typing != null) {
@@ -3219,6 +3291,7 @@ class _$DartMessage_UnsendImpl implements DartMessage_Unsend {
     required TResult Function() messageReadOnDevice,
     required TResult Function(bool field0) smsConfirmSent,
     required TResult Function() markUnread,
+    required TResult Function() peerCacheInvalidate,
   }) {
     return unsend(field0);
   }
@@ -3241,6 +3314,7 @@ class _$DartMessage_UnsendImpl implements DartMessage_Unsend {
     TResult? Function()? messageReadOnDevice,
     TResult? Function(bool field0)? smsConfirmSent,
     TResult? Function()? markUnread,
+    TResult? Function()? peerCacheInvalidate,
   }) {
     return unsend?.call(field0);
   }
@@ -3263,6 +3337,7 @@ class _$DartMessage_UnsendImpl implements DartMessage_Unsend {
     TResult Function()? messageReadOnDevice,
     TResult Function(bool field0)? smsConfirmSent,
     TResult Function()? markUnread,
+    TResult Function()? peerCacheInvalidate,
     required TResult orElse(),
   }) {
     if (unsend != null) {
@@ -3292,6 +3367,8 @@ class _$DartMessage_UnsendImpl implements DartMessage_Unsend {
         messageReadOnDevice,
     required TResult Function(DartMessage_SmsConfirmSent value) smsConfirmSent,
     required TResult Function(DartMessage_MarkUnread value) markUnread,
+    required TResult Function(DartMessage_PeerCacheInvalidate value)
+        peerCacheInvalidate,
   }) {
     return unsend(this);
   }
@@ -3316,6 +3393,8 @@ class _$DartMessage_UnsendImpl implements DartMessage_Unsend {
         messageReadOnDevice,
     TResult? Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
     TResult? Function(DartMessage_MarkUnread value)? markUnread,
+    TResult? Function(DartMessage_PeerCacheInvalidate value)?
+        peerCacheInvalidate,
   }) {
     return unsend?.call(this);
   }
@@ -3340,6 +3419,8 @@ class _$DartMessage_UnsendImpl implements DartMessage_Unsend {
         messageReadOnDevice,
     TResult Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
     TResult Function(DartMessage_MarkUnread value)? markUnread,
+    TResult Function(DartMessage_PeerCacheInvalidate value)?
+        peerCacheInvalidate,
     required TResult orElse(),
   }) {
     if (unsend != null) {
@@ -3440,6 +3521,7 @@ class _$DartMessage_EditImpl implements DartMessage_Edit {
     required TResult Function() messageReadOnDevice,
     required TResult Function(bool field0) smsConfirmSent,
     required TResult Function() markUnread,
+    required TResult Function() peerCacheInvalidate,
   }) {
     return edit(field0);
   }
@@ -3462,6 +3544,7 @@ class _$DartMessage_EditImpl implements DartMessage_Edit {
     TResult? Function()? messageReadOnDevice,
     TResult? Function(bool field0)? smsConfirmSent,
     TResult? Function()? markUnread,
+    TResult? Function()? peerCacheInvalidate,
   }) {
     return edit?.call(field0);
   }
@@ -3484,6 +3567,7 @@ class _$DartMessage_EditImpl implements DartMessage_Edit {
     TResult Function()? messageReadOnDevice,
     TResult Function(bool field0)? smsConfirmSent,
     TResult Function()? markUnread,
+    TResult Function()? peerCacheInvalidate,
     required TResult orElse(),
   }) {
     if (edit != null) {
@@ -3513,6 +3597,8 @@ class _$DartMessage_EditImpl implements DartMessage_Edit {
         messageReadOnDevice,
     required TResult Function(DartMessage_SmsConfirmSent value) smsConfirmSent,
     required TResult Function(DartMessage_MarkUnread value) markUnread,
+    required TResult Function(DartMessage_PeerCacheInvalidate value)
+        peerCacheInvalidate,
   }) {
     return edit(this);
   }
@@ -3537,6 +3623,8 @@ class _$DartMessage_EditImpl implements DartMessage_Edit {
         messageReadOnDevice,
     TResult? Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
     TResult? Function(DartMessage_MarkUnread value)? markUnread,
+    TResult? Function(DartMessage_PeerCacheInvalidate value)?
+        peerCacheInvalidate,
   }) {
     return edit?.call(this);
   }
@@ -3561,6 +3649,8 @@ class _$DartMessage_EditImpl implements DartMessage_Edit {
         messageReadOnDevice,
     TResult Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
     TResult Function(DartMessage_MarkUnread value)? markUnread,
+    TResult Function(DartMessage_PeerCacheInvalidate value)?
+        peerCacheInvalidate,
     required TResult orElse(),
   }) {
     if (edit != null) {
@@ -3663,6 +3753,7 @@ class _$DartMessage_IconChangeImpl implements DartMessage_IconChange {
     required TResult Function() messageReadOnDevice,
     required TResult Function(bool field0) smsConfirmSent,
     required TResult Function() markUnread,
+    required TResult Function() peerCacheInvalidate,
   }) {
     return iconChange(field0);
   }
@@ -3685,6 +3776,7 @@ class _$DartMessage_IconChangeImpl implements DartMessage_IconChange {
     TResult? Function()? messageReadOnDevice,
     TResult? Function(bool field0)? smsConfirmSent,
     TResult? Function()? markUnread,
+    TResult? Function()? peerCacheInvalidate,
   }) {
     return iconChange?.call(field0);
   }
@@ -3707,6 +3799,7 @@ class _$DartMessage_IconChangeImpl implements DartMessage_IconChange {
     TResult Function()? messageReadOnDevice,
     TResult Function(bool field0)? smsConfirmSent,
     TResult Function()? markUnread,
+    TResult Function()? peerCacheInvalidate,
     required TResult orElse(),
   }) {
     if (iconChange != null) {
@@ -3736,6 +3829,8 @@ class _$DartMessage_IconChangeImpl implements DartMessage_IconChange {
         messageReadOnDevice,
     required TResult Function(DartMessage_SmsConfirmSent value) smsConfirmSent,
     required TResult Function(DartMessage_MarkUnread value) markUnread,
+    required TResult Function(DartMessage_PeerCacheInvalidate value)
+        peerCacheInvalidate,
   }) {
     return iconChange(this);
   }
@@ -3760,6 +3855,8 @@ class _$DartMessage_IconChangeImpl implements DartMessage_IconChange {
         messageReadOnDevice,
     TResult? Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
     TResult? Function(DartMessage_MarkUnread value)? markUnread,
+    TResult? Function(DartMessage_PeerCacheInvalidate value)?
+        peerCacheInvalidate,
   }) {
     return iconChange?.call(this);
   }
@@ -3784,6 +3881,8 @@ class _$DartMessage_IconChangeImpl implements DartMessage_IconChange {
         messageReadOnDevice,
     TResult Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
     TResult Function(DartMessage_MarkUnread value)? markUnread,
+    TResult Function(DartMessage_PeerCacheInvalidate value)?
+        peerCacheInvalidate,
     required TResult orElse(),
   }) {
     if (iconChange != null) {
@@ -3860,6 +3959,7 @@ class _$DartMessage_StopTypingImpl implements DartMessage_StopTyping {
     required TResult Function() messageReadOnDevice,
     required TResult Function(bool field0) smsConfirmSent,
     required TResult Function() markUnread,
+    required TResult Function() peerCacheInvalidate,
   }) {
     return stopTyping();
   }
@@ -3882,6 +3982,7 @@ class _$DartMessage_StopTypingImpl implements DartMessage_StopTyping {
     TResult? Function()? messageReadOnDevice,
     TResult? Function(bool field0)? smsConfirmSent,
     TResult? Function()? markUnread,
+    TResult? Function()? peerCacheInvalidate,
   }) {
     return stopTyping?.call();
   }
@@ -3904,6 +4005,7 @@ class _$DartMessage_StopTypingImpl implements DartMessage_StopTyping {
     TResult Function()? messageReadOnDevice,
     TResult Function(bool field0)? smsConfirmSent,
     TResult Function()? markUnread,
+    TResult Function()? peerCacheInvalidate,
     required TResult orElse(),
   }) {
     if (stopTyping != null) {
@@ -3933,6 +4035,8 @@ class _$DartMessage_StopTypingImpl implements DartMessage_StopTyping {
         messageReadOnDevice,
     required TResult Function(DartMessage_SmsConfirmSent value) smsConfirmSent,
     required TResult Function(DartMessage_MarkUnread value) markUnread,
+    required TResult Function(DartMessage_PeerCacheInvalidate value)
+        peerCacheInvalidate,
   }) {
     return stopTyping(this);
   }
@@ -3957,6 +4061,8 @@ class _$DartMessage_StopTypingImpl implements DartMessage_StopTyping {
         messageReadOnDevice,
     TResult? Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
     TResult? Function(DartMessage_MarkUnread value)? markUnread,
+    TResult? Function(DartMessage_PeerCacheInvalidate value)?
+        peerCacheInvalidate,
   }) {
     return stopTyping?.call(this);
   }
@@ -3981,6 +4087,8 @@ class _$DartMessage_StopTypingImpl implements DartMessage_StopTyping {
         messageReadOnDevice,
     TResult Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
     TResult Function(DartMessage_MarkUnread value)? markUnread,
+    TResult Function(DartMessage_PeerCacheInvalidate value)?
+        peerCacheInvalidate,
     required TResult orElse(),
   }) {
     if (stopTyping != null) {
@@ -4080,6 +4188,7 @@ class _$DartMessage_EnableSmsActivationImpl
     required TResult Function() messageReadOnDevice,
     required TResult Function(bool field0) smsConfirmSent,
     required TResult Function() markUnread,
+    required TResult Function() peerCacheInvalidate,
   }) {
     return enableSmsActivation(field0);
   }
@@ -4102,6 +4211,7 @@ class _$DartMessage_EnableSmsActivationImpl
     TResult? Function()? messageReadOnDevice,
     TResult? Function(bool field0)? smsConfirmSent,
     TResult? Function()? markUnread,
+    TResult? Function()? peerCacheInvalidate,
   }) {
     return enableSmsActivation?.call(field0);
   }
@@ -4124,6 +4234,7 @@ class _$DartMessage_EnableSmsActivationImpl
     TResult Function()? messageReadOnDevice,
     TResult Function(bool field0)? smsConfirmSent,
     TResult Function()? markUnread,
+    TResult Function()? peerCacheInvalidate,
     required TResult orElse(),
   }) {
     if (enableSmsActivation != null) {
@@ -4153,6 +4264,8 @@ class _$DartMessage_EnableSmsActivationImpl
         messageReadOnDevice,
     required TResult Function(DartMessage_SmsConfirmSent value) smsConfirmSent,
     required TResult Function(DartMessage_MarkUnread value) markUnread,
+    required TResult Function(DartMessage_PeerCacheInvalidate value)
+        peerCacheInvalidate,
   }) {
     return enableSmsActivation(this);
   }
@@ -4177,6 +4290,8 @@ class _$DartMessage_EnableSmsActivationImpl
         messageReadOnDevice,
     TResult? Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
     TResult? Function(DartMessage_MarkUnread value)? markUnread,
+    TResult? Function(DartMessage_PeerCacheInvalidate value)?
+        peerCacheInvalidate,
   }) {
     return enableSmsActivation?.call(this);
   }
@@ -4201,6 +4316,8 @@ class _$DartMessage_EnableSmsActivationImpl
         messageReadOnDevice,
     TResult Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
     TResult Function(DartMessage_MarkUnread value)? markUnread,
+    TResult Function(DartMessage_PeerCacheInvalidate value)?
+        peerCacheInvalidate,
     required TResult orElse(),
   }) {
     if (enableSmsActivation != null) {
@@ -4280,6 +4397,7 @@ class _$DartMessage_MessageReadOnDeviceImpl
     required TResult Function() messageReadOnDevice,
     required TResult Function(bool field0) smsConfirmSent,
     required TResult Function() markUnread,
+    required TResult Function() peerCacheInvalidate,
   }) {
     return messageReadOnDevice();
   }
@@ -4302,6 +4420,7 @@ class _$DartMessage_MessageReadOnDeviceImpl
     TResult? Function()? messageReadOnDevice,
     TResult? Function(bool field0)? smsConfirmSent,
     TResult? Function()? markUnread,
+    TResult? Function()? peerCacheInvalidate,
   }) {
     return messageReadOnDevice?.call();
   }
@@ -4324,6 +4443,7 @@ class _$DartMessage_MessageReadOnDeviceImpl
     TResult Function()? messageReadOnDevice,
     TResult Function(bool field0)? smsConfirmSent,
     TResult Function()? markUnread,
+    TResult Function()? peerCacheInvalidate,
     required TResult orElse(),
   }) {
     if (messageReadOnDevice != null) {
@@ -4353,6 +4473,8 @@ class _$DartMessage_MessageReadOnDeviceImpl
         messageReadOnDevice,
     required TResult Function(DartMessage_SmsConfirmSent value) smsConfirmSent,
     required TResult Function(DartMessage_MarkUnread value) markUnread,
+    required TResult Function(DartMessage_PeerCacheInvalidate value)
+        peerCacheInvalidate,
   }) {
     return messageReadOnDevice(this);
   }
@@ -4377,6 +4499,8 @@ class _$DartMessage_MessageReadOnDeviceImpl
         messageReadOnDevice,
     TResult? Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
     TResult? Function(DartMessage_MarkUnread value)? markUnread,
+    TResult? Function(DartMessage_PeerCacheInvalidate value)?
+        peerCacheInvalidate,
   }) {
     return messageReadOnDevice?.call(this);
   }
@@ -4401,6 +4525,8 @@ class _$DartMessage_MessageReadOnDeviceImpl
         messageReadOnDevice,
     TResult Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
     TResult Function(DartMessage_MarkUnread value)? markUnread,
+    TResult Function(DartMessage_PeerCacheInvalidate value)?
+        peerCacheInvalidate,
     required TResult orElse(),
   }) {
     if (messageReadOnDevice != null) {
@@ -4498,6 +4624,7 @@ class _$DartMessage_SmsConfirmSentImpl implements DartMessage_SmsConfirmSent {
     required TResult Function() messageReadOnDevice,
     required TResult Function(bool field0) smsConfirmSent,
     required TResult Function() markUnread,
+    required TResult Function() peerCacheInvalidate,
   }) {
     return smsConfirmSent(field0);
   }
@@ -4520,6 +4647,7 @@ class _$DartMessage_SmsConfirmSentImpl implements DartMessage_SmsConfirmSent {
     TResult? Function()? messageReadOnDevice,
     TResult? Function(bool field0)? smsConfirmSent,
     TResult? Function()? markUnread,
+    TResult? Function()? peerCacheInvalidate,
   }) {
     return smsConfirmSent?.call(field0);
   }
@@ -4542,6 +4670,7 @@ class _$DartMessage_SmsConfirmSentImpl implements DartMessage_SmsConfirmSent {
     TResult Function()? messageReadOnDevice,
     TResult Function(bool field0)? smsConfirmSent,
     TResult Function()? markUnread,
+    TResult Function()? peerCacheInvalidate,
     required TResult orElse(),
   }) {
     if (smsConfirmSent != null) {
@@ -4571,6 +4700,8 @@ class _$DartMessage_SmsConfirmSentImpl implements DartMessage_SmsConfirmSent {
         messageReadOnDevice,
     required TResult Function(DartMessage_SmsConfirmSent value) smsConfirmSent,
     required TResult Function(DartMessage_MarkUnread value) markUnread,
+    required TResult Function(DartMessage_PeerCacheInvalidate value)
+        peerCacheInvalidate,
   }) {
     return smsConfirmSent(this);
   }
@@ -4595,6 +4726,8 @@ class _$DartMessage_SmsConfirmSentImpl implements DartMessage_SmsConfirmSent {
         messageReadOnDevice,
     TResult? Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
     TResult? Function(DartMessage_MarkUnread value)? markUnread,
+    TResult? Function(DartMessage_PeerCacheInvalidate value)?
+        peerCacheInvalidate,
   }) {
     return smsConfirmSent?.call(this);
   }
@@ -4619,6 +4752,8 @@ class _$DartMessage_SmsConfirmSentImpl implements DartMessage_SmsConfirmSent {
         messageReadOnDevice,
     TResult Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
     TResult Function(DartMessage_MarkUnread value)? markUnread,
+    TResult Function(DartMessage_PeerCacheInvalidate value)?
+        peerCacheInvalidate,
     required TResult orElse(),
   }) {
     if (smsConfirmSent != null) {
@@ -4695,6 +4830,7 @@ class _$DartMessage_MarkUnreadImpl implements DartMessage_MarkUnread {
     required TResult Function() messageReadOnDevice,
     required TResult Function(bool field0) smsConfirmSent,
     required TResult Function() markUnread,
+    required TResult Function() peerCacheInvalidate,
   }) {
     return markUnread();
   }
@@ -4717,6 +4853,7 @@ class _$DartMessage_MarkUnreadImpl implements DartMessage_MarkUnread {
     TResult? Function()? messageReadOnDevice,
     TResult? Function(bool field0)? smsConfirmSent,
     TResult? Function()? markUnread,
+    TResult? Function()? peerCacheInvalidate,
   }) {
     return markUnread?.call();
   }
@@ -4739,6 +4876,7 @@ class _$DartMessage_MarkUnreadImpl implements DartMessage_MarkUnread {
     TResult Function()? messageReadOnDevice,
     TResult Function(bool field0)? smsConfirmSent,
     TResult Function()? markUnread,
+    TResult Function()? peerCacheInvalidate,
     required TResult orElse(),
   }) {
     if (markUnread != null) {
@@ -4768,6 +4906,8 @@ class _$DartMessage_MarkUnreadImpl implements DartMessage_MarkUnread {
         messageReadOnDevice,
     required TResult Function(DartMessage_SmsConfirmSent value) smsConfirmSent,
     required TResult Function(DartMessage_MarkUnread value) markUnread,
+    required TResult Function(DartMessage_PeerCacheInvalidate value)
+        peerCacheInvalidate,
   }) {
     return markUnread(this);
   }
@@ -4792,6 +4932,8 @@ class _$DartMessage_MarkUnreadImpl implements DartMessage_MarkUnread {
         messageReadOnDevice,
     TResult? Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
     TResult? Function(DartMessage_MarkUnread value)? markUnread,
+    TResult? Function(DartMessage_PeerCacheInvalidate value)?
+        peerCacheInvalidate,
   }) {
     return markUnread?.call(this);
   }
@@ -4816,6 +4958,8 @@ class _$DartMessage_MarkUnreadImpl implements DartMessage_MarkUnread {
         messageReadOnDevice,
     TResult Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
     TResult Function(DartMessage_MarkUnread value)? markUnread,
+    TResult Function(DartMessage_PeerCacheInvalidate value)?
+        peerCacheInvalidate,
     required TResult orElse(),
   }) {
     if (markUnread != null) {
@@ -4827,6 +4971,209 @@ class _$DartMessage_MarkUnreadImpl implements DartMessage_MarkUnread {
 
 abstract class DartMessage_MarkUnread implements DartMessage {
   const factory DartMessage_MarkUnread() = _$DartMessage_MarkUnreadImpl;
+}
+
+/// @nodoc
+abstract class _$$DartMessage_PeerCacheInvalidateImplCopyWith<$Res> {
+  factory _$$DartMessage_PeerCacheInvalidateImplCopyWith(
+          _$DartMessage_PeerCacheInvalidateImpl value,
+          $Res Function(_$DartMessage_PeerCacheInvalidateImpl) then) =
+      __$$DartMessage_PeerCacheInvalidateImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$DartMessage_PeerCacheInvalidateImplCopyWithImpl<$Res>
+    extends _$DartMessageCopyWithImpl<$Res,
+        _$DartMessage_PeerCacheInvalidateImpl>
+    implements _$$DartMessage_PeerCacheInvalidateImplCopyWith<$Res> {
+  __$$DartMessage_PeerCacheInvalidateImplCopyWithImpl(
+      _$DartMessage_PeerCacheInvalidateImpl _value,
+      $Res Function(_$DartMessage_PeerCacheInvalidateImpl) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$DartMessage_PeerCacheInvalidateImpl
+    implements DartMessage_PeerCacheInvalidate {
+  const _$DartMessage_PeerCacheInvalidateImpl();
+
+  @override
+  String toString() {
+    return 'DartMessage.peerCacheInvalidate()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$DartMessage_PeerCacheInvalidateImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(DartNormalMessage field0) message,
+    required TResult Function(DartRenameMessage field0) renameMessage,
+    required TResult Function(DartChangeParticipantMessage field0)
+        changeParticipants,
+    required TResult Function(DartReactMessage field0) react,
+    required TResult Function() delivered,
+    required TResult Function() read,
+    required TResult Function() typing,
+    required TResult Function(DartUnsendMessage field0) unsend,
+    required TResult Function(DartEditMessage field0) edit,
+    required TResult Function(DartIconChangeMessage field0) iconChange,
+    required TResult Function() stopTyping,
+    required TResult Function(bool field0) enableSmsActivation,
+    required TResult Function() messageReadOnDevice,
+    required TResult Function(bool field0) smsConfirmSent,
+    required TResult Function() markUnread,
+    required TResult Function() peerCacheInvalidate,
+  }) {
+    return peerCacheInvalidate();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(DartNormalMessage field0)? message,
+    TResult? Function(DartRenameMessage field0)? renameMessage,
+    TResult? Function(DartChangeParticipantMessage field0)? changeParticipants,
+    TResult? Function(DartReactMessage field0)? react,
+    TResult? Function()? delivered,
+    TResult? Function()? read,
+    TResult? Function()? typing,
+    TResult? Function(DartUnsendMessage field0)? unsend,
+    TResult? Function(DartEditMessage field0)? edit,
+    TResult? Function(DartIconChangeMessage field0)? iconChange,
+    TResult? Function()? stopTyping,
+    TResult? Function(bool field0)? enableSmsActivation,
+    TResult? Function()? messageReadOnDevice,
+    TResult? Function(bool field0)? smsConfirmSent,
+    TResult? Function()? markUnread,
+    TResult? Function()? peerCacheInvalidate,
+  }) {
+    return peerCacheInvalidate?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(DartNormalMessage field0)? message,
+    TResult Function(DartRenameMessage field0)? renameMessage,
+    TResult Function(DartChangeParticipantMessage field0)? changeParticipants,
+    TResult Function(DartReactMessage field0)? react,
+    TResult Function()? delivered,
+    TResult Function()? read,
+    TResult Function()? typing,
+    TResult Function(DartUnsendMessage field0)? unsend,
+    TResult Function(DartEditMessage field0)? edit,
+    TResult Function(DartIconChangeMessage field0)? iconChange,
+    TResult Function()? stopTyping,
+    TResult Function(bool field0)? enableSmsActivation,
+    TResult Function()? messageReadOnDevice,
+    TResult Function(bool field0)? smsConfirmSent,
+    TResult Function()? markUnread,
+    TResult Function()? peerCacheInvalidate,
+    required TResult orElse(),
+  }) {
+    if (peerCacheInvalidate != null) {
+      return peerCacheInvalidate();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(DartMessage_Message value) message,
+    required TResult Function(DartMessage_RenameMessage value) renameMessage,
+    required TResult Function(DartMessage_ChangeParticipants value)
+        changeParticipants,
+    required TResult Function(DartMessage_React value) react,
+    required TResult Function(DartMessage_Delivered value) delivered,
+    required TResult Function(DartMessage_Read value) read,
+    required TResult Function(DartMessage_Typing value) typing,
+    required TResult Function(DartMessage_Unsend value) unsend,
+    required TResult Function(DartMessage_Edit value) edit,
+    required TResult Function(DartMessage_IconChange value) iconChange,
+    required TResult Function(DartMessage_StopTyping value) stopTyping,
+    required TResult Function(DartMessage_EnableSmsActivation value)
+        enableSmsActivation,
+    required TResult Function(DartMessage_MessageReadOnDevice value)
+        messageReadOnDevice,
+    required TResult Function(DartMessage_SmsConfirmSent value) smsConfirmSent,
+    required TResult Function(DartMessage_MarkUnread value) markUnread,
+    required TResult Function(DartMessage_PeerCacheInvalidate value)
+        peerCacheInvalidate,
+  }) {
+    return peerCacheInvalidate(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(DartMessage_Message value)? message,
+    TResult? Function(DartMessage_RenameMessage value)? renameMessage,
+    TResult? Function(DartMessage_ChangeParticipants value)? changeParticipants,
+    TResult? Function(DartMessage_React value)? react,
+    TResult? Function(DartMessage_Delivered value)? delivered,
+    TResult? Function(DartMessage_Read value)? read,
+    TResult? Function(DartMessage_Typing value)? typing,
+    TResult? Function(DartMessage_Unsend value)? unsend,
+    TResult? Function(DartMessage_Edit value)? edit,
+    TResult? Function(DartMessage_IconChange value)? iconChange,
+    TResult? Function(DartMessage_StopTyping value)? stopTyping,
+    TResult? Function(DartMessage_EnableSmsActivation value)?
+        enableSmsActivation,
+    TResult? Function(DartMessage_MessageReadOnDevice value)?
+        messageReadOnDevice,
+    TResult? Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
+    TResult? Function(DartMessage_MarkUnread value)? markUnread,
+    TResult? Function(DartMessage_PeerCacheInvalidate value)?
+        peerCacheInvalidate,
+  }) {
+    return peerCacheInvalidate?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(DartMessage_Message value)? message,
+    TResult Function(DartMessage_RenameMessage value)? renameMessage,
+    TResult Function(DartMessage_ChangeParticipants value)? changeParticipants,
+    TResult Function(DartMessage_React value)? react,
+    TResult Function(DartMessage_Delivered value)? delivered,
+    TResult Function(DartMessage_Read value)? read,
+    TResult Function(DartMessage_Typing value)? typing,
+    TResult Function(DartMessage_Unsend value)? unsend,
+    TResult Function(DartMessage_Edit value)? edit,
+    TResult Function(DartMessage_IconChange value)? iconChange,
+    TResult Function(DartMessage_StopTyping value)? stopTyping,
+    TResult Function(DartMessage_EnableSmsActivation value)?
+        enableSmsActivation,
+    TResult Function(DartMessage_MessageReadOnDevice value)?
+        messageReadOnDevice,
+    TResult Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
+    TResult Function(DartMessage_MarkUnread value)? markUnread,
+    TResult Function(DartMessage_PeerCacheInvalidate value)?
+        peerCacheInvalidate,
+    required TResult orElse(),
+  }) {
+    if (peerCacheInvalidate != null) {
+      return peerCacheInvalidate(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class DartMessage_PeerCacheInvalidate implements DartMessage {
+  const factory DartMessage_PeerCacheInvalidate() =
+      _$DartMessage_PeerCacheInvalidateImpl;
 }
 
 /// @nodoc
@@ -5334,6 +5681,344 @@ abstract class DartMessagePart_Mention implements DartMessagePart {
   String get field1;
   @JsonKey(ignore: true)
   _$$DartMessagePart_MentionImplCopyWith<_$DartMessagePart_MentionImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+mixin _$DartMessageTarget {
+  Object get field0 => throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(Uint8List field0) token,
+    required TResult Function(String field0) uuid,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(Uint8List field0)? token,
+    TResult? Function(String field0)? uuid,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(Uint8List field0)? token,
+    TResult Function(String field0)? uuid,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(DartMessageTarget_Token value) token,
+    required TResult Function(DartMessageTarget_Uuid value) uuid,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(DartMessageTarget_Token value)? token,
+    TResult? Function(DartMessageTarget_Uuid value)? uuid,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(DartMessageTarget_Token value)? token,
+    TResult Function(DartMessageTarget_Uuid value)? uuid,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $DartMessageTargetCopyWith<$Res> {
+  factory $DartMessageTargetCopyWith(
+          DartMessageTarget value, $Res Function(DartMessageTarget) then) =
+      _$DartMessageTargetCopyWithImpl<$Res, DartMessageTarget>;
+}
+
+/// @nodoc
+class _$DartMessageTargetCopyWithImpl<$Res, $Val extends DartMessageTarget>
+    implements $DartMessageTargetCopyWith<$Res> {
+  _$DartMessageTargetCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+}
+
+/// @nodoc
+abstract class _$$DartMessageTarget_TokenImplCopyWith<$Res> {
+  factory _$$DartMessageTarget_TokenImplCopyWith(
+          _$DartMessageTarget_TokenImpl value,
+          $Res Function(_$DartMessageTarget_TokenImpl) then) =
+      __$$DartMessageTarget_TokenImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({Uint8List field0});
+}
+
+/// @nodoc
+class __$$DartMessageTarget_TokenImplCopyWithImpl<$Res>
+    extends _$DartMessageTargetCopyWithImpl<$Res, _$DartMessageTarget_TokenImpl>
+    implements _$$DartMessageTarget_TokenImplCopyWith<$Res> {
+  __$$DartMessageTarget_TokenImplCopyWithImpl(
+      _$DartMessageTarget_TokenImpl _value,
+      $Res Function(_$DartMessageTarget_TokenImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? field0 = null,
+  }) {
+    return _then(_$DartMessageTarget_TokenImpl(
+      null == field0
+          ? _value.field0
+          : field0 // ignore: cast_nullable_to_non_nullable
+              as Uint8List,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$DartMessageTarget_TokenImpl implements DartMessageTarget_Token {
+  const _$DartMessageTarget_TokenImpl(this.field0);
+
+  @override
+  final Uint8List field0;
+
+  @override
+  String toString() {
+    return 'DartMessageTarget.token(field0: $field0)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$DartMessageTarget_TokenImpl &&
+            const DeepCollectionEquality().equals(other.field0, field0));
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(field0));
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$DartMessageTarget_TokenImplCopyWith<_$DartMessageTarget_TokenImpl>
+      get copyWith => __$$DartMessageTarget_TokenImplCopyWithImpl<
+          _$DartMessageTarget_TokenImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(Uint8List field0) token,
+    required TResult Function(String field0) uuid,
+  }) {
+    return token(field0);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(Uint8List field0)? token,
+    TResult? Function(String field0)? uuid,
+  }) {
+    return token?.call(field0);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(Uint8List field0)? token,
+    TResult Function(String field0)? uuid,
+    required TResult orElse(),
+  }) {
+    if (token != null) {
+      return token(field0);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(DartMessageTarget_Token value) token,
+    required TResult Function(DartMessageTarget_Uuid value) uuid,
+  }) {
+    return token(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(DartMessageTarget_Token value)? token,
+    TResult? Function(DartMessageTarget_Uuid value)? uuid,
+  }) {
+    return token?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(DartMessageTarget_Token value)? token,
+    TResult Function(DartMessageTarget_Uuid value)? uuid,
+    required TResult orElse(),
+  }) {
+    if (token != null) {
+      return token(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class DartMessageTarget_Token implements DartMessageTarget {
+  const factory DartMessageTarget_Token(final Uint8List field0) =
+      _$DartMessageTarget_TokenImpl;
+
+  @override
+  Uint8List get field0;
+  @JsonKey(ignore: true)
+  _$$DartMessageTarget_TokenImplCopyWith<_$DartMessageTarget_TokenImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$DartMessageTarget_UuidImplCopyWith<$Res> {
+  factory _$$DartMessageTarget_UuidImplCopyWith(
+          _$DartMessageTarget_UuidImpl value,
+          $Res Function(_$DartMessageTarget_UuidImpl) then) =
+      __$$DartMessageTarget_UuidImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String field0});
+}
+
+/// @nodoc
+class __$$DartMessageTarget_UuidImplCopyWithImpl<$Res>
+    extends _$DartMessageTargetCopyWithImpl<$Res, _$DartMessageTarget_UuidImpl>
+    implements _$$DartMessageTarget_UuidImplCopyWith<$Res> {
+  __$$DartMessageTarget_UuidImplCopyWithImpl(
+      _$DartMessageTarget_UuidImpl _value,
+      $Res Function(_$DartMessageTarget_UuidImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? field0 = null,
+  }) {
+    return _then(_$DartMessageTarget_UuidImpl(
+      null == field0
+          ? _value.field0
+          : field0 // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$DartMessageTarget_UuidImpl implements DartMessageTarget_Uuid {
+  const _$DartMessageTarget_UuidImpl(this.field0);
+
+  @override
+  final String field0;
+
+  @override
+  String toString() {
+    return 'DartMessageTarget.uuid(field0: $field0)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$DartMessageTarget_UuidImpl &&
+            (identical(other.field0, field0) || other.field0 == field0));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, field0);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$DartMessageTarget_UuidImplCopyWith<_$DartMessageTarget_UuidImpl>
+      get copyWith => __$$DartMessageTarget_UuidImplCopyWithImpl<
+          _$DartMessageTarget_UuidImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(Uint8List field0) token,
+    required TResult Function(String field0) uuid,
+  }) {
+    return uuid(field0);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(Uint8List field0)? token,
+    TResult? Function(String field0)? uuid,
+  }) {
+    return uuid?.call(field0);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(Uint8List field0)? token,
+    TResult Function(String field0)? uuid,
+    required TResult orElse(),
+  }) {
+    if (uuid != null) {
+      return uuid(field0);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(DartMessageTarget_Token value) token,
+    required TResult Function(DartMessageTarget_Uuid value) uuid,
+  }) {
+    return uuid(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(DartMessageTarget_Token value)? token,
+    TResult? Function(DartMessageTarget_Uuid value)? uuid,
+  }) {
+    return uuid?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(DartMessageTarget_Token value)? token,
+    TResult Function(DartMessageTarget_Uuid value)? uuid,
+    required TResult orElse(),
+  }) {
+    if (uuid != null) {
+      return uuid(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class DartMessageTarget_Uuid implements DartMessageTarget {
+  const factory DartMessageTarget_Uuid(final String field0) =
+      _$DartMessageTarget_UuidImpl;
+
+  @override
+  String get field0;
+  @JsonKey(ignore: true)
+  _$$DartMessageTarget_UuidImplCopyWith<_$DartMessageTarget_UuidImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 

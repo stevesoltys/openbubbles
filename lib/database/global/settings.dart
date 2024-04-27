@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:bluebubbles/app/layouts/conversation_view/widgets/message/popup/details_menu_action.dart';
 import 'package:bluebubbles/helpers/helpers.dart';
@@ -182,9 +183,10 @@ class Settings {
   // RustPush settings
   final RxString defaultHandle = "".obs;
   final RxBool macIsMine = true.obs;
-  final RxBool smsForwardingEnabled = false.obs;
   final RxBool isSmsRouter = false.obs; // true if we can send/recieve from the app, and via sms forwarding over APNs
   final RxBool vpnWarned = false.obs;
+  final RxMap<String, String> cachedCodes = <String, String>{}.obs;
+  final RxList<String> smsForwardingTargets = <String>[].obs;
 
   Future<DisplayMode> getDisplayMode() async {
     List<DisplayMode> modes = await FlutterDisplayMode.supported;
@@ -372,9 +374,9 @@ class Settings {
       'useWindowsAccent': useWindowsAccent.value,
       'defaultHandle': defaultHandle.value,
       'macIsMine': macIsMine.value,
-      'smsForwardingEnabled': smsForwardingEnabled.value,
       'isSmsRouter': isSmsRouter.value,
       'vpnWarned': vpnWarned.value,
+      'smsForwardingTargets': smsForwardingTargets,
     };
     if (includeAll) {
       map.addAll({
@@ -390,6 +392,7 @@ class Settings {
         'firstFcmRegisterDate': firstFcmRegisterDate.value,
         'sendSoundPath': sendSoundPath.value,
         'receiveSoundPath': receiveSoundPath.value,
+        'cachedCodes': cachedCodes,
       });
     }
     return map;
@@ -515,9 +518,10 @@ class Settings {
     ss.settings.useWindowsAccent.value = map['useWindowsAccent'] ?? false;
     ss.settings.defaultHandle.value = map['defaultHandle'] ?? "";
     ss.settings.macIsMine.value = map['macIsMine'] ?? true;
-    ss.settings.smsForwardingEnabled.value = map['smsForwardingEnabled'] ?? false;
     ss.settings.isSmsRouter.value = map['isSmsRouter'] ?? false;
     ss.settings.vpnWarned.value = map['vpnWarned'] ?? false;
+    ss.settings.cachedCodes.value = map['cachedCodes'] ?? {};
+    ss.settings.smsForwardingTargets.value = (map['smsForwardingTargets']?.runtimeType == String ? jsonDecode(map['smsForwardingTargets']) as List : []).cast<String>();
     ss.settings.save();
 
     eventDispatcher.emit("theme-update", null);
@@ -655,9 +659,10 @@ class Settings {
     s.useWindowsAccent.value = map['useWindowsAccent'] ?? false;
     s.defaultHandle.value = map['defaultHandle'] ?? "";
     s.macIsMine.value = map['macIsMine'] ?? true;
-    s.smsForwardingEnabled.value = map['smsForwardingEnabled'] ?? false;
     s.isSmsRouter.value = map['isSmsRouter'] ?? false;
     s.vpnWarned.value = map['vpnWarned'] ?? false;
+    s.cachedCodes.value =  map['cachedCodes'] is String ? jsonDecode(map['cachedCodes']).cast<String, String>() : <String, String>{};
+    s.smsForwardingTargets.value = (map['smsForwardingTargets']?.runtimeType == String ? jsonDecode(map['smsForwardingTargets']) as List : []).cast<String>();
     return s;
   }
 

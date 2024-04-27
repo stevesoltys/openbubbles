@@ -329,7 +329,7 @@ class Message {
 
 
   Future<void> forwardIfNessesary(Chat chat, {bool markFailed = false}) async {
-    if (hasBeenForwarded || !ss.settings.smsForwardingEnabled.value || !chat.isTextForwarding || !(isFromMe ?? true)) return;
+    if (hasBeenForwarded || !ss.settings.isSmsRouter.value || !chat.isTextForwarding || !(isFromMe ?? true)) return;
     hasBeenForwarded = true;
     save(chat: chat);
     var attachments = fetchAttachments()!;
