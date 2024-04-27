@@ -757,10 +757,14 @@ pub struct DartTrustedPhoneNumber {
     pub id: u32
 }
 
-pub async fn get_2fa_sms_opts(state: &Arc<PushState>) -> anyhow::Result<Vec<DartTrustedPhoneNumber>> {
+pub async fn get_2fa_sms_opts(state: &Arc<PushState>) -> anyhow::Result<(Vec<DartTrustedPhoneNumber>, Option<DartLoginState>)> {
     let inner = state.0.read().await;
     let account = inner.account.as_ref().unwrap();
-    Ok(account.get_auth_extras().await?.trusted_phone_numbers.into_iter().map(|i| unsafe { std::mem::transmute(i) }).collect())
+    let extras = account.get_auth_extras().await?;
+    Ok((
+        extras.trusted_phone_numbers.into_iter().map(|i| unsafe { std::mem::transmute(i) }).collect(),
+        extras.new_state.map(|i| unsafe { std::mem::transmute(i) })
+    ))
 }
 
 pub async fn send_2fa_sms(state: &Arc<PushState>, phone_id: u32) -> anyhow::Result<DartLoginState> {

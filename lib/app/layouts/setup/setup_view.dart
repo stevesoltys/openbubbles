@@ -52,8 +52,10 @@ class SetupViewController extends StatefulController {
     }
     if (ret is DartLoginState_NeedsSMS2FA) {
       var options = await api.get2FaSmsOpts(state: pushService.state);
-      if (options.length == 1) {
-        ret = await api.send2FaSms(state: pushService.state, phoneId: options[0].id);
+      if (options.$2 != null) {
+        ret = options.$2!;
+      } else if (options.$1.length == 1) {
+        ret = await api.send2FaSms(state: pushService.state, phoneId: options.$1[0].id);
       } else {
         int selectedRadio = -1;
         await showDialog(
@@ -64,7 +66,7 @@ class SetupViewController extends StatefulController {
               builder: (BuildContext context, StateSetter setState) {
                 return Column(
                   mainAxisSize: MainAxisSize.min,
-                  children: options.map((e) => RadioListTile(
+                  children: options.$1.map((e) => RadioListTile(
                       value: e.id,
                       groupValue: selectedRadio,
                       title: Text(e.numberWithDialCode),

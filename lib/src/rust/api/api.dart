@@ -131,7 +131,7 @@ Future<DartLoginState> verify2Fa(
         {required ArcPushState state, required String code, dynamic hint}) =>
     RustLib.instance.api.verify2Fa(state: state, code: code, hint: hint);
 
-Future<List<DartTrustedPhoneNumber>> get2FaSmsOpts(
+Future<(List<DartTrustedPhoneNumber>, DartLoginState?)> get2FaSmsOpts(
         {required ArcPushState state, dynamic hint}) =>
     RustLib.instance.api.get2FaSmsOpts(state: state, hint: hint);
 

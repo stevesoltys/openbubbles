@@ -275,6 +275,16 @@ class _AppleIdLoginState extends OptimizedState<AppleIdLogin> {
       var result = await api.tryAuth(state: pushService.state, username: appleId, password: password);
       result = await controller.updateLoginState(result);
 
+
+      // if (result is api.DartLoginState_NeedsSMS2FA) {
+      //   result = api.DartLoginState.needsSms2FaVerification(api.VerifyBody(
+
+      //   ))
+      // }
+      // if (result is api.DartLoginState_NeedsDevice2FA) {
+      //   result = const api.DartLoginState.needs2FaVerification();
+      // }
+
       ss.settings.iCloudAccount.value = appleId;
       if (result is api.DartLoginState_Needs2FAVerification || result is api.DartLoginState_NeedsSMS2FAVerification) {
         // we need 2fa

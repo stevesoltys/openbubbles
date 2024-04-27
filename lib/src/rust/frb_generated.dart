@@ -101,7 +101,7 @@ abstract class RustLibApi extends BaseApi {
       required String path,
       dynamic hint});
 
-  Future<List<DartTrustedPhoneNumber>> get2FaSmsOpts(
+  Future<(List<DartTrustedPhoneNumber>, DartLoginState?)> get2FaSmsOpts(
       {required ArcPushState state, dynamic hint});
 
   Future<DartDeviceInfo> getDeviceInfo(
@@ -507,7 +507,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
-  Future<List<DartTrustedPhoneNumber>> get2FaSmsOpts(
+  Future<(List<DartTrustedPhoneNumber>, DartLoginState?)> get2FaSmsOpts(
       {required ArcPushState state, dynamic hint}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
@@ -518,7 +518,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             funcId: 23, port: port_);
       },
       codec: SseCodec(
-        decodeSuccessData: sse_decode_list_dart_trusted_phone_number,
+        decodeSuccessData:
+            sse_decode_record_list_dart_trusted_phone_number_opt_box_autoadd_dart_login_state,
         decodeErrorData: sse_decode_AnyhowException,
       ),
       constMeta: kGet2FaSmsOptsConstMeta,
@@ -1353,6 +1354,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  DartLoginState dco_decode_box_autoadd_dart_login_state(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_dart_login_state(raw);
+  }
+
+  @protected
   DartMessage dco_decode_box_autoadd_dart_message(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return dco_decode_dart_message(raw);
@@ -1971,6 +1978,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  DartLoginState? dco_decode_opt_box_autoadd_dart_login_state(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_box_autoadd_dart_login_state(raw);
+  }
+
+  @protected
   DartMMCSFile? dco_decode_opt_box_autoadd_dart_mmcs_file(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw == null ? null : dco_decode_box_autoadd_dart_mmcs_file(raw);
@@ -2015,6 +2028,23 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       default:
         throw Exception("unreachable");
     }
+  }
+
+  @protected
+  (
+    List<DartTrustedPhoneNumber>,
+    DartLoginState?
+  ) dco_decode_record_list_dart_trusted_phone_number_opt_box_autoadd_dart_login_state(
+      dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2) {
+      throw Exception('Expected 2 elements, got ${arr.length}');
+    }
+    return (
+      dco_decode_list_dart_trusted_phone_number(arr[0]),
+      dco_decode_opt_box_autoadd_dart_login_state(arr[1]),
+    );
   }
 
   @protected
@@ -2222,6 +2252,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return (sse_decode_dart_icon_change_message(deserializer));
+  }
+
+  @protected
+  DartLoginState sse_decode_box_autoadd_dart_login_state(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_dart_login_state(deserializer));
   }
 
   @protected
@@ -2897,6 +2934,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  DartLoginState? sse_decode_opt_box_autoadd_dart_login_state(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_box_autoadd_dart_login_state(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
   DartMMCSFile? sse_decode_opt_box_autoadd_dart_mmcs_file(
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -2970,6 +3019,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       default:
         throw UnimplementedError('');
     }
+  }
+
+  @protected
+  (
+    List<DartTrustedPhoneNumber>,
+    DartLoginState?
+  ) sse_decode_record_list_dart_trusted_phone_number_opt_box_autoadd_dart_login_state(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_field0 = sse_decode_list_dart_trusted_phone_number(deserializer);
+    var var_field1 = sse_decode_opt_box_autoadd_dart_login_state(deserializer);
+    return (var_field0, var_field1);
   }
 
   @protected
@@ -3165,6 +3226,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       DartIconChangeMessage self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_dart_icon_change_message(self, serializer);
+  }
+
+  @protected
+  void sse_encode_box_autoadd_dart_login_state(
+      DartLoginState self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_dart_login_state(self, serializer);
   }
 
   @protected
@@ -3724,6 +3792,17 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_opt_box_autoadd_dart_login_state(
+      DartLoginState? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_box_autoadd_dart_login_state(self, serializer);
+    }
+  }
+
+  @protected
   void sse_encode_opt_box_autoadd_dart_mmcs_file(
       DartMMCSFile? self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -3787,6 +3866,16 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_i_32(1, serializer);
         sse_encode_opt_box_autoadd_dart_i_message(field0, serializer);
     }
+  }
+
+  @protected
+  void
+      sse_encode_record_list_dart_trusted_phone_number_opt_box_autoadd_dart_login_state(
+          (List<DartTrustedPhoneNumber>, DartLoginState?) self,
+          SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_list_dart_trusted_phone_number(self.$1, serializer);
+    sse_encode_opt_box_autoadd_dart_login_state(self.$2, serializer);
   }
 
   @protected

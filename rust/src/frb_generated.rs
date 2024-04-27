@@ -2147,6 +2147,17 @@ impl SseDecode for Option<crate::api::api::DartIMessage> {
     }
 }
 
+impl SseDecode for Option<crate::api::api::DartLoginState> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<crate::api::api::DartLoginState>::sse_decode(deserializer));
+        } else {
+            return None;
+        }
+    }
+}
+
 impl SseDecode for Option<crate::api::api::DartMMCSFile> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -2225,6 +2236,21 @@ impl SseDecode for crate::api::api::PollResult {
                 unimplemented!("");
             }
         }
+    }
+}
+
+impl SseDecode
+    for (
+        Vec<crate::api::api::DartTrustedPhoneNumber>,
+        Option<crate::api::api::DartLoginState>,
+    )
+{
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_field0 =
+            <Vec<crate::api::api::DartTrustedPhoneNumber>>::sse_decode(deserializer);
+        let mut var_field1 = <Option<crate::api::api::DartLoginState>>::sse_decode(deserializer);
+        return (var_field0, var_field1);
     }
 }
 
@@ -3793,6 +3819,16 @@ impl SseEncode for Option<crate::api::api::DartIMessage> {
     }
 }
 
+impl SseEncode for Option<crate::api::api::DartLoginState> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <crate::api::api::DartLoginState>::sse_encode(value, serializer);
+        }
+    }
+}
+
 impl SseEncode for Option<crate::api::api::DartMMCSFile> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -3855,6 +3891,19 @@ impl SseEncode for crate::api::api::PollResult {
                 <Option<crate::api::api::DartIMessage>>::sse_encode(field0, serializer);
             }
         }
+    }
+}
+
+impl SseEncode
+    for (
+        Vec<crate::api::api::DartTrustedPhoneNumber>,
+        Option<crate::api::api::DartLoginState>,
+    )
+{
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <Vec<crate::api::api::DartTrustedPhoneNumber>>::sse_encode(self.0, serializer);
+        <Option<crate::api::api::DartLoginState>>::sse_encode(self.1, serializer);
     }
 }
 

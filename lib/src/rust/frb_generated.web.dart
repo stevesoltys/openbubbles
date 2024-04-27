@@ -110,6 +110,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       dynamic raw);
 
   @protected
+  DartLoginState dco_decode_box_autoadd_dart_login_state(dynamic raw);
+
+  @protected
   DartMessage dco_decode_box_autoadd_dart_message(dynamic raw);
 
   @protected
@@ -271,6 +274,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   DartIMessage? dco_decode_opt_box_autoadd_dart_i_message(dynamic raw);
 
   @protected
+  DartLoginState? dco_decode_opt_box_autoadd_dart_login_state(dynamic raw);
+
+  @protected
   DartMMCSFile? dco_decode_opt_box_autoadd_dart_mmcs_file(dynamic raw);
 
   @protected
@@ -288,6 +294,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   PollResult dco_decode_poll_result(dynamic raw);
+
+  @protected
+  (
+    List<DartTrustedPhoneNumber>,
+    DartLoginState?
+  ) dco_decode_record_list_dart_trusted_phone_number_opt_box_autoadd_dart_login_state(
+      dynamic raw);
 
   @protected
   RegistrationPhase dco_decode_registration_phase(dynamic raw);
@@ -395,6 +408,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   DartIconChangeMessage sse_decode_box_autoadd_dart_icon_change_message(
+      SseDeserializer deserializer);
+
+  @protected
+  DartLoginState sse_decode_box_autoadd_dart_login_state(
       SseDeserializer deserializer);
 
   @protected
@@ -584,6 +601,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       SseDeserializer deserializer);
 
   @protected
+  DartLoginState? sse_decode_opt_box_autoadd_dart_login_state(
+      SseDeserializer deserializer);
+
+  @protected
   DartMMCSFile? sse_decode_opt_box_autoadd_dart_mmcs_file(
       SseDeserializer deserializer);
 
@@ -604,6 +625,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   PollResult sse_decode_poll_result(SseDeserializer deserializer);
+
+  @protected
+  (
+    List<DartTrustedPhoneNumber>,
+    DartLoginState?
+  ) sse_decode_record_list_dart_trusted_phone_number_opt_box_autoadd_dart_login_state(
+      SseDeserializer deserializer);
 
   @protected
   RegistrationPhase sse_decode_registration_phase(SseDeserializer deserializer);
@@ -712,6 +740,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_box_autoadd_dart_icon_change_message(
       DartIconChangeMessage self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_dart_login_state(
+      DartLoginState self, SseSerializer serializer);
 
   @protected
   void sse_encode_box_autoadd_dart_message(
@@ -912,6 +944,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       DartIMessage? self, SseSerializer serializer);
 
   @protected
+  void sse_encode_opt_box_autoadd_dart_login_state(
+      DartLoginState? self, SseSerializer serializer);
+
+  @protected
   void sse_encode_opt_box_autoadd_dart_mmcs_file(
       DartMMCSFile? self, SseSerializer serializer);
 
@@ -932,6 +968,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_poll_result(PollResult self, SseSerializer serializer);
+
+  @protected
+  void
+      sse_encode_record_list_dart_trusted_phone_number_opt_box_autoadd_dart_login_state(
+          (List<DartTrustedPhoneNumber>, DartLoginState?) self,
+          SseSerializer serializer);
 
   @protected
   void sse_encode_registration_phase(

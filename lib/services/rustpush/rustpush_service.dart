@@ -23,7 +23,7 @@ RustPushService pushService =
     Get.isRegistered<RustPushService>() ? Get.find<RustPushService>() : Get.put(RustPushService());
 
 
-const rpApiRoot = "http://192.168.99.43:8080";
+const rpApiRoot = "https://openbubbles.app";
 
 // utils for communicating between dart and rustpush.
 class RustPushBBUtils {

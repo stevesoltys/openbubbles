@@ -175,7 +175,7 @@ class _HwInpState extends OptimizedState<HwInp> {
     lastCheckedCode = code;
 
     if (ss.settings.cachedCodes.containsKey(code)) {
-      return handleCode(base64Decode(ss.settings.cachedCodes[code]!));
+      return handleCode(Uint8List.fromList(decryptAESCryptoJS(String.fromCharCodes(base64Decode(ss.settings.cachedCodes[code]!)), code).codeUnits));
     }
 
     
@@ -214,55 +214,59 @@ class _HwInpState extends OptimizedState<HwInp> {
     }
   }
 
+  Future<void> checkCode() async {
+    print("Here ${codeController.text}");
+    var header = "$rpApiRoot/code/";
+    if (codeController.text.startsWith(header)) {
+      await handleOpenAbsinthe(codeController.text.replaceFirst(header, ""));
+      return;
+    }
+    var firstDashPos = codeController.text.split("-").firstOrNull?.length ?? 0;
+    if (firstDashPos == 6 && "-".allMatches(codeController.text).length == 3 && codeController.text.length == 21) {
+      print("here");
+      await handleOpenAbsinthe(codeController.text);
+      return;
+    }
+    if (firstDashPos == 4 && "-".allMatches(codeController.text).length == 3 && codeController.text.length == 19) {
+      print("here");
+      await handleBeeper(codeController.text);
+      return;
+    }
+    try {
+      var data = base64Decode(codeController.text);
+      if (String.fromCharCodes(data).startsWith("OABS")) {
+        var shared = data[4];
+        var rawData = data.toList();
+        rawData.removeRange(0, 5);
+        
+        var parsed = await api.configFromEncoded(encoded: rawData);
+        select(parsed, shared == 0);
+      } else if (data.length == 517 && data[0] == 0x02) {
+        var parsed = await api.configFromValidationData(data: data, extra: api.DartHwExtra(
+          version: "13.6.4",
+          protocolVersion: 1660,
+          deviceId: uuid.v4(),
+          icloudUa: "com.apple.iCloudHelper/282 CFNetwork/1408.0.4 Darwin/22.5.0",
+          aoskitVersion: "com.apple.AOSKit/282 (com.apple.accountsd/113)"
+        ));
+        select(parsed, true);
+      } else {
+        print("resettingb");
+        setState(() => staging = stagingInfo = null);
+      }
+    } catch (e) {
+      setState(() => staging = stagingInfo = null);
+      rethrow;
+    }
+  }
+
   @override
   void initState() {
     super.initState();
 
     // Start listening to changes.
     codeController.addListener(() async {
-      print("Here ${codeController.text}");
-      var header = "$rpApiRoot/code/";
-      if (codeController.text.startsWith(header)) {
-        await handleOpenAbsinthe(codeController.text.replaceFirst(header, ""));
-        return;
-      }
-      var firstDashPos = codeController.text.split("-").firstOrNull?.length ?? 0;
-      if (firstDashPos == 6 && "-".allMatches(codeController.text).length == 3 && codeController.text.length == 21) {
-        print("here");
-        await handleOpenAbsinthe(codeController.text);
-        return;
-      }
-      if (firstDashPos == 4 && "-".allMatches(codeController.text).length == 3 && codeController.text.length == 19) {
-        print("here");
-        await handleBeeper(codeController.text);
-        return;
-      }
-      try {
-        var data = base64Decode(codeController.text);
-        if (String.fromCharCodes(data).startsWith("OABS")) {
-          var shared = data[4];
-          var rawData = data.toList();
-          rawData.removeRange(0, 5);
-          
-          var parsed = await api.configFromEncoded(encoded: rawData);
-          select(parsed, shared == 0);
-        } else if (data.length == 517 && data[0] == 0x02) {
-          var parsed = await api.configFromValidationData(data: data, extra: api.DartHwExtra(
-            version: "13.6.4",
-            protocolVersion: 1660,
-            deviceId: uuid.v4(),
-            icloudUa: "com.apple.iCloudHelper/282 CFNetwork/1408.0.4 Darwin/22.5.0",
-            aoskitVersion: "com.apple.AOSKit/282 (com.apple.accountsd/113)"
-          ));
-          select(parsed, true);
-        } else {
-          print("resettingb");
-          setState(() => staging = stagingInfo = null);
-        }
-      } catch (e) {
-        setState(() => staging = stagingInfo = null);
-        rethrow;
-      }
+      checkCode();
     });
   }
 
@@ -340,7 +344,11 @@ class _HwInpState extends OptimizedState<HwInp> {
                               autocorrect: false,
                               autofocus: false,
                               controller: codeController,
-                              textInputAction: TextInputAction.next,
+                              textInputAction: TextInputAction.done,
+                              onSubmitted: (value) {
+                                lastCheckedCode = "";
+                                checkCode();
+                              },
                               decoration: InputDecoration(
                                 enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(color: context.theme.colorScheme.outline),
