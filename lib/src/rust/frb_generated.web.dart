@@ -57,6 +57,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           dynamic raw);
 
   @protected
+  VerifyBody
+      dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockVerifyBody(
+          dynamic raw);
+
+  @protected
   ArcPushState
       dco_decode_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockArcPushState(
           dynamic raw);
@@ -331,6 +336,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   MacOsConfig
       sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockMacOSConfig(
+          SseDeserializer deserializer);
+
+  @protected
+  VerifyBody
+      sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockVerifyBody(
           SseDeserializer deserializer);
 
   @protected
@@ -644,6 +654,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void
       sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockMacOSConfig(
           MacOsConfig self, SseSerializer serializer);
+
+  @protected
+  void
+      sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockVerifyBody(
+          VerifyBody self, SseSerializer serializer);
 
   @protected
   void

@@ -394,7 +394,7 @@ class _HwInpState extends OptimizedState<HwInp> {
                                 ),
                               ),
                             ),
-                            if (staging == null)
+                            if (staging == null && !kIsDesktop)
                             Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(25),
@@ -432,13 +432,13 @@ class _HwInpState extends OptimizedState<HwInp> {
                                 ),
                               ),
                             ),
-                            if (staging != null)
+                            if (staging != null || kIsDesktop)
                             Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(25),
                                 gradient: LinearGradient(
                                   begin: AlignmentDirectional.topStart,
-                                  colors: loading ? [HexColor('777777'), HexColor('777777')] : [HexColor('2772C3'), HexColor('5CA7F8').darkenPercent(5)],
+                                  colors: loading || (kIsDesktop && staging == null) ? [HexColor('777777'), HexColor('777777')] : [HexColor('2772C3'), HexColor('5CA7F8').darkenPercent(5)],
                                 ),
                               ),
                               height: 40,
@@ -454,7 +454,7 @@ class _HwInpState extends OptimizedState<HwInp> {
                                   maximumSize: MaterialStateProperty.all(const Size(200, 36)),
                                   minimumSize: MaterialStateProperty.all(const Size(30, 30)),
                                 ),
-                                onPressed: loading ? null : () async {
+                                onPressed: loading || (kIsDesktop && staging == null) ? null : () async {
                                   ss.settings.customHeaders.value = {};
                                   http.onInit();
                                   connect(staging!);
@@ -465,7 +465,7 @@ class _HwInpState extends OptimizedState<HwInp> {
                                     Opacity(opacity: loading ? 0 : 1, child: Row(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        Text("Use this Mac",
+                                        Text(kIsDesktop && staging == null ? "Continue" : "Use this Mac",
                                             style: context.theme.textTheme.bodyLarge!
                                                 .apply(fontSizeFactor: 1.1, color: Colors.white)),
                                         const SizedBox(width: 10),

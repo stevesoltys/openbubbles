@@ -273,13 +273,10 @@ class _AppleIdLoginState extends OptimizedState<AppleIdLogin> {
     });
     try {
       var result = await api.tryAuth(state: pushService.state, username: appleId, password: password);
-      var ans = await controller.updateLoginState(result);
-      // if (result == 2) {
-      //   controller.updateConnectError("Bad Username or Password");
-      //   return;
-      // }
+      result = await controller.updateLoginState(result);
+
       ss.settings.iCloudAccount.value = appleId;
-      if (ans is api.DartLoginState_Needs2FAVerification || ans is api.DartLoginState_NeedsSMS2FAVerification) {
+      if (result is api.DartLoginState_Needs2FAVerification || result is api.DartLoginState_NeedsSMS2FAVerification) {
         // we need 2fa
         controller.goingTo2fa = true;
         controller.twoFaUser = appleId;
@@ -290,7 +287,10 @@ class _AppleIdLoginState extends OptimizedState<AppleIdLogin> {
         );
         return;
       }
-      if (ans is api.DartLoginState_LoggedIn) {
+      if (result is api.DartLoginState_LoggedIn) {
+        if (!controller.success) {
+          return;
+        }
         controller.goingTo2fa = false;
         controller.pageController.animateToPage(
           controller.pageController.page!.toInt() + 2,

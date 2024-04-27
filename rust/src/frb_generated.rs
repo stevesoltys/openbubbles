@@ -1338,14 +1338,17 @@ fn wire_verify_2fa_sms_impl(
             let api_state = <RustOpaqueMoi<
                 flutter_rust_bridge::for_generated::rust_async::RwLock<Arc<PushState>>,
             >>::sse_decode(&mut deserializer);
-            let api_body = <VerifyBody>::sse_decode(&mut deserializer);
+            let api_body = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::rust_async::RwLock<VerifyBody>,
+            >>::sse_decode(&mut deserializer);
             let api_code = <String>::sse_decode(&mut deserializer);
             deserializer.end();
             move |context| async move {
                 transform_result_sse(
                     (move || async move {
                         let api_state = api_state.rust_auto_opaque_decode_ref();
-                        crate::api::api::verify_2fa_sms(&api_state, api_body, api_code).await
+                        let api_body = api_body.rust_auto_opaque_decode_ref();
+                        crate::api::api::verify_2fa_sms(&api_state, &api_body, api_code).await
                     })()
                     .await,
                 )

@@ -712,9 +712,6 @@ pub async fn upload_attachment(sink: StreamSink<TransferProgress>, state: &Arc<P
 }
 
 pub async fn try_auth(state: &Arc<PushState>, username: String, password: String) -> anyhow::Result<DartLoginState> {
-    if !matches!(state.get_phase().await, RegistrationPhase::WantsUserPass) {
-        panic!("Wrong phase! (try_auth)")
-    }
     let connection = state.0.read().await.conn.as_ref().unwrap().clone();
 
     let mut inner = state.0.write().await;
@@ -772,10 +769,10 @@ pub async fn send_2fa_sms(state: &Arc<PushState>, phone_id: u32) -> anyhow::Resu
     Ok(unsafe { std::mem::transmute(account.send_sms_2fa_to_devices(phone_id).await?) })
 }
 
-pub async fn verify_2fa_sms(state: &Arc<PushState>, body: VerifyBody, code: String) -> anyhow::Result<DartLoginState> {
+pub async fn verify_2fa_sms(state: &Arc<PushState>, body: &VerifyBody, code: String) -> anyhow::Result<DartLoginState> {
     let inner = state.0.read().await;
     let account = inner.account.as_ref().unwrap();
-    Ok(unsafe { std::mem::transmute(account.verify_sms_2fa(code, body).await?) })
+    Ok(unsafe { std::mem::transmute(account.verify_sms_2fa(code, body.clone()).await?) })
 }
 
 pub async fn reset_state(state: &Arc<PushState>) -> anyhow::Result<()> {

@@ -263,10 +263,17 @@ class _AppleId2FAState extends OptimizedState<AppleId2FA> {
     });
     try {
       if (await controller.submitCode(code) is api.DartLoginState_LoggedIn) {
-        controller.pageController.nextPage(
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.easeInOut,
-        );
+        if (controller.success) {
+          controller.pageController.nextPage(
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeInOut,
+          );
+        } else {
+          controller.pageController.previousPage(
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeInOut,
+          );
+        }
         FocusManager.instance.primaryFocus?.unfocus();
       }
     } catch (e) {

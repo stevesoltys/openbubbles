@@ -18,6 +18,7 @@ import 'package:bluebubbles/services/services.dart';
 import 'package:bluebubbles/src/rust/api/api.dart';
 import 'package:disable_battery_optimization/disable_battery_optimization.dart';
 import 'package:ffi/ffi.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart';
@@ -37,6 +38,7 @@ class SetupViewController extends StatefulController {
   RxBool isSms = false.obs;
 
   bool goingTo2fa = true;
+  bool success = false;
 
   DartLoginState state = const api.DartLoginState.needsLogin();
 
@@ -102,6 +104,7 @@ class SetupViewController extends StatefulController {
       ss.settings.userName.value = await api.getUserName(state: pushService.state);
       var response = await api.registerIds(state: pushService.state);
       if (response != null) {
+        var devInfo = await api.getDeviceInfoState(state: pushService.state);
         await showDialog(
           context: Get.context!,
           builder: (context) => AlertDialog(
@@ -110,9 +113,24 @@ class SetupViewController extends StatefulController {
                   response.title,
                   style: Get.textTheme.titleLarge,
                 ),
-                content: Text(
-                  response.body,
-                  style: Get.textTheme.bodyLarge,
+                content: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      response.body,
+                      style: Get.textTheme.bodyLarge,
+                    ),
+                    const SizedBox(height: 20),
+                    Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        "The above message is from Apple.\n${RustPushBBUtils.modelToUser(devInfo.name)}\nS/N: ${devInfo.serial}\nmacOS ${devInfo.osVersion}",
+                        textAlign: TextAlign.center,
+                        style: Get.textTheme.bodySmall,
+                      )
+                    ),
+                  ],
                 ),
                 actions: [
                   if (response.action != null)
@@ -126,6 +144,7 @@ class SetupViewController extends StatefulController {
               ));
         return ret;
       }
+      success = true;
       ss.settings.cachedCodes.clear();
       await pushService.configured();
       await setup.finishSetup();
