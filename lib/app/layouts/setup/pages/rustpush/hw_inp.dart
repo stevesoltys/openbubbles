@@ -12,6 +12,8 @@ import 'package:bluebubbles/src/rust/api/api.dart' as api;
 import 'package:bluebubbles/helpers/helpers.dart';
 import 'package:bluebubbles/services/rustpush/rustpush_service.dart';
 import 'package:bluebubbles/services/services.dart';
+import 'package:bluebubbles/utils/crypto_utils.dart';
+import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +22,7 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge.dart';
 import 'package:get/get.dart' hide Response;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:convert/convert.dart';
 
 class HwInp extends StatefulWidget {
   @override
@@ -174,12 +177,16 @@ class _HwInpState extends OptimizedState<HwInp> {
     if (ss.settings.cachedCodes.containsKey(code)) {
       return handleCode(base64Decode(ss.settings.cachedCodes[code]!));
     }
+
+    
+    String hash = hex.encode(sha256.convert(code.codeUnits).bytes);
+
     try {
       var timer = Timer(const Duration(milliseconds: 500), () {
         showSnackbar("Fetching data", "This might take a minute");
       });
       final response = await http.dio.get(
-        "$rpApiRoot/code/$code",
+        "$rpApiRoot/code/$hash",
         options: Options(
           headers: {
             "X-OpenBubbles-Get": ""
@@ -198,7 +205,9 @@ class _HwInpState extends OptimizedState<HwInp> {
       ss.settings.cachedCodes[code] = data;
       ss.saveSettings();
 
-      handleCode(base64Decode(data));
+      var enc = base64Decode(data);
+
+      handleCode(Uint8List.fromList(decryptAESCryptoJS(String.fromCharCodes(enc), code).codeUnits));
     } catch (e) {
       showSnackbar("Fetching data", "Failed");
       rethrow;

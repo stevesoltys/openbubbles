@@ -1,9 +1,11 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:bluebubbles/helpers/helpers.dart';
 import 'package:bluebubbles/services/network/backend_service.dart';
 import 'package:bluebubbles/services/rustpush/rustpush_service.dart';
+import 'package:bluebubbles/utils/crypto_utils.dart';
 import 'package:bluebubbles/utils/share.dart';
 import 'package:bluebubbles/utils/window_effects.dart';
 import 'package:bluebubbles/utils/logger.dart';
@@ -28,6 +30,7 @@ import 'package:idb_shim/idb.dart';
 import 'package:universal_io/io.dart';
 import 'package:bluebubbles/src/rust/api/api.dart' as api;
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:crypto/crypto.dart';
 import 'package:convert/convert.dart';
 
 class DevicePanelController extends StatefulController {
@@ -59,13 +62,28 @@ class _DevicePanelState extends CustomState<DevicePanel, void, DevicePanelContro
   }
 
   Future<String> uploadCode() async {
-    var code = base64Encode(getQrInfo(controller.allowSharing.value, deviceInfo!.encodedData).codeUnits);
+    var data = getQrInfo(controller.allowSharing.value, deviceInfo!.encodedData);
     if (controller.allowSharing.value) {
-      return code;
+      return base64Encode(data.codeUnits);
     }
+    const _chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ123456789';
+
+    Random _rnd = Random.secure();
+    String code = "MB";
+    for (var i = 0; i < 4; i++) {
+      code += String.fromCharCodes(Iterable.generate(
+        4, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
+      if (i != 3) {
+        code += "-";
+      }
+    }
+
+    String hash = hex.encode(sha256.convert(code.codeUnits).bytes);
+
+    var encrypted = encryptAESCryptoJS(data, code);
+    var encData = base64Encode(encrypted.codeUnits);
     showDialog(
       context: context,
-      barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: context.theme.colorScheme.properSurface,
@@ -88,13 +106,14 @@ class _DevicePanelState extends CustomState<DevicePanel, void, DevicePanelContro
       final response = await http.dio.post(
         "$rpApiRoot/code",
         data: {
-          "data": code,
-        },
+          "data": encData,
+          "id": hash,
+        }
       );
       if (response.statusCode != 200) {
         throw Exception("bad!");
       }
-      return response.data.toString();
+      return code;
     } catch (e) {
       showSnackbar("Error", "Couldn't create link!");
       rethrow;
@@ -198,7 +217,6 @@ class _DevicePanelState extends CustomState<DevicePanel, void, DevicePanelContro
                       onTap: () async {
                         Clipboard.setData(ClipboardData(text: await uploadCode()));
                       },
-                      subtitle: controller.allowSharing.value ? "" : "Make sure you delete your code after activation to prevent sharing.",
                       trailing: Icon(
                         ss.settings.skin.value == Skins.iOS ? CupertinoIcons.doc_on_clipboard : Icons.copy
                       ),
