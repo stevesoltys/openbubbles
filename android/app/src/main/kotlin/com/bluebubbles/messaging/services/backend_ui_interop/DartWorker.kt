@@ -44,10 +44,30 @@ class DartWorker(context: Context, workerParams: WorkerParameters): ListenableWo
 
     override fun startWork(): ListenableFuture<Result> {
         val method = inputData.getString("method")!!
-        val data = inputData.getString("data")!!
+        var data = inputData.getString("data")!!
         val gson = GsonBuilder()
                 .setObjectToNumberStrategy(ToNumberPolicy.LONG_OR_DOUBLE)
                 .create()
+        if (method == "APNMsg") {
+            val json: HashMap<String, String> = gson.fromJson(data, TypeToken.getParameterized(HashMap::class.java, String::class.java, Any::class.java).type)
+            val pointer = json["pointer"]
+            if (APNService.validPtrs.contains(pointer)) {
+                APNService.validPtrs.remove(pointer)
+            } else {
+                // bail
+                return Futures.immediateFuture(Result.success())
+            }
+        }
+        if (method == "SMSMsg") {
+            val json: HashMap<String, Any> = gson.fromJson(data, TypeToken.getParameterized(HashMap::class.java, String::class.java, Any::class.java).type)
+            val pointer: Int = (json["id"] as Long).toInt()
+            if (MethodCallHandler.queuedMessages.contains(pointer)) {
+                data = MethodCallHandler.queuedMessages.remove(pointer)!!
+            } else {
+                // bail
+                return Futures.immediateFuture(Result.success())
+            }
+        }
 
         if (engine != null) {
             Log.d(Constants.logTag, "Using MainActivity engine to send to Dart")

@@ -611,8 +611,9 @@ class Chat {
       handle.save();
     }
     for (var part in parts) {
+      var partContent = part["body"] is Uint8List ? part["body"] as Uint8List : Uint8List.fromList(part["body"].cast<int>().toList());
       if (part["contentType"] == "text/plain") {
-        var bodyString = utf8.decode(part["body"] as Uint8List);
+        var bodyString = utf8.decode(partContent);
         if (bodyString.trim() == "") continue;
         final _message = Message(
           text: bodyString,
@@ -677,8 +678,8 @@ class Chat {
               uti: utiMap[part["contentType"] as String] ?? "public.data",
               mimeType: part["contentType"] as String,
               isOutgoing: false,
-              bytes: part["body"] as Uint8List,
-              totalBytes: (part["body"] as Uint8List).length,
+              bytes: partContent,
+              totalBytes: partContent.length,
               transferName: "${part["id"]}.${extensionFromMime(part["contentType"] as String) ?? "bin"}"
             )
           ]

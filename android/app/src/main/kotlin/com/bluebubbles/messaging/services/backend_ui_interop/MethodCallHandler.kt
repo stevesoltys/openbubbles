@@ -28,12 +28,17 @@ import com.bluebubbles.messaging.services.system.StartGoogleDuoRequestHandler
 import com.bluebubbles.messaging.services.foreground.StartForegroundServiceHandler
 import com.bluebubbles.messaging.services.foreground.StopForegroundServiceHandler
 import com.bluebubbles.telephony_plus.receive.SMSObserver
+import com.google.gson.GsonBuilder
+import com.google.gson.ToNumberPolicy
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 
 class MethodCallHandler {
     companion object {
         var getNotificationListenerResult: MethodChannel.Result? = null
+
+        var queueId = 0
+        var queuedMessages = HashMap<Int, String>()
 
         init {
             // not being called??
@@ -43,7 +48,12 @@ class MethodCallHandler {
                     invokeMethod("SMSMsg", map)
                     return@listener
                 }
-                DartWorkManager.createWorker(context, "SMSMsg", HashMap(map.map { e -> e.key to e.value as Any? }.toMap())) {}
+                queueId += 1
+                val gson = GsonBuilder()
+                    .setObjectToNumberStrategy(ToNumberPolicy.LONG_OR_DOUBLE)
+                    .create()
+                queuedMessages[queueId] = gson.toJson(map).toString()
+                DartWorkManager.createWorker(context, "SMSMsg", hashMapOf("id" to queueId)) {}
             }
         }
 
