@@ -9,6 +9,7 @@ import 'package:bluebubbles/app/wrappers/stateful_boilerplate.dart';
 import 'package:bluebubbles/helpers/helpers.dart';
 import 'package:bluebubbles/database/database.dart';
 import 'package:bluebubbles/database/models.dart';
+import 'package:bluebubbles/services/rustpush/rustpush_service.dart';
 import 'package:bluebubbles/services/services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -17,6 +18,7 @@ import 'package:flutter/material.dart' hide BackButton;
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:universal_io/io.dart';
+import 'package:bluebubbles/src/rust/api/api.dart' as api;
 
 class CupertinoHeader extends StatelessWidget implements PreferredSizeWidget {
   const CupertinoHeader({Key? key, required this.controller});

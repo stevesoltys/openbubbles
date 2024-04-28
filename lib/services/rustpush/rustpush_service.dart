@@ -1,11 +1,17 @@
+import 'dart:convert';
+import 'dart:math';
+import 'dart:typed_data';
+
 import 'package:async_task/async_task_extension.dart';
 import 'package:bluebubbles/main.dart';
 import 'package:bluebubbles/src/rust/api/api.dart' as api;
 import 'package:bluebubbles/helpers/helpers.dart';
 import 'package:bluebubbles/models/models.dart';
 import 'package:bluebubbles/services/services.dart';
+import 'package:bluebubbles/utils/crypto_utils.dart';
 import 'package:bluebubbles/utils/logger.dart';
 import 'package:collection/collection.dart';
+import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:supercharged/supercharged.dart';
@@ -17,6 +23,7 @@ import 'package:uuid/uuid.dart';
 import 'package:dlibphonenumber/dlibphonenumber.dart';
 import 'package:telephony_plus/telephony_plus.dart';
 import 'package:vpn_connection_detector/vpn_connection_detector.dart';
+import 'package:convert/convert.dart';
 
 var uuid = const Uuid();
 RustPushService pushService =
@@ -1348,6 +1355,78 @@ class RustPushService extends GetxService {
       message: await pushService.reflectMessageDyn(myMsg),
       type: QueueType.newMessage
     ));
+  }
+
+  Uint8List getQrInfo(bool allowSharing, Uint8List data) {
+    var b = BytesBuilder();
+    b.add(utf8.encode("OABS"));
+    b.addByte(allowSharing ? 0 : 1);
+    b.add(data);
+    // for (var slice in b.toBytes().slices(500)) {
+    //   print(hex.encode(slice));
+    // }
+    return b.toBytes();
+  }
+
+  Future<String> uploadCode(bool allowSharing, api.DartDeviceInfo deviceInfo) async {
+    var data = getQrInfo(allowSharing, deviceInfo.encodedData);
+    if (allowSharing) {
+      return base64Encode(data);
+    }
+    const _chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ123456789';
+
+    Random _rnd = Random.secure();
+    String code = "MB";
+    for (var i = 0; i < 4; i++) {
+      code += String.fromCharCodes(Iterable.generate(
+        4, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
+      if (i != 3) {
+        code += "-";
+      }
+    }
+
+    String hash = hex.encode(sha256.convert(code.codeUnits).bytes);
+
+    var encrypted = encryptAESCryptoJS(data, code);
+    showDialog(
+      context: Get.context!,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: context.theme.colorScheme.properSurface,
+          title: Text(
+            "Creating code...",
+            style: context.theme.textTheme.titleLarge,
+          ),
+          content: Container(
+            height: 70,
+            child: Center(
+              child: CircularProgressIndicator(
+                backgroundColor: context.theme.colorScheme.properSurface,
+                valueColor: AlwaysStoppedAnimation<Color>(context.theme.colorScheme.primary),
+              ),
+            ),
+          ),
+        );
+    });
+    try {
+      final response = await http.dio.post(
+        "$rpApiRoot/code",
+        data: {
+          "data": encrypted,
+          "id": hash,
+        }
+      );
+      if (response.statusCode != 200) {
+        throw Exception("bad!");
+      }
+      return code;
+    } catch (e) {
+      showSnackbar("Error", "Couldn't create link!");
+      rethrow;
+    } finally {
+      Get.back(closeOverlays: true);
+    }
   }
 
   Future recievedMsgPointer(String pointer) async {
