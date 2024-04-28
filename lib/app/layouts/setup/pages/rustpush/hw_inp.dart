@@ -24,13 +24,16 @@ import 'package:get/get.dart' hide Response;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:convert/convert.dart';
+import 'package:app_links/app_links.dart';
 
 class HwInp extends StatefulWidget {
   @override
-  State<HwInp> createState() => _HwInpState();
+  State<HwInp> createState() => HwInpState();
+
+  const HwInp({super.key});
 }
 
-class _HwInpState extends OptimizedState<HwInp> {
+class HwInpState extends OptimizedState<HwInp> {
   final TextEditingController codeController = TextEditingController();
   final controller = Get.find<SetupViewController>();
   final FocusNode focusNode = FocusNode();
@@ -213,26 +216,26 @@ class _HwInpState extends OptimizedState<HwInp> {
     }
   }
 
-  Future<void> checkCode() async {
-    print("Here ${codeController.text}");
+  Future<void> checkCode(String text) async {
+    print("Here $text");
     var header = "$rpApiRoot/code/";
-    if (codeController.text.startsWith(header)) {
-      await handleOpenAbsinthe(codeController.text.replaceFirst(header, ""));
+    if (text.startsWith(header)) {
+      await handleOpenAbsinthe(text.replaceFirst(header, ""));
       return;
     }
-    var firstDashPos = codeController.text.split("-").firstOrNull?.length ?? 0;
-    if (firstDashPos == 6 && "-".allMatches(codeController.text).length == 3 && codeController.text.length == 21) {
+    var firstDashPos = text.split("-").firstOrNull?.length ?? 0;
+    if (firstDashPos == 6 && "-".allMatches(text).length == 3 && text.length == 21) {
       print("here");
-      await handleOpenAbsinthe(codeController.text);
+      await handleOpenAbsinthe(text);
       return;
     }
-    if (firstDashPos == 4 && "-".allMatches(codeController.text).length == 3 && codeController.text.length == 19) {
+    if (firstDashPos == 4 && "-".allMatches(text).length == 3 && text.length == 19) {
       print("here");
-      await handleBeeper(codeController.text);
+      await handleBeeper(text);
       return;
     }
     try {
-      var data = base64Decode(codeController.text);
+      var data = base64Decode(text);
       if (String.fromCharCodes(data).startsWith("OABS")) {
         var shared = data[4];
         var rawData = data.toList();
@@ -259,13 +262,25 @@ class _HwInpState extends OptimizedState<HwInp> {
     }
   }
 
+  void updateAppLink() async {
+    print("updating app link");
+    final _appLinks = AppLinks();
+    var link = await _appLinks.getLatestAppLink();
+
+    if (link != null) {
+      checkCode(link.toString());
+    }
+  }
+
   @override
   void initState() {
     super.initState();
 
+    updateAppLink();
+
     // Start listening to changes.
     codeController.addListener(() async {
-      checkCode();
+      checkCode(codeController.text);
     });
   }
 
@@ -346,7 +361,7 @@ class _HwInpState extends OptimizedState<HwInp> {
                               textInputAction: TextInputAction.done,
                               onSubmitted: (value) {
                                 lastCheckedCode = "";
-                                checkCode();
+                                checkCode(codeController.text);
                               },
                               decoration: InputDecoration(
                                 enabledBorder: OutlineInputBorder(

@@ -16,6 +16,9 @@ import 'package:bluebubbles/main.dart';
 import 'package:bluebubbles/services/rustpush/rustpush_service.dart';
 import 'package:bluebubbles/services/services.dart';
 import 'package:bluebubbles/src/rust/api/api.dart';
+import 'package:bluebubbles/utils/crypto_utils.dart';
+import 'package:crypto/crypto.dart';
+import 'package:dio/dio.dart';
 import 'package:disable_battery_optimization/disable_battery_optimization.dart';
 import 'package:ffi/ffi.dart';
 import 'package:flutter/cupertino.dart';
@@ -26,6 +29,8 @@ import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:bluebubbles/src/rust/api/api.dart' as api;
 import 'package:url_launcher/url_launcher.dart';
+import 'package:convert/convert.dart';
+import 'package:app_links/app_links.dart';
 
 class SetupViewController extends StatefulController {
   final pageController = PageController(initialPage: 0);
@@ -36,6 +41,8 @@ class SetupViewController extends StatefulController {
   String error = "";
   bool obscurePass = true;
   RxBool isSms = false.obs;
+
+  final GlobalKey<HwInpState> _childKey = GlobalKey<HwInpState>();
 
   bool goingTo2fa = true;
   bool success = false;
@@ -163,7 +170,34 @@ class SetupViewController extends StatefulController {
     return ret;
   }
 
-  Future<void> submitCode(String code) async {
+  Future<void> cacheCode(String code) async {
+    if (ss.settings.cachedCodes.containsKey(code)) {
+      return;
+    }
+
+    String hash = hex.encode(sha256.convert(code.codeUnits).bytes);
+
+    final response = await http.dio.get(
+      "$rpApiRoot/code/$hash",
+      options: Options(
+        headers: {
+          "X-OpenBubbles-Get": ""
+        },
+      )
+    );
+
+    if (response.statusCode == 404) {
+      return;
+    }
+
+    var data = response.data["data"];
+    
+    print("cached code");
+    ss.settings.cachedCodes[code] = data;
+    ss.saveSettings();
+  }
+
+  Future<DartLoginState> submitCode(String code) async {
     if (state is DartLoginState_Needs2FAVerification) {
       state = await api.verify2Fa(state: pushService.state, code: code);
     } else if (state is DartLoginState_NeedsSMS2FAVerification) {
@@ -207,6 +241,30 @@ class _SetupViewState extends OptimizedState<SetupView> {
   @override
   void initState() {
     super.initState();
+
+    (() async {
+      final _appLinks = AppLinks();
+      var link = await _appLinks.getLatestAppLink();
+
+      _appLinks.uriLinkStream.listen((uri) async {
+        var text = uri.toString();
+        var header = "$rpApiRoot/code/";
+        if (text.startsWith(header)) {
+          print("caching code");
+          await controller.cacheCode(text.replaceFirst(header, ""));
+          controller._childKey.currentState?.updateAppLink();
+        }
+      });
+
+      if (link != null) {
+        var text = link.toString();
+        var header = "$rpApiRoot/code/";
+        if (text.startsWith(header)) {
+          print("caching code");
+          await controller.cacheCode(text.replaceFirst(header, ""));
+        }
+      }
+    })();
 
     ever(socket.state, (event) {
       if (event == SocketState.error
@@ -374,7 +432,7 @@ class SetupPages extends StatelessWidget {
           if (!usingRustPush)
             SyncProgress(),
           if (usingRustPush)
-            HwInp(),
+            HwInp(key: controller._childKey),
           if (usingRustPush)
             AppleIdLogin(),
           if (usingRustPush)
