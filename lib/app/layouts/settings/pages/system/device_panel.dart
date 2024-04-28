@@ -84,6 +84,7 @@ class _DevicePanelState extends CustomState<DevicePanel, void, DevicePanelContro
     var encData = base64Encode(encrypted.codeUnits);
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: context.theme.colorScheme.properSurface,
@@ -118,7 +119,7 @@ class _DevicePanelState extends CustomState<DevicePanel, void, DevicePanelContro
       showSnackbar("Error", "Couldn't create link!");
       rethrow;
     } finally {
-      Navigator.of(context).pop();
+      Get.back(closeOverlays: true);
     }
   }
 
@@ -220,6 +221,7 @@ class _DevicePanelState extends CustomState<DevicePanel, void, DevicePanelContro
                       trailing: Icon(
                         ss.settings.skin.value == Skins.iOS ? CupertinoIcons.doc_on_clipboard : Icons.copy
                       ),
+                      subtitle: controller.allowSharing.value ? "" : "Code can only be used once",
                     ),
                     if (!kIsDesktop)
                     SettingsTile(
@@ -233,6 +235,7 @@ class _DevicePanelState extends CustomState<DevicePanel, void, DevicePanelContro
                           Share.text("BlueBubbles", "Text me on BlueBubbles with my activation code! $code $rpApiRoot/code/$code");
                         }
                       },
+                      subtitle: controller.allowSharing.value ? "" : "Code can only be used once",
                       trailing: Icon(
                         ss.settings.skin.value == Skins.iOS ? CupertinoIcons.share : Icons.share
                       ),

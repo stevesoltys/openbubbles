@@ -28,6 +28,8 @@ class ChatsService extends GetxService {
   final RxBool loadedChatBatch = false.obs;
   final RxList<Chat> chats = <Chat>[].obs;
 
+  bool restoring = false;
+
   final List<Handle> webCachedHandles = [];
 
   @override

@@ -792,6 +792,7 @@ class ChatCreatorState extends OptimizedState<ChatCreator> {
                             final method = iMessage ? "iMessage" : "SMS";
                             showDialog(
                                 context: context,
+                                barrierDismissible: false,
                                 builder: (BuildContext context) {
                                   return AlertDialog(
                                     backgroundColor: context.theme.colorScheme.properSurface,
@@ -845,7 +846,7 @@ class ChatCreatorState extends OptimizedState<ChatCreator> {
                               createCompleter?.complete();
 
                               // Navigate to the new chat
-                              Navigator.of(context).pop();
+                              Get.back(closeOverlays: true);
                               ns.pushAndRemoveUntil(
                                 Get.context!,
                                 ConversationView(chat: newChat),
@@ -861,7 +862,7 @@ class ChatCreatorState extends OptimizedState<ChatCreator> {
                                 ),
                               );
                             }).catchError((error) {
-                              Navigator.of(context).pop();
+                              Get.back(closeOverlays: true);
                               showDialog(
                                   barrierDismissible: false,
                                   context: context,

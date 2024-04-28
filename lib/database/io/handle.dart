@@ -123,7 +123,10 @@ class Handle {
         id = existing.id;
         contactRelation.target = existing.contactRelation.target;
       } else if (existing == null && contactRelation.target == null) {
+        id = 0;
         contactRelation.target = cs.matchHandleToContact(this);
+      } else {
+        id = 0;
       }
       if (!updateColor) {
         color = existing?.color ?? color;

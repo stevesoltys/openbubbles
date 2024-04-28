@@ -7,6 +7,7 @@ import 'package:bluebubbles/database/models.dart';
 import 'package:bluebubbles/services/services.dart';
 import 'package:bluebubbles/utils/logger/logger.dart';
 import 'package:bluebubbles/utils/share.dart';
+import 'package:bluebubbles/services/network/backend_service.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
@@ -21,7 +22,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:universal_io/io.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:bluebubbles/services/network/backend_service.dart';
 
 class BackupRestorePanel extends StatefulWidget {
   BackupRestorePanel({
@@ -401,6 +401,10 @@ class _BackupRestorePanelState extends OptimizedState<BackupRestorePanel> {
                             if (desc.isNotEmpty) {
                               json["description"] = desc;
                             }
+                            // these are per-registration keys
+                            json.remove("smsForwardingTargets");
+                            json.remove("isSmsRouter");
+
                             final timestamp = DateTime.now().millisecondsSinceEpoch;
                             json["timestamp"] = timestamp;
                             if (method) {
@@ -937,6 +941,239 @@ class _BackupRestorePanelState extends OptimizedState<BackupRestorePanel> {
                                     } catch (e, s) {
                                       Logger.error("Failed to restore theme backup!", error: e, trace: s);
                                       showSnackbar("Error", "Failed to restore theme backup! Error: ${e.toString()}");
+                                    }
+                                  }
+                              ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              if (fetching == false)
+                SettingsHeader(
+                  iosSubtitle: iosSubtitle,
+                  materialSubtitle: materialSubtitle,
+                  text: "Messages Backups",
+                ),
+              if (fetching == false)
+                SettingsSection(
+                  backgroundColor: tileColor,
+                  children: [
+                    Material(
+                      color: Colors.transparent,
+                      child: ListTile(
+                        mouseCursor: SystemMouseCursors.click,
+                        title: Text("Create New", style: context.theme.textTheme.bodyLarge!.copyWith(color: context.theme.colorScheme.primary)),
+                        subtitle: Text("Only attachments under 16mb saved", style: context.theme.textTheme.bodySmall),
+                        leading: Container(
+                          width: 40 * ss.settings.avatarScale.value,
+                          height: 40 * ss.settings.avatarScale.value,
+                          decoration: BoxDecoration(
+                            color: !iOS ? null : context.theme.colorScheme.primaryContainer.withOpacity(0.3),
+                            shape: BoxShape.circle,
+                            border: iOS ? null : Border.all(color: context.theme.colorScheme.primary, width: 3)
+                          ),
+                          child: Icon(
+                            Icons.add,
+                            color: context.theme.colorScheme.primary,
+                            size: 20,
+                          ),
+                        ),
+                        onTap: () async {
+                          showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                backgroundColor: context.theme.colorScheme.properSurface,
+                                title: Text(
+                                  "Creating backup...",
+                                  style: context.theme.textTheme.titleLarge,
+                                ),
+                                content: Container(
+                                  height: 70,
+                                  child: Center(
+                                    child: CircularProgressIndicator(
+                                      backgroundColor: context.theme.colorScheme.properSurface,
+                                      valueColor: AlwaysStoppedAnimation<Color>(context.theme.colorScheme.primary),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            });
+                          try {
+                            final List<Map<String, dynamic>> chatData = [];
+                            for (var chat in chats.chats) {
+                              chatData.add(chat.toMap());
+                            }
+                            final List<Map<String, dynamic>> msgData = [];
+                            for (var message in messageBox.getAll()) {
+                              var map = message.toMap(includeObjects: true);
+                              map["chat"] = message.chat.target?.guid;
+                              msgData.add(map);
+                            }
+                            final List<Map<String, dynamic>> msgAtts = [];
+                            for (var att in attachmentBox.getAll()) {
+                              var map = att.toMap();
+                              if (File(att.path).lengthSync() < 16777216 /* 16 mb */) {
+                                map["data"] = base64Encode(await File(att.path).readAsBytes());
+                              }
+                              msgAtts.add(map);
+                            }
+                            String jsonStr = jsonEncode({
+                              "chats": chatData,
+                              "messages": msgData,
+                              "atts": msgAtts,
+                            });
+                            String directoryPath = "/storage/emulated/0/Download/BlueBubbles-chats-";
+                            DateTime now = DateTime.now().toLocal();
+                            String filePath = "$directoryPath${now.year}${now.month}${now.day}_${now.hour}${now.minute}${now.second}.json";
+                            if (kIsDesktop) {
+                              String? _filePath = await FilePicker.platform.saveFile(
+                                initialDirectory: (await getDownloadsDirectory())?.path,
+                                dialogTitle: 'Choose a location to save this file',
+                                fileName: "BlueBubbles-chats-${now.year}${now.month}${now.day}_${now
+                                    .hour}${now.minute}${now.second}.json",
+                                type: FileType.custom,
+                                allowedExtensions: ["json"],
+                              );
+                              if (_filePath == null) {
+                                return showSnackbar('Failed', 'You didn\'t select a file path!');
+                              }
+                              filePath = _filePath;
+                            }
+                            File file = File(filePath);
+                            await file.create(recursive: true);
+                            await file.writeAsString(jsonStr);
+                            Get.back(closeOverlays: true);
+                            showSnackbar(
+                              "Success",
+                              "Message exported successfully to ${kIsDesktop ? filePath : "downloads folder"}",
+                              durationMs: kIsDesktop ? 4000 : 2000,
+                              button: TextButton(
+                                style: TextButton.styleFrom(
+                                  backgroundColor: Get.theme.colorScheme.secondary,
+                                ),
+                                onPressed: () {
+                                  if (kIsDesktop) {
+                                    launchUrl(Uri.file(dirname(filePath)));
+                                    return;
+                                  }
+                                  Share.file("BlueBubbles Chats", filePath);
+                                },
+                                child: Text(kIsDesktop ? "OPEN FOLDER" : "SHARE", style: TextStyle(color: context.theme.colorScheme.onSecondary)),
+                              ),
+                            );
+                            
+                            setState(() {
+                              fetching = true;
+                              settings.clear();
+                              themes.clear();
+                            });
+                            getBackups();
+                          } catch(e) {
+                            Get.back(closeOverlays: true);
+                            rethrow;
+                          }
+                        },
+                      ),
+                    ),
+                    Material(
+                      color: Colors.transparent,
+                      child: ListTile(
+                        mouseCursor: SystemMouseCursors.click,
+                        title: Text("Restore Local", style: context.theme.textTheme.bodyLarge!.copyWith(color: context.theme.colorScheme.primary)),
+                        leading: Container(
+                          width: 40 * ss.settings.avatarScale.value,
+                          height: 40 * ss.settings.avatarScale.value,
+                          decoration: BoxDecoration(
+                              color: !iOS ? null : context.theme.colorScheme.primaryContainer.withOpacity(0.3),
+                              shape: BoxShape.circle,
+                              border: iOS ? null : Border.all(color: context.theme.colorScheme.primary, width: 3)
+                          ),
+                          child: Icon(
+                            Icons.upload,
+                            color: context.theme.colorScheme.primary,
+                            size: 20,
+                          ),
+                        ),
+                        onTap: () async {
+                          final res = await FilePicker.platform
+                              .pickFiles(withData: true, type: FileType.custom, allowedExtensions: ["json"]);
+                          if (res == null || res.files.isEmpty || res.files.first.bytes == null) return;
+
+                          showDialog(
+                              context: context,
+                              builder: (context) => areYouSure(context,
+                                  title: "Restore Backup?",
+                                  content: const Text("Are you sure you want to restore this backup? All existing messages will be replaced."),
+                                  onNo: () => Navigator.of(context).pop(),
+                                  onYes: () async {
+                                    Navigator.of(context).pop();
+                                    try {
+                                      showDialog(
+                                        context: context,
+                                        barrierDismissible: false,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            backgroundColor: context.theme.colorScheme.properSurface,
+                                            title: Text(
+                                              "Restoring backup...",
+                                              style: context.theme.textTheme.titleLarge,
+                                            ),
+                                            content: Container(
+                                              height: 70,
+                                              child: Center(
+                                                child: CircularProgressIndicator(
+                                                  backgroundColor: context.theme.colorScheme.properSurface,
+                                                  valueColor: AlwaysStoppedAnimation<Color>(context.theme.colorScheme.primary),
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        });
+                                      try {
+                                        chats.restoring = true;
+                                        String jsonString = const Utf8Decoder().convert(res.files.first.bytes!);
+                                        chatBox.removeAll();
+                                        handleBox.removeAll();
+                                        messageBox.removeAll();
+                                        attachmentBox.removeAll();
+                                        Map<dynamic, dynamic> json = jsonDecode(jsonString);
+                                        for (var usedChat in json["chats"]) {
+                                          var chat = Chat.fromMap(usedChat);
+                                          chat.id = null;
+                                          chat.save();
+                                          await chats.addChat(chat);
+                                        }
+                                        for (var usedMessage in json["messages"]) {
+                                          var msg = Message.fromMap(usedMessage);
+                                          msg.id = null;
+                                          msg.save(chat: Chat.findOne(guid: usedMessage["chat"]));
+                                        }
+                                        for (var myAtt in json["atts"]) {
+                                          var att = Attachment.fromMap(myAtt);
+                                          att.id = null;
+                                          if (myAtt.containsKey("data")) {
+                                            var file = File(att.path);
+                                            await file.create(recursive: true);
+                                            await file.writeAsBytes(base64Decode(myAtt["data"]));
+                                          }
+                                          att.save(null);
+                                        }
+                                        Get.back(closeOverlays: true);
+                                        showSnackbar("Success", "Chats restored successfully");
+                                      } catch(e) {
+                                        Get.back(closeOverlays: true);
+                                        rethrow;
+                                      }
+                                    } catch (e, s) {
+                                      Logger.error(e);
+                                      Logger.error(s);
+                                      showSnackbar("Error", "Something went wrong");
+                                    } finally {
+                                      chats.restoring = false;
                                     }
                                   }
                               ),

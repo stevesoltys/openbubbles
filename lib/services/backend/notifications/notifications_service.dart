@@ -102,6 +102,7 @@ class NotificationsService extends GetxService {
     if (!kIsWeb) {
       final countQuery = (Database.messages.query()..order(Message_.id, flags: Order.descending)).watch(triggerImmediately: true);
       countSub = countQuery.listen((event) {
+        if (chats.restoring) return;
         if (!ss.settings.finishedSetup.value) return;
         final newCount = event.count();
         final activeChatFetching = cm.activeChat != null ? ms(cm.activeChat!.chat.guid).isFetching : false;
