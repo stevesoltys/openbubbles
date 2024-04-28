@@ -571,7 +571,7 @@ class _ServerCredentialsState extends OptimizedState<ServerCredentials> {
 
     // Open the QR Scanner and get the result
     try {
-      final response = await Navigator.of(context).push(
+      Uint8List? response = await Navigator.of(context).push(
         CupertinoPageRoute(
           builder: (BuildContext context) {
             return QRCodeScanner();
@@ -582,7 +582,7 @@ class _ServerCredentialsState extends OptimizedState<ServerCredentials> {
       if (isNullOrEmpty(response)) {
         throw Exception("No data was scanned, please try again.");
       } else {
-        final List result = jsonDecode(response);
+        final List result = jsonDecode(utf8.decode(response!));
 
         // make sure we have all the data we need
         if (result.length < 2) {

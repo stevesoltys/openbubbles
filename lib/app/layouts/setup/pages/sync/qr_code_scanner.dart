@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:bluebubbles/helpers/helpers.dart';
 import 'package:bluebubbles/app/wrappers/stateful_boilerplate.dart';
 import 'package:bluebubbles/services/services.dart';
@@ -33,11 +35,11 @@ class _QRCodeScannerState extends OptimizedState<QRCodeScanner> {
           onDetect: (capture) {
             if (!scanned && !isNullOrEmpty(capture.barcodes.first.rawValue)) {
               scanned = true;
-              Navigator.of(context).pop(capture.barcodes.first.rawValue);
+              Navigator.of(context).pop(utf8.encode(capture.barcodes.first.rawValue!));
             }
             if (!scanned && !isNullOrEmpty(capture.barcodes.first.rawBytes)!) {
               scanned = true;
-              Navigator.of(context).pop(String.fromCharCodes(capture.barcodes.first.rawBytes!));
+              Navigator.of(context).pop(capture.barcodes.first.rawBytes!);
             }
           },
         ),

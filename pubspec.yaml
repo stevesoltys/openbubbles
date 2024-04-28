@@ -144,7 +144,6 @@ dependencies:
   photo_manager: ^3.0.0-dev.5 # only mobile
   photo_view: ^0.14.0
   printing: ^5.11.1
-  qr_flutter: ^4.1.0
   receive_intent: ^0.2.5 # mobile only
   record: ^5.0.4
   reorderables: ^0.6.0
@@ -183,6 +182,7 @@ dependencies:
   dlibphonenumber: ^1.1.12
   vpn_connection_detector: ^1.0.6
   crypto: ^3.0.3
+  barcode_widget: ^2.0.4
 
 dependency_overrides:
   # overrides for packages stuck on outdated versions

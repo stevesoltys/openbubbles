@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:animated_size_and_fade/animated_size_and_fade.dart';
+import 'package:barcode_widget/barcode_widget.dart';
 import 'package:bluebubbles/app/layouts/conversation_details/dialogs/timeframe_picker.dart';
 import 'package:bluebubbles/app/layouts/settings/dialogs/custom_headers_dialog.dart';
 import 'package:bluebubbles/app/layouts/settings/pages/server/oauth_panel.dart';
@@ -26,7 +27,6 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:qr_flutter/qr_flutter.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:universal_io/io.dart';
 import 'package:version/version.dart';
@@ -323,11 +323,11 @@ class _ServerManagementPanelState extends CustomState<ServerManagementPanel, voi
                                       child: Container(
                                         height: 320,
                                         width: 320,
-                                        child: QrImageView(
+                                        child: BarcodeWidget(
+                                          barcode: Barcode.qrCode(
+                                            errorCorrectLevel: BarcodeQRCorrectionLevel.high,
+                                          ),
                                           data: qrtext,
-                                          version: QrVersions.auto,
-                                          size: 320,
-                                          gapless: true,
                                           backgroundColor: context.theme.colorScheme.properSurface,
                                           eyeStyle: QrEyeStyle(color: context.theme.colorScheme.properOnSurface),
                                           dataModuleStyle:
@@ -480,13 +480,13 @@ class _ServerManagementPanelState extends CustomState<ServerManagementPanel, voi
                             List<dynamic>? fcmData;
                             try {
                               fcmData = jsonDecode(
-                                await Navigator.of(context).push(
+                                utf8.decode(await Navigator.of(context).push(
                                   CupertinoPageRoute(
                                     builder: (BuildContext context) {
                                       return QRCodeScanner();
                                     },
                                   ),
-                                ),
+                                )),
                               );
                             } catch (e) {
                               return;

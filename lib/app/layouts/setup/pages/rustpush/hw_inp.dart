@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:async_task/async_task_extension.dart';
 import 'package:bluebubbles/app/layouts/settings/dialogs/custom_headers_dialog.dart';
 import 'package:bluebubbles/app/layouts/settings/widgets/layout/settings_section.dart';
 import 'package:bluebubbles/app/layouts/setup/dialogs/failed_to_scan_dialog.dart';
@@ -60,7 +61,7 @@ class _HwInpState extends OptimizedState<HwInp> {
 
     // Open the QR Scanner and get the result
     try {
-      final String? response = await Navigator.of(context).push(
+      final Uint8List? response = await Navigator.of(context).push(
         CupertinoPageRoute(
           builder: (BuildContext context) {
             return QRCodeScanner();
@@ -70,12 +71,12 @@ class _HwInpState extends OptimizedState<HwInp> {
       if (response == null) {
         return;
       }
-      if (response.startsWith("OABS")) {
-        var shared = response.codeUnits[4];
-        var rawData = response.codeUnits.toList();
-        rawData.removeRange(0, 5);
+      if (utf8.decode(response.sublist(0, 4)) == "OABS") {
+        var shared = response[4];
+        var cpy = response.toList();
+        cpy.removeRange(0, 5);
         
-        var parsed = await api.configFromEncoded(encoded: rawData);
+        var parsed = await api.configFromEncoded(encoded: cpy);
         stagingNonInp = true;
         select(parsed, shared == 0);
       } else { throw Exception("Bad data!"); }
@@ -175,7 +176,7 @@ class _HwInpState extends OptimizedState<HwInp> {
     lastCheckedCode = code;
 
     if (ss.settings.cachedCodes.containsKey(code)) {
-      return handleCode(Uint8List.fromList(decryptAESCryptoJS(String.fromCharCodes(base64Decode(ss.settings.cachedCodes[code]!)), code).codeUnits));
+      return handleCode(Uint8List.fromList(decryptAESCryptoJS(ss.settings.cachedCodes[code]!, code)));
     }
 
     
@@ -205,9 +206,7 @@ class _HwInpState extends OptimizedState<HwInp> {
       ss.settings.cachedCodes[code] = data;
       ss.saveSettings();
 
-      var enc = base64Decode(data);
-
-      handleCode(Uint8List.fromList(decryptAESCryptoJS(String.fromCharCodes(enc), code).codeUnits));
+      handleCode(Uint8List.fromList(decryptAESCryptoJS(data, code)));
     } catch (e) {
       showSnackbar("Fetching data", "Failed");
       rethrow;

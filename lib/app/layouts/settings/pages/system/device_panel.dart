@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:barcode_widget/barcode_widget.dart';
 import 'package:bluebubbles/helpers/helpers.dart';
 import 'package:bluebubbles/services/network/backend_service.dart';
 import 'package:bluebubbles/services/rustpush/rustpush_service.dart';
@@ -29,7 +30,6 @@ import 'package:get/get.dart' hide Response;
 import 'package:idb_shim/idb.dart';
 import 'package:universal_io/io.dart';
 import 'package:bluebubbles/src/rust/api/api.dart' as api;
-import 'package:qr_flutter/qr_flutter.dart';
 import 'package:crypto/crypto.dart';
 import 'package:convert/convert.dart';
 
@@ -64,7 +64,7 @@ class _DevicePanelState extends CustomState<DevicePanel, void, DevicePanelContro
   Future<String> uploadCode() async {
     var data = getQrInfo(controller.allowSharing.value, deviceInfo!.encodedData);
     if (controller.allowSharing.value) {
-      return base64Encode(data.codeUnits);
+      return base64Encode(data);
     }
     const _chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ123456789';
 
@@ -81,7 +81,6 @@ class _DevicePanelState extends CustomState<DevicePanel, void, DevicePanelContro
     String hash = hex.encode(sha256.convert(code.codeUnits).bytes);
 
     var encrypted = encryptAESCryptoJS(data, code);
-    var encData = base64Encode(encrypted.codeUnits);
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -107,7 +106,7 @@ class _DevicePanelState extends CustomState<DevicePanel, void, DevicePanelContro
       final response = await http.dio.post(
         "$rpApiRoot/code",
         data: {
-          "data": encData,
+          "data": encrypted,
           "id": hash,
         }
       );
@@ -123,14 +122,15 @@ class _DevicePanelState extends CustomState<DevicePanel, void, DevicePanelContro
     }
   }
 
-  String getQrInfo(bool allowSharing, Uint8List data) {
+  Uint8List getQrInfo(bool allowSharing, Uint8List data) {
     var b = BytesBuilder();
+    b.add(utf8.encode("OABS"));
     b.addByte(allowSharing ? 0 : 1);
     b.add(data);
-    for (var slice in b.toBytes().slices(500)) {
-      print(hex.encode(slice));
-    }
-    return "OABS${String.fromCharCodes(b.toBytes())}";
+    // for (var slice in b.toBytes().slices(500)) {
+    //   print(hex.encode(slice));
+    // }
+    return b.toBytes();
   }
 
   @override
@@ -202,13 +202,13 @@ class _DevicePanelState extends CustomState<DevicePanel, void, DevicePanelContro
                       padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
                       child: AspectRatio(
                         aspectRatio: 1,
-                        child: QrImageView(
+                        child: BarcodeWidget.fromBytes(
+                          barcode: Barcode.qrCode(
+                            errorCorrectLevel: BarcodeQRCorrectionLevel.medium,
+                          ),
                           data: getQrInfo(controller.allowSharing.value, deviceInfo!.encodedData),
-                          version: QrVersions.auto,
-                          gapless: true,
-                          backgroundColor: context.theme.colorScheme.properSurface,
-                          eyeStyle: QrEyeStyle(color: context.theme.colorScheme.properOnSurface),
-                          dataModuleStyle: QrDataModuleStyle(color: context.theme.colorScheme.properOnSurface),
+                          backgroundColor: const Color(0),
+                          color: context.theme.colorScheme.onSurface,
                         ),
                       )),
                     if (kIsDesktop)

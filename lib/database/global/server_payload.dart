@@ -52,7 +52,7 @@ class ServerPayload {
   }) {
     if (isEncrypted) {
       if (encryptionType == EncryptionType.AES_PB) {
-        data = decryptAESCryptoJS(data, ss.settings.guidAuthKey.value);
+        data = utf8.decode(decryptAESCryptoJS(data, ss.settings.guidAuthKey.value));
       }
     }
     if ([PayloadEncoding.JSON_OBJECT, PayloadEncoding.JSON_STRING].contains(encoding) && data is String) {
