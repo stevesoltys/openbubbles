@@ -412,8 +412,8 @@ class _ProfilePanelState extends OptimizedState<ProfilePanel> with WidgetsBindin
                             });
                           },
                           initialVal: ss.settings.isSmsRouter.value,
-                          title: "Local SMS forwarding",
-                          subtitle: "Receive/Send SMS messages from other devices through this phone${accountInfo['vetted_aliases']?.any((i) => i['Alias'].contains("tel:") as bool) ?? false ? "" : ". Warning: no phone handles are registered; official Apple clients will only be able to receive forwarded SMS"}",
+                          title: "Use SMS with this phone",
+                          subtitle: "Use this phone with BlueBubbles and your other Apple devices${accountInfo['vetted_aliases']?.any((i) => i['Alias'].contains("tel:") as bool) ?? false ? "" : ". Warning: no phone handles are registered; official Apple clients will only be able to receive forwarded SMS"}",
                           backgroundColor: tileColor,
                           isThreeLine: true,
                         )),

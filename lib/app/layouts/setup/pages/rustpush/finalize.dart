@@ -2,10 +2,12 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:bluebubbles/app/layouts/conversation_list/pages/conversation_list.dart';
+import 'package:bluebubbles/app/layouts/settings/widgets/content/settings_switch.dart';
 import 'package:bluebubbles/app/layouts/setup/pages/page_template.dart';
 import 'package:bluebubbles/app/layouts/setup/setup_view.dart';
 import 'package:bluebubbles/app/wrappers/stateful_boilerplate.dart';
 import 'package:bluebubbles/services/backend/settings/settings_service.dart';
+import 'package:bluebubbles/services/network/backend_service.dart';
 import 'package:bluebubbles/src/rust/api/api.dart' as api;
 import 'package:bluebubbles/helpers/helpers.dart';
 import 'package:bluebubbles/services/rustpush/rustpush_service.dart';
@@ -14,6 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge.dart';
 import 'package:get/get.dart' hide Response;
+import 'package:telephony_plus/telephony_plus.dart';
 
 class FinalizePage extends StatefulWidget {
   @override
@@ -30,7 +33,7 @@ class _FinalizePageState extends OptimizedState<FinalizePage> {
     super.initState();
     api.getHandles(state: pushService.state).then((result) {
       setState(() {
-        handles = result.map((e) => e.replaceFirst("tel:", "").replaceAll("mailto:", "")).toList();
+        handles = result;
       });
     });
   }
@@ -55,7 +58,7 @@ class _FinalizePageState extends OptimizedState<FinalizePage> {
             ...handles.map((e) => Padding(
               padding: const EdgeInsets.all(8),
               child: Text(
-                e,
+                e.replaceFirst("tel:", "").replaceAll("mailto:", ""),
                 style: context.theme.textTheme.titleMedium,
               ),
             )),
@@ -63,6 +66,37 @@ class _FinalizePageState extends OptimizedState<FinalizePage> {
             const Text(
               "Note: Phone numbers cannot be registered without an iOS device"
             ),
+            if (!kIsDesktop)
+              Padding(padding: const EdgeInsets.symmetric(vertical: 5),
+                child: Obx(() => SettingsSwitch(
+                  padding: false,
+                  onChanged: (bool val) async {
+                    if (val) {
+                      var granted = await TelephonyPlus().requestPermissions();
+                      if (!granted) {
+                        showSnackbar("SMS denied", "Please enable SMS permission in settings");
+                        return;
+                      }
+                    }
+                    setState(() {
+                      ss.settings.isSmsRouter.value = val;
+                      ss.saveSettings();
+                    });
+                  },
+                  initialVal: ss.settings.isSmsRouter.value,
+                  title: "Use SMS with this phone",
+                  subtitle: "Use this phone with BlueBubbles and your other Apple devices",
+                  backgroundColor: tileColor,
+                  isThreeLine: true,
+                )),
+              ),
+            if (ss.settings.isSmsRouter.value)
+              const Padding(padding: EdgeInsets.symmetric(vertical: 5),
+                child: Text(
+                  "Enable SMS on other devices in settings.",
+                  textAlign: TextAlign.center,
+                ),
+              ),
           ],
         ),
       ),
@@ -80,10 +114,12 @@ class _FinalizePageState extends OptimizedState<FinalizePage> {
                     child: Column(
                       children: [
                         if (ss.settings.macIsMine.value)
-                        const Text(
-                          "Share your iMessage access with up to 20 friends in settings!",
-                          textAlign: TextAlign.center,
-                        ),
+                          const Padding(padding: EdgeInsets.symmetric(vertical: 5),
+                            child: Text(
+                              "Share your iMessage access with up to 20 friends in settings!",
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
                         const SizedBox(height: 20),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
