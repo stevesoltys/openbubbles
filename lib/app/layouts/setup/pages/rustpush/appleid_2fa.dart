@@ -51,7 +51,7 @@ class _AppleId2FAState extends OptimizedState<AppleId2FA> {
   Widget build(BuildContext context) {
     return SetupPageTemplate(
       title: "2fa Code",
-      subtitle: "Enter the code sent to your ${controller.isSms.value ? "phone" : "apple devices"}",
+      subtitle: "Enter the code sent to your ${controller.isSms.value ? "phone" : "Apple devices"}",
       customButton: Column(
         children: [
           ErrorText(parentController: controller),
