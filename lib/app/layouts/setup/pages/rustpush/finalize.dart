@@ -85,7 +85,7 @@ class _FinalizePageState extends OptimizedState<FinalizePage> {
                   },
                   initialVal: ss.settings.isSmsRouter.value,
                   title: "Use SMS with this phone",
-                  subtitle: "Use this phone with BlueBubbles and your other Apple devices",
+                  subtitle: "Use this phone with OpenBubbles and your other Apple devices",
                   backgroundColor: tileColor,
                   isThreeLine: true,
                 )),

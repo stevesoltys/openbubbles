@@ -60,7 +60,7 @@ class _WelcomePageState extends OptimizedState<WelcomePage> with TickerProviderS
   @override
   Widget build(BuildContext context) {
     return SetupPageTemplate(
-      title: "Welcome to BlueBubbles",
+      title: "Welcome to OpenBubbles",
       subtitle: "Experience a clean, customizable iMessage client across all platforms",
       aboveTitle: Theme(
         data: context.theme.copyWith(

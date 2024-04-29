@@ -136,9 +136,9 @@ class _DevicePanelState extends CustomState<DevicePanel, void, DevicePanelContro
                       onTap: () async {
                         var code = await pushService.uploadCode(controller.allowSharing.value, deviceInfo!);
                         if (code.length > 50) {
-                          Share.text("BlueBubbles", "Text me on BlueBubbles with my activation code! $code");
+                          Share.text("OpenBubbles", "Text me on OpenBubbles with my activation code! $code");
                         } else {
-                          Share.text("BlueBubbles", "Text me on BlueBubbles with my activation code! $code\n$rpApiRoot/code/$code");
+                          Share.text("OpenBubbles", "Text me on OpenBubbles with my activation code! $code\n$rpApiRoot/code/$code");
                         }
                       },
                       subtitle: controller.allowSharing.value ? null : "Code can only be used once",

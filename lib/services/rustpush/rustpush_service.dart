@@ -1478,7 +1478,7 @@ class RustPushService extends GetxService {
           backgroundColor: Get.theme.colorScheme.properSurface,
           title: Text("VPN warning", style: Get.textTheme.titleLarge),
           content: Text(
-            "It appears you are using a VPN. Apple blocks some VPN servers from using iMessage as real iDevices bypass them. Exclude BlueBubbles from your VPN app if you have trouble sending messages.",
+            "It appears you are using a VPN. Apple blocks some VPN servers from using iMessage as real iDevices bypass them. Exclude OpenBubbles from your VPN app if you have trouble sending messages.",
             style: Get.textTheme.bodyLarge,
           ),
           actions: [

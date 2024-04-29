@@ -33,7 +33,7 @@ class _AppleIdLoginState extends OptimizedState<AppleIdLogin> {
   Widget build(BuildContext context) {
     return SetupPageTemplate(
       title: "Login with your Apple ID",
-      subtitle: "Start using BlueBubbles with your Apple ID",
+      subtitle: "Start using OpenBubbles with your Apple ID",
       customButton: Column(
         children: [
           ErrorText(parentController: controller),

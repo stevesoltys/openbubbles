@@ -29,7 +29,7 @@ class _AboutPanelState extends OptimizedState<AboutPanel> {
   Widget build(BuildContext context) {
     return SettingsScaffold(
         title: "About & Links",
-        initialHeader: "Links",
+        initialHeader: "Links (from BlueBubbles)",
         iosSubtitle: iosSubtitle,
         materialSubtitle: materialSubtitle,
         tileColor: tileColor,
@@ -423,7 +423,7 @@ class _AboutPanelState extends OptimizedState<AboutPanel> {
                                                 child: ListBody(
                                                   children: <Widget>[
                                                     Text(
-                                                      "BlueBubbles",
+                                                      "OpenBubbles",
                                                       style: context.theme.textTheme.titleLarge,
                                                     ),
                                                     if (!kIsDesktop)

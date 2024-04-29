@@ -184,7 +184,7 @@ class PageButtons extends StatelessWidget {
     return customButton ?? Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        title == "Welcome to BlueBubbles" ? const SizedBox.shrink() : Container(
+        title == "Welcome to OpenBubbles" ? const SizedBox.shrink() : Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(25),
             gradient: LinearGradient(

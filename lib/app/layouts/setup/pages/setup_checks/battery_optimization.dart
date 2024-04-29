@@ -11,7 +11,7 @@ class BatteryOptimizationCheck extends StatelessWidget {
   Widget build(BuildContext context) {
     return SetupPageTemplate(
       title: "Battery Optimization",
-      subtitle: "We recommend disabling battery optimization for BlueBubbles to ensure you receive all your notifications.",
+      subtitle: "We recommend disabling battery optimization for OpenBubbles to ensure you receive all your notifications.",
       belowSubtitle: FutureBuilder<bool?>(
         future: DisableBatteryOptimization.isAllBatteryOptimizationDisabled,
         initialData: false,
