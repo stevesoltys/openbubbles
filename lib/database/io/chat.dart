@@ -599,6 +599,7 @@ class Chat {
     if (!ss.settings.isSmsRouter.value) {
       return; // don't deliver if not enabled :)
     }
+    if (sender.isEmail) return; // no one uses this feature anyway, and can't debug it due to TMO's MXRT AUP
     var handle = Handle.findOne(addressAndService: Tuple2(sender, "iMessage"));
     if (handle == null) {
       handle = Handle(

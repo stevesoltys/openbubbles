@@ -97,8 +97,11 @@ class AttachmentDownloadController extends GetxController {
     if (attachment.guid == null || attachment.guid!.contains("temp")) return;
     isFetching = true;
     stopwatch.start();
-    var response = await backend.downloadAttachment(attachment,
-        onReceiveProgress: (count, total) => setProgress(kIsWeb ? (count / total) : (count / attachment.totalBytes!))).catchError((err) async {
+    PlatformFile response;
+    try {
+        response = await backend.downloadAttachment(attachment,
+          onReceiveProgress: (count, total) => setProgress(kIsWeb ? (count / total) : (count / attachment.totalBytes!)));
+    } catch (e) {
       if (!kIsWeb) {
         File file = File(attachment.path);
         if (await file.exists()) {
@@ -111,8 +114,8 @@ class AttachmentDownloadController extends GetxController {
 
       error.value = true;
       attachmentDownloader._removeFromQueue(this);
-      return null;
-    });
+      return;
+    }
     if (!kIsWeb && !kIsDesktop && response.path == null) {
       File _file = await File(attachment.path).create(recursive: true);
       await _file.writeAsBytes(response.bytes!);

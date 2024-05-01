@@ -8,6 +8,7 @@ import 'package:bluebubbles/app/layouts/settings/widgets/settings_widgets.dart';
 import 'package:bluebubbles/app/wrappers/stateful_boilerplate.dart';
 import 'package:bluebubbles/database/database.dart';
 import 'package:bluebubbles/database/models.dart';
+import 'package:bluebubbles/services/network/backend_service.dart';
 import 'package:bluebubbles/services/services.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
@@ -53,7 +54,7 @@ class SearchViewState extends OptimizedState<SearchView> {
   bool noResults = false;
   bool isSearching = false;
   String? currentSearchTerm;
-  bool local = false;
+  bool local = backend.getRemoteService() == null;
   bool network = true;
   Chat? selectedChat;
   Handle? selectedHandle;

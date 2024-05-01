@@ -420,8 +420,8 @@ class RustPushBackend implements BackendService {
           effect: m.expressiveSendStyleId,
           service: service,
         )));
-    if (m.stagingGuid != null) {
-      msg.id = m.stagingGuid!;
+    if (m.stagingGuid != null || m.guid != null) {
+      msg.id = m.stagingGuid ?? m.guid!;
     }
     msg.target = getSMSTargets();
     await api.send(state: pushService.state, msg: msg);
@@ -586,8 +586,8 @@ class RustPushBackend implements BackendService {
         service: await getService(chat.isRpSms, forMessage: m),
       )),
     );
-    if (m.stagingGuid != null) {
-      msg.id = m.stagingGuid!;
+    if (m.stagingGuid != null || (chat.isRpSms && m.guid != null)) {
+      msg.id = m.stagingGuid ?? m.guid!; // make sure we pass forwarded messages's original GUID so it doesn't get overwritten and marked as a different msg
     }
     if (chat.isRpSms) {
       msg.target = getSMSTargets();
