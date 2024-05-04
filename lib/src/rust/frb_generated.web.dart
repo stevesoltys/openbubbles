@@ -25,6 +25,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       get rust_arc_decrement_strong_count_MacOsConfigPtr => wire
           .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockMacOSConfig;
 
+  CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_ValuePtr => wire
+      .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockValue;
+
   CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_VerifyBodyPtr =>
       wire.rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockVerifyBody;
 
@@ -39,6 +42,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   MacOsConfig
       dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockMacOSConfig(
+          dynamic raw);
+
+  @protected
+  Value
+      dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockValue(
           dynamic raw);
 
   @protected
@@ -72,6 +80,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           dynamic raw);
 
   @protected
+  Value
+      dco_decode_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockValue(
+          dynamic raw);
+
+  @protected
   VerifyBody
       dco_decode_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockVerifyBody(
           dynamic raw);
@@ -81,6 +94,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   bool dco_decode_bool(dynamic raw);
+
+  @protected
+  bool dco_decode_box_autoadd_bool(dynamic raw);
 
   @protected
   DartAttachment dco_decode_box_autoadd_dart_attachment(dynamic raw);
@@ -125,6 +141,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   DartNormalMessage dco_decode_box_autoadd_dart_normal_message(dynamic raw);
 
   @protected
+  DartPartExtension dco_decode_box_autoadd_dart_part_extension(dynamic raw);
+
+  @protected
   DartReactMessage dco_decode_box_autoadd_dart_react_message(dynamic raw);
 
   @protected
@@ -138,6 +157,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   DartUnsendMessage dco_decode_box_autoadd_dart_unsend_message(dynamic raw);
+
+  @protected
+  DartUpdateExtensionMessage
+      dco_decode_box_autoadd_dart_update_extension_message(dynamic raw);
 
   @protected
   int dco_decode_box_autoadd_usize(dynamic raw);
@@ -201,10 +224,16 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   DartNormalMessage dco_decode_dart_normal_message(dynamic raw);
 
   @protected
+  DartPartExtension dco_decode_dart_part_extension(dynamic raw);
+
+  @protected
   DartPrivateDeviceInfo dco_decode_dart_private_device_info(dynamic raw);
 
   @protected
   DartReactMessage dco_decode_dart_react_message(dynamic raw);
+
+  @protected
+  DartReactMessageType dco_decode_dart_react_message_type(dynamic raw);
 
   @protected
   DartReaction dco_decode_dart_reaction(dynamic raw);
@@ -228,7 +257,17 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   DartUnsendMessage dco_decode_dart_unsend_message(dynamic raw);
 
   @protected
+  DartUpdateExtensionMessage dco_decode_dart_update_extension_message(
+      dynamic raw);
+
+  @protected
+  double dco_decode_f_64(dynamic raw);
+
+  @protected
   int dco_decode_i_32(dynamic raw);
+
+  @protected
+  int dco_decode_i_64(dynamic raw);
 
   @protected
   List<String> dco_decode_list_String(dynamic raw);
@@ -261,6 +300,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   String? dco_decode_opt_String(dynamic raw);
 
   @protected
+  bool? dco_decode_opt_box_autoadd_bool(dynamic raw);
+
+  @protected
   DartAttachment? dco_decode_opt_box_autoadd_dart_attachment(dynamic raw);
 
   @protected
@@ -278,6 +320,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   DartMMCSFile? dco_decode_opt_box_autoadd_dart_mmcs_file(dynamic raw);
+
+  @protected
+  DartPartExtension? dco_decode_opt_box_autoadd_dart_part_extension(
+      dynamic raw);
 
   @protected
   DartSupportAction? dco_decode_opt_box_autoadd_dart_support_action(
@@ -337,6 +383,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           SseDeserializer deserializer);
 
   @protected
+  Value
+      sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockValue(
+          SseDeserializer deserializer);
+
+  @protected
   VerifyBody
       sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockVerifyBody(
           SseDeserializer deserializer);
@@ -367,6 +418,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           SseDeserializer deserializer);
 
   @protected
+  Value
+      sse_decode_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockValue(
+          SseDeserializer deserializer);
+
+  @protected
   VerifyBody
       sse_decode_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockVerifyBody(
           SseDeserializer deserializer);
@@ -376,6 +432,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   bool sse_decode_bool(SseDeserializer deserializer);
+
+  @protected
+  bool sse_decode_box_autoadd_bool(SseDeserializer deserializer);
 
   @protected
   DartAttachment sse_decode_box_autoadd_dart_attachment(
@@ -430,6 +489,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       SseDeserializer deserializer);
 
   @protected
+  DartPartExtension sse_decode_box_autoadd_dart_part_extension(
+      SseDeserializer deserializer);
+
+  @protected
   DartReactMessage sse_decode_box_autoadd_dart_react_message(
       SseDeserializer deserializer);
 
@@ -448,6 +511,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   DartUnsendMessage sse_decode_box_autoadd_dart_unsend_message(
       SseDeserializer deserializer);
+
+  @protected
+  DartUpdateExtensionMessage
+      sse_decode_box_autoadd_dart_update_extension_message(
+          SseDeserializer deserializer);
 
   @protected
   int sse_decode_box_autoadd_usize(SseDeserializer deserializer);
@@ -517,11 +585,19 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       SseDeserializer deserializer);
 
   @protected
+  DartPartExtension sse_decode_dart_part_extension(
+      SseDeserializer deserializer);
+
+  @protected
   DartPrivateDeviceInfo sse_decode_dart_private_device_info(
       SseDeserializer deserializer);
 
   @protected
   DartReactMessage sse_decode_dart_react_message(SseDeserializer deserializer);
+
+  @protected
+  DartReactMessageType sse_decode_dart_react_message_type(
+      SseDeserializer deserializer);
 
   @protected
   DartReaction sse_decode_dart_reaction(SseDeserializer deserializer);
@@ -550,7 +626,17 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       SseDeserializer deserializer);
 
   @protected
+  DartUpdateExtensionMessage sse_decode_dart_update_extension_message(
+      SseDeserializer deserializer);
+
+  @protected
+  double sse_decode_f_64(SseDeserializer deserializer);
+
+  @protected
   int sse_decode_i_32(SseDeserializer deserializer);
+
+  @protected
+  int sse_decode_i_64(SseDeserializer deserializer);
 
   @protected
   List<String> sse_decode_list_String(SseDeserializer deserializer);
@@ -585,6 +671,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   String? sse_decode_opt_String(SseDeserializer deserializer);
 
   @protected
+  bool? sse_decode_opt_box_autoadd_bool(SseDeserializer deserializer);
+
+  @protected
   DartAttachment? sse_decode_opt_box_autoadd_dart_attachment(
       SseDeserializer deserializer);
 
@@ -606,6 +695,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   DartMMCSFile? sse_decode_opt_box_autoadd_dart_mmcs_file(
+      SseDeserializer deserializer);
+
+  @protected
+  DartPartExtension? sse_decode_opt_box_autoadd_dart_part_extension(
       SseDeserializer deserializer);
 
   @protected
@@ -670,6 +763,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void
+      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockValue(
+          Value self, SseSerializer serializer);
+
+  @protected
+  void
       sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockVerifyBody(
           VerifyBody self, SseSerializer serializer);
 
@@ -700,6 +798,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void
+      sse_encode_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockValue(
+          Value self, SseSerializer serializer);
+
+  @protected
+  void
       sse_encode_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockVerifyBody(
           VerifyBody self, SseSerializer serializer);
 
@@ -708,6 +811,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_bool(bool self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_bool(bool self, SseSerializer serializer);
 
   @protected
   void sse_encode_box_autoadd_dart_attachment(
@@ -762,6 +868,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       DartNormalMessage self, SseSerializer serializer);
 
   @protected
+  void sse_encode_box_autoadd_dart_part_extension(
+      DartPartExtension self, SseSerializer serializer);
+
+  @protected
   void sse_encode_box_autoadd_dart_react_message(
       DartReactMessage self, SseSerializer serializer);
 
@@ -780,6 +890,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_box_autoadd_dart_unsend_message(
       DartUnsendMessage self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_dart_update_extension_message(
+      DartUpdateExtensionMessage self, SseSerializer serializer);
 
   @protected
   void sse_encode_box_autoadd_usize(int self, SseSerializer serializer);
@@ -857,12 +971,20 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       DartNormalMessage self, SseSerializer serializer);
 
   @protected
+  void sse_encode_dart_part_extension(
+      DartPartExtension self, SseSerializer serializer);
+
+  @protected
   void sse_encode_dart_private_device_info(
       DartPrivateDeviceInfo self, SseSerializer serializer);
 
   @protected
   void sse_encode_dart_react_message(
       DartReactMessage self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_dart_react_message_type(
+      DartReactMessageType self, SseSerializer serializer);
 
   @protected
   void sse_encode_dart_reaction(DartReaction self, SseSerializer serializer);
@@ -892,7 +1014,17 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       DartUnsendMessage self, SseSerializer serializer);
 
   @protected
+  void sse_encode_dart_update_extension_message(
+      DartUpdateExtensionMessage self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_f_64(double self, SseSerializer serializer);
+
+  @protected
   void sse_encode_i_32(int self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_i_64(int self, SseSerializer serializer);
 
   @protected
   void sse_encode_list_String(List<String> self, SseSerializer serializer);
@@ -928,6 +1060,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_opt_String(String? self, SseSerializer serializer);
 
   @protected
+  void sse_encode_opt_box_autoadd_bool(bool? self, SseSerializer serializer);
+
+  @protected
   void sse_encode_opt_box_autoadd_dart_attachment(
       DartAttachment? self, SseSerializer serializer);
 
@@ -950,6 +1085,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_opt_box_autoadd_dart_mmcs_file(
       DartMMCSFile? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_dart_part_extension(
+      DartPartExtension? self, SseSerializer serializer);
 
   @protected
   void sse_encode_opt_box_autoadd_dart_support_action(
@@ -1028,6 +1167,18 @@ class RustLibWire implements BaseWire {
           .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockMacOSConfig(
               ptr);
 
+  void rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockValue(
+          dynamic ptr) =>
+      wasmModule
+          .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockValue(
+              ptr);
+
+  void rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockValue(
+          dynamic ptr) =>
+      wasmModule
+          .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockValue(
+              ptr);
+
   void rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockVerifyBody(
           dynamic ptr) =>
       wasmModule
@@ -1067,6 +1218,14 @@ class RustLibWasmModule implements WasmModule {
 
   external void
       rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockMacOSConfig(
+          dynamic ptr);
+
+  external void
+      rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockValue(
+          dynamic ptr);
+
+  external void
+      rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedrust_asyncRwLockValue(
           dynamic ptr);
 
   external void

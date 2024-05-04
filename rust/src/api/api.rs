@@ -6,6 +6,7 @@ use anyhow::anyhow;
 use flutter_rust_bridge::{frb, IntoDart};
 use icloud_auth::{LoginState, AnisetteConfiguration, AppleAccount};
 pub use icloud_auth::{VerifyBody, TrustedPhoneNumber};
+pub use plist::Value;
 use prost::Message;
 pub use rustpush::{APNSState, APNSConnection, IDSAppleUser, PushError, IDSUser, IMClient, IMessage, ConversationData, register};
 
@@ -396,7 +397,30 @@ pub enum DartMessagePart {
 }
 
 #[repr(C)]
-pub struct DartIndexedMessagePart(pub DartMessagePart, pub Option<usize>);
+pub enum DartPartExtension {
+    Sticker {
+        msg_width: f64,
+        rotation: f64, // radians, -pi to +pi
+        sai: u64,
+        scale: f64,
+        update: Option<bool>, // Some(false) for updates
+        sli: u64,
+        normalized_x: f64,
+        normalized_y: f64,
+        version: u64,
+        hash: String,
+        safi: u64,
+        effect_type: i64,
+        sticker_id: String,
+    }
+}
+
+#[repr(C)]
+pub struct DartIndexedMessagePart {
+    pub part: DartMessagePart,
+    pub idx: Option<usize>,
+    pub ext: Option<DartPartExtension>,
+}
 
 #[repr(C)]
 pub struct DartMessageParts(pub Vec<DartIndexedMessagePart>);
@@ -461,11 +485,23 @@ pub enum DartReaction {
 }
 
 #[repr(C)]
+#[frb(non_opaque)]
+pub enum DartReactMessageType {
+    React {
+        reaction: DartReaction,
+        enable: bool,
+    },
+    Extension {
+        spec: Value,
+        body: DartMessageParts
+    },
+}
+
+#[repr(C)]
 pub struct DartReactMessage {
     pub to_uuid: String,
     pub to_part: u64,
-    pub enable: bool,
-    pub reaction: DartReaction,
+    pub reaction: DartReactMessageType,
     pub to_text: String,
 }
 
@@ -489,6 +525,12 @@ pub struct DartIconChangeMessage {
 }
 
 #[repr(C)]
+pub struct DartUpdateExtensionMessage {
+    pub for_uuid: String,
+    pub ext: DartPartExtension,
+}
+
+#[repr(C)]
 pub enum DartMessage {
     Message(DartNormalMessage),
     RenameMessage(DartRenameMessage),
@@ -506,6 +548,7 @@ pub enum DartMessage {
     SmsConfirmSent(bool),
     MarkUnread, // send for last message from other participant
     PeerCacheInvalidate,
+    UpdateExtension(DartUpdateExtensionMessage),
 }
 
 #[repr(C)]

@@ -306,7 +306,7 @@ class RustPushBackend implements BackendService {
           conversation: await chat.getConversationData(),
           message: api.DartMessage.message(api.DartNormalMessage(
               parts: api.DartMessageParts(
-                  field0: [api.DartIndexedMessagePart(field0: api.DartMessagePart.text(message))]),
+                  field0: [api.DartIndexedMessagePart(part: api.DartMessagePart.text(message))]),
                   service: await getService(chat.isRpSms)
                   )),
           sender: handle);
@@ -371,7 +371,7 @@ class RustPushBackend implements BackendService {
         sender: await chat.ensureHandle(),
         message: api.DartMessage.message(api.DartNormalMessage(
           parts: api.DartMessageParts(
-              field0: [api.DartIndexedMessagePart(field0: api.DartMessagePart.attachment(attachment!))]),
+              field0: [api.DartIndexedMessagePart(part: api.DartMessagePart.attachment(attachment!))]),
           replyGuid: m.threadOriginatorGuid,
           replyPart: m.threadOriginatorGuid == null ? null : "$partIndex:0:0",
           effect: m.expressiveSendStyleId,
@@ -414,13 +414,13 @@ class RustPushBackend implements BackendService {
         sender: await chat.ensureHandle(),
         message: api.DartMessage.message(api.DartNormalMessage(
           parts: api.DartMessageParts(
-              field0: [api.DartIndexedMessagePart(field0: api.DartMessagePart.attachment(attachment!))]),
+              field0: [api.DartIndexedMessagePart(part: api.DartMessagePart.attachment(attachment!))]),
           replyGuid: m.threadOriginatorGuid,
           replyPart: m.threadOriginatorGuid == null ? null : "$partIndex:0:0",
           effect: m.expressiveSendStyleId,
           service: service,
         )));
-    if (m.stagingGuid != null || m.guid != null) {
+    if (m.stagingGuid != null || (m.guid != null && m.guid!.contains("error") && m.guid!.contains("temp"))) {
       msg.id = m.stagingGuid ?? m.guid!;
     }
     msg.target = getSMSTargets();
@@ -567,12 +567,12 @@ class RustPushBackend implements BackendService {
     if (m.attributedBody.isNotEmpty) {
       parts = api.DartMessageParts(field0: m.attributedBody.first.runs.map((e) {
         var text = m.attributedBody.first.string.substring(e.range.first, e.range.first + e.range.last);
-        return api.DartIndexedMessagePart(field0: e.hasMention ? 
+        return api.DartIndexedMessagePart(part: e.hasMention ? 
           api.DartMessagePart.mention(e.attributes!.mention!, text) : 
           api.DartMessagePart.text(text));
       }).toList());
     } else {
-      parts = api.DartMessageParts(field0: [api.DartIndexedMessagePart(field0: api.DartMessagePart.text(m.text!))]);
+      parts = api.DartMessageParts(field0: [api.DartIndexedMessagePart(part: api.DartMessagePart.text(m.text!))]);
     }
     var msg = await api.newMsg(
       state: pushService.state,
@@ -586,7 +586,7 @@ class RustPushBackend implements BackendService {
         service: await getService(chat.isRpSms, forMessage: m),
       )),
     );
-    if (m.stagingGuid != null || (chat.isRpSms && m.guid != null)) {
+    if (m.stagingGuid != null || (chat.isRpSms && m.guid != null && m.guid!.contains("error") && m.guid!.contains("temp"))) {
       msg.id = m.stagingGuid ?? m.guid!; // make sure we pass forwarded messages's original GUID so it doesn't get overwritten and marked as a different msg
     }
     if (chat.isRpSms) {
@@ -770,8 +770,7 @@ class RustPushBackend implements BackendService {
             toUuid: selected.guid!,
             toPart: repPart ?? 0,
             toText: selected.text ?? "",
-            enable: enabled,
-            reaction: reactionMap[reaction]!)));
+            reaction: api.DartReactMessageType.react(reaction: reactionMap[reaction]!, enable: enabled))));
     await api.send(state: pushService.state, msg: msg);
     msg.sentTimestamp = DateTime.now().millisecondsSinceEpoch;
     return await pushService.reflectMessageDyn(msg);
@@ -798,7 +797,7 @@ class RustPushBackend implements BackendService {
             tuuid: msgObj.guid!,
             editPart: part,
             newParts: api.DartMessageParts(
-                field0: [api.DartIndexedMessagePart(field0: api.DartMessagePart.text(text), field1: part)]))));
+                field0: [api.DartIndexedMessagePart(part: api.DartMessagePart.text(text), idx: part)]))));
     await api.send(state: pushService.state, msg: msg);
     msg.sentTimestamp = DateTime.now().millisecondsSinceEpoch;
     return await pushService.reflectMessageDyn(msg);
@@ -899,6 +898,24 @@ class RustPushService extends GetxService {
     api.DartReaction.question: ReactionTypes.QUESTION,
   };
 
+  StickerData stickerFromDart(api.DartPartExtension_Sticker ext) {
+    return StickerData(
+      msgWidth: ext.msgWidth, 
+      rotation: ext.rotation, 
+      sai: ext.sai, 
+      scale: ext.scale, 
+      update: ext.update, 
+      sli: ext.sli, 
+      normalizedX: ext.normalizedX, 
+      normalizedY: ext.normalizedY, 
+      version: ext.version, 
+      hash: ext.hash, 
+      safi: ext.safi, 
+      effectType: ext.effectType, 
+      stickerId: ext.stickerId
+    );
+  }
+
   Future<(AttributedBody, String, List<Attachment>)> indexedPartsToAttributedBodyDyn(
       List<api.DartIndexedMessagePart> parts, String msgId, AttributedBody? existingBody) async {
     var bodyString = "";
@@ -908,8 +925,8 @@ class RustPushService extends GetxService {
     var addedIndicies = [];
     for (var indexedParts in parts) {
       index += 1;
-      var part = indexedParts.field0;
-      var fieldIdx = indexedParts.field1 ?? body.count((i) => i.attributes?.attachmentGuid != null); // only count attachments increment parts by default
+      var part = indexedParts.part;
+      var fieldIdx = indexedParts.idx ?? body.count((i) => i.attributes?.attachmentGuid != null); // only count attachments increment parts by default
       // remove old elements
       if (!addedIndicies.contains(fieldIdx)) {
         body.removeWhere((element) => element.attributes?.messagePart == fieldIdx);
@@ -938,12 +955,19 @@ class RustPushService extends GetxService {
         }
         api.DartAttachment? myIris;
         var next = parts.elementAtOrNull(index + 1);
-        if (next != null && next.field0 is api.DartMessagePart_Attachment) {
-          var nextA = next.field0 as api.DartMessagePart_Attachment;
+        if (next != null && next.part is api.DartMessagePart_Attachment) {
+          var nextA = next.part as api.DartMessagePart_Attachment;
           if (nextA.field0.iris) {
             myIris = nextA.field0;
           }
         }
+
+        StickerData? stickerData;
+        if (indexedParts.ext != null && indexedParts.ext is api.DartPartExtension_Sticker) {
+          var ext = indexedParts.ext! as api.DartPartExtension_Sticker;
+          stickerData = stickerFromDart(ext);
+        }
+        
         var myUuid = "${msgId}_$fieldIdx";
         attachments.add(Attachment(
           guid: myUuid,
@@ -959,7 +983,8 @@ class RustPushService extends GetxService {
           range: [bodyString.length, 1],
           attributes: Attributes(
             attachmentGuid: myUuid,
-            messagePart: body.length
+            messagePart: body.length,
+            stickerData: stickerData,
           )
         ));
         bodyString += " ";
@@ -1078,9 +1103,20 @@ class RustPushService extends GetxService {
       );
     } else if (myMsg.message is api.DartMessage_React) {
       var msg = myMsg.message as api.DartMessage_React;
-      var reaction = invReactionMap[msg.field0.reaction]!;
-      if (!msg.field0.enable) {
-        reaction = "-$reaction";
+      String reaction;
+      (AttributedBody, String, List<Attachment>)? attributedBodyData;
+      if (msg.field0.reaction is api.DartReactMessageType_React) {
+        var msgType = msg.field0.reaction as api.DartReactMessageType_React;
+        reaction = invReactionMap[msgType.reaction]!;
+        if (!msgType.enable) {
+          reaction = "-$reaction";
+        }
+      } else if (msg.field0.reaction is api.DartReactMessageType_Extension) {
+        var msgType = msg.field0.reaction as api.DartReactMessageType_Extension;
+        attributedBodyData = await indexedPartsToAttributedBodyDyn(msgType.body.field0, myMsg.id, null);
+        reaction = "sticker";
+      } else {
+        throw Exception("bad type!");
       }
       return Message(
         guid: myMsg.id,
@@ -1091,6 +1127,9 @@ class RustPushService extends GetxService {
         associatedMessagePart: msg.field0.toPart,
         associatedMessageGuid: msg.field0.toUuid,
         associatedMessageType: reaction,
+        text: attributedBodyData?.$2,
+        attributedBody: attributedBodyData != null ? [attributedBodyData.$1] : [],
+        attachments: attributedBodyData?.$3 ?? [],
       );
     } else if (myMsg.message is api.DartMessage_Unsend) {
       var msg = myMsg.message as api.DartMessage_Unsend;
@@ -1215,6 +1254,18 @@ class RustPushService extends GetxService {
         showSnackbar("Error", "Error activating SMS forwarding");
         rethrow;
       }
+      return;
+    }
+    if (myMsg.message is api.DartMessage_UpdateExtension) {
+      var message = myMsg.message as api.DartMessage_UpdateExtension;
+      var subject = Message.findOne(guid: message.field0.forUuid);
+      if (subject == null) return;
+      var data = message.field0.ext;
+      if (data is! api.DartPartExtension_Sticker) return;
+      var body = subject.attributedBody.first.toMap();
+      body["runs"].first["attributes"]["sticker"] = stickerFromDart(data).toMap();
+      subject.attributedBody = [AttributedBody.fromMap(body)];
+      subject.save();
       return;
     }
     if (myMsg.message is api.DartMessage_PeerCacheInvalidate) {
@@ -1344,7 +1395,7 @@ class RustPushService extends GetxService {
       }
       var msg = myMsg.message as api.DartMessage_Message;
       if ((await msg.field0.parts.asPlain()) == "" &&
-          msg.field0.parts.field0.none((p0) => p0.field0 is api.DartMessagePart_Attachment)) {
+          msg.field0.parts.field0.none((p0) => p0.part is api.DartMessagePart_Attachment)) {
         return;
       }
     }

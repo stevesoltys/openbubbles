@@ -211,6 +211,24 @@ class MacOsConfig extends RustOpaque {
   );
 }
 
+// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::rust_async::RwLock<Value>>
+@sealed
+class Value extends RustOpaque {
+  Value.dcoDecode(List<dynamic> wire) : super.dcoDecode(wire, _kStaticData);
+
+  Value.sseDecode(int ptr, int externalSizeOnNative)
+      : super.sseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount:
+        RustLib.instance.api.rust_arc_increment_strong_count_Value,
+    rustArcDecrementStrongCount:
+        RustLib.instance.api.rust_arc_decrement_strong_count_Value,
+    rustArcDecrementStrongCountPtr:
+        RustLib.instance.api.rust_arc_decrement_strong_count_ValuePtr,
+  );
+}
+
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::rust_async::RwLock<VerifyBody>>
 @sealed
 class VerifyBody extends RustOpaque {
@@ -515,24 +533,27 @@ class DartIconChangeMessage {
 }
 
 class DartIndexedMessagePart {
-  final DartMessagePart field0;
-  final int? field1;
+  final DartMessagePart part;
+  final int? idx;
+  final DartPartExtension? ext;
 
   const DartIndexedMessagePart({
-    required this.field0,
-    this.field1,
+    required this.part,
+    this.idx,
+    this.ext,
   });
 
   @override
-  int get hashCode => field0.hashCode ^ field1.hashCode;
+  int get hashCode => part.hashCode ^ idx.hashCode ^ ext.hashCode;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is DartIndexedMessagePart &&
           runtimeType == other.runtimeType &&
-          field0 == other.field0 &&
-          field1 == other.field1;
+          part == other.part &&
+          idx == other.idx &&
+          ext == other.ext;
 }
 
 @freezed
@@ -589,6 +610,9 @@ sealed class DartMessage with _$DartMessage {
   const factory DartMessage.markUnread() = DartMessage_MarkUnread;
   const factory DartMessage.peerCacheInvalidate() =
       DartMessage_PeerCacheInvalidate;
+  const factory DartMessage.updateExtension(
+    DartUpdateExtensionMessage field0,
+  ) = DartMessage_UpdateExtension;
 }
 
 @freezed
@@ -722,6 +746,25 @@ class DartNormalMessage {
           service == other.service;
 }
 
+@freezed
+sealed class DartPartExtension with _$DartPartExtension {
+  const factory DartPartExtension.sticker({
+    required double msgWidth,
+    required double rotation,
+    required int sai,
+    required double scale,
+    bool? update,
+    required int sli,
+    required double normalizedX,
+    required double normalizedY,
+    required int version,
+    required String hash,
+    required int safi,
+    required int effectType,
+    required String stickerId,
+  }) = DartPartExtension_Sticker;
+}
+
 class DartPrivateDeviceInfo {
   final String? uuid;
   final String? deviceName;
@@ -764,25 +807,19 @@ class DartPrivateDeviceInfo {
 class DartReactMessage {
   final String toUuid;
   final int toPart;
-  final bool enable;
-  final DartReaction reaction;
+  final DartReactMessageType reaction;
   final String toText;
 
   const DartReactMessage({
     required this.toUuid,
     required this.toPart,
-    required this.enable,
     required this.reaction,
     required this.toText,
   });
 
   @override
   int get hashCode =>
-      toUuid.hashCode ^
-      toPart.hashCode ^
-      enable.hashCode ^
-      reaction.hashCode ^
-      toText.hashCode;
+      toUuid.hashCode ^ toPart.hashCode ^ reaction.hashCode ^ toText.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -791,9 +828,20 @@ class DartReactMessage {
           runtimeType == other.runtimeType &&
           toUuid == other.toUuid &&
           toPart == other.toPart &&
-          enable == other.enable &&
           reaction == other.reaction &&
           toText == other.toText;
+}
+
+@freezed
+sealed class DartReactMessageType with _$DartReactMessageType {
+  const factory DartReactMessageType.react({
+    required DartReaction reaction,
+    required bool enable,
+  }) = DartReactMessageType_React;
+  const factory DartReactMessageType.extension({
+    required Value spec,
+    required DartMessageParts body,
+  }) = DartReactMessageType_Extension;
 }
 
 enum DartReaction {
@@ -928,6 +976,27 @@ class DartUnsendMessage {
           runtimeType == other.runtimeType &&
           tuuid == other.tuuid &&
           editPart == other.editPart;
+}
+
+class DartUpdateExtensionMessage {
+  final String forUuid;
+  final DartPartExtension ext;
+
+  const DartUpdateExtensionMessage({
+    required this.forUuid,
+    required this.ext,
+  });
+
+  @override
+  int get hashCode => forUuid.hashCode ^ ext.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is DartUpdateExtensionMessage &&
+          runtimeType == other.runtimeType &&
+          forUuid == other.forUuid &&
+          ext == other.ext;
 }
 
 class MMCSTransferProgress {

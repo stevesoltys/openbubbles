@@ -34,7 +34,7 @@ class ConversationViewController extends StatefulController with GetSingleTicker
   // caching items
   final Map<String, Uint8List> imageData = {};
   final List<Tuple4<Attachment, PlatformFile, BuildContext, Completer<Uint8List>>> imageCacheQueue = [];
-  final Map<String, Map<String, Uint8List>> stickerData = {};
+  final Map<String, Map<String, (Uint8List, StickerData?)>> stickerData = {};
   final Map<String, Metadata> legacyUrlPreviews = {};
   final Map<String, VideoController> videoPlayers = {};
   final Map<String, PlayerController> audioPlayers = {};
