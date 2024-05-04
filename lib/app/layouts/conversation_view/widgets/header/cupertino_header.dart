@@ -18,7 +18,6 @@ import 'package:flutter/material.dart' hide BackButton;
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:universal_io/io.dart';
-import 'package:bluebubbles/src/rust/api/api.dart' as api;
 
 class CupertinoHeader extends StatelessWidget implements PreferredSizeWidget {
   const CupertinoHeader({Key? key, required this.controller});
