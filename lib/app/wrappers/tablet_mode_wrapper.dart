@@ -4,6 +4,7 @@ import 'package:bluebubbles/helpers/ui/theme_helpers.dart';
 import 'package:bluebubbles/app/wrappers/stateful_boilerplate.dart';
 import 'package:bluebubbles/app/wrappers/titlebar_wrapper.dart';
 import 'package:bluebubbles/services/services.dart';
+import 'package:defer_pointer/defer_pointer.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -17,17 +18,19 @@ class TabletModeWrapper extends StatefulWidget {
   final bool allowResize;
   final double? minWidthLeft;
   final double? maxWidthLeft;
+  final double dragMargin;
 
   const TabletModeWrapper({super.key,
     required this.left,
     required this.right,
     this.initialRatio = 0.5,
     this.allowResize = true,
-    this.dividerWidth = 7.0,
+    this.dividerWidth = 3.0,
     this.minRatio = 0,
     this.maxRatio = 0,
     this.minWidthLeft,
-    this.maxWidthLeft
+    this.maxWidthLeft,
+    this.dragMargin = 5,
   }) : assert(initialRatio >= 0),
         assert(initialRatio <= 1);
 
@@ -78,7 +81,8 @@ class _TabletModeWrapperState extends OptimizedState<TabletModeWrapper> {
     return LayoutBuilder(
       builder: (context, BoxConstraints constraints) {
         _maxWidth = constraints.maxWidth - widget.dividerWidth;
-        return TitleBarWrapper(
+        return DeferredPointerHandler(
+          child: TitleBarWrapper(
           child: SizedBox(
             width: constraints.maxWidth,
             child: Obx(() => Row(
@@ -87,40 +91,36 @@ class _TabletModeWrapperState extends OptimizedState<TabletModeWrapper> {
                   width: _width1,
                   child: widget.left,
                 ),
-                (widget.allowResize) ? MouseRegion(
-                  cursor: SystemMouseCursors.resizeLeftRight,
-                  child: GestureDetector(
-                    behavior: HitTestBehavior.translucent,
-                    child: Container(
-                      color: context.theme.colorScheme.properSurface,
-                      width: widget.dividerWidth,
-                      height: constraints.maxHeight,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(height: 4, width: 4, decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(25),
-                            color: context.theme.colorScheme.properOnSurface,
-                          )),
-                          const SizedBox(height: 20),
-                          Container(height: 4, width: 4, decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(25),
-                            color: context.theme.colorScheme.properOnSurface,
-                          )),
-                          const SizedBox(height: 20),
-                          Container(height: 4, width: 4, decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(25),
-                            color: context.theme.colorScheme.properOnSurface,
-                          )),
-                        ],
-                      ),
-                    ),
-                    onPanUpdate: (DragUpdateDetails details) {
-                      _ratio.value = (_ratio.value + (details.delta.dx / _maxWidth!)).clamp(widget.minRatio, widget.maxRatio);
-                      ns.listener.refresh();
-                    },
-                  ),
+                (widget.allowResize) ? Container(
+                  width: widget.dividerWidth,
+                  height: constraints.maxHeight,
+                  child: Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      Positioned(
+                        top: 0,
+                        left: -widget.dragMargin,
+                        right: -widget.dragMargin,
+                        bottom: 0,
+                        child: DeferPointer(child: MouseRegion(
+                          cursor: SystemMouseCursors.resizeLeftRight,
+                          child: GestureDetector(
+                            behavior: HitTestBehavior.translucent,
+                            child: Center(
+                              child: Container(
+                                color: context.theme.colorScheme.properSurface,
+                                width: widget.dividerWidth,
+                              ),
+                            ),
+                            onPanUpdate: (DragUpdateDetails details) {
+                              _ratio.value = (_ratio.value + (details.delta.dx / _maxWidth!)).clamp(widget.minRatio, widget.maxRatio);
+                              ns.listener.refresh();
+                            },
+                          ),
+                        ))
+                      )
+                    ],
+                  )
                 ) : Container(
                     width: widget.dividerWidth,
                     height: constraints.maxHeight,
@@ -133,7 +133,7 @@ class _TabletModeWrapperState extends OptimizedState<TabletModeWrapper> {
               ],
             )),
           ),
-        );
+        ));
       },
     );
   }
