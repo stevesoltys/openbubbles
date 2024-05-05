@@ -2012,7 +2012,7 @@ impl SseDecode for crate::api::api::DartRegisterState {
                 return crate::api::api::DartRegisterState::Registering;
             }
             2 => {
-                let mut var_retryWait = <u64>::sse_decode(deserializer);
+                let mut var_retryWait = <Option<u64>>::sse_decode(deserializer);
                 let mut var_error = <String>::sse_decode(deserializer);
                 return crate::api::api::DartRegisterState::Failed {
                     retry_wait: var_retryWait,
@@ -2340,6 +2340,17 @@ impl SseDecode for Option<crate::api::api::DartSupportAlert> {
             return Some(<crate::api::api::DartSupportAlert>::sse_decode(
                 deserializer,
             ));
+        } else {
+            return None;
+        }
+    }
+}
+
+impl SseDecode for Option<u64> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<u64>::sse_decode(deserializer));
         } else {
             return None;
         }
@@ -4004,7 +4015,7 @@ impl SseEncode for crate::api::api::DartRegisterState {
             }
             crate::api::api::DartRegisterState::Failed { retry_wait, error } => {
                 <i32>::sse_encode(2, serializer);
-                <u64>::sse_encode(retry_wait, serializer);
+                <Option<u64>>::sse_encode(retry_wait, serializer);
                 <String>::sse_encode(error, serializer);
             }
         }
@@ -4257,6 +4268,16 @@ impl SseEncode for Option<crate::api::api::DartSupportAlert> {
         <bool>::sse_encode(self.is_some(), serializer);
         if let Some(value) = self {
             <crate::api::api::DartSupportAlert>::sse_encode(value, serializer);
+        }
+    }
+}
+
+impl SseEncode for Option<u64> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <u64>::sse_encode(value, serializer);
         }
     }
 }

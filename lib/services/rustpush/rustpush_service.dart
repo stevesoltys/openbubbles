@@ -3,6 +3,8 @@ import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:async_task/async_task_extension.dart';
+import 'package:bluebubbles/app/layouts/setup/setup_view.dart';
+import 'package:bluebubbles/app/wrappers/titlebar_wrapper.dart';
 import 'package:bluebubbles/main.dart';
 import 'package:bluebubbles/src/rust/api/api.dart' as api;
 import 'package:bluebubbles/helpers/helpers.dart';
@@ -13,6 +15,7 @@ import 'package:bluebubbles/utils/logger.dart';
 import 'package:collection/collection.dart';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rust_bridge/flutter_rust_bridge.dart';
 import 'package:get/get.dart';
 import 'package:supercharged/supercharged.dart';
 import 'package:tuple/tuple.dart';
@@ -286,6 +289,34 @@ class RustPushBackend implements BackendService {
     return const api.DartMessageType.iMessage();
   }
 
+  void markFailedToLogin() async {
+    print("markingfailed");
+    ss.settings.finishedSetup.value = false;
+    var data = await api.getDeviceInfoState(state: pushService.state);
+    ss.settings.cachedCodes["restore"] = base64Encode(pushService.getQrInfo(ss.settings.macIsMine.value, data.encodedData));
+    ss.saveSettings();
+    if (usingRustPush) {
+      await pushService.reset();
+    }
+    Get.offAll(() => PopScope(
+      canPop: false,
+      child: TitleBarWrapper(child: SetupView()),
+    ), duration: Duration.zero, transition: Transition.noTransition);
+  }
+
+  Future<void> sendMsg(api.DartIMessage msg) async {
+    try {
+      await api.send(state: pushService.state, msg: msg);
+    } catch (e) {
+      if (e is AnyhowException) {
+        if (e.message.contains("Failed to reregister") && e.message.contains("not retrying")) {
+          markFailedToLogin();
+        }
+      }
+      rethrow;
+    }
+  }
+
   @override
   Future<Chat> createChat(List<String> addresses, String? message, String service,
       {CancelToken? cancelToken}) async {
@@ -313,7 +344,7 @@ class RustPushBackend implements BackendService {
       if (chat.isRpSms) {
         msg.target = getSMSTargets();
       }
-      await api.send(state: pushService.state, msg: msg);
+      await sendMsg(msg);
       msg.sentTimestamp = DateTime.now().millisecondsSinceEpoch;
 
       final newMessage = await pushService.reflectMessageDyn(msg);
@@ -385,7 +416,7 @@ class RustPushBackend implements BackendService {
     }
     m.stagingGuid = msg.id; // in case delivered comes in before sending "finishes" (also for retries, duh)
     m.save(chat: chat);
-    await api.send(state: pushService.state, msg: msg);
+    await sendMsg(msg);
     if (chat.isRpSms) {
       m.stagingGuid = msg.id;
     } else {
@@ -414,7 +445,7 @@ class RustPushBackend implements BackendService {
         sender: await chat.ensureHandle(),
         message: api.DartMessage.message(api.DartNormalMessage(
           parts: api.DartMessageParts(
-              field0: [api.DartIndexedMessagePart(part: api.DartMessagePart.attachment(attachment!))]),
+              field0: [api.DartIndexedMessagePart(part: api.DartMessagePart.attachment(attachment))]),
           replyGuid: m.threadOriginatorGuid,
           replyPart: m.threadOriginatorGuid == null ? null : "$partIndex:0:0",
           effect: m.expressiveSendStyleId,
@@ -424,7 +455,7 @@ class RustPushBackend implements BackendService {
       msg.id = m.stagingGuid ?? m.guid!;
     }
     msg.target = getSMSTargets();
-    await api.send(state: pushService.state, msg: msg);
+    await sendMsg(msg);
     msg.sentTimestamp = DateTime.now().millisecondsSinceEpoch;
     return await pushService.reflectMessageDyn(msg);
   }
@@ -444,7 +475,7 @@ class RustPushBackend implements BackendService {
       message: api.DartMessage.enableSmsActivation(state),
     );
     msg.target = uuids.map((e) => api.DartMessageTarget.uuid(e)).toList();
-    await api.send(state: pushService.state, msg: msg);
+    await sendMsg(msg);
   }
 
   Future<void> confirmSmsSent(Message m, Chat c, bool success) async {
@@ -458,7 +489,7 @@ class RustPushBackend implements BackendService {
     if (c.isRpSms) {
       msg.target = getSMSTargets();
     }
-    await api.send(state: pushService.state, msg: msg);
+    await sendMsg(msg);
   }
 
   @override
@@ -474,7 +505,7 @@ class RustPushBackend implements BackendService {
       sender: await chat.ensureHandle(),
       message: api.DartMessage.iconChange(api.DartIconChangeMessage(groupVersion: chat.groupVersion!)),
     );
-    await api.send(state: pushService.state, msg: msg);
+    await sendMsg(msg);
     return true;
   }
 
@@ -495,7 +526,8 @@ class RustPushBackend implements BackendService {
       "apple_id": Settings.getSettings().iCloudAccount.value,
       "login_status_message": stateStr,
       "vetted_aliases": handles.map((e) => {
-        "Alias": e.replaceFirst("tel:", "").replaceFirst("mailto:", "")
+        "Alias": e.replaceFirst("tel:", "").replaceFirst("mailto:", ""),
+        "Status": state is api.DartRegisterState_Registered ? 3 : 0,
       }).toList(),
       "active_alias": (await getDefaultHandle()).replaceFirst("tel:", "").replaceFirst("mailto:", ""),
       "sms_forwarding_capable": true,
@@ -536,7 +568,7 @@ class RustPushBackend implements BackendService {
       sender: await chat.ensureHandle(),
       message: api.DartMessage.iconChange(api.DartIconChangeMessage(groupVersion: chat.groupVersion!, file: mmcs!)),
     );
-    await api.send(state: pushService.state, msg: msg);
+    await sendMsg(msg);
     return true;
   }
 
@@ -549,7 +581,7 @@ class RustPushBackend implements BackendService {
         sender: handle,
         message: const api.DartMessage.peerCacheInvalidate(),
       );
-      await api.send(state: pushService.state, msg: msg);
+      await sendMsg(msg);
     }
   }
 
@@ -595,7 +627,7 @@ class RustPushBackend implements BackendService {
     m.stagingGuid = msg.id; // in case delivered comes in before sending "finishes" (also for retries, duh)
     m.save(chat: chat);
     try {
-      await api.send(state: pushService.state, msg: msg);
+      await sendMsg(msg);
     } catch (e) {
       print(e);
       if (!chat.isRpSms) {
@@ -640,7 +672,7 @@ class RustPushBackend implements BackendService {
     if (msg.id.contains("temp") || msg.id.contains("error")) {
       return true;
     }
-    await api.send(state: pushService.state, msg: msg);
+    await sendMsg(msg);
     return true;
   }
 
@@ -666,7 +698,7 @@ class RustPushBackend implements BackendService {
     if (msg.id.contains("temp") || msg.id.contains("error")) {
       return true;
     }
-    await api.send(state: pushService.state, msg: msg);
+    await sendMsg(msg);
     return true;
   }
 
@@ -687,7 +719,7 @@ class RustPushBackend implements BackendService {
     if (chat.isRpSms) {
       msg.target = getSMSTargets();
     }
-    await api.send(state: pushService.state, msg: msg);
+    await sendMsg(msg);
     return true;
   }
 
@@ -699,7 +731,7 @@ class RustPushBackend implements BackendService {
         conversation: data,
         sender: await chat.ensureHandle(),
         message: api.DartMessage.renameMessage(api.DartRenameMessage(newName: newName)));
-    await api.send(state: pushService.state, msg: msg);
+    await sendMsg(msg);
     msg.sentTimestamp = DateTime.now().millisecondsSinceEpoch;
     inq.queue(IncomingItem(
       chat: chat,
@@ -732,7 +764,7 @@ class RustPushBackend implements BackendService {
         sender: await chat.ensureHandle(),
         message: api.DartMessage.changeParticipants(
             api.DartChangeParticipantMessage(groupVersion: chat.groupVersion!, newParticipants: newParticipants)));
-    await api.send(state: pushService.state, msg: msg);
+    await sendMsg(msg);
     msg.sentTimestamp = DateTime.now().millisecondsSinceEpoch;
     inq.queue(IncomingItem(
       chat: chat,
@@ -771,7 +803,7 @@ class RustPushBackend implements BackendService {
             toPart: repPart ?? 0,
             toText: selected.text ?? "",
             reaction: api.DartReactMessageType.react(reaction: reactionMap[reaction]!, enable: enabled))));
-    await api.send(state: pushService.state, msg: msg);
+    await sendMsg(msg);
     msg.sentTimestamp = DateTime.now().millisecondsSinceEpoch;
     return await pushService.reflectMessageDyn(msg);
   }
@@ -783,7 +815,7 @@ class RustPushBackend implements BackendService {
         sender: await msgObj.chat.target!.ensureHandle(),
         conversation: await msgObj.chat.target!.getConversationData(),
         message: api.DartMessage.unsend(api.DartUnsendMessage(tuuid: msgObj.guid!, editPart: part.part)));
-    await api.send(state: pushService.state, msg: msg);
+    await sendMsg(msg);
     return await pushService.reflectMessageDyn(msg);
   }
 
@@ -798,7 +830,7 @@ class RustPushBackend implements BackendService {
             editPart: part,
             newParts: api.DartMessageParts(
                 field0: [api.DartIndexedMessagePart(part: api.DartMessagePart.text(text), idx: part)]))));
-    await api.send(state: pushService.state, msg: msg);
+    await sendMsg(msg);
     msg.sentTimestamp = DateTime.now().millisecondsSinceEpoch;
     return await pushService.reflectMessageDyn(msg);
   }
@@ -853,7 +885,7 @@ class RustPushBackend implements BackendService {
       sender: await c.ensureHandle(),
       message: const api.DartMessage.typing()
     );
-    await api.send(state: pushService.state, msg: msg);
+    await sendMsg(msg);
   }
 
   @override
@@ -868,7 +900,7 @@ class RustPushBackend implements BackendService {
       sender: await c.ensureHandle(),
       message: const api.DartMessage.stopTyping()
     );
-    await api.send(state: pushService.state, msg: msg);
+    await sendMsg(msg);
   }
 
   @override
@@ -878,7 +910,17 @@ class RustPushBackend implements BackendService {
   Future<bool> handleiMessageState(String address) async {
     var handle = await getDefaultHandle();
     var formatted = await RustPushBBUtils.formatAndAddPrefix(address);
-    var available = await api.validateTargets(state: pushService.state, targets: [formatted], sender: handle);
+    List<String> available;
+    try {
+      available = await api.validateTargets(state: pushService.state, targets: [formatted], sender: handle);
+    } catch (e) {
+      if (e is AnyhowException) {
+        if (e.message.contains("Failed to reregister") && e.message.contains("not retrying")) {
+          markFailedToLogin();
+        }
+      }
+      rethrow;
+    }
     return available.isNotEmpty;
   }
 
@@ -1290,7 +1332,7 @@ class RustPushService extends GetxService {
           message: const api.DartMessage.peerCacheInvalidate(),
         );
         msg.id = myMsg.id;
-        await api.send(state: pushService.state, msg: msg);
+        await (backend as RustPushBackend).sendMsg(msg);
       }
       return;
     }
@@ -1390,7 +1432,7 @@ class RustPushService extends GetxService {
         otherIds.remove(myId);
         if (otherIds.isNotEmpty) {
           myMsg.target = otherIds.map((element) => api.DartMessageTarget.uuid(element)).toList(); // forward to other devices
-          await api.send(state: pushService.state, msg: myMsg);
+          await (backend as RustPushBackend).sendMsg(myMsg);
         }
       }
       var msg = myMsg.message as api.DartMessage_Message;

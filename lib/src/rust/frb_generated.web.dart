@@ -163,6 +163,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       dco_decode_box_autoadd_dart_update_extension_message(dynamic raw);
 
   @protected
+  int dco_decode_box_autoadd_u_64(dynamic raw);
+
+  @protected
   int dco_decode_box_autoadd_usize(dynamic raw);
 
   @protected
@@ -331,6 +334,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   DartSupportAlert? dco_decode_opt_box_autoadd_dart_support_alert(dynamic raw);
+
+  @protected
+  int? dco_decode_opt_box_autoadd_u_64(dynamic raw);
 
   @protected
   int? dco_decode_opt_box_autoadd_usize(dynamic raw);
@@ -516,6 +522,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   DartUpdateExtensionMessage
       sse_decode_box_autoadd_dart_update_extension_message(
           SseDeserializer deserializer);
+
+  @protected
+  int sse_decode_box_autoadd_u_64(SseDeserializer deserializer);
 
   @protected
   int sse_decode_box_autoadd_usize(SseDeserializer deserializer);
@@ -710,6 +719,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       SseDeserializer deserializer);
 
   @protected
+  int? sse_decode_opt_box_autoadd_u_64(SseDeserializer deserializer);
+
+  @protected
   int? sse_decode_opt_box_autoadd_usize(SseDeserializer deserializer);
 
   @protected
@@ -894,6 +906,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_box_autoadd_dart_update_extension_message(
       DartUpdateExtensionMessage self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_u_64(int self, SseSerializer serializer);
 
   @protected
   void sse_encode_box_autoadd_usize(int self, SseSerializer serializer);
@@ -1097,6 +1112,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_opt_box_autoadd_dart_support_alert(
       DartSupportAlert? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_u_64(int? self, SseSerializer serializer);
 
   @protected
   void sse_encode_opt_box_autoadd_usize(int? self, SseSerializer serializer);

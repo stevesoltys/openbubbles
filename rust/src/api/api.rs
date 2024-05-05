@@ -872,7 +872,7 @@ pub enum DartRegisterState {
     Registered,
     Registering,
     Failed {
-        retry_wait: u64,
+        retry_wait: Option<u64>,
         error: String
     }
 }
@@ -884,8 +884,8 @@ pub async fn get_regstate(state: &Arc<PushState>) -> anyhow::Result<DartRegister
     Ok(match &*regstate {
         RegisterState::Registering => DartRegisterState::Registering,
         RegisterState::Registered => DartRegisterState::Registered,
-        RegisterState::Failed { retry_wait, error } => 
-            DartRegisterState::Failed { retry_wait: *retry_wait, error: format!("{error}") },
+        RegisterState::Failed(failure) => 
+            DartRegisterState::Failed { retry_wait: failure.retry_wait, error: format!("{}", failure.error) },
     })
 }
 

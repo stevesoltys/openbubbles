@@ -858,7 +858,7 @@ sealed class DartRegisterState with _$DartRegisterState {
   const factory DartRegisterState.registered() = DartRegisterState_Registered;
   const factory DartRegisterState.registering() = DartRegisterState_Registering;
   const factory DartRegisterState.failed({
-    required int retryWait,
+    int? retryWait,
     required String error,
   }) = DartRegisterState_Failed;
 }

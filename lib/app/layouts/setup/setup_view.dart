@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:bluebubbles/app/layouts/conversation_list/pages/conversation_list.dart';
 import 'package:bluebubbles/app/layouts/setup/pages/rustpush/appleid_2fa.dart';
 import 'package:bluebubbles/app/layouts/setup/pages/rustpush/appleid_login.dart';
@@ -192,8 +194,9 @@ class SetupViewController extends StatefulController {
 
     var data = response.data["data"];
     
+     var myData = Uint8List.fromList(decryptAESCryptoJS(data, code));
     print("cached code");
-    ss.settings.cachedCodes[code] = data;
+    ss.settings.cachedCodes[code] = base64Encode(myData);
     ss.saveSettings();
   }
 

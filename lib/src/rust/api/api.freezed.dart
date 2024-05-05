@@ -7661,21 +7661,21 @@ mixin _$DartRegisterState {
   TResult when<TResult extends Object?>({
     required TResult Function() registered,
     required TResult Function() registering,
-    required TResult Function(int retryWait, String error) failed,
+    required TResult Function(int? retryWait, String error) failed,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? registered,
     TResult? Function()? registering,
-    TResult? Function(int retryWait, String error)? failed,
+    TResult? Function(int? retryWait, String error)? failed,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? registered,
     TResult Function()? registering,
-    TResult Function(int retryWait, String error)? failed,
+    TResult Function(int? retryWait, String error)? failed,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -7766,7 +7766,7 @@ class _$DartRegisterState_RegisteredImpl
   TResult when<TResult extends Object?>({
     required TResult Function() registered,
     required TResult Function() registering,
-    required TResult Function(int retryWait, String error) failed,
+    required TResult Function(int? retryWait, String error) failed,
   }) {
     return registered();
   }
@@ -7776,7 +7776,7 @@ class _$DartRegisterState_RegisteredImpl
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? registered,
     TResult? Function()? registering,
-    TResult? Function(int retryWait, String error)? failed,
+    TResult? Function(int? retryWait, String error)? failed,
   }) {
     return registered?.call();
   }
@@ -7786,7 +7786,7 @@ class _$DartRegisterState_RegisteredImpl
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? registered,
     TResult Function()? registering,
-    TResult Function(int retryWait, String error)? failed,
+    TResult Function(int? retryWait, String error)? failed,
     required TResult orElse(),
   }) {
     if (registered != null) {
@@ -7880,7 +7880,7 @@ class _$DartRegisterState_RegisteringImpl
   TResult when<TResult extends Object?>({
     required TResult Function() registered,
     required TResult Function() registering,
-    required TResult Function(int retryWait, String error) failed,
+    required TResult Function(int? retryWait, String error) failed,
   }) {
     return registering();
   }
@@ -7890,7 +7890,7 @@ class _$DartRegisterState_RegisteringImpl
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? registered,
     TResult? Function()? registering,
-    TResult? Function(int retryWait, String error)? failed,
+    TResult? Function(int? retryWait, String error)? failed,
   }) {
     return registering?.call();
   }
@@ -7900,7 +7900,7 @@ class _$DartRegisterState_RegisteringImpl
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? registered,
     TResult Function()? registering,
-    TResult Function(int retryWait, String error)? failed,
+    TResult Function(int? retryWait, String error)? failed,
     required TResult orElse(),
   }) {
     if (registering != null) {
@@ -7956,7 +7956,7 @@ abstract class _$$DartRegisterState_FailedImplCopyWith<$Res> {
           $Res Function(_$DartRegisterState_FailedImpl) then) =
       __$$DartRegisterState_FailedImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({int retryWait, String error});
+  $Res call({int? retryWait, String error});
 }
 
 /// @nodoc
@@ -7972,14 +7972,14 @@ class __$$DartRegisterState_FailedImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? retryWait = null,
+    Object? retryWait = freezed,
     Object? error = null,
   }) {
     return _then(_$DartRegisterState_FailedImpl(
-      retryWait: null == retryWait
+      retryWait: freezed == retryWait
           ? _value.retryWait
           : retryWait // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       error: null == error
           ? _value.error
           : error // ignore: cast_nullable_to_non_nullable
@@ -7991,11 +7991,10 @@ class __$$DartRegisterState_FailedImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$DartRegisterState_FailedImpl implements DartRegisterState_Failed {
-  const _$DartRegisterState_FailedImpl(
-      {required this.retryWait, required this.error});
+  const _$DartRegisterState_FailedImpl({this.retryWait, required this.error});
 
   @override
-  final int retryWait;
+  final int? retryWait;
   @override
   final String error;
 
@@ -8029,7 +8028,7 @@ class _$DartRegisterState_FailedImpl implements DartRegisterState_Failed {
   TResult when<TResult extends Object?>({
     required TResult Function() registered,
     required TResult Function() registering,
-    required TResult Function(int retryWait, String error) failed,
+    required TResult Function(int? retryWait, String error) failed,
   }) {
     return failed(retryWait, error);
   }
@@ -8039,7 +8038,7 @@ class _$DartRegisterState_FailedImpl implements DartRegisterState_Failed {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? registered,
     TResult? Function()? registering,
-    TResult? Function(int retryWait, String error)? failed,
+    TResult? Function(int? retryWait, String error)? failed,
   }) {
     return failed?.call(retryWait, error);
   }
@@ -8049,7 +8048,7 @@ class _$DartRegisterState_FailedImpl implements DartRegisterState_Failed {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? registered,
     TResult Function()? registering,
-    TResult Function(int retryWait, String error)? failed,
+    TResult Function(int? retryWait, String error)? failed,
     required TResult orElse(),
   }) {
     if (failed != null) {
@@ -8095,10 +8094,10 @@ class _$DartRegisterState_FailedImpl implements DartRegisterState_Failed {
 
 abstract class DartRegisterState_Failed implements DartRegisterState {
   const factory DartRegisterState_Failed(
-      {required final int retryWait,
+      {final int? retryWait,
       required final String error}) = _$DartRegisterState_FailedImpl;
 
-  int get retryWait;
+  int? get retryWait;
   String get error;
   @JsonKey(ignore: true)
   _$$DartRegisterState_FailedImplCopyWith<_$DartRegisterState_FailedImpl>

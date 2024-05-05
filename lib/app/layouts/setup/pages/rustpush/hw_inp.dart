@@ -179,7 +179,7 @@ class HwInpState extends OptimizedState<HwInp> {
     lastCheckedCode = code;
 
     if (ss.settings.cachedCodes.containsKey(code)) {
-      return handleCode(Uint8List.fromList(decryptAESCryptoJS(ss.settings.cachedCodes[code]!, code)));
+      return handleCode(base64Decode(ss.settings.cachedCodes[code]!));
     }
 
     
@@ -206,10 +206,11 @@ class HwInpState extends OptimizedState<HwInp> {
 
       var data = response.data["data"];
       
-      ss.settings.cachedCodes[code] = data;
+      var myData = Uint8List.fromList(decryptAESCryptoJS(data, code));
+      ss.settings.cachedCodes[code] = base64Encode(myData);
       ss.saveSettings();
 
-      handleCode(Uint8List.fromList(decryptAESCryptoJS(data, code)));
+      handleCode(myData);
     } catch (e) {
       showSnackbar("Fetching data", "Failed");
       rethrow;
@@ -277,6 +278,10 @@ class HwInpState extends OptimizedState<HwInp> {
     super.initState();
 
     updateAppLink();
+
+    if (ss.settings.cachedCodes.containsKey("restore")) {
+      handleOpenAbsinthe("restore");
+    }
 
     // Start listening to changes.
     codeController.addListener(() async {
