@@ -111,8 +111,8 @@ class __$$DartAttachmentType_InlineImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$DartAttachmentType_InlineImpl implements DartAttachmentType_Inline {
-  const _$DartAttachmentType_InlineImpl(this.field0);
+class _$DartAttachmentType_InlineImpl extends DartAttachmentType_Inline {
+  const _$DartAttachmentType_InlineImpl(this.field0) : super._();
 
   @override
   final Uint8List field0;
@@ -204,9 +204,10 @@ class _$DartAttachmentType_InlineImpl implements DartAttachmentType_Inline {
   }
 }
 
-abstract class DartAttachmentType_Inline implements DartAttachmentType {
+abstract class DartAttachmentType_Inline extends DartAttachmentType {
   const factory DartAttachmentType_Inline(final Uint8List field0) =
       _$DartAttachmentType_InlineImpl;
+  const DartAttachmentType_Inline._() : super._();
 
   @override
   Uint8List get field0;
@@ -251,8 +252,8 @@ class __$$DartAttachmentType_MMCSImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$DartAttachmentType_MMCSImpl implements DartAttachmentType_MMCS {
-  const _$DartAttachmentType_MMCSImpl(this.field0);
+class _$DartAttachmentType_MMCSImpl extends DartAttachmentType_MMCS {
+  const _$DartAttachmentType_MMCSImpl(this.field0) : super._();
 
   @override
   final DartMMCSFile field0;
@@ -343,9 +344,10 @@ class _$DartAttachmentType_MMCSImpl implements DartAttachmentType_MMCS {
   }
 }
 
-abstract class DartAttachmentType_MMCS implements DartAttachmentType {
+abstract class DartAttachmentType_MMCS extends DartAttachmentType {
   const factory DartAttachmentType_MMCS(final DartMMCSFile field0) =
       _$DartAttachmentType_MMCSImpl;
+  const DartAttachmentType_MMCS._() : super._();
 
   @override
   DartMMCSFile get field0;
@@ -472,8 +474,8 @@ class __$$DartLoginState_LoggedInImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$DartLoginState_LoggedInImpl implements DartLoginState_LoggedIn {
-  const _$DartLoginState_LoggedInImpl();
+class _$DartLoginState_LoggedInImpl extends DartLoginState_LoggedIn {
+  const _$DartLoginState_LoggedInImpl() : super._();
 
   @override
   String toString() {
@@ -591,8 +593,9 @@ class _$DartLoginState_LoggedInImpl implements DartLoginState_LoggedIn {
   }
 }
 
-abstract class DartLoginState_LoggedIn implements DartLoginState {
+abstract class DartLoginState_LoggedIn extends DartLoginState {
   const factory DartLoginState_LoggedIn() = _$DartLoginState_LoggedInImpl;
+  const DartLoginState_LoggedIn._() : super._();
 }
 
 /// @nodoc
@@ -617,8 +620,8 @@ class __$$DartLoginState_NeedsDevice2FAImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$DartLoginState_NeedsDevice2FAImpl
-    implements DartLoginState_NeedsDevice2FA {
-  const _$DartLoginState_NeedsDevice2FAImpl();
+    extends DartLoginState_NeedsDevice2FA {
+  const _$DartLoginState_NeedsDevice2FAImpl() : super._();
 
   @override
   String toString() {
@@ -736,9 +739,10 @@ class _$DartLoginState_NeedsDevice2FAImpl
   }
 }
 
-abstract class DartLoginState_NeedsDevice2FA implements DartLoginState {
+abstract class DartLoginState_NeedsDevice2FA extends DartLoginState {
   const factory DartLoginState_NeedsDevice2FA() =
       _$DartLoginState_NeedsDevice2FAImpl;
+  const DartLoginState_NeedsDevice2FA._() : super._();
 }
 
 /// @nodoc
@@ -763,8 +767,8 @@ class __$$DartLoginState_Needs2FAVerificationImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$DartLoginState_Needs2FAVerificationImpl
-    implements DartLoginState_Needs2FAVerification {
-  const _$DartLoginState_Needs2FAVerificationImpl();
+    extends DartLoginState_Needs2FAVerification {
+  const _$DartLoginState_Needs2FAVerificationImpl() : super._();
 
   @override
   String toString() {
@@ -882,9 +886,10 @@ class _$DartLoginState_Needs2FAVerificationImpl
   }
 }
 
-abstract class DartLoginState_Needs2FAVerification implements DartLoginState {
+abstract class DartLoginState_Needs2FAVerification extends DartLoginState {
   const factory DartLoginState_Needs2FAVerification() =
       _$DartLoginState_Needs2FAVerificationImpl;
+  const DartLoginState_Needs2FAVerification._() : super._();
 }
 
 /// @nodoc
@@ -907,8 +912,8 @@ class __$$DartLoginState_NeedsSMS2FAImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$DartLoginState_NeedsSMS2FAImpl implements DartLoginState_NeedsSMS2FA {
-  const _$DartLoginState_NeedsSMS2FAImpl();
+class _$DartLoginState_NeedsSMS2FAImpl extends DartLoginState_NeedsSMS2FA {
+  const _$DartLoginState_NeedsSMS2FAImpl() : super._();
 
   @override
   String toString() {
@@ -1026,8 +1031,9 @@ class _$DartLoginState_NeedsSMS2FAImpl implements DartLoginState_NeedsSMS2FA {
   }
 }
 
-abstract class DartLoginState_NeedsSMS2FA implements DartLoginState {
+abstract class DartLoginState_NeedsSMS2FA extends DartLoginState {
   const factory DartLoginState_NeedsSMS2FA() = _$DartLoginState_NeedsSMS2FAImpl;
+  const DartLoginState_NeedsSMS2FA._() : super._();
 }
 
 /// @nodoc
@@ -1067,8 +1073,8 @@ class __$$DartLoginState_NeedsSMS2FAVerificationImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$DartLoginState_NeedsSMS2FAVerificationImpl
-    implements DartLoginState_NeedsSMS2FAVerification {
-  const _$DartLoginState_NeedsSMS2FAVerificationImpl(this.field0);
+    extends DartLoginState_NeedsSMS2FAVerification {
+  const _$DartLoginState_NeedsSMS2FAVerificationImpl(this.field0) : super._();
 
   @override
   final VerifyBody field0;
@@ -1199,10 +1205,10 @@ class _$DartLoginState_NeedsSMS2FAVerificationImpl
   }
 }
 
-abstract class DartLoginState_NeedsSMS2FAVerification
-    implements DartLoginState {
+abstract class DartLoginState_NeedsSMS2FAVerification extends DartLoginState {
   const factory DartLoginState_NeedsSMS2FAVerification(
       final VerifyBody field0) = _$DartLoginState_NeedsSMS2FAVerificationImpl;
+  const DartLoginState_NeedsSMS2FAVerification._() : super._();
 
   VerifyBody get field0;
   @JsonKey(ignore: true)
@@ -1248,8 +1254,8 @@ class __$$DartLoginState_NeedsExtraStepImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$DartLoginState_NeedsExtraStepImpl
-    implements DartLoginState_NeedsExtraStep {
-  const _$DartLoginState_NeedsExtraStepImpl(this.field0);
+    extends DartLoginState_NeedsExtraStep {
+  const _$DartLoginState_NeedsExtraStepImpl(this.field0) : super._();
 
   @override
   final String field0;
@@ -1379,9 +1385,10 @@ class _$DartLoginState_NeedsExtraStepImpl
   }
 }
 
-abstract class DartLoginState_NeedsExtraStep implements DartLoginState {
+abstract class DartLoginState_NeedsExtraStep extends DartLoginState {
   const factory DartLoginState_NeedsExtraStep(final String field0) =
       _$DartLoginState_NeedsExtraStepImpl;
+  const DartLoginState_NeedsExtraStep._() : super._();
 
   String get field0;
   @JsonKey(ignore: true)
@@ -1410,8 +1417,8 @@ class __$$DartLoginState_NeedsLoginImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$DartLoginState_NeedsLoginImpl implements DartLoginState_NeedsLogin {
-  const _$DartLoginState_NeedsLoginImpl();
+class _$DartLoginState_NeedsLoginImpl extends DartLoginState_NeedsLogin {
+  const _$DartLoginState_NeedsLoginImpl() : super._();
 
   @override
   String toString() {
@@ -1529,8 +1536,9 @@ class _$DartLoginState_NeedsLoginImpl implements DartLoginState_NeedsLogin {
   }
 }
 
-abstract class DartLoginState_NeedsLogin implements DartLoginState {
+abstract class DartLoginState_NeedsLogin extends DartLoginState {
   const factory DartLoginState_NeedsLogin() = _$DartLoginState_NeedsLoginImpl;
+  const DartLoginState_NeedsLogin._() : super._();
 }
 
 /// @nodoc
@@ -1729,8 +1737,8 @@ class __$$DartMessage_MessageImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$DartMessage_MessageImpl implements DartMessage_Message {
-  const _$DartMessage_MessageImpl(this.field0);
+class _$DartMessage_MessageImpl extends DartMessage_Message {
+  const _$DartMessage_MessageImpl(this.field0) : super._();
 
   @override
   final DartNormalMessage field0;
@@ -1924,9 +1932,10 @@ class _$DartMessage_MessageImpl implements DartMessage_Message {
   }
 }
 
-abstract class DartMessage_Message implements DartMessage {
+abstract class DartMessage_Message extends DartMessage {
   const factory DartMessage_Message(final DartNormalMessage field0) =
       _$DartMessage_MessageImpl;
+  const DartMessage_Message._() : super._();
 
   DartNormalMessage get field0;
   @JsonKey(ignore: true)
@@ -1969,8 +1978,8 @@ class __$$DartMessage_RenameMessageImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$DartMessage_RenameMessageImpl implements DartMessage_RenameMessage {
-  const _$DartMessage_RenameMessageImpl(this.field0);
+class _$DartMessage_RenameMessageImpl extends DartMessage_RenameMessage {
+  const _$DartMessage_RenameMessageImpl(this.field0) : super._();
 
   @override
   final DartRenameMessage field0;
@@ -2164,9 +2173,10 @@ class _$DartMessage_RenameMessageImpl implements DartMessage_RenameMessage {
   }
 }
 
-abstract class DartMessage_RenameMessage implements DartMessage {
+abstract class DartMessage_RenameMessage extends DartMessage {
   const factory DartMessage_RenameMessage(final DartRenameMessage field0) =
       _$DartMessage_RenameMessageImpl;
+  const DartMessage_RenameMessage._() : super._();
 
   DartRenameMessage get field0;
   @JsonKey(ignore: true)
@@ -2211,8 +2221,8 @@ class __$$DartMessage_ChangeParticipantsImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$DartMessage_ChangeParticipantsImpl
-    implements DartMessage_ChangeParticipants {
-  const _$DartMessage_ChangeParticipantsImpl(this.field0);
+    extends DartMessage_ChangeParticipants {
+  const _$DartMessage_ChangeParticipantsImpl(this.field0) : super._();
 
   @override
   final DartChangeParticipantMessage field0;
@@ -2407,10 +2417,11 @@ class _$DartMessage_ChangeParticipantsImpl
   }
 }
 
-abstract class DartMessage_ChangeParticipants implements DartMessage {
+abstract class DartMessage_ChangeParticipants extends DartMessage {
   const factory DartMessage_ChangeParticipants(
           final DartChangeParticipantMessage field0) =
       _$DartMessage_ChangeParticipantsImpl;
+  const DartMessage_ChangeParticipants._() : super._();
 
   DartChangeParticipantMessage get field0;
   @JsonKey(ignore: true)
@@ -2452,8 +2463,8 @@ class __$$DartMessage_ReactImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$DartMessage_ReactImpl implements DartMessage_React {
-  const _$DartMessage_ReactImpl(this.field0);
+class _$DartMessage_ReactImpl extends DartMessage_React {
+  const _$DartMessage_ReactImpl(this.field0) : super._();
 
   @override
   final DartReactMessage field0;
@@ -2647,9 +2658,10 @@ class _$DartMessage_ReactImpl implements DartMessage_React {
   }
 }
 
-abstract class DartMessage_React implements DartMessage {
+abstract class DartMessage_React extends DartMessage {
   const factory DartMessage_React(final DartReactMessage field0) =
       _$DartMessage_ReactImpl;
+  const DartMessage_React._() : super._();
 
   DartReactMessage get field0;
   @JsonKey(ignore: true)
@@ -2676,8 +2688,8 @@ class __$$DartMessage_DeliveredImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$DartMessage_DeliveredImpl implements DartMessage_Delivered {
-  const _$DartMessage_DeliveredImpl();
+class _$DartMessage_DeliveredImpl extends DartMessage_Delivered {
+  const _$DartMessage_DeliveredImpl() : super._();
 
   @override
   String toString() {
@@ -2860,8 +2872,9 @@ class _$DartMessage_DeliveredImpl implements DartMessage_Delivered {
   }
 }
 
-abstract class DartMessage_Delivered implements DartMessage {
+abstract class DartMessage_Delivered extends DartMessage {
   const factory DartMessage_Delivered() = _$DartMessage_DeliveredImpl;
+  const DartMessage_Delivered._() : super._();
 }
 
 /// @nodoc
@@ -2882,8 +2895,8 @@ class __$$DartMessage_ReadImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$DartMessage_ReadImpl implements DartMessage_Read {
-  const _$DartMessage_ReadImpl();
+class _$DartMessage_ReadImpl extends DartMessage_Read {
+  const _$DartMessage_ReadImpl() : super._();
 
   @override
   String toString() {
@@ -3065,8 +3078,9 @@ class _$DartMessage_ReadImpl implements DartMessage_Read {
   }
 }
 
-abstract class DartMessage_Read implements DartMessage {
+abstract class DartMessage_Read extends DartMessage {
   const factory DartMessage_Read() = _$DartMessage_ReadImpl;
+  const DartMessage_Read._() : super._();
 }
 
 /// @nodoc
@@ -3087,8 +3101,8 @@ class __$$DartMessage_TypingImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$DartMessage_TypingImpl implements DartMessage_Typing {
-  const _$DartMessage_TypingImpl();
+class _$DartMessage_TypingImpl extends DartMessage_Typing {
+  const _$DartMessage_TypingImpl() : super._();
 
   @override
   String toString() {
@@ -3270,8 +3284,9 @@ class _$DartMessage_TypingImpl implements DartMessage_Typing {
   }
 }
 
-abstract class DartMessage_Typing implements DartMessage {
+abstract class DartMessage_Typing extends DartMessage {
   const factory DartMessage_Typing() = _$DartMessage_TypingImpl;
+  const DartMessage_Typing._() : super._();
 }
 
 /// @nodoc
@@ -3307,8 +3322,8 @@ class __$$DartMessage_UnsendImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$DartMessage_UnsendImpl implements DartMessage_Unsend {
-  const _$DartMessage_UnsendImpl(this.field0);
+class _$DartMessage_UnsendImpl extends DartMessage_Unsend {
+  const _$DartMessage_UnsendImpl(this.field0) : super._();
 
   @override
   final DartUnsendMessage field0;
@@ -3502,9 +3517,10 @@ class _$DartMessage_UnsendImpl implements DartMessage_Unsend {
   }
 }
 
-abstract class DartMessage_Unsend implements DartMessage {
+abstract class DartMessage_Unsend extends DartMessage {
   const factory DartMessage_Unsend(final DartUnsendMessage field0) =
       _$DartMessage_UnsendImpl;
+  const DartMessage_Unsend._() : super._();
 
   DartUnsendMessage get field0;
   @JsonKey(ignore: true)
@@ -3545,8 +3561,8 @@ class __$$DartMessage_EditImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$DartMessage_EditImpl implements DartMessage_Edit {
-  const _$DartMessage_EditImpl(this.field0);
+class _$DartMessage_EditImpl extends DartMessage_Edit {
+  const _$DartMessage_EditImpl(this.field0) : super._();
 
   @override
   final DartEditMessage field0;
@@ -3740,9 +3756,10 @@ class _$DartMessage_EditImpl implements DartMessage_Edit {
   }
 }
 
-abstract class DartMessage_Edit implements DartMessage {
+abstract class DartMessage_Edit extends DartMessage {
   const factory DartMessage_Edit(final DartEditMessage field0) =
       _$DartMessage_EditImpl;
+  const DartMessage_Edit._() : super._();
 
   DartEditMessage get field0;
   @JsonKey(ignore: true)
@@ -3785,8 +3802,8 @@ class __$$DartMessage_IconChangeImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$DartMessage_IconChangeImpl implements DartMessage_IconChange {
-  const _$DartMessage_IconChangeImpl(this.field0);
+class _$DartMessage_IconChangeImpl extends DartMessage_IconChange {
+  const _$DartMessage_IconChangeImpl(this.field0) : super._();
 
   @override
   final DartIconChangeMessage field0;
@@ -3980,9 +3997,10 @@ class _$DartMessage_IconChangeImpl implements DartMessage_IconChange {
   }
 }
 
-abstract class DartMessage_IconChange implements DartMessage {
+abstract class DartMessage_IconChange extends DartMessage {
   const factory DartMessage_IconChange(final DartIconChangeMessage field0) =
       _$DartMessage_IconChangeImpl;
+  const DartMessage_IconChange._() : super._();
 
   DartIconChangeMessage get field0;
   @JsonKey(ignore: true)
@@ -4010,8 +4028,8 @@ class __$$DartMessage_StopTypingImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$DartMessage_StopTypingImpl implements DartMessage_StopTyping {
-  const _$DartMessage_StopTypingImpl();
+class _$DartMessage_StopTypingImpl extends DartMessage_StopTyping {
+  const _$DartMessage_StopTypingImpl() : super._();
 
   @override
   String toString() {
@@ -4194,8 +4212,9 @@ class _$DartMessage_StopTypingImpl implements DartMessage_StopTyping {
   }
 }
 
-abstract class DartMessage_StopTyping implements DartMessage {
+abstract class DartMessage_StopTyping extends DartMessage {
   const factory DartMessage_StopTyping() = _$DartMessage_StopTypingImpl;
+  const DartMessage_StopTyping._() : super._();
 }
 
 /// @nodoc
@@ -4235,8 +4254,8 @@ class __$$DartMessage_EnableSmsActivationImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$DartMessage_EnableSmsActivationImpl
-    implements DartMessage_EnableSmsActivation {
-  const _$DartMessage_EnableSmsActivationImpl(this.field0);
+    extends DartMessage_EnableSmsActivation {
+  const _$DartMessage_EnableSmsActivationImpl(this.field0) : super._();
 
   @override
   final bool field0;
@@ -4431,9 +4450,10 @@ class _$DartMessage_EnableSmsActivationImpl
   }
 }
 
-abstract class DartMessage_EnableSmsActivation implements DartMessage {
+abstract class DartMessage_EnableSmsActivation extends DartMessage {
   const factory DartMessage_EnableSmsActivation(final bool field0) =
       _$DartMessage_EnableSmsActivationImpl;
+  const DartMessage_EnableSmsActivation._() : super._();
 
   bool get field0;
   @JsonKey(ignore: true)
@@ -4464,8 +4484,8 @@ class __$$DartMessage_MessageReadOnDeviceImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$DartMessage_MessageReadOnDeviceImpl
-    implements DartMessage_MessageReadOnDevice {
-  const _$DartMessage_MessageReadOnDeviceImpl();
+    extends DartMessage_MessageReadOnDevice {
+  const _$DartMessage_MessageReadOnDeviceImpl() : super._();
 
   @override
   String toString() {
@@ -4648,9 +4668,10 @@ class _$DartMessage_MessageReadOnDeviceImpl
   }
 }
 
-abstract class DartMessage_MessageReadOnDevice implements DartMessage {
+abstract class DartMessage_MessageReadOnDevice extends DartMessage {
   const factory DartMessage_MessageReadOnDevice() =
       _$DartMessage_MessageReadOnDeviceImpl;
+  const DartMessage_MessageReadOnDevice._() : super._();
 }
 
 /// @nodoc
@@ -4688,8 +4709,8 @@ class __$$DartMessage_SmsConfirmSentImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$DartMessage_SmsConfirmSentImpl implements DartMessage_SmsConfirmSent {
-  const _$DartMessage_SmsConfirmSentImpl(this.field0);
+class _$DartMessage_SmsConfirmSentImpl extends DartMessage_SmsConfirmSent {
+  const _$DartMessage_SmsConfirmSentImpl(this.field0) : super._();
 
   @override
   final bool field0;
@@ -4883,9 +4904,10 @@ class _$DartMessage_SmsConfirmSentImpl implements DartMessage_SmsConfirmSent {
   }
 }
 
-abstract class DartMessage_SmsConfirmSent implements DartMessage {
+abstract class DartMessage_SmsConfirmSent extends DartMessage {
   const factory DartMessage_SmsConfirmSent(final bool field0) =
       _$DartMessage_SmsConfirmSentImpl;
+  const DartMessage_SmsConfirmSent._() : super._();
 
   bool get field0;
   @JsonKey(ignore: true)
@@ -4913,8 +4935,8 @@ class __$$DartMessage_MarkUnreadImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$DartMessage_MarkUnreadImpl implements DartMessage_MarkUnread {
-  const _$DartMessage_MarkUnreadImpl();
+class _$DartMessage_MarkUnreadImpl extends DartMessage_MarkUnread {
+  const _$DartMessage_MarkUnreadImpl() : super._();
 
   @override
   String toString() {
@@ -5097,8 +5119,9 @@ class _$DartMessage_MarkUnreadImpl implements DartMessage_MarkUnread {
   }
 }
 
-abstract class DartMessage_MarkUnread implements DartMessage {
+abstract class DartMessage_MarkUnread extends DartMessage {
   const factory DartMessage_MarkUnread() = _$DartMessage_MarkUnreadImpl;
+  const DartMessage_MarkUnread._() : super._();
 }
 
 /// @nodoc
@@ -5123,8 +5146,8 @@ class __$$DartMessage_PeerCacheInvalidateImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$DartMessage_PeerCacheInvalidateImpl
-    implements DartMessage_PeerCacheInvalidate {
-  const _$DartMessage_PeerCacheInvalidateImpl();
+    extends DartMessage_PeerCacheInvalidate {
+  const _$DartMessage_PeerCacheInvalidateImpl() : super._();
 
   @override
   String toString() {
@@ -5307,9 +5330,10 @@ class _$DartMessage_PeerCacheInvalidateImpl
   }
 }
 
-abstract class DartMessage_PeerCacheInvalidate implements DartMessage {
+abstract class DartMessage_PeerCacheInvalidate extends DartMessage {
   const factory DartMessage_PeerCacheInvalidate() =
       _$DartMessage_PeerCacheInvalidateImpl;
+  const DartMessage_PeerCacheInvalidate._() : super._();
 }
 
 /// @nodoc
@@ -5347,8 +5371,8 @@ class __$$DartMessage_UpdateExtensionImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$DartMessage_UpdateExtensionImpl implements DartMessage_UpdateExtension {
-  const _$DartMessage_UpdateExtensionImpl(this.field0);
+class _$DartMessage_UpdateExtensionImpl extends DartMessage_UpdateExtension {
+  const _$DartMessage_UpdateExtensionImpl(this.field0) : super._();
 
   @override
   final DartUpdateExtensionMessage field0;
@@ -5542,10 +5566,11 @@ class _$DartMessage_UpdateExtensionImpl implements DartMessage_UpdateExtension {
   }
 }
 
-abstract class DartMessage_UpdateExtension implements DartMessage {
+abstract class DartMessage_UpdateExtension extends DartMessage {
   const factory DartMessage_UpdateExtension(
           final DartUpdateExtensionMessage field0) =
       _$DartMessage_UpdateExtensionImpl;
+  const DartMessage_UpdateExtension._() : super._();
 
   DartUpdateExtensionMessage get field0;
   @JsonKey(ignore: true)
@@ -5653,8 +5678,8 @@ class __$$DartMessagePart_TextImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$DartMessagePart_TextImpl implements DartMessagePart_Text {
-  const _$DartMessagePart_TextImpl(this.field0);
+class _$DartMessagePart_TextImpl extends DartMessagePart_Text {
+  const _$DartMessagePart_TextImpl(this.field0) : super._();
 
   @override
   final String field0;
@@ -5752,9 +5777,10 @@ class _$DartMessagePart_TextImpl implements DartMessagePart_Text {
   }
 }
 
-abstract class DartMessagePart_Text implements DartMessagePart {
+abstract class DartMessagePart_Text extends DartMessagePart {
   const factory DartMessagePart_Text(final String field0) =
       _$DartMessagePart_TextImpl;
+  const DartMessagePart_Text._() : super._();
 
   @override
   String get field0;
@@ -5799,8 +5825,8 @@ class __$$DartMessagePart_AttachmentImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$DartMessagePart_AttachmentImpl implements DartMessagePart_Attachment {
-  const _$DartMessagePart_AttachmentImpl(this.field0);
+class _$DartMessagePart_AttachmentImpl extends DartMessagePart_Attachment {
+  const _$DartMessagePart_AttachmentImpl(this.field0) : super._();
 
   @override
   final DartAttachment field0;
@@ -5897,9 +5923,10 @@ class _$DartMessagePart_AttachmentImpl implements DartMessagePart_Attachment {
   }
 }
 
-abstract class DartMessagePart_Attachment implements DartMessagePart {
+abstract class DartMessagePart_Attachment extends DartMessagePart {
   const factory DartMessagePart_Attachment(final DartAttachment field0) =
       _$DartMessagePart_AttachmentImpl;
+  const DartMessagePart_Attachment._() : super._();
 
   @override
   DartAttachment get field0;
@@ -5948,8 +5975,8 @@ class __$$DartMessagePart_MentionImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$DartMessagePart_MentionImpl implements DartMessagePart_Mention {
-  const _$DartMessagePart_MentionImpl(this.field0, this.field1);
+class _$DartMessagePart_MentionImpl extends DartMessagePart_Mention {
+  const _$DartMessagePart_MentionImpl(this.field0, this.field1) : super._();
 
   @override
   final String field0;
@@ -6049,9 +6076,10 @@ class _$DartMessagePart_MentionImpl implements DartMessagePart_Mention {
   }
 }
 
-abstract class DartMessagePart_Mention implements DartMessagePart {
+abstract class DartMessagePart_Mention extends DartMessagePart {
   const factory DartMessagePart_Mention(
       final String field0, final String field1) = _$DartMessagePart_MentionImpl;
+  const DartMessagePart_Mention._() : super._();
 
   @override
   String get field0;
@@ -6157,8 +6185,8 @@ class __$$DartMessageTarget_TokenImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$DartMessageTarget_TokenImpl implements DartMessageTarget_Token {
-  const _$DartMessageTarget_TokenImpl(this.field0);
+class _$DartMessageTarget_TokenImpl extends DartMessageTarget_Token {
+  const _$DartMessageTarget_TokenImpl(this.field0) : super._();
 
   @override
   final Uint8List field0;
@@ -6250,9 +6278,10 @@ class _$DartMessageTarget_TokenImpl implements DartMessageTarget_Token {
   }
 }
 
-abstract class DartMessageTarget_Token implements DartMessageTarget {
+abstract class DartMessageTarget_Token extends DartMessageTarget {
   const factory DartMessageTarget_Token(final Uint8List field0) =
       _$DartMessageTarget_TokenImpl;
+  const DartMessageTarget_Token._() : super._();
 
   @override
   Uint8List get field0;
@@ -6296,8 +6325,8 @@ class __$$DartMessageTarget_UuidImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$DartMessageTarget_UuidImpl implements DartMessageTarget_Uuid {
-  const _$DartMessageTarget_UuidImpl(this.field0);
+class _$DartMessageTarget_UuidImpl extends DartMessageTarget_Uuid {
+  const _$DartMessageTarget_UuidImpl(this.field0) : super._();
 
   @override
   final String field0;
@@ -6388,9 +6417,10 @@ class _$DartMessageTarget_UuidImpl implements DartMessageTarget_Uuid {
   }
 }
 
-abstract class DartMessageTarget_Uuid implements DartMessageTarget {
+abstract class DartMessageTarget_Uuid extends DartMessageTarget {
   const factory DartMessageTarget_Uuid(final String field0) =
       _$DartMessageTarget_UuidImpl;
+  const DartMessageTarget_Uuid._() : super._();
 
   @override
   String get field0;
@@ -6482,8 +6512,8 @@ class __$$DartMessageType_IMessageImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$DartMessageType_IMessageImpl implements DartMessageType_IMessage {
-  const _$DartMessageType_IMessageImpl();
+class _$DartMessageType_IMessageImpl extends DartMessageType_IMessage {
+  const _$DartMessageType_IMessageImpl() : super._();
 
   @override
   String toString() {
@@ -6566,8 +6596,9 @@ class _$DartMessageType_IMessageImpl implements DartMessageType_IMessage {
   }
 }
 
-abstract class DartMessageType_IMessage implements DartMessageType {
+abstract class DartMessageType_IMessage extends DartMessageType {
   const factory DartMessageType_IMessage() = _$DartMessageType_IMessageImpl;
+  const DartMessageType_IMessage._() : super._();
 }
 
 /// @nodoc
@@ -6613,9 +6644,10 @@ class __$$DartMessageType_SMSImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$DartMessageType_SMSImpl implements DartMessageType_SMS {
+class _$DartMessageType_SMSImpl extends DartMessageType_SMS {
   const _$DartMessageType_SMSImpl(
-      {required this.isPhone, required this.usingNumber, this.fromHandle});
+      {required this.isPhone, required this.usingNumber, this.fromHandle})
+      : super._();
 
   @override
   final bool isPhone;
@@ -6718,11 +6750,12 @@ class _$DartMessageType_SMSImpl implements DartMessageType_SMS {
   }
 }
 
-abstract class DartMessageType_SMS implements DartMessageType {
+abstract class DartMessageType_SMS extends DartMessageType {
   const factory DartMessageType_SMS(
       {required final bool isPhone,
       required final String usingNumber,
       final String? fromHandle}) = _$DartMessageType_SMSImpl;
+  const DartMessageType_SMS._() : super._();
 
   bool get isPhone;
   String get usingNumber;
@@ -7044,7 +7077,7 @@ class __$$DartPartExtension_StickerImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$DartPartExtension_StickerImpl implements DartPartExtension_Sticker {
+class _$DartPartExtension_StickerImpl extends DartPartExtension_Sticker {
   const _$DartPartExtension_StickerImpl(
       {required this.msgWidth,
       required this.rotation,
@@ -7058,7 +7091,8 @@ class _$DartPartExtension_StickerImpl implements DartPartExtension_Sticker {
       required this.hash,
       required this.safi,
       required this.effectType,
-      required this.stickerId});
+      required this.stickerId})
+      : super._();
 
   @override
   final double msgWidth;
@@ -7244,7 +7278,7 @@ class _$DartPartExtension_StickerImpl implements DartPartExtension_Sticker {
   }
 }
 
-abstract class DartPartExtension_Sticker implements DartPartExtension {
+abstract class DartPartExtension_Sticker extends DartPartExtension {
   const factory DartPartExtension_Sticker(
       {required final double msgWidth,
       required final double rotation,
@@ -7259,6 +7293,7 @@ abstract class DartPartExtension_Sticker implements DartPartExtension {
       required final int safi,
       required final int effectType,
       required final String stickerId}) = _$DartPartExtension_StickerImpl;
+  const DartPartExtension_Sticker._() : super._();
 
   @override
   double get msgWidth;
@@ -7394,9 +7429,10 @@ class __$$DartReactMessageType_ReactImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$DartReactMessageType_ReactImpl implements DartReactMessageType_React {
+class _$DartReactMessageType_ReactImpl extends DartReactMessageType_React {
   const _$DartReactMessageType_ReactImpl(
-      {required this.reaction, required this.enable});
+      {required this.reaction, required this.enable})
+      : super._();
 
   @override
   final DartReaction reaction;
@@ -7491,10 +7527,11 @@ class _$DartReactMessageType_ReactImpl implements DartReactMessageType_React {
   }
 }
 
-abstract class DartReactMessageType_React implements DartReactMessageType {
+abstract class DartReactMessageType_React extends DartReactMessageType {
   const factory DartReactMessageType_React(
       {required final DartReaction reaction,
       required final bool enable}) = _$DartReactMessageType_ReactImpl;
+  const DartReactMessageType_React._() : super._();
 
   DartReaction get reaction;
   bool get enable;
@@ -7545,9 +7582,10 @@ class __$$DartReactMessageType_ExtensionImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$DartReactMessageType_ExtensionImpl
-    implements DartReactMessageType_Extension {
+    extends DartReactMessageType_Extension {
   const _$DartReactMessageType_ExtensionImpl(
-      {required this.spec, required this.body});
+      {required this.spec, required this.body})
+      : super._();
 
   @override
   final Value spec;
@@ -7642,10 +7680,11 @@ class _$DartReactMessageType_ExtensionImpl
   }
 }
 
-abstract class DartReactMessageType_Extension implements DartReactMessageType {
+abstract class DartReactMessageType_Extension extends DartReactMessageType {
   const factory DartReactMessageType_Extension(
           {required final Value spec, required final DartMessageParts body}) =
       _$DartReactMessageType_ExtensionImpl;
+  const DartReactMessageType_Extension._() : super._();
 
   Value get spec;
   DartMessageParts get body;
@@ -7742,9 +7781,8 @@ class __$$DartRegisterState_RegisteredImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$DartRegisterState_RegisteredImpl
-    implements DartRegisterState_Registered {
-  const _$DartRegisterState_RegisteredImpl();
+class _$DartRegisterState_RegisteredImpl extends DartRegisterState_Registered {
+  const _$DartRegisterState_RegisteredImpl() : super._();
 
   @override
   String toString() {
@@ -7830,9 +7868,10 @@ class _$DartRegisterState_RegisteredImpl
   }
 }
 
-abstract class DartRegisterState_Registered implements DartRegisterState {
+abstract class DartRegisterState_Registered extends DartRegisterState {
   const factory DartRegisterState_Registered() =
       _$DartRegisterState_RegisteredImpl;
+  const DartRegisterState_Registered._() : super._();
 }
 
 /// @nodoc
@@ -7857,8 +7896,8 @@ class __$$DartRegisterState_RegisteringImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$DartRegisterState_RegisteringImpl
-    implements DartRegisterState_Registering {
-  const _$DartRegisterState_RegisteringImpl();
+    extends DartRegisterState_Registering {
+  const _$DartRegisterState_RegisteringImpl() : super._();
 
   @override
   String toString() {
@@ -7944,9 +7983,10 @@ class _$DartRegisterState_RegisteringImpl
   }
 }
 
-abstract class DartRegisterState_Registering implements DartRegisterState {
+abstract class DartRegisterState_Registering extends DartRegisterState {
   const factory DartRegisterState_Registering() =
       _$DartRegisterState_RegisteringImpl;
+  const DartRegisterState_Registering._() : super._();
 }
 
 /// @nodoc
@@ -7990,8 +8030,9 @@ class __$$DartRegisterState_FailedImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$DartRegisterState_FailedImpl implements DartRegisterState_Failed {
-  const _$DartRegisterState_FailedImpl({this.retryWait, required this.error});
+class _$DartRegisterState_FailedImpl extends DartRegisterState_Failed {
+  const _$DartRegisterState_FailedImpl({this.retryWait, required this.error})
+      : super._();
 
   @override
   final int? retryWait;
@@ -8092,10 +8133,11 @@ class _$DartRegisterState_FailedImpl implements DartRegisterState_Failed {
   }
 }
 
-abstract class DartRegisterState_Failed implements DartRegisterState {
+abstract class DartRegisterState_Failed extends DartRegisterState {
   const factory DartRegisterState_Failed(
       {final int? retryWait,
       required final String error}) = _$DartRegisterState_FailedImpl;
+  const DartRegisterState_Failed._() : super._();
 
   int? get retryWait;
   String get error;
@@ -8182,8 +8224,8 @@ class __$$PollResult_StopImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$PollResult_StopImpl implements PollResult_Stop {
-  const _$PollResult_StopImpl();
+class _$PollResult_StopImpl extends PollResult_Stop {
+  const _$PollResult_StopImpl() : super._();
 
   @override
   String toString() {
@@ -8262,8 +8304,9 @@ class _$PollResult_StopImpl implements PollResult_Stop {
   }
 }
 
-abstract class PollResult_Stop implements PollResult {
+abstract class PollResult_Stop extends PollResult {
   const factory PollResult_Stop() = _$PollResult_StopImpl;
+  const PollResult_Stop._() : super._();
 }
 
 /// @nodoc
@@ -8299,8 +8342,8 @@ class __$$PollResult_ContImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$PollResult_ContImpl implements PollResult_Cont {
-  const _$PollResult_ContImpl([this.field0]);
+class _$PollResult_ContImpl extends PollResult_Cont {
+  const _$PollResult_ContImpl([this.field0]) : super._();
 
   @override
   final DartIMessage? field0;
@@ -8391,9 +8434,10 @@ class _$PollResult_ContImpl implements PollResult_Cont {
   }
 }
 
-abstract class PollResult_Cont implements PollResult {
+abstract class PollResult_Cont extends PollResult {
   const factory PollResult_Cont([final DartIMessage? field0]) =
       _$PollResult_ContImpl;
+  const PollResult_Cont._() : super._();
 
   DartIMessage? get field0;
   @JsonKey(ignore: true)

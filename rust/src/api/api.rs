@@ -1,9 +1,9 @@
 
 
-use std::{borrow::{Borrow, BorrowMut}, io::{Cursor, Write}, path::PathBuf, str::FromStr, sync::Arc, time::Duration};
+use std::{borrow::{Borrow, BorrowMut}, future::Future, io::{Cursor, Write}, path::PathBuf, str::FromStr, sync::{Arc, OnceLock}, time::Duration};
 
 use anyhow::anyhow;
-use flutter_rust_bridge::{frb, IntoDart};
+use flutter_rust_bridge::{frb, IntoDart, JoinHandle};
 use icloud_auth::{LoginState, AnisetteConfiguration, AppleAccount};
 pub use icloud_auth::{VerifyBody, TrustedPhoneNumber};
 pub use plist::Value;
@@ -18,8 +18,39 @@ use uniffi::{deps::log::{info, error}, HandleAlloc};
 use std::io::Seek;
 use async_recursion::async_recursion;
 
-use crate::{frb_generated::{RustOpaque, StreamSink}, runtime};
+use crate::frb_generated::StreamSink;
 
+use flutter_rust_bridge::for_generated::{SimpleHandler, SimpleExecutor, NoOpErrorListener, SimpleThreadPool, BaseAsyncRuntime, lazy_static};
+
+pub type MyHandler = SimpleHandler<SimpleExecutor<NoOpErrorListener, SimpleThreadPool, MyAsyncRuntime>, NoOpErrorListener>;
+
+pub fn runtime() -> &'static tokio::runtime::Runtime {
+    static RUNTIME: OnceLock<tokio::runtime::Runtime> = OnceLock::new();
+    info!("creating runner");
+    RUNTIME.get_or_init(|| tokio::runtime::Runtime::new().unwrap())
+}
+
+#[derive(Debug, Default)]
+pub struct MyAsyncRuntime;
+
+impl BaseAsyncRuntime for MyAsyncRuntime {
+    fn spawn<F>(&self, future: F) -> JoinHandle<F::Output>
+    where
+        F: Future + Send + 'static,
+        F::Output: Send + 'static,
+    {
+        runtime().spawn(future)
+    }
+}
+
+lazy_static! {
+    pub static ref FLUTTER_RUST_BRIDGE_HANDLER: MyHandler = {
+        MyHandler::new(
+            SimpleExecutor::new(NoOpErrorListener, Default::default(), Default::default()),
+            NoOpErrorListener,
+        )
+    };
+}
 
 #[derive(Serialize, Deserialize, Clone)]
 struct SavedState {
@@ -613,7 +644,7 @@ pub async fn recv_wait(state: &Arc<PushState>) -> PollResult {
     let recv_path = state.0.read().await;
     *recv_path.cancel_poll.lock().await = Some(send);
     select! {
-        msg = recv_path.client.as_ref().unwrap().recieve_wait() => {
+        msg = recv_path.client.as_ref().expect("no client??/").recieve_wait() => {
             *recv_path.cancel_poll.lock().await = None;
             let msg = match msg {
                 Ok(msg) => msg,

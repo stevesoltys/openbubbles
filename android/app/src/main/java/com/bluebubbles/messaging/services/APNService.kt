@@ -105,7 +105,7 @@ class APNService : Service() {
     fun launchAgent() {
         Log.i("launching agent", "herer")
         SMSObserver.init(applicationContext)
-        scope.launch {
+        Thread {
             pushState = initNative(applicationContext.filesDir.path)
             if (pushState.getReady()) {
                 listenLoop()
