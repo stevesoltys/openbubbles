@@ -27,7 +27,11 @@ pub type MyHandler = SimpleHandler<SimpleExecutor<NoOpErrorListener, SimpleThrea
 pub fn runtime() -> &'static tokio::runtime::Runtime {
     static RUNTIME: OnceLock<tokio::runtime::Runtime> = OnceLock::new();
     info!("creating runner");
-    RUNTIME.get_or_init(|| tokio::runtime::Runtime::new().unwrap())
+    RUNTIME.get_or_init(|| tokio::runtime::Builder::new_multi_thread()
+        .worker_threads(1)
+        .thread_name("tokio-rustpush")
+        .enable_all()
+        .build().unwrap())
 }
 
 #[derive(Debug, Default)]
@@ -79,8 +83,6 @@ pub struct InnerPushState {
 pub struct PushState (pub RwLock<InnerPushState>);
 
 pub async fn new_push_state(dir: String) -> anyhow::Result<Arc<PushState>> {
-    #[cfg(target_os = "android")]
-    android_log::init("rustpush").unwrap();
     #[cfg(not(target_os = "android"))]
     init_logger();
     // flutter_rust_bridge::setup_default_user_utils();

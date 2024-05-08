@@ -1,4 +1,4 @@
-package com.bluebubbles.messaging.services
+package com.bluebubbles.messaging.services.rustpush
 
 import android.app.Notification
 import android.app.NotificationChannel
@@ -23,21 +23,26 @@ import com.bluebubbles.telephony_plus.receive.SMSObserver
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.launch
 import uniffi.rust_lib_bluebubbles.NativePushState
 import uniffi.rust_lib_bluebubbles.initNative
+import uniffi.rust_lib_bluebubbles.MsgReceiver
 
-const val APNS_PREFS = "APNS_PREFS"
-const val APNS_STATE = "state"
-
-class APNService : Service() {
-    val pushState = NativePushState()
+class APNService : Service(), MsgReceiver {
+    lateinit var pushState: NativePushState
     private var started = false
     private val binder = APNBinder()
     private var ready = false;
     private var waitingHandleCb = ArrayList<(handle: ULong) -> Unit>();
 
+    private val job = SupervisorJob()
+    private val scope = CoroutineScope(Dispatchers.IO + job)
+
+    companion object {
+        var validPtrs: ArrayList<String> = arrayListOf()
+    }
+
     fun ready() {
+        Log.i("launching agent", "ready")
         synchronized(waitingHandleCb) {
             ready = true;
             for (cb in waitingHandleCb) {
@@ -46,74 +51,48 @@ class APNService : Service() {
         }
     }
 
-    fun recievedMsg(ptr: ULong) {
+    override fun receievedMsg(ptr: ULong) {
         Handler(Looper.getMainLooper()).post {
-            if (MainActivity.channel != null) {
-                Log.i("ugh running", "here")
+            if (MainActivity.engine != null) {
+                Log.i("ugh running", "here $ptr")
                 // app is alive, deliver directly there
-                MainActivity.channel.invokeMethod("APNMsg", ptr.toString())
+                MethodCallHandler.invokeMethod("APNMsg", mapOf("pointer" to ptr.toString()))
                 return@post
             }
-            val onBackgroundMessageIntent = Intent(
-                this@APNService,
-                FlutterFirebaseMessagingBackgroundService::class.java
-            )
-            onBackgroundMessageIntent.putExtra("type", "APNMsg")
-            onBackgroundMessageIntent.putExtra("data", ptr.toString())
-            FlutterFirebaseMessagingBackgroundService.enqueueMessageProcessing(
-                this@APNService,
-                onBackgroundMessageIntent
-            )
+            Log.i("ugh running", "backend $ptr")
+            validPtrs.add(ptr.toString())
+            DartWorkManager.createWorker(this@APNService, "APNMsg", hashMapOf("pointer" to ptr.toString())) {}
         }
     }
 
     fun configured() {
-        val state = pushState.savePush()
-        val sharedPrefs = applicationContext.getSharedPreferences(APNS_PREFS, Context.MODE_PRIVATE)
-        with (sharedPrefs.edit()) {
-            putString(APNS_STATE, state)
-            apply()
-        }
-        listenLoop()
+        pushState.startLoop(this)
     }
 
     fun getHandle(cb: (handle: ULong) -> Unit) {
+        Log.i("launching agent", "getting handle")
         synchronized(waitingHandleCb) {
             if (ready) {
                 cb(pushState.getState())
             } else {
+                Log.i("launching agent", "stalled")
                 waitingHandleCb.add(cb)
             }
         }
     }
 
-    fun listenLoop() {
-        Log.i("launching agent", "stalling")
-        Thread {
-            while (true) {
-                val recievedMsg = pushState.recvWait()
-                if (recievedMsg == ULong.MAX_VALUE) {
-                    ready = false;
-                    break
-                }
-                if (recievedMsg != 0UL) {
-                    recievedMsg(recievedMsg)
-                }
-            }
-        }.start()
+    override fun nativeReady(isReady: Boolean, state: NativePushState) {
+        pushState = state
+        if (isReady) {
+            state.startLoop(this)
+        }
+        ready()
     }
+
     fun launchAgent() {
         Log.i("launching agent", "herer")
         SMSObserver.init(applicationContext)
-        Thread {
-            pushState = initNative(applicationContext.filesDir.path)
-            if (pushState.getReady()) {
-                listenLoop()
-            } else {
-                pushState.newPush()
-            }
-            ready()
-        }.start()
+        initNative(applicationContext.filesDir.path, this)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -146,12 +125,10 @@ class APNService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            notifyForeground()
-        }
         if (!started) {
-            if (ContextHolder.getApplicationContext() == null) {
-                ContextHolder.setApplicationContext(applicationContext)
+            Log.i("launching agent", "start commanded")
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                notifyForeground()
             }
             launchAgent()
             started = true
@@ -162,9 +139,11 @@ class APNService : Service() {
     override fun onDestroy() {
         super.onDestroy()
         pushState.destroy()
+        job.cancel()
     }
 
     override fun onBind(intent: Intent): IBinder {
+        Log.i("trybindsfsf", "bound")
         if (!started) {
             throw Exception("APNService not started!")
         }
@@ -202,7 +181,9 @@ class APNClient(val context: Context) {
     fun bind(cb: (service: APNService) -> Unit) {
         mCallback = cb
         Intent(context, APNService::class.java).also { intent ->
-            context.bindService(intent, connection, 0)
+            Log.i("trybindsfsf", "trying to bind")
+            val result = context.bindService(intent, connection, 0)
+            Log.i("trybindresult", result.toString());
         }
     }
 
