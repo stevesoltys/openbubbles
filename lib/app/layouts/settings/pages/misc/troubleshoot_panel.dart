@@ -17,6 +17,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:universal_io/io.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:bluebubbles/src/rust/api/api.dart' as api;
 
 class TroubleshootPanel extends StatefulWidget {
   @override
@@ -395,6 +396,24 @@ class _TroubleshootPanelState extends OptimizedState<TroubleshootPanel> {
                                     ))
                                 : Icon(Icons.check,
                                     color: context.theme.colorScheme.outline)))
+                  ]),
+              if (usingRustPush)
+                SettingsHeader(
+                  iosSubtitle: iosSubtitle,
+                  materialSubtitle: materialSubtitle,
+                  text: "iMessage"
+                ),
+              if (usingRustPush)
+                SettingsSection(
+                  backgroundColor: tileColor,
+                  children: [
+                    SettingsTile(
+                      title: "Clear identity cache",
+                      subtitle: "Run this troubleshooter if you're having trouble sending messages.",
+                      onTap: () async {
+                        await api.invalidateIdCache(state: pushService.state);
+                        showSnackbar("Success", "Identity cache cleared! Try re-sending any messages.");
+                      }),
                   ]),
                 if (kIsDesktop) const SizedBox(height: 100),
               ],

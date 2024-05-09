@@ -1,13 +1,19 @@
 use std::sync::OnceLock;
 
 use tokio::runtime::Runtime;
+use uniffi::deps::log::info;
 
 
 uniffi::setup_scaffolding!();
 
-fn runtime() -> &'static Runtime {
-    static RUNTIME: OnceLock<Runtime> = OnceLock::new();
-    RUNTIME.get_or_init(|| Runtime::new().unwrap())
+pub fn runtime() -> &'static tokio::runtime::Runtime {
+    static RUNTIME: OnceLock<tokio::runtime::Runtime> = OnceLock::new();
+    info!("creating runner");
+    RUNTIME.get_or_init(|| tokio::runtime::Builder::new_multi_thread()
+        .worker_threads(1)
+        .thread_name("tokio-rustpush")
+        .enable_all()
+        .build().unwrap())
 }
 
 pub mod bbhwinfo {

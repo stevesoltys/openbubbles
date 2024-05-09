@@ -3,7 +3,7 @@ use std::{fmt::Debug, sync::{Arc, RwLock}};
 use tokio::runtime::{Handle, Runtime};
 use uniffi::deps::log::info;
 
-use crate::{api::api::{get_phase, new_push_state, recv_wait, runtime, InnerPushState, PollResult, PushState, RegistrationPhase}, frb_generated::FLUTTER_RUST_BRIDGE_HANDLER};
+use crate::{api::api::{get_phase, new_push_state, recv_wait, InnerPushState, PollResult, PushState, RegistrationPhase}, frb_generated::FLUTTER_RUST_BRIDGE_HANDLER, runtime};
 
 #[uniffi::export(with_foreign)]
 pub trait MsgReceiver: Send + Sync + Debug {

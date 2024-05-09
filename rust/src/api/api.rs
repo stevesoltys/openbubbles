@@ -18,21 +18,11 @@ use uniffi::{deps::log::{info, error}, HandleAlloc};
 use std::io::Seek;
 use async_recursion::async_recursion;
 
-use crate::frb_generated::StreamSink;
+use crate::{frb_generated::StreamSink, runtime};
 
 use flutter_rust_bridge::for_generated::{SimpleHandler, SimpleExecutor, NoOpErrorListener, SimpleThreadPool, BaseAsyncRuntime, lazy_static};
 
 pub type MyHandler = SimpleHandler<SimpleExecutor<NoOpErrorListener, SimpleThreadPool, MyAsyncRuntime>, NoOpErrorListener>;
-
-pub fn runtime() -> &'static tokio::runtime::Runtime {
-    static RUNTIME: OnceLock<tokio::runtime::Runtime> = OnceLock::new();
-    info!("creating runner");
-    RUNTIME.get_or_init(|| tokio::runtime::Builder::new_multi_thread()
-        .worker_threads(1)
-        .thread_name("tokio-rustpush")
-        .enable_all()
-        .build().unwrap())
-}
 
 #[derive(Debug, Default)]
 pub struct MyAsyncRuntime;
@@ -873,6 +863,12 @@ pub async fn reset_state(state: &Arc<PushState>) -> anyhow::Result<()> {
     inner.users = vec![];
     let _ = std::fs::remove_file(inner.conf_dir.join("config.plist"));
     let _ = std::fs::remove_file(inner.conf_dir.join("id_cache.plist"));
+    Ok(())
+}
+
+pub async fn invalidate_id_cache(state: &Arc<PushState>) -> anyhow::Result<()> {
+    let inner = state.0.read().await;
+    inner.client.as_ref().unwrap().invalidate_id_cache().await;
     Ok(())
 }
 

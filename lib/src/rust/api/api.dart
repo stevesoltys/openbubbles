@@ -8,6 +8,7 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'package:freezed_annotation/freezed_annotation.dart' hide protected;
 part 'api.freezed.dart';
 
+// The type `FLUTTER_RUST_BRIDGE_HANDLER` is not used by any `pub` functions, thus it is ignored.
 // The type `InnerPushState` is not used by any `pub` functions, thus it is ignored.
 // The type `MyAsyncRuntime` is not used by any `pub` functions, thus it is ignored.
 // The type `SavedState` is not used by any `pub` functions, thus it is ignored.
@@ -150,6 +151,9 @@ Future<DartLoginState> verify2FaSms(
 
 Future<void> resetState({required ArcPushState state, dynamic hint}) =>
     RustLib.instance.api.resetState(state: state, hint: hint);
+
+Future<void> invalidateIdCache({required ArcPushState state, dynamic hint}) =>
+    RustLib.instance.api.invalidateIdCache(state: state, hint: hint);
 
 Future<String> getUserName({required ArcPushState state, dynamic hint}) =>
     RustLib.instance.api.getUserName(state: state, hint: hint);
