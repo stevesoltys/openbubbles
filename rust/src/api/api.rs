@@ -597,6 +597,8 @@ pub struct DartIMessage {
     pub sent_timestamp: u64,
     #[frb(non_final)]
     pub target: Option<Vec<DartMessageTarget>>,
+    #[frb(non_final)]
+    pub send_delivered: bool,
 }
 
 impl Into<rustpush::Message> for DartMessage {

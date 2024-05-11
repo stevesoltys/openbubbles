@@ -482,6 +482,7 @@ class DartIMessage {
   DartMessage message;
   int sentTimestamp;
   List<DartMessageTarget>? target;
+  bool sendDelivered;
 
   DartIMessage({
     required this.id,
@@ -491,6 +492,7 @@ class DartIMessage {
     required this.message,
     required this.sentTimestamp,
     this.target,
+    required this.sendDelivered,
   });
 
   @override
@@ -501,7 +503,8 @@ class DartIMessage {
       conversation.hashCode ^
       message.hashCode ^
       sentTimestamp.hashCode ^
-      target.hashCode;
+      target.hashCode ^
+      sendDelivered.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -514,7 +517,8 @@ class DartIMessage {
           conversation == other.conversation &&
           message == other.message &&
           sentTimestamp == other.sentTimestamp &&
-          target == other.target;
+          target == other.target &&
+          sendDelivered == other.sendDelivered;
 }
 
 class DartIconChangeMessage {

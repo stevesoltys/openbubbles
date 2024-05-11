@@ -647,12 +647,7 @@ class RustPushBackend implements BackendService {
   }
 
   Future<bool> markDelivered(api.DartIMessage message) async {
-    // all messages with c = 100 need to be acked
-    if (!(message.message is api.DartMessage_React ||
-        message.message is api.DartMessage_Message ||
-        message.message is api.DartMessage_Typing)) {
-      return true;
-    }
+    if (!message.sendDelivered) return true;
     var chat = await pushService.chatForMessage(message);
     if (chat.isRpSms) {
       return true; // no delivery recipts :)

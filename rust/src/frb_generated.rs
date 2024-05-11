@@ -1315,6 +1315,7 @@ impl SseDecode for crate::api::api::DartIMessage {
         let mut var_sentTimestamp = <u64>::sse_decode(deserializer);
         let mut var_target =
             <Option<Vec<crate::api::api::DartMessageTarget>>>::sse_decode(deserializer);
+        let mut var_sendDelivered = <bool>::sse_decode(deserializer);
         return crate::api::api::DartIMessage {
             id: var_id,
             sender: var_sender,
@@ -1323,6 +1324,7 @@ impl SseDecode for crate::api::api::DartIMessage {
             message: var_message,
             sent_timestamp: var_sentTimestamp,
             target: var_target,
+            send_delivered: var_sendDelivered,
         };
     }
 }
@@ -2494,6 +2496,7 @@ impl flutter_rust_bridge::IntoDart for crate::api::api::DartIMessage {
             self.message.into_into_dart().into_dart(),
             self.sent_timestamp.into_into_dart().into_dart(),
             self.target.into_into_dart().into_dart(),
+            self.send_delivered.into_into_dart().into_dart(),
         ]
         .into_dart()
     }
@@ -3370,6 +3373,7 @@ impl SseEncode for crate::api::api::DartIMessage {
         <crate::api::api::DartMessage>::sse_encode(self.message, serializer);
         <u64>::sse_encode(self.sent_timestamp, serializer);
         <Option<Vec<crate::api::api::DartMessageTarget>>>::sse_encode(self.target, serializer);
+        <bool>::sse_encode(self.send_delivered, serializer);
     }
 }
 
