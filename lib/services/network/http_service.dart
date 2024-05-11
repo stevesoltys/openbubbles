@@ -14,7 +14,7 @@ HttpService http = Get.isRegistered<HttpService>() ? Get.find<HttpService>() : G
 
 class HttpBackend implements BackendService {
   @override
-  Future<Chat> createChat(List<String> addresses, String? message, String service, {CancelToken? cancelToken}) async {
+  Future<Chat> createChat(List<String> addresses, String? message, String service, {CancelToken? cancelToken, String? existingGuid}) async {
     var response = await http.createChat(addresses, message, service, cancelToken: cancelToken);
     return Chat.fromMap(response.data["data"]);
   }

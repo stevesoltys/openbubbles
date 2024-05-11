@@ -62,6 +62,9 @@ Future<void> send(
 Future<List<String>> getHandles({required ArcPushState state, dynamic hint}) =>
     RustLib.instance.api.getHandles(state: state, hint: hint);
 
+Future<void> doReregister({required ArcPushState state, dynamic hint}) =>
+    RustLib.instance.api.doReregister(state: state, hint: hint);
+
 Future<DartIMessage> newMsg(
         {required ArcPushState state,
         required DartConversationData conversation,

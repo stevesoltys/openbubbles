@@ -20,6 +20,8 @@ import com.bluebubbles.messaging.R
 import com.bluebubbles.messaging.services.backend_ui_interop.DartWorkManager
 import com.bluebubbles.messaging.services.backend_ui_interop.MethodCallHandler
 import com.bluebubbles.telephony_plus.receive.SMSObserver
+import com.google.gson.GsonBuilder
+import com.google.gson.ToNumberPolicy
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -91,7 +93,19 @@ class APNService : Service(), MsgReceiver {
 
     fun launchAgent() {
         Log.i("launching agent", "herer")
-        SMSObserver.init(applicationContext)
+        SMSObserver.init(applicationContext) { context, map ->
+            if (MainActivity.engine != null) {
+                // app is alive, deliver directly there
+                MethodCallHandler.invokeMethod("SMSMsg", map)
+                return@init
+            }
+            MethodCallHandler.queueId += 1
+            val gson = GsonBuilder()
+                .setObjectToNumberStrategy(ToNumberPolicy.LONG_OR_DOUBLE)
+                .create()
+            MethodCallHandler.queuedMessages[MethodCallHandler.queueId] = gson.toJson(map).toString()
+            DartWorkManager.createWorker(context, "SMSMsg", hashMapOf("id" to MethodCallHandler.queueId)) {}
+        }
         initNative(applicationContext.filesDir.path, this)
     }
 

@@ -4,9 +4,11 @@ import 'package:bluebubbles/utils/logger/logger.dart';
 import 'package:bluebubbles/database/models.dart';
 import 'package:bluebubbles/services/services.dart';
 import 'package:dio/dio.dart';
+import 'package:bluebubbles/services/rustpush/rustpush_service.dart';
 import 'package:bluebubbles/services/network/backend_service.dart';
 import 'package:get/get.dart' hide Response;
 import 'package:tuple/tuple.dart';
+import 'package:bluebubbles/src/rust/api/api.dart' as api;
 
 ChatManager cm = Get.isRegistered<ChatManager>() ? Get.find<ChatManager>() : Get.put(ChatManager());
 
@@ -53,6 +55,13 @@ class ChatManager extends GetxService {
   void setActiveChatSync(Chat chat, {clearNotifications = true, save = true}) {
     eventDispatcher.emit("update-highlight", chat.guid);
     Logger.debug('Setting active chat to ${chat.guid} (${chat.displayName})');
+
+    (() async {
+      print("ensuring keys");
+      var participants = (await chat.getConversationData()).participants;
+      var targets = await api.validateTargets(state: pushService.state, targets: participants, sender: await chat.ensureHandle());
+      print("finished ensuring keys ${targets.length}/${participants.length}");
+    })();
 
     createChatController(chat, active: true);
     if (clearNotifications) {

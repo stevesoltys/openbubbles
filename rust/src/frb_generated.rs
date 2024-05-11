@@ -32,7 +32,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
     default_rust_auto_opaque = RustAutoOpaqueMoi,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.0.0-dev.33";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 1845325924;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = -1867643805;
 
 // Section: executor
 
@@ -284,6 +284,30 @@ fn wire_dart_message_parts_as_plain_impl(
             }
         },
     )
+}
+fn wire_do_reregister_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec,_,_,_>(flutter_rust_bridge::for_generated::TaskInfo{ debug_name: "do_reregister", port: Some(port_), mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal }, move || { 
+            let message = unsafe { flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(ptr_, rust_vec_len_, data_len_) };
+            let mut deserializer = flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_state = <RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Arc < PushState >>>>::sse_decode(&mut deserializer);deserializer.end(); move |context| async move {
+                    transform_result_sse((move || async move {
+                        let mut api_state_decoded = None;
+let decode_indices_ = flutter_rust_bridge::for_generated::rust_auto_opaque_decode_compute_order(vec![api_state.rust_auto_opaque_lock_order_info(0, false)]);
+        for i in decode_indices_ {
+            match i {
+                0 => api_state_decoded = Some(api_state.rust_auto_opaque_decode_async_ref().await),
+                _ => unreachable!(),
+            }
+        }
+        let api_state = api_state_decoded.unwrap();
+ crate::api::api::do_reregister(&api_state).await
+                    })().await)
+                } })
 }
 fn wire_download_attachment_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
@@ -2169,38 +2193,39 @@ fn pde_ffi_dispatcher_primary_impl(
         8 => wire_config_from_encoded_impl(port, ptr, rust_vec_len, data_len),
         5 => wire_config_from_validation_data_impl(port, ptr, rust_vec_len, data_len),
         4 => wire_configure_macos_impl(port, ptr, rust_vec_len, data_len),
-        30 => wire_convert_token_to_uuid_impl(port, ptr, rust_vec_len, data_len),
-        34 => wire_dart_attachment_get_size_impl(port, ptr, rust_vec_len, data_len),
-        33 => wire_dart_attachment_restore_impl(port, ptr, rust_vec_len, data_len),
-        32 => wire_dart_attachment_save_impl(port, ptr, rust_vec_len, data_len),
-        35 => wire_dart_message_parts_as_plain_impl(port, ptr, rust_vec_len, data_len),
-        16 => wire_download_attachment_impl(port, ptr, rust_vec_len, data_len),
-        17 => wire_download_mmcs_impl(port, ptr, rust_vec_len, data_len),
-        23 => wire_get_2fa_sms_opts_impl(port, ptr, rust_vec_len, data_len),
+        31 => wire_convert_token_to_uuid_impl(port, ptr, rust_vec_len, data_len),
+        35 => wire_dart_attachment_get_size_impl(port, ptr, rust_vec_len, data_len),
+        34 => wire_dart_attachment_restore_impl(port, ptr, rust_vec_len, data_len),
+        33 => wire_dart_attachment_save_impl(port, ptr, rust_vec_len, data_len),
+        36 => wire_dart_message_parts_as_plain_impl(port, ptr, rust_vec_len, data_len),
+        13 => wire_do_reregister_impl(port, ptr, rust_vec_len, data_len),
+        17 => wire_download_attachment_impl(port, ptr, rust_vec_len, data_len),
+        18 => wire_download_mmcs_impl(port, ptr, rust_vec_len, data_len),
+        24 => wire_get_2fa_sms_opts_impl(port, ptr, rust_vec_len, data_len),
         7 => wire_get_device_info_impl(port, ptr, rust_vec_len, data_len),
         6 => wire_get_device_info_state_impl(port, ptr, rust_vec_len, data_len),
         12 => wire_get_handles_impl(port, ptr, rust_vec_len, data_len),
-        15 => wire_get_phase_impl(port, ptr, rust_vec_len, data_len),
-        29 => wire_get_regstate_impl(port, ptr, rust_vec_len, data_len),
-        31 => wire_get_sms_targets_impl(port, ptr, rust_vec_len, data_len),
-        28 => wire_get_user_name_impl(port, ptr, rust_vec_len, data_len),
-        27 => wire_invalidate_id_cache_impl(port, ptr, rust_vec_len, data_len),
-        13 => wire_new_msg_impl(port, ptr, rust_vec_len, data_len),
+        16 => wire_get_phase_impl(port, ptr, rust_vec_len, data_len),
+        30 => wire_get_regstate_impl(port, ptr, rust_vec_len, data_len),
+        32 => wire_get_sms_targets_impl(port, ptr, rust_vec_len, data_len),
+        29 => wire_get_user_name_impl(port, ptr, rust_vec_len, data_len),
+        28 => wire_invalidate_id_cache_impl(port, ptr, rust_vec_len, data_len),
+        14 => wire_new_msg_impl(port, ptr, rust_vec_len, data_len),
         1 => wire_new_push_state_impl(port, ptr, rust_vec_len, data_len),
         9 => wire_ptr_to_dart_impl(port, ptr, rust_vec_len, data_len),
         10 => wire_recv_wait_impl(port, ptr, rust_vec_len, data_len),
         3 => wire_register_ids_impl(port, ptr, rust_vec_len, data_len),
-        26 => wire_reset_state_impl(port, ptr, rust_vec_len, data_len),
+        27 => wire_reset_state_impl(port, ptr, rust_vec_len, data_len),
         11 => wire_send_impl(port, ptr, rust_vec_len, data_len),
-        24 => wire_send_2fa_sms_impl(port, ptr, rust_vec_len, data_len),
-        21 => wire_send_2fa_to_devices_impl(port, ptr, rust_vec_len, data_len),
+        25 => wire_send_2fa_sms_impl(port, ptr, rust_vec_len, data_len),
+        22 => wire_send_2fa_to_devices_impl(port, ptr, rust_vec_len, data_len),
         2 => wire_service_from_ptr_impl(port, ptr, rust_vec_len, data_len),
-        20 => wire_try_auth_impl(port, ptr, rust_vec_len, data_len),
-        19 => wire_upload_attachment_impl(port, ptr, rust_vec_len, data_len),
-        18 => wire_upload_mmcs_impl(port, ptr, rust_vec_len, data_len),
-        14 => wire_validate_targets_impl(port, ptr, rust_vec_len, data_len),
-        22 => wire_verify_2fa_impl(port, ptr, rust_vec_len, data_len),
-        25 => wire_verify_2fa_sms_impl(port, ptr, rust_vec_len, data_len),
+        21 => wire_try_auth_impl(port, ptr, rust_vec_len, data_len),
+        20 => wire_upload_attachment_impl(port, ptr, rust_vec_len, data_len),
+        19 => wire_upload_mmcs_impl(port, ptr, rust_vec_len, data_len),
+        15 => wire_validate_targets_impl(port, ptr, rust_vec_len, data_len),
+        23 => wire_verify_2fa_impl(port, ptr, rust_vec_len, data_len),
+        26 => wire_verify_2fa_sms_impl(port, ptr, rust_vec_len, data_len),
         _ => unreachable!(),
     }
 }

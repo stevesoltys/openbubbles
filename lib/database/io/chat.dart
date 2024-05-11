@@ -1175,7 +1175,7 @@ class Chat {
       return participantsCopy.isEmpty;
     });
     if (result == null && !soft) {
-      result = await backend.createChat(dartParticipants.map((e) => e.address).toList(), null, service);
+      result = await backend.createChat(dartParticipants.map((e) => e.address).toList(), null, service, existingGuid: data.senderGuid);
       result.displayName = data.cvName;
       result.apnTitle = data.cvName;
       result = result.save();

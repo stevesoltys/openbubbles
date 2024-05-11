@@ -48,6 +48,7 @@ impl NativePushState {
                     PollResult::Stop => break
                 }
             }
+            info!("finishing loop");
         });
     }
 

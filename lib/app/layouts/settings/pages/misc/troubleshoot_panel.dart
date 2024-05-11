@@ -32,6 +32,7 @@ class _TroubleshootPanelState extends OptimizedState<TroubleshootPanel> {
   final RxBool optimizationsDisabled = false.obs;
 
   bool isExportingLogs = false;
+  final RxnBool reregisteringIds = RxnBool();
 
   @override
   void initState() {
@@ -414,6 +415,33 @@ class _TroubleshootPanelState extends OptimizedState<TroubleshootPanel> {
                         await api.invalidateIdCache(state: pushService.state);
                         showSnackbar("Success", "Identity cache cleared! Try re-sending any messages.");
                       }),
+                    SettingsTile(
+                      title: "Reregister",
+                      subtitle: "Run this troubleshooter if you are told to do so.",
+                      onTap: () async {
+                        try {
+                          reregisteringIds.value = true;
+                          await api.doReregister(state: pushService.state);
+                          showSnackbar("Success", "Registered");
+                        } catch (e) {
+                          showSnackbar("Failure", e.toString());
+                          rethrow;
+                        } finally {
+                          reregisteringIds.value = false;
+                        }
+                      },
+                      trailing: Obx(() => reregisteringIds.value == null
+                          ? const SizedBox.shrink()
+                          : reregisteringIds.value == true ? Container(
+                          constraints: const BoxConstraints(
+                            maxHeight: 20,
+                            maxWidth: 20,
+                          ),
+                          child: CircularProgressIndicator(
+                            strokeWidth: 3,
+                            valueColor: AlwaysStoppedAnimation<Color>(context.theme.colorScheme.primary),
+                          )) : Icon(Icons.check, color: context.theme.colorScheme.outline))
+                      )
                   ]),
                 if (kIsDesktop) const SizedBox(height: 100),
               ],

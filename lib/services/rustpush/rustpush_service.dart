@@ -319,13 +319,13 @@ class RustPushBackend implements BackendService {
 
   @override
   Future<Chat> createChat(List<String> addresses, String? message, String service,
-      {CancelToken? cancelToken}) async {
+      {CancelToken? cancelToken, String? existingGuid}) async {
     var handle = await getDefaultHandle();
     var formattedHandles = (await Future.wait(
               addresses.map((e) async => RustPushBBUtils.rustHandleToBB(await RustPushBBUtils.formatAddress(e)))))
           .toList();
     var chat = Chat(
-      guid: uuid.v4(),
+      guid: existingGuid ?? uuid.v4(),
       participants: formattedHandles,
       usingHandle: handle,
       isRpSms: service == "SMS"
@@ -683,7 +683,8 @@ class RustPushBackend implements BackendService {
 
   @override
   Future<bool> markRead(Chat chat, bool notifyOthers) async {
-    if (chat.isRpSms) return true;
+    if (chat.isRpSms) notifyOthers = false;
+    if (!chat.hasUnreadMessage!) return true;
     var latestMsg = chat.latestMessage.guid;
     var data = await chat.getConversationData();
     if (!notifyOthers) {

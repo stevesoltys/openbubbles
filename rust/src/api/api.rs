@@ -674,6 +674,14 @@ pub async fn get_handles(state: &Arc<PushState>) -> anyhow::Result<Vec<String>> 
     Ok(state.0.read().await.client.as_ref().unwrap().get_handles().await.to_vec())
 }
 
+pub async fn do_reregister(state: &Arc<PushState>) -> anyhow::Result<()> {
+    if !matches!(state.get_phase().await, RegistrationPhase::Registered) {
+        panic!("Wrong phase! (send)")
+    }
+    state.0.read().await.client.as_ref().unwrap().reregister().await?;
+    Ok(())
+}
+
 pub async fn new_msg(state: &Arc<PushState>, conversation: DartConversationData, sender: String, message: DartMessage) -> DartIMessage {
     if !matches!(state.get_phase().await, RegistrationPhase::Registered) {
         panic!("Wrong phase! (new_msg)")

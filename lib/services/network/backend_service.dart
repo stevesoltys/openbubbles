@@ -10,7 +10,7 @@ enum ParticipantOp { Add, Remove }
 
 abstract class BackendService {
   Future<Chat> createChat(List<String> addresses, String? message, String service,
-      {CancelToken? cancelToken});
+      {CancelToken? cancelToken, String? existingGuid});
   Future<Message> sendMessage(Chat c, Message m, {CancelToken? cancelToken});
   Future<bool> renameChat(Chat chat, String newName);
   Future<bool> chatParticipant(ParticipantOp method, Chat chat, String newName);

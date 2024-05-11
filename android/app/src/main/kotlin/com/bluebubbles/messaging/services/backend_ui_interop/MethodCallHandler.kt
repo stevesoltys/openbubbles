@@ -40,23 +40,6 @@ class MethodCallHandler {
         var queueId = 0
         var queuedMessages = HashMap<Int, String>()
 
-        init {
-            // not being called??
-            SMSObserver.listener = listener@{ context, map ->
-                if (engine != null) {
-                    // app is alive, deliver directly there
-                    invokeMethod("SMSMsg", map)
-                    return@listener
-                }
-                queueId += 1
-                val gson = GsonBuilder()
-                    .setObjectToNumberStrategy(ToNumberPolicy.LONG_OR_DOUBLE)
-                    .create()
-                queuedMessages[queueId] = gson.toJson(map).toString()
-                DartWorkManager.createWorker(context, "SMSMsg", hashMapOf("id" to queueId)) {}
-            }
-        }
-
         /// Send a method call back to Dart (app must be launched, otherwise use the DartWorker!)
         fun invokeMethod(method: String, arguments: Map<String, Any>) {
             if (engine != null) {
