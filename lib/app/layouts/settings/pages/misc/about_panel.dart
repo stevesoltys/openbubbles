@@ -73,7 +73,10 @@ class _AboutPanelState extends OptimizedState<AboutPanel> {
                       title: "Source Code",
                       subtitle: "View the source code for BlueBubbles, and contribute!",
                       onTap: () async {
-                        await launchUrl(Uri(scheme: "https", host: "github.com", path: "BlueBubblesApp"), mode: LaunchMode.externalApplication);
+                        await launchUrl(Uri(scheme: "https", host: "github.com", path: "TaeHagen/bluebubbles-app"), mode: LaunchMode.externalApplication);
+                      },
+                      onLongPress: () async {
+                        await launchUrl(Uri(scheme: "https", host: "github.com", path: "TaeHagen/bluebubbles-app/issues"), mode: LaunchMode.externalApplication);
                       },
                       leading: const SettingsLeadingIcon(
                         iosIcon: CupertinoIcons.chevron_left_slash_chevron_right,
@@ -106,7 +109,7 @@ class _AboutPanelState extends OptimizedState<AboutPanel> {
                   backgroundColor: tileColor,
                   children: [
                     SettingsTile(
-                      title: "Changelog",
+                      title: "Changelog (BlueBubbles)",
                       onTap: () async {
                         String changelog =
                             await DefaultAssetBundle.of(context).loadString('assets/changelog/changelog.md');
@@ -176,9 +179,10 @@ class _AboutPanelState extends OptimizedState<AboutPanel> {
                       title: "Developers",
                       onTap: () {
                         final devs = {
-                          "Zach": "zlshames",
-                          "Tanay": "tneotia",
-                          "Joel": "jjoelj",
+                          "Zach (BlueBubbles)": "zlshames",
+                          "Tanay (BlueBubbles)": "tneotia",
+                          "Joel (BlueBubbles)": "jjoelj",
+                          "Tae": "TaeHagen",
                         };
                         showDialog(
                           context: context,
@@ -426,9 +430,12 @@ class _AboutPanelState extends OptimizedState<AboutPanel> {
                                                       "OpenBubbles",
                                                       style: context.theme.textTheme.titleLarge,
                                                     ),
+                                                    Text(
+                                                          "Based on BlueBubbles (not affiliated)",
+                                                          style: context.theme.textTheme.bodyMedium),
                                                     if (!kIsDesktop)
                                                       Text(
-                                                          "Version Number: ${snapshot.hasData ? snapshot.data!.version : "N/A"}",
+                                                          "Version Number: ",
                                                           style: context.theme.textTheme.bodyLarge),
                                                     if (!kIsDesktop)
                                                       Text(
