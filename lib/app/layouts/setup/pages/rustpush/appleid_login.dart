@@ -139,14 +139,14 @@ class _AppleIdLoginState extends OptimizedState<AppleIdLogin> {
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     Text(
-                                      "Visit icloud.com to create an Apple ID. You may need to contact Apple support if it won't let you.",
+                                      "Visit icloud.com to create an Apple ID. You may need to contact Apple support if it won't let you..",
                                       style: Get.textTheme.bodyLarge,
                                     ),
                                     const SizedBox(height: 20),
                                     Align(
                                       alignment: Alignment.center,
                                       child: Text(
-                                        "${RustPushBBUtils.modelToUser(devInfo.name)}\nS/N: ${devInfo.serial}\nmacOS ${devInfo.osVersion}",
+                                        "Warning: OpenBubbles is not an officially supported Apple product.\n\n${RustPushBBUtils.modelToUser(devInfo.name)}\nS/N: ${devInfo.serial}\nmacOS ${devInfo.osVersion}",
                                         textAlign: TextAlign.center,
                                         style: Get.textTheme.bodySmall,
                                       )

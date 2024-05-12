@@ -136,7 +136,7 @@ class SetupViewController extends StatefulController {
                     Align(
                       alignment: Alignment.center,
                       child: Text(
-                        "The above message is from Apple.\n${RustPushBBUtils.modelToUser(devInfo.name)}\nS/N: ${devInfo.serial}\nmacOS ${devInfo.osVersion}",
+                        "The above message is from Apple.\nWarning: OpenBubbles is not an officially supported Apple product. If you can't login on this Mac, call Apple support.\n${RustPushBBUtils.modelToUser(devInfo.name)}\nS/N: ${devInfo.serial}\nmacOS ${devInfo.osVersion}",
                         textAlign: TextAlign.center,
                         style: Get.textTheme.bodySmall,
                       )
