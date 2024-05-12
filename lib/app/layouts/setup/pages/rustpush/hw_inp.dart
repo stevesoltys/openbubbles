@@ -17,6 +17,7 @@ import 'package:bluebubbles/utils/crypto_utils.dart';
 import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge.dart';
@@ -294,7 +295,37 @@ class HwInpState extends OptimizedState<HwInp> {
   Widget build(BuildContext context) {
     return SetupPageTemplate(
       title: staging == null ? "Hardware info" : stagingMine ? "My Mac" : "Shared Mac",
-      subtitle: staging == null ? "To authenticate with iMessage, Apple requires hardware identifiers. If you don't have a code, run the generator on a Mac. The Mac does not need to remain online. Compatible with macOS Beeper codes." : "",
+      customSubtitle: staging != null ? Container() : Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: RichText(
+            text: TextSpan(
+              style: context.theme.textTheme.bodyLarge!.apply(
+                fontSizeDelta: 1.5,
+                color: context.theme.colorScheme.outline,
+              ).copyWith(height: 2),
+              children: [
+                const TextSpan(
+                  text: "To authenticate with iMessage, Apple requires hardware identifiers. If you don't have a code, run "
+                ),
+                TextSpan(
+                  text: 'the generator on a Mac',
+                  style: const TextStyle(color: Colors.blue),
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = () {
+                      launchUrl(Uri.parse("https://openbubbles.app/macos"));
+                  },
+                ),
+                const TextSpan(
+                  text: ". The Mac does not need to remain online. Compatible with macOS Beeper codes."
+                )
+              ]
+            ),
+          ),
+        ),
+      ),
+      subtitle: "",
       customButton: Column(
         children: [
           ErrorText(parentController: controller),
