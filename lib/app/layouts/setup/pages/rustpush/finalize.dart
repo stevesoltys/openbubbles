@@ -116,7 +116,7 @@ class _FinalizePageState extends OptimizedState<FinalizePage> {
                         if (ss.settings.macIsMine.value)
                           const Padding(padding: EdgeInsets.symmetric(vertical: 5),
                             child: Text(
-                              "Share your iMessage access with up to 20 friends in settings!",
+                              "You can manage your hardware identifiers in settings.",
                               textAlign: TextAlign.center,
                             ),
                           ),

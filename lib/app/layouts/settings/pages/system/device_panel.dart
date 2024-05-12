@@ -100,7 +100,7 @@ class _DevicePanelState extends CustomState<DevicePanel, void, DevicePanelContro
                       initialVal: !controller.allowSharing.value,
                       title: "Prevent sharing",
                       backgroundColor: tileColor,
-                      subtitle: "Choose your friends wisely. Apple may block devices due to spam or exceeding 20 users.",
+                      subtitle: "Apple may block devices due to spam or exceeding 20 users.",
                       isThreeLine: true,
                     )),
                     if (deviceInfo != null)
@@ -117,7 +117,24 @@ class _DevicePanelState extends CustomState<DevicePanel, void, DevicePanelContro
                           color: context.theme.colorScheme.onSurface,
                         ),
                       )),
-                    if (kIsDesktop)
+                    const SizedBox(height: 10),
+                    if (!kIsDesktop)
+                    SettingsTile(
+                      backgroundColor: tileColor,
+                      title: "Share Activation Code",
+                      onTap: () async {
+                        var code = await pushService.uploadCode(controller.allowSharing.value, deviceInfo!);
+                        if (code.length > 50) {
+                          Share.text("OpenBubbles", code);
+                        } else {
+                          Share.text("OpenBubbles", "$rpApiRoot/code/$code");
+                        }
+                      },
+                      subtitle: controller.allowSharing.value ? null : "Code can only be used once",
+                      trailing: Icon(
+                        ss.settings.skin.value == Skins.iOS ? CupertinoIcons.share : Icons.share
+                      ),
+                    ),
                     SettingsTile(
                       backgroundColor: tileColor,
                       title: "Copy Activation Code",
@@ -128,23 +145,6 @@ class _DevicePanelState extends CustomState<DevicePanel, void, DevicePanelContro
                         ss.settings.skin.value == Skins.iOS ? CupertinoIcons.doc_on_clipboard : Icons.copy
                       ),
                       subtitle: controller.allowSharing.value ? null : "Code can only be used once",
-                    ),
-                    if (!kIsDesktop)
-                    SettingsTile(
-                      backgroundColor: tileColor,
-                      title: "Share Activation Code",
-                      onTap: () async {
-                        var code = await pushService.uploadCode(controller.allowSharing.value, deviceInfo!);
-                        if (code.length > 50) {
-                          Share.text("OpenBubbles", "Text me on OpenBubbles with my activation code! $code");
-                        } else {
-                          Share.text("OpenBubbles", "Text me on OpenBubbles with my activation code! $code\n$rpApiRoot/code/$code");
-                        }
-                      },
-                      subtitle: controller.allowSharing.value ? null : "Code can only be used once",
-                      trailing: Icon(
-                        ss.settings.skin.value == Skins.iOS ? CupertinoIcons.share : Icons.share
-                      ),
                     ),
                   ],
                 ),

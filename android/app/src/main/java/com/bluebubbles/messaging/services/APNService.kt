@@ -127,7 +127,7 @@ class APNService : Service(), MsgReceiver {
         createNotificationChannel()
         val text = "Hold and turn off notifications to hide this notification"
         val notification: Notification = Notification.Builder(this, FOREGROUND_SERVICE_CHANNEL)
-            .setContentTitle("Connected to APNs")
+            .setContentTitle("Ready for messages")
             .setContentText(text)
             .setSmallIcon(R.mipmap.ic_stat_icon)
             .setStyle(Notification.BigTextStyle()

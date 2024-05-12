@@ -294,7 +294,7 @@ class HwInpState extends OptimizedState<HwInp> {
   Widget build(BuildContext context) {
     return SetupPageTemplate(
       title: staging == null ? "Hardware info" : stagingMine ? "My Mac" : "Shared Mac",
-      subtitle: staging == null ? "To authenticate with iMessage, Apple requires hardware identifiers. If you have a Mac, download and run the QR code generator. If you don't, ask a friend who does to share their code with you. The Mac does not need to remain online. Compatible with macOS Beeper codes." : "",
+      subtitle: staging == null ? "To authenticate with iMessage, Apple requires hardware identifiers. If you don't have a code, run the generator on a Mac. The Mac does not need to remain online. Compatible with macOS Beeper codes." : "",
       customButton: Column(
         children: [
           ErrorText(parentController: controller),
