@@ -129,7 +129,7 @@ class APNService : Service(), MsgReceiver {
         val notification: Notification = Notification.Builder(this, FOREGROUND_SERVICE_CHANNEL)
             .setContentTitle("Connected to APNs")
             .setContentText(text)
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setSmallIcon(R.mipmap.ic_stat_icon)
             .setStyle(Notification.BigTextStyle()
                 .bigText(text))
             .build()
