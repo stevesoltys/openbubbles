@@ -679,9 +679,9 @@ class RustPushBackend implements BackendService {
   @override
   Future<bool> markRead(Chat chat, bool notifyOthers) async {
     if (chat.isRpSms) notifyOthers = false;
-    if (!chat.hasUnreadMessage!) return true;
     var latestMsg = chat.latestMessage.guid;
     var data = await chat.getConversationData();
+    if (data.participants.length > 2) return true;
     if (!notifyOthers) {
       data.participants = [await chat.ensureHandle()];
     }

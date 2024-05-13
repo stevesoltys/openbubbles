@@ -866,13 +866,15 @@ class Chat {
     });
   }
 
-  Chat toggleHasUnread(bool hasUnread, {bool force = false, bool clearLocalNotifications = true, bool privateMark = true}) {
+  Chat toggleHasUnread(bool hasUnread, {bool force = false, bool newOnMessage = false, bool clearLocalNotifications = true, bool privateMark = true}) {
     if (kIsDesktop && !hasUnread) {
       notif.clearDesktopNotificationsForChat(guid);
     }
 
     if (hasUnreadMessage == hasUnread && !force) return this;
+    var changed = false;
     if (!cm.isChatActive(guid) || !hasUnread || force) {
+      changed = Chat.findOne(guid: guid)!.hasUnreadMessage! != hasUnread || newOnMessage;
       hasUnreadMessage = hasUnread;
       save(updateHasUnreadMessage: true);
     }
@@ -891,7 +893,7 @@ class Chat {
           }
         );
       }
-      if (privateMark) {
+      if (privateMark && changed) {
         if (!hasUnread) {
           backend.markRead(this, ss.settings.enablePrivateAPI.value && (autoSendReadReceipts ?? ss.settings.privateMarkChatAsRead.value));
         } else if (hasUnread) {
@@ -967,7 +969,8 @@ class Chat {
           clearLocalNotifications: clearNotificationsIfFromMe,
           force: cm.isChatActive(guid),
           // only private mark if the chat is active
-          privateMark: cm.isChatActive(guid)
+          privateMark: cm.isChatActive(guid),
+          newOnMessage: !message.isFromMe!
         );
       } else if (!cm.isChatActive(guid)) {
         toggleHasUnread(true, privateMark: false);
