@@ -8,11 +8,11 @@ use icloud_auth::{LoginState, AnisetteConfiguration, AppleAccount};
 pub use icloud_auth::{VerifyBody, TrustedPhoneNumber};
 pub use plist::Value;
 use prost::Message;
-pub use rustpush::{APNSState, APNSConnection, IDSAppleUser, PushError, IDSUser, IMClient, IMessage, ConversationData, register};
+pub use rustpush::{IDSAppleUser, PushError, IDSUser, IMClient, IMessage, ConversationData, register};
 
 use serde::{Serialize, Deserialize};
-use tokio::{runtime::Runtime, select, sync::{oneshot::{self, Sender}, Mutex, RwLock}};
-use rustpush::{init_logger, Attachment, BalloonBody, MMCSFile, MessagePart, MessageParts, OSConfig, RegisterState};
+use tokio::{runtime::Runtime, select, sync::{broadcast, oneshot::{self, Sender}, Mutex, RwLock}};
+use rustpush::{init_logger, APSConnection, APSState, Attachment, BalloonBody, MMCSFile, MessagePart, MessageParts, OSConfig, RegisterState};
 pub use rustpush::{MacOSConfig, HardwareConfig};
 use uniffi::{deps::log::{info, error}, HandleAlloc};
 use std::io::Seek;
@@ -48,7 +48,7 @@ lazy_static! {
 
 #[derive(Serialize, Deserialize, Clone)]
 struct SavedState {
-    push: APNSState,
+    push: APSState,
     users: Vec<IDSUser>,
     os_config: MacOSConfig,
 }
@@ -61,7 +61,7 @@ pub enum RegistrationPhase {
 }
 
 pub struct InnerPushState {
-    pub conn: Option<Arc<APNSConnection>>,
+    pub conn: Option<Arc<APSConnection>>,
     pub users: Vec<IDSUser>,
     pub client: Option<IMClient>,
     pub conf_dir: PathBuf,
@@ -125,19 +125,30 @@ async fn restore(curr_state: &PushState) -> anyhow::Result<()> {
 
     let mut inner = curr_state.0.write().await;
     let conf_path = inner.conf_dir.join("config.plist");
-    let mut state: SavedState = plist::from_file(&conf_path)?;
+    let conf_path_dup = conf_path.clone();
+    let state: SavedState = plist::from_file(&conf_path)?;
 
-    let connection = setup_push_rec(&state.os_config, Some(&state.push)).await;
+    // even if we failed on the initial connection, we don't care cuz we're restoring.
     inner.os_config = Some(Arc::new(state.os_config.clone()));
+    let (connection, _err) = setup_push(inner.os_config.clone().unwrap(), Some(&state.push)).await;
     inner.conn = Some(connection);
 
     println!("registration expires at {}", state.users[0].identity.as_ref().unwrap().get_exp().unwrap());
+    let users = state.users.clone();
 
-    inner.client = Some(IMClient::new(inner.conn.as_ref().unwrap().clone(), state.users.clone(), 
+    let state = Arc::new(Mutex::new(state));
+    watch_conn(inner.conn.as_ref().unwrap(), state.clone(), conf_path_dup);
+
+    inner.client = Some(IMClient::new(inner.conn.as_ref().unwrap().clone(), users, 
         inner.conf_dir.join("id_cache.plist"), inner.os_config.clone().unwrap(), Box::new(move |updated_keys| {
             println!("updated keys!!!");
-            state.users = updated_keys;
-            std::fs::write(&conf_path, plist_to_string(&state).unwrap()).unwrap();
+            let state_cpy = state.clone();
+            let conf_path_cpy = conf_path.clone();
+            tokio::spawn(async move {
+                let mut state_locked = state_cpy.lock().await;
+                state_locked.users = updated_keys;
+                std::fs::write(&conf_path_cpy, plist_to_string(&*state_locked).unwrap()).unwrap();
+            });
         })).await);
     Ok(())
 }
@@ -174,40 +185,62 @@ pub async fn register_ids(state: &Arc<PushState>) -> anyhow::Result<Option<DartS
     let conf_path = inner.conf_dir.join("config.plist");
     let conf_path_dup = conf_path.clone();
 
-    let mut state = SavedState {
-        push: inner.conn.as_ref().unwrap().clone_state().await,
+    let state = SavedState {
+        push: inner.conn.as_ref().unwrap().state.read().await.clone(),
         users: empty_users.clone(),
         os_config: inner.os_config.as_ref().unwrap().as_ref().clone()
     };
     std::fs::write(&conf_path_dup, plist_to_string(&state).unwrap()).unwrap();
 
+    let state = Arc::new(Mutex::new(state));
+    watch_conn(inner.conn.as_ref().unwrap(), state.clone(), conf_path_dup);
+
     inner.client = Some(IMClient::new(conn_state, empty_users, inner.conf_dir.join("id_cache.plist"), inner.os_config.clone().unwrap(), Box::new(move |updated_keys| {
-        state.users = updated_keys;
-        std::fs::write(&conf_path, plist_to_string(&state).unwrap()).unwrap();
+        let state_cpy = state.clone();
+        let conf_path_cpy = conf_path.clone();
+        tokio::spawn(async move {
+            let mut state_locked = state_cpy.lock().await;
+            state_locked.users = updated_keys;
+            std::fs::write(&conf_path_cpy, plist_to_string(&*state_locked).unwrap()).unwrap();
+        });
     })).await);
 
     Ok(None)
 }
 
-async fn setup_push(config: &dyn OSConfig, state: Option<&APNSState>) -> anyhow::Result<Arc<APNSConnection>> {
-    let connection = Arc::new(APNSConnection::new(config, state.cloned()).await?);
-    Ok(connection)
+fn watch_conn(connection: &Arc<APSConnection>, state: Arc<Mutex<SavedState>>, conf_path: PathBuf) {
+    let mut to_refresh = connection.connected.subscribe();
+    let reconn_conn = Arc::downgrade(connection);
+
+    tokio::spawn(async move {
+        loop {
+            match to_refresh.recv().await {
+                Ok(()) => {
+                    let Some(conn) = reconn_conn.upgrade() else { break };
+                    // update keys
+                    let mut state_locked = state.lock().await;
+                    state_locked.push = conn.state.read().await.clone();
+                    std::fs::write(&conf_path, plist_to_string(&*state_locked).unwrap()).unwrap();
+                },
+                Err(broadcast::error::RecvError::Lagged(_)) => continue,
+                Err(broadcast::error::RecvError::Closed) => break,
+            }
+        }
+    });
 }
 
-#[async_recursion]
-async fn setup_push_rec(config: &dyn OSConfig, state: Option<&APNSState>) -> Arc<APNSConnection> {
-    let Ok(push) = setup_push(config, state).await else {
-        tokio::time::sleep(Duration::from_secs(30)).await;
-        return setup_push_rec(config, state).await;
-    };
-    push
+async fn setup_push(config: Arc<dyn OSConfig>, state: Option<&APSState>) -> (Arc<APSConnection>, Option<PushError>) {
+    APSConnection::new(config, state.cloned()).await
 }
 
 pub async fn configure_macos(state: &Arc<PushState>, config: &MacOSConfig) -> anyhow::Result<()> {
     let config = config.clone();
     let mut inner = state.0.write().await;
-    let connection = setup_push_rec(&config, None).await;
     inner.os_config = Some(Arc::new(config));
+    let (connection, err) = setup_push(inner.os_config.clone().unwrap(), None).await;
+    if let Some(err) = err {
+        return Err(err.into())
+    }
     inner.conn = Some(connection);
     Ok(())
 }

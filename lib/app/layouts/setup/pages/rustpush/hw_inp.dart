@@ -570,6 +570,7 @@ class HwInpState extends OptimizedState<HwInp> {
     setState(() {
       loading = true;
     });
+    controller.updateConnectError("");
     try {
       ss.settings.macIsMine.value = stagingMine;
       ss.settings.save();
@@ -578,6 +579,11 @@ class HwInpState extends OptimizedState<HwInp> {
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
       );
+    } catch (e) {
+      if (e is AnyhowException) {
+        controller.updateConnectError(e.message);
+      }
+      rethrow;
     } finally {
       setState(() {
         loading = false;
