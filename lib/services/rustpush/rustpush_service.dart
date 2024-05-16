@@ -1096,6 +1096,7 @@ class RustPushService extends GetxService {
         expressiveSendStyleId: innerMsg.field0.effect,
         attributedBody: [attributedBodyData.$1],
         attachments: attributedBodyData.$3,
+        hasAttachments: attributedBodyData.$3.isNotEmpty,
       );
     } else if (myMsg.message is api.DartMessage_RenameMessage) {
       var msg = myMsg.message as api.DartMessage_RenameMessage;
@@ -1190,13 +1191,13 @@ class RustPushService extends GetxService {
         isFromMe: myHandles.contains(myMsg.sender),
         handleId: RustPushBBUtils.rustHandleToBB(myMsg.sender!).originalROWID!,
         dateCreated: DateTime.fromMillisecondsSinceEpoch(myMsg.sentTimestamp),
-        itemType: 1,
         associatedMessagePart: msg.field0.toPart,
         associatedMessageGuid: msg.field0.toUuid,
         associatedMessageType: reaction,
         text: attributedBodyData?.$2,
         attributedBody: attributedBodyData != null ? [attributedBodyData.$1] : [],
         attachments: attributedBodyData?.$3 ?? [],
+        hasAttachments: attributedBodyData?.$3.isNotEmpty ?? false,
       );
     } else if (myMsg.message is api.DartMessage_Unsend) {
       var msg = myMsg.message as api.DartMessage_Unsend;
@@ -1231,7 +1232,6 @@ class RustPushService extends GetxService {
         summaryInfo.editedParts.add(msg.field0.editPart);
       }
 
-      // TODO need i set originalTextRange?
       var contentMap = summaryInfo.editedContent;
       if (contentMap[msg.field0.editPart.toString()] == null) {
         contentMap[msg.field0.editPart.toString()] = [

@@ -375,11 +375,12 @@ class ConversationTextFieldState extends CustomState<ConversationTextField, void
   }
 
   Future<void> sendMessage({String? effect}) async {
-    final text = controller.textController.text.replaceAllMapped(RegExp(r'([\s\\])(:\))(\s|$)'), replaceEmoji("🙂"))
-        .replaceAllMapped(RegExp(r'([\s\\])(:P)(\s|$)'), replaceEmoji("😛"))
-        .replaceAllMapped(RegExp(r'([\s\\])(XD)(\s|$)'), replaceEmoji("😆"))
-        .replaceAllMapped(RegExp(r'([\s\\])(;\))(\s|$)'), replaceEmoji("😉"))
-        .replaceAllMapped(RegExp(r'([\s\\])(:D)(\s|$)'), replaceEmoji("😀"));
+    final text = controller.textController.text
+        .replaceAllMapped(RegExp(r'(^|[\s\\])(:\))(\s|$)'), replaceEmoji("🙂"))
+        .replaceAllMapped(RegExp(r'(^|[\s\\])(:P)(\s|$)'), replaceEmoji("😛"))
+        .replaceAllMapped(RegExp(r'(^|[\s\\])(XD)(\s|$)'), replaceEmoji("😆"))
+        .replaceAllMapped(RegExp(r'(^|[\s\\])(;\))(\s|$)'), replaceEmoji("😉"))
+        .replaceAllMapped(RegExp(r'(^|[\s\\])(:D)(\s|$)'), replaceEmoji("😀"));
     if (controller.scheduledDate.value != null) {
       final date = controller.scheduledDate.value!;
       if (date.isBefore(DateTime.now())) return showSnackbar("Error", "Pick a date in the future!");
