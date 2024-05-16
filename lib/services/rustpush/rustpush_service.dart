@@ -292,11 +292,8 @@ class RustPushBackend implements BackendService {
   void markFailedToLogin() async {
     print("markingfailed");
     ss.settings.finishedSetup.value = false;
-    var data = await api.getDeviceInfoState(state: pushService.state);
-    ss.settings.cachedCodes["restore"] = base64Encode(pushService.getQrInfo(ss.settings.macIsMine.value, data.encodedData));
-    ss.saveSettings();
     if (usingRustPush) {
-      await pushService.reset();
+      await pushService.reset(false);
     }
     Get.offAll(() => PopScope(
       canPop: false,
@@ -1645,8 +1642,8 @@ class RustPushService extends GetxService {
     await initFuture;
   }
 
-  Future reset() async {
-    await api.resetState(state: state);
+  Future reset(bool hw) async {
+    await api.resetState(state: state, resetHw: hw);
   }
 
   Future configured() async {

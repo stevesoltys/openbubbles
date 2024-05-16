@@ -754,7 +754,8 @@ fn wire_reset_state_impl(
     FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec,_,_,_>(flutter_rust_bridge::for_generated::TaskInfo{ debug_name: "reset_state", port: Some(port_), mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal }, move || { 
             let message = unsafe { flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(ptr_, rust_vec_len_, data_len_) };
             let mut deserializer = flutter_rust_bridge::for_generated::SseDeserializer::new(message);
-            let api_state = <RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Arc < PushState >>>>::sse_decode(&mut deserializer);deserializer.end(); move |context| async move {
+            let api_state = <RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Arc < PushState >>>>::sse_decode(&mut deserializer);
+let api_reset_hw = <bool>::sse_decode(&mut deserializer);deserializer.end(); move |context| async move {
                     transform_result_sse((move || async move {
                         let mut api_state_decoded = None;
 let decode_indices_ = flutter_rust_bridge::for_generated::rust_auto_opaque_decode_compute_order(vec![api_state.rust_auto_opaque_lock_order_info(0, false)]);
@@ -765,7 +766,7 @@ let decode_indices_ = flutter_rust_bridge::for_generated::rust_auto_opaque_decod
             }
         }
         let api_state = api_state_decoded.unwrap();
- crate::api::api::reset_state(&api_state).await
+ crate::api::api::reset_state(&api_state, api_reset_hw).await
                     })().await)
                 } })
 }

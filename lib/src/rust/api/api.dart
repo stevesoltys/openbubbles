@@ -11,7 +11,7 @@ part 'api.freezed.dart';
 // The type `FLUTTER_RUST_BRIDGE_HANDLER` is not used by any `pub` functions, thus it is ignored.
 // The type `InnerPushState` is not used by any `pub` functions, thus it is ignored.
 // The type `MyAsyncRuntime` is not used by any `pub` functions, thus it is ignored.
-// The type `SavedState` is not used by any `pub` functions, thus it is ignored.
+// The type `SavedHardwareState` is not used by any `pub` functions, thus it is ignored.
 
 Future<ArcPushState> newPushState({required String dir, dynamic hint}) =>
     RustLib.instance.api.newPushState(dir: dir, hint: hint);
@@ -152,8 +152,9 @@ Future<DartLoginState> verify2FaSms(
     RustLib.instance.api
         .verify2FaSms(state: state, body: body, code: code, hint: hint);
 
-Future<void> resetState({required ArcPushState state, dynamic hint}) =>
-    RustLib.instance.api.resetState(state: state, hint: hint);
+Future<void> resetState(
+        {required ArcPushState state, required bool resetHw, dynamic hint}) =>
+    RustLib.instance.api.resetState(state: state, resetHw: resetHw, hint: hint);
 
 Future<void> invalidateIdCache({required ArcPushState state, dynamic hint}) =>
     RustLib.instance.api.invalidateIdCache(state: state, hint: hint);

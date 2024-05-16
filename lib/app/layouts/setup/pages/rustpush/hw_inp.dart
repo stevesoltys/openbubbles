@@ -47,6 +47,7 @@ class HwInpState extends OptimizedState<HwInp> {
   String deviceName = "";
 
   bool stagingNonInp = false;
+  bool alreadyActivated = false;
   bool usingBeeper = false;
 
   Future<void> scanQRCode() async {
@@ -264,13 +265,22 @@ class HwInpState extends OptimizedState<HwInp> {
     }
   }
 
-  void updateAppLink() async {
+  void updateInitial() async {
     print("updating app link");
     final _appLinks = AppLinks();
     var link = await _appLinks.getLatestAppLink();
 
     if (link != null) {
       checkCode(link.toString());
+    } else {
+      var state = await api.getPhase(state: pushService.state);
+      if (state != api.RegistrationPhase.wantsOsConfig) {
+        // restore
+        stagingNonInp = true;
+        alreadyActivated = true;
+        var parsed = await api.configFromEncoded(encoded: (await api.getDeviceInfoState(state: pushService.state)).encodedData);
+        select(parsed, ss.settings.macIsMine.value);
+      }
     }
   }
 
@@ -278,7 +288,7 @@ class HwInpState extends OptimizedState<HwInp> {
   void initState() {
     super.initState();
 
-    updateAppLink();
+    updateInitial();
 
     if (ss.settings.cachedCodes.containsKey("restore")) {
       handleOpenAbsinthe("restore");
@@ -443,6 +453,7 @@ class HwInpState extends OptimizedState<HwInp> {
                                       stagingNonInp = false;
                                       staging = stagingInfo = null;
                                       codeController.clear();
+                                      alreadyActivated = false;
                                       usingBeeper = false;
                                     });
                                   } else {
@@ -572,9 +583,11 @@ class HwInpState extends OptimizedState<HwInp> {
     });
     controller.updateConnectError("");
     try {
-      ss.settings.macIsMine.value = stagingMine;
-      ss.settings.save();
-      await api.configureMacos(state: pushService.state, config: config);
+      if (!alreadyActivated) {
+        ss.settings.macIsMine.value = stagingMine;
+        ss.settings.save();
+        await api.configureMacos(state: pushService.state, config: config);
+      }
       controller.pageController.nextPage(
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,

@@ -149,7 +149,8 @@ abstract class RustLibApi extends BaseApi {
   Future<DartSupportAlert?> registerIds(
       {required ArcPushState state, dynamic hint});
 
-  Future<void> resetState({required ArcPushState state, dynamic hint});
+  Future<void> resetState(
+      {required ArcPushState state, required bool resetHw, dynamic hint});
 
   Future<void> send(
       {required ArcPushState state, required DartIMessage msg, dynamic hint});
@@ -936,12 +937,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
-  Future<void> resetState({required ArcPushState state, dynamic hint}) {
+  Future<void> resetState(
+      {required ArcPushState state, required bool resetHw, dynamic hint}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcPushState(
             state, serializer);
+        sse_encode_bool(resetHw, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
             funcId: 27, port: port_);
       },
@@ -950,7 +953,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         decodeErrorData: sse_decode_AnyhowException,
       ),
       constMeta: kResetStateConstMeta,
-      argValues: [state],
+      argValues: [state, resetHw],
       apiImpl: this,
       hint: hint,
     ));
@@ -958,7 +961,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   TaskConstMeta get kResetStateConstMeta => const TaskConstMeta(
         debugName: "reset_state",
-        argNames: ["state"],
+        argNames: ["state", "resetHw"],
       );
 
   @override

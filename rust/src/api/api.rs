@@ -47,9 +47,8 @@ lazy_static! {
 }
 
 #[derive(Serialize, Deserialize, Clone)]
-struct SavedState {
+struct SavedHardwareState {
     push: APSState,
-    users: Vec<IDSUser>,
     os_config: MacOSConfig,
 }
 
@@ -85,9 +84,7 @@ pub async fn new_push_state(dir: String) -> anyhow::Result<Arc<PushState>> {
         account: None,
         cancel_poll: Mutex::new(None)
     }));
-    if PathBuf::from_str(&dir).unwrap().join("config.plist").exists() {
-        restore(&state).await?;
-    }
+    restore(&state).await?;
     Ok(Arc::new(state))
 }
 
@@ -124,31 +121,35 @@ async fn restore(curr_state: &PushState) -> anyhow::Result<()> {
     }
 
     let mut inner = curr_state.0.write().await;
-    let conf_path = inner.conf_dir.join("config.plist");
-    let conf_path_dup = conf_path.clone();
-    let state: SavedState = plist::from_file(&conf_path)?;
+
+    let hw_config_path = inner.conf_dir.join("hw_info.plist");
+    let id_path = inner.conf_dir.join("id.plist");
+
+    // migrate
+    if let Ok(config) = plist::from_file::<_, SavedHardwareState>(&inner.conf_dir.join("config.plist")) {
+        std::fs::write(&hw_config_path, plist_to_string(&config).unwrap()).unwrap();
+        let data: Value = plist::from_file(&inner.conf_dir.join("config.plist")).unwrap();
+        std::fs::write(&id_path, plist_to_string(&data.as_dictionary().unwrap().get("users").unwrap()).unwrap()).unwrap();
+        std::fs::remove_file(inner.conf_dir.join("config.plist")).unwrap();
+        info!("migrated!");
+    }
+
+    let Ok(state) = plist::from_file::<_, SavedHardwareState>(&hw_config_path) else { return Ok(()) };
 
     // even if we failed on the initial connection, we don't care cuz we're restoring.
     inner.os_config = Some(Arc::new(state.os_config.clone()));
-    let (connection, _err) = setup_push(inner.os_config.clone().unwrap(), Some(&state.push)).await;
+    let (connection, _err) = setup_push(inner.os_config.clone().unwrap(), Some(&state.push), hw_config_path).await;
     inner.conn = Some(connection);
 
-    println!("registration expires at {}", state.users[0].identity.as_ref().unwrap().get_exp().unwrap());
-    let users = state.users.clone();
+    // id may not exist yet; that's fine
+    let Ok(users) = plist::from_file::<_, Vec<IDSUser>>(&id_path) else { return Ok(()) };
 
-    let state = Arc::new(Mutex::new(state));
-    watch_conn(inner.conn.as_ref().unwrap(), state.clone(), conf_path_dup);
+    println!("registration expires at {}", users[0].identity.as_ref().unwrap().get_exp().unwrap());
 
     inner.client = Some(IMClient::new(inner.conn.as_ref().unwrap().clone(), users, 
         inner.conf_dir.join("id_cache.plist"), inner.os_config.clone().unwrap(), Box::new(move |updated_keys| {
             println!("updated keys!!!");
-            let state_cpy = state.clone();
-            let conf_path_cpy = conf_path.clone();
-            tokio::spawn(async move {
-                let mut state_locked = state_cpy.lock().await;
-                state_locked.users = updated_keys;
-                std::fs::write(&conf_path_cpy, plist_to_string(&*state_locked).unwrap()).unwrap();
-            });
+            std::fs::write(&id_path, plist_to_string(&updated_keys).unwrap()).unwrap();
         })).await);
     Ok(())
 }
@@ -182,62 +183,57 @@ pub async fn register_ids(state: &Arc<PushState>) -> anyhow::Result<Option<DartS
             Err(anyhow!(err))
         }
     }
-    let conf_path = inner.conf_dir.join("config.plist");
-    let conf_path_dup = conf_path.clone();
-
-    let state = SavedState {
-        push: inner.conn.as_ref().unwrap().state.read().await.clone(),
-        users: empty_users.clone(),
-        os_config: inner.os_config.as_ref().unwrap().as_ref().clone()
-    };
-    std::fs::write(&conf_path_dup, plist_to_string(&state).unwrap()).unwrap();
-
-    let state = Arc::new(Mutex::new(state));
-    watch_conn(inner.conn.as_ref().unwrap(), state.clone(), conf_path_dup);
+    let id_path = inner.conf_dir.join("id.plist");
+    std::fs::write(&id_path, plist_to_string(&empty_users).unwrap()).unwrap();
 
     inner.client = Some(IMClient::new(conn_state, empty_users, inner.conf_dir.join("id_cache.plist"), inner.os_config.clone().unwrap(), Box::new(move |updated_keys| {
-        let state_cpy = state.clone();
-        let conf_path_cpy = conf_path.clone();
-        tokio::spawn(async move {
-            let mut state_locked = state_cpy.lock().await;
-            state_locked.users = updated_keys;
-            std::fs::write(&conf_path_cpy, plist_to_string(&*state_locked).unwrap()).unwrap();
-        });
+        std::fs::write(&id_path, plist_to_string(&updated_keys).unwrap()).unwrap();
     })).await);
 
     Ok(None)
 }
 
-fn watch_conn(connection: &Arc<APSConnection>, state: Arc<Mutex<SavedState>>, conf_path: PathBuf) {
-    let mut to_refresh = connection.connected.subscribe();
-    let reconn_conn = Arc::downgrade(connection);
+async fn setup_push(config: Arc<MacOSConfig>, state: Option<&APSState>, state_path: PathBuf) -> (Arc<APSConnection>, Option<PushError>) {
+    let (conn, error) = APSConnection::new(config.clone(), state.cloned()).await;
 
+    if error.is_none() {
+        let state = SavedHardwareState {
+            push: conn.state.read().await.clone(),
+            os_config: config.as_ref().clone()
+        };
+        std::fs::write(&state_path, plist_to_string(&state).unwrap()).unwrap();
+    }
+
+    let mut to_refresh = conn.connected.subscribe();
+    let reconn_conn = Arc::downgrade(&conn);
+    let config_ref = config.clone();
     tokio::spawn(async move {
         loop {
             match to_refresh.recv().await {
                 Ok(()) => {
                     let Some(conn) = reconn_conn.upgrade() else { break };
                     // update keys
-                    let mut state_locked = state.lock().await;
-                    state_locked.push = conn.state.read().await.clone();
-                    std::fs::write(&conf_path, plist_to_string(&*state_locked).unwrap()).unwrap();
+                    let state = SavedHardwareState {
+                        push: conn.state.read().await.clone(),
+                        os_config: config_ref.as_ref().clone()
+                    };
+                    std::fs::write(&state_path, plist_to_string(&state).unwrap()).unwrap();
                 },
                 Err(broadcast::error::RecvError::Lagged(_)) => continue,
                 Err(broadcast::error::RecvError::Closed) => break,
             }
         }
     });
-}
 
-async fn setup_push(config: Arc<dyn OSConfig>, state: Option<&APSState>) -> (Arc<APSConnection>, Option<PushError>) {
-    APSConnection::new(config, state.cloned()).await
+    (conn, error)
 }
 
 pub async fn configure_macos(state: &Arc<PushState>, config: &MacOSConfig) -> anyhow::Result<()> {
     let config = config.clone();
     let mut inner = state.0.write().await;
     inner.os_config = Some(Arc::new(config));
-    let (connection, err) = setup_push(inner.os_config.clone().unwrap(), None).await;
+    let conf_path = inner.conf_dir.join("hw_info.plist");
+    let (connection, err) = setup_push(inner.os_config.clone().unwrap(), None, conf_path).await;
     if let Some(err) = err {
         return Err(err.into())
     }
@@ -888,7 +884,7 @@ pub async fn verify_2fa_sms(state: &Arc<PushState>, body: &VerifyBody, code: Str
     Ok(unsafe { std::mem::transmute(account.verify_sms_2fa(code, body.clone()).await?) })
 }
 
-pub async fn reset_state(state: &Arc<PushState>) -> anyhow::Result<()> {
+pub async fn reset_state(state: &Arc<PushState>, reset_hw: bool) -> anyhow::Result<()> {
     // tell any poll to stop
     let inner = state.0.read().await;
     if let Some(cancel) = inner.cancel_poll.lock().await.take() {
@@ -900,12 +896,17 @@ pub async fn reset_state(state: &Arc<PushState>) -> anyhow::Result<()> {
     inner.client = None;
     // try deregistering from iMessage, but if it fails we don't really care
     let _ = register(inner.os_config.as_ref().unwrap().as_ref(), &mut [], &conn_state).await;
-    inner.conn = None;
-    inner.os_config = None;
     inner.account = None;
     inner.users = vec![];
-    let _ = std::fs::remove_file(inner.conf_dir.join("config.plist"));
+    let _ = std::fs::remove_file(inner.conf_dir.join("id.plist"));
     let _ = std::fs::remove_file(inner.conf_dir.join("id_cache.plist"));
+
+    if reset_hw {
+        inner.conn = None;
+        inner.os_config = None;
+        let _ = std::fs::remove_file(inner.conf_dir.join("hw_info.plist"));
+    }
+
     Ok(())
 }
 
