@@ -343,6 +343,14 @@ class Chat {
   String? lastReadMessageGuid;
   int? groupVersion;
 
+  Message get sendLastMessage {
+    var messages = Chat.getMessages(this, limit: 10, getDetails: true);
+    return messages.firstWhereOrNull((msg) => msg.stagingGuid != null || (msg.guid != null && !msg.guid!.contains("temp") && !msg.guid!.contains("error"))) ?? Message(
+      dateCreated: DateTime.fromMillisecondsSinceEpoch(0),
+      guid: guid,
+    );
+  }
+
   final RxnString _customAvatarPath = RxnString();
   String? get customAvatarPath => _customAvatarPath.value;
   set customAvatarPath(String? s) => _customAvatarPath.value = s;
