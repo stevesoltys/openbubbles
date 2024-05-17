@@ -27,7 +27,7 @@ class Settings {
   final RxBool autoSave = false.obs;
   final RxString autoSavePicsLocation = "Pictures".obs;
   final RxString autoSaveDocsLocation = "/storage/emulated/0/Download/".obs;
-  final RxBool autoOpenKeyboard = true.obs;
+  final RxBool autoOpenKeyboard = false.obs;
   final RxBool hideTextPreviews = false.obs;
   final RxBool showIncrementalSync = false.obs;
   final RxBool highPerfMode = false.obs;

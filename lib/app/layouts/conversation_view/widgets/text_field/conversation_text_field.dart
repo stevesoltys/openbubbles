@@ -380,7 +380,8 @@ class ConversationTextFieldState extends CustomState<ConversationTextField, void
         .replaceAllMapped(RegExp(r'(^|[\s\\])(:P)(\s|$)'), replaceEmoji("😛"))
         .replaceAllMapped(RegExp(r'(^|[\s\\])(XD)(\s|$)'), replaceEmoji("😆"))
         .replaceAllMapped(RegExp(r'(^|[\s\\])(;\))(\s|$)'), replaceEmoji("😉"))
-        .replaceAllMapped(RegExp(r'(^|[\s\\])(:D)(\s|$)'), replaceEmoji("😀"));
+        .replaceAllMapped(RegExp(r'(^|[\s\\])(:D)(\s|$)'), replaceEmoji("😀"))
+        .replaceAllMapped(RegExp(r'(^|[\s\\])(:\()(\s|$)'), replaceEmoji("🙁"));
     if (controller.scheduledDate.value != null) {
       final date = controller.scheduledDate.value!;
       if (date.isBefore(DateTime.now())) return showSnackbar("Error", "Pick a date in the future!");

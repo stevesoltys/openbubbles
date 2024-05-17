@@ -155,7 +155,7 @@ class ChatCreatorState extends OptimizedState<ChatCreator> {
     if (widget.initialSelected.isNotEmpty) messageNode.requestFocus();
   }
 
-  void addSelected(SelectedContact c) async {
+  Future<void> addSelected(SelectedContact c) async {
     selectedContacts.add(c);
     try {
       c.iMessage.value = await backend.handleiMessageState(c.address);
@@ -182,7 +182,7 @@ class ChatCreatorState extends OptimizedState<ChatCreator> {
       fakeController.value = null;
       return null;
     }
-    if (selectedContacts.firstWhereOrNull((element) => element.iMessage.value == false) != null) {
+    if (selectedContacts.any((element) => element.iMessage.value == false)) {
       setState(() {
         iMessage = false;
         sms = true;
@@ -203,7 +203,10 @@ class ChatCreatorState extends OptimizedState<ChatCreator> {
         if (kIsWeb) {
           existingChat = await Chat.findOneWeb(chatIdentifier: slugify(address, delimiter: ''));
         } else {
-          existingChat = Chat.findOne(chatIdentifier: slugify(address, delimiter: ''));
+          final query = chatBox.query(Chat_.chatIdentifier.equals(slugify(address, delimiter: ''))).build();
+          final result = query.find();
+          existingChat = result.firstWhere((element) => element.isIMessage == iMessage);
+          query.close();
         }
       } catch (_) {}
     }
@@ -211,6 +214,7 @@ class ChatCreatorState extends OptimizedState<ChatCreator> {
     if (existingChat == null) {
       for (Chat c in (checkDeleted ? Database.chats.getAll() : filteredChats)) {
         if (c.participants.length != selectedContacts.length) continue;
+        if (c.isIMessage != iMessage) continue; // mke sure imessage status is the same
         int matches = 0;
         for (SelectedContact contact in selectedContacts) {
           for (Handle participant in c.participants) {
@@ -269,17 +273,17 @@ class ChatCreatorState extends OptimizedState<ChatCreator> {
     return existingChat;
   }
 
-  void addressOnSubmitted() {
+  Future<void> addressOnSubmitted() async {
     final text = addressController.text;
     if (text.isEmail || text.isPhoneNumber) {
-      addSelected(SelectedContact(
+      await addSelected(SelectedContact(
         displayName: text,
         address: text,
       ));
     } else if (filteredContacts.length == 1) {
       final possibleAddresses = [...filteredContacts.first.phones, ...filteredContacts.first.emails];
       if (possibleAddresses.length == 1) {
-        addSelected(SelectedContact(
+        await addSelected(SelectedContact(
           displayName: filteredContacts.first.displayName,
           address: possibleAddresses.first,
         ));
@@ -721,7 +725,31 @@ class ChatCreatorState extends OptimizedState<ChatCreator> {
                         recorderController: null,
                         initialAttachments: widget.initialAttachments,
                         sendMessage: ({String? effect}) async {
-                          addressOnSubmitted();
+                          if (addressController.text.trim() != "") {
+                            showDialog(
+                                context: context,
+                                barrierDismissible: false,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    backgroundColor: context.theme.colorScheme.properSurface,
+                                    title: Text(
+                                      "Querying available services...",
+                                      style: context.theme.textTheme.titleLarge,
+                                    ),
+                                    content: Container(
+                                      height: 70,
+                                      child: Center(
+                                        child: CircularProgressIndicator(
+                                          backgroundColor: context.theme.colorScheme.properSurface,
+                                          valueColor: AlwaysStoppedAnimation<Color>(context.theme.colorScheme.primary),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                });
+                            await addressOnSubmitted();
+                            Get.back(closeOverlays: true);
+                          }
                           final chat = fakeController.value?.chat ?? await findExistingChat(checkDeleted: true, update: false);
                           bool existsOnServer = true; // if there is no remote, we exist on the "server"
                           if (chat != null && backend.getRemoteService() != null) {
