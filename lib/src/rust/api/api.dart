@@ -23,6 +23,9 @@ Future<DartSupportAlert?> registerIds(
         {required ArcPushState state, dynamic hint}) =>
     RustLib.instance.api.registerIds(state: state, hint: hint);
 
+Future<void> configureAppReview({required ArcPushState state, dynamic hint}) =>
+    RustLib.instance.api.configureAppReview(state: state, hint: hint);
+
 Future<void> configureMacos(
         {required ArcPushState state,
         required MacOsConfig config,

@@ -1270,6 +1270,13 @@ class RustPushService extends GetxService {
   Future<Chat> chatForMessage(api.DartIMessage myMsg) async {
     // find existing saved message and use that chat if we're getting a replay
     var existing = Message.findOne(guid: myMsg.id);
+    if (myMsg.message is api.DartMessage_Edit) {
+      var msg = myMsg.message as api.DartMessage_Edit;
+      existing = Message.findOne(guid: msg.field0.tuuid);
+    } else if (myMsg.message is api.DartMessage_Unsend) {
+      var msg = myMsg.message as api.DartMessage_Unsend;
+      existing = Message.findOne(guid: msg.field0.tuuid);
+    }
     if (existing?.getChat() != null) {
       return existing!.getChat()!;
     }

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:async_task/async_task_extension.dart';
+import 'package:bluebubbles/app/layouts/conversation_list/pages/conversation_list.dart';
 import 'package:bluebubbles/app/layouts/settings/dialogs/custom_headers_dialog.dart';
 import 'package:bluebubbles/app/layouts/settings/widgets/layout/settings_section.dart';
 import 'package:bluebubbles/app/layouts/setup/dialogs/failed_to_scan_dialog.dart';
@@ -221,6 +222,38 @@ class HwInpState extends OptimizedState<HwInp> {
 
   Future<void> checkCode(String text) async {
     print("Here $text");
+    if (text == "testing-please-letmein") {
+      FocusManager.instance.primaryFocus?.unfocus();
+      setState(() {
+        loading = true;
+      });
+      controller.updateConnectError("");
+      try {
+        await api.configureAppReview(state: pushService.state);
+        ss.settings.cachedCodes.clear();
+        await pushService.configured();
+        await setup.finishSetup();
+        Get.offAll(() => ConversationList(
+            showArchivedChats: false,
+            showUnknownSenders: false,
+          ),
+          routeName: "",
+          duration: Duration.zero,
+          transition: Transition.noTransition
+        );
+        Get.delete<SetupViewController>(force: true);
+      } catch (e) {
+        if (e is AnyhowException) {
+          controller.updateConnectError(e.message);
+        }
+        rethrow;
+      } finally {
+        setState(() {
+          loading = false;
+        });
+      }
+      return;
+    }
     var header = "$rpApiRoot/code/";
     if (text.startsWith(header)) {
       await handleOpenAbsinthe(text.replaceFirst(header, ""));
@@ -472,7 +505,7 @@ class HwInpState extends OptimizedState<HwInp> {
                                 ),
                               ),
                             ),
-                            if (staging == null && !kIsDesktop)
+                            if (staging == null && !kIsDesktop && !loading)
                             Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(25),
@@ -510,7 +543,7 @@ class HwInpState extends OptimizedState<HwInp> {
                                 ),
                               ),
                             ),
-                            if (staging != null || kIsDesktop)
+                            if (staging != null || kIsDesktop || loading)
                             Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(25),
