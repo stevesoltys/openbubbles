@@ -55,3 +55,6 @@ pubspeck.lock
 
 #native-lib
 native-lib/target/**
+
+/rust/src/api/hw_testing.plist
+/rust/src/api/id_testing.plist
