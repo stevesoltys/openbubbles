@@ -24,7 +24,7 @@ pub fn init_native(dir: String, handler: Arc<dyn MsgReceiver>) {
     runtime().spawn(async move {
         info!("rpljslf initting");
         let state = Arc::new(NativePushState {
-            state: new_push_state(dir).await.unwrap()
+            state: new_push_state(dir).await
         });
         info!("rpljslf raed");
         handler.native_ready(state.get_ready().await, state.clone());

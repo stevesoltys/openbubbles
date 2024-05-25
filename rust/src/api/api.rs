@@ -71,7 +71,7 @@ pub struct InnerPushState {
 
 pub struct PushState (pub RwLock<InnerPushState>);
 
-pub async fn new_push_state(dir: String) -> anyhow::Result<Arc<PushState>> {
+pub async fn new_push_state(dir: String) -> Arc<PushState> {
     #[cfg(not(target_os = "android"))]
     init_logger();
     // flutter_rust_bridge::setup_default_user_utils();
@@ -84,8 +84,8 @@ pub async fn new_push_state(dir: String) -> anyhow::Result<Arc<PushState>> {
         account: None,
         cancel_poll: Mutex::new(None)
     }));
-    restore(&state).await?;
-    Ok(Arc::new(state))
+    restore(&state).await;
+    Arc::new(state)
 }
 
 pub fn service_from_ptr(ptr: String) -> Arc<PushState> {
@@ -115,7 +115,7 @@ fn plist_to_bin<T: serde::Serialize>(value: &T) -> Result<Vec<u8>, plist::Error>
     Ok(buf)
 }
 
-async fn restore(curr_state: &PushState) -> anyhow::Result<()> {
+async fn restore(curr_state: &PushState) {
     if !matches!(curr_state.get_phase().await, RegistrationPhase::WantsOSConfig) {
         panic!("Wrong phase! (restore)")
     }
@@ -134,7 +134,7 @@ async fn restore(curr_state: &PushState) -> anyhow::Result<()> {
         info!("migrated!");
     }
 
-    let Ok(state) = plist::from_file::<_, SavedHardwareState>(&hw_config_path) else { return Ok(()) };
+    let Ok(state) = plist::from_file::<_, SavedHardwareState>(&hw_config_path) else { return };
 
     // even if we failed on the initial connection, we don't care cuz we're restoring.
     inner.os_config = Some(Arc::new(state.os_config.clone()));
@@ -142,16 +142,15 @@ async fn restore(curr_state: &PushState) -> anyhow::Result<()> {
     inner.conn = Some(connection);
 
     // id may not exist yet; that's fine
-    let Ok(users) = plist::from_file::<_, Vec<IDSUser>>(&id_path) else { return Ok(()) };
+    let Ok(users) = plist::from_file::<_, Vec<IDSUser>>(&id_path) else { return };
 
-    println!("registration expires at {}", users[0].identity.as_ref().unwrap().get_exp().unwrap());
+    info!("registration expires at {}", users[0].identity.as_ref().unwrap().get_exp().unwrap());
 
     inner.client = Some(IMClient::new(inner.conn.as_ref().unwrap().clone(), users, 
         inner.conf_dir.join("id_cache.plist"), inner.os_config.clone().unwrap(), Box::new(move |updated_keys| {
             println!("updated keys!!!");
             std::fs::write(&id_path, plist_to_string(&updated_keys).unwrap()).unwrap();
         })).await);
-    Ok(())
 }
 
 #[repr(C)]
@@ -233,7 +232,7 @@ pub async fn configure_app_review(state: &Arc<PushState>) -> anyhow::Result<()> 
     std::fs::write(inner.conf_dir.join("id.plist"), include_str!("id_testing.plist"))?;
     std::fs::write(inner.conf_dir.join("hw_info.plist"), include_str!("hw_testing.plist"))?;
     drop(inner);
-    restore(state).await?;
+    restore(state).await;
     Ok(())
 }
 

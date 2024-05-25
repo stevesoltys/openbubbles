@@ -683,7 +683,10 @@ fn wire_new_push_state_impl(
             deserializer.end();
             move |context| async move {
                 transform_result_sse(
-                    (move || async move { crate::api::api::new_push_state(api_dir).await })().await,
+                    (move || async move {
+                        Result::<_, ()>::Ok(crate::api::api::new_push_state(api_dir).await)
+                    })()
+                    .await,
                 )
             }
         },
