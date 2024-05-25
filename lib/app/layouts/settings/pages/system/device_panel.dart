@@ -68,7 +68,7 @@ class _DevicePanelState extends CustomState<DevicePanel, void, DevicePanelContro
                           Padding(
                             padding: const EdgeInsets.all(25),
                             child: Icon(
-                              RustPushBBUtils.isLaptop(deviceName) ? CupertinoIcons.device_laptop : CupertinoIcons.device_desktop,
+                              RustPushBBUtils.getIcon(deviceName),
                               size: 200,
                               color: context.theme.colorScheme.properOnSurface,
                             ),
@@ -84,12 +84,12 @@ class _DevicePanelState extends CustomState<DevicePanel, void, DevicePanelContro
                     ),
                   ],
                 ),
-                if (ss.settings.macIsMine.value)
+                if (ss.settings.macIsMine.value && deviceInfo?.encodedData != null)
                 SettingsHeader(
                     iosSubtitle: iosSubtitle,
                     materialSubtitle: materialSubtitle,
                     text: "Share Mac"),
-                if (ss.settings.macIsMine.value)
+                if (ss.settings.macIsMine.value && deviceInfo?.encodedData != null)
                 SettingsSection(
                   backgroundColor: tileColor,
                   children: [
@@ -112,7 +112,7 @@ class _DevicePanelState extends CustomState<DevicePanel, void, DevicePanelContro
                           barcode: Barcode.qrCode(
                             errorCorrectLevel: BarcodeQRCorrectionLevel.medium,
                           ),
-                          data: pushService.getQrInfo(controller.allowSharing.value, deviceInfo!.encodedData),
+                          data: pushService.getQrInfo(controller.allowSharing.value, deviceInfo!.encodedData!),
                           backgroundColor: const Color(0),
                           color: context.theme.colorScheme.onSurface,
                         ),

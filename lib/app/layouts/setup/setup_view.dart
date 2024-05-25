@@ -4,6 +4,7 @@ import 'package:bluebubbles/app/layouts/conversation_list/pages/conversation_lis
 import 'package:bluebubbles/app/layouts/setup/pages/rustpush/appleid_2fa.dart';
 import 'package:bluebubbles/app/layouts/setup/pages/rustpush/appleid_login.dart';
 import 'package:bluebubbles/app/layouts/setup/pages/rustpush/hw_inp.dart';
+import 'package:bluebubbles/app/layouts/setup/pages/rustpush/phone_number.dart';
 import 'package:bluebubbles/helpers/helpers.dart';
 import 'package:bluebubbles/app/layouts/setup/pages/setup_checks/battery_optimization.dart';
 import 'package:bluebubbles/app/layouts/setup/dialogs/failed_to_connect_dialog.dart';
@@ -44,16 +45,22 @@ class SetupViewController extends StatefulController {
   bool obscurePass = true;
   RxBool isSms = false.obs;
 
+  RxBool supportsPhoneReg = false.obs;
+
   final GlobalKey<HwInpState> _childKey = GlobalKey<HwInpState>();
 
   bool goingTo2fa = true;
   bool success = false;
 
   DartLoginState state = const api.DartLoginState.needsLogin();
+  api.IdsUser? currentAppleUser;
+  api.IdsUser? currentPhoneUser;
 
   Future<DartLoginState> updateLoginState(DartLoginState ret) async {
     if (ret is DartLoginState_NeedsLogin) {
-      ret = await api.tryAuth(state: pushService.state, username: twoFaUser, password: twoFaPass);
+      api.IdsUser? user;
+      (ret, user) = await api.tryAuth(state: pushService.state, username: twoFaUser, password: twoFaPass);
+      currentAppleUser = user;
     }
     if (ret is DartLoginState_NeedsDevice2FA) {
       ret = await api.send2FaToDevices(state: pushService.state);
@@ -113,7 +120,27 @@ class SetupViewController extends StatefulController {
     state = ret;
     if (ret is DartLoginState_LoggedIn) {
       ss.settings.userName.value = await api.getUserName(state: pushService.state);
-      var response = await api.registerIds(state: pushService.state);
+      await doRegister();
+    }
+    return ret;
+  }
+
+  Future<void> doRegister() async {
+    List<IdsUser> users = [];
+
+    if (currentAppleUser != null) {
+      users.add(currentAppleUser!);
+    }
+
+    if (currentPhoneUser != null) {
+      users.add(currentPhoneUser!);
+    }
+
+    if (users.isEmpty) {
+      throw Exception("No users to register!");
+    }
+
+    var response = await api.registerIds(state: pushService.state, users: users);
       if (response != null) {
         var devInfo = await api.getDeviceInfoState(state: pushService.state);
         await showDialog(
@@ -153,23 +180,13 @@ class SetupViewController extends StatefulController {
                       child: Text("OK", style: context.theme.textTheme.bodyLarge!.copyWith(color: context.theme.colorScheme.primary))),
                 ],
               ));
-        return ret;
+        return;
       }
       success = true;
-      ss.settings.cachedCodes.clear();
+      // TODO remove clear
+      // ss.settings.cachedCodes.clear();
       await pushService.configured();
       await setup.finishSetup();
-      Get.offAll(() => ConversationList(
-          showArchivedChats: false,
-          showUnknownSenders: false,
-        ),
-        routeName: "",
-        duration: Duration.zero,
-        transition: Transition.noTransition
-      );
-      Get.delete<SetupViewController>(force: true);
-    }
-    return ret;
   }
 
   Future<void> cacheCode(String code) async {
@@ -246,6 +263,11 @@ class _SetupViewState extends OptimizedState<SetupView> {
     super.initState();
 
     (() async {
+
+      if (ss.settings.cachedCodes.containsKey("sms-auth")) {
+        controller.currentPhoneUser = await api.restoreUser(user: ss.settings.cachedCodes["sms-auth"]!);
+      }
+
       final _appLinks = AppLinks();
       var link = await _appLinks.getLatestAppLink();
 
@@ -395,7 +417,7 @@ class SetupPages extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: PageView(
+      child: Obx(() => PageView(
         onPageChanged: (page) {
           // skip pages if the things required are already complete
           if (!kIsWeb && !kIsDesktop && page == 1 && controller.currentPage == 1) {
@@ -436,13 +458,15 @@ class SetupPages extends StatelessWidget {
             SyncProgress(),
           if (usingRustPush)
             HwInp(key: controller._childKey),
+          if (usingRustPush && controller.supportsPhoneReg.value && !kIsDesktop)
+            const PhoneNumber(),
           if (usingRustPush)
             AppleIdLogin(),
           if (usingRustPush)
             AppleId2FA(),
           //ThemeSelector(),
         ],
-      ),
+      ),)
     );
   }
 }

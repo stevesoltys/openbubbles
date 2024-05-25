@@ -11,7 +11,6 @@ import 'package:bluebubbles/app/layouts/setup/pages/sync/qr_code_scanner.dart';
 import 'package:bluebubbles/app/layouts/setup/setup_view.dart';
 import 'package:bluebubbles/app/wrappers/stateful_boilerplate.dart';
 import 'package:bluebubbles/src/rust/api/api.dart' as api;
-import 'package:bluebubbles/src/rust/lib.dart' as lib;
 import 'package:bluebubbles/helpers/helpers.dart';
 import 'package:bluebubbles/services/rustpush/rustpush_service.dart';
 import 'package:bluebubbles/services/services.dart';
@@ -44,7 +43,7 @@ class HwInpState extends OptimizedState<HwInp> {
   bool loading = false;
 
   bool stagingMine = true;
-  lib.MacOsConfig? staging;
+  api.JoinedOsConfig? staging;
   api.DartDeviceInfo? stagingInfo;
   String deviceName = "";
 
@@ -98,7 +97,7 @@ class HwInpState extends OptimizedState<HwInp> {
     }
   }
 
-  void select(lib.MacOsConfig parsed, bool mine) async {
+  void select(api.JoinedOsConfig parsed, bool mine) async {
     var info = await api.getDeviceInfo(config: parsed);
     setState(() {
       if (staging == null) {
@@ -117,24 +116,10 @@ class HwInpState extends OptimizedState<HwInp> {
     if (code == lastCheckedCode) return;
     lastCheckedCode = code;
     try {
-      showSnackbar("Fetching validation data", "This might take a minute");
-      final response = await http.dio.post(
-        "https://registration-relay.beeper.com/api/v1/bridge/get-validation-data",
-        data: {},
-        options: Options(
-          headers: {
-            // not a secret; burner account
-            "X-Beeper-Access-Token": "5c175851953ecaf5209185d897591badb6c3e712",
-            "Authorization": "Bearer $code",
-          },
-        )
-      );
-
-      if (response.statusCode == 404) {
-        showSnackbar("Fetching validation data", "Mac Offline");
-        return;
+      if (staging == null) {
+        FocusManager.instance.primaryFocus?.unfocus();
       }
-
+      showSnackbar("Fetching validation data", "This might take a minute");
       final response2 = await http.dio.post(
         "https://registration-relay.beeper.com/api/v1/bridge/get-version-info",
         data: {},
@@ -147,16 +132,39 @@ class HwInpState extends OptimizedState<HwInp> {
         )
       );
 
-      var parsed = await api.configFromValidationData(data: base64Decode(response.data["data"]), extra: api.DartHwExtra(
-        version: response2.data["versions"]["software_version"],
-        protocolVersion: 1660,
-        deviceId: response2.data["versions"]["unique_device_id"],
-        icloudUa: "com.apple.iCloudHelper/282 CFNetwork/1408.0.4 Darwin/22.5.0",
-        aoskitVersion: "com.apple.AOSKit/282 (com.apple.accountsd/113)"
-      ));
+      api.JoinedOsConfig parsed;
+      if (response2.data["versions"]["software_name"] == "iPhone OS") {
+        print("Using as iOS");
+        parsed = await api.configFromRelay(code: code, host: "https://registration-relay.beeper.com", token: "5c175851953ecaf5209185d897591badb6c3e712");
+        usingBeeper = false;
+      } else {
+        final response = await http.dio.post(
+          "https://registration-relay.beeper.com/api/v1/bridge/get-validation-data",
+          data: {},
+          options: Options(
+            headers: {
+              // not a secret; burner account
+              "X-Beeper-Access-Token": "5c175851953ecaf5209185d897591badb6c3e712",
+              "Authorization": "Bearer $code",
+            },
+          )
+        );
+
+        if (response.statusCode == 404) {
+          showSnackbar("Fetching validation data", "Mac Offline");
+          return;
+        }
+        parsed = await api.configFromValidationData(data: base64Decode(response.data["data"]), extra: api.DartHwExtra(
+          version: response2.data["versions"]["software_version"],
+          protocolVersion: 1660,
+          deviceId: response2.data["versions"]["unique_device_id"],
+          icloudUa: "com.apple.iCloudHelper/282 CFNetwork/1408.0.4 Darwin/22.5.0",
+          aoskitVersion: "com.apple.AOSKit/282 (com.apple.accountsd/113)"
+        ));
+        usingBeeper = true;
+      }
       showSnackbar("Fetching validation data", "Done");
       stagingNonInp = true;
-      usingBeeper = true;
       select(parsed, true);
     } catch (e) {
       showSnackbar("Fetching validation data", "Failed");
@@ -312,7 +320,7 @@ class HwInpState extends OptimizedState<HwInp> {
         // restore
         stagingNonInp = true;
         alreadyActivated = true;
-        var parsed = await api.configFromEncoded(encoded: (await api.getDeviceInfoState(state: pushService.state)).encodedData);
+        var parsed = (await api.getConfigState(state: pushService.state))!;
         select(parsed, ss.settings.macIsMine.value);
       }
     }
@@ -338,7 +346,7 @@ class HwInpState extends OptimizedState<HwInp> {
   @override
   Widget build(BuildContext context) {
     return SetupPageTemplate(
-      title: staging == null ? "Hardware info" : stagingMine ? "My Mac" : "Shared Mac",
+      title: staging == null ? "Hardware info" : stagingMine ? "My Device" : "Shared Device",
       customSubtitle: staging != null ? Container() : Padding(
         padding: const EdgeInsets.all(8.0),
         child: Align(
@@ -393,7 +401,7 @@ class HwInpState extends OptimizedState<HwInp> {
                                     Padding(
                                       padding: const EdgeInsets.all(25),
                                       child: Icon(
-                                        RustPushBBUtils.isLaptop(deviceName) ? CupertinoIcons.device_laptop : CupertinoIcons.device_desktop,
+                                        RustPushBBUtils.getIcon(deviceName),
                                         size: 200,
                                         color: context.theme.colorScheme.properOnSurface,
                                       ),
@@ -577,7 +585,7 @@ class HwInpState extends OptimizedState<HwInp> {
                                     Opacity(opacity: loading ? 0 : 1, child: Row(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        Text(kIsDesktop && staging == null ? "Continue" : "Use this Mac",
+                                        Text(kIsDesktop && staging == null ? "Continue" : "Use this Device",
                                             style: context.theme.textTheme.bodyLarge!
                                                 .apply(fontSizeFactor: 1.1, color: Colors.white)),
                                         const SizedBox(width: 10),
@@ -611,7 +619,7 @@ class HwInpState extends OptimizedState<HwInp> {
     );
   }
 
-  Future<void> connect(lib.MacOsConfig config) async {
+  Future<void> connect(api.JoinedOsConfig config) async {
     setState(() {
       loading = true;
     });
@@ -622,6 +630,11 @@ class HwInpState extends OptimizedState<HwInp> {
         ss.settings.save();
         await api.configureMacos(state: pushService.state, config: config);
       }
+
+      var state = await api.getDeviceInfoState(state: pushService.state);
+      controller.supportsPhoneReg.value = state.name.contains("iPhone");
+      // controller.updatePhoneReg();
+      
       controller.pageController.nextPage(
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,

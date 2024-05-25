@@ -30,6 +30,20 @@ class _AppleIdLoginState extends OptimizedState<AppleIdLogin> {
   bool obscureText = true;
 
   @override
+  void initState() {
+    super.initState();
+
+    // Start listening to changes.
+    appleIdController.addListener(() {
+      setState(() { });
+    });
+
+    passwordController.addListener(() {
+      setState(() { });
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SetupPageTemplate(
       title: "Login with your Apple ID",
@@ -220,6 +234,7 @@ class _AppleIdLoginState extends OptimizedState<AppleIdLogin> {
                                 ),
                               ),
                             ),
+                            if ((appleIdController.text != "" && passwordController.text != "") || controller.currentPhoneUser == null)
                             Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(25),
@@ -269,6 +284,77 @@ class _AppleIdLoginState extends OptimizedState<AppleIdLogin> {
                                 )
                               ),
                             ),
+                            if (!((appleIdController.text != "" && passwordController.text != "") || controller.currentPhoneUser == null))
+                            Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(25),
+                                gradient: LinearGradient(
+                                  begin: AlignmentDirectional.topStart,
+                                  colors: loading ? [HexColor('777777'), HexColor('777777')] : [HexColor('2772C3'), HexColor('5CA7F8').darkenPercent(5)],
+                                ),
+                              ),
+                              height: 40,
+                              padding: const EdgeInsets.all(2),
+                              child: ElevatedButton(
+                                style: ButtonStyle(
+                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20.0),
+                                    ),
+                                  ),
+                                  backgroundColor: MaterialStateProperty.all(context.theme.colorScheme.background),
+                                  shadowColor: MaterialStateProperty.all(context.theme.colorScheme.background),
+                                  maximumSize: MaterialStateProperty.all(const Size(200, 36)),
+                                  minimumSize: MaterialStateProperty.all(const Size(30, 30)),
+                                ),
+                                onPressed: loading ? null : () async {
+                                  controller.updateConnectError("");
+                                  setState(() {
+                                    loading = true;
+                                  });
+                                  try {
+                                    ss.settings.customHeaders.value = {};
+                                    http.onInit();
+                                    await controller.doRegister();
+                                    if (!controller.success) {
+                                      return;
+                                    }
+                                    controller.goingTo2fa = false;
+                                    controller.pageController.animateToPage(
+                                      controller.pageController.page!.toInt() + 2,
+                                      duration: const Duration(milliseconds: 300),
+                                      curve: Curves.easeInOut,
+                                    );
+                                  } catch (e) {
+                                    if (e is AnyhowException) {
+                                      controller.updateConnectError(e.message);
+                                    }
+                                    rethrow;
+                                  } finally {
+                                    setState(() {
+                                      loading = false;
+                                    });
+                                  }
+                                },
+                                child: Stack(
+                                  alignment: Alignment.center,
+                                  children: [
+                                    Opacity(opacity: loading ? 0 : 1, child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text("Skip",
+                                            style: context.theme.textTheme.bodyLarge!
+                                                .apply(fontSizeFactor: 1.1, color: Colors.white)),
+                                        const SizedBox(width: 10),
+                                        const Icon(Icons.arrow_forward, color: Colors.white, size: 20),
+                                      ],
+                                    ),),
+                                    if (loading)
+                                    buildProgressIndicator(context, brightness: Brightness.dark),
+                                  ],
+                                )
+                              ),
+                            ),
                           ],
                         ),
                       ],
@@ -286,7 +372,8 @@ class _AppleIdLoginState extends OptimizedState<AppleIdLogin> {
       loading = true;
     });
     try {
-      var result = await api.tryAuth(state: pushService.state, username: appleId, password: password);
+      var (result, user) = await api.tryAuth(state: pushService.state, username: appleId, password: password);
+      controller.currentAppleUser = user;
       result = await controller.updateLoginState(result);
 
 

@@ -17,6 +17,8 @@ import com.bluebubbles.messaging.services.notifications.NotificationChannelHandl
 import com.bluebubbles.messaging.services.notifications.NotificationListenerPermissionRequestHandler
 import com.bluebubbles.messaging.services.notifications.StartNotificationListenerHandler
 import com.bluebubbles.messaging.services.notifications.UnifiedPushHandler
+import com.bluebubbles.messaging.services.rustpush.NotifyNativeConfiguredHandler
+import com.bluebubbles.messaging.services.rustpush.SMSAuthGateway
 import com.bluebubbles.messaging.services.system.BrowserLaunchRequestHandler
 import com.bluebubbles.messaging.services.system.CheckChromeOsHandler
 import com.bluebubbles.messaging.services.system.NewContactFormRequestHandler
@@ -76,6 +78,9 @@ class MethodCallHandler {
             DeleteNotificationHandler.tag -> DeleteNotificationHandler().handleMethodCall(call, result, context)
             StartForegroundServiceHandler.tag -> StartForegroundServiceHandler().handleMethodCall(call, result, context)
             StopForegroundServiceHandler.tag -> StopForegroundServiceHandler().handleMethodCall(call, result, context)
+            GetNativeHandleHandler.tag -> GetNativeHandleHandler().handleMethodCall(call, result, context)
+            NotifyNativeConfiguredHandler.tag -> NotifyNativeConfiguredHandler().handleMethodCall(call, result, context)
+            SMSAuthGateway.tag -> SMSAuthGateway().handleMethodCall(call, result, context)
             else -> {
                 val error = "Could not find method call handler for ${call.method}!"
                 Log.d(Constants.logTag, error)

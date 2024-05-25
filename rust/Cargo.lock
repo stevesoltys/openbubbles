@@ -2562,6 +2562,7 @@ dependencies = [
  "serde",
  "tokio",
  "uniffi",
+ "uuid",
 ]
 
 [[package]]
