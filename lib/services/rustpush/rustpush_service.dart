@@ -292,6 +292,7 @@ class RustPushBackend implements BackendService {
   void markFailedToLogin() async {
     print("markingfailed");
     ss.settings.finishedSetup.value = false;
+    ss.saveSettings();
     if (usingRustPush) {
       await pushService.reset(false);
     }
