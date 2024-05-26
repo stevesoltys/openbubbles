@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:isolate';
 import 'dart:ui' hide window;
 
@@ -24,6 +25,9 @@ class LifecycleService extends GetxService with WidgetsBindingObserver {
   bool get isAlive => kIsWeb ? !(window.document.hidden ?? false)
       : kIsDesktop ? windowFocused : (WidgetsBinding.instance.lifecycleState == AppLifecycleState.resumed
         || IsolateNameServer.lookupPortByName('bg_isolate') != null);
+  
+  bool isDead = false;
+  Timer? closeTimer;
 
   AppLifecycleState? get currentState => WidgetsBinding.instance.lifecycleState;
 
@@ -107,6 +111,13 @@ class LifecycleService extends GetxService with WidgetsBindingObserver {
       } else if ([AppLifecycleState.paused, AppLifecycleState.detached].contains(state)) {
         Logger.info(tag: "LifecycleService", "Starting foreground service");
         mcs.invokeMethod("start-foreground-service");
+      }
+    }
+    if (state == AppLifecycleState.detached && !(kIsDesktop || kIsWeb)) {
+      isDead = true;
+      if (!outq.isProcessing && !inq.isProcessing) {
+        Logger.info("Engine exit");
+        await mcs.invokeMethod("engine-done");
       }
     }
   }

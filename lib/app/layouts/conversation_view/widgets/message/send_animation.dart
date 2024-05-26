@@ -180,7 +180,7 @@ class _SendAnimationState
   @override
   Widget build(BuildContext context) {
     final typicalWidth = message?.isBigEmoji ?? false ? ns.width(context) : ns.width(context) * MessageWidgetController.maxBubbleSizeFactor - 40;
-    const duration = 450;
+    const duration = 500;
     const curve = Curves.easeInOut;
     const buttonSize = 88;
     final messageBoxSize = ns.width(context) - buttonSize;
@@ -225,7 +225,7 @@ class _SendAnimationState
                         minWidth: messageBoxSize * exp,
                         minHeight: 40,
                       ),
-                      color: !message!.isBigEmoji ? context.theme.colorScheme.primary.darkenAmount(0.2) : null,
+                      color: !message!.isBigEmoji ? context.theme.colorScheme.primary.withAlpha(((1-value) * 255).toInt()) : null,
                       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15).add(EdgeInsets.only(
                         left: message!.isFromMe! || message!.isBigEmoji ? 0 : 10, right: message!.isFromMe! && !message!.isBigEmoji ? 10 : 0)),
                       child: Align(

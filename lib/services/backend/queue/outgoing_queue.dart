@@ -61,9 +61,6 @@ class OutgoingQueue extends Queue {
       case QueueType.sendMessage:
         await handleSend(() => ah.sendMessage(item.chat, item.message, item.selected, item.reaction), item.chat);
         break;
-      case QueueType.sendMultipart:
-        await handleSend(() => ah.sendMultipart(item.chat, item.message, item.selected, item.reaction), item.chat);
-        break;
       case QueueType.sendAttachment:
         await handleSend(() => ah.sendAttachment(item.chat, item.message, item.customArgs?['audio'] ?? false), item.chat);
         break;

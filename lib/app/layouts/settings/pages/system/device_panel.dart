@@ -100,7 +100,7 @@ class _DevicePanelState extends CustomState<DevicePanel, void, DevicePanelContro
                       initialVal: !controller.allowSharing.value,
                       title: "Prevent sharing",
                       backgroundColor: tileColor,
-                      subtitle: "Apple may block devices due to spam or exceeding 20 users.",
+                      subtitle: "Apple may block devices due to spam or exceeding 20 users. Only share with people you trust.",
                       isThreeLine: true,
                     )),
                     if (deviceInfo != null)

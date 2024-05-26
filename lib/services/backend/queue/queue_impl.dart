@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:isolate';
 
 import 'package:bluebubbles/helpers/helpers.dart';
 import 'package:bluebubbles/database/models.dart';
@@ -33,8 +34,17 @@ abstract class Queue extends GetxService {
   Future<void> processNextItem() async {
     if (items.isEmpty) {
       isProcessing = false;
+      if (ls.isDead && !inq.isProcessing && !outq.isProcessing) {
+        Logger.info("Done! waiting a bit for any stragglers");
+        ls.closeTimer = Timer(const Duration(seconds: 5), () {
+          mcs.invokeMethod("engine-done");
+        });
+      }
       return;
     }
+
+    ls.closeTimer?.cancel();
+    ls.closeTimer = null;
 
     isProcessing = true;
     QueueItem queued = items.removeAt(0);

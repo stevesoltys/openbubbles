@@ -362,6 +362,7 @@ class Chat {
   @Transient()
   RxDouble sendProgress = 0.0.obs;
 
+  List<String> guidRefs = [];
   final handles = ToMany<Handle>();
 
   String? usingHandle;

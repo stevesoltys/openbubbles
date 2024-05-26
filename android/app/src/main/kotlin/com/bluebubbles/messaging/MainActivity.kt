@@ -7,6 +7,7 @@ import androidx.activity.ComponentActivity
 import com.bluebubbles.messaging.services.backend_ui_interop.MethodCallHandler
 import com.bluebubbles.messaging.services.foreground.ForegroundServiceBroadcastReceiver
 import com.bluebubbles.messaging.Constants
+import com.bluebubbles.messaging.services.rustpush.APNService
 import io.flutter.embedding.android.FlutterFragmentActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
@@ -19,8 +20,15 @@ class MainActivity : FlutterFragmentActivity() {
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         engine = flutterEngine
         super.configureFlutterEngine(flutterEngine)
-        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, Constants.methodChannel).setMethodCallHandler {
-            call, result -> MethodCallHandler().methodCallHandler(call, result, this)
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, Constants.methodChannel).setMethodCallHandler { call, result ->
+            if (call.method == "engine-done") {
+                Log.i("BBEngine", "Destroyed");
+                // this must be here in case another engine has been spawned in the meantime
+                flutterEngine.destroy()
+                if (engine == flutterEngine)
+                    engine = null
+            }
+            MethodCallHandler().methodCallHandler(call, result, this)
         }
     }
 
