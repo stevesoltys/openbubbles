@@ -79,8 +79,8 @@ class _SendAnimationState
         attachments: [
           Attachment(
             isOutgoing: true,
-            mimeType: mime(file.path),
-            uti: utiMap[mime(file.path)] ?? "public.data",
+            mimeType: mime(file.path ?? file.name),
+            uti: utiMap[mime(file.path ?? file.name)] ?? "public.data",
             bytes: file.bytes,
             transferName: file.name,
             totalBytes: file.size,

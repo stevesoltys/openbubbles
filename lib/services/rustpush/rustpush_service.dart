@@ -607,6 +607,7 @@ class RustPushBackend implements BackendService {
     if (chat.isRpSms && !smsForwardingEnabled()) {
       throw Exception("SMS is not enabled (enable in settings -> user)");
     }
+    // await Future.delayed(const Duration(seconds: 15));
     var partIndex = int.tryParse(m.threadOriginatorPart?.split(":").firstOrNull ?? "");
     api.DartMessageParts parts;
     if (m.attributedBody.isNotEmpty) {
