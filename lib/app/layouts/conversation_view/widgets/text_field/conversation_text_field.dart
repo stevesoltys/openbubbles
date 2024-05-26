@@ -506,23 +506,6 @@ class ConversationTextFieldState extends CustomState<ConversationTextField, void
           mainAxisSize: MainAxisSize.min,
           children: [
             Row(crossAxisAlignment: CrossAxisAlignment.end, children: [
-              if (!kIsWeb && iOS && Platform.isAndroid)
-                GestureDetector(
-                  onLongPress: () {
-                    openFullCamera(type: 'video');
-                  },
-                  child: IconButton(
-                      padding: const EdgeInsets.only(left: 10),
-                      icon: Icon(
-                        CupertinoIcons.camera_fill,
-                        color: context.theme.colorScheme.outline,
-                        size: 28,
-                      ),
-                      visualDensity: VisualDensity.compact,
-                      onPressed: () {
-                        openFullCamera();
-                      }),
-                ),
               IconButton(
                 icon: Icon(
                   iOS

@@ -182,7 +182,7 @@ class _SendAnimationState
     final typicalWidth = message?.isBigEmoji ?? false ? ns.width(context) : ns.width(context) * MessageWidgetController.maxBubbleSizeFactor - 40;
     const duration = 500;
     const curve = Curves.easeInOut;
-    const buttonSize = 88;
+    const buttonSize = 44;
     final messageBoxSize = ns.width(context) - buttonSize;
     return AnimatedPositioned(
       duration: Duration(milliseconds: message != null ? duration : 0),
