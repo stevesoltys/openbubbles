@@ -231,6 +231,7 @@ class MethodChannelService extends GetxService {
         return Future.value(true);
       case "ReplyChat":
         await Database.waitForInit();
+        await pushService.initFuture;
         Logger.info("Received reply to message from Kotlin");
         final Map<String, dynamic>? data = arguments;
         if (data == null) return Future.value(true);
