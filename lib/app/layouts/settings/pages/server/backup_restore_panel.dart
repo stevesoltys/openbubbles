@@ -22,6 +22,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:universal_io/io.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:async/async.dart';
 
 class BackupRestorePanel extends StatefulWidget {
   BackupRestorePanel({
@@ -1013,11 +1014,14 @@ class _BackupRestorePanelState extends OptimizedState<BackupRestorePanel> {
                               map["chat"] = message.chat.target?.guid;
                               msgData.add(map);
                             }
+                            final List<String> attMap = [];
                             final List<Map<String, dynamic>> msgAtts = [];
                             for (var att in attachmentBox.getAll()) {
                               var map = att.toMap();
-                              if (File(att.path).lengthSync() < 16777216 /* 16 mb */) {
-                                map["data"] = base64Encode(await File(att.path).readAsBytes());
+                              var file = File(att.path);
+                              if (file.existsSync() && file.lengthSync() < 16777216 /* 16 mb */) {
+                                map["bytes_id"] = attMap.length;
+                                attMap.add(att.path);
                               }
                               msgAtts.add(map);
                             }
@@ -1043,9 +1047,20 @@ class _BackupRestorePanelState extends OptimizedState<BackupRestorePanel> {
                               }
                               filePath = _filePath;
                             }
+
+                            Uint8List int32BigEndianBytes(int value) =>
+                                Uint8List(4)..buffer.asByteData().setUint32(0, value, Endian.big);
+
                             File file = File(filePath);
                             await file.create(recursive: true);
-                            await file.writeAsString(jsonStr);
+                            Uint8List jsonString = const Utf8Encoder().convert(jsonStr);
+                            await file.writeAsBytes(int32BigEndianBytes(jsonString.length), mode: FileMode.append);
+                            await file.writeAsBytes(jsonString, mode: FileMode.append);
+                            for (var att in attMap) {
+                              var attFile = File(att);
+                              await file.writeAsBytes(int32BigEndianBytes(attFile.lengthSync()), mode: FileMode.append);
+                              await file.writeAsBytes(await attFile.readAsBytes(), mode: FileMode.append);
+                            }
                             Get.back(closeOverlays: true);
                             showSnackbar(
                               "Success",
@@ -1100,8 +1115,8 @@ class _BackupRestorePanelState extends OptimizedState<BackupRestorePanel> {
                         ),
                         onTap: () async {
                           final res = await FilePicker.platform
-                              .pickFiles(withData: true, type: FileType.custom, allowedExtensions: ["json"]);
-                          if (res == null || res.files.isEmpty || res.files.first.bytes == null) return;
+                              .pickFiles(type: FileType.custom, allowedExtensions: ["json"], withReadStream: true);
+                          if (res == null || res.files.isEmpty) return;
 
                           showDialog(
                               context: context,
@@ -1135,12 +1150,31 @@ class _BackupRestorePanelState extends OptimizedState<BackupRestorePanel> {
                                         });
                                       try {
                                         chats.restoring = true;
-                                        String jsonString = const Utf8Decoder().convert(res.files.first.bytes!);
+                                        var file = res.files.first.readStream!;
+                                        var chunked = ChunkedStreamReader(file);
+                                        int listToInt(Uint8List list) {
+                                          ByteData byteData = ByteData.sublistView(list);
+                                          return byteData.getUint32(0, Endian.big);
+                                        }
+                                        int size = listToInt(await chunked.readBytes(4));
+                                        size = 13337763;
+                                        String jsonString = const Utf8Decoder().convert(await chunked.readBytes(size));
+                                        List<File> files = [];
+                                        for (int i = 0; true; i++) {
+                                          Uint8List sizeList = await chunked.readBytes(4);
+                                          if (sizeList.isEmpty) break;
+                                          int size = listToInt(sizeList);
+                                          var data = await chunked.readBytes(size);
+                                          File file = File(join((await getTemporaryDirectory()).path, "restorefile", i.toString()));
+                                          await file.create(recursive: true);
+                                          files.add(file);
+                                          await file.writeAsBytes(data);
+                                        }
+                                        Map<dynamic, dynamic> json = jsonDecode(jsonString);
                                         chatBox.removeAll();
                                         handleBox.removeAll();
                                         messageBox.removeAll();
                                         attachmentBox.removeAll();
-                                        Map<dynamic, dynamic> json = jsonDecode(jsonString);
                                         for (var usedChat in json["chats"]) {
                                           var chat = Chat.fromMap(usedChat);
                                           chat.id = null;
@@ -1155,10 +1189,10 @@ class _BackupRestorePanelState extends OptimizedState<BackupRestorePanel> {
                                         for (var myAtt in json["atts"]) {
                                           var att = Attachment.fromMap(myAtt);
                                           att.id = null;
-                                          if (myAtt.containsKey("data")) {
+                                          if (myAtt.containsKey("bytes_id")) {
                                             var file = File(att.path);
                                             await file.create(recursive: true);
-                                            await file.writeAsBytes(base64Decode(myAtt["data"]));
+                                            files[myAtt["bytes_id"]].rename(att.path);
                                           }
                                           att.save(null);
                                         }
