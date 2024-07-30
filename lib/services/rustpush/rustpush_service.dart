@@ -339,9 +339,6 @@ class RustPushBackend implements BackendService {
                   service: await getService(chat.isRpSms)
                   )),
           sender: handle);
-      try {
-        msg.afterGuid = chat.sendLastMessage.guid;
-      } catch (e) { /* No message, that's fine */ }
       if (chat.isRpSms) {
         msg.target = getSMSTargets();
       }
@@ -409,9 +406,6 @@ class RustPushBackend implements BackendService {
           effect: m.expressiveSendStyleId,
           service: await getService(chat.isRpSms, forMessage: m),
         )));
-    try {
-        msg.afterGuid = chat.sendLastMessage.guid;
-      } catch (e) { /* No message, that's fine */ }
     if (m.stagingGuid != null) {
       msg.id = m.stagingGuid!;
     }
@@ -455,9 +449,6 @@ class RustPushBackend implements BackendService {
           effect: m.expressiveSendStyleId,
           service: service,
         )));
-        try {
-        msg.afterGuid = chat.sendLastMessage.guid;
-      } catch (e) { /* No message, that's fine */ }
     if (m.stagingGuid != null || (m.guid != null && m.guid!.contains("error") && m.guid!.contains("temp"))) {
       msg.id = m.stagingGuid ?? m.guid!;
     }
@@ -512,9 +503,6 @@ class RustPushBackend implements BackendService {
       sender: await chat.ensureHandle(),
       message: api.DartMessage.iconChange(api.DartIconChangeMessage(groupVersion: chat.groupVersion!)),
     );
-    try {
-        msg.afterGuid = chat.sendLastMessage.guid;
-      } catch (e) { /* No message, that's fine */ }
     await sendMsg(msg);
     return true;
   }
@@ -578,9 +566,6 @@ class RustPushBackend implements BackendService {
       sender: await chat.ensureHandle(),
       message: api.DartMessage.iconChange(api.DartIconChangeMessage(groupVersion: chat.groupVersion!, file: mmcs!)),
     );
-    try {
-        msg.afterGuid = chat.sendLastMessage.guid;
-      } catch (e) { /* No message, that's fine */ }
     await sendMsg(msg);
     return true;
   }
@@ -633,10 +618,6 @@ class RustPushBackend implements BackendService {
       )),
     );
     print("sending ${msg.id}");
-    try {
-      var lastMsg = chat.sendLastMessage;
-        msg.afterGuid = lastMsg.stagingGuid ?? lastMsg.guid;
-      } catch (e) { /* No message, that's fine */ }
     if (m.stagingGuid != null || (chat.isRpSms && m.guid != null && m.guid!.contains("error") && m.guid!.contains("temp"))) {
       msg.id = m.stagingGuid ?? m.guid!; // make sure we pass forwarded messages's original GUID so it doesn't get overwritten and marked as a different msg
     }
@@ -746,9 +727,6 @@ class RustPushBackend implements BackendService {
         conversation: data,
         sender: await chat.ensureHandle(),
         message: api.DartMessage.renameMessage(api.DartRenameMessage(newName: newName)));
-    try {
-        msg.afterGuid = chat.sendLastMessage.guid;
-      } catch (e) { /* No message, that's fine */ }
     await sendMsg(msg);
     msg.sentTimestamp = DateTime.now().millisecondsSinceEpoch;
     inq.queue(IncomingItem(
@@ -782,9 +760,6 @@ class RustPushBackend implements BackendService {
         sender: await chat.ensureHandle(),
         message: api.DartMessage.changeParticipants(
             api.DartChangeParticipantMessage(groupVersion: chat.groupVersion!, newParticipants: newParticipants)));
-    try {
-        msg.afterGuid = chat.sendLastMessage.guid;
-      } catch (e) { /* No message, that's fine */ }
     await sendMsg(msg);
     msg.sentTimestamp = DateTime.now().millisecondsSinceEpoch;
     inq.queue(IncomingItem(
@@ -824,9 +799,6 @@ class RustPushBackend implements BackendService {
             toPart: repPart ?? 0,
             toText: selected.text ?? "",
             reaction: api.DartReactMessageType.react(reaction: reactionMap[reaction]!, enable: enabled))));
-    try {
-        msg.afterGuid = chat.sendLastMessage.guid;
-      } catch (e) { /* No message, that's fine */ }
     await sendMsg(msg);
     msg.sentTimestamp = DateTime.now().millisecondsSinceEpoch;
     return await pushService.reflectMessageDyn(msg);
@@ -854,9 +826,6 @@ class RustPushBackend implements BackendService {
             editPart: part,
             newParts: api.DartMessageParts(
                 field0: [api.DartIndexedMessagePart(part: api.DartMessagePart.text(text), idx: part)]))));
-    try {
-        msg.afterGuid = msgObj.chat.target!.sendLastMessage.guid;
-      } catch (e) { /* No message, that's fine */ }
     await sendMsg(msg);
     msg.sentTimestamp = DateTime.now().millisecondsSinceEpoch;
     return await pushService.reflectMessageDyn(msg);
@@ -1282,8 +1251,8 @@ class RustPushService extends GetxService {
     if (existing?.getChat() != null) {
       return existing!.getChat()!;
     }
-    if (myMsg.afterGuid != null) {
-      var existing = Message.findOne(guid: myMsg.afterGuid);
+    if (myMsg.conversation?.afterGuid != null) {
+      var existing = Message.findOne(guid: myMsg.conversation!.afterGuid!);
       if (existing?.getChat() != null) {
         return existing!.getChat()!;
       }

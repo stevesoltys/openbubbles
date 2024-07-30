@@ -6,13 +6,14 @@ use anyhow::anyhow;
 use flutter_rust_bridge::{frb, IntoDart, JoinHandle};
 use icloud_auth::{LoginState, AnisetteConfiguration, AppleAccount};
 pub use icloud_auth::{VerifyBody, TrustedPhoneNumber};
+use plist::Dictionary;
 pub use plist::Value;
 use prost::Message;
-pub use rustpush::{IDSAppleUser, PushError, IDSUser, IMClient, IMessage, ConversationData, register};
+pub use rustpush::{PushError, IDSUser, IMClient, ConversationData, register};
 
 use serde::{Serialize, Deserialize};
 use tokio::{runtime::Runtime, select, sync::{broadcast, oneshot::{self, Sender}, Mutex, RwLock}};
-use rustpush::{init_logger, APSConnection, APSState, Attachment, BalloonBody, MMCSFile, MessagePart, MessageParts, OSConfig, RegisterState};
+use rustpush::{authenticate_apple, init_logger, APSConnection, APSConnectionResource, APSState, Attachment, MMCSFile, MessageInst, MessagePart, MessageParts, OSConfig, ResourceState};
 pub use rustpush::{MacOSConfig, HardwareConfig};
 use uniffi::{deps::log::{info, error}, HandleAlloc};
 use std::io::Seek;
@@ -60,7 +61,7 @@ pub enum RegistrationPhase {
 }
 
 pub struct InnerPushState {
-    pub conn: Option<Arc<APSConnection>>,
+    pub conn: Option<APSConnection>,
     pub users: Vec<IDSUser>,
     pub client: Option<IMClient>,
     pub conf_dir: PathBuf,
@@ -125,6 +126,8 @@ async fn restore(curr_state: &PushState) {
     let hw_config_path = inner.conf_dir.join("hw_info.plist");
     let id_path = inner.conf_dir.join("id.plist");
 
+    info!("restoring now");
+
     // migrate
     if let Ok(config) = plist::from_file::<_, SavedHardwareState>(&inner.conf_dir.join("config.plist")) {
         std::fs::write(&hw_config_path, plist_to_string(&config).unwrap()).unwrap();
@@ -132,6 +135,27 @@ async fn restore(curr_state: &PushState) {
         std::fs::write(&id_path, plist_to_string(&data.as_dictionary().unwrap().get("users").unwrap()).unwrap()).unwrap();
         std::fs::remove_file(inner.conf_dir.join("config.plist")).unwrap();
         info!("migrated!");
+    }
+
+    // second migrate
+    if let Ok(mut users) = plist::from_file::<_, Vec<Dictionary>>(&id_path) {
+        for user in &mut users {
+            if user.contains_key("handles") {
+                // migrate!
+                let handles = user.remove("handles").unwrap();
+                let identity = user.get_mut("identity").unwrap().as_dictionary_mut().unwrap();
+                let id_keypair = identity.remove("id_keypair").unwrap();
+
+                let registration = Dictionary::from_iter([
+                    ("id_keypair", id_keypair),
+                    ("handles", handles),
+                ].into_iter());
+                user.insert("registration".to_string(), Value::Dictionary(registration));
+
+                info!("migrated!")
+            }
+        }
+        std::fs::write(&id_path, plist_to_string(&users).unwrap()).unwrap();
     }
 
     let Ok(state) = plist::from_file::<_, SavedHardwareState>(&hw_config_path) else { return };
@@ -144,7 +168,7 @@ async fn restore(curr_state: &PushState) {
     // id may not exist yet; that's fine
     let Ok(users) = plist::from_file::<_, Vec<IDSUser>>(&id_path) else { return };
 
-    info!("registration expires at {}", users[0].identity.as_ref().unwrap().get_exp().unwrap());
+    info!("registration expires at {}", users[0].registration.as_ref().unwrap().get_exp().unwrap());
 
     inner.client = Some(IMClient::new(inner.conn.as_ref().unwrap().clone(), users, 
         inner.conf_dir.join("id_cache.plist"), inner.os_config.clone().unwrap(), Box::new(move |updated_keys| {
@@ -175,7 +199,7 @@ pub async fn register_ids(state: &Arc<PushState>) -> anyhow::Result<Option<DartS
 
     let mut empty_users = vec![];
     std::mem::swap(&mut empty_users, &mut inner.users);
-    if let Err(err) = register(inner.os_config.as_ref().unwrap().as_ref(), &mut empty_users, &conn_state).await {
+    if let Err(err) = register(inner.os_config.as_ref().unwrap().as_ref(), &*conn_state.state.read().await, &mut empty_users).await {
         return if let PushError::CustomerMessage(support) = err {
             Ok(Some(unsafe { std::mem::transmute(support) }))
         } else {
@@ -192,8 +216,8 @@ pub async fn register_ids(state: &Arc<PushState>) -> anyhow::Result<Option<DartS
     Ok(None)
 }
 
-async fn setup_push(config: Arc<MacOSConfig>, state: Option<&APSState>, state_path: PathBuf) -> (Arc<APSConnection>, Option<PushError>) {
-    let (conn, error) = APSConnection::new(config.clone(), state.cloned()).await;
+async fn setup_push(config: Arc<MacOSConfig>, state: Option<&APSState>, state_path: PathBuf) -> (APSConnection, Option<PushError>) {
+    let (conn, error) = APSConnectionResource::new(config.clone(), state.cloned()).await;
 
     if error.is_none() {
         let state = SavedHardwareState {
@@ -203,7 +227,7 @@ async fn setup_push(config: Arc<MacOSConfig>, state: Option<&APSState>, state_pa
         std::fs::write(&state_path, plist_to_string(&state).unwrap()).unwrap();
     }
 
-    let mut to_refresh = conn.connected.subscribe();
+    let mut to_refresh = conn.generated_signal.subscribe();
     let reconn_conn = Arc::downgrade(&conn);
     let config_ref = config.clone();
     tokio::spawn(async move {
@@ -351,14 +375,6 @@ pub fn ptr_to_dart(ptr: String) -> DartIMessage {
     *recieved
 }
 
-#[frb]
-#[repr(C)]
-pub struct DartBalloonBody {
-    #[frb(non_final)]
-    pub bid: String,
-    #[frb(non_final)]
-    pub data: Vec<u8>
-}
 
 #[frb]
 #[repr(C)]
@@ -369,6 +385,8 @@ pub struct DartConversationData {
     pub cv_name: Option<String>,
     #[frb(non_final)]
     pub sender_guid: Option<String>,
+    #[frb(non_final)]
+    pub after_guid: Option<String>,
 }
 
 
@@ -513,8 +531,6 @@ pub struct DartNormalMessage {
     #[frb(non_final)]
     pub parts: DartMessageParts,
     #[frb(non_final)]
-    pub body: Option<DartBalloonBody>,
-    #[frb(non_final)]
     pub effect: Option<String>,
     #[frb(non_final)]
     pub reply_guid: Option<String>,
@@ -625,8 +641,6 @@ pub struct DartIMessage {
     #[frb(non_final)]
     pub sender: Option<String>,
     #[frb(non_final)]
-    pub after_guid: Option<String>,
-    #[frb(non_final)]
     pub conversation: Option<DartConversationData>,
     #[frb(non_final)]
     pub message: DartMessage,
@@ -650,14 +664,14 @@ impl Into<ConversationData> for DartConversationData {
     }
 }
 
-impl From<IMessage> for DartIMessage {
-    fn from(value: IMessage) -> Self {
+impl From<MessageInst> for DartIMessage {
+    fn from(value: MessageInst) -> Self {
         unsafe { std::mem::transmute(value) }
     }
 }
 
 impl DartIMessage {
-    fn to_imsg(self) -> IMessage {
+    fn to_imsg(self) -> MessageInst {
         unsafe { std::mem::transmute(self) }
     }
 }
@@ -675,7 +689,7 @@ pub async fn recv_wait(state: &Arc<PushState>) -> PollResult {
     let recv_path = state.0.read().await;
     *recv_path.cancel_poll.lock().await = Some(send);
     select! {
-        msg = recv_path.client.as_ref().expect("no client??/").recieve_wait() => {
+        msg = recv_path.client.as_ref().expect("no client??/").receive_wait() => {
             *recv_path.cancel_poll.lock().await = None;
             let msg = match msg {
                 Ok(msg) => msg,
@@ -710,14 +724,14 @@ pub async fn get_handles(state: &Arc<PushState>) -> anyhow::Result<Vec<String>> 
     if !matches!(state.get_phase().await, RegistrationPhase::Registered) {
         panic!("Wrong phase! (send)")
     }
-    Ok(state.0.read().await.client.as_ref().unwrap().get_handles().await.to_vec())
+    Ok(state.0.read().await.client.as_ref().unwrap().identity.get_handles().await.to_vec())
 }
 
 pub async fn do_reregister(state: &Arc<PushState>) -> anyhow::Result<()> {
     if !matches!(state.get_phase().await, RegistrationPhase::Registered) {
         panic!("Wrong phase! (send)")
     }
-    state.0.read().await.client.as_ref().unwrap().reregister().await?;
+    state.0.read().await.client.as_ref().unwrap().identity.refresh().await?;
     Ok(())
 }
 
@@ -726,15 +740,14 @@ pub async fn new_msg(state: &Arc<PushState>, conversation: DartConversationData,
         panic!("Wrong phase! (new_msg)")
     }
     let read = state.0.read().await;
-    let client = read.client.as_ref().unwrap();
-    client.new_msg(conversation.into(), &sender, message.into()).await.into()
+    MessageInst::new(conversation.into(), &sender, message.into()).into()
 }
 
 pub async fn validate_targets(state: &Arc<PushState>, targets: Vec<String>, sender: String) -> anyhow::Result<Vec<String>> {
     if !matches!(state.get_phase().await, RegistrationPhase::Registered) {
         panic!("Wrong phase! (validate_targets)")
     }
-    Ok(state.0.read().await.client.as_ref().unwrap().validate_targets(&targets, &sender).await?)
+    Ok(state.0.read().await.client.as_ref().unwrap().identity.validate_targets(&targets, &sender).await?)
 }
 
 pub async fn get_phase(state: &Arc<PushState>) -> RegistrationPhase {
@@ -825,8 +838,6 @@ pub async fn upload_attachment(sink: StreamSink<TransferProgress>, state: &Arc<P
 }
 
 pub async fn try_auth(state: &Arc<PushState>, username: String, password: String) -> anyhow::Result<DartLoginState> {
-    let connection = state.0.read().await.conn.as_ref().unwrap().clone();
-
     let mut inner = state.0.write().await;
     let anisette_config = AnisetteConfiguration::new()
         .set_configuration_path(inner.conf_dir.join("anisette_test"));
@@ -834,7 +845,7 @@ pub async fn try_auth(state: &Arc<PushState>, username: String, password: String
     let mut login_state = apple_account.login_email_pass(&username, &password).await?;
 
     if let Some(pet) = apple_account.get_pet() {
-        let identity = IDSAppleUser::authenticate(&connection, username.trim(), &pet, inner.os_config.as_ref().unwrap().as_ref()).await?;
+        let identity = authenticate_apple(username.trim(), &pet, inner.os_config.as_ref().unwrap().as_ref()).await?;
         inner.users.push(identity);
         
         // who needs extra steps when you have a PET, amirite?
@@ -903,7 +914,7 @@ pub async fn reset_state(state: &Arc<PushState>, reset_hw: bool) -> anyhow::Resu
     let conn_state = inner.conn.as_ref().unwrap().clone();
     inner.client = None;
     // try deregistering from iMessage, but if it fails we don't really care
-    let _ = register(inner.os_config.as_ref().unwrap().as_ref(), &mut [], &conn_state).await;
+    let _ = register(inner.os_config.as_ref().unwrap().as_ref(), &*conn_state.state.read().await, &mut []).await;
     inner.account = None;
     inner.users = vec![];
     let _ = std::fs::remove_file(inner.conf_dir.join("id.plist"));
@@ -920,7 +931,7 @@ pub async fn reset_state(state: &Arc<PushState>, reset_hw: bool) -> anyhow::Resu
 
 pub async fn invalidate_id_cache(state: &Arc<PushState>) -> anyhow::Result<()> {
     let inner = state.0.read().await;
-    inner.client.as_ref().unwrap().invalidate_id_cache().await;
+    inner.client.as_ref().unwrap().identity.invalidate_id_cache().await;
     Ok(())
 }
 
@@ -960,19 +971,18 @@ pub enum DartRegisterState {
 
 pub async fn get_regstate(state: &Arc<PushState>) -> anyhow::Result<DartRegisterState> {
     let inner = state.0.read().await;
-    let mutex_ref = inner.client.as_ref().unwrap().get_regstate().await;
-    let regstate = mutex_ref.lock().await;
-    Ok(match &*regstate {
-        RegisterState::Registering => DartRegisterState::Registering,
-        RegisterState::Registered => DartRegisterState::Registered,
-        RegisterState::Failed(failure) => 
+    let mutex_ref = inner.client.as_ref().unwrap().identity.resource_state.lock().await;
+    Ok(match &*mutex_ref {
+        ResourceState::Generating => DartRegisterState::Registering,
+        ResourceState::Generated => DartRegisterState::Registered,
+        ResourceState::Failed(failure) => 
             DartRegisterState::Failed { retry_wait: failure.retry_wait, error: format!("{}", failure.error) },
     })
 }
 
 pub async fn convert_token_to_uuid(state: &Arc<PushState>, handle: String, token: Vec<u8>) -> anyhow::Result<String> {
     let inner = state.0.read().await;
-    let uuid = inner.client.as_ref().unwrap().token_to_uuid(&handle, &token).await?;
+    let uuid = inner.client.as_ref().unwrap().identity.token_to_uuid(&handle, &token).await?;
     Ok(uuid)
 }
 
@@ -988,6 +998,6 @@ pub struct DartPrivateDeviceInfo {
 
 pub async fn get_sms_targets(state: &Arc<PushState>, handle: String, refresh: bool) -> anyhow::Result<Vec<DartPrivateDeviceInfo>> {
     let inner = state.0.read().await;
-    let targets = inner.client.as_ref().unwrap().get_sms_targets(&handle, refresh).await?;
+    let targets = inner.client.as_ref().unwrap().identity.get_sms_targets(&handle, refresh).await?;
     Ok(unsafe { std::mem::transmute(targets) })
 }

@@ -110,9 +110,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   DartAttachment dco_decode_box_autoadd_dart_attachment(dynamic raw);
 
   @protected
-  DartBalloonBody dco_decode_box_autoadd_dart_balloon_body(dynamic raw);
-
-  @protected
   DartChangeParticipantMessage
       dco_decode_box_autoadd_dart_change_participant_message(dynamic raw);
 
@@ -181,9 +178,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   DartAttachmentType dco_decode_dart_attachment_type(dynamic raw);
-
-  @protected
-  DartBalloonBody dco_decode_dart_balloon_body(dynamic raw);
 
   @protected
   DartChangeParticipantMessage dco_decode_dart_change_participant_message(
@@ -315,9 +309,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   DartAttachment? dco_decode_opt_box_autoadd_dart_attachment(dynamic raw);
-
-  @protected
-  DartBalloonBody? dco_decode_opt_box_autoadd_dart_balloon_body(dynamic raw);
 
   @protected
   DartConversationData? dco_decode_opt_box_autoadd_dart_conversation_data(
@@ -464,10 +455,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       SseDeserializer deserializer);
 
   @protected
-  DartBalloonBody sse_decode_box_autoadd_dart_balloon_body(
-      SseDeserializer deserializer);
-
-  @protected
   DartChangeParticipantMessage
       sse_decode_box_autoadd_dart_change_participant_message(
           SseDeserializer deserializer);
@@ -552,9 +539,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   DartAttachmentType sse_decode_dart_attachment_type(
       SseDeserializer deserializer);
-
-  @protected
-  DartBalloonBody sse_decode_dart_balloon_body(SseDeserializer deserializer);
 
   @protected
   DartChangeParticipantMessage sse_decode_dart_change_participant_message(
@@ -701,10 +685,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   DartAttachment? sse_decode_opt_box_autoadd_dart_attachment(
-      SseDeserializer deserializer);
-
-  @protected
-  DartBalloonBody? sse_decode_opt_box_autoadd_dart_balloon_body(
       SseDeserializer deserializer);
 
   @protected
@@ -857,10 +837,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       DartAttachment self, SseSerializer serializer);
 
   @protected
-  void sse_encode_box_autoadd_dart_balloon_body(
-      DartBalloonBody self, SseSerializer serializer);
-
-  @protected
   void sse_encode_box_autoadd_dart_change_participant_message(
       DartChangeParticipantMessage self, SseSerializer serializer);
 
@@ -945,10 +921,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_dart_attachment_type(
       DartAttachmentType self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_dart_balloon_body(
-      DartBalloonBody self, SseSerializer serializer);
 
   @protected
   void sse_encode_dart_change_participant_message(
@@ -1105,10 +1077,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_opt_box_autoadd_dart_attachment(
       DartAttachment? self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_opt_box_autoadd_dart_balloon_body(
-      DartBalloonBody? self, SseSerializer serializer);
 
   @protected
   void sse_encode_opt_box_autoadd_dart_conversation_data(

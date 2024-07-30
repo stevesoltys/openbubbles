@@ -321,27 +321,6 @@ sealed class DartAttachmentType with _$DartAttachmentType {
   ) = DartAttachmentType_MMCS;
 }
 
-class DartBalloonBody {
-  String bid;
-  Uint8List data;
-
-  DartBalloonBody({
-    required this.bid,
-    required this.data,
-  });
-
-  @override
-  int get hashCode => bid.hashCode ^ data.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is DartBalloonBody &&
-          runtimeType == other.runtimeType &&
-          bid == other.bid &&
-          data == other.data;
-}
-
 class DartChangeParticipantMessage {
   final List<String> newParticipants;
   final int groupVersion;
@@ -367,16 +346,21 @@ class DartConversationData {
   List<String> participants;
   String? cvName;
   String? senderGuid;
+  String? afterGuid;
 
   DartConversationData({
     required this.participants,
     this.cvName,
     this.senderGuid,
+    this.afterGuid,
   });
 
   @override
   int get hashCode =>
-      participants.hashCode ^ cvName.hashCode ^ senderGuid.hashCode;
+      participants.hashCode ^
+      cvName.hashCode ^
+      senderGuid.hashCode ^
+      afterGuid.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -385,7 +369,8 @@ class DartConversationData {
           runtimeType == other.runtimeType &&
           participants == other.participants &&
           cvName == other.cvName &&
-          senderGuid == other.senderGuid;
+          senderGuid == other.senderGuid &&
+          afterGuid == other.afterGuid;
 }
 
 class DartDeviceInfo {
@@ -481,7 +466,6 @@ class DartHwExtra {
 class DartIMessage {
   String id;
   String? sender;
-  String? afterGuid;
   DartConversationData? conversation;
   DartMessage message;
   int sentTimestamp;
@@ -491,7 +475,6 @@ class DartIMessage {
   DartIMessage({
     required this.id,
     this.sender,
-    this.afterGuid,
     this.conversation,
     required this.message,
     required this.sentTimestamp,
@@ -503,7 +486,6 @@ class DartIMessage {
   int get hashCode =>
       id.hashCode ^
       sender.hashCode ^
-      afterGuid.hashCode ^
       conversation.hashCode ^
       message.hashCode ^
       sentTimestamp.hashCode ^
@@ -517,7 +499,6 @@ class DartIMessage {
           runtimeType == other.runtimeType &&
           id == other.id &&
           sender == other.sender &&
-          afterGuid == other.afterGuid &&
           conversation == other.conversation &&
           message == other.message &&
           sentTimestamp == other.sentTimestamp &&
@@ -731,7 +712,6 @@ class DartMMCSFile {
 
 class DartNormalMessage {
   DartMessageParts parts;
-  DartBalloonBody? body;
   String? effect;
   String? replyGuid;
   String? replyPart;
@@ -739,7 +719,6 @@ class DartNormalMessage {
 
   DartNormalMessage({
     required this.parts,
-    this.body,
     this.effect,
     this.replyGuid,
     this.replyPart,
@@ -749,7 +728,6 @@ class DartNormalMessage {
   @override
   int get hashCode =>
       parts.hashCode ^
-      body.hashCode ^
       effect.hashCode ^
       replyGuid.hashCode ^
       replyPart.hashCode ^
@@ -761,7 +739,6 @@ class DartNormalMessage {
       other is DartNormalMessage &&
           runtimeType == other.runtimeType &&
           parts == other.parts &&
-          body == other.body &&
           effect == other.effect &&
           replyGuid == other.replyGuid &&
           replyPart == other.replyPart &&

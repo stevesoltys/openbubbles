@@ -1245,18 +1245,6 @@ impl SseDecode for crate::api::api::DartAttachmentType {
     }
 }
 
-impl SseDecode for crate::api::api::DartBalloonBody {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut var_bid = <String>::sse_decode(deserializer);
-        let mut var_data = <Vec<u8>>::sse_decode(deserializer);
-        return crate::api::api::DartBalloonBody {
-            bid: var_bid,
-            data: var_data,
-        };
-    }
-}
-
 impl SseDecode for crate::api::api::DartChangeParticipantMessage {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -1275,10 +1263,12 @@ impl SseDecode for crate::api::api::DartConversationData {
         let mut var_participants = <Vec<String>>::sse_decode(deserializer);
         let mut var_cvName = <Option<String>>::sse_decode(deserializer);
         let mut var_senderGuid = <Option<String>>::sse_decode(deserializer);
+        let mut var_afterGuid = <Option<String>>::sse_decode(deserializer);
         return crate::api::api::DartConversationData {
             participants: var_participants,
             cv_name: var_cvName,
             sender_guid: var_senderGuid,
+            after_guid: var_afterGuid,
         };
     }
 }
@@ -1336,7 +1326,6 @@ impl SseDecode for crate::api::api::DartIMessage {
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut var_id = <String>::sse_decode(deserializer);
         let mut var_sender = <Option<String>>::sse_decode(deserializer);
-        let mut var_afterGuid = <Option<String>>::sse_decode(deserializer);
         let mut var_conversation =
             <Option<crate::api::api::DartConversationData>>::sse_decode(deserializer);
         let mut var_message = <crate::api::api::DartMessage>::sse_decode(deserializer);
@@ -1347,7 +1336,6 @@ impl SseDecode for crate::api::api::DartIMessage {
         return crate::api::api::DartIMessage {
             id: var_id,
             sender: var_sender,
-            after_guid: var_afterGuid,
             conversation: var_conversation,
             message: var_message,
             sent_timestamp: var_sentTimestamp,
@@ -1595,14 +1583,12 @@ impl SseDecode for crate::api::api::DartNormalMessage {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut var_parts = <crate::api::api::DartMessageParts>::sse_decode(deserializer);
-        let mut var_body = <Option<crate::api::api::DartBalloonBody>>::sse_decode(deserializer);
         let mut var_effect = <Option<String>>::sse_decode(deserializer);
         let mut var_replyGuid = <Option<String>>::sse_decode(deserializer);
         let mut var_replyPart = <Option<String>>::sse_decode(deserializer);
         let mut var_service = <crate::api::api::DartMessageType>::sse_decode(deserializer);
         return crate::api::api::DartNormalMessage {
             parts: var_parts,
-            body: var_body,
             effect: var_effect,
             reply_guid: var_replyGuid,
             reply_part: var_replyPart,
@@ -1977,17 +1963,6 @@ impl SseDecode for Option<crate::api::api::DartAttachment> {
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         if (<bool>::sse_decode(deserializer)) {
             return Some(<crate::api::api::DartAttachment>::sse_decode(deserializer));
-        } else {
-            return None;
-        }
-    }
-}
-
-impl SseDecode for Option<crate::api::api::DartBalloonBody> {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        if (<bool>::sse_decode(deserializer)) {
-            return Some(<crate::api::api::DartBalloonBody>::sse_decode(deserializer));
         } else {
             return None;
         }
@@ -2385,27 +2360,6 @@ impl flutter_rust_bridge::IntoIntoDart<crate::api::api::DartAttachmentType>
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for crate::api::api::DartBalloonBody {
-    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
-        [
-            self.bid.into_into_dart().into_dart(),
-            self.data.into_into_dart().into_dart(),
-        ]
-        .into_dart()
-    }
-}
-impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-    for crate::api::api::DartBalloonBody
-{
-}
-impl flutter_rust_bridge::IntoIntoDart<crate::api::api::DartBalloonBody>
-    for crate::api::api::DartBalloonBody
-{
-    fn into_into_dart(self) -> crate::api::api::DartBalloonBody {
-        self
-    }
-}
-// Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart for crate::api::api::DartChangeParticipantMessage {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
@@ -2433,6 +2387,7 @@ impl flutter_rust_bridge::IntoDart for crate::api::api::DartConversationData {
             self.participants.into_into_dart().into_dart(),
             self.cv_name.into_into_dart().into_dart(),
             self.sender_guid.into_into_dart().into_dart(),
+            self.after_guid.into_into_dart().into_dart(),
         ]
         .into_dart()
     }
@@ -2520,7 +2475,6 @@ impl flutter_rust_bridge::IntoDart for crate::api::api::DartIMessage {
         [
             self.id.into_into_dart().into_dart(),
             self.sender.into_into_dart().into_dart(),
-            self.after_guid.into_into_dart().into_dart(),
             self.conversation.into_into_dart().into_dart(),
             self.message.into_into_dart().into_dart(),
             self.sent_timestamp.into_into_dart().into_dart(),
@@ -2789,7 +2743,6 @@ impl flutter_rust_bridge::IntoDart for crate::api::api::DartNormalMessage {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
             self.parts.into_into_dart().into_dart(),
-            self.body.into_into_dart().into_dart(),
             self.effect.into_into_dart().into_dart(),
             self.reply_guid.into_into_dart().into_dart(),
             self.reply_part.into_into_dart().into_dart(),
@@ -3337,14 +3290,6 @@ impl SseEncode for crate::api::api::DartAttachmentType {
     }
 }
 
-impl SseEncode for crate::api::api::DartBalloonBody {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <String>::sse_encode(self.bid, serializer);
-        <Vec<u8>>::sse_encode(self.data, serializer);
-    }
-}
-
 impl SseEncode for crate::api::api::DartChangeParticipantMessage {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -3359,6 +3304,7 @@ impl SseEncode for crate::api::api::DartConversationData {
         <Vec<String>>::sse_encode(self.participants, serializer);
         <Option<String>>::sse_encode(self.cv_name, serializer);
         <Option<String>>::sse_encode(self.sender_guid, serializer);
+        <Option<String>>::sse_encode(self.after_guid, serializer);
     }
 }
 
@@ -3397,7 +3343,6 @@ impl SseEncode for crate::api::api::DartIMessage {
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <String>::sse_encode(self.id, serializer);
         <Option<String>>::sse_encode(self.sender, serializer);
-        <Option<String>>::sse_encode(self.after_guid, serializer);
         <Option<crate::api::api::DartConversationData>>::sse_encode(self.conversation, serializer);
         <crate::api::api::DartMessage>::sse_encode(self.message, serializer);
         <u64>::sse_encode(self.sent_timestamp, serializer);
@@ -3603,7 +3548,6 @@ impl SseEncode for crate::api::api::DartNormalMessage {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <crate::api::api::DartMessageParts>::sse_encode(self.parts, serializer);
-        <Option<crate::api::api::DartBalloonBody>>::sse_encode(self.body, serializer);
         <Option<String>>::sse_encode(self.effect, serializer);
         <Option<String>>::sse_encode(self.reply_guid, serializer);
         <Option<String>>::sse_encode(self.reply_part, serializer);
@@ -3894,16 +3838,6 @@ impl SseEncode for Option<crate::api::api::DartAttachment> {
         <bool>::sse_encode(self.is_some(), serializer);
         if let Some(value) = self {
             <crate::api::api::DartAttachment>::sse_encode(value, serializer);
-        }
-    }
-}
-
-impl SseEncode for Option<crate::api::api::DartBalloonBody> {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <bool>::sse_encode(self.is_some(), serializer);
-        if let Some(value) = self {
-            <crate::api::api::DartBalloonBody>::sse_encode(value, serializer);
         }
     }
 }

@@ -729,7 +729,7 @@ class Chat {
       }
     }).toList();
     handles.add(await ensureHandle());
-    return api.DartConversationData(participants: handles, cvName: apnTitle, senderGuid: guid);
+    return api.DartConversationData(participants: handles, cvName: apnTitle, senderGuid: guid, afterGuid: sendLastMessage.stagingGuid ?? sendLastMessage.guid);
   }
 
   /// Change a chat's display name
