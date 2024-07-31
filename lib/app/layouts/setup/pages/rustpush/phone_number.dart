@@ -41,6 +41,8 @@ class PhoneNumberState extends OptimizedState<PhoneNumber> {
   final controller = Get.find<SetupViewController>();
   final FocusNode focusNode = FocusNode();
 
+  bool loading = false;
+
   @override
   Widget build(BuildContext context) {
     return SetupPageTemplate(
@@ -63,25 +65,46 @@ class PhoneNumberState extends OptimizedState<PhoneNumber> {
                           child: Obx(() => SettingsSwitch(
                             padding: false,
                             onChanged: (bool val) async {
+                              if (loading) return;
                               if (val) {
-                                var granted = await TelephonyPlus().requestPermissions();
-                                if (!granted) {
-                                  showSnackbar("SMS denied", "Please enable SMS permission in settings");
+                                if (ss.settings.cachedCodes.containsKey("sms-auth")) {
+                                  controller.currentPhoneUser = await api.restoreUser(user: ss.settings.cachedCodes["sms-auth"]!);
+                                  controller.updateConnectError("");
+                                  setState(() { });
                                   return;
                                 }
+                                setState(() {
+                                  loading = true;
+                                });
+                                try {
+                                  var granted = await TelephonyPlus().requestPermissions();
+                                  if (!granted) {
+                                    showSnackbar("SMS denied", "Please enable SMS permission in settings");
+                                    return;
+                                  }
+                                  var token = await api.getToken(state: pushService.state);
+
+                                  String resp = await mcs.invokeMethod("sms-auth-gateway", {'token': hex.encode(token).toUpperCase()});
+                                  controller.currentPhoneUser = await api.authPhone(state: pushService.state, number: resp.split("|").first, sig: hex.decode(resp.split("|").last));
+                                  ss.settings.cachedCodes["sms-auth"] = await api.saveUser(user: controller.currentPhoneUser!);
+                                  ss.saveSettings();
+                                  controller.updateConnectError("");
+                                  setState(() { });
+                                } catch(e) {
+                                  if (e is PlatformException) {
+                                    var msg = e.code;
+                                    controller.updateConnectError(msg);
+                                  }
+                                  rethrow;
+                                } finally {
+                                  setState(() {
+                                    loading = false;
+                                  });
+                                }
+                              } else {
+                                controller.currentPhoneUser = null;
+                                setState(() { });
                               }
-                              var token = await api.getToken(state: pushService.state);
-
-                              var tokenTarget = "F7BC95290B7FEE210CA4849CB3DF59A6D25012FB1EB70DD856FE4702CFE1307F";
-
-                              String resp = await mcs.invokeMethod("sms-auth-gateway", {'token': tokenTarget});
-                              print(resp);
-                              return;
-                              // String resp = "+17204878766|02664EC83CFFFFFFFF2FF14F73F2D9641E25FF7F21A2332BDE19DC060B";
-                              controller.currentPhoneUser = await api.authPhone(state: pushService.state, number: resp.split("|").first, sig: hex.decode(resp.split("|").last));
-                              ss.settings.cachedCodes["sms-auth"] = await api.saveUser(user: controller.currentPhoneUser!);
-                              ss.saveSettings();
-                              setState(() { });
                             },
                             initialVal: controller.currentPhoneUser != null,
                             title: "Register your Phone Number",
@@ -136,7 +159,7 @@ class PhoneNumberState extends OptimizedState<PhoneNumber> {
                                 borderRadius: BorderRadius.circular(25),
                                 gradient: LinearGradient(
                                   begin: AlignmentDirectional.topStart,
-                                  colors: [HexColor('2772C3'), HexColor('5CA7F8').darkenPercent(5)],
+                                  colors: loading ? [HexColor('777777'), HexColor('777777')] : [HexColor('2772C3'), HexColor('5CA7F8').darkenPercent(5)],
                                 ),
                               ),
                               height: 40,
@@ -148,27 +171,34 @@ class PhoneNumberState extends OptimizedState<PhoneNumber> {
                                       borderRadius: BorderRadius.circular(20.0),
                                     ),
                                   ),
-                                  backgroundColor: MaterialStateProperty.all(controller.currentPhoneUser != null ? Colors.transparent : context.theme.colorScheme.background),
-                                  shadowColor: MaterialStateProperty.all(controller.currentPhoneUser != null ? Colors.transparent : context.theme.colorScheme.background),
+                                  backgroundColor: MaterialStateProperty.all(controller.currentPhoneUser != null || loading ? Colors.transparent : context.theme.colorScheme.background),
+                                  shadowColor: MaterialStateProperty.all(controller.currentPhoneUser != null || loading ? Colors.transparent : context.theme.colorScheme.background),
                                   maximumSize: MaterialStateProperty.all(const Size(200, 36)),
                                   minimumSize: MaterialStateProperty.all(const Size(30, 30)),
                                 ),
-                                onPressed: () async {
+                                onPressed: loading ? null : () async {
                                   controller.pageController.nextPage(
                                     duration: const Duration(milliseconds: 300),
                                     curve: Curves.easeInOut,
                                   );
                                 },
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
+                                child: Stack(
+                                  alignment: Alignment.center,
                                   children: [
-                                    Text(controller.currentPhoneUser != null ? "Continue" : "Skip",
-                                        style: context.theme.textTheme.bodyLarge!
-                                            .apply(fontSizeFactor: 1.1, color: context.theme.colorScheme.onBackground)),
-                                    const SizedBox(width: 10),
-                                    Icon(Icons.arrow_forward, color: context.theme.colorScheme.onBackground, size: 20),
+                                    Opacity(opacity: loading ? 0 : 1, child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text(controller.currentPhoneUser != null ? "Continue" : "Skip",
+                                            style: context.theme.textTheme.bodyLarge!
+                                                .apply(fontSizeFactor: 1.1, color: controller.currentPhoneUser != null ? Colors.white : context.theme.colorScheme.onBackground)),
+                                        const SizedBox(width: 10),
+                                        Icon(Icons.arrow_forward, color: controller.currentPhoneUser != null ? Colors.white : context.theme.colorScheme.onBackground, size: 20),
+                                      ],
+                                    ),),
+                                    if (loading)
+                                    buildProgressIndicator(context, brightness: Brightness.dark),
                                   ],
-                                ),
+                                )
                               ),
                             ),
                           ],

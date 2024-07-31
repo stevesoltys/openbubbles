@@ -347,9 +347,9 @@ class _AppleIdLoginState extends OptimizedState<AppleIdLogin> {
                                       children: [
                                         Text("Skip",
                                             style: context.theme.textTheme.bodyLarge!
-                                                .apply(fontSizeFactor: 1.1, color: Colors.white)),
+                                                .apply(fontSizeFactor: 1.1, color: context.theme.colorScheme.onBackground)),
                                         const SizedBox(width: 10),
-                                        const Icon(Icons.arrow_forward, color: Colors.white, size: 20),
+                                        Icon(Icons.arrow_forward, color: context.theme.colorScheme.onBackground, size: 20),
                                       ],
                                     ),),
                                     if (loading)

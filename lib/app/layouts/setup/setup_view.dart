@@ -139,8 +139,8 @@ class SetupViewController extends StatefulController {
     if (users.isEmpty) {
       throw Exception("No users to register!");
     }
-
-    var response = await api.registerIds(state: pushService.state, users: users);
+    try {
+      var response = await api.registerIds(state: pushService.state, users: users);
       if (response != null) {
         var devInfo = await api.getDeviceInfoState(state: pushService.state);
         await showDialog(
@@ -187,6 +187,11 @@ class SetupViewController extends StatefulController {
       // ss.settings.cachedCodes.clear();
       await pushService.configured();
       await setup.finishSetup();
+    } catch(e) {
+      // reset currentPhoneUser because frb *insists* on taking ownership.
+      currentPhoneUser = await api.restoreUser(user: ss.settings.cachedCodes["sms-auth"]!);
+      rethrow;
+    }
   }
 
   Future<void> cacheCode(String code) async {

@@ -1,6 +1,7 @@
 package com.bluebubbles.messaging.services.rustpush
 
 import android.content.Context
+import android.os.Handler
 import android.telephony.SmsManager
 import android.telephony.TelephonyManager
 import com.bluebubbles.messaging.models.MethodCallHandlerImpl
@@ -55,6 +56,11 @@ class SMSAuthGateway: MethodCallHandlerImpl() {
                     return result.error(e.message ?: "No error", null, null)
                 }
                 waitingResult[reqId.toString()] = result
+
+                val handler = Handler(context.mainLooper)
+                handler.postDelayed({
+                    waitingResult.remove(reqId.toString())?.error("Timed out waiting for REG-RESP", null, null)
+                }, 30000)
             }
         }, carrierMccMnc)
 
