@@ -853,6 +853,7 @@ class Chat {
 
   static void softDelete(Chat chat) async {
     if (kIsWeb) return;
+    if (backend.canDelete()) return deleteChat(chat);
     // close the convo view page if open and wait for it to be disposed before deleting
     if (cm.activeChat?.chat.guid == chat.guid) {
       ns.closeAllConversationView(Get.context!);
@@ -1162,8 +1163,9 @@ class Chat {
       }
     }
 
+    var (mine, dartParticipants) = await RustPushBBUtils.rustParticipantsToBB(data.participants);
+
     final name = data.cvName;
-    var dartParticipants = await RustPushBBUtils.rustParticipantsToBB(data.participants);
 
     var cond = Chat_.dateDeleted.isNull();
     if (name != null) {
@@ -1190,12 +1192,9 @@ class Chat {
       result = await backend.createChat(dartParticipants.map((e) => e.address).toList(), null, service, existingGuid: data.senderGuid);
       result.displayName = data.cvName;
       result.apnTitle = data.cvName;
+      if (mine.isNotEmpty) result.usingHandle = mine[0];
       result = result.save();
       chats.updateChat(result);
-    }
-    if (data.senderGuid != null && result != null) {
-      result.guidRefs.add(data.senderGuid!);
-      result.save(updateGuidRefs: true);
     }
     return result;
   }

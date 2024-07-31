@@ -23,6 +23,11 @@ class HttpBackend implements BackendService {
   void init() { }
 
   @override
+  bool canDelete() {
+    return false;
+  }
+
+  @override
   void startedTyping(Chat c) {
     socket.sendMessage("started-typing", {"chatGuid": c.guid});
   }

@@ -80,9 +80,10 @@ class RustPushBBUtils {
     }
   }
 
-  static Future<List<Handle>> rustParticipantsToBB(List<String> participants) async {
+  static Future<(List<String>, List<Handle>)> rustParticipantsToBB(List<String> participants) async {
     var myHandles = (await api.getHandles(state: pushService.state));
-    return participants.filter((e) => !myHandles.contains(e)).map((e) => rustHandleToBB(e)).toList();
+    var mine = myHandles.filter((e) => participants.contains(e)).toList();
+    return (mine, participants.filter((e) => !myHandles.contains(e)).map((e) => rustHandleToBB(e)).toList());
   }
 
   static Map<String, String> modelMap = {
@@ -260,6 +261,11 @@ class RustPushBackend implements BackendService {
   }
 
   @override
+  bool canDelete() {
+    return true;
+  }
+
+  @override
   bool canCreateGroupChats() {
     return true;
   }
@@ -327,7 +333,7 @@ class RustPushBackend implements BackendService {
       guid: existingGuid ?? uuid.v4(),
       participants: formattedHandles,
       usingHandle: handle,
-      isRpSms: service == "SMS"
+      isRpSms: service == "SMS",
     );
     chat.save(); //save for reflectMessage
     if (message != null) {
@@ -1091,7 +1097,7 @@ class RustPushService extends GetxService {
         newParticipants.remove(await chat.ensureHandle());
       }
       var isAdd = newParticipants.length > chat.participants.length || didIJoin;
-      var participantHandles = await RustPushBBUtils.rustParticipantsToBB(newParticipants);
+      var (_, participantHandles) = await RustPushBBUtils.rustParticipantsToBB(newParticipants);
       var changed = didILeave || didIJoin
           ? RustPushBBUtils.rustHandleToBB(await chat.ensureHandle())
           : isAdd
@@ -1239,7 +1245,7 @@ class RustPushService extends GetxService {
 
   // finds chat for message. Use over `Chat.findByRust` for incoming messages
   // to handle after conversation changes (renames, participants)
-  Future<Chat> chatForMessage(api.DartIMessage myMsg) async {
+  Future<Chat> chatForMessageInner(api.DartIMessage myMsg) async {
     // find existing saved message and use that chat if we're getting a replay
     var existing = Message.findOne(guid: myMsg.id);
     if (myMsg.message is api.DartMessage_Edit) {
@@ -1255,7 +1261,8 @@ class RustPushService extends GetxService {
     if (myMsg.conversation?.afterGuid != null) {
       var existing = Message.findOne(guid: myMsg.conversation!.afterGuid!);
       if (existing?.getChat() != null) {
-        return existing!.getChat()!;
+        var result = existing!.getChat()!;
+        if (myMsg.sender == null || result.participants.contains(RustPushBBUtils.rustHandleToBB(myMsg.sender!))) return existing.getChat()!;
       }
     }
     if (myMsg.message is api.DartMessage_RenameMessage) {
@@ -1289,6 +1296,21 @@ class RustPushService extends GetxService {
       }
     }
     return (await Chat.findByRust(myMsg.conversation!, getService(myMsg)))!;
+  }
+
+  Future<Chat> chatForMessage(api.DartIMessage myMsg) async {
+    var result = await chatForMessageInner(myMsg);
+    // conformance stuff
+    if (myMsg.conversation!.senderGuid != null) {
+      result.guidRefs.add(myMsg.conversation!.senderGuid!);
+      result.save(updateGuidRefs: true);
+    }
+    var (mine, _) = await RustPushBBUtils.rustParticipantsToBB(myMsg.conversation!.participants);
+    if (mine.isNotEmpty && !mine.contains(result.usingHandle)) {
+      result.usingHandle = mine[0];
+      result.save(updateUsingHandle: true);
+    }
+    return result;
   }
 
   Future handleMsg(api.DartIMessage myMsg) async {

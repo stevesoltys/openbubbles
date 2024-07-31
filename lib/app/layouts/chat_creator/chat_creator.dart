@@ -13,6 +13,8 @@ import 'package:bluebubbles/database/database.dart';
 import 'package:bluebubbles/database/models.dart';
 import 'package:bluebubbles/services/services.dart';
 import 'package:bluebubbles/utils/string_utils.dart';
+import 'package:bluebubbles/services/network/backend_service.dart';
+import 'package:bluebubbles/services/rustpush/rustpush_service.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -23,7 +25,6 @@ import 'package:flutter_acrylic/window_effect.dart';
 import 'package:get/get.dart' hide Response;
 import 'package:slugify/slugify.dart';
 import 'package:tuple/tuple.dart';
-import 'package:bluebubbles/services/network/backend_service.dart';
 
 class SelectedContact {
   final String displayName;
@@ -790,6 +791,12 @@ class ChatCreatorState extends OptimizedState<ChatCreator> {
                               fakeController.value!.subjectTextController.clear();
                             }
 
+                            if (backend is RustPushBackend) {
+                              var b = backend as RustPushBackend;
+                              var handle = await b.getDefaultHandle();
+                              chat.usingHandle = handle;
+                              chat.save(updateUsingHandle: true);
+                            }
                             ns.pushAndRemoveUntil(
                               Get.context!,
                               ConversationView(chat: chat, fromChatCreator: true, onInit: sendInitialMessage),

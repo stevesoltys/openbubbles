@@ -49,4 +49,5 @@ abstract class BackendService {
   Future<void> setDefaultHandle(String handle);
   Future<Map<String, dynamic>> getAccountContact();
   void init();
+  bool canDelete(); // use hard delete
 }
