@@ -11,6 +11,7 @@ import 'package:bluebubbles/app/layouts/setup/pages/sync/qr_code_scanner.dart';
 import 'package:bluebubbles/app/layouts/setup/setup_view.dart';
 import 'package:bluebubbles/app/wrappers/stateful_boilerplate.dart';
 import 'package:bluebubbles/src/rust/api/api.dart' as api;
+import 'package:bluebubbles/src/rust/lib.dart' as lib;
 import 'package:bluebubbles/helpers/helpers.dart';
 import 'package:bluebubbles/services/rustpush/rustpush_service.dart';
 import 'package:bluebubbles/services/services.dart';
@@ -43,7 +44,7 @@ class HwInpState extends OptimizedState<HwInp> {
   bool loading = false;
 
   bool stagingMine = true;
-  api.MacOsConfig? staging;
+  lib.MacOsConfig? staging;
   api.DartDeviceInfo? stagingInfo;
   String deviceName = "";
 
@@ -97,7 +98,7 @@ class HwInpState extends OptimizedState<HwInp> {
     }
   }
 
-  void select(api.MacOsConfig parsed, bool mine) async {
+  void select(lib.MacOsConfig parsed, bool mine) async {
     var info = await api.getDeviceInfo(config: parsed);
     setState(() {
       if (staging == null) {
@@ -610,7 +611,7 @@ class HwInpState extends OptimizedState<HwInp> {
     );
   }
 
-  Future<void> connect(api.MacOsConfig config) async {
+  Future<void> connect(lib.MacOsConfig config) async {
     setState(() {
       loading = true;
     });

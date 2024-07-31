@@ -6769,15 +6769,15 @@ abstract class DartMessageType_SMS extends DartMessageType {
 mixin _$DartPartExtension {
   double get msgWidth => throw _privateConstructorUsedError;
   double get rotation => throw _privateConstructorUsedError;
-  int get sai => throw _privateConstructorUsedError;
+  BigInt get sai => throw _privateConstructorUsedError;
   double get scale => throw _privateConstructorUsedError;
   bool? get update => throw _privateConstructorUsedError;
-  int get sli => throw _privateConstructorUsedError;
+  BigInt get sli => throw _privateConstructorUsedError;
   double get normalizedX => throw _privateConstructorUsedError;
   double get normalizedY => throw _privateConstructorUsedError;
-  int get version => throw _privateConstructorUsedError;
+  BigInt get version => throw _privateConstructorUsedError;
   String get hash => throw _privateConstructorUsedError;
-  int get safi => throw _privateConstructorUsedError;
+  BigInt get safi => throw _privateConstructorUsedError;
   int get effectType => throw _privateConstructorUsedError;
   String get stickerId => throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -6785,15 +6785,15 @@ mixin _$DartPartExtension {
     required TResult Function(
             double msgWidth,
             double rotation,
-            int sai,
+            BigInt sai,
             double scale,
             bool? update,
-            int sli,
+            BigInt sli,
             double normalizedX,
             double normalizedY,
-            int version,
+            BigInt version,
             String hash,
-            int safi,
+            BigInt safi,
             int effectType,
             String stickerId)
         sticker,
@@ -6804,15 +6804,15 @@ mixin _$DartPartExtension {
     TResult? Function(
             double msgWidth,
             double rotation,
-            int sai,
+            BigInt sai,
             double scale,
             bool? update,
-            int sli,
+            BigInt sli,
             double normalizedX,
             double normalizedY,
-            int version,
+            BigInt version,
             String hash,
-            int safi,
+            BigInt safi,
             int effectType,
             String stickerId)?
         sticker,
@@ -6823,15 +6823,15 @@ mixin _$DartPartExtension {
     TResult Function(
             double msgWidth,
             double rotation,
-            int sai,
+            BigInt sai,
             double scale,
             bool? update,
-            int sli,
+            BigInt sli,
             double normalizedX,
             double normalizedY,
-            int version,
+            BigInt version,
             String hash,
-            int safi,
+            BigInt safi,
             int effectType,
             String stickerId)?
         sticker,
@@ -6869,15 +6869,15 @@ abstract class $DartPartExtensionCopyWith<$Res> {
   $Res call(
       {double msgWidth,
       double rotation,
-      int sai,
+      BigInt sai,
       double scale,
       bool? update,
-      int sli,
+      BigInt sli,
       double normalizedX,
       double normalizedY,
-      int version,
+      BigInt version,
       String hash,
-      int safi,
+      BigInt safi,
       int effectType,
       String stickerId});
 }
@@ -6921,7 +6921,7 @@ class _$DartPartExtensionCopyWithImpl<$Res, $Val extends DartPartExtension>
       sai: null == sai
           ? _value.sai
           : sai // ignore: cast_nullable_to_non_nullable
-              as int,
+              as BigInt,
       scale: null == scale
           ? _value.scale
           : scale // ignore: cast_nullable_to_non_nullable
@@ -6933,7 +6933,7 @@ class _$DartPartExtensionCopyWithImpl<$Res, $Val extends DartPartExtension>
       sli: null == sli
           ? _value.sli
           : sli // ignore: cast_nullable_to_non_nullable
-              as int,
+              as BigInt,
       normalizedX: null == normalizedX
           ? _value.normalizedX
           : normalizedX // ignore: cast_nullable_to_non_nullable
@@ -6945,7 +6945,7 @@ class _$DartPartExtensionCopyWithImpl<$Res, $Val extends DartPartExtension>
       version: null == version
           ? _value.version
           : version // ignore: cast_nullable_to_non_nullable
-              as int,
+              as BigInt,
       hash: null == hash
           ? _value.hash
           : hash // ignore: cast_nullable_to_non_nullable
@@ -6953,7 +6953,7 @@ class _$DartPartExtensionCopyWithImpl<$Res, $Val extends DartPartExtension>
       safi: null == safi
           ? _value.safi
           : safi // ignore: cast_nullable_to_non_nullable
-              as int,
+              as BigInt,
       effectType: null == effectType
           ? _value.effectType
           : effectType // ignore: cast_nullable_to_non_nullable
@@ -6978,15 +6978,15 @@ abstract class _$$DartPartExtension_StickerImplCopyWith<$Res>
   $Res call(
       {double msgWidth,
       double rotation,
-      int sai,
+      BigInt sai,
       double scale,
       bool? update,
-      int sli,
+      BigInt sli,
       double normalizedX,
       double normalizedY,
-      int version,
+      BigInt version,
       String hash,
-      int safi,
+      BigInt safi,
       int effectType,
       String stickerId});
 }
@@ -7030,7 +7030,7 @@ class __$$DartPartExtension_StickerImplCopyWithImpl<$Res>
       sai: null == sai
           ? _value.sai
           : sai // ignore: cast_nullable_to_non_nullable
-              as int,
+              as BigInt,
       scale: null == scale
           ? _value.scale
           : scale // ignore: cast_nullable_to_non_nullable
@@ -7042,7 +7042,7 @@ class __$$DartPartExtension_StickerImplCopyWithImpl<$Res>
       sli: null == sli
           ? _value.sli
           : sli // ignore: cast_nullable_to_non_nullable
-              as int,
+              as BigInt,
       normalizedX: null == normalizedX
           ? _value.normalizedX
           : normalizedX // ignore: cast_nullable_to_non_nullable
@@ -7054,7 +7054,7 @@ class __$$DartPartExtension_StickerImplCopyWithImpl<$Res>
       version: null == version
           ? _value.version
           : version // ignore: cast_nullable_to_non_nullable
-              as int,
+              as BigInt,
       hash: null == hash
           ? _value.hash
           : hash // ignore: cast_nullable_to_non_nullable
@@ -7062,7 +7062,7 @@ class __$$DartPartExtension_StickerImplCopyWithImpl<$Res>
       safi: null == safi
           ? _value.safi
           : safi // ignore: cast_nullable_to_non_nullable
-              as int,
+              as BigInt,
       effectType: null == effectType
           ? _value.effectType
           : effectType // ignore: cast_nullable_to_non_nullable
@@ -7099,23 +7099,23 @@ class _$DartPartExtension_StickerImpl extends DartPartExtension_Sticker {
   @override
   final double rotation;
   @override
-  final int sai;
+  final BigInt sai;
   @override
   final double scale;
   @override
   final bool? update;
   @override
-  final int sli;
+  final BigInt sli;
   @override
   final double normalizedX;
   @override
   final double normalizedY;
   @override
-  final int version;
+  final BigInt version;
   @override
   final String hash;
   @override
-  final int safi;
+  final BigInt safi;
   @override
   final int effectType;
   @override
@@ -7182,15 +7182,15 @@ class _$DartPartExtension_StickerImpl extends DartPartExtension_Sticker {
     required TResult Function(
             double msgWidth,
             double rotation,
-            int sai,
+            BigInt sai,
             double scale,
             bool? update,
-            int sli,
+            BigInt sli,
             double normalizedX,
             double normalizedY,
-            int version,
+            BigInt version,
             String hash,
-            int safi,
+            BigInt safi,
             int effectType,
             String stickerId)
         sticker,
@@ -7205,15 +7205,15 @@ class _$DartPartExtension_StickerImpl extends DartPartExtension_Sticker {
     TResult? Function(
             double msgWidth,
             double rotation,
-            int sai,
+            BigInt sai,
             double scale,
             bool? update,
-            int sli,
+            BigInt sli,
             double normalizedX,
             double normalizedY,
-            int version,
+            BigInt version,
             String hash,
-            int safi,
+            BigInt safi,
             int effectType,
             String stickerId)?
         sticker,
@@ -7228,15 +7228,15 @@ class _$DartPartExtension_StickerImpl extends DartPartExtension_Sticker {
     TResult Function(
             double msgWidth,
             double rotation,
-            int sai,
+            BigInt sai,
             double scale,
             bool? update,
-            int sli,
+            BigInt sli,
             double normalizedX,
             double normalizedY,
-            int version,
+            BigInt version,
             String hash,
-            int safi,
+            BigInt safi,
             int effectType,
             String stickerId)?
         sticker,
@@ -7282,15 +7282,15 @@ abstract class DartPartExtension_Sticker extends DartPartExtension {
   const factory DartPartExtension_Sticker(
       {required final double msgWidth,
       required final double rotation,
-      required final int sai,
+      required final BigInt sai,
       required final double scale,
       final bool? update,
-      required final int sli,
+      required final BigInt sli,
       required final double normalizedX,
       required final double normalizedY,
-      required final int version,
+      required final BigInt version,
       required final String hash,
-      required final int safi,
+      required final BigInt safi,
       required final int effectType,
       required final String stickerId}) = _$DartPartExtension_StickerImpl;
   const DartPartExtension_Sticker._() : super._();
@@ -7300,23 +7300,23 @@ abstract class DartPartExtension_Sticker extends DartPartExtension {
   @override
   double get rotation;
   @override
-  int get sai;
+  BigInt get sai;
   @override
   double get scale;
   @override
   bool? get update;
   @override
-  int get sli;
+  BigInt get sli;
   @override
   double get normalizedX;
   @override
   double get normalizedY;
   @override
-  int get version;
+  BigInt get version;
   @override
   String get hash;
   @override
-  int get safi;
+  BigInt get safi;
   @override
   int get effectType;
   @override
@@ -7332,38 +7332,38 @@ mixin _$DartReactMessageType {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(DartReaction reaction, bool enable) react,
-    required TResult Function(Value spec, DartMessageParts body) extension,
+    required TResult Function(Value spec, DartMessageParts body) extension_,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(DartReaction reaction, bool enable)? react,
-    TResult? Function(Value spec, DartMessageParts body)? extension,
+    TResult? Function(Value spec, DartMessageParts body)? extension_,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(DartReaction reaction, bool enable)? react,
-    TResult Function(Value spec, DartMessageParts body)? extension,
+    TResult Function(Value spec, DartMessageParts body)? extension_,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(DartReactMessageType_React value) react,
-    required TResult Function(DartReactMessageType_Extension value) extension,
+    required TResult Function(DartReactMessageType_Extension value) extension_,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(DartReactMessageType_React value)? react,
-    TResult? Function(DartReactMessageType_Extension value)? extension,
+    TResult? Function(DartReactMessageType_Extension value)? extension_,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(DartReactMessageType_React value)? react,
-    TResult Function(DartReactMessageType_Extension value)? extension,
+    TResult Function(DartReactMessageType_Extension value)? extension_,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -7468,7 +7468,7 @@ class _$DartReactMessageType_ReactImpl extends DartReactMessageType_React {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(DartReaction reaction, bool enable) react,
-    required TResult Function(Value spec, DartMessageParts body) extension,
+    required TResult Function(Value spec, DartMessageParts body) extension_,
   }) {
     return react(reaction, enable);
   }
@@ -7477,7 +7477,7 @@ class _$DartReactMessageType_ReactImpl extends DartReactMessageType_React {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(DartReaction reaction, bool enable)? react,
-    TResult? Function(Value spec, DartMessageParts body)? extension,
+    TResult? Function(Value spec, DartMessageParts body)? extension_,
   }) {
     return react?.call(reaction, enable);
   }
@@ -7486,7 +7486,7 @@ class _$DartReactMessageType_ReactImpl extends DartReactMessageType_React {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(DartReaction reaction, bool enable)? react,
-    TResult Function(Value spec, DartMessageParts body)? extension,
+    TResult Function(Value spec, DartMessageParts body)? extension_,
     required TResult orElse(),
   }) {
     if (react != null) {
@@ -7499,7 +7499,7 @@ class _$DartReactMessageType_ReactImpl extends DartReactMessageType_React {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(DartReactMessageType_React value) react,
-    required TResult Function(DartReactMessageType_Extension value) extension,
+    required TResult Function(DartReactMessageType_Extension value) extension_,
   }) {
     return react(this);
   }
@@ -7508,7 +7508,7 @@ class _$DartReactMessageType_ReactImpl extends DartReactMessageType_React {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(DartReactMessageType_React value)? react,
-    TResult? Function(DartReactMessageType_Extension value)? extension,
+    TResult? Function(DartReactMessageType_Extension value)? extension_,
   }) {
     return react?.call(this);
   }
@@ -7517,7 +7517,7 @@ class _$DartReactMessageType_ReactImpl extends DartReactMessageType_React {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(DartReactMessageType_React value)? react,
-    TResult Function(DartReactMessageType_Extension value)? extension,
+    TResult Function(DartReactMessageType_Extension value)? extension_,
     required TResult orElse(),
   }) {
     if (react != null) {
@@ -7594,7 +7594,7 @@ class _$DartReactMessageType_ExtensionImpl
 
   @override
   String toString() {
-    return 'DartReactMessageType.extension(spec: $spec, body: $body)';
+    return 'DartReactMessageType.extension_(spec: $spec, body: $body)';
   }
 
   @override
@@ -7621,29 +7621,29 @@ class _$DartReactMessageType_ExtensionImpl
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(DartReaction reaction, bool enable) react,
-    required TResult Function(Value spec, DartMessageParts body) extension,
+    required TResult Function(Value spec, DartMessageParts body) extension_,
   }) {
-    return extension(spec, body);
+    return extension_(spec, body);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(DartReaction reaction, bool enable)? react,
-    TResult? Function(Value spec, DartMessageParts body)? extension,
+    TResult? Function(Value spec, DartMessageParts body)? extension_,
   }) {
-    return extension?.call(spec, body);
+    return extension_?.call(spec, body);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(DartReaction reaction, bool enable)? react,
-    TResult Function(Value spec, DartMessageParts body)? extension,
+    TResult Function(Value spec, DartMessageParts body)? extension_,
     required TResult orElse(),
   }) {
-    if (extension != null) {
-      return extension(spec, body);
+    if (extension_ != null) {
+      return extension_(spec, body);
     }
     return orElse();
   }
@@ -7652,29 +7652,29 @@ class _$DartReactMessageType_ExtensionImpl
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(DartReactMessageType_React value) react,
-    required TResult Function(DartReactMessageType_Extension value) extension,
+    required TResult Function(DartReactMessageType_Extension value) extension_,
   }) {
-    return extension(this);
+    return extension_(this);
   }
 
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(DartReactMessageType_React value)? react,
-    TResult? Function(DartReactMessageType_Extension value)? extension,
+    TResult? Function(DartReactMessageType_Extension value)? extension_,
   }) {
-    return extension?.call(this);
+    return extension_?.call(this);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(DartReactMessageType_React value)? react,
-    TResult Function(DartReactMessageType_Extension value)? extension,
+    TResult Function(DartReactMessageType_Extension value)? extension_,
     required TResult orElse(),
   }) {
-    if (extension != null) {
-      return extension(this);
+    if (extension_ != null) {
+      return extension_(this);
     }
     return orElse();
   }
@@ -7700,21 +7700,21 @@ mixin _$DartRegisterState {
   TResult when<TResult extends Object?>({
     required TResult Function() registered,
     required TResult Function() registering,
-    required TResult Function(int? retryWait, String error) failed,
+    required TResult Function(BigInt? retryWait, String error) failed,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? registered,
     TResult? Function()? registering,
-    TResult? Function(int? retryWait, String error)? failed,
+    TResult? Function(BigInt? retryWait, String error)? failed,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? registered,
     TResult Function()? registering,
-    TResult Function(int? retryWait, String error)? failed,
+    TResult Function(BigInt? retryWait, String error)? failed,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -7804,7 +7804,7 @@ class _$DartRegisterState_RegisteredImpl extends DartRegisterState_Registered {
   TResult when<TResult extends Object?>({
     required TResult Function() registered,
     required TResult Function() registering,
-    required TResult Function(int? retryWait, String error) failed,
+    required TResult Function(BigInt? retryWait, String error) failed,
   }) {
     return registered();
   }
@@ -7814,7 +7814,7 @@ class _$DartRegisterState_RegisteredImpl extends DartRegisterState_Registered {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? registered,
     TResult? Function()? registering,
-    TResult? Function(int? retryWait, String error)? failed,
+    TResult? Function(BigInt? retryWait, String error)? failed,
   }) {
     return registered?.call();
   }
@@ -7824,7 +7824,7 @@ class _$DartRegisterState_RegisteredImpl extends DartRegisterState_Registered {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? registered,
     TResult Function()? registering,
-    TResult Function(int? retryWait, String error)? failed,
+    TResult Function(BigInt? retryWait, String error)? failed,
     required TResult orElse(),
   }) {
     if (registered != null) {
@@ -7919,7 +7919,7 @@ class _$DartRegisterState_RegisteringImpl
   TResult when<TResult extends Object?>({
     required TResult Function() registered,
     required TResult Function() registering,
-    required TResult Function(int? retryWait, String error) failed,
+    required TResult Function(BigInt? retryWait, String error) failed,
   }) {
     return registering();
   }
@@ -7929,7 +7929,7 @@ class _$DartRegisterState_RegisteringImpl
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? registered,
     TResult? Function()? registering,
-    TResult? Function(int? retryWait, String error)? failed,
+    TResult? Function(BigInt? retryWait, String error)? failed,
   }) {
     return registering?.call();
   }
@@ -7939,7 +7939,7 @@ class _$DartRegisterState_RegisteringImpl
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? registered,
     TResult Function()? registering,
-    TResult Function(int? retryWait, String error)? failed,
+    TResult Function(BigInt? retryWait, String error)? failed,
     required TResult orElse(),
   }) {
     if (registering != null) {
@@ -7996,7 +7996,7 @@ abstract class _$$DartRegisterState_FailedImplCopyWith<$Res> {
           $Res Function(_$DartRegisterState_FailedImpl) then) =
       __$$DartRegisterState_FailedImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({int? retryWait, String error});
+  $Res call({BigInt? retryWait, String error});
 }
 
 /// @nodoc
@@ -8019,7 +8019,7 @@ class __$$DartRegisterState_FailedImplCopyWithImpl<$Res>
       retryWait: freezed == retryWait
           ? _value.retryWait
           : retryWait // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as BigInt?,
       error: null == error
           ? _value.error
           : error // ignore: cast_nullable_to_non_nullable
@@ -8035,7 +8035,7 @@ class _$DartRegisterState_FailedImpl extends DartRegisterState_Failed {
       : super._();
 
   @override
-  final int? retryWait;
+  final BigInt? retryWait;
   @override
   final String error;
 
@@ -8069,7 +8069,7 @@ class _$DartRegisterState_FailedImpl extends DartRegisterState_Failed {
   TResult when<TResult extends Object?>({
     required TResult Function() registered,
     required TResult Function() registering,
-    required TResult Function(int? retryWait, String error) failed,
+    required TResult Function(BigInt? retryWait, String error) failed,
   }) {
     return failed(retryWait, error);
   }
@@ -8079,7 +8079,7 @@ class _$DartRegisterState_FailedImpl extends DartRegisterState_Failed {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? registered,
     TResult? Function()? registering,
-    TResult? Function(int? retryWait, String error)? failed,
+    TResult? Function(BigInt? retryWait, String error)? failed,
   }) {
     return failed?.call(retryWait, error);
   }
@@ -8089,7 +8089,7 @@ class _$DartRegisterState_FailedImpl extends DartRegisterState_Failed {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? registered,
     TResult Function()? registering,
-    TResult Function(int? retryWait, String error)? failed,
+    TResult Function(BigInt? retryWait, String error)? failed,
     required TResult orElse(),
   }) {
     if (failed != null) {
@@ -8135,11 +8135,11 @@ class _$DartRegisterState_FailedImpl extends DartRegisterState_Failed {
 
 abstract class DartRegisterState_Failed extends DartRegisterState {
   const factory DartRegisterState_Failed(
-      {final int? retryWait,
+      {final BigInt? retryWait,
       required final String error}) = _$DartRegisterState_FailedImpl;
   const DartRegisterState_Failed._() : super._();
 
-  int? get retryWait;
+  BigInt? get retryWait;
   String get error;
   @JsonKey(ignore: true)
   _$$DartRegisterState_FailedImplCopyWith<_$DartRegisterState_FailedImpl>

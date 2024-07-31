@@ -298,6 +298,29 @@ class _TroubleshootPanelState extends OptimizedState<TroubleshootPanel> {
                   iosSubtitle: iosSubtitle,
                   materialSubtitle: materialSubtitle,
                   text: "Troubleshooting"),
+                SettingsTile(
+                      leading: const SettingsLeadingIcon(
+                        iosIcon: CupertinoIcons.share,
+                        materialIcon: Icons.share,
+                      ),
+                      title: "Export OB logs",
+                      subtitle: "Last 2 hours saved",
+                      onTap: () async {
+                        var file = Directory("${fs.appDocDir.path}/../files/logs");
+                        final List<FileSystemEntity> entities = await file.list().toList();
+                        var current = entities.indexWhere((element) => element.path.endsWith("CURRENT.log"));
+                        var item = entities.removeAt(current);
+                        var end = await File(item.path).readAsBytes();
+                        var b = BytesBuilder();
+                        if (entities.isNotEmpty) {
+                          var next = await File(entities.first.path).readAsBytes();
+                          b.add(next);
+                        }
+                        b.add(end);
+                        var total = b.toBytes();
+                        Logger.writeLogToFile(total);
+                      },
+                    ),
                 SettingsSection(
                   backgroundColor: tileColor,
                   children: [

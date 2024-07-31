@@ -1,9 +1,10 @@
 use std::{fmt::Debug, sync::{Arc, RwLock}};
 
+use flexi_logger::{FileSpec, Logger, WriteMode};
 use tokio::runtime::{Handle, Runtime};
 use uniffi::deps::log::info;
 
-use crate::{api::api::{get_phase, new_push_state, recv_wait, InnerPushState, PollResult, PushState, RegistrationPhase}, frb_generated::FLUTTER_RUST_BRIDGE_HANDLER, runtime};
+use crate::{api::api::{get_phase, new_push_state, recv_wait, PollResult, PushState, RegistrationPhase}, frb_generated::FLUTTER_RUST_BRIDGE_HANDLER, init_logger, runtime};
 
 #[uniffi::export(with_foreign)]
 pub trait MsgReceiver: Send + Sync + Debug {
@@ -18,8 +19,6 @@ pub struct NativePushState {
 
 #[uniffi::export]
 pub fn init_native(dir: String, handler: Arc<dyn MsgReceiver>) {
-    #[cfg(target_os = "android")]
-    android_log::init("rustpush").unwrap();
     info!("rpljslf start");
     runtime().spawn(async move {
         info!("rpljslf initting");

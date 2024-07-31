@@ -6,27 +6,27 @@ use anyhow::anyhow;
 use flutter_rust_bridge::{frb, IntoDart, JoinHandle};
 use icloud_auth::{LoginState, AnisetteConfiguration, AppleAccount};
 pub use icloud_auth::{VerifyBody, TrustedPhoneNumber};
-use plist::Dictionary;
+use plist::{Data, Dictionary};
 pub use plist::Value;
 use prost::Message;
 pub use rustpush::{PushError, IDSUser, IMClient, ConversationData, register};
 
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use tokio::{runtime::Runtime, select, sync::{broadcast, oneshot::{self, Sender}, Mutex, RwLock}};
-use rustpush::{authenticate_apple, init_logger, APSConnection, APSConnectionResource, APSState, Attachment, MMCSFile, MessageInst, MessagePart, MessageParts, OSConfig, ResourceState};
+use rustpush::{authenticate_apple, APSConnection, APSConnectionResource, APSState, Attachment, MMCSFile, MessageInst, MessagePart, MessageParts, OSConfig, ResourceState};
 pub use rustpush::{MacOSConfig, HardwareConfig};
 use uniffi::{deps::log::{info, error}, HandleAlloc};
 use std::io::Seek;
 use async_recursion::async_recursion;
 
-use crate::{frb_generated::StreamSink, runtime};
+use crate::{frb_generated::{SseEncode, StreamSink}, init_logger, runtime};
 
 use flutter_rust_bridge::for_generated::{SimpleHandler, SimpleExecutor, NoOpErrorListener, SimpleThreadPool, BaseAsyncRuntime, lazy_static};
 
 pub type MyHandler = SimpleHandler<SimpleExecutor<NoOpErrorListener, SimpleThreadPool, MyAsyncRuntime>, NoOpErrorListener>;
 
 #[derive(Debug, Default)]
-pub struct MyAsyncRuntime;
+pub struct MyAsyncRuntime();
 
 impl BaseAsyncRuntime for MyAsyncRuntime {
     fn spawn<F>(&self, future: F) -> JoinHandle<F::Output>
@@ -60,7 +60,8 @@ pub enum RegistrationPhase {
     Registered,
 }
 
-pub struct InnerPushState {
+#[frb(ignore)]
+struct InnerPushState {
     pub conn: Option<APSConnection>,
     pub users: Vec<IDSUser>,
     pub client: Option<IMClient>,
@@ -70,17 +71,18 @@ pub struct InnerPushState {
     pub cancel_poll: Mutex<Option<Sender<()>>>
 }
 
-pub struct PushState (pub RwLock<InnerPushState>);
+#[frb(opaque)]
+pub struct PushState (RwLock<InnerPushState>);
 
 pub async fn new_push_state(dir: String) -> Arc<PushState> {
-    #[cfg(not(target_os = "android"))]
-    init_logger();
+    let dir = PathBuf::from_str(&dir).unwrap();
+    init_logger(&dir);
     // flutter_rust_bridge::setup_default_user_utils();
     let state = PushState(RwLock::new(InnerPushState {
         conn: None,
         users: vec![],
         client: None,
-        conf_dir: PathBuf::from_str(&dir).unwrap(),
+        conf_dir: dir,
         os_config: None,
         account: None,
         cancel_poll: Mutex::new(None)
@@ -405,10 +407,13 @@ pub enum DartLoginState {
 
 #[repr(C)]
 #[derive(Serialize, Deserialize)]
+#[frb(type_64bit_int)]
 pub struct DartMMCSFile {
+    #[serde(serialize_with = "bin_serialize", deserialize_with = "bin_deserialize")]
     pub signature: Vec<u8>,
     pub object: String,
     pub url: String,
+    #[serde(serialize_with = "bin_serialize", deserialize_with = "bin_deserialize")]
     pub key: Vec<u8>,
     pub size: usize
 }
@@ -425,15 +430,31 @@ impl From<MMCSFile> for DartMMCSFile {
     }
 }
 
+pub fn bin_serialize<S>(x: &[u8], s: S) -> Result<S::Ok, S::Error>
+where
+    S: Serializer,
+{
+    s.serialize_bytes(x)
+}
+
+pub fn bin_deserialize<'de, D>(d: D) -> Result<Vec<u8>, D::Error>
+where
+    D: Deserializer<'de>,
+{
+    let s: Data = Deserialize::deserialize(d)?;
+    Ok(s.into())
+}
+
 #[repr(C)]
 #[derive(Serialize, Deserialize)]
 pub enum DartAttachmentType {
-    Inline(Vec<u8>),
+    Inline(#[serde(serialize_with = "bin_serialize", deserialize_with = "bin_deserialize")] Vec<u8>),
     MMCS(DartMMCSFile)
 }
 
 #[repr(C)]
 #[derive(Serialize, Deserialize)]
+#[frb(type_64bit_int)]
 pub struct DartAttachment {
     pub a_type: DartAttachmentType,
     pub part_idx: u64,
@@ -452,6 +473,7 @@ impl DartAttachment {
         plist::from_reader_xml(Cursor::new(saved)).unwrap()
     }
 
+    #[frb(type_64bit_int)]
     pub fn get_size(&self) -> usize {
         self.get_raw().get_size()
     }
@@ -475,6 +497,7 @@ pub enum DartMessagePart {
 }
 
 #[repr(C)]
+#[frb(type_64bit_int)]
 pub enum DartPartExtension {
     Sticker {
         msg_width: f64,
@@ -494,6 +517,7 @@ pub enum DartPartExtension {
 }
 
 #[repr(C)]
+#[frb(type_64bit_int)]
 pub struct DartIndexedMessagePart {
     pub part: DartMessagePart,
     pub idx: Option<usize>,
@@ -545,6 +569,7 @@ pub struct DartRenameMessage {
 }
 
 #[repr(C)]
+#[frb(type_64bit_int)]
 pub struct DartChangeParticipantMessage {
     pub new_participants: Vec<String>,
     pub group_version: u64
@@ -574,6 +599,7 @@ pub enum DartReactMessageType {
 }
 
 #[repr(C)]
+#[frb(type_64bit_int)]
 pub struct DartReactMessage {
     pub to_uuid: String,
     pub to_part: u64,
@@ -582,12 +608,14 @@ pub struct DartReactMessage {
 }
 
 #[repr(C)]
+#[frb(type_64bit_int)]
 pub struct DartUnsendMessage {
     pub tuuid: String,
     pub edit_part: u64,
 }
 
 #[repr(C)]
+#[frb(type_64bit_int)]
 pub struct DartEditMessage {
     pub tuuid: String,
     pub edit_part: u64,
@@ -595,6 +623,7 @@ pub struct DartEditMessage {
 }
 
 #[repr(C)]
+#[frb(type_64bit_int)]
 pub struct DartIconChangeMessage {
     pub file: Option<DartMMCSFile>,
     pub group_version: u64
@@ -607,6 +636,7 @@ pub struct DartUpdateExtensionMessage {
 }
 
 #[repr(C)]
+#[frb(non_opaque)]
 pub enum DartMessage {
     Message(DartNormalMessage),
     RenameMessage(DartRenameMessage),
@@ -633,7 +663,7 @@ pub enum DartMessageTarget {
     Uuid(String),
 }
 
-#[frb]
+#[frb(type_64bit_int)]
 #[repr(C)]
 pub struct DartIMessage {
     #[frb(non_final)]
@@ -739,7 +769,6 @@ pub async fn new_msg(state: &Arc<PushState>, conversation: DartConversationData,
     if !matches!(state.get_phase().await, RegistrationPhase::Registered) {
         panic!("Wrong phase! (new_msg)")
     }
-    let read = state.0.read().await;
     MessageInst::new(conversation.into(), &sender, message.into()).into()
 }
 
@@ -754,87 +783,104 @@ pub async fn get_phase(state: &Arc<PushState>) -> RegistrationPhase {
     state.get_phase().await
 }
 
+#[frb(type_64bit_int)]
 pub struct TransferProgress {
     pub prog: usize,
     pub total: usize,
     pub attachment: Option<DartAttachment>
 }
 
-pub async fn download_attachment(sink: StreamSink<TransferProgress>, state: &Arc<PushState>, attachment: DartAttachment, path: String) -> anyhow::Result<()> {
-    let inner = state.0.read().await;
-    println!("donwloading file {}", path);
-    let path = std::path::Path::new(&path);
-    let prefix = path.parent().unwrap();
-    std::fs::create_dir_all(prefix)?;
-    let mut file = std::fs::File::create(path)?;
-    attachment.get_raw().get_attachment(inner.conn.as_ref().unwrap(), &mut file, &mut |prog, total| {
-        println!("donwloading file {} of {}", prog, total);
-        sink.add(TransferProgress {
-            prog,
-            total,
-            attachment: None
-        }).unwrap();
-    }).await?;
-    file.flush()?;
-    Ok(())
+pub async fn download_attachment(sink: StreamSink<TransferProgress>, state: &Arc<PushState>, attachment: DartAttachment, path: String) {
+    wrap_sink(&sink, || async {
+        let inner = state.0.read().await;
+        println!("donwloading file {}", path);
+        let path = std::path::Path::new(&path);
+        let prefix = path.parent().unwrap();
+        std::fs::create_dir_all(prefix)?;
+        let mut file = std::fs::File::create(path)?;
+        attachment.get_raw().get_attachment(inner.conn.as_ref().unwrap(), &mut file, &mut |prog, total| {
+            println!("donwloading file {} of {}", prog, total);
+            sink.add(TransferProgress {
+                prog,
+                total,
+                attachment: None
+            }).unwrap();
+        }).await?;
+        file.flush()?;
+        Ok(())
+    }).await
 }
 
-pub async fn download_mmcs(sink: StreamSink<TransferProgress>, state: &Arc<PushState>, attachment: DartMMCSFile, path: String) -> anyhow::Result<()> {
-    let inner = state.0.read().await;
-    let path = std::path::Path::new(&path);
-    let prefix = path.parent().unwrap();
-    std::fs::create_dir_all(prefix)?;
+pub async fn download_mmcs(sink: StreamSink<TransferProgress>, state: &Arc<PushState>, attachment: DartMMCSFile, path: String) {
+    wrap_sink(&sink, || async {
+        let inner = state.0.read().await;
+        let path = std::path::Path::new(&path);
+        let prefix = path.parent().unwrap();
+        std::fs::create_dir_all(prefix)?;
 
-    let mut file = std::fs::File::create(path)?;
-    attachment.get_raw().get_attachment(inner.conn.as_ref().unwrap(), &mut file, &mut |prog, total| {
-        sink.add(TransferProgress {
-            prog,
-            total,
-            attachment: None
-        }).unwrap();
-    }).await?;
-    file.flush()?;
-    Ok(())
+        let mut file = std::fs::File::create(path)?;
+        attachment.get_raw().get_attachment(inner.conn.as_ref().unwrap(), &mut file, &mut |prog, total| {
+            sink.add(TransferProgress {
+                prog,
+                total,
+                attachment: None
+            }).unwrap();
+        }).await?;
+        file.flush()?;
+        Ok(())
+    }).await
 }
 
+async fn wrap_sink<Fut, T: SseEncode + Send + Sync>(sink: &StreamSink<T>, f: impl FnOnce() -> Fut)
+    where Fut: Future<Output = anyhow::Result<()>> {
+    if let Err(err) = f().await {
+        sink.add_error(err).unwrap();
+    }
+}
+
+#[frb(type_64bit_int)]
 pub struct MMCSTransferProgress {
     pub prog: usize,
     pub total: usize,
     pub file: Option<DartMMCSFile>
 }
 
-pub async fn upload_mmcs(sink: StreamSink<MMCSTransferProgress>, state: &Arc<PushState>, path: String) -> anyhow::Result<()> {
-    let inner = state.0.read().await;
+pub async fn upload_mmcs(sink: StreamSink<MMCSTransferProgress>, state: &Arc<PushState>, path: String) {
+    wrap_sink(&sink, || async {
+        let inner = state.0.read().await;
 
-    let mut file = std::fs::File::open(path)?;
-    let prepared = MMCSFile::prepare_put(&mut file).await?;
-    file.rewind()?;
-    let attachment = MMCSFile::new(inner.conn.as_ref().unwrap(), &prepared, &mut file, &mut |prog, total| {
-        sink.add(MMCSTransferProgress {
-            prog,
-            total,
-            file: None
-        }).unwrap();
-    }).await?;
-    sink.add(MMCSTransferProgress { prog: 0, total: 0, file: Some(attachment.into()) }).unwrap();
-    Ok(())
+        let mut file = std::fs::File::open(path)?;
+        let prepared = MMCSFile::prepare_put(&mut file).await?;
+        file.rewind()?;
+        let attachment = MMCSFile::new(inner.conn.as_ref().unwrap(), &prepared, &mut file, &mut |prog, total| {
+            sink.add(MMCSTransferProgress {
+                prog,
+                total,
+                file: None
+            }).unwrap();
+        }).await?;
+        sink.add(MMCSTransferProgress { prog: 0, total: 0, file: Some(attachment.into()) }).unwrap();
+        Ok(())
+    }).await
 }
 
-pub async fn upload_attachment(sink: StreamSink<TransferProgress>, state: &Arc<PushState>, path: String, mime: String, uti: String, name: String) -> anyhow::Result<()> {
-    let inner = state.0.read().await;
+pub async fn upload_attachment(sink: StreamSink<TransferProgress>, state: &Arc<PushState>, path: String, mime: String, uti: String, name: String) {
+    wrap_sink(&sink, || async {
+        let inner = state.0.read().await;
 
-    let mut file = std::fs::File::open(path)?;
-    let prepared = MMCSFile::prepare_put(&mut file).await?;
-    file.rewind()?;
-    let attachment = Attachment::new_mmcs(inner.conn.as_ref().unwrap(), &prepared, &mut file, &mime, &uti, &name, &mut |prog, total| {
-        sink.add(TransferProgress {
-            prog,
-            total,
-            attachment: None
-        }).unwrap();
-    }).await?;
-    sink.add(TransferProgress { prog: 0, total: 0, attachment: Some(attachment.into()) }).unwrap();
-    Ok(())
+        let mut file = std::fs::File::open(path)?;
+        let prepared = MMCSFile::prepare_put(&mut file).await?;
+        file.rewind()?;
+        let attachment = Attachment::new_mmcs(inner.conn.as_ref().unwrap(), &prepared, &mut file, &mime, &uti, &name, &mut |prog, total| {
+            sink.add(TransferProgress {
+                prog,
+                total,
+                attachment: None
+            }).unwrap();
+        }).await?;
+        sink.add(TransferProgress { prog: 0, total: 0, attachment: Some(attachment.into()) }).unwrap();
+        Ok(())
+    }).await
 }
 
 pub async fn try_auth(state: &Arc<PushState>, username: String, password: String) -> anyhow::Result<DartLoginState> {

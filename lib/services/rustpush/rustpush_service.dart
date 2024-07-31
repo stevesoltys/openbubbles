@@ -7,6 +7,7 @@ import 'package:bluebubbles/app/layouts/setup/setup_view.dart';
 import 'package:bluebubbles/app/wrappers/titlebar_wrapper.dart';
 import 'package:bluebubbles/main.dart';
 import 'package:bluebubbles/src/rust/api/api.dart' as api;
+import 'package:bluebubbles/src/rust/lib.dart' as lib;
 import 'package:bluebubbles/helpers/helpers.dart';
 import 'package:bluebubbles/models/models.dart';
 import 'package:bluebubbles/services/services.dart';
@@ -335,7 +336,7 @@ class RustPushBackend implements BackendService {
           conversation: await chat.getConversationData(),
           message: api.DartMessage.message(api.DartNormalMessage(
               parts: api.DartMessageParts(
-                  field0: [api.DartIndexedMessagePart(part: api.DartMessagePart.text(message))]),
+                  field0: [api.DartIndexedMessagePart(part_: api.DartMessagePart.text(message))]),
                   service: await getService(chat.isRpSms)
                   )),
           sender: handle);
@@ -400,7 +401,7 @@ class RustPushBackend implements BackendService {
         sender: await chat.ensureHandle(),
         message: api.DartMessage.message(api.DartNormalMessage(
           parts: api.DartMessageParts(
-              field0: [api.DartIndexedMessagePart(part: api.DartMessagePart.attachment(attachment!))]),
+              field0: [api.DartIndexedMessagePart(part_: api.DartMessagePart.attachment(attachment!))]),
           replyGuid: m.threadOriginatorGuid,
           replyPart: m.threadOriginatorGuid == null ? null : "$partIndex:0:0",
           effect: m.expressiveSendStyleId,
@@ -443,7 +444,7 @@ class RustPushBackend implements BackendService {
         sender: await chat.ensureHandle(),
         message: api.DartMessage.message(api.DartNormalMessage(
           parts: api.DartMessageParts(
-              field0: [api.DartIndexedMessagePart(part: api.DartMessagePart.attachment(attachment))]),
+              field0: [api.DartIndexedMessagePart(part_: api.DartMessagePart.attachment(attachment))]),
           replyGuid: m.threadOriginatorGuid,
           replyPart: m.threadOriginatorGuid == null ? null : "$partIndex:0:0",
           effect: m.expressiveSendStyleId,
@@ -598,12 +599,12 @@ class RustPushBackend implements BackendService {
     if (m.attributedBody.isNotEmpty) {
       parts = api.DartMessageParts(field0: m.attributedBody.first.runs.map((e) {
         var text = m.attributedBody.first.string.substring(e.range.first, e.range.first + e.range.last);
-        return api.DartIndexedMessagePart(part: e.hasMention ? 
+        return api.DartIndexedMessagePart(part_: e.hasMention ? 
           api.DartMessagePart.mention(e.attributes!.mention!, text) : 
           api.DartMessagePart.text(text));
       }).toList());
     } else {
-      parts = api.DartMessageParts(field0: [api.DartIndexedMessagePart(part: api.DartMessagePart.text(m.text!))]);
+      parts = api.DartMessageParts(field0: [api.DartIndexedMessagePart(part_: api.DartMessagePart.text(m.text!))]);
     }
     var msg = await api.newMsg(
       state: pushService.state,
@@ -825,7 +826,7 @@ class RustPushBackend implements BackendService {
             tuuid: msgObj.guid!,
             editPart: part,
             newParts: api.DartMessageParts(
-                field0: [api.DartIndexedMessagePart(part: api.DartMessagePart.text(text), idx: part)]))));
+                field0: [api.DartIndexedMessagePart(part_: api.DartMessagePart.text(text), idx: part)]))));
     await sendMsg(msg);
     msg.sentTimestamp = DateTime.now().millisecondsSinceEpoch;
     return await pushService.reflectMessageDyn(msg);
@@ -923,7 +924,7 @@ class RustPushBackend implements BackendService {
 }
 
 class RustPushService extends GetxService {
-  late api.ArcPushState state;
+  late lib.ArcPushState state;
 
   Map<String, api.DartAttachment> attachments = {};
 
@@ -940,15 +941,15 @@ class RustPushService extends GetxService {
     return StickerData(
       msgWidth: ext.msgWidth, 
       rotation: ext.rotation, 
-      sai: ext.sai, 
+      sai: ext.sai.toInt(), 
       scale: ext.scale, 
       update: ext.update, 
-      sli: ext.sli, 
+      sli: ext.sli.toInt(), 
       normalizedX: ext.normalizedX, 
       normalizedY: ext.normalizedY, 
-      version: ext.version, 
+      version: ext.version.toInt(), 
       hash: ext.hash, 
-      safi: ext.safi, 
+      safi: ext.safi.toInt(), 
       effectType: ext.effectType, 
       stickerId: ext.stickerId
     );
@@ -963,7 +964,7 @@ class RustPushService extends GetxService {
     var addedIndicies = [];
     for (var indexedParts in parts) {
       index += 1;
-      var part = indexedParts.part;
+      var part = indexedParts.part_;
       var fieldIdx = indexedParts.idx ?? body.count((i) => i.attributes?.attachmentGuid != null); // only count attachments increment parts by default
       // remove old elements
       if (!addedIndicies.contains(fieldIdx)) {
@@ -993,8 +994,8 @@ class RustPushService extends GetxService {
         }
         api.DartAttachment? myIris;
         var next = parts.elementAtOrNull(index + 1);
-        if (next != null && next.part is api.DartMessagePart_Attachment) {
-          var nextA = next.part as api.DartMessagePart_Attachment;
+        if (next != null && next.part_ is api.DartMessagePart_Attachment) {
+          var nextA = next.part_ as api.DartMessagePart_Attachment;
           if (nextA.field0.iris) {
             myIris = nextA.field0;
           }
@@ -1446,7 +1447,7 @@ class RustPushService extends GetxService {
       }
       var msg = myMsg.message as api.DartMessage_Message;
       if ((await msg.field0.parts.asPlain()) == "" &&
-          msg.field0.parts.field0.none((p0) => p0.part is api.DartMessagePart_Attachment)) {
+          msg.field0.parts.field0.none((p0) => p0.part_ is api.DartMessagePart_Attachment)) {
         return;
       }
     }

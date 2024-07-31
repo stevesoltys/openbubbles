@@ -1,5 +1,6 @@
-use std::sync::OnceLock;
+use std::{path::Path, sync::OnceLock};
 
+use flexi_logger::{Age, Cleanup, Criterion, FileSpec, Logger, Naming, WriteMode};
 use tokio::runtime::Runtime;
 use uniffi::deps::log::info;
 
@@ -18,6 +19,33 @@ pub fn runtime() -> &'static tokio::runtime::Runtime {
 
 pub mod bbhwinfo {
     include!(concat!(env!("OUT_DIR"), "/bbhwinfo.rs"));
+}
+
+pub fn init_logger(path: &Path) {
+    #[cfg(target_os = "android")]
+    let system = android_logger::AndroidLogger::new(
+        android_logger::Config::default().with_max_level(log::LevelFilter::Debug),
+    );
+    #[cfg(not(target_os = "android"))]
+    let system = {
+        if let Err(_) = std::env::var("RUST_LOG") {
+            std::env::set_var("RUST_LOG", "debug");
+        }
+        pretty_env_logger::formatted_builder()
+            .build()
+    };
+
+    println!("here??");
+    
+    let (logger, _) = Logger::try_with_str("debug").expect("No logger?")
+        .log_to_file(FileSpec::default().directory(path.join("logs")).suppress_timestamp())
+        .append()
+        .cleanup_in_background_thread(false)
+        .rotate(Criterion::AgeOrSize(Age::Hour, 1024 * 1024 * 10 /* 10 MB */), Naming::Numbers, Cleanup::KeepLogFiles(1))
+        .write_mode(WriteMode::BufferAndFlush)
+        .build().unwrap();
+    
+    multi_log::MultiLogger::init(vec![Box::new(system), logger], log::Level::Trace).expect("No init?");
 }
 
 mod native;

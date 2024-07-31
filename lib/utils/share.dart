@@ -14,11 +14,11 @@ import 'package:universal_io/io.dart';
 
 class Share {
   /// Share a file with other apps.
-  static void file(String subject, String filepath) async {
+  static Future<void> file(String subject, String filepath) async {
     if (kIsDesktop) {
       showSnackbar("Unsupported", "Can't share files on desktop yet!");
     } else {
-      sp.Share.shareXFiles([sp.XFile(filepath)], text: subject);
+      await sp.Share.shareXFiles([sp.XFile(filepath)], text: subject);
     }
   }
 
