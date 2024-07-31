@@ -352,7 +352,7 @@ class RustPushBackend implements BackendService {
       await sendMsg(msg);
       msg.sentTimestamp = DateTime.now().millisecondsSinceEpoch;
 
-      final newMessage = await pushService.reflectMessageDyn(msg);
+      final newMessage = (await pushService.reflectMessageDyn(msg))!;
       newMessage.chat.target = chat;
       await newMessage.forwardIfNessesary(chat);
       newMessage.save();
@@ -429,7 +429,7 @@ class RustPushBackend implements BackendService {
     }
     m.save(chat: chat);
     msg.sentTimestamp = DateTime.now().millisecondsSinceEpoch;
-    return await pushService.reflectMessageDyn(msg);
+    return (await pushService.reflectMessageDyn(msg))!;
   }
 
   Future<Message> forwardMMSAttachment(Chat chat, Message m, Attachment att) async {
@@ -462,7 +462,7 @@ class RustPushBackend implements BackendService {
     msg.target = getSMSTargets();
     await sendMsg(msg);
     msg.sentTimestamp = DateTime.now().millisecondsSinceEpoch;
-    return await pushService.reflectMessageDyn(msg);
+    return (await pushService.reflectMessageDyn(msg))!;
   }
 
   @override
@@ -650,7 +650,7 @@ class RustPushBackend implements BackendService {
     await m.forwardIfNessesary(chat);
     m.save(chat: chat);
     msg.sentTimestamp = DateTime.now().millisecondsSinceEpoch;
-    return await pushService.reflectMessageDyn(msg);
+    return (await pushService.reflectMessageDyn(msg))!;
   }
 
   Future<bool> markDelivered(api.DartIMessage message) async {
@@ -738,7 +738,7 @@ class RustPushBackend implements BackendService {
     msg.sentTimestamp = DateTime.now().millisecondsSinceEpoch;
     inq.queue(IncomingItem(
       chat: chat,
-      message: await pushService.reflectMessageDyn(msg),
+      message: (await pushService.reflectMessageDyn(msg))!,
       type: QueueType.newMessage
     ));
     return true;
@@ -769,11 +769,7 @@ class RustPushBackend implements BackendService {
             api.DartChangeParticipantMessage(groupVersion: chat.groupVersion!, newParticipants: newParticipants)));
     await sendMsg(msg);
     msg.sentTimestamp = DateTime.now().millisecondsSinceEpoch;
-    inq.queue(IncomingItem(
-      chat: chat,
-      message: await pushService.reflectMessageDyn(msg),
-      type: QueueType.newMessage
-    ));
+    await pushService.reflectMessageDyn(msg); // change participants does itself
     return true;
   }
 
@@ -808,7 +804,7 @@ class RustPushBackend implements BackendService {
             reaction: api.DartReactMessageType.react(reaction: reactionMap[reaction]!, enable: enabled))));
     await sendMsg(msg);
     msg.sentTimestamp = DateTime.now().millisecondsSinceEpoch;
-    return await pushService.reflectMessageDyn(msg);
+    return (await pushService.reflectMessageDyn(msg))!;
   }
 
   @override
@@ -961,6 +957,62 @@ class RustPushService extends GetxService {
     );
   }
 
+  Future<void> updateChatParticipants(Chat c, api.DartIMessage myMsg, List<String> oldParticipants, List<String> newParticipants) async {
+    var newP = newParticipants.filter((p) => !oldParticipants.contains(p));
+    var delP = oldParticipants.filter((p) => !newParticipants.contains(p));
+    if (newP.isEmpty && delP.isEmpty) return; // nothing to do
+    c.handles.clear();
+    var (_, participantHandles) = await RustPushBBUtils.rustParticipantsToBB(newParticipants);
+    c.handles.addAll(participantHandles);
+    c.handles.applyToDb();
+    c.handlesChanged();
+    c = c.getParticipants();
+    c.save();
+
+    var myHandles = (await api.getHandles(state: pushService.state));
+
+    var useId = myMsg.message is api.DartMessage_ChangeParticipants;
+
+    for (var item in newP) {
+      var bb = RustPushBBUtils.rustHandleToBB(item);
+      var msg = Message(
+        guid: useId ? myMsg.id : uuid.v4(),
+        isFromMe: myHandles.contains(myMsg.sender),
+        handleId: RustPushBBUtils.rustHandleToBB(myMsg.sender!).originalROWID!,
+        dateCreated: DateTime.fromMillisecondsSinceEpoch(myMsg.sentTimestamp),
+        itemType: 1,
+        groupActionType: 0,
+        otherHandle: bb.originalROWID
+      );
+
+      inq.queue(IncomingItem(
+        chat: c,
+        message: msg,
+        type: QueueType.newMessage
+      ));
+    }
+
+    for (var item in delP) {
+      var bb = RustPushBBUtils.rustHandleToBB(item);
+      var personDidLeave = item == myMsg.sender;
+      var msg = Message(
+        guid: useId ? myMsg.id : uuid.v4(),
+        isFromMe: myHandles.contains(myMsg.sender),
+        handleId: RustPushBBUtils.rustHandleToBB(myMsg.sender!).originalROWID!,
+        dateCreated: DateTime.fromMillisecondsSinceEpoch(myMsg.sentTimestamp),
+        itemType: personDidLeave ? 3 : 1,
+        groupActionType: personDidLeave ? 0 : 1,
+        otherHandle: bb.originalROWID
+      );
+
+      inq.queue(IncomingItem(
+        chat: c,
+        message: msg,
+        type: QueueType.newMessage
+      ));
+    }
+  }
+
   Future<(AttributedBody, String, List<Attachment>)> indexedPartsToAttributedBodyDyn(
       List<api.DartIndexedMessagePart> parts, String msgId, AttributedBody? existingBody) async {
     var bodyString = "";
@@ -1038,7 +1090,7 @@ class RustPushService extends GetxService {
     return (AttributedBody(string: bodyString, runs: body), bodyString, attachments);
   }
 
-  Future<Message> reflectMessageDyn(api.DartIMessage myMsg) async {
+  Future<Message?> reflectMessageDyn(api.DartIMessage myMsg) async {
     var chat = myMsg.conversation != null ? await chatForMessage(myMsg) : null;
     var myHandles = (await api.getHandles(state: pushService.state));
     if (myMsg.message is api.DartMessage_Message) {
@@ -1090,38 +1142,10 @@ class RustPushService extends GetxService {
       );
     } else if (myMsg.message is api.DartMessage_ChangeParticipants) {
       var msg = myMsg.message as api.DartMessage_ChangeParticipants;
-      var didILeave = !msg.field0.newParticipants.contains(await chat!.ensureHandle());
-      var didIJoin = !myMsg.conversation!.participants.contains(await chat.ensureHandle());
-      var newParticipants = msg.field0.newParticipants.copy();
-      if (!didILeave) {
-        newParticipants.remove(await chat.ensureHandle());
-      }
-      var isAdd = newParticipants.length > chat.participants.length || didIJoin;
-      var (_, participantHandles) = await RustPushBBUtils.rustParticipantsToBB(newParticipants);
-      var changed = didILeave || didIJoin
-          ? RustPushBBUtils.rustHandleToBB(await chat.ensureHandle())
-          : isAdd
-              ? participantHandles
-                  .firstWhere((element) => chat!.participants.none((p0) => p0.address == element.address))
-              : chat.participants
-                  .firstWhere((element) => participantHandles.none((p0) => p0.address == element.address));
+      await updateChatParticipants(chat!, myMsg, myMsg.conversation!.participants, msg.field0.newParticipants);
       chat.groupVersion = msg.field0.groupVersion;
-      chat.handles.clear();
-      chat.handles.addAll(participantHandles);
-      chat.handles.applyToDb();
-      chat.handlesChanged();
-      chat = chat.getParticipants();
       chat.save(updateGroupVersion: true);
-      var personDidLeave = RustPushBBUtils.bbHandleToRust(changed) == myMsg.sender && !isAdd;
-      return Message(
-        guid: myMsg.id,
-        isFromMe: myHandles.contains(myMsg.sender),
-        handleId: RustPushBBUtils.rustHandleToBB(myMsg.sender!).originalROWID!,
-        dateCreated: DateTime.fromMillisecondsSinceEpoch(myMsg.sentTimestamp),
-        itemType: personDidLeave ? 3 : 1,
-        groupActionType: isAdd || personDidLeave ? 0 : 1,
-        otherHandle: changed.originalROWID
-      );
+      return null;
     } else if (myMsg.message is api.DartMessage_IconChange) {
       if (!chat!.lockChatIcon) {
         var innerMsg = myMsg.message as api.DartMessage_IconChange;
@@ -1310,6 +1334,11 @@ class RustPushService extends GetxService {
       result.usingHandle = mine[0];
       result.save(updateUsingHandle: true);
     }
+    if (myMsg.message is! api.DartMessage_ChangeParticipants && myMsg.conversation != null) {
+      var data = await result.getConversationData();
+      // make sure we are in consensus
+      await updateChatParticipants(result, myMsg, data.participants, myMsg.conversation!.participants);
+    }
     return result;
   }
 
@@ -1477,7 +1506,7 @@ class RustPushService extends GetxService {
     service.markDelivered(myMsg);
     inq.queue(IncomingItem(
       chat: chat,
-      message: await pushService.reflectMessageDyn(myMsg),
+      message: (await pushService.reflectMessageDyn(myMsg))!,
       type: QueueType.newMessage
     ));
   }
