@@ -280,6 +280,9 @@ class _AppleId2FAState extends OptimizedState<AppleId2FA> {
       if (e is AnyhowException) {
         controller.updateConnectError(e.message);
       }
+      if (e is PanicException) {
+        controller.updateConnectError(e.message);
+      }
       rethrow;
     } finally {
       setState(() {

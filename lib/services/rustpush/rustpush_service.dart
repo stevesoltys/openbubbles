@@ -305,11 +305,11 @@ class RustPushBackend implements BackendService {
 
   void markFailedToLogin() async {
     print("markingfailed");
-    ss.settings.finishedSetup.value = false;
-    ss.saveSettings();
     if (usingRustPush) {
       await pushService.reset(false);
     }
+    ss.settings.finishedSetup.value = false;
+    ss.saveSettings();
     Get.offAll(() => PopScope(
       canPop: false,
       child: TitleBarWrapper(child: SetupView()),
@@ -321,7 +321,7 @@ class RustPushBackend implements BackendService {
       await api.send(state: pushService.state, msg: msg);
     } catch (e) {
       if (e is AnyhowException) {
-        if (e.message.contains("Failed to reregister") && e.message.contains("not retrying")) {
+        if (e.message == "Do not retry Resource Failure") {
           markFailedToLogin();
         }
       }
@@ -916,17 +916,7 @@ class RustPushBackend implements BackendService {
   Future<bool> handleiMessageState(String address) async {
     var handle = await getDefaultHandle();
     var formatted = await RustPushBBUtils.formatAndAddPrefix(address);
-    List<String> available;
-    try {
-      available = await api.validateTargets(state: pushService.state, targets: [formatted], sender: handle);
-    } catch (e) {
-      if (e is AnyhowException) {
-        if (e.message.contains("Failed to reregister") && e.message.contains("not retrying")) {
-          markFailedToLogin();
-        }
-      }
-      rethrow;
-    }
+    List<String> available = await pushService.doValidateTargets([formatted], handle);
     return available.isNotEmpty;
   }
 
@@ -945,6 +935,21 @@ class RustPushService extends GetxService {
     api.DartReaction.emphsize: ReactionTypes.EMPHASIZE,
     api.DartReaction.question: ReactionTypes.QUESTION,
   };
+
+  Future<List<String>> doValidateTargets(List<String> targets, String handle) async {
+    List<String> available;
+    try {
+      available = await api.validateTargets(state: pushService.state, targets: targets, sender: handle);
+    } catch (e) {
+      if (e is AnyhowException) {
+        if (e.message == "Do not retry Resource Failure") {
+          (backend as RustPushBackend).markFailedToLogin();
+        }
+      }
+      rethrow;
+    }
+    return available;
+  }
 
   StickerData stickerFromDart(api.DartPartExtension_Sticker ext) {
     return StickerData(
@@ -1607,6 +1612,11 @@ class RustPushService extends GetxService {
         var msgRaw = await api.recvWait(state: pushService.state);
         if (msgRaw is api.PollResult_Stop) {
           break;
+        }
+        if (msgRaw is PanicException) {
+          if ((msgRaw as PanicException).message.contains("Wrong phase!")) {
+            break;
+          }
         }
         var msg = (msgRaw as api.PollResult_Cont).field0;
         if (msg == null) {

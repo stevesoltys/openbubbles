@@ -59,7 +59,7 @@ class ChatManager extends GetxService {
     (() async {
       print("ensuring keys");
       var participants = (await chat.getConversationData()).participants;
-      var targets = await api.validateTargets(state: pushService.state, targets: participants, sender: await chat.ensureHandle());
+      var targets = await pushService.doValidateTargets(participants, await chat.ensureHandle());
       print("finished ensuring keys ${targets.length}/${participants.length}");
     })();
 

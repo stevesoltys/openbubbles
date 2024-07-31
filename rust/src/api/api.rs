@@ -6,26 +6,28 @@ use anyhow::anyhow;
 use flutter_rust_bridge::{frb, IntoDart, JoinHandle};
 use icloud_auth::{LoginState, AnisetteConfiguration, AppleAccount};
 pub use icloud_auth::{VerifyBody, TrustedPhoneNumber};
+use plist::{Data, Dictionary};
 pub use plist::Value;
 use prost::Message;
-pub use rustpush::{IDSAppleUser, PushError, IDSUser, IMClient, IMessage, ConversationData, register};
+pub use rustpush::{PushError, IDSUser, IMClient, ConversationData, register};
 
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use tokio::{runtime::Runtime, select, sync::{broadcast, oneshot::{self, Sender}, Mutex, RwLock}};
-use rustpush::{init_logger, APSConnection, APSState, Attachment, BalloonBody, HardwareConfig, IDSPhoneUser, MMCSFile, MacOSConfig, MessagePart, MessageParts, OSConfig, RegisterState, RelayConfig};
+use rustpush::{authenticate_apple, authenticate_phone, APSConnection, APSConnectionResource, APSState, Attachment, AuthPhone, MMCSFile, MessageInst, MessagePart, MessageParts, OSConfig, RelayConfig, ResourceState};
+pub use rustpush::{MacOSConfig, HardwareConfig};
 use uniffi::{deps::log::{info, error}, HandleAlloc};
 use uuid::Uuid;
 use std::io::Seek;
 use async_recursion::async_recursion;
 
-use crate::{frb_generated::StreamSink, runtime};
+use crate::{frb_generated::{SseEncode, StreamSink}, init_logger, runtime};
 
 use flutter_rust_bridge::for_generated::{SimpleHandler, SimpleExecutor, NoOpErrorListener, SimpleThreadPool, BaseAsyncRuntime, lazy_static};
 
 pub type MyHandler = SimpleHandler<SimpleExecutor<NoOpErrorListener, SimpleThreadPool, MyAsyncRuntime>, NoOpErrorListener>;
 
 #[derive(Debug, Default)]
-pub struct MyAsyncRuntime;
+pub struct MyAsyncRuntime();
 
 impl BaseAsyncRuntime for MyAsyncRuntime {
     fn spawn<F>(&self, future: F) -> JoinHandle<F::Output>
@@ -48,6 +50,7 @@ lazy_static! {
 
 #[frb(opaque)]
 #[derive(Serialize, Deserialize, Clone)]
+#[serde(tag = "type")]
 pub enum JoinedOSConfig {
     MacOS(Arc<MacOSConfig>),
     Relay(Arc<RelayConfig>),
@@ -85,8 +88,9 @@ pub enum RegistrationPhase {
     Registered,
 }
 
+#[frb(ignore)]
 pub struct InnerPushState {
-    pub conn: Option<Arc<APSConnection>>,
+    pub conn: Option<APSConnection>,
     pub client: Option<IMClient>,
     pub conf_dir: PathBuf,
     pub os_config: Option<JoinedOSConfig>,
@@ -94,22 +98,23 @@ pub struct InnerPushState {
     pub cancel_poll: Mutex<Option<Sender<()>>>
 }
 
-pub struct PushState (pub RwLock<InnerPushState>);
+#[frb(opaque)]
+pub struct PushState (RwLock<InnerPushState>);
 
-pub async fn new_push_state(dir: String) -> anyhow::Result<Arc<PushState>> {
-    #[cfg(not(target_os = "android"))]
-    init_logger();
+pub async fn new_push_state(dir: String) -> Arc<PushState> {
+    let dir = PathBuf::from_str(&dir).unwrap();
+    init_logger(&dir);
     // flutter_rust_bridge::setup_default_user_utils();
     let state = PushState(RwLock::new(InnerPushState {
         conn: None,
         client: None,
-        conf_dir: PathBuf::from_str(&dir).unwrap(),
+        conf_dir: dir,
         os_config: None,
         account: None,
         cancel_poll: Mutex::new(None)
     }));
-    restore(&state).await?;
-    Ok(Arc::new(state))
+    restore(&state).await;
+    Arc::new(state)
 }
 
 pub fn service_from_ptr(ptr: String) -> Arc<PushState> {
@@ -139,7 +144,7 @@ fn plist_to_bin<T: serde::Serialize>(value: &T) -> Result<Vec<u8>, plist::Error>
     Ok(buf)
 }
 
-async fn restore(curr_state: &PushState) -> anyhow::Result<()> {
+async fn restore(curr_state: &PushState) {
     if !matches!(curr_state.get_phase().await, RegistrationPhase::WantsOSConfig) {
         panic!("Wrong phase! (restore)")
     }
@@ -148,6 +153,8 @@ async fn restore(curr_state: &PushState) -> anyhow::Result<()> {
 
     let hw_config_path = inner.conf_dir.join("hw_info.plist");
     let id_path = inner.conf_dir.join("id.plist");
+
+    info!("restoring now");
 
     // migrate
     if let Ok(config) = plist::from_file::<_, SavedHardwareState>(&inner.conf_dir.join("config.plist")) {
@@ -158,7 +165,37 @@ async fn restore(curr_state: &PushState) -> anyhow::Result<()> {
         info!("migrated!");
     }
 
-    let Ok(state) = plist::from_file::<_, SavedHardwareState>(&hw_config_path) else { return Ok(()) };
+    if let Ok(mut value) = plist::from_file::<_, Dictionary>(&hw_config_path) {
+        let os_config = value["os_config"].as_dictionary_mut().unwrap();
+        if !os_config.contains_key("type") {
+            os_config.insert("type".to_string(), Value::String("MacOS".to_string()));
+        }
+        std::fs::write(&hw_config_path, plist_to_string(&value).unwrap()).unwrap();
+        info!("migrated two!");
+    }
+
+    // second migrate
+    if let Ok(mut users) = plist::from_file::<_, Vec<Dictionary>>(&id_path) {
+        for user in &mut users {
+            if user.contains_key("handles") {
+                // migrate!
+                let handles = user.remove("handles").unwrap();
+                let identity = user.get_mut("identity").unwrap().as_dictionary_mut().unwrap();
+                let id_keypair = identity.remove("id_keypair").unwrap();
+
+                let registration = Dictionary::from_iter([
+                    ("id_keypair", id_keypair),
+                    ("handles", handles),
+                ].into_iter());
+                user.insert("registration".to_string(), Value::Dictionary(registration));
+
+                info!("migrated!")
+            }
+        }
+        std::fs::write(&id_path, plist_to_string(&users).unwrap()).unwrap();
+    }
+
+    let Ok(state) = plist::from_file::<_, SavedHardwareState>(&hw_config_path) else { return };
 
     // even if we failed on the initial connection, we don't care cuz we're restoring.
     inner.os_config = Some(state.os_config);
@@ -166,16 +203,15 @@ async fn restore(curr_state: &PushState) -> anyhow::Result<()> {
     inner.conn = Some(connection);
 
     // id may not exist yet; that's fine
-    let Ok(users) = plist::from_file::<_, Vec<IDSUser>>(&id_path) else { return Ok(()) };
+    let Ok(users) = plist::from_file::<_, Vec<IDSUser>>(&id_path) else { return };
 
-    println!("registration expires at {}", users[0].identity.as_ref().unwrap().get_exp().unwrap());
+    info!("registration expires at {}", users[0].registration.as_ref().unwrap().get_exp().unwrap());
 
     inner.client = Some(IMClient::new(inner.conn.as_ref().unwrap().clone(), users, 
         inner.conf_dir.join("id_cache.plist"), inner.os_config.as_ref().unwrap().config(), Box::new(move |updated_keys| {
             println!("updated keys!!!");
             std::fs::write(&id_path, plist_to_string(&updated_keys).unwrap()).unwrap();
         })).await);
-    Ok(())
 }
 
 #[repr(C)]
@@ -199,7 +235,7 @@ pub async fn register_ids(state: &Arc<PushState>, users: &Vec<IDSUser>) -> anyho
     let mut inner = state.0.write().await;
     let conn_state = inner.conn.as_ref().unwrap().clone();
 
-    if let Err(err) = register(inner.os_config.as_deref().unwrap(), &mut users, &conn_state).await {
+    if let Err(err) = register(inner.os_config.as_deref().unwrap(), &*conn_state.state.read().await, &mut users).await {
         return if let PushError::CustomerMessage(support) = err {
             Ok(Some(unsafe { std::mem::transmute(support) }))
         } else {
@@ -216,8 +252,8 @@ pub async fn register_ids(state: &Arc<PushState>, users: &Vec<IDSUser>) -> anyho
     Ok(None)
 }
 
-async fn setup_push(config: &JoinedOSConfig, state: Option<&APSState>, state_path: PathBuf) -> (Arc<APSConnection>, Option<PushError>) {
-    let (conn, error) = APSConnection::new(config.config(), state.cloned()).await;
+async fn setup_push(config: &JoinedOSConfig, state: Option<&APSState>, state_path: PathBuf) -> (APSConnection, Option<PushError>) {
+    let (conn, error) = APSConnectionResource::new(config.config(), state.cloned()).await;
 
     if error.is_none() {
         let state = SavedHardwareState {
@@ -227,7 +263,7 @@ async fn setup_push(config: &JoinedOSConfig, state: Option<&APSState>, state_pat
         std::fs::write(&state_path, plist_to_string(&state).unwrap()).unwrap();
     }
 
-    let mut to_refresh = conn.connected.subscribe();
+    let mut to_refresh = conn.generated_signal.subscribe();
     let reconn_conn = Arc::downgrade(&conn);
     let config_ref = config.clone();
     tokio::spawn(async move {
@@ -256,7 +292,7 @@ pub async fn configure_app_review(state: &Arc<PushState>) -> anyhow::Result<()> 
     std::fs::write(inner.conf_dir.join("id.plist"), include_str!("id_testing.plist"))?;
     std::fs::write(inner.conf_dir.join("hw_info.plist"), include_str!("hw_testing.plist"))?;
     drop(inner);
-    restore(state).await?;
+    restore(state).await;
     Ok(())
 }
 
@@ -399,14 +435,6 @@ pub fn ptr_to_dart(ptr: String) -> DartIMessage {
     *recieved
 }
 
-#[frb]
-#[repr(C)]
-pub struct DartBalloonBody {
-    #[frb(non_final)]
-    pub bid: String,
-    #[frb(non_final)]
-    pub data: Vec<u8>
-}
 
 #[frb]
 #[repr(C)]
@@ -417,6 +445,8 @@ pub struct DartConversationData {
     pub cv_name: Option<String>,
     #[frb(non_final)]
     pub sender_guid: Option<String>,
+    #[frb(non_final)]
+    pub after_guid: Option<String>,
 }
 
 
@@ -435,10 +465,13 @@ pub enum DartLoginState {
 
 #[repr(C)]
 #[derive(Serialize, Deserialize)]
+#[frb(type_64bit_int)]
 pub struct DartMMCSFile {
+    #[serde(serialize_with = "bin_serialize", deserialize_with = "bin_deserialize")]
     pub signature: Vec<u8>,
     pub object: String,
     pub url: String,
+    #[serde(serialize_with = "bin_serialize", deserialize_with = "bin_deserialize")]
     pub key: Vec<u8>,
     pub size: usize
 }
@@ -455,15 +488,31 @@ impl From<MMCSFile> for DartMMCSFile {
     }
 }
 
+pub fn bin_serialize<S>(x: &[u8], s: S) -> Result<S::Ok, S::Error>
+where
+    S: Serializer,
+{
+    s.serialize_bytes(x)
+}
+
+pub fn bin_deserialize<'de, D>(d: D) -> Result<Vec<u8>, D::Error>
+where
+    D: Deserializer<'de>,
+{
+    let s: Data = Deserialize::deserialize(d)?;
+    Ok(s.into())
+}
+
 #[repr(C)]
 #[derive(Serialize, Deserialize)]
 pub enum DartAttachmentType {
-    Inline(Vec<u8>),
+    Inline(#[serde(serialize_with = "bin_serialize", deserialize_with = "bin_deserialize")] Vec<u8>),
     MMCS(DartMMCSFile)
 }
 
 #[repr(C)]
 #[derive(Serialize, Deserialize)]
+#[frb(type_64bit_int)]
 pub struct DartAttachment {
     pub a_type: DartAttachmentType,
     pub part_idx: u64,
@@ -482,6 +531,7 @@ impl DartAttachment {
         plist::from_reader_xml(Cursor::new(saved)).unwrap()
     }
 
+    #[frb(type_64bit_int)]
     pub fn get_size(&self) -> usize {
         self.get_raw().get_size()
     }
@@ -505,6 +555,7 @@ pub enum DartMessagePart {
 }
 
 #[repr(C)]
+#[frb(type_64bit_int)]
 pub enum DartPartExtension {
     Sticker {
         msg_width: f64,
@@ -524,6 +575,7 @@ pub enum DartPartExtension {
 }
 
 #[repr(C)]
+#[frb(type_64bit_int)]
 pub struct DartIndexedMessagePart {
     pub part: DartMessagePart,
     pub idx: Option<usize>,
@@ -561,8 +613,6 @@ pub struct DartNormalMessage {
     #[frb(non_final)]
     pub parts: DartMessageParts,
     #[frb(non_final)]
-    pub body: Option<DartBalloonBody>,
-    #[frb(non_final)]
     pub effect: Option<String>,
     #[frb(non_final)]
     pub reply_guid: Option<String>,
@@ -577,6 +627,7 @@ pub struct DartRenameMessage {
 }
 
 #[repr(C)]
+#[frb(type_64bit_int)]
 pub struct DartChangeParticipantMessage {
     pub new_participants: Vec<String>,
     pub group_version: u64
@@ -606,6 +657,7 @@ pub enum DartReactMessageType {
 }
 
 #[repr(C)]
+#[frb(type_64bit_int)]
 pub struct DartReactMessage {
     pub to_uuid: String,
     pub to_part: u64,
@@ -614,12 +666,14 @@ pub struct DartReactMessage {
 }
 
 #[repr(C)]
+#[frb(type_64bit_int)]
 pub struct DartUnsendMessage {
     pub tuuid: String,
     pub edit_part: u64,
 }
 
 #[repr(C)]
+#[frb(type_64bit_int)]
 pub struct DartEditMessage {
     pub tuuid: String,
     pub edit_part: u64,
@@ -627,6 +681,7 @@ pub struct DartEditMessage {
 }
 
 #[repr(C)]
+#[frb(type_64bit_int)]
 pub struct DartIconChangeMessage {
     pub file: Option<DartMMCSFile>,
     pub group_version: u64
@@ -639,6 +694,7 @@ pub struct DartUpdateExtensionMessage {
 }
 
 #[repr(C)]
+#[frb(non_opaque)]
 pub enum DartMessage {
     Message(DartNormalMessage),
     RenameMessage(DartRenameMessage),
@@ -665,15 +721,13 @@ pub enum DartMessageTarget {
     Uuid(String),
 }
 
-#[frb]
+#[frb(type_64bit_int)]
 #[repr(C)]
 pub struct DartIMessage {
     #[frb(non_final)]
     pub id: String,
     #[frb(non_final)]
     pub sender: Option<String>,
-    #[frb(non_final)]
-    pub after_guid: Option<String>,
     #[frb(non_final)]
     pub conversation: Option<DartConversationData>,
     #[frb(non_final)]
@@ -698,14 +752,14 @@ impl Into<ConversationData> for DartConversationData {
     }
 }
 
-impl From<IMessage> for DartIMessage {
-    fn from(value: IMessage) -> Self {
+impl From<MessageInst> for DartIMessage {
+    fn from(value: MessageInst) -> Self {
         unsafe { std::mem::transmute(value) }
     }
 }
 
 impl DartIMessage {
-    fn to_imsg(self) -> IMessage {
+    fn to_imsg(self) -> MessageInst {
         unsafe { std::mem::transmute(self) }
     }
 }
@@ -723,7 +777,7 @@ pub async fn recv_wait(state: &Arc<PushState>) -> PollResult {
     let recv_path = state.0.read().await;
     *recv_path.cancel_poll.lock().await = Some(send);
     select! {
-        msg = recv_path.client.as_ref().expect("no client??/").recieve_wait() => {
+        msg = recv_path.client.as_ref().expect("no client??/").receive_wait() => {
             *recv_path.cancel_poll.lock().await = None;
             let msg = match msg {
                 Ok(msg) => msg,
@@ -758,14 +812,14 @@ pub async fn get_handles(state: &Arc<PushState>) -> anyhow::Result<Vec<String>> 
     if !matches!(state.get_phase().await, RegistrationPhase::Registered) {
         panic!("Wrong phase! (send)")
     }
-    Ok(state.0.read().await.client.as_ref().unwrap().get_handles().await.to_vec())
+    Ok(state.0.read().await.client.as_ref().unwrap().identity.get_handles().await.to_vec())
 }
 
 pub async fn do_reregister(state: &Arc<PushState>) -> anyhow::Result<()> {
     if !matches!(state.get_phase().await, RegistrationPhase::Registered) {
         panic!("Wrong phase! (send)")
     }
-    state.0.read().await.client.as_ref().unwrap().reregister().await?;
+    state.0.read().await.client.as_ref().unwrap().identity.refresh().await?;
     Ok(())
 }
 
@@ -773,103 +827,118 @@ pub async fn new_msg(state: &Arc<PushState>, conversation: DartConversationData,
     if !matches!(state.get_phase().await, RegistrationPhase::Registered) {
         panic!("Wrong phase! (new_msg)")
     }
-    let read = state.0.read().await;
-    let client = read.client.as_ref().unwrap();
-    client.new_msg(conversation.into(), &sender, message.into()).await.into()
+    MessageInst::new(conversation.into(), &sender, message.into()).into()
 }
 
 pub async fn validate_targets(state: &Arc<PushState>, targets: Vec<String>, sender: String) -> anyhow::Result<Vec<String>> {
     if !matches!(state.get_phase().await, RegistrationPhase::Registered) {
         panic!("Wrong phase! (validate_targets)")
     }
-    Ok(state.0.read().await.client.as_ref().unwrap().validate_targets(&targets, &sender).await?)
+    Ok(state.0.read().await.client.as_ref().unwrap().identity.validate_targets(&targets, &sender).await?)
 }
 
 pub async fn get_phase(state: &Arc<PushState>) -> RegistrationPhase {
     state.get_phase().await
 }
 
+#[frb(type_64bit_int)]
 pub struct TransferProgress {
     pub prog: usize,
     pub total: usize,
     pub attachment: Option<DartAttachment>
 }
 
-pub async fn download_attachment(sink: StreamSink<TransferProgress>, state: &Arc<PushState>, attachment: DartAttachment, path: String) -> anyhow::Result<()> {
-    let inner = state.0.read().await;
-    println!("donwloading file {}", path);
-    let path = std::path::Path::new(&path);
-    let prefix = path.parent().unwrap();
-    std::fs::create_dir_all(prefix)?;
-    let mut file = std::fs::File::create(path)?;
-    attachment.get_raw().get_attachment(inner.conn.as_ref().unwrap(), &mut file, &mut |prog, total| {
-        println!("donwloading file {} of {}", prog, total);
-        sink.add(TransferProgress {
-            prog,
-            total,
-            attachment: None
-        }).unwrap();
-    }).await?;
-    file.flush()?;
-    Ok(())
+pub async fn download_attachment(sink: StreamSink<TransferProgress>, state: &Arc<PushState>, attachment: DartAttachment, path: String) {
+    wrap_sink(&sink, || async {
+        let inner = state.0.read().await;
+        println!("donwloading file {}", path);
+        let path = std::path::Path::new(&path);
+        let prefix = path.parent().unwrap();
+        std::fs::create_dir_all(prefix)?;
+        let mut file = std::fs::File::create(path)?;
+        attachment.get_raw().get_attachment(inner.conn.as_ref().unwrap(), &mut file, &mut |prog, total| {
+            println!("donwloading file {} of {}", prog, total);
+            sink.add(TransferProgress {
+                prog,
+                total,
+                attachment: None
+            }).unwrap();
+        }).await?;
+        file.flush()?;
+        Ok(())
+    }).await
 }
 
-pub async fn download_mmcs(sink: StreamSink<TransferProgress>, state: &Arc<PushState>, attachment: DartMMCSFile, path: String) -> anyhow::Result<()> {
-    let inner = state.0.read().await;
-    let path = std::path::Path::new(&path);
-    let prefix = path.parent().unwrap();
-    std::fs::create_dir_all(prefix)?;
+pub async fn download_mmcs(sink: StreamSink<TransferProgress>, state: &Arc<PushState>, attachment: DartMMCSFile, path: String) {
+    wrap_sink(&sink, || async {
+        let inner = state.0.read().await;
+        let path = std::path::Path::new(&path);
+        let prefix = path.parent().unwrap();
+        std::fs::create_dir_all(prefix)?;
 
-    let mut file = std::fs::File::create(path)?;
-    attachment.get_raw().get_attachment(inner.conn.as_ref().unwrap(), &mut file, &mut |prog, total| {
-        sink.add(TransferProgress {
-            prog,
-            total,
-            attachment: None
-        }).unwrap();
-    }).await?;
-    file.flush()?;
-    Ok(())
+        let mut file = std::fs::File::create(path)?;
+        attachment.get_raw().get_attachment(inner.conn.as_ref().unwrap(), &mut file, &mut |prog, total| {
+            sink.add(TransferProgress {
+                prog,
+                total,
+                attachment: None
+            }).unwrap();
+        }).await?;
+        file.flush()?;
+        Ok(())
+    }).await
 }
 
+async fn wrap_sink<Fut, T: SseEncode + Send + Sync>(sink: &StreamSink<T>, f: impl FnOnce() -> Fut)
+    where Fut: Future<Output = anyhow::Result<()>> {
+    if let Err(err) = f().await {
+        sink.add_error(err).unwrap();
+    }
+}
+
+#[frb(type_64bit_int)]
 pub struct MMCSTransferProgress {
     pub prog: usize,
     pub total: usize,
     pub file: Option<DartMMCSFile>
 }
 
-pub async fn upload_mmcs(sink: StreamSink<MMCSTransferProgress>, state: &Arc<PushState>, path: String) -> anyhow::Result<()> {
-    let inner = state.0.read().await;
+pub async fn upload_mmcs(sink: StreamSink<MMCSTransferProgress>, state: &Arc<PushState>, path: String) {
+    wrap_sink(&sink, || async {
+        let inner = state.0.read().await;
 
-    let mut file = std::fs::File::open(path)?;
-    let prepared = MMCSFile::prepare_put(&mut file).await?;
-    file.rewind()?;
-    let attachment = MMCSFile::new(inner.conn.as_ref().unwrap(), &prepared, &mut file, &mut |prog, total| {
-        sink.add(MMCSTransferProgress {
-            prog,
-            total,
-            file: None
-        }).unwrap();
-    }).await?;
-    sink.add(MMCSTransferProgress { prog: 0, total: 0, file: Some(attachment.into()) }).unwrap();
-    Ok(())
+        let mut file = std::fs::File::open(path)?;
+        let prepared = MMCSFile::prepare_put(&mut file).await?;
+        file.rewind()?;
+        let attachment = MMCSFile::new(inner.conn.as_ref().unwrap(), &prepared, &mut file, &mut |prog, total| {
+            sink.add(MMCSTransferProgress {
+                prog,
+                total,
+                file: None
+            }).unwrap();
+        }).await?;
+        sink.add(MMCSTransferProgress { prog: 0, total: 0, file: Some(attachment.into()) }).unwrap();
+        Ok(())
+    }).await
 }
 
-pub async fn upload_attachment(sink: StreamSink<TransferProgress>, state: &Arc<PushState>, path: String, mime: String, uti: String, name: String) -> anyhow::Result<()> {
-    let inner = state.0.read().await;
+pub async fn upload_attachment(sink: StreamSink<TransferProgress>, state: &Arc<PushState>, path: String, mime: String, uti: String, name: String) {
+    wrap_sink(&sink, || async {
+        let inner = state.0.read().await;
 
-    let mut file = std::fs::File::open(path)?;
-    let prepared = MMCSFile::prepare_put(&mut file).await?;
-    file.rewind()?;
-    let attachment = Attachment::new_mmcs(inner.conn.as_ref().unwrap(), &prepared, &mut file, &mime, &uti, &name, &mut |prog, total| {
-        sink.add(TransferProgress {
-            prog,
-            total,
-            attachment: None
-        }).unwrap();
-    }).await?;
-    sink.add(TransferProgress { prog: 0, total: 0, attachment: Some(attachment.into()) }).unwrap();
-    Ok(())
+        let mut file = std::fs::File::open(path)?;
+        let prepared = MMCSFile::prepare_put(&mut file).await?;
+        file.rewind()?;
+        let attachment = Attachment::new_mmcs(inner.conn.as_ref().unwrap(), &prepared, &mut file, &mime, &uti, &name, &mut |prog, total| {
+            sink.add(TransferProgress {
+                prog,
+                total,
+                attachment: None
+            }).unwrap();
+        }).await?;
+        sink.add(TransferProgress { prog: 0, total: 0, attachment: Some(attachment.into()) }).unwrap();
+        Ok(())
+    }).await
 }
 
 pub async fn get_token(state: &Arc<PushState>) -> Vec<u8> {
@@ -887,8 +956,6 @@ pub fn restore_user(user: String) -> anyhow::Result<IDSUser> {
 }
 
 pub async fn try_auth(state: &Arc<PushState>, username: String, password: String) -> anyhow::Result<(DartLoginState, Option<IDSUser>)> {
-    let connection = state.0.read().await.conn.as_ref().unwrap().clone();
-
     let mut inner = state.0.write().await;
     let anisette_config = AnisetteConfiguration::new()
         .set_configuration_path(inner.conf_dir.join("anisette_test"));
@@ -897,8 +964,7 @@ pub async fn try_auth(state: &Arc<PushState>, username: String, password: String
 
     let mut user = None;
     if let Some(pet) = apple_account.get_pet() {
-        let identity = IDSAppleUser::authenticate(&connection, username.trim(), &pet, inner.os_config.as_deref().unwrap()).await?;
-
+        let identity = authenticate_apple(username.trim(), &pet, inner.os_config.as_deref().unwrap()).await?;
         user = Some(identity);
         
         // who needs extra steps when you have a PET, amirite?
@@ -916,7 +982,10 @@ pub async fn try_auth(state: &Arc<PushState>, username: String, password: String
 pub async fn auth_phone(state: &Arc<PushState>, number: String, sig: Vec<u8>) -> anyhow::Result<IDSUser> {
     let inner = state.0.read().await;
 
-    let identity = IDSPhoneUser::authenticate(inner.conn.as_ref().unwrap(), &number, &sig, inner.os_config.as_deref().unwrap()).await?;
+    let identity = authenticate_phone(&number, AuthPhone {
+        push_token: inner.conn.as_deref().unwrap().get_token().await.to_vec().into(),
+        sigs: vec![sig.into()]
+    }, inner.os_config.as_deref().unwrap()).await?;
 
     Ok(identity)
 }
@@ -972,10 +1041,13 @@ pub async fn reset_state(state: &Arc<PushState>, reset_hw: bool) -> anyhow::Resu
     }
     drop(inner);
     let mut inner = state.0.write().await;
+    info!("a");
     let conn_state = inner.conn.as_ref().unwrap().clone();
+    info!("b {:?}", inner.os_config.is_some());
     inner.client = None;
     // try deregistering from iMessage, but if it fails we don't really care
-    let _ = register(inner.os_config.as_deref().unwrap(), &mut [], &conn_state).await;
+    let _ = register(inner.os_config.as_deref().unwrap(), &*conn_state.state.read().await, &mut []).await;
+    info!("c");
     inner.account = None;
     let _ = std::fs::remove_file(inner.conf_dir.join("id.plist"));
     let _ = std::fs::remove_file(inner.conf_dir.join("id_cache.plist"));
@@ -991,7 +1063,7 @@ pub async fn reset_state(state: &Arc<PushState>, reset_hw: bool) -> anyhow::Resu
 
 pub async fn invalidate_id_cache(state: &Arc<PushState>) -> anyhow::Result<()> {
     let inner = state.0.read().await;
-    inner.client.as_ref().unwrap().invalidate_id_cache().await;
+    inner.client.as_ref().unwrap().identity.invalidate_id_cache().await;
     Ok(())
 }
 
@@ -1028,19 +1100,18 @@ pub enum DartRegisterState {
 
 pub async fn get_regstate(state: &Arc<PushState>) -> anyhow::Result<DartRegisterState> {
     let inner = state.0.read().await;
-    let mutex_ref = inner.client.as_ref().unwrap().get_regstate().await;
-    let regstate = mutex_ref.lock().await;
-    Ok(match &*regstate {
-        RegisterState::Registering => DartRegisterState::Registering,
-        RegisterState::Registered => DartRegisterState::Registered,
-        RegisterState::Failed(failure) => 
+    let mutex_ref = inner.client.as_ref().unwrap().identity.resource_state.lock().await;
+    Ok(match &*mutex_ref {
+        ResourceState::Generating => DartRegisterState::Registering,
+        ResourceState::Generated => DartRegisterState::Registered,
+        ResourceState::Failed(failure) => 
             DartRegisterState::Failed { retry_wait: failure.retry_wait, error: format!("{}", failure.error) },
     })
 }
 
 pub async fn convert_token_to_uuid(state: &Arc<PushState>, handle: String, token: Vec<u8>) -> anyhow::Result<String> {
     let inner = state.0.read().await;
-    let uuid = inner.client.as_ref().unwrap().token_to_uuid(&handle, &token).await?;
+    let uuid = inner.client.as_ref().unwrap().identity.token_to_uuid(&handle, &token).await?;
     Ok(uuid)
 }
 
@@ -1056,6 +1127,6 @@ pub struct DartPrivateDeviceInfo {
 
 pub async fn get_sms_targets(state: &Arc<PushState>, handle: String, refresh: bool) -> anyhow::Result<Vec<DartPrivateDeviceInfo>> {
     let inner = state.0.read().await;
-    let targets = inner.client.as_ref().unwrap().get_sms_targets(&handle, refresh).await?;
+    let targets = inner.client.as_ref().unwrap().identity.get_sms_targets(&handle, refresh).await?;
     Ok(unsafe { std::mem::transmute(targets) })
 }
