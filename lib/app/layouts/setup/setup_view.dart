@@ -132,7 +132,7 @@ class SetupViewController extends StatefulController {
       users.add(currentAppleUser!);
     }
 
-    if (currentPhoneUser != null) {
+    if (currentPhoneUser != null && supportsPhoneReg.value) {
       users.add(currentPhoneUser!);
     }
 
@@ -185,7 +185,9 @@ class SetupViewController extends StatefulController {
       success = true;
       // TODO remove clear
       // ss.settings.cachedCodes.clear();
+      print("Success registered!");
       await pushService.configured();
+      print("Finishing!");
       await setup.finishSetup();
     } catch(e) {
       // reset currentPhoneUser because frb *insists* on taking ownership.

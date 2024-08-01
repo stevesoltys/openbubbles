@@ -957,8 +957,10 @@ pub fn restore_user(user: String) -> anyhow::Result<IDSUser> {
 
 pub async fn try_auth(state: &Arc<PushState>, username: String, password: String) -> anyhow::Result<(DartLoginState, Option<IDSUser>)> {
     let mut inner = state.0.write().await;
+    let serial = inner.os_config.as_deref().unwrap().get_serial_number();
     let anisette_config = AnisetteConfiguration::new()
-        .set_configuration_path(inner.conf_dir.join("anisette_test"));
+        .set_configuration_path(inner.conf_dir.join("anisette_test"))
+        .set_macos_serial(serial);
     let mut apple_account = AppleAccount::new(anisette_config).await?;
     let mut login_state = apple_account.login_email_pass(&username, &password).await?;
 
