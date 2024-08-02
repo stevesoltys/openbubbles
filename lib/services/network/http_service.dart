@@ -26,6 +26,12 @@ class HttpBackend implements BackendService {
   bool canDelete() {
     return false;
   }
+  
+  @override
+  bool canSendSubject() {
+    return false; 
+    // return controller.serverVersionCode.value >= 63;
+  }
 
   @override
   void startedTyping(Chat c) {

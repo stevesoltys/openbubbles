@@ -263,6 +263,11 @@ class RustPushBackend implements BackendService {
   }
 
   @override
+  bool canSendSubject() {
+    return true;
+  }
+
+  @override
   void init() {
     pushService.hello();
   }
@@ -419,6 +424,7 @@ class RustPushBackend implements BackendService {
           replyPart: m.threadOriginatorGuid == null ? null : "$partIndex:0:0",
           effect: m.expressiveSendStyleId,
           service: await getService(chat.isRpSms, forMessage: m),
+          subject: m.subject,
         )));
     if (m.stagingGuid != null) {
       msg.id = m.stagingGuid!;
@@ -629,6 +635,7 @@ class RustPushBackend implements BackendService {
         replyPart: m.threadOriginatorGuid == null ? null : "$partIndex:0:0",
         effect: m.expressiveSendStyleId,
         service: await getService(chat.isRpSms, forMessage: m),
+        subject: m.subject,
       )),
     );
     print("sending ${msg.id}");
@@ -1133,6 +1140,7 @@ class RustPushService extends GetxService {
         isFromMe: myHandles.contains(sender),
         handle: RustPushBBUtils.rustHandleToBB(sender!),
         dateCreated: DateTime.fromMillisecondsSinceEpoch(myMsg.sentTimestamp),
+        subject: innerMsg.field0.subject,
         threadOriginatorPart: innerMsg.field0.replyPart?.toString(),
         threadOriginatorGuid: innerMsg.field0.replyGuid,
         expressiveSendStyleId: innerMsg.field0.effect,
