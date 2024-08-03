@@ -20,6 +20,7 @@ prost = "0.12"
 # Only necessary if using Protobuf well-known types:
 prost-types = "0.12"
 uuid = { version = "1.4.1", features = ["v4"] }
+futures = "0.3.30"
 
 [target.'cfg(target_os = "android")'.dependencies]
 android_log = "0.1.3"
