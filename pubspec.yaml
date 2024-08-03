@@ -312,13 +312,13 @@ flutter:
   # see https://flutter.dev/custom-fonts/#from-packages
 
 msix_config:
-  display_name: BlueBubbles
-  publisher_display_name: BlueBubbles
-  identity_name: 23344BlueBubbles.BlueBubbles
-  msix_version: 1.12.100.0
-  publisher: CN=BEC9154D-191E-4375-BF30-698BD4C141C4
+  display_name: OpenBubbles
+  publisher_display_name: OpenBubbles
+  identity_name: OpenBubbles.OpenBubbles
+  msix_version: 1.12.300.0
+  publisher: CN=A7258527-3356-42FA-AABD-F6BAA9420BDE
   vs_generated_images_folder_path: windows/icons
-  logo_path: assets/icon/icon.ico
+  logo_path: assets/icon/icon.png
   store: true
   #  certificate_path: ../bluebubbles.pfx
   #  certificate_password: BlueBubbles
