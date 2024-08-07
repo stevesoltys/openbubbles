@@ -57,6 +57,7 @@ class _TextFieldSuffixState extends OptimizedState<TextFieldSuffix> {
         return Obx(() {
           bool canSend = widget.textController.text.isNotEmpty ||
               widget.subjectTextController.text.isNotEmpty ||
+              widget.controller?.pickedApp.value != null ||
               (widget.controller?.pickedAttachments.isNotEmpty ?? false.obs.value);
           bool showRecording = (widget.controller?.showRecording.value ?? false.obs.value) && widget.recorderController != null;
           bool isLinuxArm64 = kIsDesktop && Platform.isLinux && SysInfo.kernelArchitecture == ProcessorArchitecture.arm64;
@@ -169,7 +170,7 @@ class _TextFieldSuffixState extends OptimizedState<TextFieldSuffix> {
                               onPressed: () async {
                                 await widget.controller!.send(
                                   [file],
-                                  "", "", null, null, null, true,
+                                  "", "", null, null, null, null, true,
                                 );
                                 deleteAudioRecording(file.path!);
                                 Get.back();

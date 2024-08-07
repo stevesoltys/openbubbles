@@ -3,6 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.bluebubbles.messaging">
 
+    <queries>
+        <package android:name="com.example.openbubblesextension" />
+    </queries>
+
     <!--
      io.flutter.app.FlutterApplication is an android.app.Application that
          calls FlutterMain.startInitialization(this); in its onCreate method.

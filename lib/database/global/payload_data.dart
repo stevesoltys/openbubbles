@@ -1,5 +1,9 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:bluebubbles/helpers/helpers.dart';
 import 'package:bluebubbles/utils/logger/logger.dart';
+import 'package:bluebubbles/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -13,6 +17,10 @@ class PayloadData {
   PayloadType type;
   List<UrlPreviewData>? urlData;
   List<iMessageAppData>? appData;
+
+  String get bundleId {
+    return appData!.first.bundleId;
+  }
 
   factory PayloadData.fromJson(dynamic json) {
     if (json is Map) {
@@ -155,18 +163,47 @@ class iMessageAppData {
     this.ldText,
     this.userInfo,
     this.url,
+    this.session,
+    this.appIcon,
+    this.appId,
+    this.isLive,
   });
 
   String? appName;
   String? ldText;
   String? url;
+  int? appId;
   UserInfo? userInfo;
+  String? session;
+  String? appIcon;
+  bool? isLive;
+
+  String get bundleId {
+    return es.getExtensionBundle(appId!);
+  }
+
+  bool get isSupported {
+    if (url?.startsWith("http") ?? false) return true;
+    if (appId == null) return false;
+    return es.isAppSupported(appId!);
+  }
+
+  String? get icon {
+    if (appId == null) return appIcon;
+    var app = es.cachedStatus.firstWhereOrNull((a) => a.appId == appId);
+    if (app == null || app.available == null) return appIcon;
+    return app.available!.icon;
+  }
 
   factory iMessageAppData.fromJson(Map<String, dynamic> json) => iMessageAppData(
     appName: json["an"],
     ldText: json["ldtext"],
     userInfo: json["userInfo"] == null ? null : UserInfo.fromJson(Map<String, dynamic>.from(json["userInfo"])),
     url: json["URL"]?["NS.relative"],
+    session: json["session"],
+    appIcon: json['appIcon'],
+    appId: json['appId'],
+    isLive: json['isLive'],
   );
 
   Map<String, dynamic> toJson() => {
@@ -176,6 +213,45 @@ class iMessageAppData {
       "NS.relative": url,
     },
     "userInfo": userInfo?.toJson(),
+    "session": session,
+    "appIcon": appIcon,
+    "appId": appId,
+    "isLive": isLive,
+  };
+
+  factory iMessageAppData.fromNative(Map<String, dynamic> args, App app) => iMessageAppData(
+    appName: app.madridName,
+    ldText: args["ldText"],
+    url: args["url"],
+    session: args["session"],
+    appIcon: app.available!.icon,
+    appId: app.appId,
+    isLive: args["isLive"],
+    userInfo: UserInfo(
+      imageSubtitle: args["imageSubtitle"],
+      imageTitle: args["imageTitle"],
+      caption: args["caption"],
+      secondarySubcaption: args["secondaryCaption"],
+      tertiarySubcaption: args["tertiaryCaption"],
+      subcaption: args["subcaption"],
+    )
+  );
+
+  Map<String, dynamic> toNative(String? image) => {
+    "ldText": ldText,
+    "url": url,
+    "session": session,
+    
+    "imageBase64": image,
+    "imageSubtitle": userInfo?.imageSubtitle,
+    "imageTitle": userInfo?.imageTitle,
+    "caption": userInfo?.caption,
+    "secondaryCaption": userInfo?.secondarySubcaption,
+    "tertiaryCaption": userInfo?.tertiarySubcaption,
+    "subcaption": userInfo?.subcaption,
+    "appId": appId,
+
+    "isLive": isLive,
   };
 }
 

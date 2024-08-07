@@ -3,6 +3,7 @@ import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:async_task/async_task_extension.dart';
+import 'package:bluebubbles/app/layouts/conversation_view/widgets/message/message_holder.dart';
 import 'package:bluebubbles/app/layouts/setup/setup_view.dart';
 import 'package:bluebubbles/app/wrappers/titlebar_wrapper.dart';
 import 'package:bluebubbles/main.dart';
@@ -29,6 +30,7 @@ import 'package:dlibphonenumber/dlibphonenumber.dart';
 import 'package:telephony_plus/telephony_plus.dart';
 import 'package:vpn_connection_detector/vpn_connection_detector.dart';
 import 'package:convert/convert.dart';
+import 'package:bluebubbles/helpers/types/constants.dart' as constants;
 
 var uuid = const Uuid();
 RustPushService pushService =
@@ -419,12 +421,17 @@ class RustPushBackend implements BackendService {
         sender: await chat.ensureHandle(),
         message: api.DartMessage.message(api.DartNormalMessage(
           parts: api.DartMessageParts(
-              field0: [api.DartIndexedMessagePart(part_: api.DartMessagePart.attachment(attachment!))]),
+              field0: [
+                if (m.payloadData?.appData?.first.ldText != null)
+                api.DartIndexedMessagePart(part_: api.DartMessagePart.object(m.payloadData!.appData!.first.ldText!)),
+                api.DartIndexedMessagePart(part_: api.DartMessagePart.attachment(attachment!))
+              ]),
           replyGuid: m.threadOriginatorGuid,
           replyPart: m.threadOriginatorGuid == null ? null : "$partIndex:0:0",
           effect: m.expressiveSendStyleId,
           service: await getService(chat.isRpSms, forMessage: m),
           subject: m.subject,
+          app: m.payloadData == null ? null : pushService.dataToApp(m.payloadData!),
         )));
     if (m.stagingGuid != null) {
       msg.id = m.stagingGuid!;
@@ -636,6 +643,7 @@ class RustPushBackend implements BackendService {
         effect: m.expressiveSendStyleId,
         service: await getService(chat.isRpSms, forMessage: m),
         subject: m.subject,
+        app: m.payloadData == null ? null : pushService.dataToApp(m.payloadData!),
       )),
     );
     print("sending ${msg.id}");
@@ -816,6 +824,27 @@ class RustPushBackend implements BackendService {
             toPart: repPart ?? 0,
             toText: selected.text ?? "",
             reaction: api.DartReactMessageType.react(reaction: reactionMap[reaction]!, enable: enabled))));
+    await sendMsg(msg);
+    msg.sentTimestamp = DateTime.now().millisecondsSinceEpoch;
+    return (await pushService.reflectMessageDyn(msg))!;
+  }
+
+  @override
+  Future<Message> updateMessage(
+        Chat chat, Message old, PayloadData newData) async {
+    var msg = await api.newMsg(
+        state: pushService.state,
+        conversation: await chat.getConversationData(),
+        sender: await chat.ensureHandle(),
+        message: api.DartMessage.react(api.DartReactMessage(
+            toUuid: old.amkSessionId!,
+            toText: "",
+            reaction: api.DartReactMessageType.extension_(
+              spec: pushService.dataToApp(newData),
+              body: api.DartMessageParts(field0: [
+                api.DartIndexedMessagePart(part_: api.DartMessagePart.object(newData.appData![0].ldText ?? ""))
+              ])
+            ))));
     await sendMsg(msg);
     msg.sentTimestamp = DateTime.now().millisecondsSinceEpoch;
     return (await pushService.reflectMessageDyn(msg))!;
@@ -1032,7 +1061,7 @@ class RustPushService extends GetxService {
     }
   }
 
-  Future<(AttributedBody, String, List<Attachment>)> indexedPartsToAttributedBodyDyn(
+  Future<(AttributedBody, String, List<Attachment?>)> indexedPartsToAttributedBodyDyn(
       List<api.DartIndexedMessagePart> parts, String msgId, AttributedBody? existingBody) async {
     var bodyString = "";
     List<Run> body = existingBody?.runs.copy() ?? [];
@@ -1109,6 +1138,58 @@ class RustPushService extends GetxService {
     return (AttributedBody(string: bodyString, runs: body), bodyString, attachments);
   }
 
+  api.DartExtensionApp dataToApp(PayloadData data) {
+    var appData = data.appData!.first;
+    return api.DartExtensionApp(
+      name: appData.appName!,
+      appId: appData.appId!,
+      bundleId: appData.bundleId,
+      balloon: api.DartBalloon(
+        icon: base64Decode(appData.appIcon!),
+        url: appData.url!,
+        session: appData.session,
+        ldText: appData.ldText,
+        isLive: appData.isLive ?? false,
+        layout: api.DartBalloonLayout.templateLayout(
+          imageSubtitle: appData.userInfo!.imageSubtitle ?? "",
+          imageTitle: appData.userInfo!.imageTitle ?? "",
+          caption: appData.userInfo!.caption ?? "", 
+          secondarySubcaption: appData.userInfo!.secondarySubcaption ?? "", 
+          tertiarySubcaption: appData.userInfo!.tertiarySubcaption ?? "", 
+          subcaption: appData.userInfo!.subcaption ?? "", 
+          class_: api.NSDictionaryClass.nsDictionary,
+        )
+      )
+    );
+  }
+
+  PayloadData appToData(api.DartExtensionApp app) {
+    var layout = app.balloon!.layout as api.DartBalloonLayout_TemplateLayout;
+    return PayloadData(
+      type: constants.PayloadType.app,
+      urlData: null,
+      appData: [
+        iMessageAppData(
+          appName: app.name,
+          ldText: app.balloon?.ldText,
+          url: app.balloon?.url,
+          session: app.balloon?.session,
+          appIcon: app.balloon?.icon != null ? base64Encode(app.balloon!.icon) : null,
+          appId: app.appId,
+          isLive: app.balloon?.isLive ?? false,
+          userInfo: UserInfo(
+            imageSubtitle: layout.imageSubtitle,
+            imageTitle: layout.imageTitle,
+            caption: layout.caption,
+            secondarySubcaption: layout.secondarySubcaption,
+            subcaption: layout.subcaption,
+            tertiarySubcaption: layout.tertiarySubcaption,
+          )
+        )
+      ]
+    );
+  }
+
   Future<Message?> reflectMessageDyn(api.DartIMessage myMsg) async {
     var chat = myMsg.conversation != null ? await chatForMessage(myMsg) : null;
     var myHandles = (await api.getHandles(state: pushService.state));
@@ -1147,6 +1228,9 @@ class RustPushService extends GetxService {
         attributedBody: [attributedBodyData.$1],
         attachments: attributedBodyData.$3,
         hasAttachments: attributedBodyData.$3.isNotEmpty,
+        balloonBundleId: innerMsg.field0.app?.bundleId,
+        payloadData: innerMsg.field0.app?.balloon != null ? appToData(innerMsg.field0.app!) : null,
+        amkSessionId: innerMsg.field0.app?.balloon != null ? myMsg.id : null,
       );
     } else if (myMsg.message is api.DartMessage_RenameMessage) {
       var msg = myMsg.message as api.DartMessage_RenameMessage;
@@ -1193,8 +1277,9 @@ class RustPushService extends GetxService {
       );
     } else if (myMsg.message is api.DartMessage_React) {
       var msg = myMsg.message as api.DartMessage_React;
-      String reaction;
-      (AttributedBody, String, List<Attachment>)? attributedBodyData;
+      String? reaction;
+      api.DartExtensionApp? app;
+      (AttributedBody, String, List<Attachment?>)? attributedBodyData;
       if (msg.field0.reaction is api.DartReactMessageType_React) {
         var msgType = msg.field0.reaction as api.DartReactMessageType_React;
         reaction = invReactionMap[msgType.reaction]!;
@@ -1203,24 +1288,57 @@ class RustPushService extends GetxService {
         }
       } else if (msg.field0.reaction is api.DartReactMessageType_Extension) {
         var msgType = msg.field0.reaction as api.DartReactMessageType_Extension;
+        app = msgType.spec;
         attributedBodyData = await indexedPartsToAttributedBodyDyn(msgType.body.field0, myMsg.id, null);
-        reaction = "sticker";
+        if (msgType.spec.balloon != null) {
+          // copy over assets
+          reaction = null;
+
+          final query = (messageBox.query(Message_.amkSessionId.equals(msg.field0.toUuid))
+            ..order(Message_.dateCreated, flags: Order.descending))
+          .build();
+          query.limit = 2;
+
+          final messages = query.find();
+          query.close();
+
+          final original = messages.firstWhere((msg) => (msg.stagingGuid ?? msg.guid) != myMsg.id);
+          
+          attributedBodyData = (original.attributedBody[0], original.text!, original.dbAttachments);
+          es.amkToLatest[msg.field0.toUuid] = myMsg.id; // we are latest
+
+          if (chat != null && cm.activeChat?.chat.guid == chat.guid) {
+            ms(original.chat.target!.guid).updateMessage(original);
+            mwc(original).updateWidgets<MessageHolder>(null);
+          }
+        } else {
+          reaction = "sticker";
+        }
       } else {
         throw Exception("bad type!");
       }
-      return Message(
+      var message = Message(
         guid: myMsg.id,
         isFromMe: myHandles.contains(myMsg.sender),
         handleId: RustPushBBUtils.rustHandleToBB(myMsg.sender!).originalROWID!,
         dateCreated: DateTime.fromMillisecondsSinceEpoch(myMsg.sentTimestamp),
         associatedMessagePart: msg.field0.toPart,
-        associatedMessageGuid: msg.field0.toUuid,
+        associatedMessageGuid: reaction == null ? null : msg.field0.toUuid,
         associatedMessageType: reaction,
         text: attributedBodyData?.$2,
         attributedBody: attributedBodyData != null ? [attributedBodyData.$1] : [],
         attachments: attributedBodyData?.$3 ?? [],
         hasAttachments: attributedBodyData?.$3.isNotEmpty ?? false,
+        balloonBundleId: app?.bundleId,
+        payloadData: app?.balloon != null ? appToData(app!) : null,
+        amkSessionId: app?.balloon != null ? msg.field0.toUuid : null,
       );
+
+      if (app?.balloon != null) {
+        es.informUpdate(message);
+      }
+
+      return message;
     } else if (myMsg.message is api.DartMessage_Unsend) {
       var msg = myMsg.message as api.DartMessage_Unsend;
       var msgObj = Message.findOne(guid: msg.field0.tuuid)!;

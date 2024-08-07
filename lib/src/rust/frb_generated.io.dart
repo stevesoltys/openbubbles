@@ -30,9 +30,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       get rust_arc_decrement_strong_count_JoinedOsConfigPtr => wire
           ._rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerJoinedOSConfigPtr;
 
-  CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_ValuePtr => wire
-      ._rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValuePtr;
-
   CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_VerifyBodyPtr =>
       wire._rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyBodyPtr;
 
@@ -52,11 +49,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   JoinedOsConfig
       dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerJoinedOSConfig(
-          dynamic raw);
-
-  @protected
-  Value
-      dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue(
           dynamic raw);
 
   @protected
@@ -106,11 +98,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           dynamic raw);
 
   @protected
-  Value
-      dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue(
-          dynamic raw);
-
-  @protected
   VerifyBody
       dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyBody(
           dynamic raw);
@@ -146,6 +133,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   DartAttachment dco_decode_box_autoadd_dart_attachment(dynamic raw);
 
   @protected
+  DartBalloon dco_decode_box_autoadd_dart_balloon(dynamic raw);
+
+  @protected
   DartChangeParticipantMessage
       dco_decode_box_autoadd_dart_change_participant_message(dynamic raw);
 
@@ -155,6 +145,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   DartEditMessage dco_decode_box_autoadd_dart_edit_message(dynamic raw);
+
+  @protected
+  DartExtensionApp dco_decode_box_autoadd_dart_extension_app(dynamic raw);
 
   @protected
   DartHwExtra dco_decode_box_autoadd_dart_hw_extra(dynamic raw);
@@ -213,6 +206,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   DartAttachmentType dco_decode_dart_attachment_type(dynamic raw);
 
   @protected
+  DartBalloon dco_decode_dart_balloon(dynamic raw);
+
+  @protected
+  DartBalloonLayout dco_decode_dart_balloon_layout(dynamic raw);
+
+  @protected
   DartChangeParticipantMessage dco_decode_dart_change_participant_message(
       dynamic raw);
 
@@ -224,6 +223,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   DartEditMessage dco_decode_dart_edit_message(dynamic raw);
+
+  @protected
+  DartExtensionApp dco_decode_dart_extension_app(dynamic raw);
 
   @protected
   DartHwExtra dco_decode_dart_hw_extra(dynamic raw);
@@ -343,6 +345,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   MyAsyncRuntime dco_decode_my_async_runtime(dynamic raw);
 
   @protected
+  NSDictionaryClass dco_decode_ns_dictionary_class(dynamic raw);
+
+  @protected
+  int? dco_decode_opt_CastedPrimitive_u_64(dynamic raw);
+
+  @protected
   int? dco_decode_opt_CastedPrimitive_usize(dynamic raw);
 
   @protected
@@ -365,8 +373,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   DartAttachment? dco_decode_opt_box_autoadd_dart_attachment(dynamic raw);
 
   @protected
+  DartBalloon? dco_decode_opt_box_autoadd_dart_balloon(dynamic raw);
+
+  @protected
   DartConversationData? dco_decode_opt_box_autoadd_dart_conversation_data(
       dynamic raw);
+
+  @protected
+  DartExtensionApp? dco_decode_opt_box_autoadd_dart_extension_app(dynamic raw);
 
   @protected
   DartIMessage? dco_decode_opt_box_autoadd_dart_i_message(dynamic raw);
@@ -454,11 +468,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           SseDeserializer deserializer);
 
   @protected
-  Value
-      sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue(
-          SseDeserializer deserializer);
-
-  @protected
   VerifyBody
       sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyBody(
           SseDeserializer deserializer);
@@ -505,11 +514,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           SseDeserializer deserializer);
 
   @protected
-  Value
-      sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue(
-          SseDeserializer deserializer);
-
-  @protected
   VerifyBody
       sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyBody(
           SseDeserializer deserializer);
@@ -547,6 +551,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       SseDeserializer deserializer);
 
   @protected
+  DartBalloon sse_decode_box_autoadd_dart_balloon(SseDeserializer deserializer);
+
+  @protected
   DartChangeParticipantMessage
       sse_decode_box_autoadd_dart_change_participant_message(
           SseDeserializer deserializer);
@@ -557,6 +564,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   DartEditMessage sse_decode_box_autoadd_dart_edit_message(
+      SseDeserializer deserializer);
+
+  @protected
+  DartExtensionApp sse_decode_box_autoadd_dart_extension_app(
       SseDeserializer deserializer);
 
   @protected
@@ -630,6 +641,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       SseDeserializer deserializer);
 
   @protected
+  DartBalloon sse_decode_dart_balloon(SseDeserializer deserializer);
+
+  @protected
+  DartBalloonLayout sse_decode_dart_balloon_layout(
+      SseDeserializer deserializer);
+
+  @protected
   DartChangeParticipantMessage sse_decode_dart_change_participant_message(
       SseDeserializer deserializer);
 
@@ -642,6 +660,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   DartEditMessage sse_decode_dart_edit_message(SseDeserializer deserializer);
+
+  @protected
+  DartExtensionApp sse_decode_dart_extension_app(SseDeserializer deserializer);
 
   @protected
   DartHwExtra sse_decode_dart_hw_extra(SseDeserializer deserializer);
@@ -775,6 +796,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   MyAsyncRuntime sse_decode_my_async_runtime(SseDeserializer deserializer);
 
   @protected
+  NSDictionaryClass sse_decode_ns_dictionary_class(
+      SseDeserializer deserializer);
+
+  @protected
+  int? sse_decode_opt_CastedPrimitive_u_64(SseDeserializer deserializer);
+
+  @protected
   int? sse_decode_opt_CastedPrimitive_usize(SseDeserializer deserializer);
 
   @protected
@@ -798,7 +826,15 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       SseDeserializer deserializer);
 
   @protected
+  DartBalloon? sse_decode_opt_box_autoadd_dart_balloon(
+      SseDeserializer deserializer);
+
+  @protected
   DartConversationData? sse_decode_opt_box_autoadd_dart_conversation_data(
+      SseDeserializer deserializer);
+
+  @protected
+  DartExtensionApp? sse_decode_opt_box_autoadd_dart_extension_app(
       SseDeserializer deserializer);
 
   @protected
@@ -894,11 +930,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void
-      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue(
-          Value self, SseSerializer serializer);
-
-  @protected
-  void
       sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyBody(
           VerifyBody self, SseSerializer serializer);
 
@@ -945,11 +976,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void
-      sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue(
-          Value self, SseSerializer serializer);
-
-  @protected
-  void
       sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyBody(
           VerifyBody self, SseSerializer serializer);
 
@@ -985,6 +1011,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       DartAttachment self, SseSerializer serializer);
 
   @protected
+  void sse_encode_box_autoadd_dart_balloon(
+      DartBalloon self, SseSerializer serializer);
+
+  @protected
   void sse_encode_box_autoadd_dart_change_participant_message(
       DartChangeParticipantMessage self, SseSerializer serializer);
 
@@ -995,6 +1025,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_box_autoadd_dart_edit_message(
       DartEditMessage self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_dart_extension_app(
+      DartExtensionApp self, SseSerializer serializer);
 
   @protected
   void sse_encode_box_autoadd_dart_hw_extra(
@@ -1068,6 +1102,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       DartAttachmentType self, SseSerializer serializer);
 
   @protected
+  void sse_encode_dart_balloon(DartBalloon self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_dart_balloon_layout(
+      DartBalloonLayout self, SseSerializer serializer);
+
+  @protected
   void sse_encode_dart_change_participant_message(
       DartChangeParticipantMessage self, SseSerializer serializer);
 
@@ -1082,6 +1123,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_dart_edit_message(
       DartEditMessage self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_dart_extension_app(
+      DartExtensionApp self, SseSerializer serializer);
 
   @protected
   void sse_encode_dart_hw_extra(DartHwExtra self, SseSerializer serializer);
@@ -1223,6 +1268,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       MyAsyncRuntime self, SseSerializer serializer);
 
   @protected
+  void sse_encode_ns_dictionary_class(
+      NSDictionaryClass self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_CastedPrimitive_u_64(int? self, SseSerializer serializer);
+
+  @protected
   void sse_encode_opt_CastedPrimitive_usize(
       int? self, SseSerializer serializer);
 
@@ -1247,8 +1299,16 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       DartAttachment? self, SseSerializer serializer);
 
   @protected
+  void sse_encode_opt_box_autoadd_dart_balloon(
+      DartBalloon? self, SseSerializer serializer);
+
+  @protected
   void sse_encode_opt_box_autoadd_dart_conversation_data(
       DartConversationData? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_dart_extension_app(
+      DartExtensionApp? self, SseSerializer serializer);
 
   @protected
   void sse_encode_opt_box_autoadd_dart_i_message(
@@ -1431,38 +1491,6 @@ class RustLibWire implements BaseWire {
           'frbgen_bluebubbles_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerJoinedOSConfig');
   late final _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerJoinedOSConfig =
       _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerJoinedOSConfigPtr
-          .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
-
-  void
-      rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue(
-    ffi.Pointer<ffi.Void> ptr,
-  ) {
-    return _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue(
-      ptr,
-    );
-  }
-
-  late final _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValuePtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
-          'frbgen_bluebubbles_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue');
-  late final _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue =
-      _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValuePtr
-          .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
-
-  void
-      rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue(
-    ffi.Pointer<ffi.Void> ptr,
-  ) {
-    return _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue(
-      ptr,
-    );
-  }
-
-  late final _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValuePtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
-          'frbgen_bluebubbles_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue');
-  late final _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValue =
-      _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerValuePtr
           .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
 
   void

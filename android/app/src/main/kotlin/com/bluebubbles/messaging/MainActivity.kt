@@ -7,6 +7,8 @@ import androidx.activity.ComponentActivity
 import com.bluebubbles.messaging.services.backend_ui_interop.MethodCallHandler
 import com.bluebubbles.messaging.services.foreground.ForegroundServiceBroadcastReceiver
 import com.bluebubbles.messaging.Constants
+import com.bluebubbles.messaging.services.extension.KeyboardViewFactory
+import com.bluebubbles.messaging.services.extension.LiveExtensionFactory
 import com.bluebubbles.messaging.services.rustpush.APNService
 import io.flutter.embedding.android.FlutterFragmentActivity
 import io.flutter.embedding.engine.FlutterEngine
@@ -30,6 +32,8 @@ class MainActivity : FlutterFragmentActivity() {
             }
             MethodCallHandler().methodCallHandler(call, result, this)
         }
+        flutterEngine.platformViewsController.registry.registerViewFactory("extension-keyboard", KeyboardViewFactory())
+        flutterEngine.platformViewsController.registry.registerViewFactory("extension-live", LiveExtensionFactory())
     }
 
     override fun onDestroy() {

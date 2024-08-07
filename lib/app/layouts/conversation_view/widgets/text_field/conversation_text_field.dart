@@ -68,6 +68,8 @@ class ConversationTextFieldState extends CustomState<ConversationTextField, void
 
   String get chatGuid => chat.guid;
 
+  GlobalKey<AttachmentPickerState> attachmentPicker = GlobalKey();
+
   bool get showAttachmentPicker => controller.showAttachmentPicker;
 
   late final double emojiPickerHeight = max(256, context.height * 0.4);
@@ -449,15 +451,17 @@ class ConversationTextFieldState extends CustomState<ConversationTextField, void
         }
       }
       await controller.send(
-        controller.pickedAttachments,
+        controller.pickedApp.value?.$1 != null ? [controller.pickedApp.value!.$1!] : controller.pickedAttachments,
         text,
         controller.subjectTextController.text,
         controller.replyToMessage?.item1.threadOriginatorGuid ?? controller.replyToMessage?.item1.guid,
         controller.replyToMessage?.item2,
         effect,
+        controller.pickedApp.value?.$2,
         false,
       );
     }
+    controller.pickedApp.value = null;
     controller.pickedAttachments.clear();
     controller.textController.clear();
     controller.subjectTextController.clear();
@@ -577,6 +581,10 @@ class ConversationTextFieldState extends CustomState<ConversationTextField, void
                       controller.subjectFocusNode.unfocus();
                     }
                     setState(() {
+                      if (attachmentPicker.currentState?.currentApp != null) {
+                        attachmentPicker.currentState!.setState(() { attachmentPicker.currentState!.currentApp = null; });
+                        return;
+                      }
                       controller.showAttachmentPicker = !showAttachmentPicker;
                     });
                   }
@@ -713,6 +721,7 @@ class ConversationTextFieldState extends CustomState<ConversationTextField, void
               child: !showAttachmentPicker
                   ? SizedBox(width: ns.width(context))
                   : AttachmentPicker(
+                      key: attachmentPicker,
                       controller: controller,
                     ),
             ),
@@ -923,7 +932,7 @@ class TextFieldComponentState extends State<TextFieldComponent> {
                   ),
                 if (!isChatCreator)
                   Obx(() {
-                    if (controller!.pickedAttachments.isNotEmpty && iOS) {
+                    if ((controller!.pickedAttachments.isNotEmpty || controller!.pickedApp.value != null) && iOS) {
                       return Divider(
                         height: 1.5,
                         thickness: 1.5,

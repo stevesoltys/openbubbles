@@ -109,6 +109,10 @@ android {
         }
     }
 
+    buildFeatures {
+        aidl true
+    }
+
     buildTypes {
         release {
             productFlavors.joel.signingConfig signingConfigs.debug

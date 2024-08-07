@@ -86,6 +86,7 @@ class _MessageHolderState extends CustomState<MessageHolder, void, MessageWidget
   void initState() {
     forceDelete = false;
     super.initState();
+    
     if (widget.isReplyThread) {
       if (widget.replyPart != null) {
         messageParts = [controller.parts[widget.replyPart!]];

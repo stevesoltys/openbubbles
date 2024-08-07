@@ -75,6 +75,24 @@ class MethodChannelService extends GetxService {
         String pointer = call.arguments.toString();
         await pushService.recievedMsgPointer(pointer);
         return true;
+      case "extension-add-message":
+        try {
+          es.addMessage(arguments!);
+          return true;
+        } catch (e, s) {
+          Logger.error(e);
+          Logger.error(s);
+          return Future.error(PlatformException(code: "500", message: e.toString()), s);
+        }
+      case "extension-update-message":
+        try {
+          await es.updateMessage(arguments!);
+          return true;
+        } catch (e, s) {
+          Logger.error(e);
+          Logger.error(s);
+          return Future.error(PlatformException(code: "500", message: e.toString()), s);
+        }
       case "NewServerUrl":
         if (arguments == null) return Future.value(false);
         await Database.waitForInit();

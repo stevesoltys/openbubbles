@@ -5,6 +5,9 @@ import android.util.Log
 import com.bluebubbles.messaging.Constants
 import com.bluebubbles.messaging.MainActivity
 import com.bluebubbles.messaging.MainActivity.Companion.engine
+import com.bluebubbles.messaging.services.extension.MessageUpdateHandler
+import com.bluebubbles.messaging.services.extension.StatusQuery
+import com.bluebubbles.messaging.services.extension.TemplateTapHandler
 import com.bluebubbles.messaging.services.filesystem.GetContentUriPathHandler
 import com.bluebubbles.messaging.services.firebase.FirebaseAuthHandler
 import com.bluebubbles.messaging.services.firebase.FirebaseDeleteTokenHandler
@@ -48,6 +51,12 @@ class MethodCallHandler {
                 MethodChannel(engine!!.dartExecutor.binaryMessenger, Constants.methodChannel).invokeMethod(method, arguments)
             }
         }
+
+        fun invokeMethodCb(method: String, arguments: Map<String, Any>, callback: MethodChannel.Result) {
+            if (engine != null) {
+                MethodChannel(engine!!.dartExecutor.binaryMessenger, Constants.methodChannel).invokeMethod(method, arguments, callback)
+            }
+        }
     }
 
     fun methodCallHandler(call: MethodCall, result: MethodChannel.Result, context: Context) {
@@ -81,6 +90,9 @@ class MethodCallHandler {
             GetNativeHandleHandler.tag -> GetNativeHandleHandler().handleMethodCall(call, result, context)
             NotifyNativeConfiguredHandler.tag -> NotifyNativeConfiguredHandler().handleMethodCall(call, result, context)
             SMSAuthGateway.tag -> SMSAuthGateway().handleMethodCall(call, result, context)
+            StatusQuery.tag -> StatusQuery().handleMethodCall(call, result, context)
+            TemplateTapHandler.tag -> TemplateTapHandler().handleMethodCall(call, result, context)
+            MessageUpdateHandler.tag -> MessageUpdateHandler().handleMethodCall(call, result, context)
             else -> {
                 val error = "Could not find method call handler for ${call.method}!"
                 Log.d(Constants.logTag, error)

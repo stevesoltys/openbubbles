@@ -1,20 +1,25 @@
+import 'dart:convert';
+
 import 'package:bluebubbles/app/wrappers/stateful_boilerplate.dart';
 import 'package:bluebubbles/helpers/helpers.dart';
 import 'package:bluebubbles/database/models.dart';
 import 'package:bluebubbles/services/services.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:universal_io/io.dart';
 
 class SupportedInteractive extends StatefulWidget {
   final iMessageAppData data;
-  final Message message;
+  dynamic content;
+  String? guid;
 
   SupportedInteractive({
     super.key,
     required this.data,
-    required this.message,
+    required this.content,
+    required this.guid,
   });
 
   @override
@@ -23,33 +28,29 @@ class SupportedInteractive extends StatefulWidget {
 
 class _SupportedInteractiveState extends OptimizedState<SupportedInteractive> with AutomaticKeepAliveClientMixin {
   iMessageAppData get data => widget.data;
-  dynamic get file => File(content.path!);
-  dynamic content;
+  dynamic get file => File(widget.content.path!);
 
   @override
   bool get wantKeepAlive => true;
 
   @override
-  void initState() {
-    super.initState();
-    updateObx(() async {
-      final attachment = widget.message.attachments.firstOrNull;
-      if (attachment != null) {
-        content = as.getContent(attachment, autoDownload: true, onComplete: (file) {
-          setState(() {
-            content = file;
-          });
-        });
-        if (content is PlatformFile) {
-          setState(() {});
-        }
-      }
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     super.build(context);
+    if (widget.data.isLive == true) {
+      var data = widget.data.toNative(null);
+      data["messageGuid"] = widget.guid;
+      return SizedBox(
+        height: 250,
+        child: RepaintBoundary(
+          child: AndroidView(
+          viewType: "extension-live",
+          layoutDirection: TextDirection.ltr,
+          creationParams: data,
+          creationParamsCodec: const StandardMessageCodec(),
+        ),
+        )
+      );
+    }
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -57,9 +58,9 @@ class _SupportedInteractiveState extends OptimizedState<SupportedInteractive> wi
         Stack(
           alignment: Alignment.bottomLeft,
           children: [
-            if (content is PlatformFile && content.bytes != null)
+            if (widget.content is PlatformFile && widget.content.bytes != null)
               Image.memory(
-                content.bytes!,
+                widget.content.bytes!,
                 gaplessPlayback: true,
                 filterQuality: FilterQuality.none,
                 errorBuilder: (context, object, stacktrace) => Center(
@@ -67,7 +68,7 @@ class _SupportedInteractiveState extends OptimizedState<SupportedInteractive> wi
                   child: Text("Failed to display image", style: context.theme.textTheme.bodyLarge),
                 ),
               ),
-            if (content is PlatformFile && content.bytes == null && content.path != null)
+            if (widget.content is PlatformFile && widget.content.bytes == null && widget.content.path != null)
               Image.file(
                 file,
                 gaplessPlayback: true,

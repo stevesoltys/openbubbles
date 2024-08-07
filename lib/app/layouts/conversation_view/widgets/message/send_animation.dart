@@ -25,7 +25,7 @@ class SendAnimation extends CustomStateful<ConversationViewController> {
 }
 
 class _SendAnimationState
-    extends CustomState<SendAnimation, Tuple6<List<PlatformFile>, String, String, String?, int?, String?>, ConversationViewController> {
+    extends CustomState<SendAnimation, Tuple7<List<PlatformFile>, String, String, String?, int?, String?, PayloadData?>, ConversationViewController> {
   Message? message;
   Tween<double> tween = Tween<double>(begin: 1, end: 0);
   Control control = Control.stop;
@@ -43,7 +43,7 @@ class _SendAnimationState
     });
   }
 
-  Future<void> send(Tuple6<List<PlatformFile>, String, String, String?, int?, String?> tuple, bool isAudioMessage) async {
+  Future<void> send(Tuple7<List<PlatformFile>, String, String, String?, int?, String?, PayloadData?> tuple, bool isAudioMessage) async {
     // do not add anything above this line, the attachments must be extracted first
     final attachments = List<PlatformFile>.from(tuple.item1);
     String text = tuple.item2;
@@ -51,10 +51,11 @@ class _SendAnimationState
     final replyGuid = tuple.item4;
     final part = tuple.item5;
     final effectId = tuple.item6;
+    final payload = tuple.item7;
     if (ss.settings.scrollToBottomOnSend.value) {
       await controller.scrollToBottom();
     }
-    if (ss.settings.sendSoundPath.value != null && !(isNullOrEmptyString(text) && isNullOrEmptyString(subject) && controller.pickedAttachments.isEmpty)) {
+    if (ss.settings.sendSoundPath.value != null && !(isNullOrEmptyString(text) && isNullOrEmptyString(subject) && controller.pickedAttachments.isEmpty && controller.pickedApp.value == null)) {
       if (kIsDesktop) {
         Player player = Player();
         await player.setVolume(ss.settings.soundVolume.value.toDouble());
@@ -91,6 +92,8 @@ class _SendAnimationState
         threadOriginatorGuid: i == 0 ? replyGuid : null,
         threadOriginatorPart: i == 0 ? "${part ?? 0}:0:0" : null,
         expressiveSendStyleId: effectId,
+        payloadData: payload,
+        balloonBundleId: payload?.bundleId,
       );
       message.generateTempGuid();
       message.attachments.first!.guid = message.guid;

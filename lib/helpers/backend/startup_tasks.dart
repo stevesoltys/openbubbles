@@ -58,6 +58,8 @@ class StartupTasks {
     await ls.init(isBubble: isBubble);
     await ts.init();
     
+    es.refreshCache();
+
     if (!kIsWeb) {
       await cs.init();
       GlobalChatService;

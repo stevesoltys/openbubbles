@@ -1,14 +1,17 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:bluebubbles/app/components/avatars/contact_avatar_widget.dart';
 import 'package:bluebubbles/app/components/custom_text_editing_controllers.dart';
 import 'package:bluebubbles/app/layouts/conversation_view/dialogs/custom_mention_dialog.dart';
+import 'package:bluebubbles/app/layouts/conversation_view/widgets/message/interactive/supported_interactive.dart';
 import 'package:bluebubbles/app/layouts/conversation_view/widgets/text_field/picked_attachment.dart';
 import 'package:bluebubbles/app/wrappers/theme_switcher.dart';
 import 'package:bluebubbles/app/wrappers/stateful_boilerplate.dart';
 import 'package:bluebubbles/helpers/helpers.dart';
 import 'package:bluebubbles/database/models.dart';
 import 'package:bluebubbles/services/services.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -100,6 +103,65 @@ class _PickedAttachmentsHolderState extends OptimizedState<PickedAttachmentsHold
             return const SizedBox.shrink();
           }
         }),
+        if (widget.controller != null)
+          Obx(() {
+            if (widget.controller!.pickedApp.value != null) {
+              var appData = widget.controller!.pickedApp.value!.$2.appData![0];
+              return Padding(
+                padding: const EdgeInsets.all(10),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Container(
+                    color: iOS ? context.theme.colorScheme.properSurface : null,
+                    child: Stack(
+                    children: [
+                      SupportedInteractive(
+                        data: appData, 
+                        content: widget.controller!.pickedApp.value!.$1,
+                        guid: null,
+                      ),
+                      if (appData.icon != null && widget.controller!.pickedApp.value!.$1 != null)
+                        Positioned(
+                          child: ClipRRect(
+                            child: Image.memory(
+                              base64Decode(appData.icon!),
+                              width: 30,
+                            ),
+                            borderRadius: BorderRadius.circular(100),
+                          ),
+                          top: 7,
+                          left: 7,
+                        ),
+                        Positioned(
+                          top: 7,
+                          right: 7,
+                          child: TextButton(
+                            style: TextButton.styleFrom(
+                              backgroundColor: context.theme.colorScheme.outline,
+                              shape: const CircleBorder(),
+                              padding: const EdgeInsets.all(0),
+                              maximumSize: const Size(32, 32),
+                              minimumSize: const Size(32, 32),
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            ),
+                            child: const Icon(
+                              CupertinoIcons.xmark,
+                              color: Colors.white,
+                              size: 18,
+                            ),
+                            onPressed: () {
+                              widget.controller!.pickedApp.value = null;
+                            },
+                          ),
+                        ),
+                    ]
+                  )
+                  ),
+                )
+              );
+            }
+            return const SizedBox.shrink();
+          }),
         if (widget.controller != null)
           Obx(() {
             if (widget.controller!.emojiMatches.isNotEmpty) {

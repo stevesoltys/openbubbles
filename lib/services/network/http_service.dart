@@ -34,6 +34,12 @@ class HttpBackend implements BackendService {
   }
 
   @override
+  Future<Message> updateMessage(
+      Chat chat, Message old, PayloadData newData) {
+        throw Exception("does not support updating!");
+      }
+
+  @override
   void startedTyping(Chat c) {
     socket.sendMessage("started-typing", {"chatGuid": c.guid});
   }

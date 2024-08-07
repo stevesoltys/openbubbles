@@ -720,13 +720,13 @@ class _MessagePopupState extends OptimizedState<MessagePopup> with SingleTickerP
     if (part.attachments.isNotEmpty && !message.isLegacyUrlPreview && !kIsWeb && !kIsDesktop) {
       for (Attachment? element in part.attachments) {
         Share.file(
-          "${element!.mimeType!.split("/")[0].capitalizeFirst} shared from BlueBubbles: ${element.transferName}",
+          "${element!.mimeType!.split("/")[0].capitalizeFirst} shared from OpenBubbles: ${element.transferName}",
           element.path,
         );
       }
     } else if (part.text!.isNotEmpty) {
       Share.text(
-        "Text shared from BlueBubbles",
+        "Text shared from OpenBubbles",
         part.text!,
       );
     }

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:bluebubbles/app/layouts/conversation_details/dialogs/timeframe_picker.dart';
 import 'package:bluebubbles/app/wrappers/stateful_boilerplate.dart';
@@ -15,6 +16,7 @@ import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:hand_signature/signature.dart';
 import 'package:image_picker/image_picker.dart';
@@ -29,18 +31,161 @@ class AttachmentPicker extends StatefulWidget {
   final ConversationViewController controller;
 
   @override
-  State<AttachmentPicker> createState() => _AttachmentPickerState();
+  State<AttachmentPicker> createState() => AttachmentPickerState();
 }
 
-class _AttachmentPickerState extends OptimizedState<AttachmentPicker> {
+class AttachmentPickerState extends OptimizedState<AttachmentPicker> {
   List<AssetEntity> _images = <AssetEntity>[];
 
   ConversationViewController get controller => widget.controller;
+
+  List<Map<String, dynamic>> iconsList = [];
+
+  App? currentApp;
+
+  void generateIcons() {
+    iconsList = [
+      {
+        "icon": iOS ? CupertinoIcons.folder_open : Icons.folder_open_outlined,
+        "text": "Files",
+        "handle": () async {
+          final res = await FilePicker.platform.pickFiles(withReadStream: true, allowMultiple: true);
+          if (res == null || res.files.isEmpty) return;
+
+          for (pf.PlatformFile file in res.files) {
+            if (file.size / 1024000 > 1000) {
+              showSnackbar("Error", "This file is over 1 GB! Please compress it before sending.");
+              continue;
+            }
+            controller.pickedAttachments.add(PlatformFile(
+                path: file.path,
+                name: file.name,
+                bytes: await readByteStream(file.readStream!),
+                size: file.size
+            ));
+          }
+        }
+      },
+      {
+        "icon": iOS ? CupertinoIcons.location : Icons.location_on_outlined,
+        "text": "Location",
+        "handle": () async {
+          await Share.location(cm.activeChat!.chat);
+        }
+      },
+      {
+        "icon": iOS ? CupertinoIcons.pencil_outline : Icons.draw,
+        "text": "Handwritten",
+        "handle": () async {
+          Color selectedColor = context.theme.colorScheme.bubble(context, controller.chat.isIMessage);
+          final result = (await ColorPicker(
+            color: selectedColor,
+            onColorChanged: (Color newColor) {
+              selectedColor = newColor;
+            },
+            title: Text(
+              "Select Color",
+              style: context.theme.textTheme.titleLarge,
+            ),
+            width: 40,
+            height: 40,
+            spacing: 0,
+            runSpacing: 0,
+            borderRadius: 0,
+            wheelDiameter: 165,
+            enableOpacity: false,
+            showColorCode: true,
+            colorCodeHasColor: true,
+            pickersEnabled: <ColorPickerType, bool>{
+              ColorPickerType.wheel: true,
+            },
+            copyPasteBehavior: const ColorPickerCopyPasteBehavior(
+              parseShortHexCode: true,
+            ),
+            actionButtons: const ColorPickerActionButtons(
+              dialogActionButtons: true,
+            ),
+          ).showPickerDialog(
+            context,
+            barrierDismissible: false,
+            constraints: BoxConstraints(
+                minHeight: 480, minWidth: ns.width(context) - 70, maxWidth: ns.width(context) - 70),
+          ));
+          if (result) {
+            final control = HandSignatureControl();
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text(
+                    "Draw Handwritten Message",
+                    style: context.theme.textTheme.titleLarge,
+                  ),
+                  content: AspectRatio(
+                    aspectRatio: 1,
+                    child: Container(
+                      constraints: const BoxConstraints.expand(),
+                      child: HandSignature(
+                        control: control,
+                        color: selectedColor,
+                        width: 1.0,
+                        maxWidth: 10.0,
+                        type: SignatureDrawType.shape,
+                      ),
+                    ),
+                  ),
+                  actions: [
+                    TextButton(
+                      child: Text("Cancel", style: context.theme.textTheme.bodyLarge!.copyWith(color: Get.context!.theme.colorScheme.primary)),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                    TextButton(
+                      child: Text("OK", style: context.theme.textTheme.bodyLarge!.copyWith(color: Get.context!.theme.colorScheme.primary)),
+                      onPressed: () async {
+                        Navigator.of(context).pop();
+                        final bytes = await control.toImage(height: 512, fit: false);
+                        if (bytes != null) {
+                          final uint8 = bytes.buffer.asUint8List();
+                          controller.pickedAttachments.add(PlatformFile(
+                            path: null,
+                            name: "handwritten-${randomString(3)}.png",
+                            bytes: uint8,
+                            size: uint8.lengthInBytes,
+                          ));
+                        }
+                      },
+                    ),
+                  ],
+                  backgroundColor: context.theme.colorScheme.properSurface,
+                );
+              },
+            );
+          }
+        }
+      },
+    ];
+
+    for (var app in es.cachedStatus) {
+      if (app.available == null) return;
+      iconsList.add({
+        "logo": base64Decode(app.available!.icon),
+        "text": app.available!.name,
+        "handle": () {
+          setState(() {
+            currentApp = app;
+          });
+        }
+      });
+    }
+  }
 
   @override
   void initState() {
     super.initState();
     getAttachments();
+    generateIcons();
   }
 
   Future<void> getAttachments() async {
@@ -104,14 +249,6 @@ class _AttachmentPickerState extends OptimizedState<AttachmentPicker> {
           return CupertinoIcons.camera;
         case 1:
           return CupertinoIcons.videocam;
-        case 2:
-          return CupertinoIcons.folder_open;
-        case 3:
-          return CupertinoIcons.location;
-        case 4:
-          return CupertinoIcons.calendar_today;
-        case 5:
-          return CupertinoIcons.pencil_outline;
       }
     } else {
       switch (index) {
@@ -119,14 +256,6 @@ class _AttachmentPickerState extends OptimizedState<AttachmentPicker> {
           return Icons.photo_camera_outlined;
         case 1:
           return Icons.videocam_outlined;
-        case 2:
-          return Icons.folder_open_outlined;
-        case 3:
-          return Icons.location_on_outlined;
-        case 4:
-          return Icons.schedule;
-        case 5:
-          return Icons.draw;
       }
     }
     return Icons.abc;
@@ -138,20 +267,25 @@ class _AttachmentPickerState extends OptimizedState<AttachmentPicker> {
         return "Photo";
       case 1:
         return "Video";
-      case 2:
-        return "Files";
-      case 3:
-        return "Location";
-      case 4:
-        return "Schedule";
-      case 5:
-        return "Handwritten";
     }
     return "";
   }
 
   @override
   Widget build(BuildContext context) {
+    if (currentApp != null) {
+      return SizedBox(
+        height: 300,
+        child: AndroidView(
+          viewType: "extension-keyboard",
+          layoutDirection: TextDirection.ltr,
+          creationParams: {
+            "app-id": currentApp!.appId,
+          },
+          creationParamsCodec: const StandardMessageCodec(),
+        )
+      );
+    }
     return SizedBox(
       height: 300,
       child: RefreshIndicator(
@@ -219,164 +353,66 @@ class _AttachmentPickerState extends OptimizedState<AttachmentPicker> {
                       ),
                     ),
                     const SliverPadding(padding: EdgeInsets.only(left: 5, right: 5)),
-                    SliverGrid(
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 4,
-                        childAspectRatio: 2/3,
-                        crossAxisSpacing: 10,
-                        mainAxisSpacing: 10,
-                      ),
-                      delegate: SliverChildBuilderDelegate((context, index) {
-                        index = index + 2;
-                        return ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
+                    SliverToBoxAdapter(
+                      child: SizedBox(
+                        width: 100,
+                        child: CustomScrollView(
+                        physics: ThemeSwitcher.getScrollPhysics(),
+                        scrollDirection: Axis.vertical,
+                        slivers: [
+                          SliverList(
+                            delegate: SliverChildBuilderDelegate((context, index) {
+                              return Padding(
+                                padding: const EdgeInsets.only(bottom: 10),
+                                child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  padding: const EdgeInsets.only(top: 10, bottom: 7),
+                                  backgroundColor: context.theme.colorScheme.properSurface,
+                                ),
+                                onPressed: () async {
+                                  iconsList[index]["handle"]();
+                                },
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    if (iconsList[index].containsKey("icon"))
+                                    Icon(
+                                      iconsList[index]["icon"],
+                                      color: context.theme.colorScheme.properOnSurface,
+                                    ),
+                                    if (iconsList[index].containsKey("logo"))
+                                    Padding(
+                                      padding: const EdgeInsets.only(bottom: 3),
+                                      child: ClipRRect(
+                                        child: Image.memory(
+                                          iconsList[index]["logo"],
+                                          height: 25,
+                                        ),
+                                        borderRadius: BorderRadius.circular(100),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 5),
+                                      child: Text(
+                                        iconsList[index]["text"],
+                                        style: context.theme.textTheme.labelLarge!.copyWith(color: context.theme.colorScheme.properOnSurface),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              );
+                            },
+                            childCount: iconsList.length,
                             ),
-                            padding: const EdgeInsets.symmetric(vertical: 5),
-                            backgroundColor: context.theme.colorScheme.properSurface,
                           ),
-                          onPressed: () async {
-                            switch (index) {
-                              case 2:
-                                final res = await FilePicker.platform.pickFiles(withReadStream: true, allowMultiple: true);
-                                if (res == null || res.files.isEmpty) return;
-
-                                for (pf.PlatformFile file in res.files) {
-                                  if (file.size / 1024000 > 1000) {
-                                    showSnackbar("Error", "This file is over 1 GB! Please compress it before sending.");
-                                    continue;
-                                  }
-                                  controller.pickedAttachments.add(PlatformFile(
-                                      path: file.path,
-                                      name: file.name,
-                                      bytes: await readByteStream(file.readStream!),
-                                      size: file.size
-                                  ));
-                                }
-                                return;
-                              case 3:
-                                await Share.location(cm.activeChat!.chat);
-                                return;
-                              case 4:
-                                if (controller.pickedAttachments.isNotEmpty) {
-                                  return showSnackbar("Error", "Remove all attachments before scheduling!");
-                                } else if (controller.replyToMessage != null || controller.subjectTextController.text.isNotEmpty) {
-                                  return showSnackbar("Error", "Private API features are not supported when scheduling!");
-                                }
-                                final date = await showTimeframePicker("Pick date and time", context, presetsAhead: true);
-                                if (date != null && date.isAfter(DateTime.now())) {
-                                  controller.scheduledDate.value = date;
-                                }
-                                return;
-                              case 5:
-                                Color selectedColor = context.theme.colorScheme.bubble(context, controller.chat.isIMessage);
-                                final result = (await ColorPicker(
-                                  color: selectedColor,
-                                  onColorChanged: (Color newColor) {
-                                    selectedColor = newColor;
-                                  },
-                                  title: Text(
-                                    "Select Color",
-                                    style: context.theme.textTheme.titleLarge,
-                                  ),
-                                  width: 40,
-                                  height: 40,
-                                  spacing: 0,
-                                  runSpacing: 0,
-                                  borderRadius: 0,
-                                  wheelDiameter: 165,
-                                  enableOpacity: false,
-                                  showColorCode: true,
-                                  colorCodeHasColor: true,
-                                  pickersEnabled: <ColorPickerType, bool>{
-                                    ColorPickerType.wheel: true,
-                                  },
-                                  copyPasteBehavior: const ColorPickerCopyPasteBehavior(
-                                    parseShortHexCode: true,
-                                  ),
-                                  actionButtons: const ColorPickerActionButtons(
-                                    dialogActionButtons: true,
-                                  ),
-                                ).showPickerDialog(
-                                  context,
-                                  barrierDismissible: false,
-                                  constraints: BoxConstraints(
-                                      minHeight: 480, minWidth: ns.width(context) - 70, maxWidth: ns.width(context) - 70),
-                                ));
-                                if (result) {
-                                  final control = HandSignatureControl();
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        title: Text(
-                                          "Draw Handwritten Message",
-                                          style: context.theme.textTheme.titleLarge,
-                                        ),
-                                        content: AspectRatio(
-                                          aspectRatio: 1,
-                                          child: Container(
-                                            constraints: const BoxConstraints.expand(),
-                                            child: HandSignature(
-                                              control: control,
-                                              color: selectedColor,
-                                              width: 1.0,
-                                              maxWidth: 10.0,
-                                              type: SignatureDrawType.shape,
-                                            ),
-                                          ),
-                                        ),
-                                        actions: [
-                                          TextButton(
-                                            child: Text("Cancel", style: context.theme.textTheme.bodyLarge!.copyWith(color: Get.context!.theme.colorScheme.primary)),
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                            },
-                                          ),
-                                          TextButton(
-                                            child: Text("OK", style: context.theme.textTheme.bodyLarge!.copyWith(color: Get.context!.theme.colorScheme.primary)),
-                                            onPressed: () async {
-                                              Navigator.of(context).pop();
-                                              final bytes = await control.toImage(height: 512, fit: false);
-                                              if (bytes != null) {
-                                                final uint8 = bytes.buffer.asUint8List();
-                                                controller.pickedAttachments.add(PlatformFile(
-                                                  path: null,
-                                                  name: "handwritten-${randomString(3)}.png",
-                                                  bytes: uint8,
-                                                  size: uint8.lengthInBytes,
-                                                ));
-                                              }
-                                            },
-                                          ),
-                                        ],
-                                        backgroundColor: context.theme.colorScheme.properSurface,
-                                      );
-                                    },
-                                  );
-                                }
-                                return;
-                            }
-                          },
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Icon(
-                                getIcon(index),
-                                color: context.theme.colorScheme.properOnSurface,
-                              ),
-                              const SizedBox(height: 8.0),
-                              Text(
-                                  getText(index),
-                                  style: context.theme.textTheme.labelLarge!.copyWith(color: context.theme.colorScheme.properOnSurface)
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                      childCount: 4,
+                        ],
                       ),
+                      )
                     ),
                     const SliverPadding(padding: EdgeInsets.only(left: 5, right: 5)),
                     SliverGrid(

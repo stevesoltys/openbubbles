@@ -146,6 +146,8 @@ class LifecycleService extends GetxService with WidgetsBindingObserver {
       socket.reconnect();
     }
 
+    es.refreshCache();
+
     if (kIsDesktop) {
       windowFocused = true;
     }

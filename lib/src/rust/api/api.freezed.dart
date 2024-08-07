@@ -357,6 +357,404 @@ abstract class DartAttachmentType_MMCS extends DartAttachmentType {
 }
 
 /// @nodoc
+mixin _$DartBalloonLayout {
+  String get imageSubtitle => throw _privateConstructorUsedError;
+  String get imageTitle => throw _privateConstructorUsedError;
+  String get caption => throw _privateConstructorUsedError;
+  String get secondarySubcaption => throw _privateConstructorUsedError;
+  String get tertiarySubcaption => throw _privateConstructorUsedError;
+  String get subcaption => throw _privateConstructorUsedError;
+  NSDictionaryClass get class_ => throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(
+            String imageSubtitle,
+            String imageTitle,
+            String caption,
+            String secondarySubcaption,
+            String tertiarySubcaption,
+            String subcaption,
+            NSDictionaryClass class_)
+        templateLayout,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(
+            String imageSubtitle,
+            String imageTitle,
+            String caption,
+            String secondarySubcaption,
+            String tertiarySubcaption,
+            String subcaption,
+            NSDictionaryClass class_)?
+        templateLayout,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(
+            String imageSubtitle,
+            String imageTitle,
+            String caption,
+            String secondarySubcaption,
+            String tertiarySubcaption,
+            String subcaption,
+            NSDictionaryClass class_)?
+        templateLayout,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(DartBalloonLayout_TemplateLayout value)
+        templateLayout,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(DartBalloonLayout_TemplateLayout value)? templateLayout,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(DartBalloonLayout_TemplateLayout value)? templateLayout,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+
+  @JsonKey(ignore: true)
+  $DartBalloonLayoutCopyWith<DartBalloonLayout> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $DartBalloonLayoutCopyWith<$Res> {
+  factory $DartBalloonLayoutCopyWith(
+          DartBalloonLayout value, $Res Function(DartBalloonLayout) then) =
+      _$DartBalloonLayoutCopyWithImpl<$Res, DartBalloonLayout>;
+  @useResult
+  $Res call(
+      {String imageSubtitle,
+      String imageTitle,
+      String caption,
+      String secondarySubcaption,
+      String tertiarySubcaption,
+      String subcaption,
+      NSDictionaryClass class_});
+}
+
+/// @nodoc
+class _$DartBalloonLayoutCopyWithImpl<$Res, $Val extends DartBalloonLayout>
+    implements $DartBalloonLayoutCopyWith<$Res> {
+  _$DartBalloonLayoutCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? imageSubtitle = null,
+    Object? imageTitle = null,
+    Object? caption = null,
+    Object? secondarySubcaption = null,
+    Object? tertiarySubcaption = null,
+    Object? subcaption = null,
+    Object? class_ = null,
+  }) {
+    return _then(_value.copyWith(
+      imageSubtitle: null == imageSubtitle
+          ? _value.imageSubtitle
+          : imageSubtitle // ignore: cast_nullable_to_non_nullable
+              as String,
+      imageTitle: null == imageTitle
+          ? _value.imageTitle
+          : imageTitle // ignore: cast_nullable_to_non_nullable
+              as String,
+      caption: null == caption
+          ? _value.caption
+          : caption // ignore: cast_nullable_to_non_nullable
+              as String,
+      secondarySubcaption: null == secondarySubcaption
+          ? _value.secondarySubcaption
+          : secondarySubcaption // ignore: cast_nullable_to_non_nullable
+              as String,
+      tertiarySubcaption: null == tertiarySubcaption
+          ? _value.tertiarySubcaption
+          : tertiarySubcaption // ignore: cast_nullable_to_non_nullable
+              as String,
+      subcaption: null == subcaption
+          ? _value.subcaption
+          : subcaption // ignore: cast_nullable_to_non_nullable
+              as String,
+      class_: null == class_
+          ? _value.class_
+          : class_ // ignore: cast_nullable_to_non_nullable
+              as NSDictionaryClass,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$DartBalloonLayout_TemplateLayoutImplCopyWith<$Res>
+    implements $DartBalloonLayoutCopyWith<$Res> {
+  factory _$$DartBalloonLayout_TemplateLayoutImplCopyWith(
+          _$DartBalloonLayout_TemplateLayoutImpl value,
+          $Res Function(_$DartBalloonLayout_TemplateLayoutImpl) then) =
+      __$$DartBalloonLayout_TemplateLayoutImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {String imageSubtitle,
+      String imageTitle,
+      String caption,
+      String secondarySubcaption,
+      String tertiarySubcaption,
+      String subcaption,
+      NSDictionaryClass class_});
+}
+
+/// @nodoc
+class __$$DartBalloonLayout_TemplateLayoutImplCopyWithImpl<$Res>
+    extends _$DartBalloonLayoutCopyWithImpl<$Res,
+        _$DartBalloonLayout_TemplateLayoutImpl>
+    implements _$$DartBalloonLayout_TemplateLayoutImplCopyWith<$Res> {
+  __$$DartBalloonLayout_TemplateLayoutImplCopyWithImpl(
+      _$DartBalloonLayout_TemplateLayoutImpl _value,
+      $Res Function(_$DartBalloonLayout_TemplateLayoutImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? imageSubtitle = null,
+    Object? imageTitle = null,
+    Object? caption = null,
+    Object? secondarySubcaption = null,
+    Object? tertiarySubcaption = null,
+    Object? subcaption = null,
+    Object? class_ = null,
+  }) {
+    return _then(_$DartBalloonLayout_TemplateLayoutImpl(
+      imageSubtitle: null == imageSubtitle
+          ? _value.imageSubtitle
+          : imageSubtitle // ignore: cast_nullable_to_non_nullable
+              as String,
+      imageTitle: null == imageTitle
+          ? _value.imageTitle
+          : imageTitle // ignore: cast_nullable_to_non_nullable
+              as String,
+      caption: null == caption
+          ? _value.caption
+          : caption // ignore: cast_nullable_to_non_nullable
+              as String,
+      secondarySubcaption: null == secondarySubcaption
+          ? _value.secondarySubcaption
+          : secondarySubcaption // ignore: cast_nullable_to_non_nullable
+              as String,
+      tertiarySubcaption: null == tertiarySubcaption
+          ? _value.tertiarySubcaption
+          : tertiarySubcaption // ignore: cast_nullable_to_non_nullable
+              as String,
+      subcaption: null == subcaption
+          ? _value.subcaption
+          : subcaption // ignore: cast_nullable_to_non_nullable
+              as String,
+      class_: null == class_
+          ? _value.class_
+          : class_ // ignore: cast_nullable_to_non_nullable
+              as NSDictionaryClass,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$DartBalloonLayout_TemplateLayoutImpl
+    extends DartBalloonLayout_TemplateLayout {
+  const _$DartBalloonLayout_TemplateLayoutImpl(
+      {required this.imageSubtitle,
+      required this.imageTitle,
+      required this.caption,
+      required this.secondarySubcaption,
+      required this.tertiarySubcaption,
+      required this.subcaption,
+      required this.class_})
+      : super._();
+
+  @override
+  final String imageSubtitle;
+  @override
+  final String imageTitle;
+  @override
+  final String caption;
+  @override
+  final String secondarySubcaption;
+  @override
+  final String tertiarySubcaption;
+  @override
+  final String subcaption;
+  @override
+  final NSDictionaryClass class_;
+
+  @override
+  String toString() {
+    return 'DartBalloonLayout.templateLayout(imageSubtitle: $imageSubtitle, imageTitle: $imageTitle, caption: $caption, secondarySubcaption: $secondarySubcaption, tertiarySubcaption: $tertiarySubcaption, subcaption: $subcaption, class_: $class_)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$DartBalloonLayout_TemplateLayoutImpl &&
+            (identical(other.imageSubtitle, imageSubtitle) ||
+                other.imageSubtitle == imageSubtitle) &&
+            (identical(other.imageTitle, imageTitle) ||
+                other.imageTitle == imageTitle) &&
+            (identical(other.caption, caption) || other.caption == caption) &&
+            (identical(other.secondarySubcaption, secondarySubcaption) ||
+                other.secondarySubcaption == secondarySubcaption) &&
+            (identical(other.tertiarySubcaption, tertiarySubcaption) ||
+                other.tertiarySubcaption == tertiarySubcaption) &&
+            (identical(other.subcaption, subcaption) ||
+                other.subcaption == subcaption) &&
+            (identical(other.class_, class_) || other.class_ == class_));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, imageSubtitle, imageTitle,
+      caption, secondarySubcaption, tertiarySubcaption, subcaption, class_);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$DartBalloonLayout_TemplateLayoutImplCopyWith<
+          _$DartBalloonLayout_TemplateLayoutImpl>
+      get copyWith => __$$DartBalloonLayout_TemplateLayoutImplCopyWithImpl<
+          _$DartBalloonLayout_TemplateLayoutImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(
+            String imageSubtitle,
+            String imageTitle,
+            String caption,
+            String secondarySubcaption,
+            String tertiarySubcaption,
+            String subcaption,
+            NSDictionaryClass class_)
+        templateLayout,
+  }) {
+    return templateLayout(imageSubtitle, imageTitle, caption,
+        secondarySubcaption, tertiarySubcaption, subcaption, class_);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(
+            String imageSubtitle,
+            String imageTitle,
+            String caption,
+            String secondarySubcaption,
+            String tertiarySubcaption,
+            String subcaption,
+            NSDictionaryClass class_)?
+        templateLayout,
+  }) {
+    return templateLayout?.call(imageSubtitle, imageTitle, caption,
+        secondarySubcaption, tertiarySubcaption, subcaption, class_);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(
+            String imageSubtitle,
+            String imageTitle,
+            String caption,
+            String secondarySubcaption,
+            String tertiarySubcaption,
+            String subcaption,
+            NSDictionaryClass class_)?
+        templateLayout,
+    required TResult orElse(),
+  }) {
+    if (templateLayout != null) {
+      return templateLayout(imageSubtitle, imageTitle, caption,
+          secondarySubcaption, tertiarySubcaption, subcaption, class_);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(DartBalloonLayout_TemplateLayout value)
+        templateLayout,
+  }) {
+    return templateLayout(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(DartBalloonLayout_TemplateLayout value)? templateLayout,
+  }) {
+    return templateLayout?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(DartBalloonLayout_TemplateLayout value)? templateLayout,
+    required TResult orElse(),
+  }) {
+    if (templateLayout != null) {
+      return templateLayout(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class DartBalloonLayout_TemplateLayout extends DartBalloonLayout {
+  const factory DartBalloonLayout_TemplateLayout(
+          {required final String imageSubtitle,
+          required final String imageTitle,
+          required final String caption,
+          required final String secondarySubcaption,
+          required final String tertiarySubcaption,
+          required final String subcaption,
+          required final NSDictionaryClass class_}) =
+      _$DartBalloonLayout_TemplateLayoutImpl;
+  const DartBalloonLayout_TemplateLayout._() : super._();
+
+  @override
+  String get imageSubtitle;
+  @override
+  String get imageTitle;
+  @override
+  String get caption;
+  @override
+  String get secondarySubcaption;
+  @override
+  String get tertiarySubcaption;
+  @override
+  String get subcaption;
+  @override
+  NSDictionaryClass get class_;
+  @override
+  @JsonKey(ignore: true)
+  _$$DartBalloonLayout_TemplateLayoutImplCopyWith<
+          _$DartBalloonLayout_TemplateLayoutImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
 mixin _$DartLoginState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
@@ -5586,6 +5984,7 @@ mixin _$DartMessagePart {
     required TResult Function(String field0) text,
     required TResult Function(DartAttachment field0) attachment,
     required TResult Function(String field0, String field1) mention,
+    required TResult Function(String field0) object,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -5593,6 +5992,7 @@ mixin _$DartMessagePart {
     TResult? Function(String field0)? text,
     TResult? Function(DartAttachment field0)? attachment,
     TResult? Function(String field0, String field1)? mention,
+    TResult? Function(String field0)? object,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -5600,6 +6000,7 @@ mixin _$DartMessagePart {
     TResult Function(String field0)? text,
     TResult Function(DartAttachment field0)? attachment,
     TResult Function(String field0, String field1)? mention,
+    TResult Function(String field0)? object,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -5608,6 +6009,7 @@ mixin _$DartMessagePart {
     required TResult Function(DartMessagePart_Text value) text,
     required TResult Function(DartMessagePart_Attachment value) attachment,
     required TResult Function(DartMessagePart_Mention value) mention,
+    required TResult Function(DartMessagePart_Object value) object,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -5615,6 +6017,7 @@ mixin _$DartMessagePart {
     TResult? Function(DartMessagePart_Text value)? text,
     TResult? Function(DartMessagePart_Attachment value)? attachment,
     TResult? Function(DartMessagePart_Mention value)? mention,
+    TResult? Function(DartMessagePart_Object value)? object,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -5622,6 +6025,7 @@ mixin _$DartMessagePart {
     TResult Function(DartMessagePart_Text value)? text,
     TResult Function(DartMessagePart_Attachment value)? attachment,
     TResult Function(DartMessagePart_Mention value)? mention,
+    TResult Function(DartMessagePart_Object value)? object,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -5714,6 +6118,7 @@ class _$DartMessagePart_TextImpl extends DartMessagePart_Text {
     required TResult Function(String field0) text,
     required TResult Function(DartAttachment field0) attachment,
     required TResult Function(String field0, String field1) mention,
+    required TResult Function(String field0) object,
   }) {
     return text(field0);
   }
@@ -5724,6 +6129,7 @@ class _$DartMessagePart_TextImpl extends DartMessagePart_Text {
     TResult? Function(String field0)? text,
     TResult? Function(DartAttachment field0)? attachment,
     TResult? Function(String field0, String field1)? mention,
+    TResult? Function(String field0)? object,
   }) {
     return text?.call(field0);
   }
@@ -5734,6 +6140,7 @@ class _$DartMessagePart_TextImpl extends DartMessagePart_Text {
     TResult Function(String field0)? text,
     TResult Function(DartAttachment field0)? attachment,
     TResult Function(String field0, String field1)? mention,
+    TResult Function(String field0)? object,
     required TResult orElse(),
   }) {
     if (text != null) {
@@ -5748,6 +6155,7 @@ class _$DartMessagePart_TextImpl extends DartMessagePart_Text {
     required TResult Function(DartMessagePart_Text value) text,
     required TResult Function(DartMessagePart_Attachment value) attachment,
     required TResult Function(DartMessagePart_Mention value) mention,
+    required TResult Function(DartMessagePart_Object value) object,
   }) {
     return text(this);
   }
@@ -5758,6 +6166,7 @@ class _$DartMessagePart_TextImpl extends DartMessagePart_Text {
     TResult? Function(DartMessagePart_Text value)? text,
     TResult? Function(DartMessagePart_Attachment value)? attachment,
     TResult? Function(DartMessagePart_Mention value)? mention,
+    TResult? Function(DartMessagePart_Object value)? object,
   }) {
     return text?.call(this);
   }
@@ -5768,6 +6177,7 @@ class _$DartMessagePart_TextImpl extends DartMessagePart_Text {
     TResult Function(DartMessagePart_Text value)? text,
     TResult Function(DartMessagePart_Attachment value)? attachment,
     TResult Function(DartMessagePart_Mention value)? mention,
+    TResult Function(DartMessagePart_Object value)? object,
     required TResult orElse(),
   }) {
     if (text != null) {
@@ -5860,6 +6270,7 @@ class _$DartMessagePart_AttachmentImpl extends DartMessagePart_Attachment {
     required TResult Function(String field0) text,
     required TResult Function(DartAttachment field0) attachment,
     required TResult Function(String field0, String field1) mention,
+    required TResult Function(String field0) object,
   }) {
     return attachment(field0);
   }
@@ -5870,6 +6281,7 @@ class _$DartMessagePart_AttachmentImpl extends DartMessagePart_Attachment {
     TResult? Function(String field0)? text,
     TResult? Function(DartAttachment field0)? attachment,
     TResult? Function(String field0, String field1)? mention,
+    TResult? Function(String field0)? object,
   }) {
     return attachment?.call(field0);
   }
@@ -5880,6 +6292,7 @@ class _$DartMessagePart_AttachmentImpl extends DartMessagePart_Attachment {
     TResult Function(String field0)? text,
     TResult Function(DartAttachment field0)? attachment,
     TResult Function(String field0, String field1)? mention,
+    TResult Function(String field0)? object,
     required TResult orElse(),
   }) {
     if (attachment != null) {
@@ -5894,6 +6307,7 @@ class _$DartMessagePart_AttachmentImpl extends DartMessagePart_Attachment {
     required TResult Function(DartMessagePart_Text value) text,
     required TResult Function(DartMessagePart_Attachment value) attachment,
     required TResult Function(DartMessagePart_Mention value) mention,
+    required TResult Function(DartMessagePart_Object value) object,
   }) {
     return attachment(this);
   }
@@ -5904,6 +6318,7 @@ class _$DartMessagePart_AttachmentImpl extends DartMessagePart_Attachment {
     TResult? Function(DartMessagePart_Text value)? text,
     TResult? Function(DartMessagePart_Attachment value)? attachment,
     TResult? Function(DartMessagePart_Mention value)? mention,
+    TResult? Function(DartMessagePart_Object value)? object,
   }) {
     return attachment?.call(this);
   }
@@ -5914,6 +6329,7 @@ class _$DartMessagePart_AttachmentImpl extends DartMessagePart_Attachment {
     TResult Function(DartMessagePart_Text value)? text,
     TResult Function(DartMessagePart_Attachment value)? attachment,
     TResult Function(DartMessagePart_Mention value)? mention,
+    TResult Function(DartMessagePart_Object value)? object,
     required TResult orElse(),
   }) {
     if (attachment != null) {
@@ -6013,6 +6429,7 @@ class _$DartMessagePart_MentionImpl extends DartMessagePart_Mention {
     required TResult Function(String field0) text,
     required TResult Function(DartAttachment field0) attachment,
     required TResult Function(String field0, String field1) mention,
+    required TResult Function(String field0) object,
   }) {
     return mention(field0, field1);
   }
@@ -6023,6 +6440,7 @@ class _$DartMessagePart_MentionImpl extends DartMessagePart_Mention {
     TResult? Function(String field0)? text,
     TResult? Function(DartAttachment field0)? attachment,
     TResult? Function(String field0, String field1)? mention,
+    TResult? Function(String field0)? object,
   }) {
     return mention?.call(field0, field1);
   }
@@ -6033,6 +6451,7 @@ class _$DartMessagePart_MentionImpl extends DartMessagePart_Mention {
     TResult Function(String field0)? text,
     TResult Function(DartAttachment field0)? attachment,
     TResult Function(String field0, String field1)? mention,
+    TResult Function(String field0)? object,
     required TResult orElse(),
   }) {
     if (mention != null) {
@@ -6047,6 +6466,7 @@ class _$DartMessagePart_MentionImpl extends DartMessagePart_Mention {
     required TResult Function(DartMessagePart_Text value) text,
     required TResult Function(DartMessagePart_Attachment value) attachment,
     required TResult Function(DartMessagePart_Mention value) mention,
+    required TResult Function(DartMessagePart_Object value) object,
   }) {
     return mention(this);
   }
@@ -6057,6 +6477,7 @@ class _$DartMessagePart_MentionImpl extends DartMessagePart_Mention {
     TResult? Function(DartMessagePart_Text value)? text,
     TResult? Function(DartMessagePart_Attachment value)? attachment,
     TResult? Function(DartMessagePart_Mention value)? mention,
+    TResult? Function(DartMessagePart_Object value)? object,
   }) {
     return mention?.call(this);
   }
@@ -6067,6 +6488,7 @@ class _$DartMessagePart_MentionImpl extends DartMessagePart_Mention {
     TResult Function(DartMessagePart_Text value)? text,
     TResult Function(DartMessagePart_Attachment value)? attachment,
     TResult Function(DartMessagePart_Mention value)? mention,
+    TResult Function(DartMessagePart_Object value)? object,
     required TResult orElse(),
   }) {
     if (mention != null) {
@@ -6086,6 +6508,157 @@ abstract class DartMessagePart_Mention extends DartMessagePart {
   String get field1;
   @JsonKey(ignore: true)
   _$$DartMessagePart_MentionImplCopyWith<_$DartMessagePart_MentionImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$DartMessagePart_ObjectImplCopyWith<$Res> {
+  factory _$$DartMessagePart_ObjectImplCopyWith(
+          _$DartMessagePart_ObjectImpl value,
+          $Res Function(_$DartMessagePart_ObjectImpl) then) =
+      __$$DartMessagePart_ObjectImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String field0});
+}
+
+/// @nodoc
+class __$$DartMessagePart_ObjectImplCopyWithImpl<$Res>
+    extends _$DartMessagePartCopyWithImpl<$Res, _$DartMessagePart_ObjectImpl>
+    implements _$$DartMessagePart_ObjectImplCopyWith<$Res> {
+  __$$DartMessagePart_ObjectImplCopyWithImpl(
+      _$DartMessagePart_ObjectImpl _value,
+      $Res Function(_$DartMessagePart_ObjectImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? field0 = null,
+  }) {
+    return _then(_$DartMessagePart_ObjectImpl(
+      null == field0
+          ? _value.field0
+          : field0 // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$DartMessagePart_ObjectImpl extends DartMessagePart_Object {
+  const _$DartMessagePart_ObjectImpl(this.field0) : super._();
+
+  @override
+  final String field0;
+
+  @override
+  String toString() {
+    return 'DartMessagePart.object(field0: $field0)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$DartMessagePart_ObjectImpl &&
+            (identical(other.field0, field0) || other.field0 == field0));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, field0);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$DartMessagePart_ObjectImplCopyWith<_$DartMessagePart_ObjectImpl>
+      get copyWith => __$$DartMessagePart_ObjectImplCopyWithImpl<
+          _$DartMessagePart_ObjectImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String field0) text,
+    required TResult Function(DartAttachment field0) attachment,
+    required TResult Function(String field0, String field1) mention,
+    required TResult Function(String field0) object,
+  }) {
+    return object(field0);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String field0)? text,
+    TResult? Function(DartAttachment field0)? attachment,
+    TResult? Function(String field0, String field1)? mention,
+    TResult? Function(String field0)? object,
+  }) {
+    return object?.call(field0);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String field0)? text,
+    TResult Function(DartAttachment field0)? attachment,
+    TResult Function(String field0, String field1)? mention,
+    TResult Function(String field0)? object,
+    required TResult orElse(),
+  }) {
+    if (object != null) {
+      return object(field0);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(DartMessagePart_Text value) text,
+    required TResult Function(DartMessagePart_Attachment value) attachment,
+    required TResult Function(DartMessagePart_Mention value) mention,
+    required TResult Function(DartMessagePart_Object value) object,
+  }) {
+    return object(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(DartMessagePart_Text value)? text,
+    TResult? Function(DartMessagePart_Attachment value)? attachment,
+    TResult? Function(DartMessagePart_Mention value)? mention,
+    TResult? Function(DartMessagePart_Object value)? object,
+  }) {
+    return object?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(DartMessagePart_Text value)? text,
+    TResult Function(DartMessagePart_Attachment value)? attachment,
+    TResult Function(DartMessagePart_Mention value)? mention,
+    TResult Function(DartMessagePart_Object value)? object,
+    required TResult orElse(),
+  }) {
+    if (object != null) {
+      return object(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class DartMessagePart_Object extends DartMessagePart {
+  const factory DartMessagePart_Object(final String field0) =
+      _$DartMessagePart_ObjectImpl;
+  const DartMessagePart_Object._() : super._();
+
+  @override
+  String get field0;
+  @JsonKey(ignore: true)
+  _$$DartMessagePart_ObjectImplCopyWith<_$DartMessagePart_ObjectImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -7332,19 +7905,20 @@ mixin _$DartReactMessageType {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(DartReaction reaction, bool enable) react,
-    required TResult Function(Value spec, DartMessageParts body) extension_,
+    required TResult Function(DartExtensionApp spec, DartMessageParts body)
+        extension_,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(DartReaction reaction, bool enable)? react,
-    TResult? Function(Value spec, DartMessageParts body)? extension_,
+    TResult? Function(DartExtensionApp spec, DartMessageParts body)? extension_,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(DartReaction reaction, bool enable)? react,
-    TResult Function(Value spec, DartMessageParts body)? extension_,
+    TResult Function(DartExtensionApp spec, DartMessageParts body)? extension_,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -7468,7 +8042,8 @@ class _$DartReactMessageType_ReactImpl extends DartReactMessageType_React {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(DartReaction reaction, bool enable) react,
-    required TResult Function(Value spec, DartMessageParts body) extension_,
+    required TResult Function(DartExtensionApp spec, DartMessageParts body)
+        extension_,
   }) {
     return react(reaction, enable);
   }
@@ -7477,7 +8052,7 @@ class _$DartReactMessageType_ReactImpl extends DartReactMessageType_React {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(DartReaction reaction, bool enable)? react,
-    TResult? Function(Value spec, DartMessageParts body)? extension_,
+    TResult? Function(DartExtensionApp spec, DartMessageParts body)? extension_,
   }) {
     return react?.call(reaction, enable);
   }
@@ -7486,7 +8061,7 @@ class _$DartReactMessageType_ReactImpl extends DartReactMessageType_React {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(DartReaction reaction, bool enable)? react,
-    TResult Function(Value spec, DartMessageParts body)? extension_,
+    TResult Function(DartExtensionApp spec, DartMessageParts body)? extension_,
     required TResult orElse(),
   }) {
     if (react != null) {
@@ -7547,7 +8122,7 @@ abstract class _$$DartReactMessageType_ExtensionImplCopyWith<$Res> {
           $Res Function(_$DartReactMessageType_ExtensionImpl) then) =
       __$$DartReactMessageType_ExtensionImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({Value spec, DartMessageParts body});
+  $Res call({DartExtensionApp spec, DartMessageParts body});
 }
 
 /// @nodoc
@@ -7570,7 +8145,7 @@ class __$$DartReactMessageType_ExtensionImplCopyWithImpl<$Res>
       spec: null == spec
           ? _value.spec
           : spec // ignore: cast_nullable_to_non_nullable
-              as Value,
+              as DartExtensionApp,
       body: null == body
           ? _value.body
           : body // ignore: cast_nullable_to_non_nullable
@@ -7588,7 +8163,7 @@ class _$DartReactMessageType_ExtensionImpl
       : super._();
 
   @override
-  final Value spec;
+  final DartExtensionApp spec;
   @override
   final DartMessageParts body;
 
@@ -7621,7 +8196,8 @@ class _$DartReactMessageType_ExtensionImpl
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(DartReaction reaction, bool enable) react,
-    required TResult Function(Value spec, DartMessageParts body) extension_,
+    required TResult Function(DartExtensionApp spec, DartMessageParts body)
+        extension_,
   }) {
     return extension_(spec, body);
   }
@@ -7630,7 +8206,7 @@ class _$DartReactMessageType_ExtensionImpl
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(DartReaction reaction, bool enable)? react,
-    TResult? Function(Value spec, DartMessageParts body)? extension_,
+    TResult? Function(DartExtensionApp spec, DartMessageParts body)? extension_,
   }) {
     return extension_?.call(spec, body);
   }
@@ -7639,7 +8215,7 @@ class _$DartReactMessageType_ExtensionImpl
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(DartReaction reaction, bool enable)? react,
-    TResult Function(Value spec, DartMessageParts body)? extension_,
+    TResult Function(DartExtensionApp spec, DartMessageParts body)? extension_,
     required TResult orElse(),
   }) {
     if (extension_ != null) {
@@ -7682,11 +8258,12 @@ class _$DartReactMessageType_ExtensionImpl
 
 abstract class DartReactMessageType_Extension extends DartReactMessageType {
   const factory DartReactMessageType_Extension(
-          {required final Value spec, required final DartMessageParts body}) =
+          {required final DartExtensionApp spec,
+          required final DartMessageParts body}) =
       _$DartReactMessageType_ExtensionImpl;
   const DartReactMessageType_Extension._() : super._();
 
-  Value get spec;
+  DartExtensionApp get spec;
   DartMessageParts get body;
   @JsonKey(ignore: true)
   _$$DartReactMessageType_ExtensionImplCopyWith<

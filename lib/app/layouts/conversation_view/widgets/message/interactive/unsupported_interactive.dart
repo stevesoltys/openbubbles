@@ -11,12 +11,14 @@ import 'package:universal_io/io.dart';
 class UnsupportedInteractive extends StatefulWidget {
   UnsupportedInteractive({
     super.key,
-    required this.message,
     required this.payloadData,
+    required this.content,
+    required this.balloonBundleId,
   });
 
-  final Message message;
   final iMessageAppData? payloadData;
+  final dynamic content;
+  final String? balloonBundleId;
 
   @override
   State<UnsupportedInteractive> createState() => _UnsupportedInteractiveState();
@@ -24,31 +26,10 @@ class UnsupportedInteractive extends StatefulWidget {
 
 class _UnsupportedInteractiveState extends OptimizedState<UnsupportedInteractive> with AutomaticKeepAliveClientMixin {
   iMessageAppData? get data => widget.payloadData;
-  Message get message => widget.message;
-  dynamic get file => File(content.path!);
-
-  dynamic content;
-
-  @override
-  void initState() {
-    super.initState();
-    updateObx(() async {
-      final attachment = widget.message.attachments.firstOrNull;
-      if (attachment != null) {
-        content = as.getContent(attachment, autoDownload: true, onComplete: (file) {
-          setState(() {
-            content = file;
-          });
-        });
-        if (content is PlatformFile) {
-          setState(() {});
-        }
-      }
-    });
-  }
+  dynamic get file => File(widget.content.path!);
 
   String getAppName() {
-    final balloonBundleId = message.balloonBundleId;
+    final balloonBundleId = widget.balloonBundleId;
     final temp = balloonBundleIdMap[balloonBundleId?.split(":").first];
     String? name;
     if (temp is Map) {
@@ -60,7 +41,7 @@ class _UnsupportedInteractiveState extends OptimizedState<UnsupportedInteractive
   }
 
   IconData getIcon() {
-    final balloonBundleId = message.balloonBundleId;
+    final balloonBundleId = widget.balloonBundleId;
     final temp = balloonBundleIdIconMap[balloonBundleId?.split(":").first];
     IconData? icon;
     if (temp is Map) {
@@ -80,9 +61,9 @@ class _UnsupportedInteractiveState extends OptimizedState<UnsupportedInteractive
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        if (content is PlatformFile && content.bytes != null)
+        if (widget.content is PlatformFile && widget.content.bytes != null)
           Image.memory(
-            content.bytes!,
+            widget.content.bytes!,
             gaplessPlayback: true,
             filterQuality: FilterQuality.none,
             errorBuilder: (context, object, stacktrace) => Center(
@@ -90,7 +71,7 @@ class _UnsupportedInteractiveState extends OptimizedState<UnsupportedInteractive
               child: Text("Failed to display image", style: context.theme.textTheme.bodyLarge),
             ),
           ),
-        if (content is PlatformFile && content.bytes == null && content.path != null)
+        if (widget.content is PlatformFile && widget.content.bytes == null && widget.content.path != null)
           Image.file(
             file,
             gaplessPlayback: true,

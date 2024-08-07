@@ -552,6 +552,7 @@ pub enum DartMessagePart {
     Text(String),
     Attachment(DartAttachment),
     Mention(String, String),
+    Object(String),
 }
 
 #[repr(C)]
@@ -607,6 +608,46 @@ pub enum DartMessageType {
     }
 }
 
+#[repr(C)]
+pub enum NSDictionaryClass {
+    NSDictionary,
+    NSMutableDictionary,
+}
+
+#[repr(C)]
+pub enum DartBalloonLayout {
+    TemplateLayout {
+        image_subtitle: String,
+        image_title: String,
+        caption: String,
+        secondary_subcaption: String,
+        tertiary_subcaption: String,
+        subcaption: String,
+        class: NSDictionaryClass,
+    }
+}
+
+#[repr(C)]
+pub struct DartBalloon {
+    pub url: String,
+    pub session: Option<String>, // UUID
+    pub layout: DartBalloonLayout,
+    pub ld_text: Option<String>,
+    pub is_live: bool,
+
+    pub icon: Vec<u8>,
+}
+
+#[repr(C)]
+#[frb(type_64bit_int)]
+pub struct DartExtensionApp {
+    pub name: String,
+    pub app_id: u64,
+    pub bundle_id: String,
+
+    pub balloon: Option<DartBalloon>,
+}
+
 #[frb]
 #[repr(C)]
 pub struct DartNormalMessage {
@@ -621,6 +662,8 @@ pub struct DartNormalMessage {
     pub service: DartMessageType,
     #[frb(non_final)]
     pub subject: Option<String>,
+    #[frb(non_final)]
+    pub app: Option<DartExtensionApp>,
 }
 
 #[repr(C)]
@@ -653,7 +696,7 @@ pub enum DartReactMessageType {
         enable: bool,
     },
     Extension {
-        spec: Value,
+        spec: DartExtensionApp,
         body: DartMessageParts
     },
 }
@@ -662,7 +705,7 @@ pub enum DartReactMessageType {
 #[frb(type_64bit_int)]
 pub struct DartReactMessage {
     pub to_uuid: String,
-    pub to_part: u64,
+    pub to_part: Option<u64>,
     pub reaction: DartReactMessageType,
     pub to_text: String,
 }
@@ -1091,6 +1134,7 @@ pub async fn get_user_name(state: &Arc<PushState>) -> anyhow::Result<String> {
 }
 
 
+#[frb(type_64bit_int)]
 pub enum DartRegisterState {
     Registered,
     Registering,
