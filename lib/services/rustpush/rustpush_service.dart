@@ -3,6 +3,7 @@ import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:async_task/async_task_extension.dart';
+import 'package:bluebubbles/app/layouts/conversation_list/pages/conversation_list.dart';
 import 'package:bluebubbles/app/layouts/conversation_view/widgets/message/message_holder.dart';
 import 'package:bluebubbles/app/layouts/setup/setup_view.dart';
 import 'package:bluebubbles/app/wrappers/titlebar_wrapper.dart';
@@ -257,7 +258,7 @@ class RustPushBBUtils {
 class RustPushBackend implements BackendService {
   Future<String> getDefaultHandle() async {
     var myHandles = await api.getHandles(state: pushService.state);
-    var setHandle = Settings.getSettings().defaultHandle.value;
+    var setHandle = ss.settings.defaultHandle.value;
     if (myHandles.contains(setHandle)) {
       return setHandle;
     }
@@ -547,8 +548,8 @@ class RustPushBackend implements BackendService {
       stateStr = "Deregistered";
     }
     return {
-      "account_name": Settings.getSettings().userName.value,
-      "apple_id": Settings.getSettings().iCloudAccount.value,
+      "account_name": ss.settings.userName.value,
+      "apple_id": ss.settings.iCloudAccount.value,
       "login_status_message": stateStr,
       "vetted_aliases": handles.map((e) => {
         "Alias": e.replaceFirst("tel:", "").replaceFirst("mailto:", ""),
@@ -562,9 +563,8 @@ class RustPushBackend implements BackendService {
 
   @override
   Future<void> setDefaultHandle(String defaultHandle) async {
-    var ss = Settings.getSettings();
-    ss.defaultHandle.value = await RustPushBBUtils.formatAndAddPrefix(defaultHandle);
-    ss.save();
+    ss.settings.defaultHandle.value = await RustPushBBUtils.formatAndAddPrefix(defaultHandle);
+    ss.saveSettings();
   }
 
   @override
@@ -1006,7 +1006,8 @@ class RustPushService extends GetxService {
   }
 
   Future<void> updateChatParticipants(Chat c, api.DartIMessage myMsg, List<String> oldParticipants, List<String> newParticipants) async {
-    var newP = newParticipants.filter((p) => !oldParticipants.contains(p));
+    var myHandles = await api.getHandles(state: pushService.state);
+    var newP = newParticipants.filter((p) => !oldParticipants.contains(p) && !myHandles.contains(p));
     var delP = oldParticipants.filter((p) => !newParticipants.contains(p));
     if (newP.isEmpty && delP.isEmpty) return; // nothing to do
     c.handles.clear();
@@ -1016,8 +1017,6 @@ class RustPushService extends GetxService {
     c.handlesChanged();
     c = c.getParticipants();
     c.save();
-
-    var myHandles = (await api.getHandles(state: pushService.state));
 
     var useId = myMsg.message is api.DartMessage_ChangeParticipants;
 
@@ -1788,6 +1787,31 @@ class RustPushService extends GetxService {
     }
   }
 
+  Future<void> correctState() async {
+    await initFuture;
+    var phase = await api.getPhase(state: state);
+    if (phase != api.RegistrationPhase.registered && ss.settings.finishedSetup.value) {
+      ss.settings.finishedSetup.value = false;
+      ss.saveSettings();
+      Get.offAll(() => PopScope(
+        canPop: false,
+        child: TitleBarWrapper(child: SetupView()),
+      ), duration: Duration.zero, transition: Transition.noTransition);
+    } else if (phase == api.RegistrationPhase.registered && !ss.settings.finishedSetup.value) {
+      ss.settings.finishedSetup.value = true;
+      ss.saveSettings();
+      Get.offAll(() => ConversationList(
+          showArchivedChats: false,
+          showUnknownSenders: false,
+        ),
+        routeName: "",
+        duration: Duration.zero,
+        transition: Transition.noTransition
+      );
+      Get.delete<SetupViewController>(force: true);
+    }
+  }
+
   @override
   Future<void> onInit() async {
     super.onInit();
@@ -1815,6 +1839,7 @@ class RustPushService extends GetxService {
       await cs.refreshContacts();
     })();
     await initFuture;
+    await correctState();
   }
 
   Future reset(bool hw) async {

@@ -1078,6 +1078,12 @@ pub async fn verify_2fa_sms(state: &Arc<PushState>, body: &VerifyBody, code: Str
     Ok(unsafe { std::mem::transmute(account.verify_sms_2fa(code, body.clone()).await?) })
 }
 
+pub async fn validate_cert(state: &Arc<PushState>, user: &IDSUser) -> anyhow::Result<Vec<String>> {
+    let inner = state.0.read().await;
+    let x = Ok(user.get_possible_handles(&*inner.conn.as_ref().unwrap().state.read().await).await?);
+    x
+}
+
 pub async fn reset_state(state: &Arc<PushState>, reset_hw: bool) -> anyhow::Result<()> {
     // tell any poll to stop
     let inner = state.0.read().await;

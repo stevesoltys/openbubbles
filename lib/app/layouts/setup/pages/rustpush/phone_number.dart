@@ -41,8 +41,6 @@ class PhoneNumberState extends OptimizedState<PhoneNumber> {
   final controller = Get.find<SetupViewController>();
   final FocusNode focusNode = FocusNode();
 
-  bool loading = false;
-
   @override
   Widget build(BuildContext context) {
     return SetupPageTemplate(
@@ -65,7 +63,7 @@ class PhoneNumberState extends OptimizedState<PhoneNumber> {
                           child: Obx(() => SettingsSwitch(
                             padding: false,
                             onChanged: (bool val) async {
-                              if (loading) return;
+                              if (controller.phoneValidating.value) return;
                               if (val) {
                                 if (ss.settings.cachedCodes.containsKey("sms-auth")) {
                                   controller.currentPhoneUser = await api.restoreUser(user: ss.settings.cachedCodes["sms-auth"]!);
@@ -73,9 +71,7 @@ class PhoneNumberState extends OptimizedState<PhoneNumber> {
                                   setState(() { });
                                   return;
                                 }
-                                setState(() {
-                                  loading = true;
-                                });
+                                controller.phoneValidating.value = true;
                                 try {
                                   var granted = await TelephonyPlus().requestPermissions();
                                   if (!granted) {
@@ -97,9 +93,7 @@ class PhoneNumberState extends OptimizedState<PhoneNumber> {
                                   }
                                   rethrow;
                                 } finally {
-                                  setState(() {
-                                    loading = false;
-                                  });
+                                  controller.phoneValidating.value = false;
                                 }
                               } else {
                                 controller.currentPhoneUser = null;
@@ -154,12 +148,12 @@ class PhoneNumberState extends OptimizedState<PhoneNumber> {
                                 ),
                               ),
                             ),
-                            Container(
+                            Obx(() => Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(25),
                                 gradient: LinearGradient(
                                   begin: AlignmentDirectional.topStart,
-                                  colors: loading ? [HexColor('777777'), HexColor('777777')] : [HexColor('2772C3'), HexColor('5CA7F8').darkenPercent(5)],
+                                  colors: controller.phoneValidating.value ? [HexColor('777777'), HexColor('777777')] : [HexColor('2772C3'), HexColor('5CA7F8').darkenPercent(5)],
                                 ),
                               ),
                               height: 40,
@@ -171,12 +165,12 @@ class PhoneNumberState extends OptimizedState<PhoneNumber> {
                                       borderRadius: BorderRadius.circular(20.0),
                                     ),
                                   ),
-                                  backgroundColor: MaterialStateProperty.all(controller.currentPhoneUser != null || loading ? Colors.transparent : context.theme.colorScheme.background),
-                                  shadowColor: MaterialStateProperty.all(controller.currentPhoneUser != null || loading ? Colors.transparent : context.theme.colorScheme.background),
+                                  backgroundColor: MaterialStateProperty.all(controller.currentPhoneUser != null || controller.phoneValidating.value ? Colors.transparent : context.theme.colorScheme.background),
+                                  shadowColor: MaterialStateProperty.all(controller.currentPhoneUser != null || controller.phoneValidating.value ? Colors.transparent : context.theme.colorScheme.background),
                                   maximumSize: MaterialStateProperty.all(const Size(200, 36)),
                                   minimumSize: MaterialStateProperty.all(const Size(30, 30)),
                                 ),
-                                onPressed: loading ? null : () async {
+                                onPressed: controller.phoneValidating.value ? null : () async {
                                   controller.pageController.nextPage(
                                     duration: const Duration(milliseconds: 300),
                                     curve: Curves.easeInOut,
@@ -185,7 +179,7 @@ class PhoneNumberState extends OptimizedState<PhoneNumber> {
                                 child: Stack(
                                   alignment: Alignment.center,
                                   children: [
-                                    Opacity(opacity: loading ? 0 : 1, child: Row(
+                                    Opacity(opacity: controller.phoneValidating.value ? 0 : 1, child: Row(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
                                         Text(controller.currentPhoneUser != null ? "Continue" : "Skip",
@@ -195,12 +189,12 @@ class PhoneNumberState extends OptimizedState<PhoneNumber> {
                                         Icon(Icons.arrow_forward, color: controller.currentPhoneUser != null ? Colors.white : context.theme.colorScheme.onBackground, size: 20),
                                       ],
                                     ),),
-                                    if (loading)
+                                    if (controller.phoneValidating.value)
                                     buildProgressIndicator(context, brightness: Brightness.dark),
                                   ],
                                 )
                               ),
-                            ),
+                            ),),
                           ],
                         ),
                       ],

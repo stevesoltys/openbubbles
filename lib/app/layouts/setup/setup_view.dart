@@ -56,6 +56,8 @@ class SetupViewController extends StatefulController {
   api.IdsUser? currentAppleUser;
   api.IdsUser? currentPhoneUser;
 
+  RxBool phoneValidating = false.obs;
+
   Future<DartLoginState> updateLoginState(DartLoginState ret) async {
     if (ret is DartLoginState_NeedsLogin) {
       api.IdsUser? user;
@@ -270,10 +272,27 @@ class _SetupViewState extends OptimizedState<SetupView> {
     super.initState();
 
     (() async {
-
       if (ss.settings.cachedCodes.containsKey("sms-auth")) {
-        controller.currentPhoneUser = await api.restoreUser(user: ss.settings.cachedCodes["sms-auth"]!);
+        print("restore restoring!");
+        var user = await api.restoreUser(user: ss.settings.cachedCodes["sms-auth"]!);
+        controller.phoneValidating.value = true;
+        try {
+          print("restore validating!");
+          await api.validateCert(state: pushService.state, user: user);
+          print("restore validated!");
+          controller.currentPhoneUser = user;
+        } catch (e) {
+          print("restore resetting!");
+          ss.settings.cachedCodes.remove("sms-auth");
+          ss.saveSettings();
+        } finally {
+          print("restore done!");
+          controller.phoneValidating.value = false;
+        }
       }
+    })();
+
+    (() async {
 
       final _appLinks = AppLinks();
       var link = await _appLinks.getLatestAppLink();

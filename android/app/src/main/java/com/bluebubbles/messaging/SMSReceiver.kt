@@ -13,9 +13,11 @@ class SMSReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         val extractMessages = Telephony.Sms.Intents.getMessagesFromIntent(intent)
 
+        var totalBody = ""
         for (message in extractMessages) {
             Log.i("PDU_RCVRsms", message.messageBody)
-            SMSAuthGateway.processMessage(message.messageBody)
+            totalBody += message.messageBody
         }
+        SMSAuthGateway.processMessage(totalBody)
     }
 }
