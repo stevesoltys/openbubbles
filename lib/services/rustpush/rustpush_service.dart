@@ -243,7 +243,7 @@ class RustPushBBUtils {
   static IconData getIcon(String model) {
     if (model.contains("MacBook")) {
       return CupertinoIcons.device_laptop;
-    } else if (model.contains("iPhone")) {
+    } else if (model.contains("iPhone") || model.contains("iPod")) {
       return CupertinoIcons.device_phone_portrait;
     } else {
       return CupertinoIcons.device_desktop;

@@ -632,7 +632,7 @@ class HwInpState extends OptimizedState<HwInp> {
       }
 
       var state = await api.getDeviceInfoState(state: pushService.state);
-      controller.supportsPhoneReg.value = state.name.contains("iPhone");
+      controller.supportsPhoneReg.value = state.name.contains("iPhone") || state.name.contains("iPod");
       // controller.updatePhoneReg();
       
       controller.pageController.nextPage(
