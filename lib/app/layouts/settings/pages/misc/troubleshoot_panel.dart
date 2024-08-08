@@ -304,7 +304,7 @@ class _TroubleshootPanelState extends OptimizedState<TroubleshootPanel> {
                         materialIcon: Icons.share,
                       ),
                       title: "Export OB logs",
-                      subtitle: "Last 2 hours saved",
+                      subtitle: "Last 2 hours saved. Contains sensitive information (such as messages and identifiers); do not share publicly.",
                       onTap: () async {
                         var file = Directory("${fs.appDocDir.path}/../files/logs");
                         final List<FileSystemEntity> entities = await file.list().toList();
