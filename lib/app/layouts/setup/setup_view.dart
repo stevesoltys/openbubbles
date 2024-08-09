@@ -228,10 +228,14 @@ class SetupViewController extends StatefulController {
 
   Future<DartLoginState> submitCode(String code) async {
     if (state is DartLoginState_Needs2FAVerification) {
-      state = await api.verify2Fa(state: pushService.state, code: code);
+      var (dart, isAnnoying) = await api.verify2Fa(state: pushService.state, code: code);
+      state = dart;
+      currentAppleUser = isAnnoying;
     } else if (state is DartLoginState_NeedsSMS2FAVerification) {
       var myState = state as DartLoginState_NeedsSMS2FAVerification;
-      state = await api.verify2FaSms(state: pushService.state, body: myState.field0, code: code);
+      var (dart, isAnnoying) = await api.verify2FaSms(state: pushService.state, body: myState.field0, code: code);
+      state = dart;
+      currentAppleUser = isAnnoying;
     }
     await updateLoginState(state);
   }

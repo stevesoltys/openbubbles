@@ -202,10 +202,10 @@ abstract class RustLibApi extends BaseApi {
       required List<String> targets,
       required String sender});
 
-  Future<DartLoginState> crateApiApiVerify2Fa(
+  Future<(DartLoginState, IdsUser?)> crateApiApiVerify2Fa(
       {required ArcPushState state, required String code});
 
-  Future<DartLoginState> crateApiApiVerify2FaSms(
+  Future<(DartLoginState, IdsUser?)> crateApiApiVerify2FaSms(
       {required ArcPushState state,
       required VerifyBody body,
       required String code});
@@ -1431,7 +1431,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
-  Future<DartLoginState> crateApiApiVerify2Fa(
+  Future<(DartLoginState, IdsUser?)> crateApiApiVerify2Fa(
       {required ArcPushState state, required String code}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
@@ -1443,7 +1443,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             funcId: 44, port: port_);
       },
       codec: SseCodec(
-        decodeSuccessData: sse_decode_dart_login_state,
+        decodeSuccessData:
+            sse_decode_record_dart_login_state_opt_box_autoadd_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_ids_user,
         decodeErrorData: sse_decode_AnyhowException,
       ),
       constMeta: kCrateApiApiVerify2FaConstMeta,
@@ -1458,7 +1459,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
-  Future<DartLoginState> crateApiApiVerify2FaSms(
+  Future<(DartLoginState, IdsUser?)> crateApiApiVerify2FaSms(
       {required ArcPushState state,
       required VerifyBody body,
       required String code}) {
@@ -1474,7 +1475,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             funcId: 45, port: port_);
       },
       codec: SseCodec(
-        decodeSuccessData: sse_decode_dart_login_state,
+        decodeSuccessData:
+            sse_decode_record_dart_login_state_opt_box_autoadd_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_ids_user,
         decodeErrorData: sse_decode_AnyhowException,
       ),
       constMeta: kCrateApiApiVerify2FaSmsConstMeta,

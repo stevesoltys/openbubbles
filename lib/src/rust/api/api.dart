@@ -143,7 +143,7 @@ Future<IdsUser> authPhone(
 Future<DartLoginState> send2FaToDevices({required ArcPushState state}) =>
     RustLib.instance.api.crateApiApiSend2FaToDevices(state: state);
 
-Future<DartLoginState> verify2Fa(
+Future<(DartLoginState, IdsUser?)> verify2Fa(
         {required ArcPushState state, required String code}) =>
     RustLib.instance.api.crateApiApiVerify2Fa(state: state, code: code);
 
@@ -155,7 +155,7 @@ Future<DartLoginState> send2FaSms(
         {required ArcPushState state, required int phoneId}) =>
     RustLib.instance.api.crateApiApiSend2FaSms(state: state, phoneId: phoneId);
 
-Future<DartLoginState> verify2FaSms(
+Future<(DartLoginState, IdsUser?)> verify2FaSms(
         {required ArcPushState state,
         required VerifyBody body,
         required String code}) =>

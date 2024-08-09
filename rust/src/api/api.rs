@@ -13,7 +13,7 @@ pub use rustpush::{PushError, IDSUser, IMClient, ConversationData, register};
 
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use tokio::{runtime::Runtime, select, sync::{broadcast, oneshot::{self, Sender}, Mutex, RwLock}};
-use rustpush::{authenticate_apple, authenticate_phone, APSConnection, APSConnectionResource, APSState, Attachment, AuthPhone, MMCSFile, MessageInst, MessagePart, MessageParts, OSConfig, RelayConfig, ResourceState};
+use rustpush::{authenticate_apple, authenticate_phone, get_gsa_config, APSConnection, APSConnectionResource, APSState, Attachment, AuthPhone, MMCSFile, MessageInst, MessagePart, MessageParts, OSConfig, RelayConfig, ResourceState};
 pub use rustpush::{MacOSConfig, HardwareConfig};
 use uniffi::{deps::log::{info, error}, HandleAlloc};
 use uuid::Uuid;
@@ -1002,7 +1002,8 @@ pub fn restore_user(user: String) -> anyhow::Result<IDSUser> {
 
 pub async fn try_auth(state: &Arc<PushState>, username: String, password: String) -> anyhow::Result<(DartLoginState, Option<IDSUser>)> {
     let mut inner = state.0.write().await;
-    let anisette_config = inner.os_config.as_deref().unwrap().get_anisette_config()
+    let anisette_config = AnisetteConfiguration::new()
+        .set_client_info(get_gsa_config(&*inner.conn.as_ref().unwrap().state.read().await, inner.os_config.as_deref().unwrap()))
         .set_configuration_path(inner.conf_dir.join("anisette_test"));
     let mut apple_account = AppleAccount::new(anisette_config).await?;
     let mut login_state = apple_account.login_email_pass(&username, &password).await?;
@@ -1042,10 +1043,25 @@ pub async fn send_2fa_to_devices(state: &Arc<PushState>) -> anyhow::Result<DartL
     
 }
 
-pub async fn verify_2fa(state: &Arc<PushState>, code: String) -> anyhow::Result<DartLoginState> {
-    let inner = state.0.read().await;
+pub async fn verify_2fa(state: &Arc<PushState>, code: String) -> anyhow::Result<(DartLoginState, Option<IDSUser>)> {
+    let mut inner = state.0.write().await;
+    let account = inner.account.as_mut().unwrap();
+    let mut login_state = account.verify_2fa(code).await?;
     let account = inner.account.as_ref().unwrap();
-    Ok(unsafe { std::mem::transmute(account.verify_2fa(code).await?) })
+    
+    let mut user = None;
+    if let Some(pet) = account.get_pet() {
+        let identity = authenticate_apple(account.username.as_ref().unwrap().trim(), &pet, inner.os_config.as_deref().unwrap()).await?;
+        user = Some(identity);
+        
+        // who needs extra steps when you have a PET, amirite?
+        println!("confirmed login {:?}", login_state);
+        if matches!(login_state, LoginState::NeedsExtraStep(_)) {
+            login_state = LoginState::LoggedIn;
+        }
+    }
+
+    Ok((unsafe { std::mem::transmute(login_state) }, user))
 }
 
 #[repr(C)]
@@ -1072,10 +1088,25 @@ pub async fn send_2fa_sms(state: &Arc<PushState>, phone_id: u32) -> anyhow::Resu
     Ok(unsafe { std::mem::transmute(account.send_sms_2fa_to_devices(phone_id).await?) })
 }
 
-pub async fn verify_2fa_sms(state: &Arc<PushState>, body: &VerifyBody, code: String) -> anyhow::Result<DartLoginState> {
-    let inner = state.0.read().await;
+pub async fn verify_2fa_sms(state: &Arc<PushState>, body: &VerifyBody, code: String) -> anyhow::Result<(DartLoginState, Option<IDSUser>)> {
+    let mut inner = state.0.write().await;
+    let account = inner.account.as_mut().unwrap();
+    let mut login_state = account.verify_sms_2fa(code, body.clone()).await?;
     let account = inner.account.as_ref().unwrap();
-    Ok(unsafe { std::mem::transmute(account.verify_sms_2fa(code, body.clone()).await?) })
+    
+    let mut user = None;
+    if let Some(pet) = account.get_pet() {
+        let identity = authenticate_apple(account.username.as_ref().unwrap().trim(), &pet, inner.os_config.as_deref().unwrap()).await?;
+        user = Some(identity);
+        
+        // who needs extra steps when you have a PET, amirite?
+        println!("confirmed login {:?}", login_state);
+        if matches!(login_state, LoginState::NeedsExtraStep(_)) {
+            login_state = LoginState::LoggedIn;
+        }
+    }
+
+    Ok((unsafe { std::mem::transmute(login_state) }, user))
 }
 
 pub async fn validate_cert(state: &Arc<PushState>, user: &IDSUser) -> anyhow::Result<Vec<String>> {

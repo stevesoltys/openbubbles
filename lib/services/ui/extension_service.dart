@@ -121,6 +121,7 @@ class ExtensionService extends GetxService {
   Future<void> refreshCache() async {
     print("Refreshing extension state");
     var result = await mcs.invokeMethod("extension-status");
+    if (result == null) return;
     List<dynamic> parsed = json.decode(result);
     cachedStatus = parsed.map((item) => App.fromMap(item)).toList();
     print("Extension state refreshed");
