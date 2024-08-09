@@ -1157,7 +1157,6 @@ class _BackupRestorePanelState extends OptimizedState<BackupRestorePanel> {
                                           return byteData.getUint32(0, Endian.big);
                                         }
                                         int size = listToInt(await chunked.readBytes(4));
-                                        size = 13337763;
                                         String jsonString = const Utf8Decoder().convert(await chunked.readBytes(size));
                                         List<File> files = [];
                                         for (int i = 0; true; i++) {
