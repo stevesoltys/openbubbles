@@ -337,7 +337,7 @@ class _ProfilePanelState extends OptimizedState<ProfilePanel> with WidgetsBindin
                                   const TextSpan(text: "iMessage Status: ", style: TextStyle(height: 3.0)),
                                   TextSpan(
                                       text: accountInfo['login_status_message'],
-                                      style: TextStyle(color: getIndicatorColor(accountInfo['login_status_message'].startsWith("Connected") ? SocketState.connected : SocketState.disconnected))),
+                                      style: TextStyle(color: getIndicatorColor((accountInfo['login_status_message']?.startsWith("Connected") ?? false) ? SocketState.connected : SocketState.disconnected))),
                                   const TextSpan(text: "\n"),
                                   const TextSpan(text: "SMS Forwarding Status: "),
                                   TextSpan(
