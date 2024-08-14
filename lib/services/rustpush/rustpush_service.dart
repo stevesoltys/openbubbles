@@ -535,17 +535,37 @@ class RustPushBackend implements BackendService {
     return true;
   }
 
+  String formatDuration(int seconds, {bool useSecs = false}) {
+    var secs = seconds % 60;
+    var minTotal = seconds ~/ 60;
+    var mins = minTotal % 60;
+    var hrTotal = minTotal ~/ 60;
+    var hrs = hrTotal % 24;
+    var days = hrTotal ~/ 24;
+    String output = "";
+    if (days > 0) output += "${days}d ";
+    if (hrs > 0) output += "${hrs}h ";
+    if (mins > 0) output += "${mins}m ";
+    if (secs > 0 && useSecs) output += "${secs}s ";
+    return output.trim();
+  }
+
   @override
   Future<Map<String, dynamic>> getAccountInfo() async {
     var handles = await api.getHandles(state: pushService.state);
     var state = await api.getRegstate(state: pushService.state);
     var stateStr = "";
     if (state is api.DartRegisterState_Registered) {
-      stateStr = "Connected";
+      stateStr = "Connected (renew in ${formatDuration(state.nextS)})";
     } else if (state is api.DartRegisterState_Registering) {
       stateStr = "Reregistering...";
     } else if (state is api.DartRegisterState_Failed) {
-      stateStr = "Deregistered";
+      String suffix = "";
+      if (state.retryWait != null) {
+        var data = state.retryWait!.toInt();
+        suffix = "(waiting ${formatDuration(data)}; error: ${state.error})";
+      }
+      stateStr = "Deregistered $suffix";
     }
     return {
       "account_name": ss.settings.userName.value,

@@ -2376,7 +2376,9 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     switch (raw[0]) {
       case 0:
-        return DartRegisterState_Registered();
+        return DartRegisterState_Registered(
+          nextS: dco_decode_i_64(raw[1]),
+        );
       case 1:
         return DartRegisterState_Registering();
       case 2:
@@ -3897,7 +3899,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var tag_ = sse_decode_i_32(deserializer);
     switch (tag_) {
       case 0:
-        return DartRegisterState_Registered();
+        var var_nextS = sse_decode_i_64(deserializer);
+        return DartRegisterState_Registered(nextS: var_nextS);
       case 1:
         return DartRegisterState_Registering();
       case 2:
@@ -5490,8 +5493,9 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       DartRegisterState self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     switch (self) {
-      case DartRegisterState_Registered():
+      case DartRegisterState_Registered(nextS: final nextS):
         sse_encode_i_32(0, serializer);
+        sse_encode_i_64(nextS, serializer);
       case DartRegisterState_Registering():
         sse_encode_i_32(1, serializer);
       case DartRegisterState_Failed(

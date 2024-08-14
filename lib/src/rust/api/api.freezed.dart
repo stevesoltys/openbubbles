@@ -8628,21 +8628,21 @@ abstract class DartReactMessageType_Extension extends DartReactMessageType {
 mixin _$DartRegisterState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() registered,
+    required TResult Function(int nextS) registered,
     required TResult Function() registering,
     required TResult Function(BigInt? retryWait, String error) failed,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? registered,
+    TResult? Function(int nextS)? registered,
     TResult? Function()? registering,
     TResult? Function(BigInt? retryWait, String error)? failed,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? registered,
+    TResult Function(int nextS)? registered,
     TResult Function()? registering,
     TResult Function(BigInt? retryWait, String error)? failed,
     required TResult orElse(),
@@ -8696,6 +8696,8 @@ abstract class _$$DartRegisterState_RegisteredImplCopyWith<$Res> {
           _$DartRegisterState_RegisteredImpl value,
           $Res Function(_$DartRegisterState_RegisteredImpl) then) =
       __$$DartRegisterState_RegisteredImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({int nextS});
 }
 
 /// @nodoc
@@ -8707,58 +8709,83 @@ class __$$DartRegisterState_RegisteredImplCopyWithImpl<$Res>
       _$DartRegisterState_RegisteredImpl _value,
       $Res Function(_$DartRegisterState_RegisteredImpl) _then)
       : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? nextS = null,
+  }) {
+    return _then(_$DartRegisterState_RegisteredImpl(
+      nextS: null == nextS
+          ? _value.nextS
+          : nextS // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
 }
 
 /// @nodoc
 
 class _$DartRegisterState_RegisteredImpl extends DartRegisterState_Registered {
-  const _$DartRegisterState_RegisteredImpl() : super._();
+  const _$DartRegisterState_RegisteredImpl({required this.nextS}) : super._();
+
+  @override
+  final int nextS;
 
   @override
   String toString() {
-    return 'DartRegisterState.registered()';
+    return 'DartRegisterState.registered(nextS: $nextS)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$DartRegisterState_RegisteredImpl);
+            other is _$DartRegisterState_RegisteredImpl &&
+            (identical(other.nextS, nextS) || other.nextS == nextS));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode => Object.hash(runtimeType, nextS);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$DartRegisterState_RegisteredImplCopyWith<
+          _$DartRegisterState_RegisteredImpl>
+      get copyWith => __$$DartRegisterState_RegisteredImplCopyWithImpl<
+          _$DartRegisterState_RegisteredImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() registered,
+    required TResult Function(int nextS) registered,
     required TResult Function() registering,
     required TResult Function(BigInt? retryWait, String error) failed,
   }) {
-    return registered();
+    return registered(nextS);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? registered,
+    TResult? Function(int nextS)? registered,
     TResult? Function()? registering,
     TResult? Function(BigInt? retryWait, String error)? failed,
   }) {
-    return registered?.call();
+    return registered?.call(nextS);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? registered,
+    TResult Function(int nextS)? registered,
     TResult Function()? registering,
     TResult Function(BigInt? retryWait, String error)? failed,
     required TResult orElse(),
   }) {
     if (registered != null) {
-      return registered();
+      return registered(nextS);
     }
     return orElse();
   }
@@ -8799,9 +8826,15 @@ class _$DartRegisterState_RegisteredImpl extends DartRegisterState_Registered {
 }
 
 abstract class DartRegisterState_Registered extends DartRegisterState {
-  const factory DartRegisterState_Registered() =
+  const factory DartRegisterState_Registered({required final int nextS}) =
       _$DartRegisterState_RegisteredImpl;
   const DartRegisterState_Registered._() : super._();
+
+  int get nextS;
+  @JsonKey(ignore: true)
+  _$$DartRegisterState_RegisteredImplCopyWith<
+          _$DartRegisterState_RegisteredImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -8847,7 +8880,7 @@ class _$DartRegisterState_RegisteringImpl
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() registered,
+    required TResult Function(int nextS) registered,
     required TResult Function() registering,
     required TResult Function(BigInt? retryWait, String error) failed,
   }) {
@@ -8857,7 +8890,7 @@ class _$DartRegisterState_RegisteringImpl
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? registered,
+    TResult? Function(int nextS)? registered,
     TResult? Function()? registering,
     TResult? Function(BigInt? retryWait, String error)? failed,
   }) {
@@ -8867,7 +8900,7 @@ class _$DartRegisterState_RegisteringImpl
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? registered,
+    TResult Function(int nextS)? registered,
     TResult Function()? registering,
     TResult Function(BigInt? retryWait, String error)? failed,
     required TResult orElse(),
@@ -8997,7 +9030,7 @@ class _$DartRegisterState_FailedImpl extends DartRegisterState_Failed {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() registered,
+    required TResult Function(int nextS) registered,
     required TResult Function() registering,
     required TResult Function(BigInt? retryWait, String error) failed,
   }) {
@@ -9007,7 +9040,7 @@ class _$DartRegisterState_FailedImpl extends DartRegisterState_Failed {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? registered,
+    TResult? Function(int nextS)? registered,
     TResult? Function()? registering,
     TResult? Function(BigInt? retryWait, String error)? failed,
   }) {
@@ -9017,7 +9050,7 @@ class _$DartRegisterState_FailedImpl extends DartRegisterState_Failed {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? registered,
+    TResult Function(int nextS)? registered,
     TResult Function()? registering,
     TResult Function(BigInt? retryWait, String error)? failed,
     required TResult orElse(),

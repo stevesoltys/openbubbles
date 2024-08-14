@@ -951,7 +951,9 @@ enum DartReaction {
 sealed class DartRegisterState with _$DartRegisterState {
   const DartRegisterState._();
 
-  const factory DartRegisterState.registered() = DartRegisterState_Registered;
+  const factory DartRegisterState.registered({
+    required PlatformInt64 nextS,
+  }) = DartRegisterState_Registered;
   const factory DartRegisterState.registering() = DartRegisterState_Registering;
   const factory DartRegisterState.failed({
     BigInt? retryWait,

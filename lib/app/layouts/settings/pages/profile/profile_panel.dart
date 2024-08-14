@@ -32,6 +32,7 @@ class _ProfilePanelState extends OptimizedState<ProfilePanel> with WidgetsBindin
   final RxDouble opacity = 1.0.obs;
   final RxMap<String, dynamic> accountInfo = RxMap({});
   final RxMap<String, dynamic> accountContact = RxMap({});
+  final RxnBool reregisteringIds = RxnBool();
 
   RxList<api.DartPrivateDeviceInfo> forwardingTargets = RxList([]);
 
@@ -335,8 +336,8 @@ class _ProfilePanelState extends OptimizedState<ProfilePanel> with WidgetsBindin
                                   const TextSpan(text: "\n"),
                                   const TextSpan(text: "iMessage Status: ", style: TextStyle(height: 3.0)),
                                   TextSpan(
-                                      text: accountInfo['login_status_message']?.toUpperCase(),
-                                      style: TextStyle(color: getIndicatorColor(accountInfo['login_status_message'] == "Connected" ? SocketState.connected : SocketState.disconnected))),
+                                      text: accountInfo['login_status_message'],
+                                      style: TextStyle(color: getIndicatorColor(accountInfo['login_status_message'].startsWith("Connected") ? SocketState.connected : SocketState.disconnected))),
                                   const TextSpan(text: "\n"),
                                   const TextSpan(text: "SMS Forwarding Status: "),
                                   TextSpan(
@@ -363,6 +364,42 @@ class _ProfilePanelState extends OptimizedState<ProfilePanel> with WidgetsBindin
                             ),
                           ));
                       }),
+                      if (accountInfo['login_status_message'].startsWith("Deregistered"))
+                        Container(
+                          color: tileColor,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 15.0),
+                            child: SettingsDivider(color: context.theme.colorScheme.surfaceVariant),
+                          ),
+                        ),
+                      if (accountInfo['login_status_message'].startsWith("Deregistered"))
+                        SettingsTile(
+                        title: "Retry now",
+                        onTap: () async {
+                          try {
+                            reregisteringIds.value = true;
+                            await api.doReregister(state: pushService.state);
+                            getDetails();
+                            showSnackbar("Success", "Registered");
+                          } catch (e) {
+                            showSnackbar("Failure", e.toString());
+                            rethrow;
+                          } finally {
+                            reregisteringIds.value = false;
+                          }
+                        },
+                        trailing: Obx(() => reregisteringIds.value == null
+                            ? const SizedBox.shrink()
+                            : reregisteringIds.value == true ? Container(
+                            constraints: const BoxConstraints(
+                              maxHeight: 20,
+                              maxWidth: 20,
+                            ),
+                            child: CircularProgressIndicator(
+                              strokeWidth: 3,
+                              valueColor: AlwaysStoppedAnimation<Color>(context.theme.colorScheme.primary),
+                            )) : Icon(Icons.check, color: context.theme.colorScheme.outline))
+                        ),
                       if (accountInfo['active_alias'] != null)
                         Container(
                           color: tileColor,

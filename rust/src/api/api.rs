@@ -941,7 +941,7 @@ pub async fn do_reregister(state: &Arc<PushState>) -> anyhow::Result<()> {
     if !matches!(state.get_phase().await, RegistrationPhase::Registered) {
         panic!("Wrong phase! (send)")
     }
-    state.0.read().await.client.as_ref().unwrap().identity.refresh().await?;
+    state.0.read().await.client.as_ref().unwrap().identity.refresh_now().await?;
     Ok(())
 }
 
@@ -1250,7 +1250,9 @@ pub async fn get_user_name(state: &Arc<PushState>) -> anyhow::Result<String> {
 
 #[frb(type_64bit_int)]
 pub enum DartRegisterState {
-    Registered,
+    Registered {
+        next_s: i64,
+    },
     Registering,
     Failed {
         retry_wait: Option<u64>,
@@ -1263,7 +1265,9 @@ pub async fn get_regstate(state: &Arc<PushState>) -> anyhow::Result<DartRegister
     let mutex_ref = inner.client.as_ref().unwrap().identity.resource_state.lock().await;
     Ok(match &*mutex_ref {
         ResourceState::Generating => DartRegisterState::Registering,
-        ResourceState::Generated => DartRegisterState::Registered,
+        ResourceState::Generated => DartRegisterState::Registered {
+            next_s: inner.client.as_ref().unwrap().identity.calculate_rereg_time_s().await
+        },
         ResourceState::Failed(failure) => 
             DartRegisterState::Failed { retry_wait: failure.retry_wait, error: format!("{}", failure.error) },
     })

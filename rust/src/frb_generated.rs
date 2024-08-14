@@ -3219,7 +3219,8 @@ impl SseDecode for crate::api::api::DartRegisterState {
         let mut tag_ = <i32>::sse_decode(deserializer);
         match tag_ {
             0 => {
-                return crate::api::api::DartRegisterState::Registered;
+                let mut var_nextS = <i64>::sse_decode(deserializer);
+                return crate::api::api::DartRegisterState::Registered { next_s: var_nextS };
             }
             1 => {
                 return crate::api::api::DartRegisterState::Registering;
@@ -4924,7 +4925,9 @@ impl flutter_rust_bridge::IntoIntoDart<crate::api::api::DartReaction>
 impl flutter_rust_bridge::IntoDart for crate::api::api::DartRegisterState {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         match self {
-            crate::api::api::DartRegisterState::Registered => [0.into_dart()].into_dart(),
+            crate::api::api::DartRegisterState::Registered { next_s } => {
+                [0.into_dart(), next_s.into_into_dart().into_dart()].into_dart()
+            }
             crate::api::api::DartRegisterState::Registering => [1.into_dart()].into_dart(),
             crate::api::api::DartRegisterState::Failed { retry_wait, error } => [
                 2.into_dart(),
@@ -5983,8 +5986,9 @@ impl SseEncode for crate::api::api::DartRegisterState {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         match self {
-            crate::api::api::DartRegisterState::Registered => {
+            crate::api::api::DartRegisterState::Registered { next_s } => {
                 <i32>::sse_encode(0, serializer);
+                <i64>::sse_encode(next_s, serializer);
             }
             crate::api::api::DartRegisterState::Registering => {
                 <i32>::sse_encode(1, serializer);
