@@ -1962,6 +1962,7 @@ mixin _$DartMessage {
     required TResult Function() peerCacheInvalidate,
     required TResult Function(DartUpdateExtensionMessage field0)
         updateExtension,
+    required TResult Function(DartErrorMessage field0) error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -1983,6 +1984,7 @@ mixin _$DartMessage {
     TResult? Function()? markUnread,
     TResult? Function()? peerCacheInvalidate,
     TResult? Function(DartUpdateExtensionMessage field0)? updateExtension,
+    TResult? Function(DartErrorMessage field0)? error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -2004,6 +2006,7 @@ mixin _$DartMessage {
     TResult Function()? markUnread,
     TResult Function()? peerCacheInvalidate,
     TResult Function(DartUpdateExtensionMessage field0)? updateExtension,
+    TResult Function(DartErrorMessage field0)? error,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -2031,6 +2034,7 @@ mixin _$DartMessage {
         peerCacheInvalidate,
     required TResult Function(DartMessage_UpdateExtension value)
         updateExtension,
+    required TResult Function(DartMessage_Error value) error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -2055,6 +2059,7 @@ mixin _$DartMessage {
     TResult? Function(DartMessage_PeerCacheInvalidate value)?
         peerCacheInvalidate,
     TResult? Function(DartMessage_UpdateExtension value)? updateExtension,
+    TResult? Function(DartMessage_Error value)? error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -2079,6 +2084,7 @@ mixin _$DartMessage {
     TResult Function(DartMessage_PeerCacheInvalidate value)?
         peerCacheInvalidate,
     TResult Function(DartMessage_UpdateExtension value)? updateExtension,
+    TResult Function(DartMessage_Error value)? error,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -2186,6 +2192,7 @@ class _$DartMessage_MessageImpl extends DartMessage_Message {
     required TResult Function() peerCacheInvalidate,
     required TResult Function(DartUpdateExtensionMessage field0)
         updateExtension,
+    required TResult Function(DartErrorMessage field0) error,
   }) {
     return message(field0);
   }
@@ -2210,6 +2217,7 @@ class _$DartMessage_MessageImpl extends DartMessage_Message {
     TResult? Function()? markUnread,
     TResult? Function()? peerCacheInvalidate,
     TResult? Function(DartUpdateExtensionMessage field0)? updateExtension,
+    TResult? Function(DartErrorMessage field0)? error,
   }) {
     return message?.call(field0);
   }
@@ -2234,6 +2242,7 @@ class _$DartMessage_MessageImpl extends DartMessage_Message {
     TResult Function()? markUnread,
     TResult Function()? peerCacheInvalidate,
     TResult Function(DartUpdateExtensionMessage field0)? updateExtension,
+    TResult Function(DartErrorMessage field0)? error,
     required TResult orElse(),
   }) {
     if (message != null) {
@@ -2267,6 +2276,7 @@ class _$DartMessage_MessageImpl extends DartMessage_Message {
         peerCacheInvalidate,
     required TResult Function(DartMessage_UpdateExtension value)
         updateExtension,
+    required TResult Function(DartMessage_Error value) error,
   }) {
     return message(this);
   }
@@ -2294,6 +2304,7 @@ class _$DartMessage_MessageImpl extends DartMessage_Message {
     TResult? Function(DartMessage_PeerCacheInvalidate value)?
         peerCacheInvalidate,
     TResult? Function(DartMessage_UpdateExtension value)? updateExtension,
+    TResult? Function(DartMessage_Error value)? error,
   }) {
     return message?.call(this);
   }
@@ -2321,6 +2332,7 @@ class _$DartMessage_MessageImpl extends DartMessage_Message {
     TResult Function(DartMessage_PeerCacheInvalidate value)?
         peerCacheInvalidate,
     TResult Function(DartMessage_UpdateExtension value)? updateExtension,
+    TResult Function(DartMessage_Error value)? error,
     required TResult orElse(),
   }) {
     if (message != null) {
@@ -2427,6 +2439,7 @@ class _$DartMessage_RenameMessageImpl extends DartMessage_RenameMessage {
     required TResult Function() peerCacheInvalidate,
     required TResult Function(DartUpdateExtensionMessage field0)
         updateExtension,
+    required TResult Function(DartErrorMessage field0) error,
   }) {
     return renameMessage(field0);
   }
@@ -2451,6 +2464,7 @@ class _$DartMessage_RenameMessageImpl extends DartMessage_RenameMessage {
     TResult? Function()? markUnread,
     TResult? Function()? peerCacheInvalidate,
     TResult? Function(DartUpdateExtensionMessage field0)? updateExtension,
+    TResult? Function(DartErrorMessage field0)? error,
   }) {
     return renameMessage?.call(field0);
   }
@@ -2475,6 +2489,7 @@ class _$DartMessage_RenameMessageImpl extends DartMessage_RenameMessage {
     TResult Function()? markUnread,
     TResult Function()? peerCacheInvalidate,
     TResult Function(DartUpdateExtensionMessage field0)? updateExtension,
+    TResult Function(DartErrorMessage field0)? error,
     required TResult orElse(),
   }) {
     if (renameMessage != null) {
@@ -2508,6 +2523,7 @@ class _$DartMessage_RenameMessageImpl extends DartMessage_RenameMessage {
         peerCacheInvalidate,
     required TResult Function(DartMessage_UpdateExtension value)
         updateExtension,
+    required TResult Function(DartMessage_Error value) error,
   }) {
     return renameMessage(this);
   }
@@ -2535,6 +2551,7 @@ class _$DartMessage_RenameMessageImpl extends DartMessage_RenameMessage {
     TResult? Function(DartMessage_PeerCacheInvalidate value)?
         peerCacheInvalidate,
     TResult? Function(DartMessage_UpdateExtension value)? updateExtension,
+    TResult? Function(DartMessage_Error value)? error,
   }) {
     return renameMessage?.call(this);
   }
@@ -2562,6 +2579,7 @@ class _$DartMessage_RenameMessageImpl extends DartMessage_RenameMessage {
     TResult Function(DartMessage_PeerCacheInvalidate value)?
         peerCacheInvalidate,
     TResult Function(DartMessage_UpdateExtension value)? updateExtension,
+    TResult Function(DartMessage_Error value)? error,
     required TResult orElse(),
   }) {
     if (renameMessage != null) {
@@ -2671,6 +2689,7 @@ class _$DartMessage_ChangeParticipantsImpl
     required TResult Function() peerCacheInvalidate,
     required TResult Function(DartUpdateExtensionMessage field0)
         updateExtension,
+    required TResult Function(DartErrorMessage field0) error,
   }) {
     return changeParticipants(field0);
   }
@@ -2695,6 +2714,7 @@ class _$DartMessage_ChangeParticipantsImpl
     TResult? Function()? markUnread,
     TResult? Function()? peerCacheInvalidate,
     TResult? Function(DartUpdateExtensionMessage field0)? updateExtension,
+    TResult? Function(DartErrorMessage field0)? error,
   }) {
     return changeParticipants?.call(field0);
   }
@@ -2719,6 +2739,7 @@ class _$DartMessage_ChangeParticipantsImpl
     TResult Function()? markUnread,
     TResult Function()? peerCacheInvalidate,
     TResult Function(DartUpdateExtensionMessage field0)? updateExtension,
+    TResult Function(DartErrorMessage field0)? error,
     required TResult orElse(),
   }) {
     if (changeParticipants != null) {
@@ -2752,6 +2773,7 @@ class _$DartMessage_ChangeParticipantsImpl
         peerCacheInvalidate,
     required TResult Function(DartMessage_UpdateExtension value)
         updateExtension,
+    required TResult Function(DartMessage_Error value) error,
   }) {
     return changeParticipants(this);
   }
@@ -2779,6 +2801,7 @@ class _$DartMessage_ChangeParticipantsImpl
     TResult? Function(DartMessage_PeerCacheInvalidate value)?
         peerCacheInvalidate,
     TResult? Function(DartMessage_UpdateExtension value)? updateExtension,
+    TResult? Function(DartMessage_Error value)? error,
   }) {
     return changeParticipants?.call(this);
   }
@@ -2806,6 +2829,7 @@ class _$DartMessage_ChangeParticipantsImpl
     TResult Function(DartMessage_PeerCacheInvalidate value)?
         peerCacheInvalidate,
     TResult Function(DartMessage_UpdateExtension value)? updateExtension,
+    TResult Function(DartMessage_Error value)? error,
     required TResult orElse(),
   }) {
     if (changeParticipants != null) {
@@ -2912,6 +2936,7 @@ class _$DartMessage_ReactImpl extends DartMessage_React {
     required TResult Function() peerCacheInvalidate,
     required TResult Function(DartUpdateExtensionMessage field0)
         updateExtension,
+    required TResult Function(DartErrorMessage field0) error,
   }) {
     return react(field0);
   }
@@ -2936,6 +2961,7 @@ class _$DartMessage_ReactImpl extends DartMessage_React {
     TResult? Function()? markUnread,
     TResult? Function()? peerCacheInvalidate,
     TResult? Function(DartUpdateExtensionMessage field0)? updateExtension,
+    TResult? Function(DartErrorMessage field0)? error,
   }) {
     return react?.call(field0);
   }
@@ -2960,6 +2986,7 @@ class _$DartMessage_ReactImpl extends DartMessage_React {
     TResult Function()? markUnread,
     TResult Function()? peerCacheInvalidate,
     TResult Function(DartUpdateExtensionMessage field0)? updateExtension,
+    TResult Function(DartErrorMessage field0)? error,
     required TResult orElse(),
   }) {
     if (react != null) {
@@ -2993,6 +3020,7 @@ class _$DartMessage_ReactImpl extends DartMessage_React {
         peerCacheInvalidate,
     required TResult Function(DartMessage_UpdateExtension value)
         updateExtension,
+    required TResult Function(DartMessage_Error value) error,
   }) {
     return react(this);
   }
@@ -3020,6 +3048,7 @@ class _$DartMessage_ReactImpl extends DartMessage_React {
     TResult? Function(DartMessage_PeerCacheInvalidate value)?
         peerCacheInvalidate,
     TResult? Function(DartMessage_UpdateExtension value)? updateExtension,
+    TResult? Function(DartMessage_Error value)? error,
   }) {
     return react?.call(this);
   }
@@ -3047,6 +3076,7 @@ class _$DartMessage_ReactImpl extends DartMessage_React {
     TResult Function(DartMessage_PeerCacheInvalidate value)?
         peerCacheInvalidate,
     TResult Function(DartMessage_UpdateExtension value)? updateExtension,
+    TResult Function(DartMessage_Error value)? error,
     required TResult orElse(),
   }) {
     if (react != null) {
@@ -3126,6 +3156,7 @@ class _$DartMessage_DeliveredImpl extends DartMessage_Delivered {
     required TResult Function() peerCacheInvalidate,
     required TResult Function(DartUpdateExtensionMessage field0)
         updateExtension,
+    required TResult Function(DartErrorMessage field0) error,
   }) {
     return delivered();
   }
@@ -3150,6 +3181,7 @@ class _$DartMessage_DeliveredImpl extends DartMessage_Delivered {
     TResult? Function()? markUnread,
     TResult? Function()? peerCacheInvalidate,
     TResult? Function(DartUpdateExtensionMessage field0)? updateExtension,
+    TResult? Function(DartErrorMessage field0)? error,
   }) {
     return delivered?.call();
   }
@@ -3174,6 +3206,7 @@ class _$DartMessage_DeliveredImpl extends DartMessage_Delivered {
     TResult Function()? markUnread,
     TResult Function()? peerCacheInvalidate,
     TResult Function(DartUpdateExtensionMessage field0)? updateExtension,
+    TResult Function(DartErrorMessage field0)? error,
     required TResult orElse(),
   }) {
     if (delivered != null) {
@@ -3207,6 +3240,7 @@ class _$DartMessage_DeliveredImpl extends DartMessage_Delivered {
         peerCacheInvalidate,
     required TResult Function(DartMessage_UpdateExtension value)
         updateExtension,
+    required TResult Function(DartMessage_Error value) error,
   }) {
     return delivered(this);
   }
@@ -3234,6 +3268,7 @@ class _$DartMessage_DeliveredImpl extends DartMessage_Delivered {
     TResult? Function(DartMessage_PeerCacheInvalidate value)?
         peerCacheInvalidate,
     TResult? Function(DartMessage_UpdateExtension value)? updateExtension,
+    TResult? Function(DartMessage_Error value)? error,
   }) {
     return delivered?.call(this);
   }
@@ -3261,6 +3296,7 @@ class _$DartMessage_DeliveredImpl extends DartMessage_Delivered {
     TResult Function(DartMessage_PeerCacheInvalidate value)?
         peerCacheInvalidate,
     TResult Function(DartMessage_UpdateExtension value)? updateExtension,
+    TResult Function(DartMessage_Error value)? error,
     required TResult orElse(),
   }) {
     if (delivered != null) {
@@ -3332,6 +3368,7 @@ class _$DartMessage_ReadImpl extends DartMessage_Read {
     required TResult Function() peerCacheInvalidate,
     required TResult Function(DartUpdateExtensionMessage field0)
         updateExtension,
+    required TResult Function(DartErrorMessage field0) error,
   }) {
     return read();
   }
@@ -3356,6 +3393,7 @@ class _$DartMessage_ReadImpl extends DartMessage_Read {
     TResult? Function()? markUnread,
     TResult? Function()? peerCacheInvalidate,
     TResult? Function(DartUpdateExtensionMessage field0)? updateExtension,
+    TResult? Function(DartErrorMessage field0)? error,
   }) {
     return read?.call();
   }
@@ -3380,6 +3418,7 @@ class _$DartMessage_ReadImpl extends DartMessage_Read {
     TResult Function()? markUnread,
     TResult Function()? peerCacheInvalidate,
     TResult Function(DartUpdateExtensionMessage field0)? updateExtension,
+    TResult Function(DartErrorMessage field0)? error,
     required TResult orElse(),
   }) {
     if (read != null) {
@@ -3413,6 +3452,7 @@ class _$DartMessage_ReadImpl extends DartMessage_Read {
         peerCacheInvalidate,
     required TResult Function(DartMessage_UpdateExtension value)
         updateExtension,
+    required TResult Function(DartMessage_Error value) error,
   }) {
     return read(this);
   }
@@ -3440,6 +3480,7 @@ class _$DartMessage_ReadImpl extends DartMessage_Read {
     TResult? Function(DartMessage_PeerCacheInvalidate value)?
         peerCacheInvalidate,
     TResult? Function(DartMessage_UpdateExtension value)? updateExtension,
+    TResult? Function(DartMessage_Error value)? error,
   }) {
     return read?.call(this);
   }
@@ -3467,6 +3508,7 @@ class _$DartMessage_ReadImpl extends DartMessage_Read {
     TResult Function(DartMessage_PeerCacheInvalidate value)?
         peerCacheInvalidate,
     TResult Function(DartMessage_UpdateExtension value)? updateExtension,
+    TResult Function(DartMessage_Error value)? error,
     required TResult orElse(),
   }) {
     if (read != null) {
@@ -3538,6 +3580,7 @@ class _$DartMessage_TypingImpl extends DartMessage_Typing {
     required TResult Function() peerCacheInvalidate,
     required TResult Function(DartUpdateExtensionMessage field0)
         updateExtension,
+    required TResult Function(DartErrorMessage field0) error,
   }) {
     return typing();
   }
@@ -3562,6 +3605,7 @@ class _$DartMessage_TypingImpl extends DartMessage_Typing {
     TResult? Function()? markUnread,
     TResult? Function()? peerCacheInvalidate,
     TResult? Function(DartUpdateExtensionMessage field0)? updateExtension,
+    TResult? Function(DartErrorMessage field0)? error,
   }) {
     return typing?.call();
   }
@@ -3586,6 +3630,7 @@ class _$DartMessage_TypingImpl extends DartMessage_Typing {
     TResult Function()? markUnread,
     TResult Function()? peerCacheInvalidate,
     TResult Function(DartUpdateExtensionMessage field0)? updateExtension,
+    TResult Function(DartErrorMessage field0)? error,
     required TResult orElse(),
   }) {
     if (typing != null) {
@@ -3619,6 +3664,7 @@ class _$DartMessage_TypingImpl extends DartMessage_Typing {
         peerCacheInvalidate,
     required TResult Function(DartMessage_UpdateExtension value)
         updateExtension,
+    required TResult Function(DartMessage_Error value) error,
   }) {
     return typing(this);
   }
@@ -3646,6 +3692,7 @@ class _$DartMessage_TypingImpl extends DartMessage_Typing {
     TResult? Function(DartMessage_PeerCacheInvalidate value)?
         peerCacheInvalidate,
     TResult? Function(DartMessage_UpdateExtension value)? updateExtension,
+    TResult? Function(DartMessage_Error value)? error,
   }) {
     return typing?.call(this);
   }
@@ -3673,6 +3720,7 @@ class _$DartMessage_TypingImpl extends DartMessage_Typing {
     TResult Function(DartMessage_PeerCacheInvalidate value)?
         peerCacheInvalidate,
     TResult Function(DartMessage_UpdateExtension value)? updateExtension,
+    TResult Function(DartMessage_Error value)? error,
     required TResult orElse(),
   }) {
     if (typing != null) {
@@ -3771,6 +3819,7 @@ class _$DartMessage_UnsendImpl extends DartMessage_Unsend {
     required TResult Function() peerCacheInvalidate,
     required TResult Function(DartUpdateExtensionMessage field0)
         updateExtension,
+    required TResult Function(DartErrorMessage field0) error,
   }) {
     return unsend(field0);
   }
@@ -3795,6 +3844,7 @@ class _$DartMessage_UnsendImpl extends DartMessage_Unsend {
     TResult? Function()? markUnread,
     TResult? Function()? peerCacheInvalidate,
     TResult? Function(DartUpdateExtensionMessage field0)? updateExtension,
+    TResult? Function(DartErrorMessage field0)? error,
   }) {
     return unsend?.call(field0);
   }
@@ -3819,6 +3869,7 @@ class _$DartMessage_UnsendImpl extends DartMessage_Unsend {
     TResult Function()? markUnread,
     TResult Function()? peerCacheInvalidate,
     TResult Function(DartUpdateExtensionMessage field0)? updateExtension,
+    TResult Function(DartErrorMessage field0)? error,
     required TResult orElse(),
   }) {
     if (unsend != null) {
@@ -3852,6 +3903,7 @@ class _$DartMessage_UnsendImpl extends DartMessage_Unsend {
         peerCacheInvalidate,
     required TResult Function(DartMessage_UpdateExtension value)
         updateExtension,
+    required TResult Function(DartMessage_Error value) error,
   }) {
     return unsend(this);
   }
@@ -3879,6 +3931,7 @@ class _$DartMessage_UnsendImpl extends DartMessage_Unsend {
     TResult? Function(DartMessage_PeerCacheInvalidate value)?
         peerCacheInvalidate,
     TResult? Function(DartMessage_UpdateExtension value)? updateExtension,
+    TResult? Function(DartMessage_Error value)? error,
   }) {
     return unsend?.call(this);
   }
@@ -3906,6 +3959,7 @@ class _$DartMessage_UnsendImpl extends DartMessage_Unsend {
     TResult Function(DartMessage_PeerCacheInvalidate value)?
         peerCacheInvalidate,
     TResult Function(DartMessage_UpdateExtension value)? updateExtension,
+    TResult Function(DartMessage_Error value)? error,
     required TResult orElse(),
   }) {
     if (unsend != null) {
@@ -4010,6 +4064,7 @@ class _$DartMessage_EditImpl extends DartMessage_Edit {
     required TResult Function() peerCacheInvalidate,
     required TResult Function(DartUpdateExtensionMessage field0)
         updateExtension,
+    required TResult Function(DartErrorMessage field0) error,
   }) {
     return edit(field0);
   }
@@ -4034,6 +4089,7 @@ class _$DartMessage_EditImpl extends DartMessage_Edit {
     TResult? Function()? markUnread,
     TResult? Function()? peerCacheInvalidate,
     TResult? Function(DartUpdateExtensionMessage field0)? updateExtension,
+    TResult? Function(DartErrorMessage field0)? error,
   }) {
     return edit?.call(field0);
   }
@@ -4058,6 +4114,7 @@ class _$DartMessage_EditImpl extends DartMessage_Edit {
     TResult Function()? markUnread,
     TResult Function()? peerCacheInvalidate,
     TResult Function(DartUpdateExtensionMessage field0)? updateExtension,
+    TResult Function(DartErrorMessage field0)? error,
     required TResult orElse(),
   }) {
     if (edit != null) {
@@ -4091,6 +4148,7 @@ class _$DartMessage_EditImpl extends DartMessage_Edit {
         peerCacheInvalidate,
     required TResult Function(DartMessage_UpdateExtension value)
         updateExtension,
+    required TResult Function(DartMessage_Error value) error,
   }) {
     return edit(this);
   }
@@ -4118,6 +4176,7 @@ class _$DartMessage_EditImpl extends DartMessage_Edit {
     TResult? Function(DartMessage_PeerCacheInvalidate value)?
         peerCacheInvalidate,
     TResult? Function(DartMessage_UpdateExtension value)? updateExtension,
+    TResult? Function(DartMessage_Error value)? error,
   }) {
     return edit?.call(this);
   }
@@ -4145,6 +4204,7 @@ class _$DartMessage_EditImpl extends DartMessage_Edit {
     TResult Function(DartMessage_PeerCacheInvalidate value)?
         peerCacheInvalidate,
     TResult Function(DartMessage_UpdateExtension value)? updateExtension,
+    TResult Function(DartMessage_Error value)? error,
     required TResult orElse(),
   }) {
     if (edit != null) {
@@ -4251,6 +4311,7 @@ class _$DartMessage_IconChangeImpl extends DartMessage_IconChange {
     required TResult Function() peerCacheInvalidate,
     required TResult Function(DartUpdateExtensionMessage field0)
         updateExtension,
+    required TResult Function(DartErrorMessage field0) error,
   }) {
     return iconChange(field0);
   }
@@ -4275,6 +4336,7 @@ class _$DartMessage_IconChangeImpl extends DartMessage_IconChange {
     TResult? Function()? markUnread,
     TResult? Function()? peerCacheInvalidate,
     TResult? Function(DartUpdateExtensionMessage field0)? updateExtension,
+    TResult? Function(DartErrorMessage field0)? error,
   }) {
     return iconChange?.call(field0);
   }
@@ -4299,6 +4361,7 @@ class _$DartMessage_IconChangeImpl extends DartMessage_IconChange {
     TResult Function()? markUnread,
     TResult Function()? peerCacheInvalidate,
     TResult Function(DartUpdateExtensionMessage field0)? updateExtension,
+    TResult Function(DartErrorMessage field0)? error,
     required TResult orElse(),
   }) {
     if (iconChange != null) {
@@ -4332,6 +4395,7 @@ class _$DartMessage_IconChangeImpl extends DartMessage_IconChange {
         peerCacheInvalidate,
     required TResult Function(DartMessage_UpdateExtension value)
         updateExtension,
+    required TResult Function(DartMessage_Error value) error,
   }) {
     return iconChange(this);
   }
@@ -4359,6 +4423,7 @@ class _$DartMessage_IconChangeImpl extends DartMessage_IconChange {
     TResult? Function(DartMessage_PeerCacheInvalidate value)?
         peerCacheInvalidate,
     TResult? Function(DartMessage_UpdateExtension value)? updateExtension,
+    TResult? Function(DartMessage_Error value)? error,
   }) {
     return iconChange?.call(this);
   }
@@ -4386,6 +4451,7 @@ class _$DartMessage_IconChangeImpl extends DartMessage_IconChange {
     TResult Function(DartMessage_PeerCacheInvalidate value)?
         peerCacheInvalidate,
     TResult Function(DartMessage_UpdateExtension value)? updateExtension,
+    TResult Function(DartMessage_Error value)? error,
     required TResult orElse(),
   }) {
     if (iconChange != null) {
@@ -4466,6 +4532,7 @@ class _$DartMessage_StopTypingImpl extends DartMessage_StopTyping {
     required TResult Function() peerCacheInvalidate,
     required TResult Function(DartUpdateExtensionMessage field0)
         updateExtension,
+    required TResult Function(DartErrorMessage field0) error,
   }) {
     return stopTyping();
   }
@@ -4490,6 +4557,7 @@ class _$DartMessage_StopTypingImpl extends DartMessage_StopTyping {
     TResult? Function()? markUnread,
     TResult? Function()? peerCacheInvalidate,
     TResult? Function(DartUpdateExtensionMessage field0)? updateExtension,
+    TResult? Function(DartErrorMessage field0)? error,
   }) {
     return stopTyping?.call();
   }
@@ -4514,6 +4582,7 @@ class _$DartMessage_StopTypingImpl extends DartMessage_StopTyping {
     TResult Function()? markUnread,
     TResult Function()? peerCacheInvalidate,
     TResult Function(DartUpdateExtensionMessage field0)? updateExtension,
+    TResult Function(DartErrorMessage field0)? error,
     required TResult orElse(),
   }) {
     if (stopTyping != null) {
@@ -4547,6 +4616,7 @@ class _$DartMessage_StopTypingImpl extends DartMessage_StopTyping {
         peerCacheInvalidate,
     required TResult Function(DartMessage_UpdateExtension value)
         updateExtension,
+    required TResult Function(DartMessage_Error value) error,
   }) {
     return stopTyping(this);
   }
@@ -4574,6 +4644,7 @@ class _$DartMessage_StopTypingImpl extends DartMessage_StopTyping {
     TResult? Function(DartMessage_PeerCacheInvalidate value)?
         peerCacheInvalidate,
     TResult? Function(DartMessage_UpdateExtension value)? updateExtension,
+    TResult? Function(DartMessage_Error value)? error,
   }) {
     return stopTyping?.call(this);
   }
@@ -4601,6 +4672,7 @@ class _$DartMessage_StopTypingImpl extends DartMessage_StopTyping {
     TResult Function(DartMessage_PeerCacheInvalidate value)?
         peerCacheInvalidate,
     TResult Function(DartMessage_UpdateExtension value)? updateExtension,
+    TResult Function(DartMessage_Error value)? error,
     required TResult orElse(),
   }) {
     if (stopTyping != null) {
@@ -4704,6 +4776,7 @@ class _$DartMessage_EnableSmsActivationImpl
     required TResult Function() peerCacheInvalidate,
     required TResult Function(DartUpdateExtensionMessage field0)
         updateExtension,
+    required TResult Function(DartErrorMessage field0) error,
   }) {
     return enableSmsActivation(field0);
   }
@@ -4728,6 +4801,7 @@ class _$DartMessage_EnableSmsActivationImpl
     TResult? Function()? markUnread,
     TResult? Function()? peerCacheInvalidate,
     TResult? Function(DartUpdateExtensionMessage field0)? updateExtension,
+    TResult? Function(DartErrorMessage field0)? error,
   }) {
     return enableSmsActivation?.call(field0);
   }
@@ -4752,6 +4826,7 @@ class _$DartMessage_EnableSmsActivationImpl
     TResult Function()? markUnread,
     TResult Function()? peerCacheInvalidate,
     TResult Function(DartUpdateExtensionMessage field0)? updateExtension,
+    TResult Function(DartErrorMessage field0)? error,
     required TResult orElse(),
   }) {
     if (enableSmsActivation != null) {
@@ -4785,6 +4860,7 @@ class _$DartMessage_EnableSmsActivationImpl
         peerCacheInvalidate,
     required TResult Function(DartMessage_UpdateExtension value)
         updateExtension,
+    required TResult Function(DartMessage_Error value) error,
   }) {
     return enableSmsActivation(this);
   }
@@ -4812,6 +4888,7 @@ class _$DartMessage_EnableSmsActivationImpl
     TResult? Function(DartMessage_PeerCacheInvalidate value)?
         peerCacheInvalidate,
     TResult? Function(DartMessage_UpdateExtension value)? updateExtension,
+    TResult? Function(DartMessage_Error value)? error,
   }) {
     return enableSmsActivation?.call(this);
   }
@@ -4839,6 +4916,7 @@ class _$DartMessage_EnableSmsActivationImpl
     TResult Function(DartMessage_PeerCacheInvalidate value)?
         peerCacheInvalidate,
     TResult Function(DartMessage_UpdateExtension value)? updateExtension,
+    TResult Function(DartMessage_Error value)? error,
     required TResult orElse(),
   }) {
     if (enableSmsActivation != null) {
@@ -4922,6 +5000,7 @@ class _$DartMessage_MessageReadOnDeviceImpl
     required TResult Function() peerCacheInvalidate,
     required TResult Function(DartUpdateExtensionMessage field0)
         updateExtension,
+    required TResult Function(DartErrorMessage field0) error,
   }) {
     return messageReadOnDevice();
   }
@@ -4946,6 +5025,7 @@ class _$DartMessage_MessageReadOnDeviceImpl
     TResult? Function()? markUnread,
     TResult? Function()? peerCacheInvalidate,
     TResult? Function(DartUpdateExtensionMessage field0)? updateExtension,
+    TResult? Function(DartErrorMessage field0)? error,
   }) {
     return messageReadOnDevice?.call();
   }
@@ -4970,6 +5050,7 @@ class _$DartMessage_MessageReadOnDeviceImpl
     TResult Function()? markUnread,
     TResult Function()? peerCacheInvalidate,
     TResult Function(DartUpdateExtensionMessage field0)? updateExtension,
+    TResult Function(DartErrorMessage field0)? error,
     required TResult orElse(),
   }) {
     if (messageReadOnDevice != null) {
@@ -5003,6 +5084,7 @@ class _$DartMessage_MessageReadOnDeviceImpl
         peerCacheInvalidate,
     required TResult Function(DartMessage_UpdateExtension value)
         updateExtension,
+    required TResult Function(DartMessage_Error value) error,
   }) {
     return messageReadOnDevice(this);
   }
@@ -5030,6 +5112,7 @@ class _$DartMessage_MessageReadOnDeviceImpl
     TResult? Function(DartMessage_PeerCacheInvalidate value)?
         peerCacheInvalidate,
     TResult? Function(DartMessage_UpdateExtension value)? updateExtension,
+    TResult? Function(DartMessage_Error value)? error,
   }) {
     return messageReadOnDevice?.call(this);
   }
@@ -5057,6 +5140,7 @@ class _$DartMessage_MessageReadOnDeviceImpl
     TResult Function(DartMessage_PeerCacheInvalidate value)?
         peerCacheInvalidate,
     TResult Function(DartMessage_UpdateExtension value)? updateExtension,
+    TResult Function(DartMessage_Error value)? error,
     required TResult orElse(),
   }) {
     if (messageReadOnDevice != null) {
@@ -5158,6 +5242,7 @@ class _$DartMessage_SmsConfirmSentImpl extends DartMessage_SmsConfirmSent {
     required TResult Function() peerCacheInvalidate,
     required TResult Function(DartUpdateExtensionMessage field0)
         updateExtension,
+    required TResult Function(DartErrorMessage field0) error,
   }) {
     return smsConfirmSent(field0);
   }
@@ -5182,6 +5267,7 @@ class _$DartMessage_SmsConfirmSentImpl extends DartMessage_SmsConfirmSent {
     TResult? Function()? markUnread,
     TResult? Function()? peerCacheInvalidate,
     TResult? Function(DartUpdateExtensionMessage field0)? updateExtension,
+    TResult? Function(DartErrorMessage field0)? error,
   }) {
     return smsConfirmSent?.call(field0);
   }
@@ -5206,6 +5292,7 @@ class _$DartMessage_SmsConfirmSentImpl extends DartMessage_SmsConfirmSent {
     TResult Function()? markUnread,
     TResult Function()? peerCacheInvalidate,
     TResult Function(DartUpdateExtensionMessage field0)? updateExtension,
+    TResult Function(DartErrorMessage field0)? error,
     required TResult orElse(),
   }) {
     if (smsConfirmSent != null) {
@@ -5239,6 +5326,7 @@ class _$DartMessage_SmsConfirmSentImpl extends DartMessage_SmsConfirmSent {
         peerCacheInvalidate,
     required TResult Function(DartMessage_UpdateExtension value)
         updateExtension,
+    required TResult Function(DartMessage_Error value) error,
   }) {
     return smsConfirmSent(this);
   }
@@ -5266,6 +5354,7 @@ class _$DartMessage_SmsConfirmSentImpl extends DartMessage_SmsConfirmSent {
     TResult? Function(DartMessage_PeerCacheInvalidate value)?
         peerCacheInvalidate,
     TResult? Function(DartMessage_UpdateExtension value)? updateExtension,
+    TResult? Function(DartMessage_Error value)? error,
   }) {
     return smsConfirmSent?.call(this);
   }
@@ -5293,6 +5382,7 @@ class _$DartMessage_SmsConfirmSentImpl extends DartMessage_SmsConfirmSent {
     TResult Function(DartMessage_PeerCacheInvalidate value)?
         peerCacheInvalidate,
     TResult Function(DartMessage_UpdateExtension value)? updateExtension,
+    TResult Function(DartMessage_Error value)? error,
     required TResult orElse(),
   }) {
     if (smsConfirmSent != null) {
@@ -5373,6 +5463,7 @@ class _$DartMessage_MarkUnreadImpl extends DartMessage_MarkUnread {
     required TResult Function() peerCacheInvalidate,
     required TResult Function(DartUpdateExtensionMessage field0)
         updateExtension,
+    required TResult Function(DartErrorMessage field0) error,
   }) {
     return markUnread();
   }
@@ -5397,6 +5488,7 @@ class _$DartMessage_MarkUnreadImpl extends DartMessage_MarkUnread {
     TResult? Function()? markUnread,
     TResult? Function()? peerCacheInvalidate,
     TResult? Function(DartUpdateExtensionMessage field0)? updateExtension,
+    TResult? Function(DartErrorMessage field0)? error,
   }) {
     return markUnread?.call();
   }
@@ -5421,6 +5513,7 @@ class _$DartMessage_MarkUnreadImpl extends DartMessage_MarkUnread {
     TResult Function()? markUnread,
     TResult Function()? peerCacheInvalidate,
     TResult Function(DartUpdateExtensionMessage field0)? updateExtension,
+    TResult Function(DartErrorMessage field0)? error,
     required TResult orElse(),
   }) {
     if (markUnread != null) {
@@ -5454,6 +5547,7 @@ class _$DartMessage_MarkUnreadImpl extends DartMessage_MarkUnread {
         peerCacheInvalidate,
     required TResult Function(DartMessage_UpdateExtension value)
         updateExtension,
+    required TResult Function(DartMessage_Error value) error,
   }) {
     return markUnread(this);
   }
@@ -5481,6 +5575,7 @@ class _$DartMessage_MarkUnreadImpl extends DartMessage_MarkUnread {
     TResult? Function(DartMessage_PeerCacheInvalidate value)?
         peerCacheInvalidate,
     TResult? Function(DartMessage_UpdateExtension value)? updateExtension,
+    TResult? Function(DartMessage_Error value)? error,
   }) {
     return markUnread?.call(this);
   }
@@ -5508,6 +5603,7 @@ class _$DartMessage_MarkUnreadImpl extends DartMessage_MarkUnread {
     TResult Function(DartMessage_PeerCacheInvalidate value)?
         peerCacheInvalidate,
     TResult Function(DartMessage_UpdateExtension value)? updateExtension,
+    TResult Function(DartMessage_Error value)? error,
     required TResult orElse(),
   }) {
     if (markUnread != null) {
@@ -5584,6 +5680,7 @@ class _$DartMessage_PeerCacheInvalidateImpl
     required TResult Function() peerCacheInvalidate,
     required TResult Function(DartUpdateExtensionMessage field0)
         updateExtension,
+    required TResult Function(DartErrorMessage field0) error,
   }) {
     return peerCacheInvalidate();
   }
@@ -5608,6 +5705,7 @@ class _$DartMessage_PeerCacheInvalidateImpl
     TResult? Function()? markUnread,
     TResult? Function()? peerCacheInvalidate,
     TResult? Function(DartUpdateExtensionMessage field0)? updateExtension,
+    TResult? Function(DartErrorMessage field0)? error,
   }) {
     return peerCacheInvalidate?.call();
   }
@@ -5632,6 +5730,7 @@ class _$DartMessage_PeerCacheInvalidateImpl
     TResult Function()? markUnread,
     TResult Function()? peerCacheInvalidate,
     TResult Function(DartUpdateExtensionMessage field0)? updateExtension,
+    TResult Function(DartErrorMessage field0)? error,
     required TResult orElse(),
   }) {
     if (peerCacheInvalidate != null) {
@@ -5665,6 +5764,7 @@ class _$DartMessage_PeerCacheInvalidateImpl
         peerCacheInvalidate,
     required TResult Function(DartMessage_UpdateExtension value)
         updateExtension,
+    required TResult Function(DartMessage_Error value) error,
   }) {
     return peerCacheInvalidate(this);
   }
@@ -5692,6 +5792,7 @@ class _$DartMessage_PeerCacheInvalidateImpl
     TResult? Function(DartMessage_PeerCacheInvalidate value)?
         peerCacheInvalidate,
     TResult? Function(DartMessage_UpdateExtension value)? updateExtension,
+    TResult? Function(DartMessage_Error value)? error,
   }) {
     return peerCacheInvalidate?.call(this);
   }
@@ -5719,6 +5820,7 @@ class _$DartMessage_PeerCacheInvalidateImpl
     TResult Function(DartMessage_PeerCacheInvalidate value)?
         peerCacheInvalidate,
     TResult Function(DartMessage_UpdateExtension value)? updateExtension,
+    TResult Function(DartMessage_Error value)? error,
     required TResult orElse(),
   }) {
     if (peerCacheInvalidate != null) {
@@ -5820,6 +5922,7 @@ class _$DartMessage_UpdateExtensionImpl extends DartMessage_UpdateExtension {
     required TResult Function() peerCacheInvalidate,
     required TResult Function(DartUpdateExtensionMessage field0)
         updateExtension,
+    required TResult Function(DartErrorMessage field0) error,
   }) {
     return updateExtension(field0);
   }
@@ -5844,6 +5947,7 @@ class _$DartMessage_UpdateExtensionImpl extends DartMessage_UpdateExtension {
     TResult? Function()? markUnread,
     TResult? Function()? peerCacheInvalidate,
     TResult? Function(DartUpdateExtensionMessage field0)? updateExtension,
+    TResult? Function(DartErrorMessage field0)? error,
   }) {
     return updateExtension?.call(field0);
   }
@@ -5868,6 +5972,7 @@ class _$DartMessage_UpdateExtensionImpl extends DartMessage_UpdateExtension {
     TResult Function()? markUnread,
     TResult Function()? peerCacheInvalidate,
     TResult Function(DartUpdateExtensionMessage field0)? updateExtension,
+    TResult Function(DartErrorMessage field0)? error,
     required TResult orElse(),
   }) {
     if (updateExtension != null) {
@@ -5901,6 +6006,7 @@ class _$DartMessage_UpdateExtensionImpl extends DartMessage_UpdateExtension {
         peerCacheInvalidate,
     required TResult Function(DartMessage_UpdateExtension value)
         updateExtension,
+    required TResult Function(DartMessage_Error value) error,
   }) {
     return updateExtension(this);
   }
@@ -5928,6 +6034,7 @@ class _$DartMessage_UpdateExtensionImpl extends DartMessage_UpdateExtension {
     TResult? Function(DartMessage_PeerCacheInvalidate value)?
         peerCacheInvalidate,
     TResult? Function(DartMessage_UpdateExtension value)? updateExtension,
+    TResult? Function(DartMessage_Error value)? error,
   }) {
     return updateExtension?.call(this);
   }
@@ -5955,6 +6062,7 @@ class _$DartMessage_UpdateExtensionImpl extends DartMessage_UpdateExtension {
     TResult Function(DartMessage_PeerCacheInvalidate value)?
         peerCacheInvalidate,
     TResult Function(DartMessage_UpdateExtension value)? updateExtension,
+    TResult Function(DartMessage_Error value)? error,
     required TResult orElse(),
   }) {
     if (updateExtension != null) {
@@ -5974,6 +6082,251 @@ abstract class DartMessage_UpdateExtension extends DartMessage {
   @JsonKey(ignore: true)
   _$$DartMessage_UpdateExtensionImplCopyWith<_$DartMessage_UpdateExtensionImpl>
       get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$DartMessage_ErrorImplCopyWith<$Res> {
+  factory _$$DartMessage_ErrorImplCopyWith(_$DartMessage_ErrorImpl value,
+          $Res Function(_$DartMessage_ErrorImpl) then) =
+      __$$DartMessage_ErrorImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({DartErrorMessage field0});
+}
+
+/// @nodoc
+class __$$DartMessage_ErrorImplCopyWithImpl<$Res>
+    extends _$DartMessageCopyWithImpl<$Res, _$DartMessage_ErrorImpl>
+    implements _$$DartMessage_ErrorImplCopyWith<$Res> {
+  __$$DartMessage_ErrorImplCopyWithImpl(_$DartMessage_ErrorImpl _value,
+      $Res Function(_$DartMessage_ErrorImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? field0 = null,
+  }) {
+    return _then(_$DartMessage_ErrorImpl(
+      null == field0
+          ? _value.field0
+          : field0 // ignore: cast_nullable_to_non_nullable
+              as DartErrorMessage,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$DartMessage_ErrorImpl extends DartMessage_Error {
+  const _$DartMessage_ErrorImpl(this.field0) : super._();
+
+  @override
+  final DartErrorMessage field0;
+
+  @override
+  String toString() {
+    return 'DartMessage.error(field0: $field0)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$DartMessage_ErrorImpl &&
+            (identical(other.field0, field0) || other.field0 == field0));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, field0);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$DartMessage_ErrorImplCopyWith<_$DartMessage_ErrorImpl> get copyWith =>
+      __$$DartMessage_ErrorImplCopyWithImpl<_$DartMessage_ErrorImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(DartNormalMessage field0) message,
+    required TResult Function(DartRenameMessage field0) renameMessage,
+    required TResult Function(DartChangeParticipantMessage field0)
+        changeParticipants,
+    required TResult Function(DartReactMessage field0) react,
+    required TResult Function() delivered,
+    required TResult Function() read,
+    required TResult Function() typing,
+    required TResult Function(DartUnsendMessage field0) unsend,
+    required TResult Function(DartEditMessage field0) edit,
+    required TResult Function(DartIconChangeMessage field0) iconChange,
+    required TResult Function() stopTyping,
+    required TResult Function(bool field0) enableSmsActivation,
+    required TResult Function() messageReadOnDevice,
+    required TResult Function(bool field0) smsConfirmSent,
+    required TResult Function() markUnread,
+    required TResult Function() peerCacheInvalidate,
+    required TResult Function(DartUpdateExtensionMessage field0)
+        updateExtension,
+    required TResult Function(DartErrorMessage field0) error,
+  }) {
+    return error(field0);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(DartNormalMessage field0)? message,
+    TResult? Function(DartRenameMessage field0)? renameMessage,
+    TResult? Function(DartChangeParticipantMessage field0)? changeParticipants,
+    TResult? Function(DartReactMessage field0)? react,
+    TResult? Function()? delivered,
+    TResult? Function()? read,
+    TResult? Function()? typing,
+    TResult? Function(DartUnsendMessage field0)? unsend,
+    TResult? Function(DartEditMessage field0)? edit,
+    TResult? Function(DartIconChangeMessage field0)? iconChange,
+    TResult? Function()? stopTyping,
+    TResult? Function(bool field0)? enableSmsActivation,
+    TResult? Function()? messageReadOnDevice,
+    TResult? Function(bool field0)? smsConfirmSent,
+    TResult? Function()? markUnread,
+    TResult? Function()? peerCacheInvalidate,
+    TResult? Function(DartUpdateExtensionMessage field0)? updateExtension,
+    TResult? Function(DartErrorMessage field0)? error,
+  }) {
+    return error?.call(field0);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(DartNormalMessage field0)? message,
+    TResult Function(DartRenameMessage field0)? renameMessage,
+    TResult Function(DartChangeParticipantMessage field0)? changeParticipants,
+    TResult Function(DartReactMessage field0)? react,
+    TResult Function()? delivered,
+    TResult Function()? read,
+    TResult Function()? typing,
+    TResult Function(DartUnsendMessage field0)? unsend,
+    TResult Function(DartEditMessage field0)? edit,
+    TResult Function(DartIconChangeMessage field0)? iconChange,
+    TResult Function()? stopTyping,
+    TResult Function(bool field0)? enableSmsActivation,
+    TResult Function()? messageReadOnDevice,
+    TResult Function(bool field0)? smsConfirmSent,
+    TResult Function()? markUnread,
+    TResult Function()? peerCacheInvalidate,
+    TResult Function(DartUpdateExtensionMessage field0)? updateExtension,
+    TResult Function(DartErrorMessage field0)? error,
+    required TResult orElse(),
+  }) {
+    if (error != null) {
+      return error(field0);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(DartMessage_Message value) message,
+    required TResult Function(DartMessage_RenameMessage value) renameMessage,
+    required TResult Function(DartMessage_ChangeParticipants value)
+        changeParticipants,
+    required TResult Function(DartMessage_React value) react,
+    required TResult Function(DartMessage_Delivered value) delivered,
+    required TResult Function(DartMessage_Read value) read,
+    required TResult Function(DartMessage_Typing value) typing,
+    required TResult Function(DartMessage_Unsend value) unsend,
+    required TResult Function(DartMessage_Edit value) edit,
+    required TResult Function(DartMessage_IconChange value) iconChange,
+    required TResult Function(DartMessage_StopTyping value) stopTyping,
+    required TResult Function(DartMessage_EnableSmsActivation value)
+        enableSmsActivation,
+    required TResult Function(DartMessage_MessageReadOnDevice value)
+        messageReadOnDevice,
+    required TResult Function(DartMessage_SmsConfirmSent value) smsConfirmSent,
+    required TResult Function(DartMessage_MarkUnread value) markUnread,
+    required TResult Function(DartMessage_PeerCacheInvalidate value)
+        peerCacheInvalidate,
+    required TResult Function(DartMessage_UpdateExtension value)
+        updateExtension,
+    required TResult Function(DartMessage_Error value) error,
+  }) {
+    return error(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(DartMessage_Message value)? message,
+    TResult? Function(DartMessage_RenameMessage value)? renameMessage,
+    TResult? Function(DartMessage_ChangeParticipants value)? changeParticipants,
+    TResult? Function(DartMessage_React value)? react,
+    TResult? Function(DartMessage_Delivered value)? delivered,
+    TResult? Function(DartMessage_Read value)? read,
+    TResult? Function(DartMessage_Typing value)? typing,
+    TResult? Function(DartMessage_Unsend value)? unsend,
+    TResult? Function(DartMessage_Edit value)? edit,
+    TResult? Function(DartMessage_IconChange value)? iconChange,
+    TResult? Function(DartMessage_StopTyping value)? stopTyping,
+    TResult? Function(DartMessage_EnableSmsActivation value)?
+        enableSmsActivation,
+    TResult? Function(DartMessage_MessageReadOnDevice value)?
+        messageReadOnDevice,
+    TResult? Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
+    TResult? Function(DartMessage_MarkUnread value)? markUnread,
+    TResult? Function(DartMessage_PeerCacheInvalidate value)?
+        peerCacheInvalidate,
+    TResult? Function(DartMessage_UpdateExtension value)? updateExtension,
+    TResult? Function(DartMessage_Error value)? error,
+  }) {
+    return error?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(DartMessage_Message value)? message,
+    TResult Function(DartMessage_RenameMessage value)? renameMessage,
+    TResult Function(DartMessage_ChangeParticipants value)? changeParticipants,
+    TResult Function(DartMessage_React value)? react,
+    TResult Function(DartMessage_Delivered value)? delivered,
+    TResult Function(DartMessage_Read value)? read,
+    TResult Function(DartMessage_Typing value)? typing,
+    TResult Function(DartMessage_Unsend value)? unsend,
+    TResult Function(DartMessage_Edit value)? edit,
+    TResult Function(DartMessage_IconChange value)? iconChange,
+    TResult Function(DartMessage_StopTyping value)? stopTyping,
+    TResult Function(DartMessage_EnableSmsActivation value)?
+        enableSmsActivation,
+    TResult Function(DartMessage_MessageReadOnDevice value)?
+        messageReadOnDevice,
+    TResult Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
+    TResult Function(DartMessage_MarkUnread value)? markUnread,
+    TResult Function(DartMessage_PeerCacheInvalidate value)?
+        peerCacheInvalidate,
+    TResult Function(DartMessage_UpdateExtension value)? updateExtension,
+    TResult Function(DartMessage_Error value)? error,
+    required TResult orElse(),
+  }) {
+    if (error != null) {
+      return error(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class DartMessage_Error extends DartMessage {
+  const factory DartMessage_Error(final DartErrorMessage field0) =
+      _$DartMessage_ErrorImpl;
+  const DartMessage_Error._() : super._();
+
+  DartErrorMessage get field0;
+  @JsonKey(ignore: true)
+  _$$DartMessage_ErrorImplCopyWith<_$DartMessage_ErrorImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc

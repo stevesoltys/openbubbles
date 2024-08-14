@@ -2741,6 +2741,20 @@ impl SseDecode for crate::api::api::DartEditMessage {
     }
 }
 
+impl SseDecode for crate::api::api::DartErrorMessage {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_forUuid = <String>::sse_decode(deserializer);
+        let mut var_status = <u64>::sse_decode(deserializer);
+        let mut var_statusStr = <String>::sse_decode(deserializer);
+        return crate::api::api::DartErrorMessage {
+            for_uuid: var_forUuid,
+            status: var_status,
+            status_str: var_statusStr,
+        };
+    }
+}
+
 impl SseDecode for crate::api::api::DartExtensionApp {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -2821,6 +2835,18 @@ impl SseDecode for crate::api::api::DartIndexedMessagePart {
             part: var_part_,
             idx: var_idx,
             ext: var_ext,
+        };
+    }
+}
+
+impl SseDecode for crate::api::api::DartLinkMeta {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_data = <crate::api::api::LPLinkMetadata>::sse_decode(deserializer);
+        let mut var_attachments = <Vec<Vec<u8>>>::sse_decode(deserializer);
+        return crate::api::api::DartLinkMeta {
+            data: var_data,
+            attachments: var_attachments,
         };
     }
 }
@@ -2928,6 +2954,10 @@ impl SseDecode for crate::api::api::DartMessage {
                 let mut var_field0 =
                     <crate::api::api::DartUpdateExtensionMessage>::sse_decode(deserializer);
                 return crate::api::api::DartMessage::UpdateExtension(var_field0);
+            }
+            17 => {
+                let mut var_field0 = <crate::api::api::DartErrorMessage>::sse_decode(deserializer);
+                return crate::api::api::DartMessage::Error(var_field0);
             }
             _ => {
                 unimplemented!("");
@@ -3047,6 +3077,7 @@ impl SseDecode for crate::api::api::DartNormalMessage {
         let mut var_service = <crate::api::api::DartMessageType>::sse_decode(deserializer);
         let mut var_subject = <Option<String>>::sse_decode(deserializer);
         let mut var_app = <Option<crate::api::api::DartExtensionApp>>::sse_decode(deserializer);
+        let mut var_linkMeta = <Option<crate::api::api::DartLinkMeta>>::sse_decode(deserializer);
         return crate::api::api::DartNormalMessage {
             parts: var_parts,
             effect: var_effect,
@@ -3055,6 +3086,7 @@ impl SseDecode for crate::api::api::DartNormalMessage {
             service: var_service,
             subject: var_subject,
             app: var_app,
+            link_meta: var_linkMeta,
         };
     }
 }
@@ -3384,6 +3416,42 @@ impl SseDecode for Vec<crate::api::api::DartTrustedPhoneNumber> {
     }
 }
 
+impl SseDecode for Vec<Vec<u8>> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = vec![];
+        for idx_ in 0..len_ {
+            ans_.push(<Vec<u8>>::sse_decode(deserializer));
+        }
+        return ans_;
+    }
+}
+
+impl SseDecode for Vec<crate::api::api::LPIconMetadata> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = vec![];
+        for idx_ in 0..len_ {
+            ans_.push(<crate::api::api::LPIconMetadata>::sse_decode(deserializer));
+        }
+        return ans_;
+    }
+}
+
+impl SseDecode for Vec<crate::api::api::LPImageMetadata> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = vec![];
+        for idx_ in 0..len_ {
+            ans_.push(<crate::api::api::LPImageMetadata>::sse_decode(deserializer));
+        }
+        return ans_;
+    }
+}
+
 impl SseDecode for Vec<u8> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -3393,6 +3461,66 @@ impl SseDecode for Vec<u8> {
             ans_.push(<u8>::sse_decode(deserializer));
         }
         return ans_;
+    }
+}
+
+impl SseDecode for crate::api::api::LPIconMetadata {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_url = <crate::api::api::NSURL>::sse_decode(deserializer);
+        let mut var_version = <u8>::sse_decode(deserializer);
+        return crate::api::api::LPIconMetadata {
+            url: var_url,
+            version: var_version,
+        };
+    }
+}
+
+impl SseDecode for crate::api::api::LPImageMetadata {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_size = <String>::sse_decode(deserializer);
+        let mut var_url = <crate::api::api::NSURL>::sse_decode(deserializer);
+        let mut var_version = <u8>::sse_decode(deserializer);
+        return crate::api::api::LPImageMetadata {
+            size: var_size,
+            url: var_url,
+            version: var_version,
+        };
+    }
+}
+
+impl SseDecode for crate::api::api::LPLinkMetadata {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_imageMetadata =
+            <Option<crate::api::api::LPImageMetadata>>::sse_decode(deserializer);
+        let mut var_version = <u8>::sse_decode(deserializer);
+        let mut var_iconMetadata =
+            <Option<crate::api::api::LPIconMetadata>>::sse_decode(deserializer);
+        let mut var_originalUrl = <crate::api::api::NSURL>::sse_decode(deserializer);
+        let mut var_url = <Option<crate::api::api::NSURL>>::sse_decode(deserializer);
+        let mut var_title = <Option<String>>::sse_decode(deserializer);
+        let mut var_summary = <Option<String>>::sse_decode(deserializer);
+        let mut var_image =
+            <Option<crate::api::api::RichLinkImageAttachmentSubstitute>>::sse_decode(deserializer);
+        let mut var_icon =
+            <Option<crate::api::api::RichLinkImageAttachmentSubstitute>>::sse_decode(deserializer);
+        let mut var_images = <Option<crate::api::api::NSArrayImageArray>>::sse_decode(deserializer);
+        let mut var_icons = <Option<crate::api::api::NSArrayIconArray>>::sse_decode(deserializer);
+        return crate::api::api::LPLinkMetadata {
+            image_metadata: var_imageMetadata,
+            version: var_version,
+            icon_metadata: var_iconMetadata,
+            original_url: var_originalUrl,
+            url: var_url,
+            title: var_title,
+            summary: var_summary,
+            image: var_image,
+            icon: var_icon,
+            images: var_images,
+            icons: var_icons,
+        };
     }
 }
 
@@ -3417,6 +3545,42 @@ impl SseDecode for crate::api::api::MyAsyncRuntime {
     }
 }
 
+impl SseDecode for crate::api::api::NSArrayClass {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <i32>::sse_decode(deserializer);
+        return match inner {
+            0 => crate::api::api::NSArrayClass::NSArray,
+            1 => crate::api::api::NSArrayClass::NSMutableArray,
+            _ => unreachable!("Invalid variant for NSArrayClass: {}", inner),
+        };
+    }
+}
+
+impl SseDecode for crate::api::api::NSArrayIconArray {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_objects = <Vec<crate::api::api::LPIconMetadata>>::sse_decode(deserializer);
+        let mut var_class_ = <crate::api::api::NSArrayClass>::sse_decode(deserializer);
+        return crate::api::api::NSArrayIconArray {
+            objects: var_objects,
+            class: var_class_,
+        };
+    }
+}
+
+impl SseDecode for crate::api::api::NSArrayImageArray {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_objects = <Vec<crate::api::api::LPImageMetadata>>::sse_decode(deserializer);
+        let mut var_class_ = <crate::api::api::NSArrayClass>::sse_decode(deserializer);
+        return crate::api::api::NSArrayImageArray {
+            objects: var_objects,
+            class: var_class_,
+        };
+    }
+}
+
 impl SseDecode for crate::api::api::NSDictionaryClass {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -3425,6 +3589,18 @@ impl SseDecode for crate::api::api::NSDictionaryClass {
             0 => crate::api::api::NSDictionaryClass::NSDictionary,
             1 => crate::api::api::NSDictionaryClass::NSMutableDictionary,
             _ => unreachable!("Invalid variant for NSDictionaryClass: {}", inner),
+        };
+    }
+}
+
+impl SseDecode for crate::api::api::NSURL {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_base = <String>::sse_decode(deserializer);
+        let mut var_relative = <String>::sse_decode(deserializer);
+        return crate::api::api::NSURL {
+            base: var_base,
+            relative: var_relative,
         };
     }
 }
@@ -3543,6 +3719,17 @@ impl SseDecode for Option<crate::api::api::DartIMessage> {
     }
 }
 
+impl SseDecode for Option<crate::api::api::DartLinkMeta> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<crate::api::api::DartLinkMeta>::sse_decode(deserializer));
+        } else {
+            return None;
+        }
+    }
+}
+
 impl SseDecode for Option<crate::api::api::DartLoginState> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -3598,6 +3785,78 @@ impl SseDecode for Option<crate::api::api::DartSupportAlert> {
             return Some(<crate::api::api::DartSupportAlert>::sse_decode(
                 deserializer,
             ));
+        } else {
+            return None;
+        }
+    }
+}
+
+impl SseDecode for Option<crate::api::api::LPIconMetadata> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<crate::api::api::LPIconMetadata>::sse_decode(deserializer));
+        } else {
+            return None;
+        }
+    }
+}
+
+impl SseDecode for Option<crate::api::api::LPImageMetadata> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<crate::api::api::LPImageMetadata>::sse_decode(deserializer));
+        } else {
+            return None;
+        }
+    }
+}
+
+impl SseDecode for Option<crate::api::api::NSArrayIconArray> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<crate::api::api::NSArrayIconArray>::sse_decode(
+                deserializer,
+            ));
+        } else {
+            return None;
+        }
+    }
+}
+
+impl SseDecode for Option<crate::api::api::NSArrayImageArray> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<crate::api::api::NSArrayImageArray>::sse_decode(
+                deserializer,
+            ));
+        } else {
+            return None;
+        }
+    }
+}
+
+impl SseDecode for Option<crate::api::api::NSURL> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<crate::api::api::NSURL>::sse_decode(deserializer));
+        } else {
+            return None;
+        }
+    }
+}
+
+impl SseDecode for Option<crate::api::api::RichLinkImageAttachmentSubstitute> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(
+                <crate::api::api::RichLinkImageAttachmentSubstitute>::sse_decode(deserializer),
+            );
         } else {
             return None;
         }
@@ -3692,6 +3951,18 @@ impl SseDecode for crate::api::api::RegistrationPhase {
             1 => crate::api::api::RegistrationPhase::WantsRegister,
             2 => crate::api::api::RegistrationPhase::Registered,
             _ => unreachable!("Invalid variant for RegistrationPhase: {}", inner),
+        };
+    }
+}
+
+impl SseDecode for crate::api::api::RichLinkImageAttachmentSubstitute {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_mimeType = <String>::sse_decode(deserializer);
+        let mut var_richLinkImageAttachmentSubstituteIndex = <u64>::sse_decode(deserializer);
+        return crate::api::api::RichLinkImageAttachmentSubstitute {
+            mime_type: var_mimeType,
+            rich_link_image_attachment_substitute_index: var_richLinkImageAttachmentSubstituteIndex,
         };
     }
 }
@@ -4094,6 +4365,28 @@ impl flutter_rust_bridge::IntoIntoDart<crate::api::api::DartEditMessage>
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::api::DartErrorMessage {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.for_uuid.into_into_dart().into_dart(),
+            self.status.into_into_dart().into_dart(),
+            self.status_str.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::api::api::DartErrorMessage
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::api::DartErrorMessage>
+    for crate::api::api::DartErrorMessage
+{
+    fn into_into_dart(self) -> crate::api::api::DartErrorMessage {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart for crate::api::api::DartExtensionApp {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
@@ -4204,6 +4497,24 @@ impl flutter_rust_bridge::IntoIntoDart<crate::api::api::DartIndexedMessagePart>
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::api::DartLinkMeta {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.data.into_into_dart().into_dart(),
+            self.attachments.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive for crate::api::api::DartLinkMeta {}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::api::DartLinkMeta>
+    for crate::api::api::DartLinkMeta
+{
+    fn into_into_dart(self) -> crate::api::api::DartLinkMeta {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart for crate::api::api::DartLoginState {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         match self {
@@ -4275,6 +4586,9 @@ impl flutter_rust_bridge::IntoDart for crate::api::api::DartMessage {
             crate::api::api::DartMessage::PeerCacheInvalidate => [15.into_dart()].into_dart(),
             crate::api::api::DartMessage::UpdateExtension(field0) => {
                 [16.into_dart(), field0.into_into_dart().into_dart()].into_dart()
+            }
+            crate::api::api::DartMessage::Error(field0) => {
+                [17.into_dart(), field0.into_into_dart().into_dart()].into_dart()
             }
             _ => {
                 unimplemented!("");
@@ -4435,6 +4749,7 @@ impl flutter_rust_bridge::IntoDart for crate::api::api::DartNormalMessage {
             self.service.into_into_dart().into_dart(),
             self.subject.into_into_dart().into_dart(),
             self.app.into_into_dart().into_dart(),
+            self.link_meta.into_into_dart().into_dart(),
         ]
         .into_dart()
     }
@@ -4760,6 +5075,79 @@ impl flutter_rust_bridge::IntoIntoDart<crate::api::api::DartUpdateExtensionMessa
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::api::LPIconMetadata {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.url.into_into_dart().into_dart(),
+            self.version.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::api::api::LPIconMetadata
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::api::LPIconMetadata>
+    for crate::api::api::LPIconMetadata
+{
+    fn into_into_dart(self) -> crate::api::api::LPIconMetadata {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::api::LPImageMetadata {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.size.into_into_dart().into_dart(),
+            self.url.into_into_dart().into_dart(),
+            self.version.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::api::api::LPImageMetadata
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::api::LPImageMetadata>
+    for crate::api::api::LPImageMetadata
+{
+    fn into_into_dart(self) -> crate::api::api::LPImageMetadata {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::api::LPLinkMetadata {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.image_metadata.into_into_dart().into_dart(),
+            self.version.into_into_dart().into_dart(),
+            self.icon_metadata.into_into_dart().into_dart(),
+            self.original_url.into_into_dart().into_dart(),
+            self.url.into_into_dart().into_dart(),
+            self.title.into_into_dart().into_dart(),
+            self.summary.into_into_dart().into_dart(),
+            self.image.into_into_dart().into_dart(),
+            self.icon.into_into_dart().into_dart(),
+            self.images.into_into_dart().into_dart(),
+            self.icons.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::api::api::LPLinkMetadata
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::api::LPLinkMetadata>
+    for crate::api::api::LPLinkMetadata
+{
+    fn into_into_dart(self) -> crate::api::api::LPLinkMetadata {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart for crate::api::api::MMCSTransferProgress {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
@@ -4799,6 +5187,66 @@ impl flutter_rust_bridge::IntoIntoDart<crate::api::api::MyAsyncRuntime>
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::api::NSArrayClass {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        match self {
+            Self::NSArray => 0.into_dart(),
+            Self::NSMutableArray => 1.into_dart(),
+            _ => unreachable!(),
+        }
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive for crate::api::api::NSArrayClass {}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::api::NSArrayClass>
+    for crate::api::api::NSArrayClass
+{
+    fn into_into_dart(self) -> crate::api::api::NSArrayClass {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::api::NSArrayIconArray {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.objects.into_into_dart().into_dart(),
+            self.class.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::api::api::NSArrayIconArray
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::api::NSArrayIconArray>
+    for crate::api::api::NSArrayIconArray
+{
+    fn into_into_dart(self) -> crate::api::api::NSArrayIconArray {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::api::NSArrayImageArray {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.objects.into_into_dart().into_dart(),
+            self.class.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::api::api::NSArrayImageArray
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::api::NSArrayImageArray>
+    for crate::api::api::NSArrayImageArray
+{
+    fn into_into_dart(self) -> crate::api::api::NSArrayImageArray {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart for crate::api::api::NSDictionaryClass {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         match self {
@@ -4816,6 +5264,22 @@ impl flutter_rust_bridge::IntoIntoDart<crate::api::api::NSDictionaryClass>
     for crate::api::api::NSDictionaryClass
 {
     fn into_into_dart(self) -> crate::api::api::NSDictionaryClass {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::api::NSURL {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.base.into_into_dart().into_dart(),
+            self.relative.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive for crate::api::api::NSURL {}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::api::NSURL> for crate::api::api::NSURL {
+    fn into_into_dart(self) -> crate::api::api::NSURL {
         self
     }
 }
@@ -4860,6 +5324,29 @@ impl flutter_rust_bridge::IntoIntoDart<crate::api::api::RegistrationPhase>
     for crate::api::api::RegistrationPhase
 {
     fn into_into_dart(self) -> crate::api::api::RegistrationPhase {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::api::RichLinkImageAttachmentSubstitute {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.mime_type.into_into_dart().into_dart(),
+            self.rich_link_image_attachment_substitute_index
+                .into_into_dart()
+                .into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::api::api::RichLinkImageAttachmentSubstitute
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::api::RichLinkImageAttachmentSubstitute>
+    for crate::api::api::RichLinkImageAttachmentSubstitute
+{
+    fn into_into_dart(self) -> crate::api::api::RichLinkImageAttachmentSubstitute {
         self
     }
 }
@@ -5107,6 +5594,15 @@ impl SseEncode for crate::api::api::DartEditMessage {
     }
 }
 
+impl SseEncode for crate::api::api::DartErrorMessage {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <String>::sse_encode(self.for_uuid, serializer);
+        <u64>::sse_encode(self.status, serializer);
+        <String>::sse_encode(self.status_str, serializer);
+    }
+}
+
 impl SseEncode for crate::api::api::DartExtensionApp {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -5155,6 +5651,14 @@ impl SseEncode for crate::api::api::DartIndexedMessagePart {
         <crate::api::api::DartMessagePart>::sse_encode(self.part, serializer);
         <Option<usize>>::sse_encode(self.idx, serializer);
         <Option<crate::api::api::DartPartExtension>>::sse_encode(self.ext, serializer);
+    }
+}
+
+impl SseEncode for crate::api::api::DartLinkMeta {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <crate::api::api::LPLinkMetadata>::sse_encode(self.data, serializer);
+        <Vec<Vec<u8>>>::sse_encode(self.attachments, serializer);
     }
 }
 
@@ -5256,6 +5760,10 @@ impl SseEncode for crate::api::api::DartMessage {
             crate::api::api::DartMessage::UpdateExtension(field0) => {
                 <i32>::sse_encode(16, serializer);
                 <crate::api::api::DartUpdateExtensionMessage>::sse_encode(field0, serializer);
+            }
+            crate::api::api::DartMessage::Error(field0) => {
+                <i32>::sse_encode(17, serializer);
+                <crate::api::api::DartErrorMessage>::sse_encode(field0, serializer);
             }
             _ => {
                 unimplemented!("");
@@ -5363,6 +5871,7 @@ impl SseEncode for crate::api::api::DartNormalMessage {
         <crate::api::api::DartMessageType>::sse_encode(self.service, serializer);
         <Option<String>>::sse_encode(self.subject, serializer);
         <Option<crate::api::api::DartExtensionApp>>::sse_encode(self.app, serializer);
+        <Option<crate::api::api::DartLinkMeta>>::sse_encode(self.link_meta, serializer);
     }
 }
 
@@ -5623,6 +6132,36 @@ impl SseEncode for Vec<crate::api::api::DartTrustedPhoneNumber> {
     }
 }
 
+impl SseEncode for Vec<Vec<u8>> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <Vec<u8>>::sse_encode(item, serializer);
+        }
+    }
+}
+
+impl SseEncode for Vec<crate::api::api::LPIconMetadata> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <crate::api::api::LPIconMetadata>::sse_encode(item, serializer);
+        }
+    }
+}
+
+impl SseEncode for Vec<crate::api::api::LPImageMetadata> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <crate::api::api::LPImageMetadata>::sse_encode(item, serializer);
+        }
+    }
+}
+
 impl SseEncode for Vec<u8> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -5630,6 +6169,44 @@ impl SseEncode for Vec<u8> {
         for item in self {
             <u8>::sse_encode(item, serializer);
         }
+    }
+}
+
+impl SseEncode for crate::api::api::LPIconMetadata {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <crate::api::api::NSURL>::sse_encode(self.url, serializer);
+        <u8>::sse_encode(self.version, serializer);
+    }
+}
+
+impl SseEncode for crate::api::api::LPImageMetadata {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <String>::sse_encode(self.size, serializer);
+        <crate::api::api::NSURL>::sse_encode(self.url, serializer);
+        <u8>::sse_encode(self.version, serializer);
+    }
+}
+
+impl SseEncode for crate::api::api::LPLinkMetadata {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <Option<crate::api::api::LPImageMetadata>>::sse_encode(self.image_metadata, serializer);
+        <u8>::sse_encode(self.version, serializer);
+        <Option<crate::api::api::LPIconMetadata>>::sse_encode(self.icon_metadata, serializer);
+        <crate::api::api::NSURL>::sse_encode(self.original_url, serializer);
+        <Option<crate::api::api::NSURL>>::sse_encode(self.url, serializer);
+        <Option<String>>::sse_encode(self.title, serializer);
+        <Option<String>>::sse_encode(self.summary, serializer);
+        <Option<crate::api::api::RichLinkImageAttachmentSubstitute>>::sse_encode(
+            self.image, serializer,
+        );
+        <Option<crate::api::api::RichLinkImageAttachmentSubstitute>>::sse_encode(
+            self.icon, serializer,
+        );
+        <Option<crate::api::api::NSArrayImageArray>>::sse_encode(self.images, serializer);
+        <Option<crate::api::api::NSArrayIconArray>>::sse_encode(self.icons, serializer);
     }
 }
 
@@ -5647,6 +6224,38 @@ impl SseEncode for crate::api::api::MyAsyncRuntime {
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {}
 }
 
+impl SseEncode for crate::api::api::NSArrayClass {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(
+            match self {
+                crate::api::api::NSArrayClass::NSArray => 0,
+                crate::api::api::NSArrayClass::NSMutableArray => 1,
+                _ => {
+                    unimplemented!("");
+                }
+            },
+            serializer,
+        );
+    }
+}
+
+impl SseEncode for crate::api::api::NSArrayIconArray {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <Vec<crate::api::api::LPIconMetadata>>::sse_encode(self.objects, serializer);
+        <crate::api::api::NSArrayClass>::sse_encode(self.class, serializer);
+    }
+}
+
+impl SseEncode for crate::api::api::NSArrayImageArray {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <Vec<crate::api::api::LPImageMetadata>>::sse_encode(self.objects, serializer);
+        <crate::api::api::NSArrayClass>::sse_encode(self.class, serializer);
+    }
+}
+
 impl SseEncode for crate::api::api::NSDictionaryClass {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -5660,6 +6269,14 @@ impl SseEncode for crate::api::api::NSDictionaryClass {
             },
             serializer,
         );
+    }
+}
+
+impl SseEncode for crate::api::api::NSURL {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <String>::sse_encode(self.base, serializer);
+        <String>::sse_encode(self.relative, serializer);
     }
 }
 
@@ -5763,6 +6380,16 @@ impl SseEncode for Option<crate::api::api::DartIMessage> {
     }
 }
 
+impl SseEncode for Option<crate::api::api::DartLinkMeta> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <crate::api::api::DartLinkMeta>::sse_encode(value, serializer);
+        }
+    }
+}
+
 impl SseEncode for Option<crate::api::api::DartLoginState> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -5809,6 +6436,66 @@ impl SseEncode for Option<crate::api::api::DartSupportAlert> {
         <bool>::sse_encode(self.is_some(), serializer);
         if let Some(value) = self {
             <crate::api::api::DartSupportAlert>::sse_encode(value, serializer);
+        }
+    }
+}
+
+impl SseEncode for Option<crate::api::api::LPIconMetadata> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <crate::api::api::LPIconMetadata>::sse_encode(value, serializer);
+        }
+    }
+}
+
+impl SseEncode for Option<crate::api::api::LPImageMetadata> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <crate::api::api::LPImageMetadata>::sse_encode(value, serializer);
+        }
+    }
+}
+
+impl SseEncode for Option<crate::api::api::NSArrayIconArray> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <crate::api::api::NSArrayIconArray>::sse_encode(value, serializer);
+        }
+    }
+}
+
+impl SseEncode for Option<crate::api::api::NSArrayImageArray> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <crate::api::api::NSArrayImageArray>::sse_encode(value, serializer);
+        }
+    }
+}
+
+impl SseEncode for Option<crate::api::api::NSURL> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <crate::api::api::NSURL>::sse_encode(value, serializer);
+        }
+    }
+}
+
+impl SseEncode for Option<crate::api::api::RichLinkImageAttachmentSubstitute> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <crate::api::api::RichLinkImageAttachmentSubstitute>::sse_encode(value, serializer);
         }
     }
 }
@@ -5896,6 +6583,14 @@ impl SseEncode for crate::api::api::RegistrationPhase {
             },
             serializer,
         );
+    }
+}
+
+impl SseEncode for crate::api::api::RichLinkImageAttachmentSubstitute {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <String>::sse_encode(self.mime_type, serializer);
+        <u64>::sse_encode(self.rich_link_image_attachment_substitute_index, serializer);
     }
 }
 

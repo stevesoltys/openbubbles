@@ -1721,6 +1721,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  DartErrorMessage dco_decode_box_autoadd_dart_error_message(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_dart_error_message(raw);
+  }
+
+  @protected
   DartExtensionApp dco_decode_box_autoadd_dart_extension_app(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return dco_decode_dart_extension_app(raw);
@@ -1743,6 +1749,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return dco_decode_dart_icon_change_message(raw);
+  }
+
+  @protected
+  DartLinkMeta dco_decode_box_autoadd_dart_link_meta(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_dart_link_meta(raw);
   }
 
   @protected
@@ -1816,6 +1828,44 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       dco_decode_box_autoadd_dart_update_extension_message(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return dco_decode_dart_update_extension_message(raw);
+  }
+
+  @protected
+  LPIconMetadata dco_decode_box_autoadd_lp_icon_metadata(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_lp_icon_metadata(raw);
+  }
+
+  @protected
+  LPImageMetadata dco_decode_box_autoadd_lp_image_metadata(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_lp_image_metadata(raw);
+  }
+
+  @protected
+  NSArrayIconArray dco_decode_box_autoadd_ns_array_icon_array(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_ns_array_icon_array(raw);
+  }
+
+  @protected
+  NSArrayImageArray dco_decode_box_autoadd_ns_array_image_array(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_ns_array_image_array(raw);
+  }
+
+  @protected
+  NSURL dco_decode_box_autoadd_nsurl(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_nsurl(raw);
+  }
+
+  @protected
+  RichLinkImageAttachmentSubstitute
+      dco_decode_box_autoadd_rich_link_image_attachment_substitute(
+          dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_rich_link_image_attachment_substitute(raw);
   }
 
   @protected
@@ -1947,6 +1997,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  DartErrorMessage dco_decode_dart_error_message(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 3)
+      throw Exception('unexpected arr length: expect 3 but see ${arr.length}');
+    return DartErrorMessage(
+      forUuid: dco_decode_String(arr[0]),
+      status: dco_decode_u_64(arr[1]),
+      statusStr: dco_decode_String(arr[2]),
+    );
+  }
+
+  @protected
   DartExtensionApp dco_decode_dart_extension_app(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
@@ -2014,6 +2077,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       part_: dco_decode_dart_message_part(arr[0]),
       idx: dco_decode_opt_CastedPrimitive_usize(arr[1]),
       ext: dco_decode_opt_box_autoadd_dart_part_extension(arr[2]),
+    );
+  }
+
+  @protected
+  DartLinkMeta dco_decode_dart_link_meta(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2)
+      throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
+    return DartLinkMeta(
+      data: dco_decode_lp_link_metadata(arr[0]),
+      attachments: dco_decode_list_list_prim_u_8_strict(arr[1]),
     );
   }
 
@@ -2102,6 +2177,10 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       case 16:
         return DartMessage_UpdateExtension(
           dco_decode_box_autoadd_dart_update_extension_message(raw[1]),
+        );
+      case 17:
+        return DartMessage_Error(
+          dco_decode_box_autoadd_dart_error_message(raw[1]),
         );
       default:
         throw Exception("unreachable");
@@ -2198,8 +2277,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   DartNormalMessage dco_decode_dart_normal_message(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 7)
-      throw Exception('unexpected arr length: expect 7 but see ${arr.length}');
+    if (arr.length != 8)
+      throw Exception('unexpected arr length: expect 8 but see ${arr.length}');
     return DartNormalMessage(
       parts: dco_decode_dart_message_parts(arr[0]),
       effect: dco_decode_opt_String(arr[1]),
@@ -2208,6 +2287,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       service: dco_decode_dart_message_type(arr[4]),
       subject: dco_decode_opt_String(arr[5]),
       app: dco_decode_opt_box_autoadd_dart_extension_app(arr[6]),
+      linkMeta: dco_decode_opt_box_autoadd_dart_link_meta(arr[7]),
     );
   }
 
@@ -2453,6 +2533,24 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  List<Uint8List> dco_decode_list_list_prim_u_8_strict(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>).map(dco_decode_list_prim_u_8_strict).toList();
+  }
+
+  @protected
+  List<LPIconMetadata> dco_decode_list_lp_icon_metadata(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>).map(dco_decode_lp_icon_metadata).toList();
+  }
+
+  @protected
+  List<LPImageMetadata> dco_decode_list_lp_image_metadata(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>).map(dco_decode_lp_image_metadata).toList();
+  }
+
+  @protected
   List<int> dco_decode_list_prim_u_8_loose(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as List<int>;
@@ -2462,6 +2560,54 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   Uint8List dco_decode_list_prim_u_8_strict(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as Uint8List;
+  }
+
+  @protected
+  LPIconMetadata dco_decode_lp_icon_metadata(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2)
+      throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
+    return LPIconMetadata(
+      url: dco_decode_nsurl(arr[0]),
+      version: dco_decode_u_8(arr[1]),
+    );
+  }
+
+  @protected
+  LPImageMetadata dco_decode_lp_image_metadata(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 3)
+      throw Exception('unexpected arr length: expect 3 but see ${arr.length}');
+    return LPImageMetadata(
+      size: dco_decode_String(arr[0]),
+      url: dco_decode_nsurl(arr[1]),
+      version: dco_decode_u_8(arr[2]),
+    );
+  }
+
+  @protected
+  LPLinkMetadata dco_decode_lp_link_metadata(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 11)
+      throw Exception('unexpected arr length: expect 11 but see ${arr.length}');
+    return LPLinkMetadata(
+      imageMetadata: dco_decode_opt_box_autoadd_lp_image_metadata(arr[0]),
+      version: dco_decode_u_8(arr[1]),
+      iconMetadata: dco_decode_opt_box_autoadd_lp_icon_metadata(arr[2]),
+      originalUrl: dco_decode_nsurl(arr[3]),
+      url: dco_decode_opt_box_autoadd_nsurl(arr[4]),
+      title: dco_decode_opt_String(arr[5]),
+      summary: dco_decode_opt_String(arr[6]),
+      image: dco_decode_opt_box_autoadd_rich_link_image_attachment_substitute(
+          arr[7]),
+      icon: dco_decode_opt_box_autoadd_rich_link_image_attachment_substitute(
+          arr[8]),
+      images: dco_decode_opt_box_autoadd_ns_array_image_array(arr[9]),
+      icons: dco_decode_opt_box_autoadd_ns_array_icon_array(arr[10]),
+    );
   }
 
   @protected
@@ -2487,9 +2633,51 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  NSArrayClass dco_decode_ns_array_class(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return NSArrayClass.values[raw as int];
+  }
+
+  @protected
+  NSArrayIconArray dco_decode_ns_array_icon_array(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2)
+      throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
+    return NSArrayIconArray(
+      objects: dco_decode_list_lp_icon_metadata(arr[0]),
+      class_: dco_decode_ns_array_class(arr[1]),
+    );
+  }
+
+  @protected
+  NSArrayImageArray dco_decode_ns_array_image_array(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2)
+      throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
+    return NSArrayImageArray(
+      objects: dco_decode_list_lp_image_metadata(arr[0]),
+      class_: dco_decode_ns_array_class(arr[1]),
+    );
+  }
+
+  @protected
   NSDictionaryClass dco_decode_ns_dictionary_class(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return NSDictionaryClass.values[raw as int];
+  }
+
+  @protected
+  NSURL dco_decode_nsurl(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2)
+      throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
+    return NSURL(
+      base: dco_decode_String(arr[0]),
+      relative: dco_decode_String(arr[1]),
+    );
   }
 
   @protected
@@ -2572,6 +2760,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  DartLinkMeta? dco_decode_opt_box_autoadd_dart_link_meta(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_box_autoadd_dart_link_meta(raw);
+  }
+
+  @protected
   DartLoginState? dco_decode_opt_box_autoadd_dart_login_state(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw == null ? null : dco_decode_box_autoadd_dart_login_state(raw);
@@ -2601,6 +2795,50 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   DartSupportAlert? dco_decode_opt_box_autoadd_dart_support_alert(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw == null ? null : dco_decode_box_autoadd_dart_support_alert(raw);
+  }
+
+  @protected
+  LPIconMetadata? dco_decode_opt_box_autoadd_lp_icon_metadata(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_box_autoadd_lp_icon_metadata(raw);
+  }
+
+  @protected
+  LPImageMetadata? dco_decode_opt_box_autoadd_lp_image_metadata(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_box_autoadd_lp_image_metadata(raw);
+  }
+
+  @protected
+  NSArrayIconArray? dco_decode_opt_box_autoadd_ns_array_icon_array(
+      dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_box_autoadd_ns_array_icon_array(raw);
+  }
+
+  @protected
+  NSArrayImageArray? dco_decode_opt_box_autoadd_ns_array_image_array(
+      dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null
+        ? null
+        : dco_decode_box_autoadd_ns_array_image_array(raw);
+  }
+
+  @protected
+  NSURL? dco_decode_opt_box_autoadd_nsurl(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_box_autoadd_nsurl(raw);
+  }
+
+  @protected
+  RichLinkImageAttachmentSubstitute?
+      dco_decode_opt_box_autoadd_rich_link_image_attachment_substitute(
+          dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null
+        ? null
+        : dco_decode_box_autoadd_rich_link_image_attachment_substitute(raw);
   }
 
   @protected
@@ -2676,6 +2914,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   RegistrationPhase dco_decode_registration_phase(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return RegistrationPhase.values[raw as int];
+  }
+
+  @protected
+  RichLinkImageAttachmentSubstitute
+      dco_decode_rich_link_image_attachment_substitute(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2)
+      throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
+    return RichLinkImageAttachmentSubstitute(
+      mimeType: dco_decode_String(arr[0]),
+      richLinkImageAttachmentSubstituteIndex: dco_decode_u_64(arr[1]),
+    );
   }
 
   @protected
@@ -2939,6 +3190,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  DartErrorMessage sse_decode_box_autoadd_dart_error_message(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_dart_error_message(deserializer));
+  }
+
+  @protected
   DartExtensionApp sse_decode_box_autoadd_dart_extension_app(
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -2964,6 +3222,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return (sse_decode_dart_icon_change_message(deserializer));
+  }
+
+  @protected
+  DartLinkMeta sse_decode_box_autoadd_dart_link_meta(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_dart_link_meta(deserializer));
   }
 
   @protected
@@ -3049,6 +3314,48 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return (sse_decode_dart_update_extension_message(deserializer));
+  }
+
+  @protected
+  LPIconMetadata sse_decode_box_autoadd_lp_icon_metadata(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_lp_icon_metadata(deserializer));
+  }
+
+  @protected
+  LPImageMetadata sse_decode_box_autoadd_lp_image_metadata(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_lp_image_metadata(deserializer));
+  }
+
+  @protected
+  NSArrayIconArray sse_decode_box_autoadd_ns_array_icon_array(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_ns_array_icon_array(deserializer));
+  }
+
+  @protected
+  NSArrayImageArray sse_decode_box_autoadd_ns_array_image_array(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_ns_array_image_array(deserializer));
+  }
+
+  @protected
+  NSURL sse_decode_box_autoadd_nsurl(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_nsurl(deserializer));
+  }
+
+  @protected
+  RichLinkImageAttachmentSubstitute
+      sse_decode_box_autoadd_rich_link_image_attachment_substitute(
+          SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_rich_link_image_attachment_substitute(deserializer));
   }
 
   @protected
@@ -3189,6 +3496,16 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  DartErrorMessage sse_decode_dart_error_message(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_forUuid = sse_decode_String(deserializer);
+    var var_status = sse_decode_u_64(deserializer);
+    var var_statusStr = sse_decode_String(deserializer);
+    return DartErrorMessage(
+        forUuid: var_forUuid, status: var_status, statusStr: var_statusStr);
+  }
+
+  @protected
   DartExtensionApp sse_decode_dart_extension_app(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var var_name = sse_decode_String(deserializer);
@@ -3257,6 +3574,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_idx = sse_decode_opt_CastedPrimitive_usize(deserializer);
     var var_ext = sse_decode_opt_box_autoadd_dart_part_extension(deserializer);
     return DartIndexedMessagePart(part_: var_part_, idx: var_idx, ext: var_ext);
+  }
+
+  @protected
+  DartLinkMeta sse_decode_dart_link_meta(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_data = sse_decode_lp_link_metadata(deserializer);
+    var var_attachments = sse_decode_list_list_prim_u_8_strict(deserializer);
+    return DartLinkMeta(data: var_data, attachments: var_attachments);
   }
 
   @protected
@@ -3345,6 +3670,10 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         var var_field0 =
             sse_decode_box_autoadd_dart_update_extension_message(deserializer);
         return DartMessage_UpdateExtension(var_field0);
+      case 17:
+        var var_field0 =
+            sse_decode_box_autoadd_dart_error_message(deserializer);
+        return DartMessage_Error(var_field0);
       default:
         throw UnimplementedError('');
     }
@@ -3447,6 +3776,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_service = sse_decode_dart_message_type(deserializer);
     var var_subject = sse_decode_opt_String(deserializer);
     var var_app = sse_decode_opt_box_autoadd_dart_extension_app(deserializer);
+    var var_linkMeta = sse_decode_opt_box_autoadd_dart_link_meta(deserializer);
     return DartNormalMessage(
         parts: var_parts,
         effect: var_effect,
@@ -3454,7 +3784,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         replyPart: var_replyPart,
         service: var_service,
         subject: var_subject,
-        app: var_app);
+        app: var_app,
+        linkMeta: var_linkMeta);
   }
 
   @protected
@@ -3739,6 +4070,45 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  List<Uint8List> sse_decode_list_list_prim_u_8_strict(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <Uint8List>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_list_prim_u_8_strict(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
+  List<LPIconMetadata> sse_decode_list_lp_icon_metadata(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <LPIconMetadata>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_lp_icon_metadata(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
+  List<LPImageMetadata> sse_decode_list_lp_image_metadata(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <LPImageMetadata>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_lp_image_metadata(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
   List<int> sse_decode_list_prim_u_8_loose(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var len_ = sse_decode_i_32(deserializer);
@@ -3750,6 +4120,59 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var len_ = sse_decode_i_32(deserializer);
     return deserializer.buffer.getUint8List(len_);
+  }
+
+  @protected
+  LPIconMetadata sse_decode_lp_icon_metadata(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_url = sse_decode_nsurl(deserializer);
+    var var_version = sse_decode_u_8(deserializer);
+    return LPIconMetadata(url: var_url, version: var_version);
+  }
+
+  @protected
+  LPImageMetadata sse_decode_lp_image_metadata(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_size = sse_decode_String(deserializer);
+    var var_url = sse_decode_nsurl(deserializer);
+    var var_version = sse_decode_u_8(deserializer);
+    return LPImageMetadata(size: var_size, url: var_url, version: var_version);
+  }
+
+  @protected
+  LPLinkMetadata sse_decode_lp_link_metadata(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_imageMetadata =
+        sse_decode_opt_box_autoadd_lp_image_metadata(deserializer);
+    var var_version = sse_decode_u_8(deserializer);
+    var var_iconMetadata =
+        sse_decode_opt_box_autoadd_lp_icon_metadata(deserializer);
+    var var_originalUrl = sse_decode_nsurl(deserializer);
+    var var_url = sse_decode_opt_box_autoadd_nsurl(deserializer);
+    var var_title = sse_decode_opt_String(deserializer);
+    var var_summary = sse_decode_opt_String(deserializer);
+    var var_image =
+        sse_decode_opt_box_autoadd_rich_link_image_attachment_substitute(
+            deserializer);
+    var var_icon =
+        sse_decode_opt_box_autoadd_rich_link_image_attachment_substitute(
+            deserializer);
+    var var_images =
+        sse_decode_opt_box_autoadd_ns_array_image_array(deserializer);
+    var var_icons =
+        sse_decode_opt_box_autoadd_ns_array_icon_array(deserializer);
+    return LPLinkMetadata(
+        imageMetadata: var_imageMetadata,
+        version: var_version,
+        iconMetadata: var_iconMetadata,
+        originalUrl: var_originalUrl,
+        url: var_url,
+        title: var_title,
+        summary: var_summary,
+        image: var_image,
+        icon: var_icon,
+        images: var_images,
+        icons: var_icons);
   }
 
   @protected
@@ -3770,11 +4193,44 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  NSArrayClass sse_decode_ns_array_class(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner = sse_decode_i_32(deserializer);
+    return NSArrayClass.values[inner];
+  }
+
+  @protected
+  NSArrayIconArray sse_decode_ns_array_icon_array(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_objects = sse_decode_list_lp_icon_metadata(deserializer);
+    var var_class_ = sse_decode_ns_array_class(deserializer);
+    return NSArrayIconArray(objects: var_objects, class_: var_class_);
+  }
+
+  @protected
+  NSArrayImageArray sse_decode_ns_array_image_array(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_objects = sse_decode_list_lp_image_metadata(deserializer);
+    var var_class_ = sse_decode_ns_array_class(deserializer);
+    return NSArrayImageArray(objects: var_objects, class_: var_class_);
+  }
+
+  @protected
   NSDictionaryClass sse_decode_ns_dictionary_class(
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var inner = sse_decode_i_32(deserializer);
     return NSDictionaryClass.values[inner];
+  }
+
+  @protected
+  NSURL sse_decode_nsurl(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_base = sse_decode_String(deserializer);
+    var var_relative = sse_decode_String(deserializer);
+    return NSURL(base: var_base, relative: var_relative);
   }
 
   @protected
@@ -3910,6 +4366,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  DartLinkMeta? sse_decode_opt_box_autoadd_dart_link_meta(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_box_autoadd_dart_link_meta(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
   DartLoginState? sse_decode_opt_box_autoadd_dart_login_state(
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -3964,6 +4432,79 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
     if (sse_decode_bool(deserializer)) {
       return (sse_decode_box_autoadd_dart_support_alert(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
+  LPIconMetadata? sse_decode_opt_box_autoadd_lp_icon_metadata(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_box_autoadd_lp_icon_metadata(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
+  LPImageMetadata? sse_decode_opt_box_autoadd_lp_image_metadata(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_box_autoadd_lp_image_metadata(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
+  NSArrayIconArray? sse_decode_opt_box_autoadd_ns_array_icon_array(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_box_autoadd_ns_array_icon_array(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
+  NSArrayImageArray? sse_decode_opt_box_autoadd_ns_array_image_array(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_box_autoadd_ns_array_image_array(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
+  NSURL? sse_decode_opt_box_autoadd_nsurl(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_box_autoadd_nsurl(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
+  RichLinkImageAttachmentSubstitute?
+      sse_decode_opt_box_autoadd_rich_link_image_attachment_substitute(
+          SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_box_autoadd_rich_link_image_attachment_substitute(
+          deserializer));
     } else {
       return null;
     }
@@ -4052,6 +4593,20 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var inner = sse_decode_i_32(deserializer);
     return RegistrationPhase.values[inner];
+  }
+
+  @protected
+  RichLinkImageAttachmentSubstitute
+      sse_decode_rich_link_image_attachment_substitute(
+          SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_mimeType = sse_decode_String(deserializer);
+    var var_richLinkImageAttachmentSubstituteIndex =
+        sse_decode_u_64(deserializer);
+    return RichLinkImageAttachmentSubstitute(
+        mimeType: var_mimeType,
+        richLinkImageAttachmentSubstituteIndex:
+            var_richLinkImageAttachmentSubstituteIndex);
   }
 
   @protected
@@ -4325,6 +4880,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_box_autoadd_dart_error_message(
+      DartErrorMessage self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_dart_error_message(self, serializer);
+  }
+
+  @protected
   void sse_encode_box_autoadd_dart_extension_app(
       DartExtensionApp self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -4350,6 +4912,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       DartIconChangeMessage self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_dart_icon_change_message(self, serializer);
+  }
+
+  @protected
+  void sse_encode_box_autoadd_dart_link_meta(
+      DartLinkMeta self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_dart_link_meta(self, serializer);
   }
 
   @protected
@@ -4434,6 +5003,47 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       DartUpdateExtensionMessage self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_dart_update_extension_message(self, serializer);
+  }
+
+  @protected
+  void sse_encode_box_autoadd_lp_icon_metadata(
+      LPIconMetadata self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_lp_icon_metadata(self, serializer);
+  }
+
+  @protected
+  void sse_encode_box_autoadd_lp_image_metadata(
+      LPImageMetadata self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_lp_image_metadata(self, serializer);
+  }
+
+  @protected
+  void sse_encode_box_autoadd_ns_array_icon_array(
+      NSArrayIconArray self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_ns_array_icon_array(self, serializer);
+  }
+
+  @protected
+  void sse_encode_box_autoadd_ns_array_image_array(
+      NSArrayImageArray self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_ns_array_image_array(self, serializer);
+  }
+
+  @protected
+  void sse_encode_box_autoadd_nsurl(NSURL self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_nsurl(self, serializer);
+  }
+
+  @protected
+  void sse_encode_box_autoadd_rich_link_image_attachment_substitute(
+      RichLinkImageAttachmentSubstitute self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_rich_link_image_attachment_substitute(self, serializer);
   }
 
   @protected
@@ -4546,6 +5156,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_dart_error_message(
+      DartErrorMessage self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.forUuid, serializer);
+    sse_encode_u_64(self.status, serializer);
+    sse_encode_String(self.statusStr, serializer);
+  }
+
+  @protected
   void sse_encode_dart_extension_app(
       DartExtensionApp self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -4593,6 +5212,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_dart_message_part(self.part_, serializer);
     sse_encode_opt_CastedPrimitive_usize(self.idx, serializer);
     sse_encode_opt_box_autoadd_dart_part_extension(self.ext, serializer);
+  }
+
+  @protected
+  void sse_encode_dart_link_meta(DartLinkMeta self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_lp_link_metadata(self.data, serializer);
+    sse_encode_list_list_prim_u_8_strict(self.attachments, serializer);
   }
 
   @protected
@@ -4672,6 +5298,9 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_i_32(16, serializer);
         sse_encode_box_autoadd_dart_update_extension_message(
             field0, serializer);
+      case DartMessage_Error(field0: final field0):
+        sse_encode_i_32(17, serializer);
+        sse_encode_box_autoadd_dart_error_message(field0, serializer);
       default:
         throw UnimplementedError('');
     }
@@ -4765,6 +5394,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_dart_message_type(self.service, serializer);
     sse_encode_opt_String(self.subject, serializer);
     sse_encode_opt_box_autoadd_dart_extension_app(self.app, serializer);
+    sse_encode_opt_box_autoadd_dart_link_meta(self.linkMeta, serializer);
   }
 
   @protected
@@ -5006,6 +5636,36 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_list_list_prim_u_8_strict(
+      List<Uint8List> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_list_prim_u_8_strict(item, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_list_lp_icon_metadata(
+      List<LPIconMetadata> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_lp_icon_metadata(item, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_list_lp_image_metadata(
+      List<LPImageMetadata> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_lp_image_metadata(item, serializer);
+    }
+  }
+
+  @protected
   void sse_encode_list_prim_u_8_loose(
       List<int> self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -5020,6 +5680,43 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_i_32(self.length, serializer);
     serializer.buffer.putUint8List(self);
+  }
+
+  @protected
+  void sse_encode_lp_icon_metadata(
+      LPIconMetadata self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_nsurl(self.url, serializer);
+    sse_encode_u_8(self.version, serializer);
+  }
+
+  @protected
+  void sse_encode_lp_image_metadata(
+      LPImageMetadata self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.size, serializer);
+    sse_encode_nsurl(self.url, serializer);
+    sse_encode_u_8(self.version, serializer);
+  }
+
+  @protected
+  void sse_encode_lp_link_metadata(
+      LPLinkMetadata self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_opt_box_autoadd_lp_image_metadata(
+        self.imageMetadata, serializer);
+    sse_encode_u_8(self.version, serializer);
+    sse_encode_opt_box_autoadd_lp_icon_metadata(self.iconMetadata, serializer);
+    sse_encode_nsurl(self.originalUrl, serializer);
+    sse_encode_opt_box_autoadd_nsurl(self.url, serializer);
+    sse_encode_opt_String(self.title, serializer);
+    sse_encode_opt_String(self.summary, serializer);
+    sse_encode_opt_box_autoadd_rich_link_image_attachment_substitute(
+        self.image, serializer);
+    sse_encode_opt_box_autoadd_rich_link_image_attachment_substitute(
+        self.icon, serializer);
+    sse_encode_opt_box_autoadd_ns_array_image_array(self.images, serializer);
+    sse_encode_opt_box_autoadd_ns_array_icon_array(self.icons, serializer);
   }
 
   @protected
@@ -5038,10 +5735,39 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_ns_array_class(NSArrayClass self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.index, serializer);
+  }
+
+  @protected
+  void sse_encode_ns_array_icon_array(
+      NSArrayIconArray self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_list_lp_icon_metadata(self.objects, serializer);
+    sse_encode_ns_array_class(self.class_, serializer);
+  }
+
+  @protected
+  void sse_encode_ns_array_image_array(
+      NSArrayImageArray self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_list_lp_image_metadata(self.objects, serializer);
+    sse_encode_ns_array_class(self.class_, serializer);
+  }
+
+  @protected
   void sse_encode_ns_dictionary_class(
       NSDictionaryClass self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_i_32(self.index, serializer);
+  }
+
+  @protected
+  void sse_encode_nsurl(NSURL self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.base, serializer);
+    sse_encode_String(self.relative, serializer);
   }
 
   @protected
@@ -5168,6 +5894,17 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_opt_box_autoadd_dart_link_meta(
+      DartLinkMeta? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_box_autoadd_dart_link_meta(self, serializer);
+    }
+  }
+
+  @protected
   void sse_encode_opt_box_autoadd_dart_login_state(
       DartLoginState? self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -5219,6 +5956,72 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_bool(self != null, serializer);
     if (self != null) {
       sse_encode_box_autoadd_dart_support_alert(self, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_opt_box_autoadd_lp_icon_metadata(
+      LPIconMetadata? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_box_autoadd_lp_icon_metadata(self, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_opt_box_autoadd_lp_image_metadata(
+      LPImageMetadata? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_box_autoadd_lp_image_metadata(self, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_opt_box_autoadd_ns_array_icon_array(
+      NSArrayIconArray? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_box_autoadd_ns_array_icon_array(self, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_opt_box_autoadd_ns_array_image_array(
+      NSArrayImageArray? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_box_autoadd_ns_array_image_array(self, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_opt_box_autoadd_nsurl(NSURL? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_box_autoadd_nsurl(self, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_opt_box_autoadd_rich_link_image_attachment_substitute(
+      RichLinkImageAttachmentSubstitute? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_box_autoadd_rich_link_image_attachment_substitute(
+          self, serializer);
     }
   }
 
@@ -5293,6 +6096,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       RegistrationPhase self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_i_32(self.index, serializer);
+  }
+
+  @protected
+  void sse_encode_rich_link_image_attachment_substitute(
+      RichLinkImageAttachmentSubstitute self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.mimeType, serializer);
+    sse_encode_u_64(self.richLinkImageAttachmentSubstituteIndex, serializer);
   }
 
   @protected

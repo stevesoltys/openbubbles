@@ -68,8 +68,16 @@ impl NativePushState {
                             PollResult::Stop => break
                         }
                     },
-                    Err(e) => {
-                        error!("Failed {:?}", e.downcast_ref::<&str>());
+                    Err(payload) => {
+                        let panic = match payload.downcast_ref::<&'static str>() {
+                            Some(msg) => Some(*msg),
+                            None => match payload.downcast_ref::<String>() {
+                                Some(msg) => Some(msg.as_str()),
+                                // Copy what rustc does in the default panic handler
+                                None => None,
+                            },
+                        };
+                        error!("Failed {:?}", panic);
                     }
                 }
             }

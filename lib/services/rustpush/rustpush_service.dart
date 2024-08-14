@@ -619,6 +619,68 @@ class RustPushBackend implements BackendService {
     if (chat.isRpSms && !smsForwardingEnabled()) {
       throw Exception("SMS is not enabled (enable in settings -> user)");
     }
+    api.DartLinkMeta? linkMeta;
+    try {
+      if (m.fullText.replaceAll("\n", " ").hasUrl && !MetadataHelper.mapIsNotEmpty(m.metadata) && !m.hasApplePayloadData) {
+        var metadata = await MetadataHelper.fetchMetadata(m);
+        
+        if (MetadataHelper.isNotEmpty(metadata)) {
+          m.metadata = metadata!.toJson();
+          List<Uint8List> attachments = [];
+          api.LPImageMetadata? imagemeta;
+          api.RichLinkImageAttachmentSubstitute? image;
+          api.LPIconMetadata? iconmeta;
+          api.RichLinkImageAttachmentSubstitute? icon;
+
+          var uri = Uri.parse(m.url!).replace(path: "/favicon.ico");
+          var iconUrl = uri.toString();
+          final response = await http.dio.get(iconUrl, options: Options(responseType: ResponseType.bytes));
+          if (response.statusCode == 200) {
+            var contentType = response.headers.value('content-type')!;
+
+            iconmeta = api.LPIconMetadata(url: api.NSURL(base: "\$null", relative: iconUrl), version: 1);
+
+            icon = api.RichLinkImageAttachmentSubstitute(mimeType: contentType, richLinkImageAttachmentSubstituteIndex: BigInt.from(attachments.length));
+            attachments.add(response.data as Uint8List);
+          }
+
+          if (metadata.image != null) {
+            imagemeta = api.LPImageMetadata(size: "{0, 0}", url: api.NSURL(base: "\$null", relative: metadata.image!), version: 1);
+
+            final response = await http.dio.get(metadata.image!, options: Options(responseType: ResponseType.bytes));
+            var contentType = response.headers.value('content-type')!;
+
+            image = api.RichLinkImageAttachmentSubstitute(mimeType: contentType, richLinkImageAttachmentSubstituteIndex: BigInt.from(attachments.length));
+            attachments.add(response.data as Uint8List);
+          }
+
+          linkMeta = api.DartLinkMeta(
+            attachments: attachments,
+            data: api.LPLinkMetadata(
+              imageMetadata: imagemeta,
+              image: image,
+              originalUrl: api.NSURL(base: "\$null", relative: m.url!),
+              url: api.NSURL(base: "\$null", relative: metadata.url!),
+              title: metadata.title,
+              summary: metadata.description,
+              images: imagemeta == null ? null : api.NSArrayImageArray(
+                class_: api.NSArrayClass.nsArray,
+                objects: [imagemeta]
+              ),
+              iconMetadata: iconmeta,
+              icon: icon,
+              icons: iconmeta == null ? null : api.NSArrayIconArray(
+                class_: api.NSArrayClass.nsArray,
+                objects: [iconmeta]
+              ),
+              version: 1,
+            ),
+          );
+        }
+      }
+    } catch (e, s) {
+      print("Failed to generate meta $e $s");
+    }
     // await Future.delayed(const Duration(seconds: 15));
     var partIndex = int.tryParse(m.threadOriginatorPart?.split(":").firstOrNull ?? "");
     api.DartMessageParts parts;
@@ -642,8 +704,9 @@ class RustPushBackend implements BackendService {
         replyPart: m.threadOriginatorGuid == null ? null : "$partIndex:0:0",
         effect: m.expressiveSendStyleId,
         service: await getService(chat.isRpSms, forMessage: m),
-        subject: m.subject,
+        subject: m.subject == "" ? null : m.subject,
         app: m.payloadData == null ? null : pushService.dataToApp(m.payloadData!),
+        linkMeta: linkMeta,
       )),
     );
     print("sending ${msg.id}");
@@ -1189,6 +1252,42 @@ class RustPushService extends GetxService {
     );
   }
 
+  MediaMetadata? rpToMedia(api.LPImageMetadata? imagemeta) {
+    if (imagemeta == null) return null;
+    var data = Size(double.parse(imagemeta.size.split(",").first.toString().numericOnly()), double.parse(imagemeta.size.split(",").last.toString().numericOnly()));
+    return MediaMetadata(
+      size: data,
+      url: imagemeta.url.relative
+    );
+  }
+
+  MediaMetadata? rpIToMedia(api.LPIconMetadata? imagemeta) {
+    if (imagemeta == null) return null;
+    return MediaMetadata(
+      size: null,
+      url: imagemeta.url.relative
+    );
+  }
+
+  PayloadData linkToData(api.DartLinkMeta link) {
+    return PayloadData(
+      type: constants.PayloadType.url,
+      urlData: [
+        UrlPreviewData(
+          imageMetadata: rpToMedia(link.data.imageMetadata),
+          videoMetadata: null,
+          iconMetadata: rpIToMedia(link.data.iconMetadata),
+          originalUrl: link.data.originalUrl.relative,
+          url: link.data.url?.relative,
+          title: link.data.title,
+          summary: link.data.summary,
+          siteName: link.data.title,
+        )
+      ],
+      appData: null,
+    );
+  }
+
   Future<Message?> reflectMessageDyn(api.DartIMessage myMsg) async {
     var chat = myMsg.conversation != null ? await chatForMessage(myMsg) : null;
     var myHandles = (await api.getHandles(state: pushService.state));
@@ -1227,8 +1326,8 @@ class RustPushService extends GetxService {
         attributedBody: [attributedBodyData.$1],
         attachments: attributedBodyData.$3,
         hasAttachments: attributedBodyData.$3.isNotEmpty,
-        balloonBundleId: innerMsg.field0.app?.bundleId,
-        payloadData: innerMsg.field0.app?.balloon != null ? appToData(innerMsg.field0.app!) : null,
+        balloonBundleId: innerMsg.field0.app?.bundleId ?? (innerMsg.field0.linkMeta != null ? "com.apple.messages.URLBalloonProvider" : null),
+        payloadData: innerMsg.field0.app?.balloon != null ? appToData(innerMsg.field0.app!) : innerMsg.field0.linkMeta != null ? linkToData(innerMsg.field0.linkMeta!) : null,
         amkSessionId: innerMsg.field0.app?.balloon != null ? myMsg.id : null,
       );
     } else if (myMsg.message is api.DartMessage_RenameMessage) {
@@ -1494,6 +1593,19 @@ class RustPushService extends GetxService {
         showSnackbar("Error", "Error activating SMS forwarding");
         rethrow;
       }
+      return;
+    }
+    if (myMsg.message is api.DartMessage_Error) {
+      var message = myMsg.message as api.DartMessage_Error;
+      var mistakeFor = Message.findOne(guid: message.field0.forUuid);
+      if (mistakeFor == null) return; // multiple errors will likely come in, at which point guid will be bad.
+      mistakeFor.stagingGuid = mistakeFor.guid;
+      mistakeFor.guid = "error-protocol: ${message.field0.statusStr}";
+      var chat = mistakeFor.chat.target!;
+      if (!ls.isAlive || !(cm.getChatController(chat.guid)?.isAlive ?? false)) {
+        await notif.createFailedToSend(chat);
+      }
+      await Message.replaceMessage(mistakeFor.guid, mistakeFor);
       return;
     }
     if (myMsg.message is api.DartMessage_UpdateExtension) {

@@ -425,6 +425,30 @@ class DartEditMessage {
           newParts == other.newParts;
 }
 
+class DartErrorMessage {
+  final String forUuid;
+  final BigInt status;
+  final String statusStr;
+
+  const DartErrorMessage({
+    required this.forUuid,
+    required this.status,
+    required this.statusStr,
+  });
+
+  @override
+  int get hashCode => forUuid.hashCode ^ status.hashCode ^ statusStr.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is DartErrorMessage &&
+          runtimeType == other.runtimeType &&
+          forUuid == other.forUuid &&
+          status == other.status &&
+          statusStr == other.statusStr;
+}
+
 class DartExtensionApp {
   final String name;
   final int appId;
@@ -576,6 +600,27 @@ class DartIndexedMessagePart {
           ext == other.ext;
 }
 
+class DartLinkMeta {
+  final LPLinkMetadata data;
+  final List<Uint8List> attachments;
+
+  const DartLinkMeta({
+    required this.data,
+    required this.attachments,
+  });
+
+  @override
+  int get hashCode => data.hashCode ^ attachments.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is DartLinkMeta &&
+          runtimeType == other.runtimeType &&
+          data == other.data &&
+          attachments == other.attachments;
+}
+
 @freezed
 sealed class DartLoginState with _$DartLoginState {
   const DartLoginState._();
@@ -637,6 +682,9 @@ sealed class DartMessage with _$DartMessage {
   const factory DartMessage.updateExtension(
     DartUpdateExtensionMessage field0,
   ) = DartMessage_UpdateExtension;
+  const factory DartMessage.error(
+    DartErrorMessage field0,
+  ) = DartMessage_Error;
 }
 
 @freezed
@@ -748,6 +796,7 @@ class DartNormalMessage {
   final DartMessageType service;
   String? subject;
   DartExtensionApp? app;
+  DartLinkMeta? linkMeta;
 
   DartNormalMessage({
     required this.parts,
@@ -757,6 +806,7 @@ class DartNormalMessage {
     required this.service,
     this.subject,
     this.app,
+    this.linkMeta,
   });
 
   @override
@@ -767,7 +817,8 @@ class DartNormalMessage {
       replyPart.hashCode ^
       service.hashCode ^
       subject.hashCode ^
-      app.hashCode;
+      app.hashCode ^
+      linkMeta.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -780,7 +831,8 @@ class DartNormalMessage {
           replyPart == other.replyPart &&
           service == other.service &&
           subject == other.subject &&
-          app == other.app;
+          app == other.app &&
+          linkMeta == other.linkMeta;
 }
 
 @freezed
@@ -1043,6 +1095,110 @@ class DartUpdateExtensionMessage {
           ext == other.ext;
 }
 
+class LPIconMetadata {
+  final NSURL url;
+  final int version;
+
+  const LPIconMetadata({
+    required this.url,
+    required this.version,
+  });
+
+  @override
+  int get hashCode => url.hashCode ^ version.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is LPIconMetadata &&
+          runtimeType == other.runtimeType &&
+          url == other.url &&
+          version == other.version;
+}
+
+class LPImageMetadata {
+  final String size;
+  final NSURL url;
+  final int version;
+
+  const LPImageMetadata({
+    required this.size,
+    required this.url,
+    required this.version,
+  });
+
+  @override
+  int get hashCode => size.hashCode ^ url.hashCode ^ version.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is LPImageMetadata &&
+          runtimeType == other.runtimeType &&
+          size == other.size &&
+          url == other.url &&
+          version == other.version;
+}
+
+class LPLinkMetadata {
+  final LPImageMetadata? imageMetadata;
+  final int version;
+  final LPIconMetadata? iconMetadata;
+  final NSURL originalUrl;
+  final NSURL? url;
+  final String? title;
+  final String? summary;
+  final RichLinkImageAttachmentSubstitute? image;
+  final RichLinkImageAttachmentSubstitute? icon;
+  final NSArrayImageArray? images;
+  final NSArrayIconArray? icons;
+
+  const LPLinkMetadata({
+    this.imageMetadata,
+    required this.version,
+    this.iconMetadata,
+    required this.originalUrl,
+    this.url,
+    this.title,
+    this.summary,
+    this.image,
+    this.icon,
+    this.images,
+    this.icons,
+  });
+
+  @override
+  int get hashCode =>
+      imageMetadata.hashCode ^
+      version.hashCode ^
+      iconMetadata.hashCode ^
+      originalUrl.hashCode ^
+      url.hashCode ^
+      title.hashCode ^
+      summary.hashCode ^
+      image.hashCode ^
+      icon.hashCode ^
+      images.hashCode ^
+      icons.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is LPLinkMetadata &&
+          runtimeType == other.runtimeType &&
+          imageMetadata == other.imageMetadata &&
+          version == other.version &&
+          iconMetadata == other.iconMetadata &&
+          originalUrl == other.originalUrl &&
+          url == other.url &&
+          title == other.title &&
+          summary == other.summary &&
+          image == other.image &&
+          icon == other.icon &&
+          images == other.images &&
+          icons == other.icons;
+}
+
 class MMCSTransferProgress {
   final int prog;
   final int total;
@@ -1082,10 +1238,79 @@ class MyAsyncRuntime {
       other is MyAsyncRuntime && runtimeType == other.runtimeType;
 }
 
+enum NSArrayClass {
+  nsArray,
+  nsMutableArray,
+  ;
+}
+
+class NSArrayIconArray {
+  final List<LPIconMetadata> objects;
+  final NSArrayClass class_;
+
+  const NSArrayIconArray({
+    required this.objects,
+    required this.class_,
+  });
+
+  @override
+  int get hashCode => objects.hashCode ^ class_.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is NSArrayIconArray &&
+          runtimeType == other.runtimeType &&
+          objects == other.objects &&
+          class_ == other.class_;
+}
+
+class NSArrayImageArray {
+  final List<LPImageMetadata> objects;
+  final NSArrayClass class_;
+
+  const NSArrayImageArray({
+    required this.objects,
+    required this.class_,
+  });
+
+  @override
+  int get hashCode => objects.hashCode ^ class_.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is NSArrayImageArray &&
+          runtimeType == other.runtimeType &&
+          objects == other.objects &&
+          class_ == other.class_;
+}
+
 enum NSDictionaryClass {
   nsDictionary,
   nsMutableDictionary,
   ;
+}
+
+class NSURL {
+  final String base;
+  final String relative;
+
+  const NSURL({
+    required this.base,
+    required this.relative,
+  });
+
+  @override
+  int get hashCode => base.hashCode ^ relative.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is NSURL &&
+          runtimeType == other.runtimeType &&
+          base == other.base &&
+          relative == other.relative;
 }
 
 @freezed
@@ -1103,6 +1328,29 @@ enum RegistrationPhase {
   wantsRegister,
   registered,
   ;
+}
+
+class RichLinkImageAttachmentSubstitute {
+  final String mimeType;
+  final BigInt richLinkImageAttachmentSubstituteIndex;
+
+  const RichLinkImageAttachmentSubstitute({
+    required this.mimeType,
+    required this.richLinkImageAttachmentSubstituteIndex,
+  });
+
+  @override
+  int get hashCode =>
+      mimeType.hashCode ^ richLinkImageAttachmentSubstituteIndex.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is RichLinkImageAttachmentSubstitute &&
+          runtimeType == other.runtimeType &&
+          mimeType == other.mimeType &&
+          richLinkImageAttachmentSubstituteIndex ==
+              other.richLinkImageAttachmentSubstituteIndex;
 }
 
 class TransferProgress {

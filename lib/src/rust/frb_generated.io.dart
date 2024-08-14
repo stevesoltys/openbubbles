@@ -147,6 +147,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   DartEditMessage dco_decode_box_autoadd_dart_edit_message(dynamic raw);
 
   @protected
+  DartErrorMessage dco_decode_box_autoadd_dart_error_message(dynamic raw);
+
+  @protected
   DartExtensionApp dco_decode_box_autoadd_dart_extension_app(dynamic raw);
 
   @protected
@@ -158,6 +161,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   DartIconChangeMessage dco_decode_box_autoadd_dart_icon_change_message(
       dynamic raw);
+
+  @protected
+  DartLinkMeta dco_decode_box_autoadd_dart_link_meta(dynamic raw);
 
   @protected
   DartLoginState dco_decode_box_autoadd_dart_login_state(dynamic raw);
@@ -197,6 +203,25 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       dco_decode_box_autoadd_dart_update_extension_message(dynamic raw);
 
   @protected
+  LPIconMetadata dco_decode_box_autoadd_lp_icon_metadata(dynamic raw);
+
+  @protected
+  LPImageMetadata dco_decode_box_autoadd_lp_image_metadata(dynamic raw);
+
+  @protected
+  NSArrayIconArray dco_decode_box_autoadd_ns_array_icon_array(dynamic raw);
+
+  @protected
+  NSArrayImageArray dco_decode_box_autoadd_ns_array_image_array(dynamic raw);
+
+  @protected
+  NSURL dco_decode_box_autoadd_nsurl(dynamic raw);
+
+  @protected
+  RichLinkImageAttachmentSubstitute
+      dco_decode_box_autoadd_rich_link_image_attachment_substitute(dynamic raw);
+
+  @protected
   BigInt dco_decode_box_autoadd_u_64(dynamic raw);
 
   @protected
@@ -225,6 +250,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   DartEditMessage dco_decode_dart_edit_message(dynamic raw);
 
   @protected
+  DartErrorMessage dco_decode_dart_error_message(dynamic raw);
+
+  @protected
   DartExtensionApp dco_decode_dart_extension_app(dynamic raw);
 
   @protected
@@ -238,6 +266,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   DartIndexedMessagePart dco_decode_dart_indexed_message_part(dynamic raw);
+
+  @protected
+  DartLinkMeta dco_decode_dart_link_meta(dynamic raw);
 
   @protected
   DartLoginState dco_decode_dart_login_state(dynamic raw);
@@ -333,10 +364,28 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       dynamic raw);
 
   @protected
+  List<Uint8List> dco_decode_list_list_prim_u_8_strict(dynamic raw);
+
+  @protected
+  List<LPIconMetadata> dco_decode_list_lp_icon_metadata(dynamic raw);
+
+  @protected
+  List<LPImageMetadata> dco_decode_list_lp_image_metadata(dynamic raw);
+
+  @protected
   List<int> dco_decode_list_prim_u_8_loose(dynamic raw);
 
   @protected
   Uint8List dco_decode_list_prim_u_8_strict(dynamic raw);
+
+  @protected
+  LPIconMetadata dco_decode_lp_icon_metadata(dynamic raw);
+
+  @protected
+  LPImageMetadata dco_decode_lp_image_metadata(dynamic raw);
+
+  @protected
+  LPLinkMetadata dco_decode_lp_link_metadata(dynamic raw);
 
   @protected
   MMCSTransferProgress dco_decode_mmcs_transfer_progress(dynamic raw);
@@ -345,7 +394,19 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   MyAsyncRuntime dco_decode_my_async_runtime(dynamic raw);
 
   @protected
+  NSArrayClass dco_decode_ns_array_class(dynamic raw);
+
+  @protected
+  NSArrayIconArray dco_decode_ns_array_icon_array(dynamic raw);
+
+  @protected
+  NSArrayImageArray dco_decode_ns_array_image_array(dynamic raw);
+
+  @protected
   NSDictionaryClass dco_decode_ns_dictionary_class(dynamic raw);
+
+  @protected
+  NSURL dco_decode_nsurl(dynamic raw);
 
   @protected
   int? dco_decode_opt_CastedPrimitive_u_64(dynamic raw);
@@ -386,6 +447,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   DartIMessage? dco_decode_opt_box_autoadd_dart_i_message(dynamic raw);
 
   @protected
+  DartLinkMeta? dco_decode_opt_box_autoadd_dart_link_meta(dynamic raw);
+
+  @protected
   DartLoginState? dco_decode_opt_box_autoadd_dart_login_state(dynamic raw);
 
   @protected
@@ -401,6 +465,27 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   DartSupportAlert? dco_decode_opt_box_autoadd_dart_support_alert(dynamic raw);
+
+  @protected
+  LPIconMetadata? dco_decode_opt_box_autoadd_lp_icon_metadata(dynamic raw);
+
+  @protected
+  LPImageMetadata? dco_decode_opt_box_autoadd_lp_image_metadata(dynamic raw);
+
+  @protected
+  NSArrayIconArray? dco_decode_opt_box_autoadd_ns_array_icon_array(dynamic raw);
+
+  @protected
+  NSArrayImageArray? dco_decode_opt_box_autoadd_ns_array_image_array(
+      dynamic raw);
+
+  @protected
+  NSURL? dco_decode_opt_box_autoadd_nsurl(dynamic raw);
+
+  @protected
+  RichLinkImageAttachmentSubstitute?
+      dco_decode_opt_box_autoadd_rich_link_image_attachment_substitute(
+          dynamic raw);
 
   @protected
   BigInt? dco_decode_opt_box_autoadd_u_64(dynamic raw);
@@ -430,6 +515,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   RegistrationPhase dco_decode_registration_phase(dynamic raw);
+
+  @protected
+  RichLinkImageAttachmentSubstitute
+      dco_decode_rich_link_image_attachment_substitute(dynamic raw);
 
   @protected
   TransferProgress dco_decode_transfer_progress(dynamic raw);
@@ -567,6 +656,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       SseDeserializer deserializer);
 
   @protected
+  DartErrorMessage sse_decode_box_autoadd_dart_error_message(
+      SseDeserializer deserializer);
+
+  @protected
   DartExtensionApp sse_decode_box_autoadd_dart_extension_app(
       SseDeserializer deserializer);
 
@@ -580,6 +673,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   DartIconChangeMessage sse_decode_box_autoadd_dart_icon_change_message(
+      SseDeserializer deserializer);
+
+  @protected
+  DartLinkMeta sse_decode_box_autoadd_dart_link_meta(
       SseDeserializer deserializer);
 
   @protected
@@ -631,6 +728,30 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           SseDeserializer deserializer);
 
   @protected
+  LPIconMetadata sse_decode_box_autoadd_lp_icon_metadata(
+      SseDeserializer deserializer);
+
+  @protected
+  LPImageMetadata sse_decode_box_autoadd_lp_image_metadata(
+      SseDeserializer deserializer);
+
+  @protected
+  NSArrayIconArray sse_decode_box_autoadd_ns_array_icon_array(
+      SseDeserializer deserializer);
+
+  @protected
+  NSArrayImageArray sse_decode_box_autoadd_ns_array_image_array(
+      SseDeserializer deserializer);
+
+  @protected
+  NSURL sse_decode_box_autoadd_nsurl(SseDeserializer deserializer);
+
+  @protected
+  RichLinkImageAttachmentSubstitute
+      sse_decode_box_autoadd_rich_link_image_attachment_substitute(
+          SseDeserializer deserializer);
+
+  @protected
   BigInt sse_decode_box_autoadd_u_64(SseDeserializer deserializer);
 
   @protected
@@ -662,6 +783,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   DartEditMessage sse_decode_dart_edit_message(SseDeserializer deserializer);
 
   @protected
+  DartErrorMessage sse_decode_dart_error_message(SseDeserializer deserializer);
+
+  @protected
   DartExtensionApp sse_decode_dart_extension_app(SseDeserializer deserializer);
 
   @protected
@@ -677,6 +801,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   DartIndexedMessagePart sse_decode_dart_indexed_message_part(
       SseDeserializer deserializer);
+
+  @protected
+  DartLinkMeta sse_decode_dart_link_meta(SseDeserializer deserializer);
 
   @protected
   DartLoginState sse_decode_dart_login_state(SseDeserializer deserializer);
@@ -783,10 +910,31 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       SseDeserializer deserializer);
 
   @protected
+  List<Uint8List> sse_decode_list_list_prim_u_8_strict(
+      SseDeserializer deserializer);
+
+  @protected
+  List<LPIconMetadata> sse_decode_list_lp_icon_metadata(
+      SseDeserializer deserializer);
+
+  @protected
+  List<LPImageMetadata> sse_decode_list_lp_image_metadata(
+      SseDeserializer deserializer);
+
+  @protected
   List<int> sse_decode_list_prim_u_8_loose(SseDeserializer deserializer);
 
   @protected
   Uint8List sse_decode_list_prim_u_8_strict(SseDeserializer deserializer);
+
+  @protected
+  LPIconMetadata sse_decode_lp_icon_metadata(SseDeserializer deserializer);
+
+  @protected
+  LPImageMetadata sse_decode_lp_image_metadata(SseDeserializer deserializer);
+
+  @protected
+  LPLinkMetadata sse_decode_lp_link_metadata(SseDeserializer deserializer);
 
   @protected
   MMCSTransferProgress sse_decode_mmcs_transfer_progress(
@@ -796,8 +944,21 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   MyAsyncRuntime sse_decode_my_async_runtime(SseDeserializer deserializer);
 
   @protected
+  NSArrayClass sse_decode_ns_array_class(SseDeserializer deserializer);
+
+  @protected
+  NSArrayIconArray sse_decode_ns_array_icon_array(SseDeserializer deserializer);
+
+  @protected
+  NSArrayImageArray sse_decode_ns_array_image_array(
+      SseDeserializer deserializer);
+
+  @protected
   NSDictionaryClass sse_decode_ns_dictionary_class(
       SseDeserializer deserializer);
+
+  @protected
+  NSURL sse_decode_nsurl(SseDeserializer deserializer);
 
   @protected
   int? sse_decode_opt_CastedPrimitive_u_64(SseDeserializer deserializer);
@@ -842,6 +1003,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       SseDeserializer deserializer);
 
   @protected
+  DartLinkMeta? sse_decode_opt_box_autoadd_dart_link_meta(
+      SseDeserializer deserializer);
+
+  @protected
   DartLoginState? sse_decode_opt_box_autoadd_dart_login_state(
       SseDeserializer deserializer);
 
@@ -860,6 +1025,30 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   DartSupportAlert? sse_decode_opt_box_autoadd_dart_support_alert(
       SseDeserializer deserializer);
+
+  @protected
+  LPIconMetadata? sse_decode_opt_box_autoadd_lp_icon_metadata(
+      SseDeserializer deserializer);
+
+  @protected
+  LPImageMetadata? sse_decode_opt_box_autoadd_lp_image_metadata(
+      SseDeserializer deserializer);
+
+  @protected
+  NSArrayIconArray? sse_decode_opt_box_autoadd_ns_array_icon_array(
+      SseDeserializer deserializer);
+
+  @protected
+  NSArrayImageArray? sse_decode_opt_box_autoadd_ns_array_image_array(
+      SseDeserializer deserializer);
+
+  @protected
+  NSURL? sse_decode_opt_box_autoadd_nsurl(SseDeserializer deserializer);
+
+  @protected
+  RichLinkImageAttachmentSubstitute?
+      sse_decode_opt_box_autoadd_rich_link_image_attachment_substitute(
+          SseDeserializer deserializer);
 
   @protected
   BigInt? sse_decode_opt_box_autoadd_u_64(SseDeserializer deserializer);
@@ -890,6 +1079,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   RegistrationPhase sse_decode_registration_phase(SseDeserializer deserializer);
+
+  @protected
+  RichLinkImageAttachmentSubstitute
+      sse_decode_rich_link_image_attachment_substitute(
+          SseDeserializer deserializer);
 
   @protected
   TransferProgress sse_decode_transfer_progress(SseDeserializer deserializer);
@@ -1027,6 +1221,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       DartEditMessage self, SseSerializer serializer);
 
   @protected
+  void sse_encode_box_autoadd_dart_error_message(
+      DartErrorMessage self, SseSerializer serializer);
+
+  @protected
   void sse_encode_box_autoadd_dart_extension_app(
       DartExtensionApp self, SseSerializer serializer);
 
@@ -1041,6 +1239,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_box_autoadd_dart_icon_change_message(
       DartIconChangeMessage self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_dart_link_meta(
+      DartLinkMeta self, SseSerializer serializer);
 
   @protected
   void sse_encode_box_autoadd_dart_login_state(
@@ -1091,6 +1293,29 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       DartUpdateExtensionMessage self, SseSerializer serializer);
 
   @protected
+  void sse_encode_box_autoadd_lp_icon_metadata(
+      LPIconMetadata self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_lp_image_metadata(
+      LPImageMetadata self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_ns_array_icon_array(
+      NSArrayIconArray self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_ns_array_image_array(
+      NSArrayImageArray self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_nsurl(NSURL self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_rich_link_image_attachment_substitute(
+      RichLinkImageAttachmentSubstitute self, SseSerializer serializer);
+
+  @protected
   void sse_encode_box_autoadd_u_64(BigInt self, SseSerializer serializer);
 
   @protected
@@ -1125,6 +1350,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       DartEditMessage self, SseSerializer serializer);
 
   @protected
+  void sse_encode_dart_error_message(
+      DartErrorMessage self, SseSerializer serializer);
+
+  @protected
   void sse_encode_dart_extension_app(
       DartExtensionApp self, SseSerializer serializer);
 
@@ -1141,6 +1370,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_dart_indexed_message_part(
       DartIndexedMessagePart self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_dart_link_meta(DartLinkMeta self, SseSerializer serializer);
 
   @protected
   void sse_encode_dart_login_state(
@@ -1253,11 +1485,35 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       List<DartTrustedPhoneNumber> self, SseSerializer serializer);
 
   @protected
+  void sse_encode_list_list_prim_u_8_strict(
+      List<Uint8List> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_lp_icon_metadata(
+      List<LPIconMetadata> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_lp_image_metadata(
+      List<LPImageMetadata> self, SseSerializer serializer);
+
+  @protected
   void sse_encode_list_prim_u_8_loose(List<int> self, SseSerializer serializer);
 
   @protected
   void sse_encode_list_prim_u_8_strict(
       Uint8List self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_lp_icon_metadata(
+      LPIconMetadata self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_lp_image_metadata(
+      LPImageMetadata self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_lp_link_metadata(
+      LPLinkMetadata self, SseSerializer serializer);
 
   @protected
   void sse_encode_mmcs_transfer_progress(
@@ -1268,8 +1524,22 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       MyAsyncRuntime self, SseSerializer serializer);
 
   @protected
+  void sse_encode_ns_array_class(NSArrayClass self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_ns_array_icon_array(
+      NSArrayIconArray self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_ns_array_image_array(
+      NSArrayImageArray self, SseSerializer serializer);
+
+  @protected
   void sse_encode_ns_dictionary_class(
       NSDictionaryClass self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_nsurl(NSURL self, SseSerializer serializer);
 
   @protected
   void sse_encode_opt_CastedPrimitive_u_64(int? self, SseSerializer serializer);
@@ -1315,6 +1585,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       DartIMessage? self, SseSerializer serializer);
 
   @protected
+  void sse_encode_opt_box_autoadd_dart_link_meta(
+      DartLinkMeta? self, SseSerializer serializer);
+
+  @protected
   void sse_encode_opt_box_autoadd_dart_login_state(
       DartLoginState? self, SseSerializer serializer);
 
@@ -1333,6 +1607,29 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_opt_box_autoadd_dart_support_alert(
       DartSupportAlert? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_lp_icon_metadata(
+      LPIconMetadata? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_lp_image_metadata(
+      LPImageMetadata? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_ns_array_icon_array(
+      NSArrayIconArray? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_ns_array_image_array(
+      NSArrayImageArray? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_nsurl(NSURL? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_rich_link_image_attachment_substitute(
+      RichLinkImageAttachmentSubstitute? self, SseSerializer serializer);
 
   @protected
   void sse_encode_opt_box_autoadd_u_64(BigInt? self, SseSerializer serializer);
@@ -1362,6 +1659,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_registration_phase(
       RegistrationPhase self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_rich_link_image_attachment_substitute(
+      RichLinkImageAttachmentSubstitute self, SseSerializer serializer);
 
   @protected
   void sse_encode_transfer_progress(

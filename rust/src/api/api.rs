@@ -664,6 +664,75 @@ pub struct DartNormalMessage {
     pub subject: Option<String>,
     #[frb(non_final)]
     pub app: Option<DartExtensionApp>,
+    #[frb(non_final)]
+    pub link_meta: Option<DartLinkMeta>,
+}
+
+#[repr(C)]
+pub struct NSURL {
+    pub base: String,
+    pub relative: String,
+}
+
+#[repr(C)]
+pub struct LPImageMetadata {
+    pub size: String,
+    pub url: NSURL,
+    pub version: u8,
+}
+
+#[repr(C)]
+pub struct LPIconMetadata {
+    pub url: NSURL,
+    pub version: u8,
+}
+
+#[repr(C)]
+pub struct RichLinkImageAttachmentSubstitute {
+    pub mime_type: String,
+    pub rich_link_image_attachment_substitute_index: u64,
+}
+
+#[repr(C)]
+pub enum NSArrayClass {
+    NSArray,
+    NSMutableArray,
+}
+
+// FRB doesn't support generics
+// the things i do for this bridge...
+#[repr(C)]
+pub struct NSArrayImageArray {
+    pub objects: Vec<LPImageMetadata>,
+    pub class: NSArrayClass,
+}
+
+#[repr(C)]
+pub struct NSArrayIconArray {
+    pub objects: Vec<LPIconMetadata>,
+    pub class: NSArrayClass,
+}
+
+#[repr(C)]
+pub struct LPLinkMetadata {
+    pub image_metadata: Option<LPImageMetadata>,
+    pub version: u8,
+    pub icon_metadata: Option<LPIconMetadata>,
+    pub original_url: NSURL,
+    pub url: Option<NSURL>,
+    pub title: Option<String>,
+    pub summary: Option<String>,
+    pub image: Option<RichLinkImageAttachmentSubstitute>,
+    pub icon: Option<RichLinkImageAttachmentSubstitute>,
+    pub images: Option<NSArrayImageArray>,
+    pub icons: Option<NSArrayIconArray>,
+}
+
+
+#[repr(C)]
+pub struct DartLinkMeta {
+    pub data: LPLinkMetadata,
+    pub attachments: Vec<Vec<u8>>,
 }
 
 #[repr(C)]
@@ -739,6 +808,13 @@ pub struct DartUpdateExtensionMessage {
 }
 
 #[repr(C)]
+pub struct DartErrorMessage {
+    pub for_uuid: String,
+    pub status: u64,
+    pub status_str: String,
+}
+
+#[repr(C)]
 #[frb(non_opaque)]
 pub enum DartMessage {
     Message(DartNormalMessage),
@@ -758,6 +834,7 @@ pub enum DartMessage {
     MarkUnread, // send for last message from other participant
     PeerCacheInvalidate,
     UpdateExtension(DartUpdateExtensionMessage),
+    Error(DartErrorMessage),
 }
 
 #[repr(C)]
