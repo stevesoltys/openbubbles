@@ -364,7 +364,7 @@ class _ProfilePanelState extends OptimizedState<ProfilePanel> with WidgetsBindin
                             ),
                           ));
                       }),
-                      if (accountInfo['login_status_message'].startsWith("Deregistered"))
+                      if (accountInfo['login_status_message']?.startsWith("Deregistered") ?? false)
                         Container(
                           color: tileColor,
                           child: Padding(
@@ -372,7 +372,7 @@ class _ProfilePanelState extends OptimizedState<ProfilePanel> with WidgetsBindin
                             child: SettingsDivider(color: context.theme.colorScheme.surfaceVariant),
                           ),
                         ),
-                      if (accountInfo['login_status_message'].startsWith("Deregistered"))
+                      if (accountInfo['login_status_message']?.startsWith("Deregistered") ?? false)
                         SettingsTile(
                         title: "Retry now",
                         onTap: () async {
