@@ -547,6 +547,7 @@ class RustPushBackend implements BackendService {
     if (hrs > 0) output += "${hrs}h ";
     if (mins > 0) output += "${mins}m ";
     if (secs > 0 && useSecs) output += "${secs}s ";
+    if (output.trim() == "") output = "under a minute";
     return output.trim();
   }
 
@@ -1580,20 +1581,22 @@ class RustPushService extends GetxService {
 
   Future<Chat> chatForMessage(api.DartIMessage myMsg) async {
     var result = await chatForMessageInner(myMsg);
-    // conformance stuff
-    if (myMsg.conversation!.senderGuid != null) {
-      result.guidRefs.add(myMsg.conversation!.senderGuid!);
-      result.save(updateGuidRefs: true);
-    }
-    var (mine, _) = await RustPushBBUtils.rustParticipantsToBB(myMsg.conversation!.participants);
-    if (mine.isNotEmpty && !mine.contains(result.usingHandle)) {
-      result.usingHandle = mine[0];
-      result.save(updateUsingHandle: true);
-    }
-    if (myMsg.message is! api.DartMessage_ChangeParticipants && myMsg.conversation != null) {
-      var data = await result.getConversationData();
-      // make sure we are in consensus
-      await updateChatParticipants(result, myMsg, data.participants, myMsg.conversation!.participants);
+    if (myMsg.conversation != null) {
+      // conformance stuff
+      if (myMsg.conversation!.senderGuid != null) {
+        result.guidRefs.add(myMsg.conversation!.senderGuid!);
+        result.save(updateGuidRefs: true);
+      }
+      var (mine, _) = await RustPushBBUtils.rustParticipantsToBB(myMsg.conversation!.participants);
+      if (mine.isNotEmpty && !mine.contains(result.usingHandle)) {
+        result.usingHandle = mine[0];
+        result.save(updateUsingHandle: true);
+      }
+      if (myMsg.message is! api.DartMessage_ChangeParticipants) {
+        var data = await result.getConversationData();
+        // make sure we are in consensus
+        await updateChatParticipants(result, myMsg, data.participants, myMsg.conversation!.participants);
+      }
     }
     return result;
   }
