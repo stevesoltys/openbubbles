@@ -205,8 +205,6 @@ async fn restore(curr_state: &PushState) {
     // id may not exist yet; that's fine
     let Ok(users) = plist::from_file::<_, Vec<IDSUser>>(&id_path) else { return };
 
-    info!("registration expires at {}", users[0].registration.as_ref().unwrap().get_exp().unwrap());
-
     inner.client = Some(IMClient::new(inner.conn.as_ref().unwrap().clone(), users, 
         inner.conf_dir.join("id_cache.plist"), inner.os_config.as_ref().unwrap().config(), Box::new(move |updated_keys| {
             println!("updated keys!!!");
