@@ -416,7 +416,7 @@ class _ProfilePanelState extends OptimizedState<ProfilePanel> with WidgetsBindin
                           options: accountInfo['vetted_aliases'].map((e) => e['Alias'].toString()).toList().cast<String>(),
                           secondaryColor: headerColor,
                           useCupertino: false,
-                          textProcessing: (str) => GetUtils.isEmail(str) ? "Redacted Email" : "Redacted Phone",
+                          textProcessing: (str) => ss.settings.redactedMode.value ? (GetUtils.isEmail(str) ? "Redacted Email" : "Redacted Phone") : str,
                           capitalize: false,
                           onChanged: (value) async {
                             if (value == null) return;
