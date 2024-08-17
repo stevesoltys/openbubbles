@@ -49,7 +49,7 @@ class _DevicePanelState extends CustomState<DevicePanel, void, DevicePanelContro
 
     return Obx(
       () => SettingsScaffold(
-        title: "${ss.settings.macIsMine.value ? 'My' : 'Shared'} Mac",
+        title: "${ss.settings.macIsMine.value ? 'My' : 'Shared'} Device",
         initialHeader: null,
         iosSubtitle: iosSubtitle,
         materialSubtitle: materialSubtitle,
@@ -75,7 +75,7 @@ class _DevicePanelState extends CustomState<DevicePanel, void, DevicePanelContro
                           ),
                           Text(deviceName, style: context.theme.textTheme.titleLarge),
                           const SizedBox(height: 10),
-                          Text(deviceInfo?.serial ?? ""),
+                          Text(ss.settings.redactedMode.value ? "Serial Number" : deviceInfo?.serial ?? ""),
                           const SizedBox(height: 10),
                           Text(deviceInfo?.osVersion ?? ""),
                           const SizedBox(height: 25),
@@ -84,12 +84,12 @@ class _DevicePanelState extends CustomState<DevicePanel, void, DevicePanelContro
                     ),
                   ],
                 ),
-                if (ss.settings.macIsMine.value && deviceInfo?.encodedData != null)
+                if (ss.settings.macIsMine.value && deviceInfo?.encodedData != null && !ss.settings.redactedMode.value)
                 SettingsHeader(
                     iosSubtitle: iosSubtitle,
                     materialSubtitle: materialSubtitle,
                     text: "Share Mac"),
-                if (ss.settings.macIsMine.value && deviceInfo?.encodedData != null)
+                if (ss.settings.macIsMine.value && deviceInfo?.encodedData != null && !ss.settings.redactedMode.value)
                 SettingsSection(
                   backgroundColor: tileColor,
                   children: [
@@ -127,7 +127,7 @@ class _DevicePanelState extends CustomState<DevicePanel, void, DevicePanelContro
                         if (code.length > 50) {
                           Share.text("OpenBubbles", code);
                         } else {
-                          Share.text("OpenBubbles", "$rpApiRoot/code/$code");
+                          Share.text("OpenBubbles", "$rpApiRoot/$code");
                         }
                       },
                       subtitle: controller.allowSharing.value ? null : "Code can only be used once",

@@ -206,7 +206,7 @@ class SetupViewController extends StatefulController {
     String hash = hex.encode(sha256.convert(code.codeUnits).bytes);
 
     final response = await http.dio.get(
-      "$rpApiRoot/code/$hash",
+      "$rpApiRoot/$hash",
       options: Options(
         headers: {
           "X-OpenBubbles-Get": ""
@@ -303,7 +303,7 @@ class _SetupViewState extends OptimizedState<SetupView> {
 
       _appLinks.uriLinkStream.listen((uri) async {
         var text = uri.toString();
-        var header = "$rpApiRoot/code/";
+        var header = "$rpApiRoot/";
         if (text.startsWith(header)) {
           print("caching code");
           await controller.cacheCode(text.replaceFirst(header, ""));
@@ -313,7 +313,7 @@ class _SetupViewState extends OptimizedState<SetupView> {
 
       if (link != null) {
         var text = link.toString();
-        var header = "$rpApiRoot/code/";
+        var header = "$rpApiRoot/";
         if (text.startsWith(header)) {
           print("caching code");
           await controller.cacheCode(text.replaceFirst(header, ""));

@@ -202,7 +202,7 @@ class HwInpState extends OptimizedState<HwInp> {
         showSnackbar("Fetching data", "This might take a minute");
       });
       final response = await http.dio.get(
-        "$rpApiRoot/code/$hash",
+        "$rpApiRoot/$hash",
         options: Options(
           headers: {
             "X-OpenBubbles-Get": ""
@@ -263,7 +263,7 @@ class HwInpState extends OptimizedState<HwInp> {
       }
       return;
     }
-    var header = "$rpApiRoot/code/";
+    var header = "$rpApiRoot/";
     if (text.startsWith(header)) {
       await handleOpenAbsinthe(text.replaceFirst(header, ""));
       return;

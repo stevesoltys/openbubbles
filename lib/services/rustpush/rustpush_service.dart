@@ -38,7 +38,7 @@ RustPushService pushService =
     Get.isRegistered<RustPushService>() ? Get.find<RustPushService>() : Get.put(RustPushService());
 
 
-const rpApiRoot = "https://openbubbles.app";
+const rpApiRoot = "https://hw.openbubbles.app";
 
 // utils for communicating between dart and rustpush.
 class RustPushBBUtils {
@@ -1347,7 +1347,7 @@ class RustPushService extends GetxService {
         attributedBody: [attributedBodyData.$1],
         attachments: attributedBodyData.$3,
         hasAttachments: attributedBodyData.$3.isNotEmpty,
-        balloonBundleId: innerMsg.field0.app?.bundleId ?? (innerMsg.field0.linkMeta != null ? "com.apple.messages.URLBalloonProvider" : null),
+        balloonBundleId: innerMsg.field0.app?.balloon != null ? innerMsg.field0.app?.bundleId : innerMsg.field0.linkMeta != null ? "com.apple.messages.URLBalloonProvider" : null,
         payloadData: innerMsg.field0.app?.balloon != null ? appToData(innerMsg.field0.app!) : innerMsg.field0.linkMeta != null ? linkToData(innerMsg.field0.linkMeta!) : null,
         amkSessionId: innerMsg.field0.app?.balloon != null ? myMsg.id : null,
       );
@@ -1837,7 +1837,7 @@ class RustPushService extends GetxService {
     });
     try {
       final response = await http.dio.post(
-        "$rpApiRoot/code",
+        rpApiRoot,
         data: {
           "data": encrypted,
           "id": hash,

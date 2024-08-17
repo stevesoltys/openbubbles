@@ -351,7 +351,7 @@ class _ProfilePanelState extends OptimizedState<ProfilePanel> with WidgetsBindin
                                   const TextSpan(text: "VETTED ALIASES\n", style: TextStyle(fontWeight: FontWeight.w700, height: 3.0)),
                                   ...((accountInfo['vetted_aliases'] as List<dynamic>? ?? [])).map((e) => [
                                     TextSpan(text: "⬤  ", style: TextStyle(color: getIndicatorColor(e['Status'] == 3 ? SocketState.connected : SocketState.disconnected))),
-                                    TextSpan(text: redact ? "Alias\n" : "${e['Alias']}\n")
+                                    TextSpan(text: redact ? (GetUtils.isEmail(e['Alias']) ? "Redacted Email\n" : "Redacted Phone\n") : "${e['Alias']}\n")
                                   ]).toList().flattened,
                                   const TextSpan(text: "\n"),
                                   const TextSpan(text: "Tap to update values...", style: TextStyle(fontStyle: FontStyle.italic)),
@@ -416,7 +416,7 @@ class _ProfilePanelState extends OptimizedState<ProfilePanel> with WidgetsBindin
                           options: accountInfo['vetted_aliases'].map((e) => e['Alias'].toString()).toList().cast<String>(),
                           secondaryColor: headerColor,
                           useCupertino: false,
-                          textProcessing: (str) => str,
+                          textProcessing: (str) => GetUtils.isEmail(str) ? "Redacted Email" : "Redacted Phone",
                           capitalize: false,
                           onChanged: (value) async {
                             if (value == null) return;
@@ -454,6 +454,7 @@ class _ProfilePanelState extends OptimizedState<ProfilePanel> with WidgetsBindin
                           backgroundColor: tileColor,
                           isThreeLine: true,
                         )),
+                      if (!ss.settings.redactedMode.value)
                       ...(usingRustPush && Platform.isAndroid && ss.settings.isSmsRouter.value ? 
                         forwardingTargets.filter((target) => target.uuid != null && target.deviceName != null).map((target) => SettingsSwitch(
                           onChanged: (bool val) async {

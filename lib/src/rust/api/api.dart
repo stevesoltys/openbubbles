@@ -451,13 +451,13 @@ class DartErrorMessage {
 
 class DartExtensionApp {
   final String name;
-  final int appId;
+  final int? appId;
   final String bundleId;
   final DartBalloon? balloon;
 
   const DartExtensionApp({
     required this.name,
-    required this.appId,
+    this.appId,
     required this.bundleId,
     this.balloon,
   });

@@ -2017,7 +2017,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       throw Exception('unexpected arr length: expect 4 but see ${arr.length}');
     return DartExtensionApp(
       name: dco_decode_String(arr[0]),
-      appId: dco_decode_CastedPrimitive_u_64(arr[1]),
+      appId: dco_decode_opt_CastedPrimitive_u_64(arr[1]),
       bundleId: dco_decode_String(arr[2]),
       balloon: dco_decode_opt_box_autoadd_dart_balloon(arr[3]),
     );
@@ -3511,7 +3511,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   DartExtensionApp sse_decode_dart_extension_app(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var var_name = sse_decode_String(deserializer);
-    var var_appId = sse_decode_CastedPrimitive_u_64(deserializer);
+    var var_appId = sse_decode_opt_CastedPrimitive_u_64(deserializer);
     var var_bundleId = sse_decode_String(deserializer);
     var var_balloon = sse_decode_opt_box_autoadd_dart_balloon(deserializer);
     return DartExtensionApp(
@@ -5172,7 +5172,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       DartExtensionApp self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_String(self.name, serializer);
-    sse_encode_CastedPrimitive_u_64(self.appId, serializer);
+    sse_encode_opt_CastedPrimitive_u_64(self.appId, serializer);
     sse_encode_String(self.bundleId, serializer);
     sse_encode_opt_box_autoadd_dart_balloon(self.balloon, serializer);
   }

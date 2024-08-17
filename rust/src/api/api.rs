@@ -640,7 +640,7 @@ pub struct DartBalloon {
 #[frb(type_64bit_int)]
 pub struct DartExtensionApp {
     pub name: String,
-    pub app_id: u64,
+    pub app_id: Option<u64>,
     pub bundle_id: String,
 
     pub balloon: Option<DartBalloon>,

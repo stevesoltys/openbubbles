@@ -2759,7 +2759,7 @@ impl SseDecode for crate::api::api::DartExtensionApp {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut var_name = <String>::sse_decode(deserializer);
-        let mut var_appId = <u64>::sse_decode(deserializer);
+        let mut var_appId = <Option<u64>>::sse_decode(deserializer);
         let mut var_bundleId = <String>::sse_decode(deserializer);
         let mut var_balloon = <Option<crate::api::api::DartBalloon>>::sse_decode(deserializer);
         return crate::api::api::DartExtensionApp {
@@ -5610,7 +5610,7 @@ impl SseEncode for crate::api::api::DartExtensionApp {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <String>::sse_encode(self.name, serializer);
-        <u64>::sse_encode(self.app_id, serializer);
+        <Option<u64>>::sse_encode(self.app_id, serializer);
         <String>::sse_encode(self.bundle_id, serializer);
         <Option<crate::api::api::DartBalloon>>::sse_encode(self.balloon, serializer);
     }
