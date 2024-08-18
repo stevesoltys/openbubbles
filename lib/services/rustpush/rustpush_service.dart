@@ -535,19 +535,19 @@ class RustPushBackend implements BackendService {
     return true;
   }
 
-  String formatDuration(int seconds, {bool useSecs = false}) {
+  String formatDuration(int secondsAbs, {bool useSecs = false}) {
+    var seconds = secondsAbs.abs();
     var secs = seconds % 60;
     var minTotal = seconds ~/ 60;
     var mins = minTotal % 60;
     var hrTotal = minTotal ~/ 60;
     var hrs = hrTotal % 24;
     var days = hrTotal ~/ 24;
-    String output = "";
+    String output = seconds.isNegative ? "-" : "";
     if (days > 0) output += "${days}d ";
     if (hrs > 0) output += "${hrs}h ";
     if (mins > 0) output += "${mins}m ";
-    if (secs > 0 && useSecs) output += "${secs}s ";
-    if (output.trim() == "") output = "under a minute";
+    if ((secs > 0 && useSecs) || output.trim() == "") output += "${secs}s ";
     return output.trim();
   }
 
