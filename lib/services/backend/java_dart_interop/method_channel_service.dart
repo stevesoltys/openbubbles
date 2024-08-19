@@ -72,8 +72,16 @@ class MethodChannelService extends GetxService {
         }
         return true;
       case "APNMsg":
-        String pointer = call.arguments.toString();
-        await pushService.recievedMsgPointer(pointer);
+        try {
+          String pointer = call.arguments["pointer"];
+          print("got message $pointer");
+          await pushService.recievedMsgPointer(pointer);
+          print("finish message $pointer");
+        } catch (e, s) {
+          print(e);
+          print(s);
+          rethrow;
+        }
         return true;
       case "extension-add-message":
         try {

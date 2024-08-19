@@ -1310,6 +1310,7 @@ class RustPushService extends GetxService {
   }
 
   Future<Message?> reflectMessageDyn(api.DartIMessage myMsg) async {
+    print("reflecting msg");
     var chat = myMsg.conversation != null ? await chatForMessage(myMsg) : null;
     var myHandles = (await api.getHandles(state: pushService.state));
     if (myMsg.message is api.DartMessage_Message) {
