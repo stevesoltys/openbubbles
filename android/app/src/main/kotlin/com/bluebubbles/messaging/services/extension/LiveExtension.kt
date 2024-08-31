@@ -48,6 +48,7 @@ internal class LiveExtension(val context: Context, id: Int, val data: Map<String
             }
             MessageViewRegistry.registered.add(message.session)
             handle = MessageViewHandle(
+                context,
                 data["session"] as String,
                 data["appId"] as Int,
                 data["messageGuid"] as String?,

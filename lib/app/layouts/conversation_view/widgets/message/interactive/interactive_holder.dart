@@ -222,7 +222,7 @@ class _InteractiveHolderState extends CustomState<InteractiveHolder, void, Messa
                               }
                             }
                           ),
-                          if (appIcon != null && hasImage)
+                          if (appIcon != null && (hasImage || (payloadData?.appData?.first.isLive ?? false)))
                           Positioned(
                             child: ClipRRect(
                               child: Image.memory(

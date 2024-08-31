@@ -27,6 +27,7 @@ class TemplateTapHandler: MethodCallHandlerImpl() {
         MessageViewRegistry.registered.add(message.session)
         MadridExtensionConnection.bind(appId, context) {
             var handle = MessageViewHandle(
+                context,
                 call.argument("session")!!,
                 appId,
                 call.argument("messageGuid")!!,

@@ -1,6 +1,8 @@
 package com.bluebubbles.messaging.services.extension
 
 import android.content.ComponentName
+import android.content.Context
+import android.content.pm.PackageManager
 
 data class AvailableExtension(
     val store: String,
@@ -25,4 +27,20 @@ object ExtensionRegistry {
 //            ".MadridExtensionService"
 //        )
     )
+
+    fun registerDevExtension(context: Context, name: String) {
+        val parts = ArrayList(name.split("."))
+        val cls = "." + parts.removeLast()
+        val pak = parts.joinToString(".")
+        val component = ComponentName.createRelative(pak, cls)
+        val service = context.packageManager.getServiceInfo(component, PackageManager.GET_META_DATA)
+
+        map[service.metaData.getInt("madrid_id")] = AvailableExtension(
+            "https://play.google.com/store/games?hl=en_US",
+            pak,
+            service.metaData.getString("madrid_name")!!,
+            service.metaData.getString("madrid_bundle_id")!!,
+            cls,
+        )
+    }
 }

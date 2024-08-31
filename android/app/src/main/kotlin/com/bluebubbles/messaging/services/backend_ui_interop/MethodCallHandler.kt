@@ -5,6 +5,7 @@ import android.util.Log
 import com.bluebubbles.messaging.Constants
 import com.bluebubbles.messaging.MainActivity
 import com.bluebubbles.messaging.MainActivity.Companion.engine
+import com.bluebubbles.messaging.services.extension.DevExtensionHandler
 import com.bluebubbles.messaging.services.extension.MessageUpdateHandler
 import com.bluebubbles.messaging.services.extension.StatusQuery
 import com.bluebubbles.messaging.services.extension.TemplateTapHandler
@@ -93,6 +94,7 @@ class MethodCallHandler {
             StatusQuery.tag -> StatusQuery().handleMethodCall(call, result, context)
             TemplateTapHandler.tag -> TemplateTapHandler().handleMethodCall(call, result, context)
             MessageUpdateHandler.tag -> MessageUpdateHandler().handleMethodCall(call, result, context)
+            DevExtensionHandler.tag -> DevExtensionHandler().handleMethodCall(call, result, context)
             else -> {
                 val error = "Could not find method call handler for ${call.method}!"
                 Log.d(Constants.logTag, error)

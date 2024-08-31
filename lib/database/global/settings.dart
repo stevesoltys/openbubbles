@@ -188,6 +188,10 @@ class Settings {
   final RxMap<String, String> cachedCodes = <String, String>{}.obs;
   final RxList<String> smsForwardingTargets = <String>[].obs;
 
+  final RxBool convertEmoticonsToEmoji = true.obs;
+  final RxBool developerEnabled = false.obs;
+  final RxList<String> developerMode = <String>[].obs;
+
   Future<DisplayMode> getDisplayMode() async {
     List<DisplayMode> modes = await FlutterDisplayMode.supported;
     return modes.firstWhereOrNull((element) => element.refreshRate.round() == refreshRate.value) ?? DisplayMode.auto;
@@ -374,9 +378,12 @@ class Settings {
       'useWindowsAccent': useWindowsAccent.value,
       'defaultHandle': defaultHandle.value,
       'macIsMine': macIsMine.value,
+      'convertEmoticonsToEmoji': convertEmoticonsToEmoji.value,
       'isSmsRouter': isSmsRouter.value,
+      'developerEnabled': developerEnabled.value,
       'vpnWarned': vpnWarned.value,
       'smsForwardingTargets': smsForwardingTargets,
+      'developerMode': developerMode,
     };
     if (includeAll) {
       map.addAll({
@@ -518,10 +525,13 @@ class Settings {
     ss.settings.useWindowsAccent.value = map['useWindowsAccent'] ?? false;
     ss.settings.defaultHandle.value = map['defaultHandle'] ?? "";
     ss.settings.macIsMine.value = map['macIsMine'] ?? true;
+    ss.settings.convertEmoticonsToEmoji.value = map['convertEmoticonsToEmoji'] ?? true;
     ss.settings.isSmsRouter.value = map['isSmsRouter'] ?? false;
+    ss.settings.developerEnabled.value = map['developerEnabled'] ?? false;
     ss.settings.vpnWarned.value = map['vpnWarned'] ?? false;
     ss.settings.cachedCodes.value = map['cachedCodes'] ?? {};
     ss.settings.smsForwardingTargets.value = (map['smsForwardingTargets']?.runtimeType == String ? jsonDecode(map['smsForwardingTargets']) as List : []).cast<String>();
+    ss.settings.developerMode.value = (map['developerMode']?.runtimeType == String ? jsonDecode(map['developerMode']) as List : []).cast<String>();
     ss.settings.save();
 
     eventDispatcher.emit("theme-update", null);
@@ -659,10 +669,13 @@ class Settings {
     s.useWindowsAccent.value = map['useWindowsAccent'] ?? false;
     s.defaultHandle.value = map['defaultHandle'] ?? "";
     s.macIsMine.value = map['macIsMine'] ?? true;
+    s.convertEmoticonsToEmoji.value = map['convertEmoticonsToEmoji'] ?? true;
     s.isSmsRouter.value = map['isSmsRouter'] ?? false;
+    s.developerEnabled.value = map['developerEnabled'] ?? false;
     s.vpnWarned.value = map['vpnWarned'] ?? false;
     s.cachedCodes.value =  map['cachedCodes'] is String ? jsonDecode(map['cachedCodes']).cast<String, String>() : <String, String>{};
     s.smsForwardingTargets.value = (map['smsForwardingTargets']?.runtimeType == String ? jsonDecode(map['smsForwardingTargets']) as List : []).cast<String>();
+    s.developerMode.value = (map['developerMode']?.runtimeType == String ? jsonDecode(map['developerMode']) as List : []).cast<String>();
     return s;
   }
 

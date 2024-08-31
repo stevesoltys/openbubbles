@@ -120,11 +120,22 @@ class ExtensionService extends GetxService {
 
   Future<void> refreshCache() async {
     print("Refreshing extension state");
+    if (ss.settings.developerEnabled.value) {
+      for (var item in ss.settings.developerMode) {
+        await addDevExtension(item);
+      }
+    }
     var result = await mcs.invokeMethod("extension-status");
     if (result == null) return;
     List<dynamic> parsed = json.decode(result);
     cachedStatus = parsed.map((item) => App.fromMap(item)).toList();
     print("Extension state refreshed");
+  }
+
+  Future<void> addDevExtension(String package) async {
+     await mcs.invokeMethod("dev-extension-handler", {
+      "serviceName": package
+     });
   }
 
   Future<void> updateMessage(Map<String, dynamic> args) async {
