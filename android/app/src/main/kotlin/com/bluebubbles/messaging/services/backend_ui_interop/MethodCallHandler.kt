@@ -22,6 +22,7 @@ import com.bluebubbles.messaging.services.notifications.NotificationListenerPerm
 import com.bluebubbles.messaging.services.notifications.StartNotificationListenerHandler
 import com.bluebubbles.messaging.services.notifications.UnifiedPushHandler
 import com.bluebubbles.messaging.services.rustpush.NotifyNativeConfiguredHandler
+import com.bluebubbles.messaging.services.rustpush.SIMInfoQuery
 import com.bluebubbles.messaging.services.rustpush.SMSAuthGateway
 import com.bluebubbles.messaging.services.system.BrowserLaunchRequestHandler
 import com.bluebubbles.messaging.services.system.CheckChromeOsHandler
@@ -95,6 +96,7 @@ class MethodCallHandler {
             TemplateTapHandler.tag -> TemplateTapHandler().handleMethodCall(call, result, context)
             MessageUpdateHandler.tag -> MessageUpdateHandler().handleMethodCall(call, result, context)
             DevExtensionHandler.tag -> DevExtensionHandler().handleMethodCall(call, result, context)
+            SIMInfoQuery.tag -> SIMInfoQuery().handleMethodCall(call, result, context)
             else -> {
                 val error = "Could not find method call handler for ${call.method}!"
                 Log.d(Constants.logTag, error)

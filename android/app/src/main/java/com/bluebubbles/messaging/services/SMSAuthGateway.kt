@@ -1,6 +1,7 @@
 package com.bluebubbles.messaging.services.rustpush
 
 import android.content.Context
+import android.os.Build
 import android.os.Handler
 import android.telephony.SmsManager
 import android.telephony.TelephonyManager
@@ -34,9 +35,14 @@ class SMSAuthGateway: MethodCallHandlerImpl() {
         result: MethodChannel.Result,
         context: Context
     ) {
-        val telephonyManager = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-        val carrierMccMnc = telephonyManager.networkOperator
         val token = call.argument<String>("token")!!
+        val subscription = call.argument<Int>("subscription")!!
+
+        var telephonyManager = (context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            telephonyManager = telephonyManager.createForSubscriptionId(subscription)
+        }
+        val carrierMccMnc = telephonyManager.networkOperator
 
         getCarrier(object : CarrierHandler {
             override fun gotGateway(gateway: String?, error: String?) {
@@ -44,7 +50,7 @@ class SMSAuthGateway: MethodCallHandlerImpl() {
                     result.error(error ?: "No error", null, null)
                     return
                 }
-                val smsManager = context.getSystemService(SmsManager::class.java) as SmsManager
+                val smsManager = SmsManager.getSmsManagerForSubscriptionId(subscription)
 
                 val reqId = Random().nextInt()
                 val sms = "REG-REQ?v=3;t=${token};r=${reqId};"

@@ -54,7 +54,7 @@ class SetupViewController extends StatefulController {
 
   DartLoginState state = const api.DartLoginState.needsLogin();
   api.IdsUser? currentAppleUser;
-  api.IdsUser? currentPhoneUser;
+  Map<int, api.IdsUser> currentPhoneUsers = {};
 
   RxBool phoneValidating = false.obs;
 
@@ -134,8 +134,8 @@ class SetupViewController extends StatefulController {
       users.add(currentAppleUser!);
     }
 
-    if (currentPhoneUser != null && supportsPhoneReg.value) {
-      users.add(currentPhoneUser!);
+    if (currentPhoneUsers.isNotEmpty && supportsPhoneReg.value) {
+      users.addAll(currentPhoneUsers.values);
     }
 
     if (users.isEmpty) {
@@ -185,7 +185,7 @@ class SetupViewController extends StatefulController {
         return;
       }
       success = true;
-      // TODO remove clear
+      // persisting SMS auth certs is actually really useful
       // ss.settings.cachedCodes.clear();
       print("Success registered!");
       await pushService.configured();
@@ -193,7 +193,10 @@ class SetupViewController extends StatefulController {
       await setup.finishSetup();
     } catch(e) {
       // reset currentPhoneUser because frb *insists* on taking ownership.
-      currentPhoneUser = await api.restoreUser(user: ss.settings.cachedCodes["sms-auth"]!);
+      var cpy = currentPhoneUsers.keys.toList(); // this is what happens when crappy languages have ambiguous reference semantics
+      for (var item in cpy) {
+        currentPhoneUsers[item] = await api.restoreUser(user: ss.settings.cachedCodes["sms-auth-$item"]!);
+      }
       rethrow;
     }
   }
@@ -277,22 +280,31 @@ class _SetupViewState extends OptimizedState<SetupView> {
 
     (() async {
       if (ss.settings.cachedCodes.containsKey("sms-auth")) {
-        print("restore restoring!");
-        var user = await api.restoreUser(user: ss.settings.cachedCodes["sms-auth"]!);
+        ss.settings.cachedCodes["sms-auth-1"] = ss.settings.cachedCodes["sms-auth"]!;
+        ss.settings.cachedCodes.remove("sms-auth");
+        ss.saveSettings();
+        print("Migrated sms auth");
+      }
+      var list = ss.settings.cachedCodes.entries.toList();
+      for (var items in list) {
+        if (!items.key.startsWith("sms-auth-")) continue;
+
+        var user = await api.restoreUser(user: items.value);
         controller.phoneValidating.value = true;
         try {
           print("restore validating!");
           await api.validateCert(state: pushService.state, user: user);
-          print("restore validated!");
-          controller.currentPhoneUser = user;
         } catch (e) {
           print("restore resetting!");
-          ss.settings.cachedCodes.remove("sms-auth");
+          ss.settings.cachedCodes.remove(items.key);
           ss.saveSettings();
+          continue;
         } finally {
           print("restore done!");
           controller.phoneValidating.value = false;
         }
+
+        controller.currentPhoneUsers[int.parse(items.key.replaceFirst("sms-auth-", ""))] = user;
       }
     })();
 

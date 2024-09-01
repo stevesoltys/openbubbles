@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:bluebubbles/app/layouts/conversation_list/pages/conversation_list.dart';
+import 'package:bluebubbles/app/layouts/settings/widgets/content/settings_dropdown.dart';
 import 'package:bluebubbles/app/layouts/settings/widgets/content/settings_switch.dart';
 import 'package:bluebubbles/app/layouts/setup/pages/page_template.dart';
 import 'package:bluebubbles/app/layouts/setup/setup_view.dart';
@@ -62,9 +63,24 @@ class _FinalizePageState extends OptimizedState<FinalizePage> {
                 style: context.theme.textTheme.titleMedium,
               ),
             )),
-            if (!kIsDesktop)
+            if (!kIsDesktop && !controller.supportsPhoneReg.value)
             const Text(
               "Note: Phone numbers cannot be registered without an iOS device"
+            ),
+            SettingsOptions<String>(
+              title: "Start Chats Using",
+              initial: ss.settings.defaultHandle.value.replaceFirst("tel:", "").replaceAll("mailto:", ""),
+              clampWidth: false,
+              options: handles.map((handle) => handle.replaceFirst("tel:", "").replaceAll("mailto:", "")).toList(),
+              secondaryColor: headerColor,
+              useCupertino: false,
+              textProcessing: (str) => ss.settings.redactedMode.value ? (GetUtils.isEmail(str) ? "Redacted Email" : "Redacted Phone") : str,
+              capitalize: false,
+              onChanged: (value) async {
+                if (value == null) return;
+                setState(() {});
+                await backend.setDefaultHandle(value);
+              },
             ),
             if (!kIsDesktop)
               Padding(padding: const EdgeInsets.symmetric(vertical: 5),

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:collection';
 import 'dart:convert';
 
 import 'package:bluebubbles/helpers/backend/settings_helpers.dart';
@@ -21,6 +22,8 @@ class MethodChannelService extends GetxService {
   // music theme
   bool isRunning = false;
   Uint8List? previousArt;
+
+  final RxList<Map<String, dynamic>> simInfo = <Map<String, dynamic>>[].obs;
 
   Future<void> init({bool headless = false}) async {
     if (kIsWeb || kIsDesktop) return;
@@ -77,6 +80,17 @@ class MethodChannelService extends GetxService {
           print("got message $pointer");
           await pushService.recievedMsgPointer(pointer);
           print("finish message $pointer");
+        } catch (e, s) {
+          print(e);
+          print(s);
+          rethrow;
+        }
+        return true;
+      case "sim-info":
+        try {
+          List<Object?> info = call.arguments["info"];
+          var address = info.map((e) => (e as Map<Object?, Object?>).cast<String, dynamic>()).toList();
+          simInfo.value = address;
         } catch (e, s) {
           print(e);
           print(s);

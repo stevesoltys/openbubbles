@@ -3,7 +3,9 @@ import 'dart:convert';
 
 import 'package:async_task/async_task_extension.dart';
 import 'package:bluebubbles/app/layouts/settings/dialogs/custom_headers_dialog.dart';
+import 'package:bluebubbles/app/layouts/settings/widgets/content/settings_leading_icon.dart';
 import 'package:bluebubbles/app/layouts/settings/widgets/content/settings_switch.dart';
+import 'package:bluebubbles/app/layouts/settings/widgets/content/settings_tile.dart';
 import 'package:bluebubbles/app/layouts/settings/widgets/layout/settings_section.dart';
 import 'package:bluebubbles/app/layouts/setup/dialogs/failed_to_scan_dialog.dart';
 import 'package:bluebubbles/app/layouts/setup/pages/page_template.dart';
@@ -41,6 +43,32 @@ class PhoneNumberState extends OptimizedState<PhoneNumber> {
   final controller = Get.find<SetupViewController>();
   final FocusNode focusNode = FocusNode();
 
+  final RxBool failed = false.obs;
+
+  @override
+  void initState() {
+    super.initState();
+    
+    subscribe();
+  }
+
+  void subscribe() async {
+    try {
+      await mcs.invokeMethod("sim-info-query", {"subscribe": true});
+      failed.value = false;
+    } catch (e) {
+      failed.value = true;
+      rethrow;
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    
+    mcs.invokeMethod("sim-info-query", {"subscribe": false});
+  }
+
   @override
   Widget build(BuildContext context) {
     return SetupPageTemplate(
@@ -57,16 +85,30 @@ class PhoneNumberState extends OptimizedState<PhoneNumber> {
                         labelStyle: TextStyle(color: context.theme.colorScheme.outline),
                       ),
                     ),
-                    child: Column(
+                    child: Obx(() => Column(
                       children: [
-                        Padding(padding: const EdgeInsets.symmetric(vertical: 5),
-                          child: Obx(() => SettingsSwitch(
+                        if (failed.value)
+                        SettingsTile(
+                          title: "Load SIMs",
+                          leading: const Icon(Icons.sim_card),
+                          onTap: () async {
+                            try {
+                              await Permission.phone.request();
+                            } catch (e) {
+                              showSnackbar("Failed", "Enable phone permissions in settings");
+                              rethrow;
+                            }
+                            subscribe();
+                          }),
+                        if (!failed.value)
+                        ...mcs.simInfo.map((sim) => SettingsSwitch(
                             padding: false,
                             onChanged: (bool val) async {
                               if (controller.phoneValidating.value) return;
+                              int subscription = sim["subscription"];
                               if (val) {
-                                if (ss.settings.cachedCodes.containsKey("sms-auth")) {
-                                  controller.currentPhoneUser = await api.restoreUser(user: ss.settings.cachedCodes["sms-auth"]!);
+                                if (ss.settings.cachedCodes.containsKey("sms-auth-$subscription")) {
+                                  controller.currentPhoneUsers[subscription] = await api.restoreUser(user: ss.settings.cachedCodes["sms-auth-$subscription"]!);
                                   controller.updateConnectError("");
                                   setState(() { });
                                   return;
@@ -80,9 +122,9 @@ class PhoneNumberState extends OptimizedState<PhoneNumber> {
                                   }
                                   var token = await api.getToken(state: pushService.state);
 
-                                  String resp = await mcs.invokeMethod("sms-auth-gateway", {'token': hex.encode(token).toUpperCase()});
-                                  controller.currentPhoneUser = await api.authPhone(state: pushService.state, number: resp.split("|").first, sig: hex.decode(resp.split("|").last));
-                                  ss.settings.cachedCodes["sms-auth"] = await api.saveUser(user: controller.currentPhoneUser!);
+                                  String resp = await mcs.invokeMethod("sms-auth-gateway", {'token': hex.encode(token).toUpperCase(), 'subscription': subscription});
+                                  controller.currentPhoneUsers[subscription] = await api.authPhone(state: pushService.state, number: resp.split("|").first, sig: hex.decode(resp.split("|").last));
+                                  ss.settings.cachedCodes["sms-auth-$subscription"] = await api.saveUser(user: controller.currentPhoneUsers[subscription]!);
                                   ss.saveSettings();
                                   controller.updateConnectError("");
                                   setState(() { });
@@ -96,17 +138,16 @@ class PhoneNumberState extends OptimizedState<PhoneNumber> {
                                   controller.phoneValidating.value = false;
                                 }
                               } else {
-                                controller.currentPhoneUser = null;
+                                controller.currentPhoneUsers.remove(subscription);
                                 setState(() { });
                               }
                             },
-                            initialVal: controller.currentPhoneUser != null,
-                            title: "Register your Phone Number",
+                            initialVal: controller.currentPhoneUsers.containsKey(sim["subscription"]),
+                            title: sim["carrier"],
                             subtitle: "Use this phone number with OpenBubbles and your other Apple devices",
                             backgroundColor: tileColor,
                             isThreeLine: true,
                           )),
-                        ),
                         const SizedBox(height: 20),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -165,8 +206,8 @@ class PhoneNumberState extends OptimizedState<PhoneNumber> {
                                       borderRadius: BorderRadius.circular(20.0),
                                     ),
                                   ),
-                                  backgroundColor: MaterialStateProperty.all(controller.currentPhoneUser != null || controller.phoneValidating.value ? Colors.transparent : context.theme.colorScheme.background),
-                                  shadowColor: MaterialStateProperty.all(controller.currentPhoneUser != null || controller.phoneValidating.value ? Colors.transparent : context.theme.colorScheme.background),
+                                  backgroundColor: MaterialStateProperty.all(controller.currentPhoneUsers.isNotEmpty || controller.phoneValidating.value ? Colors.transparent : context.theme.colorScheme.background),
+                                  shadowColor: MaterialStateProperty.all(controller.currentPhoneUsers.isNotEmpty || controller.phoneValidating.value ? Colors.transparent : context.theme.colorScheme.background),
                                   maximumSize: MaterialStateProperty.all(const Size(200, 36)),
                                   minimumSize: MaterialStateProperty.all(const Size(30, 30)),
                                 ),
@@ -182,11 +223,11 @@ class PhoneNumberState extends OptimizedState<PhoneNumber> {
                                     Opacity(opacity: controller.phoneValidating.value ? 0 : 1, child: Row(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        Text(controller.currentPhoneUser != null ? "Continue" : "Skip",
+                                        Text(controller.currentPhoneUsers.isNotEmpty ? "Continue" : "Skip",
                                             style: context.theme.textTheme.bodyLarge!
-                                                .apply(fontSizeFactor: 1.1, color: controller.currentPhoneUser != null ? Colors.white : context.theme.colorScheme.onBackground)),
+                                                .apply(fontSizeFactor: 1.1, color: controller.currentPhoneUsers.isNotEmpty ? Colors.white : context.theme.colorScheme.onBackground)),
                                         const SizedBox(width: 10),
-                                        Icon(Icons.arrow_forward, color: controller.currentPhoneUser != null ? Colors.white : context.theme.colorScheme.onBackground, size: 20),
+                                        Icon(Icons.arrow_forward, color: controller.currentPhoneUsers.isNotEmpty ? Colors.white : context.theme.colorScheme.onBackground, size: 20),
                                       ],
                                     ),),
                                     if (controller.phoneValidating.value)
@@ -198,7 +239,7 @@ class PhoneNumberState extends OptimizedState<PhoneNumber> {
                           ],
                         ),
                       ],
-                    ),
+                    )),
                   ),
           ),
         ],

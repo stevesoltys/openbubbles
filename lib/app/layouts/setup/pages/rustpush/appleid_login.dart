@@ -234,7 +234,7 @@ class _AppleIdLoginState extends OptimizedState<AppleIdLogin> {
                                 ),
                               ),
                             ),
-                            if ((appleIdController.text != "" && passwordController.text != "") || controller.currentPhoneUser == null)
+                            if ((appleIdController.text != "" && passwordController.text != "") || controller.currentPhoneUsers.isEmpty)
                             Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(25),
@@ -284,7 +284,7 @@ class _AppleIdLoginState extends OptimizedState<AppleIdLogin> {
                                 )
                               ),
                             ),
-                            if (!((appleIdController.text != "" && passwordController.text != "") || controller.currentPhoneUser == null))
+                            if (!((appleIdController.text != "" && passwordController.text != "") || controller.currentPhoneUsers.isEmpty))
                             Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(25),
