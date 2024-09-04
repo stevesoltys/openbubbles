@@ -1,5 +1,6 @@
 package com.bluebubbles.messaging.services.extension
 
+import android.annotation.SuppressLint
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -24,14 +25,14 @@ class MadridExtensionConnection(val bound: (ext: MadridExtensionConnection) -> U
     }
 
     companion object {
+        @SuppressLint("InlinedApi")
         fun bind(appId: Int, context: Context, bound: (ext: MadridExtensionConnection) -> Unit): MadridExtensionConnection {
             val connection = MadridExtensionConnection(bound)
             val app = ExtensionRegistry.map[appId]!!
             val intent = Intent()
             intent.component = app.getServiceName()
             intent.action = IMadridExtension::class.java.name
-            // TODO a14 target: BIND_ALLOW_ACTIVITY_STARTS
-            context.bindService(intent, connection, Context.BIND_AUTO_CREATE)
+            context.bindService(intent, connection, Context.BIND_AUTO_CREATE or Context.BIND_ALLOW_ACTIVITY_STARTS)
             return connection
         }
     }
