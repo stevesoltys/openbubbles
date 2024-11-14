@@ -629,6 +629,7 @@ class HwInpState extends OptimizedState<HwInp> {
         ss.settings.macIsMine.value = stagingMine;
         ss.settings.save();
         await api.configureMacos(state: pushService.state, config: config);
+        controller.currentPhoneUsers = {}; // reset validated phone numbers as we have a new token now
       }
 
       var state = await api.getDeviceInfoState(state: pushService.state);
