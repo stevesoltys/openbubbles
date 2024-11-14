@@ -55,7 +55,7 @@ class SearchViewState extends OptimizedState<SearchView> {
   bool isSearching = false;
   String? currentSearchTerm;
   bool local = backend.getRemoteService() == null;
-  bool network = true;
+  bool network = backend.getRemoteService() != null;
   Chat? selectedChat;
   Handle? selectedHandle;
   bool isFromMe = false;
@@ -380,7 +380,7 @@ class SearchViewState extends OptimizedState<SearchView> {
                           ]))
                     ]),
                   ),
-                  if (!kIsWeb)
+                  if (!kIsWeb && backend.getRemoteService() != null)
                     Padding(
                       padding: const EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 10),
                       child: ToggleButtons(

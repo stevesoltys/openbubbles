@@ -623,7 +623,7 @@ class _MessagePopupState extends OptimizedState<MessagePopup> with SingleTickerP
         attachmentObs.value = element;
         final nameSplit = element!.transferName!.split(".");
         await backend.downloadLivePhoto(element, "${nameSplit.take(nameSplit.length - 1).join(".")}.mov",
-            onReceiveProgress: (count, total) => progress.value = kIsWeb ? (count / total) : (count / element.totalBytes!));
+            onReceiveProgress: (count, total) => progress.value = count);
       }
       downloadingAttachments.value = false;
     } catch (ex, trace) {

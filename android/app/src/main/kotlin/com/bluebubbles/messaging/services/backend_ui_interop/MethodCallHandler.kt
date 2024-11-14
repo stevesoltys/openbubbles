@@ -34,6 +34,7 @@ import com.bluebubbles.messaging.services.system.PushShareTargetsHandler
 import com.bluebubbles.messaging.services.system.StartGoogleDuoRequestHandler
 import com.bluebubbles.messaging.services.foreground.StartForegroundServiceHandler
 import com.bluebubbles.messaging.services.foreground.StopForegroundServiceHandler
+import com.bluebubbles.messaging.services.rustpush.GetNativeHandleHandler
 import com.bluebubbles.telephony_plus.receive.SMSObserver
 import com.google.gson.GsonBuilder
 import com.google.gson.ToNumberPolicy

@@ -1,6 +1,6 @@
 
 
-use std::{borrow::{Borrow, BorrowMut}, future::Future, io::{Cursor, Write}, ops::Deref, path::PathBuf, str::FromStr, sync::{Arc, OnceLock}, time::Duration};
+use std::{borrow::{Borrow, BorrowMut}, fs, future::Future, io::{Cursor, Write}, ops::Deref, path::PathBuf, str::FromStr, sync::{Arc, OnceLock}, time::Duration};
 
 use anyhow::anyhow;
 use flutter_rust_bridge::{frb, IntoDart, JoinHandle};
@@ -322,6 +322,11 @@ pub async fn configure_macos(state: &Arc<PushState>, config: &JoinedOSConfig) ->
     let mut inner = state.0.write().await;
     inner.os_config = Some(config.clone());
     inner.identity = Some(IDSUserIdentity::new()?);
+    // delete anisette provisioning to prevent 6005's
+    let anisette_dir = inner.conf_dir.join("anisette_test");
+    if anisette_dir.exists() {
+        fs::remove_dir_all(inner.conf_dir.join("anisette_test"))?;
+    }
     let conf_path = inner.conf_dir.join("hw_info.plist");
     let (connection, err) = setup_push(inner.os_config.as_ref().unwrap(), inner.identity.as_ref().unwrap(), None, conf_path).await;
     if let Some(err) = err {

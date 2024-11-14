@@ -14,6 +14,7 @@ import 'package:bluebubbles/app/layouts/conversation_view/widgets/text_field/voi
 import 'package:bluebubbles/app/wrappers/stateful_boilerplate.dart';
 import 'package:bluebubbles/helpers/helpers.dart';
 import 'package:bluebubbles/database/models.dart';
+import 'package:bluebubbles/main.dart';
 import 'package:bluebubbles/services/services.dart';
 import 'package:bluebubbles/services/network/backend_service.dart';
 import 'package:bluebubbles/utils/emoji.dart';
@@ -377,13 +378,7 @@ class ConversationTextFieldState extends CustomState<ConversationTextField, void
   }
 
   Future<void> sendMessage({String? effect}) async {
-    final text = ss.settings.convertEmoticonsToEmoji.value ? controller.textController.text
-        .replaceAllMapped(RegExp(r'(^|[\s\\])(:\))(\s|$)'), replaceEmoji("🙂"))
-        .replaceAllMapped(RegExp(r'(^|[\s\\])(:P)(\s|$)'), replaceEmoji("😛"))
-        .replaceAllMapped(RegExp(r'(^|[\s\\])(XD)(\s|$)'), replaceEmoji("😆"))
-        .replaceAllMapped(RegExp(r'(^|[\s\\])(;\))(\s|$)'), replaceEmoji("😉"))
-        .replaceAllMapped(RegExp(r'(^|[\s\\])(:D)(\s|$)'), replaceEmoji("😀"))
-        .replaceAllMapped(RegExp(r'(^|[\s\\])(:\()(\s|$)'), replaceEmoji("🙁")) : controller.textController.text;
+    final text = controller.textController.text;
     if (controller.scheduledDate.value != null) {
       final date = controller.scheduledDate.value!;
       if (date.isBefore(DateTime.now())) return showSnackbar("Error", "Pick a date in the future!");

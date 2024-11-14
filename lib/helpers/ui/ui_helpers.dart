@@ -102,11 +102,12 @@ Widget buildBackButton(BuildContext context, {EdgeInsets padding = EdgeInsets.ze
   );
 }
 
-Widget buildProgressIndicator(BuildContext context, {double size = 20, double strokeWidth = 2}) {
+Widget buildProgressIndicator(BuildContext context, {double size = 20, double strokeWidth = 2, ui.Brightness? brightness}) {
+  brightness ??= ThemeData.estimateBrightnessForColor(context.theme.colorScheme.background);
   return ss.settings.skin.value == Skins.iOS
       ? Theme(
           data: ThemeData(
-            cupertinoOverrideTheme: CupertinoThemeData(brightness: ThemeData.estimateBrightnessForColor(context.theme.colorScheme.background)),
+            cupertinoOverrideTheme: CupertinoThemeData(brightness: brightness),
           ),
           child: CupertinoActivityIndicator(
             radius: size / 2,
@@ -120,7 +121,7 @@ Widget buildProgressIndicator(BuildContext context, {double size = 20, double st
             height: size,
             child: CircularProgressIndicator(
               strokeWidth: strokeWidth,
-              valueColor: AlwaysStoppedAnimation<Color>(context.theme.colorScheme.primary),
+              valueColor: AlwaysStoppedAnimation<Color>(brightness == ui.Brightness.dark ? context.theme.colorScheme.onPrimary : context.theme.colorScheme.primary),
             ),
           ),
         );

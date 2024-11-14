@@ -4,6 +4,8 @@ import 'package:bluebubbles/helpers/helpers.dart';
 import 'package:bluebubbles/app/layouts/settings/widgets/settings_widgets.dart';
 import 'package:bluebubbles/app/wrappers/stateful_boilerplate.dart';
 import 'package:bluebubbles/database/models.dart';
+import 'package:bluebubbles/main.dart';
+import 'package:bluebubbles/services/network/backend_service.dart';
 import 'package:bluebubbles/services/services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -320,7 +322,7 @@ class _PrivateAPIPanelState extends CustomState<PrivateAPIPanel, void, PrivateAP
                             ),
                           ),
                           AnimatedSizeAndFade.showHide(
-                            show: ss.isMinVenturaSync && ss.serverDetailsSync().item4 >= 148,
+                            show: backend.canEditUnsend(),
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
@@ -344,7 +346,7 @@ class _PrivateAPIPanelState extends CustomState<PrivateAPIPanel, void, PrivateAP
                             ),
                           ),
                           AnimatedSizeAndFade.showHide(
-                            show: controller.serverVersionCode.value >= 63,
+                            show: backend.canSendSubject(),
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [

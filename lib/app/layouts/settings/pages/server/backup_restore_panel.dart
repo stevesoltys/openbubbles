@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:bluebubbles/database/database.dart';
 import 'package:bluebubbles/helpers/helpers.dart';
 import 'package:bluebubbles/app/layouts/settings/widgets/settings_widgets.dart';
 import 'package:bluebubbles/app/wrappers/stateful_boilerplate.dart';
@@ -1009,14 +1010,14 @@ class _BackupRestorePanelState extends OptimizedState<BackupRestorePanel> {
                               chatData.add(chat.toMap());
                             }
                             final List<Map<String, dynamic>> msgData = [];
-                            for (var message in messageBox.getAll()) {
+                            for (var message in Database.messages.getAll()) {
                               var map = message.toMap(includeObjects: true);
                               map["chat"] = message.chat.target?.guid;
                               msgData.add(map);
                             }
                             final List<String> attMap = [];
                             final List<Map<String, dynamic>> msgAtts = [];
-                            for (var att in attachmentBox.getAll()) {
+                            for (var att in Database.attachments.getAll()) {
                               var map = att.toMap();
                               var file = File(att.path);
                               if (file.existsSync() && file.lengthSync() < 16777216 /* 16 mb */) {
@@ -1170,10 +1171,10 @@ class _BackupRestorePanelState extends OptimizedState<BackupRestorePanel> {
                                           await file.writeAsBytes(data);
                                         }
                                         Map<dynamic, dynamic> json = jsonDecode(jsonString);
-                                        chatBox.removeAll();
-                                        handleBox.removeAll();
-                                        messageBox.removeAll();
-                                        attachmentBox.removeAll();
+                                        Database.chats.removeAll();
+                                        Database.handles.removeAll();
+                                        Database.messages.removeAll();
+                                        Database.attachments.removeAll();
                                         for (var usedChat in json["chats"]) {
                                           var chat = Chat.fromMap(usedChat);
                                           chat.id = null;

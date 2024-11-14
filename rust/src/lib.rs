@@ -41,7 +41,7 @@ pub fn init_logger(path: &Path) {
         .log_to_file(FileSpec::default().directory(path.join("logs")).suppress_timestamp())
         .append()
         .cleanup_in_background_thread(false)
-        .rotate(Criterion::AgeOrSize(Age::Hour, 1024 * 1024 * 10 /* 10 MB */), Naming::Numbers, Cleanup::KeepLogFiles(1))
+        .rotate(Criterion::AgeOrSize(Age::Day, 1024 * 1024 * 10 /* 10 MB */), Naming::Numbers, Cleanup::KeepLogFiles(1))
         .write_mode(WriteMode::BufferAndFlush)
         .build().unwrap();
     

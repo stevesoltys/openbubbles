@@ -204,7 +204,7 @@ class ChatCreatorState extends OptimizedState<ChatCreator> {
         if (kIsWeb) {
           existingChat = await Chat.findOneWeb(chatIdentifier: slugify(address, delimiter: ''));
         } else {
-          final query = chatBox.query(Chat_.chatIdentifier.equals(slugify(address, delimiter: ''))).build();
+          final query = Database.chats.query(Chat_.chatIdentifier.equals(slugify(address, delimiter: ''))).build();
           final result = query.find();
           existingChat = result.firstWhere((element) => element.isIMessage == iMessage);
           query.close();
@@ -782,6 +782,7 @@ class ChatCreatorState extends OptimizedState<ChatCreator> {
                                     fakeController.value!.replyToMessage?.item1.guid,
                                 fakeController.value!.replyToMessage?.item2,
                                 effect,
+                                null,
                                 false,
                               );
 

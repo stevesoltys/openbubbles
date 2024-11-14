@@ -50,17 +50,19 @@ class Database {
       // ignore: deprecated_member_use_from_same_package
       themeObjects = store.box<ThemeObject>();
 
-      if (!ss.settings.finishedSetup.value) {
-        Database.attachments.removeAll();
-        Database.chats.removeAll();
-        Database.contacts.removeAll();
-        Database.fcmData.removeAll();
-        Database.handles.removeAll();
-        Database.messages.removeAll();
-        Database.themes.removeAll();
-        Database.themeEntries.removeAll();
-        themeObjects.removeAll();
-      }
+      // we reset when apple logs out; don't wipe chats
+      // this was supposed to ensure chats are deleted after reset.
+      // if (!ss.settings.finishedSetup.value) {
+      //   Database.attachments.removeAll();
+      //   Database.chats.removeAll();
+      //   Database.contacts.removeAll();
+      //   Database.fcmData.removeAll();
+      //   Database.handles.removeAll();
+      //   Database.messages.removeAll();
+      //   Database.themes.removeAll();
+      //   Database.themeEntries.removeAll();
+      //   themeObjects.removeAll();
+      // }
     } catch (e, s) {
       Logger.error("Failed to setup ObjectBox boxes!", error: e, trace: s);
     }

@@ -733,7 +733,7 @@ class Message {
       query.close();
       result?.handle = result.getHandle();
       if (result == null) {
-        final query = messageBox.query(Message_.stagingGuid.equals(guid)).build();
+        final query = Database.messages.query(Message_.stagingGuid.equals(guid)).build();
         query.limit = 1;
         final result = query.findFirst();
         query.close();

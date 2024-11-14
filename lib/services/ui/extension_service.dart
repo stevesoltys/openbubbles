@@ -2,9 +2,10 @@
 
 import 'dart:convert';
 
+import 'package:bluebubbles/database/database.dart';
 import 'package:bluebubbles/helpers/types/constants.dart';
 import 'package:bluebubbles/main.dart';
-import 'package:bluebubbles/models/models.dart';
+import 'package:bluebubbles/database/models.dart';
 import 'package:bluebubbles/services/network/backend_service.dart';
 import 'package:bluebubbles/services/services.dart';
 import 'package:get/get.dart';
@@ -78,7 +79,7 @@ class ExtensionService extends GetxService {
       return amkToLatest[amk]!;
     }
 
-    final query = (messageBox.query(Message_.amkSessionId.equals(amk))
+    final query = (Database.messages.query(Message_.amkSessionId.equals(amk))
             ..order(Message_.dateCreated, flags: Order.descending))
           .build();
           query.limit = 1;

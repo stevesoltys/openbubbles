@@ -240,7 +240,7 @@ class SetupViewController extends StatefulController {
       state = dart;
       currentAppleUser = isAnnoying;
     }
-    await updateLoginState(state);
+    return await updateLoginState(state);
   }
 
   String twoFaUser = "";
@@ -311,7 +311,7 @@ class _SetupViewState extends OptimizedState<SetupView> {
     (() async {
 
       final _appLinks = AppLinks();
-      var link = await _appLinks.getLatestAppLink();
+      var link = await _appLinks.getLatestLink();
 
       _appLinks.uriLinkStream.listen((uri) async {
         var text = uri.toString();

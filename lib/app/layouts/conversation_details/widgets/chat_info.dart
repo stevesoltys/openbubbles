@@ -336,6 +336,7 @@ class _ChatInfoState extends OptimizedState<ChatInfo> {
                         chat.participants.first.address.contains("@")))
                   MailButton(tileColor: tileColor, chat: chat, iOS: iOS),
                 if (!kIsWeb && !kIsDesktop) InfoButton(tileColor: tileColor, chat: chat, iOS: iOS),
+                if (ss.settings.macIsMine.value && chat.isRpSms) ShareButton(tileColor: tileColor, chat: chat, iOS: iOS)
               ]).toList(),
             ),
           ),
@@ -346,6 +347,75 @@ class _ChatInfoState extends OptimizedState<ChatInfo> {
                 style: context.theme.textTheme.bodyMedium!.copyWith(color: context.theme.colorScheme.outline)),
           ),
       ]),
+    );
+  }
+}
+
+class ShareButton extends StatelessWidget {
+  const ShareButton({
+    super.key,
+    required this.tileColor,
+    required this.chat,
+    required this.iOS,
+  });
+
+  final Color tileColor;
+  final Chat chat;
+  final bool iOS;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Material(
+        borderRadius: BorderRadius.circular(15),
+        color: tileColor,
+        child: InkWell(
+          onTap: () async {
+            var ctx = context;
+            showDialog(
+              context: Get.context!,
+              builder: (context) => AlertDialog(
+                title: const Text('Choose your friends wisely'),
+                content: Text(
+                  "Apple may block devices due to spam or exceeding 20 users.",
+                  style: Get.textTheme.bodyLarge,
+                ),
+                actions: <Widget>[
+                  TextButton(
+                          onPressed: () => Get.back(),
+                          child: Text("Cancel", style: context.theme.textTheme.bodyLarge!.copyWith(color: context.theme.colorScheme.primary))),
+                  TextButton(
+                          onPressed: () async {
+                              Get.back();
+                              String code = await pushService.uploadCode(false, await api.getDeviceInfoState(state: pushService.state));
+                              String text = "$rpApiRoot/$code";
+                              cvc(chat).textController.text = text;
+                              Navigator.of(ctx).pop();
+                          },
+                          child: Text("Invite", style: context.theme.textTheme.bodyLarge!.copyWith(color: context.theme.colorScheme.primary))),
+                ],
+              ),
+            );
+          },
+          borderRadius: BorderRadius.circular(15),
+          child: SizedBox(
+            height: 60,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  CupertinoIcons.arrow_up_right_diamond,
+                  color: context.theme.colorScheme.onSurface,
+                  size: 20
+                ),
+                const SizedBox(height: 7.5),
+                Text("Invite", style: context.theme.textTheme.bodySmall!.copyWith(color: context.theme.colorScheme.onSurface)),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

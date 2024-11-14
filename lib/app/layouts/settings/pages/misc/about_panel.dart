@@ -56,6 +56,20 @@ class _AboutPanelState extends OptimizedState<AboutPanel> {
                     ),
                     const SettingsDivider(),
                     SettingsTile(
+                      title: "Make a Donation [BlueBubbles]",
+                      subtitle: "Support the developers by making a one-time or recurring donation to the BlueBubbles Team!",
+                      onTap: () async {
+                        await launchUrl(Uri(scheme: "https", host: "bluebubbles.app", path: "donate"), mode: LaunchMode.externalApplication);
+                      },
+                      leading: const SettingsLeadingIcon(
+                        iosIcon: CupertinoIcons.money_dollar_circle,
+                        materialIcon: Icons.attach_money,
+                        containerColor: Colors.green,
+                      ),
+                      isThreeLine: false,
+                    ),
+                    const SettingsDivider(),
+                    SettingsTile(
                       title: "Documentation",
                       subtitle: "RTFM: Read the [Fine] Manual and learn how to use BlueBubbles or fix common issues",
                       onTap: () async {
@@ -220,7 +234,7 @@ class _AboutPanelState extends OptimizedState<AboutPanel> {
                           ),
                         );
                       },
-                      subtitle: "Meet the developers behind BlueBubbles",
+                      subtitle: "Meet the developers behind OpenBubbles",
                       leading: const SettingsLeadingIcon(
                         iosIcon: CupertinoIcons.person_alt,
                         materialIcon: Icons.person,

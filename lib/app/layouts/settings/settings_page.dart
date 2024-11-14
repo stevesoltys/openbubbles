@@ -5,8 +5,11 @@ import 'package:bluebubbles/app/layouts/settings/pages/advanced/tasker_panel.dar
 import 'package:bluebubbles/app/layouts/settings/pages/profile/profile_panel.dart';
 import 'package:bluebubbles/app/layouts/settings/pages/scheduling/message_reminders_panel.dart';
 import 'package:bluebubbles/app/layouts/settings/pages/server/backup_restore_panel.dart';
+import 'package:bluebubbles/app/layouts/settings/pages/system/device_panel.dart';
 import 'package:bluebubbles/app/layouts/settings/widgets/content/next_button.dart';
+import 'package:bluebubbles/main.dart';
 import 'package:bluebubbles/utils/logger/logger.dart';
+import 'package:bluebubbles/src/rust/api/api.dart' as api;
 import 'package:bluebubbles/helpers/helpers.dart';
 import 'package:bluebubbles/services/network/backend_service.dart';
 import 'package:bluebubbles/services/rustpush/rustpush_service.dart';
@@ -151,11 +154,12 @@ class _SettingsPageState extends OptimizedState<SettingsPage> {
                                     ),
                                   ],
                                 ),
-                              if (!kIsWeb)
+                              if (!kIsWeb && backend.getRemoteService() != null)
                                 SettingsHeader(
                                     iosSubtitle: iosSubtitle,
                                     materialSubtitle: materialSubtitle,
                                     text: "Server & Message Management"),
+                              if (backend.getRemoteService() != null)
                               SettingsSection(
                                 backgroundColor: tileColor,
                                 children: [
@@ -319,6 +323,85 @@ class _SettingsPageState extends OptimizedState<SettingsPage> {
                                     ),
                                 ],
                               ),
+
+                              if (!kIsWeb && usingRustPush)
+                                SettingsHeader(
+                                    iosSubtitle: iosSubtitle,
+                                    materialSubtitle: materialSubtitle,
+                                    text: "Device"),
+                              if (usingRustPush)
+                              SettingsSection(
+                                backgroundColor: tileColor,
+                                children: [
+                                  Obx(() {
+
+                                    return Skeletonizer(
+                                      enabled: deviceInfo == null,
+                                      child: SettingsTile(
+                                        backgroundColor: tileColor,
+                                        title: deviceInfo == null ? null : RustPushBBUtils.modelToUser(deviceInfo!.name),
+                                        subtitle: ss.settings.redactedMode.value ? "Serial Number" : deviceInfo?.serial,
+                                        onTap: () {
+                                          ns.pushAndRemoveSettingsUntil(
+                                            context,
+                                            DevicePanel(),
+                                                (route) => route.isFirst,
+                                          );
+                                        },
+                                        trailing: const NextButton(),
+                                        leading: const SettingsLeadingIcon(
+                                          iosIcon: CupertinoIcons.device_laptop,
+                                          materialIcon: Icons.laptop,
+                                          containerColor: Colors.indigoAccent,
+                                        ),
+                                      ));
+                                  }),
+                                  if (ss.serverDetailsSync().item4 >= 205)
+                                    const SettingsDivider(),
+                                  if (ss.serverDetailsSync().item4 >= 205)
+                                    SettingsTile(
+                                      backgroundColor: tileColor,
+                                      title: "Scheduled Messages",
+                                      onTap: () {
+                                        ns.pushAndRemoveSettingsUntil(
+                                          context,
+                                          ScheduledMessagesPanel(),
+                                          (route) => route.isFirst,
+                                        );
+                                      },
+                                      trailing: const NextButton(),
+                                      leading: const SettingsLeadingIcon(
+                                        iosIcon: CupertinoIcons.calendar,
+                                        materialIcon:
+                                            Icons.schedule_send_outlined,
+                                        containerColor: Colors.redAccent,
+                                      ),
+                                    ),
+                                  if (Platform.isAndroid)
+                                    const SettingsDivider(),
+                                  if (Platform.isAndroid)
+                                    SettingsTile(
+                                      backgroundColor: tileColor,
+                                      title: "Message Reminders",
+                                      onTap: () {
+                                        ns.pushAndRemoveSettingsUntil(
+                                          context,
+                                          MessageRemindersPanel(),
+                                          (route) => route.isFirst,
+                                        );
+                                      },
+                                      trailing: const NextButton(),
+                                      leading: const SettingsLeadingIcon(
+                                        iosIcon: CupertinoIcons.alarm_fill,
+                                        materialIcon: Icons.alarm,
+                                        containerColor: Colors.blueAccent,
+                                      ),
+                                    ),
+                                ],
+                              ),
+
+
+
                               SettingsHeader(
                                   iosSubtitle: iosSubtitle,
                                   materialSubtitle: materialSubtitle,
@@ -478,6 +561,7 @@ class _SettingsPageState extends OptimizedState<SettingsPage> {
                               SettingsSection(
                                 backgroundColor: tileColor,
                                 children: [
+                                  if (!usingRustPush)
                                   Obx(() => SettingsTile(
                                         backgroundColor: tileColor,
                                         title: "Private API Features",
@@ -513,6 +597,7 @@ class _SettingsPageState extends OptimizedState<SettingsPage> {
                                                   : Colors.amber,
                                         ),
                                       )),
+                                  if (!usingRustPush)
                                   const SettingsDivider(),
                                   Obx(() => SettingsTile(
                                         backgroundColor: tileColor,
@@ -564,7 +649,9 @@ class _SettingsPageState extends OptimizedState<SettingsPage> {
                                               Icons.electric_bolt_outlined,
                                           containerColor: Colors.orangeAccent),
                                     ),
+                                  if (!usingRustPush)
                                   const SettingsDivider(),
+                                  if (!usingRustPush)
                                   SettingsTile(
                                       backgroundColor: tileColor,
                                       title: "Notification Providers",
@@ -807,27 +894,11 @@ class _SettingsPageState extends OptimizedState<SettingsPage> {
                                       ),
                                       isThreeLine: false,
                                     ),
-                                  if (!kIsWeb && (Platform.isAndroid || Platform.isWindows))
-                                    const SettingsDivider(),
-                                  SettingsTile(
-                                    title: "Make a Donation",
-                                    subtitle: "Support the developers by making a one-time or recurring donation to the BlueBubbles Team!",
-                                    onTap: () async {
-                                      await launchUrl(Uri(scheme: "https", host: "bluebubbles.app", path: "donate"), mode: LaunchMode.externalApplication);
-                                    },
-                                    leading: const SettingsLeadingIcon(
-                                      iosIcon: CupertinoIcons.money_dollar_circle,
-                                      materialIcon: Icons.attach_money,
-                                      containerColor: Colors.green,
-                                    ),
-                                    isThreeLine: false,
-                                  ),
-                                  const SettingsDivider(),
                                   SettingsTile(
                                     title: "Join Our Discord",
-                                    subtitle: "Join our Discord server to chat with other BlueBubbles users and the developers",
+                                    subtitle: "Join our Discord server to chat with other OpenBubbles users and the developers",
                                     onTap: () async {
-                                      await launchUrl(Uri(scheme: "https", host: "discord.gg", path: "hbx7EhNFjp"), mode: LaunchMode.externalApplication);
+                                      await launchUrl(Uri(scheme: "https", host: "discord.gg", path: "qUB3ksM3Ry"), mode: LaunchMode.externalApplication);
                                     },
                                     leading: SettingsLeadingIcon(
                                       iosIcon: Icons.discord,
@@ -929,6 +1000,67 @@ class _SettingsPageState extends OptimizedState<SettingsPage> {
                                         title: "Delete All Attachments",
                                         subtitle: "Remove all attachments from this app",
                                       ),
+                                      const SettingsDivider(),
+                                      SettingsTile(
+                                        backgroundColor: tileColor,
+                                        onTap: () {
+                                          showDialog(
+                                            barrierDismissible: true,
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: Text(
+                                                  "Are you sure?",
+                                                  style: context
+                                                      .theme.textTheme.titleLarge,
+                                                ),
+                                                content: Text(
+                                                  "Re-login will be required. No messages will be deleted.",
+                                                  style: context
+                                                      .theme.textTheme.bodyLarge,
+                                                ),
+                                                backgroundColor: context.theme
+                                                    .colorScheme.properSurface,
+                                                actions: <Widget>[
+                                                  TextButton(
+                                                    child: Text("No",
+                                                        style: context.theme
+                                                            .textTheme.bodyLarge!
+                                                            .copyWith(
+                                                                color: context
+                                                                    .theme
+                                                                    .colorScheme
+                                                                    .primary)),
+                                                    onPressed: () {
+                                                      Navigator.of(context).pop();
+                                                    },
+                                                  ),
+                                                  TextButton(
+                                                    child: Text("Yes",
+                                                        style: context.theme
+                                                            .textTheme.bodyLarge!
+                                                            .copyWith(
+                                                                color: context
+                                                                    .theme
+                                                                    .colorScheme
+                                                                    .primary)),
+                                                    onPressed: () async {
+                                                      (backend as RustPushBackend).markFailedToLogin();
+                                                    }
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
+                                        },
+                                        leading: SettingsLeadingIcon(
+                                          iosIcon: CupertinoIcons.device_laptop,
+                                          materialIcon: Icons.laptop,
+                                          containerColor: Colors.red[700],
+                                        ),
+                                        title: "Change hardware",
+                                        subtitle: "Keep messages and change hardware",
+                                      ),
                                     if (!kIsWeb)
                                       const SettingsDivider(),
                                     SettingsTile(
@@ -966,6 +1098,45 @@ class _SettingsPageState extends OptimizedState<SettingsPage> {
                                                   },
                                                 ),
                                                 TextButton(
+                                                  child: Text("Keep hardware",
+                                                      style: context.theme
+                                                          .textTheme.bodyLarge!
+                                                          .copyWith(
+                                                              color: context
+                                                                  .theme
+                                                                  .colorScheme
+                                                                  .primary)),
+                                                  onPressed: () async {
+                                                    fs.deleteDB();
+                                                    socket.forgetConnection();
+                                                    if (usingRustPush) {
+                                                      await pushService.reset(false);
+                                                    }
+                                                    ss.settings = Settings();
+                                                    await ss.settings.saveAsync();
+
+                                                    await ss.prefs.clear();
+                                                    await ss.prefs.setString("selected-dark", "OLED Dark");
+                                                    await ss.prefs.setString("selected-light", "Bright White");
+                                                    Database.themes.putMany(ts.defaultThemes);
+                                                    
+                                                    // Clear the FCM data from the database, shared preferences, and locally
+                                                    await FCMData.deleteFcmData();
+
+                                                    // Delete the Firebase FCM token
+                                                    try {
+                                                      if (fcm.token != null) {
+                                                        await mcs.invokeMethod("firebase-delete-token");
+                                                      }
+                                                    } catch (e, s) {
+                                                      Logger.error("Failed to delete Firebase FCM token", error: e, trace: s);
+                                                    }
+
+                                                    // Fully close the app
+                                                    exit(0);
+                                                  },
+                                                ),
+                                                TextButton(
                                                   child: Text("Yes",
                                                       style: context.theme
                                                           .textTheme.bodyLarge!
@@ -978,7 +1149,7 @@ class _SettingsPageState extends OptimizedState<SettingsPage> {
                                                     fs.deleteDB();
                                                     socket.forgetConnection();
                                                     if (usingRustPush) {
-                                                      await pushService.reset();
+                                                      await pushService.reset(true);
                                                     }
                                                     ss.settings = Settings();
                                                     await ss.settings.saveAsync();

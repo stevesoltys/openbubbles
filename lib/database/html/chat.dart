@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:bluebubbles/services/network/backend_service.dart';
-import 'package:bluebubbles/utils/logger.dart';
 import 'package:bluebubbles/helpers/helpers.dart';
 import 'package:bluebubbles/database/html/attachment.dart';
 import 'package:bluebubbles/database/html/handle.dart';

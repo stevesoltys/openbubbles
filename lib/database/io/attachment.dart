@@ -2,9 +2,7 @@ import 'dart:convert';
 
 import 'package:bluebubbles/helpers/helpers.dart';
 import 'package:bluebubbles/database/database.dart';
-import 'package:bluebubbles/models/global/platform_file.dart';
-import 'package:bluebubbles/objectbox.g.dart';
-import 'package:bluebubbles/database/io/message.dart';
+import 'package:bluebubbles/database/models.dart';
 import 'package:bluebubbles/services/network/backend_service.dart';
 import 'package:bluebubbles/services/services.dart';
 import 'package:collection/collection.dart';

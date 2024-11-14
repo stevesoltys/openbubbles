@@ -2,7 +2,9 @@ import 'package:bluebubbles/app/layouts/settings/pages/misc/logging_panel.dart';
 import 'package:bluebubbles/app/layouts/settings/widgets/content/log_level_selector.dart';
 import 'package:bluebubbles/app/layouts/settings/widgets/content/next_button.dart';
 import 'package:bluebubbles/helpers/backend/settings_helpers.dart';
+import 'package:bluebubbles/main.dart';
 import 'package:bluebubbles/services/backend/sync/chat_sync_manager.dart';
+import 'package:bluebubbles/services/rustpush/rustpush_service.dart';
 import 'package:bluebubbles/utils/logger/logger.dart';
 import 'package:bluebubbles/helpers/helpers.dart';
 import 'package:bluebubbles/services/network/backend_service.dart';
@@ -15,9 +17,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:path/path.dart';
 import 'package:universal_io/io.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:bluebubbles/src/rust/api/api.dart' as api;
+
+
+
 
 class TroubleshootPanel extends StatefulWidget {
   @override
@@ -30,6 +36,7 @@ class _TroubleshootPanelState extends OptimizedState<TroubleshootPanel> {
   final RxInt logFileCount = 1.obs;
   final RxInt logFileSize = 0.obs;
   final RxBool optimizationsDisabled = false.obs;
+  final TextEditingController participantController = TextEditingController();
 
   bool isExportingLogs = false;
   final RxnBool reregisteringIds = RxnBool();
@@ -294,19 +301,24 @@ class _TroubleshootPanelState extends OptimizedState<TroubleshootPanel> {
                             : Icon(Icons.check,
                                 color: context.theme.colorScheme.outline))),
                   ]),
+
+                
                 SettingsHeader(
                   iosSubtitle: iosSubtitle,
                   materialSubtitle: materialSubtitle,
                   text: "Troubleshooting"),
-                SettingsTile(
+                SettingsSection(
+                  backgroundColor: tileColor,
+                  children: [
+                    SettingsTile(
                       leading: const SettingsLeadingIcon(
                         iosIcon: CupertinoIcons.share,
                         materialIcon: Icons.share,
                       ),
                       title: "Export OB logs",
-                      subtitle: "Last 2 hours saved. Contains sensitive information (such as messages and identifiers); do not share publicly.",
+                      subtitle: "Last 24-48 hours saved. Contains sensitive information (such as messages and identifiers); do not share publicly.",
                       onTap: () async {
-                        var file = Directory("${fs.appDocDir.path}/../files/logs");
+                        var file = Directory(Platform.isAndroid ? "${fs.appDocDir.path}/../files/logs" : "${fs.appDocDir.path}/logs");
                         final List<FileSystemEntity> entities = await file.list().toList();
                         var current = entities.indexWhere((element) => element.path.endsWith("CURRENT.log"));
                         var item = entities.removeAt(current);
@@ -318,12 +330,33 @@ class _TroubleshootPanelState extends OptimizedState<TroubleshootPanel> {
                         }
                         b.add(end);
                         var total = b.toBytes();
-                        Logger.writeLogToFile(total);
+                        // Copy the file to downloads
+
+                        final Directory logDir = Directory(Logger.logDir);
+                        final date = DateTime.now().toIso8601String().split('T').first;
+                        final File logFile =
+                            File("${fs.appDocDir.path}/openbubbles-logs-$date.log");
+                        if (logFile.existsSync()) logFile.deleteSync();
+
+                        await logFile.writeAsBytes(total);
+
+                        String newPath = await fs.saveToDownloads(logFile);
+
+                        // Delete the original file
+                        logFile.deleteSync();
+
+                        // Let the user know what happened
+                        showSnackbar(
+                          "Logs Exported",
+                          "Logs have been exported to your downloads folder. Tap here to share it.",
+                          durationMs: 5000,
+                          onTap: (snackbar) async {
+                            Share.file("OpenBubbles Logs", newPath);
+                          },
+                        );
+                        // Logger.writeLogToFile(total);
                       },
                     ),
-                SettingsSection(
-                  backgroundColor: tileColor,
-                  children: [
                     SettingsTile(
                         onTap: () async {
                           await ss.prefs.remove("lastOpenedChat");
@@ -466,10 +499,186 @@ class _TroubleshootPanelState extends OptimizedState<TroubleshootPanel> {
                           )) : Icon(Icons.check, color: context.theme.colorScheme.outline))
                       )
                   ]),
+                if(!kIsDesktop)
+                SettingsHeader(
+                  iosSubtitle: iosSubtitle,
+                  materialSubtitle: materialSubtitle,
+                  text: "Extensions"
+                ),
+                if(!kIsDesktop)
+                SettingsSection(
+                  backgroundColor: tileColor,
+                  children: [
+                    Obx(() => SettingsSwitch(
+                      onChanged: (bool val) {
+                        if (val) {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                  backgroundColor: context.theme.colorScheme.properSurface,
+                                  title: Text("Enable development mode?", style: context.theme.textTheme.titleLarge),
+                                  content: Text(
+                                    'This mode is intended for developer use only. Extensions added through this mode have not been reviewed or approved by neither OpenBubbles or Google. You are responsible for ensuring the safety of your data and any extensions you add.',
+                                    style: context.theme.textTheme.bodyLarge,
+                                  ),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      child: Text("Cancel",
+                                          style: context.theme.textTheme.bodyLarge!
+                                              .copyWith(color: context.theme.colorScheme.primary)),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                    TextButton(
+                                      child: Text("Enable",
+                                          style: context.theme.textTheme.bodyLarge!
+                                              .copyWith(color: context.theme.colorScheme.primary)),
+                                      onPressed: () async {
+                                        Navigator.of(context).pop();
+                                        ss.settings.developerEnabled.value = true;
+                                        ss.settings.save();
+                                      },
+                                    ),
+                                  ]);
+                            },
+                          );
+                          return;
+                        }
+                        ss.settings.developerEnabled.value = val;
+                        ss.settings.save();
+                        showSnackbar("Success", "Restart device or force quit OpenBubbles to unload extensions");
+                      },
+                      initialVal: ss.settings.developerEnabled.value,
+                      title: "Enable Developer Mode",
+                      backgroundColor: tileColor,
+                    )),
+                  ],
+                ),
                 if (kIsDesktop) const SizedBox(height: 100),
               ],
             ),
           ),
+          if(!kIsDesktop)
+          Obx(() => SliverList(
+            delegate: SliverChildBuilderDelegate((context, index) {
+              final addMember = ListTile(
+                mouseCursor: MouseCursor.defer,
+                title: Text("Add Service Name", style: context.theme.textTheme.bodyLarge!.copyWith(color: context.theme.colorScheme.primary)),
+                leading: Container(
+                  width: 40 * ss.settings.avatarScale.value,
+                  height: 40 * ss.settings.avatarScale.value,
+                  decoration: BoxDecoration(
+                    color: !iOS ? null : context.theme.colorScheme.properSurface,
+                    shape: BoxShape.circle,
+                    border: iOS ? null : Border.all(color: context.theme.colorScheme.primary, width: 3)
+                  ),
+                  child: Icon(
+                    Icons.add,
+                    color: context.theme.colorScheme.primary,
+                    size: 20
+                  ),
+                ),
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (_) {
+                      return AlertDialog(
+                        actions: [
+                          TextButton(
+                            child: Text("Cancel", style: context.theme.textTheme.bodyLarge!.copyWith(color: context.theme.colorScheme.primary)),
+                            onPressed: () => Get.back(),
+                          ),
+                          TextButton(
+                            child: Text("OK", style: context.theme.textTheme.bodyLarge!.copyWith(color: context.theme.colorScheme.primary)),
+                            onPressed: () async {
+                              ss.settings.developerMode.add(participantController.text);
+                              ss.saveSettings();
+                              await es.refreshCache();
+                              Get.back();
+                            },
+                          ),
+                        ],
+                        content: TextField(
+                          controller: participantController,
+                          decoration: const InputDecoration(
+                            labelText: "Service Name",
+                            border: OutlineInputBorder(),
+                          ),
+                          autofillHints: [AutofillHints.telephoneNumber, AutofillHints.email],
+                        ),
+                        title: Text("Add", style: context.theme.textTheme.titleLarge),
+                        backgroundColor: context.theme.colorScheme.properSurface,
+                      );
+                    }
+                  );
+                },
+              );
+
+              final refreshCache = ListTile(
+                mouseCursor: MouseCursor.defer,
+                title: Text("Reload extensions", style: context.theme.textTheme.bodyLarge!.copyWith(color: context.theme.colorScheme.primary)),
+                leading: Container(
+                  width: 40 * ss.settings.avatarScale.value,
+                  height: 40 * ss.settings.avatarScale.value,
+                  decoration: BoxDecoration(
+                    color: !iOS ? null : context.theme.colorScheme.properSurface,
+                    shape: BoxShape.circle,
+                    border: iOS ? null : Border.all(color: context.theme.colorScheme.primary, width: 3)
+                  ),
+                  child: Icon(
+                    Icons.refresh,
+                    color: context.theme.colorScheme.primary,
+                    size: 20
+                  ),
+                ),
+                onTap: () async {
+                  await es.refreshCache();
+                  showSnackbar("Success", "Extensions reloaded!");
+                },
+              );
+
+              final clear = ListTile(
+                mouseCursor: MouseCursor.defer,
+                title: Text("Clear services", style: context.theme.textTheme.bodyLarge!.copyWith(color: context.theme.colorScheme.error)),
+                leading: Container(
+                  width: 40 * ss.settings.avatarScale.value,
+                  height: 40 * ss.settings.avatarScale.value,
+                  decoration: BoxDecoration(
+                    color: !iOS ? null : context.theme.colorScheme.properSurface,
+                    shape: BoxShape.circle,
+                    border: iOS ? null : Border.all(color: context.theme.colorScheme.primary, width: 3)
+                  ),
+                  child: Icon(
+                    Icons.clear_all,
+                    color: context.theme.colorScheme.error,
+                    size: 20
+                  ),
+                ),
+                onTap: () async {
+                  ss.settings.developerMode.clear();
+                  ss.saveSettings();
+                  showSnackbar("Success", "Restart device or force quit OpenBubbles to unload extensions");
+                },
+              );
+
+              if (index == ss.settings.developerMode.length) {
+                return addMember;
+              }
+              if (index == ss.settings.developerMode.length + 1) {
+                return refreshCache;
+              }
+              if (index == ss.settings.developerMode.length + 2) {
+                return clear;
+              }
+
+              return ListTile(
+                mouseCursor: MouseCursor.defer,
+                title: Text(ss.settings.developerMode[index]),
+              );
+            }, childCount: ss.settings.developerEnabled.value ? ss.settings.developerMode.length + 3 : 0),
+          ),)
         ]);
   }
 }

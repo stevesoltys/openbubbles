@@ -7,14 +7,14 @@ import 'package:bluebubbles/app/layouts/conversation_list/pages/conversation_lis
 import 'package:bluebubbles/app/layouts/conversation_view/widgets/message/message_holder.dart';
 import 'package:bluebubbles/app/layouts/setup/setup_view.dart';
 import 'package:bluebubbles/app/wrappers/titlebar_wrapper.dart';
+import 'package:bluebubbles/database/database.dart';
 import 'package:bluebubbles/main.dart';
 import 'package:bluebubbles/src/rust/api/api.dart' as api;
 import 'package:bluebubbles/src/rust/lib.dart' as lib;
 import 'package:bluebubbles/helpers/helpers.dart';
-import 'package:bluebubbles/models/models.dart';
+import 'package:bluebubbles/database/models.dart';
 import 'package:bluebubbles/services/services.dart';
 import 'package:bluebubbles/utils/crypto_utils.dart';
-import 'package:bluebubbles/utils/logger.dart';
 import 'package:collection/collection.dart';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/cupertino.dart';
@@ -310,6 +310,7 @@ class RustPushBackend implements BackendService {
     }
     return const api.DartMessageType.iMessage();
   }
+  
 
   void markFailedToLogin() async {
     print("markingfailed");
@@ -594,10 +595,10 @@ class RustPushBackend implements BackendService {
   }
 
   @override
-  Future<bool> setChatIcon(Chat chat,
+  Future<bool> setChatIcon(Chat chat, String path,
       {void Function(int p1, int p2)? onSendProgress, CancelToken? cancelToken}) async {
     chat.groupVersion = (chat.groupVersion ?? -1) + 1;
-    var mmcsStream = api.uploadMmcs(state: pushService.state, path: chat.customAvatarPath!);
+    var mmcsStream = api.uploadMmcs(state: pushService.state, path: path);
     api.DartMMCSFile? mmcs;
     await for (final event in mmcsStream) {
       if (event.file != null) {
@@ -1414,7 +1415,7 @@ class RustPushService extends GetxService {
           // copy over assets
           reaction = null;
 
-          final query = (messageBox.query(Message_.amkSessionId.equals(msg.field0.toUuid))
+          final query = (Database.messages.query(Message_.amkSessionId.equals(msg.field0.toUuid))
             ..order(Message_.dateCreated, flags: Order.descending))
           .build();
           query.limit = 2;
@@ -1648,7 +1649,7 @@ class RustPushService extends GetxService {
       var myHandles = (await api.getHandles(state: pushService.state));
       if (!myHandles.contains(myMsg.sender)) return; // sanity check, shouldn't get here anyways otherwise
       // loop through recent chats (1 day or newer)
-      Query<Chat> query = chatBox.query(Chat_.dateDeleted.isNull().and(Chat_.usingHandle.equals(myMsg.sender!)).and(Chat_.dbOnlyLatestMessageDate.greaterThan(DateTime.now().subtract(const Duration(days: 1)).millisecondsSinceEpoch)))
+      Query<Chat> query = Database.chats.query(Chat_.dateDeleted.isNull().and(Chat_.usingHandle.equals(myMsg.sender!)).and(Chat_.dbOnlyLatestMessageDate.greaterThan(DateTime.now().subtract(const Duration(days: 1)).millisecondsSinceEpoch)))
           .build();
 
       // Execute the query, then close the DB connection
@@ -1887,7 +1888,7 @@ class RustPushService extends GetxService {
       } catch (e, t) {
         // if there was an error somewhere, log it and move on.
         // don't stop our loop
-        Logger.error("$e: $t");
+        print("$e: $t");
       }
     }
   }

@@ -362,8 +362,14 @@ class Chat {
   @Transient()
   RxDouble sendProgress = 0.0.obs;
 
+  void handlesChanged() {
+    var cachedChat = cvc(this).chat;
+    cachedChat.handles = handles; // someone can't keep their objects in sync...
+    cachedChat._participants = [];
+  }
+
   List<String> guidRefs = [];
-  final handles = ToMany<Handle>();
+  var handles = ToMany<Handle>();
 
   String? usingHandle;
   bool isRpSms;
@@ -573,12 +579,12 @@ class Chat {
   }
 
   static Future<Chat> getChatForTel(int tid, List<String> participants) async {
-    final query3 = chatBox.query(Chat_.telephonyId.equals(tid).and(Chat_.dateDeleted.isNull())).build();
+    final query3 = Database.chats.query(Chat_.telephonyId.equals(tid).and(Chat_.dateDeleted.isNull())).build();
     final result4 = query3.findFirst();
     query3.close();
     if (result4 != null) return result4;
 
-    final query = (chatBox.query(Chat_.dateDeleted.isNull().and(Chat_.isRpSms.equals(true)))
+    final query = (Database.chats.query(Chat_.dateDeleted.isNull().and(Chat_.isRpSms.equals(true)))
           ..linkMany(Chat_.handles, Handle_.address.oneOf(participants)))
             .build();
     final results = query.find();
@@ -1154,7 +1160,7 @@ class Chat {
       if (direct != null) return direct;
 
       // prioritize finding by related GUID
-      final query = chatBox.query(Chat_.guidRefs.containsElement(data.senderGuid!)).build();
+      final query = Database.chats.query(Chat_.guidRefs.containsElement(data.senderGuid!)).build();
       final results = query.find();
       query.close();
       if (results.isNotEmpty) {
@@ -1171,7 +1177,7 @@ class Chat {
     if (name != null) {
       cond = cond.and(Chat_.apnTitle.equals(name));
     }
-    final query = (chatBox.query(cond)
+    final query = (Database.chats.query(cond)
           ..linkMany(Chat_.handles, Handle_.address.oneOf(dartParticipants.map((e) => e.address).toList())))
             .build();
     final results = query.find();

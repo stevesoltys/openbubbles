@@ -1,5 +1,5 @@
 import 'package:bluebubbles/helpers/helpers.dart';
-import 'package:bluebubbles/database/database.dart';
+import 'package:bluebubbles/database/database.dart' as db;
 import 'package:bluebubbles/services/ui/contact_service.dart';
 import 'package:bluebubbles/utils/logger/logger.dart';
 import 'package:collection/collection.dart';
@@ -112,7 +112,7 @@ class FilesystemService extends GetxService {
 
   void deleteDB() {
     if (kIsWeb) return;
-    Database.reset();
+    db.Database.reset();
     cs.contacts.clear();
   }
 

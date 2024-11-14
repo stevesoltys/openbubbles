@@ -72,7 +72,7 @@ class OverflowMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      if (ss.settings.skin.value == Skins.iOS && !(kIsDesktop || kIsWeb)) {
+      if (ss.settings.skin.value == Skins.iOS) {
         return CupertinoOverflowMenu(extraItems: extraItems, controller: controller);
       }
 
@@ -233,6 +233,7 @@ class CupertinoOverflowMenu extends StatelessWidget {
       routeTheme: PullDownMenuRouteTheme(
         backgroundColor: context.theme.colorScheme.properSurface.withOpacity(0.9)
       ),
+      animationAlignmentOverride: Alignment.topRight,
       itemBuilder: (context) => [
         PullDownMenuHeader(
           title: ss.settings.userName.value,
@@ -272,12 +273,12 @@ class CupertinoOverflowMenu extends StatelessWidget {
             icon: CupertinoIcons.person_crop_circle_badge_xmark,
             onTap: () => goToUnknownSenders(context),
           ),
-        if (ss.isMinCatalinaSync)
-          PullDownMenuItem(
-            title: 'Find My',
-            icon: CupertinoIcons.location,
-            onTap: () => goToFindMy(context),
-          ),
+        // if (ss.isMinCatalinaSync)
+        //   PullDownMenuItem(
+        //     title: 'Find My',
+        //     icon: CupertinoIcons.location,
+        //     onTap: () => goToFindMy(context),
+        //   ),
         if (extraItems)
           PullDownMenuItem(
             title: 'Search',

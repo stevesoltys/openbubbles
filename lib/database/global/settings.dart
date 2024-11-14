@@ -90,7 +90,7 @@ class Settings {
   final RxString userName = "You".obs;
   final RxnString userAvatarPath = RxnString();
   final RxBool hideNamesForReactions = false.obs;
-  final RxBool replaceEmoticonsWithEmoji = false.obs;
+  final RxBool replaceEmoticonsWithEmoji = true.obs;
 
   // final RxString emojiFontFamily;
 
@@ -188,7 +188,6 @@ class Settings {
   final RxMap<String, String> cachedCodes = <String, String>{}.obs;
   final RxList<String> smsForwardingTargets = <String>[].obs;
 
-  final RxBool convertEmoticonsToEmoji = true.obs;
   final RxBool developerEnabled = false.obs;
   final RxList<String> developerMode = <String>[].obs;
 
@@ -378,7 +377,6 @@ class Settings {
       'useWindowsAccent': useWindowsAccent.value,
       'defaultHandle': defaultHandle.value,
       'macIsMine': macIsMine.value,
-      'convertEmoticonsToEmoji': convertEmoticonsToEmoji.value,
       'isSmsRouter': isSmsRouter.value,
       'developerEnabled': developerEnabled.value,
       'vpnWarned': vpnWarned.value,
@@ -525,7 +523,6 @@ class Settings {
     ss.settings.useWindowsAccent.value = map['useWindowsAccent'] ?? false;
     ss.settings.defaultHandle.value = map['defaultHandle'] ?? "";
     ss.settings.macIsMine.value = map['macIsMine'] ?? true;
-    ss.settings.convertEmoticonsToEmoji.value = map['convertEmoticonsToEmoji'] ?? true;
     ss.settings.isSmsRouter.value = map['isSmsRouter'] ?? false;
     ss.settings.developerEnabled.value = map['developerEnabled'] ?? false;
     ss.settings.vpnWarned.value = map['vpnWarned'] ?? false;
@@ -669,7 +666,6 @@ class Settings {
     s.useWindowsAccent.value = map['useWindowsAccent'] ?? false;
     s.defaultHandle.value = map['defaultHandle'] ?? "";
     s.macIsMine.value = map['macIsMine'] ?? true;
-    s.convertEmoticonsToEmoji.value = map['convertEmoticonsToEmoji'] ?? true;
     s.isSmsRouter.value = map['isSmsRouter'] ?? false;
     s.developerEnabled.value = map['developerEnabled'] ?? false;
     s.vpnWarned.value = map['vpnWarned'] ?? false;

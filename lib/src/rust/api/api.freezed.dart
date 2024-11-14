@@ -73,6 +73,9 @@ class _$DartAttachmentTypeCopyWithImpl<$Res, $Val extends DartAttachmentType>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of DartAttachmentType
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -95,6 +98,8 @@ class __$$DartAttachmentType_InlineImplCopyWithImpl<$Res>
       $Res Function(_$DartAttachmentType_InlineImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of DartAttachmentType
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -134,7 +139,9 @@ class _$DartAttachmentType_InlineImpl extends DartAttachmentType_Inline {
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(field0));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of DartAttachmentType
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$DartAttachmentType_InlineImplCopyWith<_$DartAttachmentType_InlineImpl>
@@ -211,7 +218,10 @@ abstract class DartAttachmentType_Inline extends DartAttachmentType {
 
   @override
   Uint8List get field0;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of DartAttachmentType
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DartAttachmentType_InlineImplCopyWith<_$DartAttachmentType_InlineImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -236,6 +246,8 @@ class __$$DartAttachmentType_MMCSImplCopyWithImpl<$Res>
       $Res Function(_$DartAttachmentType_MMCSImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of DartAttachmentType
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -274,7 +286,9 @@ class _$DartAttachmentType_MMCSImpl extends DartAttachmentType_MMCS {
   @override
   int get hashCode => Object.hash(runtimeType, field0);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of DartAttachmentType
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$DartAttachmentType_MMCSImplCopyWith<_$DartAttachmentType_MMCSImpl>
@@ -351,7 +365,10 @@ abstract class DartAttachmentType_MMCS extends DartAttachmentType {
 
   @override
   DartMMCSFile get field0;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of DartAttachmentType
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DartAttachmentType_MMCSImplCopyWith<_$DartAttachmentType_MMCSImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -423,7 +440,9 @@ mixin _$DartBalloonLayout {
   }) =>
       throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of DartBalloonLayout
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $DartBalloonLayoutCopyWith<DartBalloonLayout> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -454,6 +473,8 @@ class _$DartBalloonLayoutCopyWithImpl<$Res, $Val extends DartBalloonLayout>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of DartBalloonLayout
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -527,6 +548,8 @@ class __$$DartBalloonLayout_TemplateLayoutImplCopyWithImpl<$Res>
       $Res Function(_$DartBalloonLayout_TemplateLayoutImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of DartBalloonLayout
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -628,7 +651,9 @@ class _$DartBalloonLayout_TemplateLayoutImpl
   int get hashCode => Object.hash(runtimeType, imageSubtitle, imageTitle,
       caption, secondarySubcaption, tertiarySubcaption, subcaption, class_);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of DartBalloonLayout
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$DartBalloonLayout_TemplateLayoutImplCopyWith<
@@ -747,8 +772,11 @@ abstract class DartBalloonLayout_TemplateLayout extends DartBalloonLayout {
   String get subcaption;
   @override
   NSDictionaryClass get class_;
+
+  /// Create a copy of DartBalloonLayout
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DartBalloonLayout_TemplateLayoutImplCopyWith<
           _$DartBalloonLayout_TemplateLayoutImpl>
       get copyWith => throw _privateConstructorUsedError;
@@ -850,6 +878,9 @@ class _$DartLoginStateCopyWithImpl<$Res, $Val extends DartLoginState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of DartLoginState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -868,6 +899,9 @@ class __$$DartLoginState_LoggedInImplCopyWithImpl<$Res>
       _$DartLoginState_LoggedInImpl _value,
       $Res Function(_$DartLoginState_LoggedInImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of DartLoginState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -1013,6 +1047,9 @@ class __$$DartLoginState_NeedsDevice2FAImplCopyWithImpl<$Res>
       _$DartLoginState_NeedsDevice2FAImpl _value,
       $Res Function(_$DartLoginState_NeedsDevice2FAImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of DartLoginState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -1160,6 +1197,9 @@ class __$$DartLoginState_Needs2FAVerificationImplCopyWithImpl<$Res>
       _$DartLoginState_Needs2FAVerificationImpl _value,
       $Res Function(_$DartLoginState_Needs2FAVerificationImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of DartLoginState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -1306,6 +1346,9 @@ class __$$DartLoginState_NeedsSMS2FAImplCopyWithImpl<$Res>
       _$DartLoginState_NeedsSMS2FAImpl _value,
       $Res Function(_$DartLoginState_NeedsSMS2FAImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of DartLoginState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -1454,6 +1497,8 @@ class __$$DartLoginState_NeedsSMS2FAVerificationImplCopyWithImpl<$Res>
       $Res Function(_$DartLoginState_NeedsSMS2FAVerificationImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of DartLoginState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1493,7 +1538,9 @@ class _$DartLoginState_NeedsSMS2FAVerificationImpl
   @override
   int get hashCode => Object.hash(runtimeType, field0);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of DartLoginState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$DartLoginState_NeedsSMS2FAVerificationImplCopyWith<
@@ -1609,7 +1656,10 @@ abstract class DartLoginState_NeedsSMS2FAVerification extends DartLoginState {
   const DartLoginState_NeedsSMS2FAVerification._() : super._();
 
   VerifyBody get field0;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of DartLoginState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DartLoginState_NeedsSMS2FAVerificationImplCopyWith<
           _$DartLoginState_NeedsSMS2FAVerificationImpl>
       get copyWith => throw _privateConstructorUsedError;
@@ -1635,6 +1685,8 @@ class __$$DartLoginState_NeedsExtraStepImplCopyWithImpl<$Res>
       $Res Function(_$DartLoginState_NeedsExtraStepImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of DartLoginState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1674,7 +1726,9 @@ class _$DartLoginState_NeedsExtraStepImpl
   @override
   int get hashCode => Object.hash(runtimeType, field0);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of DartLoginState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$DartLoginState_NeedsExtraStepImplCopyWith<
@@ -1789,7 +1843,10 @@ abstract class DartLoginState_NeedsExtraStep extends DartLoginState {
   const DartLoginState_NeedsExtraStep._() : super._();
 
   String get field0;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of DartLoginState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DartLoginState_NeedsExtraStepImplCopyWith<
           _$DartLoginState_NeedsExtraStepImpl>
       get copyWith => throw _privateConstructorUsedError;
@@ -1811,6 +1868,9 @@ class __$$DartLoginState_NeedsLoginImplCopyWithImpl<$Res>
       _$DartLoginState_NeedsLoginImpl _value,
       $Res Function(_$DartLoginState_NeedsLoginImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of DartLoginState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -2106,6 +2166,9 @@ class _$DartMessageCopyWithImpl<$Res, $Val extends DartMessage>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of DartMessage
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -2125,6 +2188,8 @@ class __$$DartMessage_MessageImplCopyWithImpl<$Res>
       $Res Function(_$DartMessage_MessageImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of DartMessage
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -2163,7 +2228,9 @@ class _$DartMessage_MessageImpl extends DartMessage_Message {
   @override
   int get hashCode => Object.hash(runtimeType, field0);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of DartMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$DartMessage_MessageImplCopyWith<_$DartMessage_MessageImpl> get copyWith =>
@@ -2348,7 +2415,10 @@ abstract class DartMessage_Message extends DartMessage {
   const DartMessage_Message._() : super._();
 
   DartNormalMessage get field0;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of DartMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DartMessage_MessageImplCopyWith<_$DartMessage_MessageImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -2372,6 +2442,8 @@ class __$$DartMessage_RenameMessageImplCopyWithImpl<$Res>
       $Res Function(_$DartMessage_RenameMessageImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of DartMessage
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -2410,7 +2482,9 @@ class _$DartMessage_RenameMessageImpl extends DartMessage_RenameMessage {
   @override
   int get hashCode => Object.hash(runtimeType, field0);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of DartMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$DartMessage_RenameMessageImplCopyWith<_$DartMessage_RenameMessageImpl>
@@ -2595,7 +2669,10 @@ abstract class DartMessage_RenameMessage extends DartMessage {
   const DartMessage_RenameMessage._() : super._();
 
   DartRenameMessage get field0;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of DartMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DartMessage_RenameMessageImplCopyWith<_$DartMessage_RenameMessageImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -2620,6 +2697,8 @@ class __$$DartMessage_ChangeParticipantsImplCopyWithImpl<$Res>
       $Res Function(_$DartMessage_ChangeParticipantsImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of DartMessage
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -2659,7 +2738,9 @@ class _$DartMessage_ChangeParticipantsImpl
   @override
   int get hashCode => Object.hash(runtimeType, field0);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of DartMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$DartMessage_ChangeParticipantsImplCopyWith<
@@ -2846,7 +2927,10 @@ abstract class DartMessage_ChangeParticipants extends DartMessage {
   const DartMessage_ChangeParticipants._() : super._();
 
   DartChangeParticipantMessage get field0;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of DartMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DartMessage_ChangeParticipantsImplCopyWith<
           _$DartMessage_ChangeParticipantsImpl>
       get copyWith => throw _privateConstructorUsedError;
@@ -2869,6 +2953,8 @@ class __$$DartMessage_ReactImplCopyWithImpl<$Res>
       $Res Function(_$DartMessage_ReactImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of DartMessage
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -2907,7 +2993,9 @@ class _$DartMessage_ReactImpl extends DartMessage_React {
   @override
   int get hashCode => Object.hash(runtimeType, field0);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of DartMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$DartMessage_ReactImplCopyWith<_$DartMessage_ReactImpl> get copyWith =>
@@ -3092,7 +3180,10 @@ abstract class DartMessage_React extends DartMessage {
   const DartMessage_React._() : super._();
 
   DartReactMessage get field0;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of DartMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DartMessage_ReactImplCopyWith<_$DartMessage_ReactImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -3112,6 +3203,9 @@ class __$$DartMessage_DeliveredImplCopyWithImpl<$Res>
   __$$DartMessage_DeliveredImplCopyWithImpl(_$DartMessage_DeliveredImpl _value,
       $Res Function(_$DartMessage_DeliveredImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of DartMessage
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -3325,6 +3419,9 @@ class __$$DartMessage_ReadImplCopyWithImpl<$Res>
   __$$DartMessage_ReadImplCopyWithImpl(_$DartMessage_ReadImpl _value,
       $Res Function(_$DartMessage_ReadImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of DartMessage
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -3537,6 +3634,9 @@ class __$$DartMessage_TypingImplCopyWithImpl<$Res>
   __$$DartMessage_TypingImplCopyWithImpl(_$DartMessage_TypingImpl _value,
       $Res Function(_$DartMessage_TypingImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of DartMessage
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -3752,6 +3852,8 @@ class __$$DartMessage_UnsendImplCopyWithImpl<$Res>
       $Res Function(_$DartMessage_UnsendImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of DartMessage
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -3790,7 +3892,9 @@ class _$DartMessage_UnsendImpl extends DartMessage_Unsend {
   @override
   int get hashCode => Object.hash(runtimeType, field0);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of DartMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$DartMessage_UnsendImplCopyWith<_$DartMessage_UnsendImpl> get copyWith =>
@@ -3975,7 +4079,10 @@ abstract class DartMessage_Unsend extends DartMessage {
   const DartMessage_Unsend._() : super._();
 
   DartUnsendMessage get field0;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of DartMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DartMessage_UnsendImplCopyWith<_$DartMessage_UnsendImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -3997,6 +4104,8 @@ class __$$DartMessage_EditImplCopyWithImpl<$Res>
       $Res Function(_$DartMessage_EditImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of DartMessage
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -4035,7 +4144,9 @@ class _$DartMessage_EditImpl extends DartMessage_Edit {
   @override
   int get hashCode => Object.hash(runtimeType, field0);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of DartMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$DartMessage_EditImplCopyWith<_$DartMessage_EditImpl> get copyWith =>
@@ -4220,7 +4331,10 @@ abstract class DartMessage_Edit extends DartMessage {
   const DartMessage_Edit._() : super._();
 
   DartEditMessage get field0;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of DartMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DartMessage_EditImplCopyWith<_$DartMessage_EditImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -4244,6 +4358,8 @@ class __$$DartMessage_IconChangeImplCopyWithImpl<$Res>
       $Res Function(_$DartMessage_IconChangeImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of DartMessage
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -4282,7 +4398,9 @@ class _$DartMessage_IconChangeImpl extends DartMessage_IconChange {
   @override
   int get hashCode => Object.hash(runtimeType, field0);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of DartMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$DartMessage_IconChangeImplCopyWith<_$DartMessage_IconChangeImpl>
@@ -4467,7 +4585,10 @@ abstract class DartMessage_IconChange extends DartMessage {
   const DartMessage_IconChange._() : super._();
 
   DartIconChangeMessage get field0;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of DartMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DartMessage_IconChangeImplCopyWith<_$DartMessage_IconChangeImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -4488,6 +4609,9 @@ class __$$DartMessage_StopTypingImplCopyWithImpl<$Res>
       _$DartMessage_StopTypingImpl _value,
       $Res Function(_$DartMessage_StopTypingImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of DartMessage
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -4707,6 +4831,8 @@ class __$$DartMessage_EnableSmsActivationImplCopyWithImpl<$Res>
       $Res Function(_$DartMessage_EnableSmsActivationImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of DartMessage
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -4746,7 +4872,9 @@ class _$DartMessage_EnableSmsActivationImpl
   @override
   int get hashCode => Object.hash(runtimeType, field0);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of DartMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$DartMessage_EnableSmsActivationImplCopyWith<
@@ -4932,7 +5060,10 @@ abstract class DartMessage_EnableSmsActivation extends DartMessage {
   const DartMessage_EnableSmsActivation._() : super._();
 
   bool get field0;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of DartMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DartMessage_EnableSmsActivationImplCopyWith<
           _$DartMessage_EnableSmsActivationImpl>
       get copyWith => throw _privateConstructorUsedError;
@@ -4955,6 +5086,9 @@ class __$$DartMessage_MessageReadOnDeviceImplCopyWithImpl<$Res>
       _$DartMessage_MessageReadOnDeviceImpl _value,
       $Res Function(_$DartMessage_MessageReadOnDeviceImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of DartMessage
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -5175,6 +5309,8 @@ class __$$DartMessage_SmsConfirmSentImplCopyWithImpl<$Res>
       $Res Function(_$DartMessage_SmsConfirmSentImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of DartMessage
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -5213,7 +5349,9 @@ class _$DartMessage_SmsConfirmSentImpl extends DartMessage_SmsConfirmSent {
   @override
   int get hashCode => Object.hash(runtimeType, field0);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of DartMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$DartMessage_SmsConfirmSentImplCopyWith<_$DartMessage_SmsConfirmSentImpl>
@@ -5398,7 +5536,10 @@ abstract class DartMessage_SmsConfirmSent extends DartMessage {
   const DartMessage_SmsConfirmSent._() : super._();
 
   bool get field0;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of DartMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DartMessage_SmsConfirmSentImplCopyWith<_$DartMessage_SmsConfirmSentImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -5419,6 +5560,9 @@ class __$$DartMessage_MarkUnreadImplCopyWithImpl<$Res>
       _$DartMessage_MarkUnreadImpl _value,
       $Res Function(_$DartMessage_MarkUnreadImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of DartMessage
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -5635,6 +5779,9 @@ class __$$DartMessage_PeerCacheInvalidateImplCopyWithImpl<$Res>
       _$DartMessage_PeerCacheInvalidateImpl _value,
       $Res Function(_$DartMessage_PeerCacheInvalidateImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of DartMessage
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -5855,6 +6002,8 @@ class __$$DartMessage_UpdateExtensionImplCopyWithImpl<$Res>
       $Res Function(_$DartMessage_UpdateExtensionImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of DartMessage
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -5893,7 +6042,9 @@ class _$DartMessage_UpdateExtensionImpl extends DartMessage_UpdateExtension {
   @override
   int get hashCode => Object.hash(runtimeType, field0);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of DartMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$DartMessage_UpdateExtensionImplCopyWith<_$DartMessage_UpdateExtensionImpl>
@@ -6079,7 +6230,10 @@ abstract class DartMessage_UpdateExtension extends DartMessage {
   const DartMessage_UpdateExtension._() : super._();
 
   DartUpdateExtensionMessage get field0;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of DartMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DartMessage_UpdateExtensionImplCopyWith<_$DartMessage_UpdateExtensionImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -6101,6 +6255,8 @@ class __$$DartMessage_ErrorImplCopyWithImpl<$Res>
       $Res Function(_$DartMessage_ErrorImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of DartMessage
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -6139,7 +6295,9 @@ class _$DartMessage_ErrorImpl extends DartMessage_Error {
   @override
   int get hashCode => Object.hash(runtimeType, field0);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of DartMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$DartMessage_ErrorImplCopyWith<_$DartMessage_ErrorImpl> get copyWith =>
@@ -6324,7 +6482,10 @@ abstract class DartMessage_Error extends DartMessage {
   const DartMessage_Error._() : super._();
 
   DartErrorMessage get field0;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of DartMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DartMessage_ErrorImplCopyWith<_$DartMessage_ErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -6400,6 +6561,9 @@ class _$DartMessagePartCopyWithImpl<$Res, $Val extends DartMessagePart>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of DartMessagePart
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -6419,6 +6583,8 @@ class __$$DartMessagePart_TextImplCopyWithImpl<$Res>
       $Res Function(_$DartMessagePart_TextImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of DartMessagePart
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -6457,7 +6623,9 @@ class _$DartMessagePart_TextImpl extends DartMessagePart_Text {
   @override
   int get hashCode => Object.hash(runtimeType, field0);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of DartMessagePart
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$DartMessagePart_TextImplCopyWith<_$DartMessagePart_TextImpl>
@@ -6547,7 +6715,10 @@ abstract class DartMessagePart_Text extends DartMessagePart {
 
   @override
   String get field0;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of DartMessagePart
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DartMessagePart_TextImplCopyWith<_$DartMessagePart_TextImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -6572,6 +6743,8 @@ class __$$DartMessagePart_AttachmentImplCopyWithImpl<$Res>
       $Res Function(_$DartMessagePart_AttachmentImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of DartMessagePart
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -6610,7 +6783,9 @@ class _$DartMessagePart_AttachmentImpl extends DartMessagePart_Attachment {
   @override
   int get hashCode => Object.hash(runtimeType, field0);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of DartMessagePart
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$DartMessagePart_AttachmentImplCopyWith<_$DartMessagePart_AttachmentImpl>
@@ -6699,7 +6874,10 @@ abstract class DartMessagePart_Attachment extends DartMessagePart {
 
   @override
   DartAttachment get field0;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of DartMessagePart
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DartMessagePart_AttachmentImplCopyWith<_$DartMessagePart_AttachmentImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -6723,6 +6901,8 @@ class __$$DartMessagePart_MentionImplCopyWithImpl<$Res>
       $Res Function(_$DartMessagePart_MentionImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of DartMessagePart
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -6769,7 +6949,9 @@ class _$DartMessagePart_MentionImpl extends DartMessagePart_Mention {
   @override
   int get hashCode => Object.hash(runtimeType, field0, field1);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of DartMessagePart
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$DartMessagePart_MentionImplCopyWith<_$DartMessagePart_MentionImpl>
@@ -6859,7 +7041,10 @@ abstract class DartMessagePart_Mention extends DartMessagePart {
   @override
   String get field0;
   String get field1;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of DartMessagePart
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DartMessagePart_MentionImplCopyWith<_$DartMessagePart_MentionImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -6883,6 +7068,8 @@ class __$$DartMessagePart_ObjectImplCopyWithImpl<$Res>
       $Res Function(_$DartMessagePart_ObjectImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of DartMessagePart
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -6921,7 +7108,9 @@ class _$DartMessagePart_ObjectImpl extends DartMessagePart_Object {
   @override
   int get hashCode => Object.hash(runtimeType, field0);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of DartMessagePart
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$DartMessagePart_ObjectImplCopyWith<_$DartMessagePart_ObjectImpl>
@@ -7010,7 +7199,10 @@ abstract class DartMessagePart_Object extends DartMessagePart {
 
   @override
   String get field0;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of DartMessagePart
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DartMessagePart_ObjectImplCopyWith<_$DartMessagePart_ObjectImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -7074,6 +7266,9 @@ class _$DartMessageTargetCopyWithImpl<$Res, $Val extends DartMessageTarget>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of DartMessageTarget
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -7095,6 +7290,8 @@ class __$$DartMessageTarget_TokenImplCopyWithImpl<$Res>
       $Res Function(_$DartMessageTarget_TokenImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of DartMessageTarget
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -7134,7 +7331,9 @@ class _$DartMessageTarget_TokenImpl extends DartMessageTarget_Token {
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(field0));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of DartMessageTarget
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$DartMessageTarget_TokenImplCopyWith<_$DartMessageTarget_TokenImpl>
@@ -7211,7 +7410,10 @@ abstract class DartMessageTarget_Token extends DartMessageTarget {
 
   @override
   Uint8List get field0;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of DartMessageTarget
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DartMessageTarget_TokenImplCopyWith<_$DartMessageTarget_TokenImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -7235,6 +7437,8 @@ class __$$DartMessageTarget_UuidImplCopyWithImpl<$Res>
       $Res Function(_$DartMessageTarget_UuidImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of DartMessageTarget
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -7273,7 +7477,9 @@ class _$DartMessageTarget_UuidImpl extends DartMessageTarget_Uuid {
   @override
   int get hashCode => Object.hash(runtimeType, field0);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of DartMessageTarget
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$DartMessageTarget_UuidImplCopyWith<_$DartMessageTarget_UuidImpl>
@@ -7350,7 +7556,10 @@ abstract class DartMessageTarget_Uuid extends DartMessageTarget {
 
   @override
   String get field0;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of DartMessageTarget
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DartMessageTarget_UuidImplCopyWith<_$DartMessageTarget_UuidImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -7416,6 +7625,9 @@ class _$DartMessageTypeCopyWithImpl<$Res, $Val extends DartMessageType>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of DartMessageType
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -7434,6 +7646,9 @@ class __$$DartMessageType_IMessageImplCopyWithImpl<$Res>
       _$DartMessageType_IMessageImpl _value,
       $Res Function(_$DartMessageType_IMessageImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of DartMessageType
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -7544,6 +7759,8 @@ class __$$DartMessageType_SMSImplCopyWithImpl<$Res>
       $Res Function(_$DartMessageType_SMSImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of DartMessageType
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -7603,7 +7820,9 @@ class _$DartMessageType_SMSImpl extends DartMessageType_SMS {
   int get hashCode =>
       Object.hash(runtimeType, isPhone, usingNumber, fromHandle);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of DartMessageType
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$DartMessageType_SMSImplCopyWith<_$DartMessageType_SMSImpl> get copyWith =>
@@ -7686,7 +7905,10 @@ abstract class DartMessageType_SMS extends DartMessageType {
   bool get isPhone;
   String get usingNumber;
   String? get fromHandle;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of DartMessageType
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DartMessageType_SMSImplCopyWith<_$DartMessageType_SMSImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -7781,7 +8003,9 @@ mixin _$DartPartExtension {
   }) =>
       throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of DartPartExtension
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $DartPartExtensionCopyWith<DartPartExtension> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -7818,6 +8042,8 @@ class _$DartPartExtensionCopyWithImpl<$Res, $Val extends DartPartExtension>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of DartPartExtension
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -7927,6 +8153,8 @@ class __$$DartPartExtension_StickerImplCopyWithImpl<$Res>
       $Res Function(_$DartPartExtension_StickerImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of DartPartExtension
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -8095,7 +8323,9 @@ class _$DartPartExtension_StickerImpl extends DartPartExtension_Sticker {
       effectType,
       stickerId);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of DartPartExtension
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$DartPartExtension_StickerImplCopyWith<_$DartPartExtension_StickerImpl>
@@ -8247,8 +8477,11 @@ abstract class DartPartExtension_Sticker extends DartPartExtension {
   int get effectType;
   @override
   String get stickerId;
+
+  /// Create a copy of DartPartExtension
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DartPartExtension_StickerImplCopyWith<_$DartPartExtension_StickerImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -8313,6 +8546,9 @@ class _$DartReactMessageTypeCopyWithImpl<$Res,
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of DartReactMessageType
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -8335,6 +8571,8 @@ class __$$DartReactMessageType_ReactImplCopyWithImpl<$Res>
       $Res Function(_$DartReactMessageType_ReactImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of DartReactMessageType
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -8384,7 +8622,9 @@ class _$DartReactMessageType_ReactImpl extends DartReactMessageType_React {
   @override
   int get hashCode => Object.hash(runtimeType, reaction, enable);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of DartReactMessageType
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$DartReactMessageType_ReactImplCopyWith<_$DartReactMessageType_ReactImpl>
@@ -8463,7 +8703,10 @@ abstract class DartReactMessageType_React extends DartReactMessageType {
 
   DartReaction get reaction;
   bool get enable;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of DartReactMessageType
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DartReactMessageType_ReactImplCopyWith<_$DartReactMessageType_ReactImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -8488,6 +8731,8 @@ class __$$DartReactMessageType_ExtensionImplCopyWithImpl<$Res>
       $Res Function(_$DartReactMessageType_ExtensionImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of DartReactMessageType
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -8537,7 +8782,9 @@ class _$DartReactMessageType_ExtensionImpl
   @override
   int get hashCode => Object.hash(runtimeType, spec, body);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of DartReactMessageType
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$DartReactMessageType_ExtensionImplCopyWith<
@@ -8618,7 +8865,10 @@ abstract class DartReactMessageType_Extension extends DartReactMessageType {
 
   DartExtensionApp get spec;
   DartMessageParts get body;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of DartReactMessageType
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DartReactMessageType_ExtensionImplCopyWith<
           _$DartReactMessageType_ExtensionImpl>
       get copyWith => throw _privateConstructorUsedError;
@@ -8688,6 +8938,9 @@ class _$DartRegisterStateCopyWithImpl<$Res, $Val extends DartRegisterState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of DartRegisterState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -8710,6 +8963,8 @@ class __$$DartRegisterState_RegisteredImplCopyWithImpl<$Res>
       $Res Function(_$DartRegisterState_RegisteredImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of DartRegisterState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -8748,7 +9003,9 @@ class _$DartRegisterState_RegisteredImpl extends DartRegisterState_Registered {
   @override
   int get hashCode => Object.hash(runtimeType, nextS);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of DartRegisterState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$DartRegisterState_RegisteredImplCopyWith<
@@ -8831,7 +9088,10 @@ abstract class DartRegisterState_Registered extends DartRegisterState {
   const DartRegisterState_Registered._() : super._();
 
   int get nextS;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of DartRegisterState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DartRegisterState_RegisteredImplCopyWith<
           _$DartRegisterState_RegisteredImpl>
       get copyWith => throw _privateConstructorUsedError;
@@ -8854,6 +9114,9 @@ class __$$DartRegisterState_RegisteringImplCopyWithImpl<$Res>
       _$DartRegisterState_RegisteringImpl _value,
       $Res Function(_$DartRegisterState_RegisteringImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of DartRegisterState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -8972,6 +9235,8 @@ class __$$DartRegisterState_FailedImplCopyWithImpl<$Res>
       $Res Function(_$DartRegisterState_FailedImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of DartRegisterState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -9020,7 +9285,9 @@ class _$DartRegisterState_FailedImpl extends DartRegisterState_Failed {
   @override
   int get hashCode => Object.hash(runtimeType, retryWait, error);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of DartRegisterState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$DartRegisterState_FailedImplCopyWith<_$DartRegisterState_FailedImpl>
@@ -9104,7 +9371,10 @@ abstract class DartRegisterState_Failed extends DartRegisterState {
 
   BigInt? get retryWait;
   String get error;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of DartRegisterState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DartRegisterState_FailedImplCopyWith<_$DartRegisterState_FailedImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -9167,6 +9437,9 @@ class _$PollResultCopyWithImpl<$Res, $Val extends PollResult>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of PollResult
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -9183,6 +9456,9 @@ class __$$PollResult_StopImplCopyWithImpl<$Res>
   __$$PollResult_StopImplCopyWithImpl(
       _$PollResult_StopImpl _value, $Res Function(_$PollResult_StopImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of PollResult
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -9289,6 +9565,8 @@ class __$$PollResult_ContImplCopyWithImpl<$Res>
       _$PollResult_ContImpl _value, $Res Function(_$PollResult_ContImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of PollResult
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -9327,7 +9605,9 @@ class _$PollResult_ContImpl extends PollResult_Cont {
   @override
   int get hashCode => Object.hash(runtimeType, field0);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of PollResult
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$PollResult_ContImplCopyWith<_$PollResult_ContImpl> get copyWith =>
@@ -9403,7 +9683,10 @@ abstract class PollResult_Cont extends PollResult {
   const PollResult_Cont._() : super._();
 
   DartIMessage? get field0;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of PollResult
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$PollResult_ContImplCopyWith<_$PollResult_ContImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

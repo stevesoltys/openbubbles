@@ -329,9 +329,9 @@ class _ServerManagementPanelState extends CustomState<ServerManagementPanel, voi
                                           ),
                                           data: qrtext,
                                           backgroundColor: context.theme.colorScheme.properSurface,
-                                          eyeStyle: QrEyeStyle(color: context.theme.colorScheme.properOnSurface),
-                                          dataModuleStyle:
-                                              QrDataModuleStyle(color: context.theme.colorScheme.properOnSurface),
+                                          width: 320,
+                                          height: 320,
+                                          color: context.theme.colorScheme.onSurface,
                                         ),
                                       ),
                                     ),

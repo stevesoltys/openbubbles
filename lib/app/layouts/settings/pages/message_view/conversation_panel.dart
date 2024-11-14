@@ -1,4 +1,6 @@
+import 'package:animated_size_and_fade/animated_size_and_fade.dart';
 import 'package:audio_waveforms/audio_waveforms.dart' as aw;
+import 'package:bluebubbles/app/layouts/conversation_view/widgets/message/reaction/reaction.dart';
 import 'package:bluebubbles/app/layouts/settings/pages/message_view/message_options_order_panel.dart';
 import 'package:bluebubbles/app/layouts/settings/widgets/content/next_button.dart';
 import 'package:bluebubbles/helpers/helpers.dart';
@@ -455,6 +457,232 @@ class _ConversationPanelState extends OptimizedState<ConversationPanel> {
                       )),
                 ],
               ),
+
+              SettingsHeader(iosSubtitle: iosSubtitle, materialSubtitle: materialSubtitle, text: "Interaction Settings"),
+                SettingsSection(
+                  backgroundColor: tileColor,
+                  children: [
+                    SettingsSwitch(
+                      onChanged: (bool val) {
+                        ss.settings.privateSendTypingIndicators.value = val;
+                        saveSettings();
+                      },
+                      initialVal: ss.settings.privateSendTypingIndicators.value,
+                      title: "Send Typing Indicators",
+                      subtitle: "Sends typing indicators to other iMessage users",
+                      backgroundColor: tileColor,
+                      leading: const SettingsLeadingIcon(
+                        iosIcon: CupertinoIcons.keyboard_chevron_compact_down,
+                        materialIcon: Icons.keyboard_alt_outlined,
+                        containerColor: Colors.green,
+                      ),
+                    ),
+                    AnimatedSizeAndFade(
+                    child: !ss.settings.privateManualMarkAsRead.value
+                          ? Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const SettingsDivider(),
+                                SettingsSwitch(
+                                  onChanged: (bool val) {
+                                    ss.settings.privateMarkChatAsRead.value = val;
+                                    if (val) {
+                                      ss.settings.privateManualMarkAsRead.value = false;
+                                    }
+                                    saveSettings();
+                                  },
+                                  initialVal: ss.settings.privateMarkChatAsRead.value,
+                                  title: "Automatic Mark Read / Send Read Receipts",
+                                  subtitle:
+                                      "Marks chats read in the iMessage app on your server and sends read receipts to other iMessage users",
+                                  backgroundColor: tileColor,
+                                  isThreeLine: true,
+                                  leading: const SettingsLeadingIcon(
+                                    iosIcon: CupertinoIcons.rectangle_fill_badge_checkmark,
+                                    materialIcon: Icons.playlist_add_check,
+                                    containerColor: Colors.blueAccent,
+                                  )
+                                ),
+                              ],
+                            )
+                          : const SizedBox.shrink(),
+                    ),
+                    AnimatedSizeAndFade.showHide(
+                      show: !ss.settings.privateMarkChatAsRead.value,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const SettingsDivider(),
+                          SettingsSwitch(
+                            onChanged: (bool val) {
+                              ss.settings.privateManualMarkAsRead.value = val;
+                              saveSettings();
+                            },
+                            initialVal: ss.settings.privateManualMarkAsRead.value,
+                            title: "Manual Mark Read / Send Read Receipts",
+                            subtitle: "Only mark a chat read when pressing the manual mark read button",
+                            backgroundColor: tileColor,
+                            isThreeLine: true,
+                            leading: const SettingsLeadingIcon(
+                              iosIcon: CupertinoIcons.check_mark_circled,
+                              materialIcon: Icons.check_circle_outline,
+                              containerColor: Colors.orange,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SettingsDivider(),
+                    SettingsSwitch(
+                      title: "Double-${kIsWeb || kIsDesktop ? "Click" : "Tap"} Message for Quick Tapback",
+                      initialVal: ss.settings.enableQuickTapback.value,
+                      onChanged: (bool val) {
+                        ss.settings.enableQuickTapback.value = val;
+                        if (val && ss.settings.doubleTapForDetails.value) {
+                          ss.settings.doubleTapForDetails.value = false;
+                        }
+                        saveSettings();
+                      },
+                      subtitle: "Send a tapback of your choosing when double ${kIsWeb || kIsDesktop ? "click" : "tapp"}ing a message",
+                      backgroundColor: tileColor,
+                      isThreeLine: true,
+                      leading: const SettingsLeadingIcon(
+                        iosIcon: CupertinoIcons.rays,
+                        materialIcon: Icons.touch_app_outlined,
+                        containerColor: Colors.purple,
+                      ),
+                    ),
+                    AnimatedSizeAndFade.showHide(
+                      show: ss.settings.enableQuickTapback.value,
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 5.0),
+                        child: SettingsOptions<String>(
+                          title: "Quick Tapback",
+                          options: ReactionTypes.toList(),
+                          cupertinoCustomWidgets: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 7.5),
+                              child: ReactionWidget(
+                                reaction: Message(
+                                    guid: "",
+                                    associatedMessageType: ReactionTypes.LOVE,
+                                    isFromMe: ss.settings.quickTapbackType.value != ReactionTypes.LOVE),
+                                message: null,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 7.5),
+                              child: ReactionWidget(
+                                reaction: Message(
+                                    guid: "",
+                                    associatedMessageType: ReactionTypes.LIKE,
+                                    isFromMe: ss.settings.quickTapbackType.value != ReactionTypes.LIKE),
+                                message: null,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 7.5),
+                              child: ReactionWidget(
+                                reaction: Message(
+                                    guid: "",
+                                    associatedMessageType: ReactionTypes.DISLIKE,
+                                    isFromMe: ss.settings.quickTapbackType.value != ReactionTypes.DISLIKE),
+                                message: null,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 7.5),
+                              child: ReactionWidget(
+                                reaction: Message(
+                                    guid: "",
+                                    associatedMessageType: ReactionTypes.LAUGH,
+                                    isFromMe: ss.settings.quickTapbackType.value != ReactionTypes.LAUGH),
+                                message: null,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 7.5),
+                              child: ReactionWidget(
+                                reaction: Message(
+                                    guid: "",
+                                    associatedMessageType: ReactionTypes.EMPHASIZE,
+                                    isFromMe: ss.settings.quickTapbackType.value != ReactionTypes.EMPHASIZE),
+                                message: null,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 7.5),
+                              child: ReactionWidget(
+                                reaction: Message(
+                                    guid: "",
+                                    associatedMessageType: ReactionTypes.QUESTION,
+                                    isFromMe: ss.settings.quickTapbackType.value != ReactionTypes.QUESTION),
+                                message: null,
+                              ),
+                            ),
+                          ],
+                          initial: ss.settings.quickTapbackType.value,
+                          textProcessing: (val) => val,
+                          onChanged: (val) {
+                            if (val == null) return;
+                            ss.settings.quickTapbackType.value = val;
+                            saveSettings();
+                          },
+                          secondaryColor: headerColor,
+                        ),
+                      ),
+                    ),
+                    AnimatedSizeAndFade.showHide(
+                      show: backend.canEditUnsend(),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const SettingsDivider(),
+                          SettingsSwitch(
+                            title: "Up Arrow for Quick Edit",
+                            initialVal: ss.settings.editLastSentMessageOnUpArrow.value,
+                            onChanged: (bool val) {
+                              ss.settings.editLastSentMessageOnUpArrow.value = val;
+                              saveSettings();
+                            },
+                            subtitle: "Press the Up Arrow to begin editing the last message you sent",
+                            backgroundColor: tileColor,
+                            leading: const SettingsLeadingIcon(
+                              iosIcon: CupertinoIcons.arrow_up_square,
+                              materialIcon: Icons.arrow_circle_up,
+                              containerColor: Colors.redAccent,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    AnimatedSizeAndFade.showHide(
+                      show: backend.canSendSubject(),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const SettingsDivider(),
+                          SettingsSwitch(
+                            onChanged: (bool val) {
+                              ss.settings.privateSubjectLine.value = val;
+                              saveSettings();
+                            },
+                            initialVal: ss.settings.privateSubjectLine.value,
+                            title: "Send Subject Lines",
+                            subtitle: "Show the subject line field when sending a message",
+                            backgroundColor: tileColor,
+                            isThreeLine: true,
+                            leading: const SettingsLeadingIcon(
+                              iosIcon: CupertinoIcons.textformat,
+                              materialIcon: Icons.text_format_rounded,
+                              containerColor: Colors.blueAccent,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                )
             ],
           ),
         ),

@@ -164,7 +164,7 @@ class _SendAnimationState
       );
       _message.generateTempGuid();
       outq.queue(OutgoingItem(
-        type: (_message.attributedBody.isNotEmpty) ? QueueType.sendMultipart : QueueType.sendMessage,
+        type: QueueType.sendMessage,
         chat: controller.chat,
         message: _message,
       ));

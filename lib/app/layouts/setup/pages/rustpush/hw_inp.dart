@@ -310,7 +310,7 @@ class HwInpState extends OptimizedState<HwInp> {
   void updateInitial() async {
     print("updating app link");
     final _appLinks = AppLinks();
-    var link = await _appLinks.getLatestAppLink();
+    var link = await _appLinks.getLatestLink();
 
     if (link != null) {
       checkCode(link.toString());
