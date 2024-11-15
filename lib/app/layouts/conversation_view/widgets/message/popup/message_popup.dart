@@ -919,15 +919,14 @@ class _MessagePopupState extends OptimizedState<MessagePopup> with SingleTickerP
             onTap: createContact,
             action: DetailsMenuAction.CreateContact,
           ),
-        if (ss.isMinVenturaSync && message.isFromMe! && !message.guid!.startsWith("temp") && ss.serverDetailsSync().item4 >= 148)
+        if (backend.canEditUnsend() && message.isFromMe! && !message.guid!.startsWith("temp"))
           DetailsMenuActionWidget(
             onTap: unsend,
             action: DetailsMenuAction.UndoSend,
           ),
-        if (ss.isMinVenturaSync &&
+        if (backend.canEditUnsend() && 
             message.isFromMe! &&
             !message.guid!.startsWith("temp") &&
-            ss.serverDetailsSync().item4 >= 148 &&
             (part.text?.isNotEmpty ?? false))
           DetailsMenuActionWidget(
             onTap: edit,

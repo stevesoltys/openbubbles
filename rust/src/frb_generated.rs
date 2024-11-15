@@ -39,7 +39,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
     default_rust_auto_opaque = RustAutoOpaqueMoi,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.3.0";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = -346028107;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 1453877513;
 
 // Section: executor
 
@@ -1577,6 +1577,61 @@ fn wire__crate__api__api__recv_wait_impl(
                         let output_ok = Result::<_, ()>::Ok(
                             crate::api::api::recv_wait(&*api_state_guard).await,
                         )?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
+fn wire__crate__api__api__refresh_token_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "refresh_token",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_state = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Arc<PushState>>,
+            >>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, flutter_rust_bridge::for_generated::anyhow::Error>(
+                    (move || async move {
+                        let mut api_state_guard = None;
+                        let decode_indices_ =
+                            flutter_rust_bridge::for_generated::lockable_compute_decode_order(
+                                vec![flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                    &api_state, 0, false,
+                                )],
+                            );
+                        for i in decode_indices_ {
+                            match i {
+                                0 => {
+                                    api_state_guard =
+                                        Some(api_state.lockable_decode_async_ref().await)
+                                }
+                                _ => unreachable!(),
+                            }
+                        }
+                        let api_state_guard = api_state_guard.unwrap();
+                        let output_ok = crate::api::api::refresh_token(&*api_state_guard).await?;
                         Ok(output_ok)
                     })()
                     .await,
@@ -4069,21 +4124,22 @@ fn pde_ffi_dispatcher_primary_impl(
         28 => wire__crate__api__api__new_push_state_impl(port, ptr, rust_vec_len, data_len),
         29 => wire__crate__api__api__ptr_to_dart_impl(port, ptr, rust_vec_len, data_len),
         30 => wire__crate__api__api__recv_wait_impl(port, ptr, rust_vec_len, data_len),
-        31 => wire__crate__api__api__register_ids_impl(port, ptr, rust_vec_len, data_len),
-        32 => wire__crate__api__api__reset_state_impl(port, ptr, rust_vec_len, data_len),
-        33 => wire__crate__api__api__restore_user_impl(port, ptr, rust_vec_len, data_len),
-        34 => wire__crate__api__api__save_user_impl(port, ptr, rust_vec_len, data_len),
-        35 => wire__crate__api__api__send_impl(port, ptr, rust_vec_len, data_len),
-        36 => wire__crate__api__api__send_2fa_sms_impl(port, ptr, rust_vec_len, data_len),
-        37 => wire__crate__api__api__send_2fa_to_devices_impl(port, ptr, rust_vec_len, data_len),
-        38 => wire__crate__api__api__service_from_ptr_impl(port, ptr, rust_vec_len, data_len),
-        39 => wire__crate__api__api__try_auth_impl(port, ptr, rust_vec_len, data_len),
-        40 => wire__crate__api__api__upload_attachment_impl(port, ptr, rust_vec_len, data_len),
-        41 => wire__crate__api__api__upload_mmcs_impl(port, ptr, rust_vec_len, data_len),
-        42 => wire__crate__api__api__validate_cert_impl(port, ptr, rust_vec_len, data_len),
-        43 => wire__crate__api__api__validate_targets_impl(port, ptr, rust_vec_len, data_len),
-        44 => wire__crate__api__api__verify_2fa_impl(port, ptr, rust_vec_len, data_len),
-        45 => wire__crate__api__api__verify_2fa_sms_impl(port, ptr, rust_vec_len, data_len),
+        31 => wire__crate__api__api__refresh_token_impl(port, ptr, rust_vec_len, data_len),
+        32 => wire__crate__api__api__register_ids_impl(port, ptr, rust_vec_len, data_len),
+        33 => wire__crate__api__api__reset_state_impl(port, ptr, rust_vec_len, data_len),
+        34 => wire__crate__api__api__restore_user_impl(port, ptr, rust_vec_len, data_len),
+        35 => wire__crate__api__api__save_user_impl(port, ptr, rust_vec_len, data_len),
+        36 => wire__crate__api__api__send_impl(port, ptr, rust_vec_len, data_len),
+        37 => wire__crate__api__api__send_2fa_sms_impl(port, ptr, rust_vec_len, data_len),
+        38 => wire__crate__api__api__send_2fa_to_devices_impl(port, ptr, rust_vec_len, data_len),
+        39 => wire__crate__api__api__service_from_ptr_impl(port, ptr, rust_vec_len, data_len),
+        40 => wire__crate__api__api__try_auth_impl(port, ptr, rust_vec_len, data_len),
+        41 => wire__crate__api__api__upload_attachment_impl(port, ptr, rust_vec_len, data_len),
+        42 => wire__crate__api__api__upload_mmcs_impl(port, ptr, rust_vec_len, data_len),
+        43 => wire__crate__api__api__validate_cert_impl(port, ptr, rust_vec_len, data_len),
+        44 => wire__crate__api__api__validate_targets_impl(port, ptr, rust_vec_len, data_len),
+        45 => wire__crate__api__api__verify_2fa_impl(port, ptr, rust_vec_len, data_len),
+        46 => wire__crate__api__api__verify_2fa_sms_impl(port, ptr, rust_vec_len, data_len),
         _ => unreachable!(),
     }
 }
@@ -6721,3 +6777,85 @@ mod io {
 }
 #[cfg(not(target_family = "wasm"))]
 pub use io::*;
+
+/// cbindgen:ignore
+#[cfg(target_family = "wasm")]
+mod web {
+    // This file is automatically generated, so please do not edit it.
+    // Generated by `flutter_rust_bridge`@ 2.3.0.
+
+    // Section: imports
+
+    use super::*;
+    use crate::api::api::*;
+    use crate::*;
+    use flutter_rust_bridge::for_generated::byteorder::{
+        NativeEndian, ReadBytesExt, WriteBytesExt,
+    };
+    use flutter_rust_bridge::for_generated::wasm_bindgen;
+    use flutter_rust_bridge::for_generated::wasm_bindgen::prelude::*;
+    use flutter_rust_bridge::for_generated::{transform_result_dco, Lifetimeable, Lockable};
+    use flutter_rust_bridge::{Handler, IntoIntoDart};
+
+    // Section: boilerplate
+
+    flutter_rust_bridge::frb_generated_boilerplate_web!();
+
+    #[wasm_bindgen]
+    pub fn rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcPushState(
+        ptr: *const std::ffi::c_void,
+    ) {
+        MoiArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Arc < PushState >>>::increment_strong_count(ptr as _);
+    }
+
+    #[wasm_bindgen]
+    pub fn rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcPushState(
+        ptr: *const std::ffi::c_void,
+    ) {
+        MoiArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Arc < PushState >>>::decrement_strong_count(ptr as _);
+    }
+
+    #[wasm_bindgen]
+    pub fn rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIDSUser(
+        ptr: *const std::ffi::c_void,
+    ) {
+        MoiArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<IDSUser>>::increment_strong_count(ptr as _);
+    }
+
+    #[wasm_bindgen]
+    pub fn rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIDSUser(
+        ptr: *const std::ffi::c_void,
+    ) {
+        MoiArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<IDSUser>>::decrement_strong_count(ptr as _);
+    }
+
+    #[wasm_bindgen]
+    pub fn rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerJoinedOSConfig(
+        ptr: *const std::ffi::c_void,
+    ) {
+        MoiArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<JoinedOSConfig>>::increment_strong_count(ptr as _);
+    }
+
+    #[wasm_bindgen]
+    pub fn rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerJoinedOSConfig(
+        ptr: *const std::ffi::c_void,
+    ) {
+        MoiArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<JoinedOSConfig>>::decrement_strong_count(ptr as _);
+    }
+
+    #[wasm_bindgen]
+    pub fn rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyBody(
+        ptr: *const std::ffi::c_void,
+    ) {
+        MoiArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<VerifyBody>>::increment_strong_count(ptr as _);
+    }
+
+    #[wasm_bindgen]
+    pub fn rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyBody(
+        ptr: *const std::ffi::c_void,
+    ) {
+        MoiArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<VerifyBody>>::decrement_strong_count(ptr as _);
+    }
+}
+#[cfg(target_family = "wasm")]
+pub use web::*;

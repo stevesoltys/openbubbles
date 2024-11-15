@@ -713,8 +713,9 @@ class _SettingsPageState extends OptimizedState<SettingsPage> {
                                       subtitle:
                                           "Backup and restore all app settings and custom themes",
                                     ),
+                                    if (!kIsWeb && !kIsDesktop && !usingRustPush)
                                     const SettingsDivider(),
-                                    if (!kIsWeb && !kIsDesktop)
+                                    if (!kIsWeb && !kIsDesktop && !usingRustPush)
                                       SettingsTile(
                                         backgroundColor: tileColor,
                                         onTap: () async {
@@ -894,6 +895,8 @@ class _SettingsPageState extends OptimizedState<SettingsPage> {
                                       ),
                                       isThreeLine: false,
                                     ),
+                                    if (!kIsWeb && (Platform.isAndroid || Platform.isWindows))
+                                  const SettingsDivider(),
                                   SettingsTile(
                                     title: "Join Our Discord",
                                     subtitle: "Join our Discord server to chat with other OpenBubbles users and the developers",

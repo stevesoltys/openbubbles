@@ -71,6 +71,8 @@ class StartupTasks {
   }
 
   static Future<void> initIsolateServices() async {
+    await RustLib.init();
+
     debugPrint("Initializing isolate services...");
     await fs.init(headless: true);
     await Logger.init();

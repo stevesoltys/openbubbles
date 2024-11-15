@@ -120,6 +120,8 @@ class PhoneNumberState extends OptimizedState<PhoneNumber> {
                                     showSnackbar("SMS denied", "Please enable SMS permission in settings");
                                     return;
                                   }
+                                  // always get new token for PNR
+                                  await api.refreshToken(state: pushService.state);
                                   var token = await api.getToken(state: pushService.state);
 
                                   String resp = await mcs.invokeMethod("sms-auth-gateway", {'token': hex.encode(token).toUpperCase(), 'subscription': subscription});

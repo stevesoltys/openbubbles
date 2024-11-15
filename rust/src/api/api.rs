@@ -336,6 +336,22 @@ pub async fn configure_macos(state: &Arc<PushState>, config: &JoinedOSConfig) ->
     Ok(())
 }
 
+pub async fn refresh_token(state: &Arc<PushState>) -> anyhow::Result<()> {
+    let mut inner = state.0.write().await;
+
+    let InnerPushState { identity: Some(identity), os_config: Some(os_config), .. } = &*inner else {
+        return Err(anyhow!("No indentity!"))
+    };
+    let conf_path = inner.conf_dir.join("hw_info.plist");
+    let (connection, err) = setup_push(os_config, identity, None, conf_path).await;
+    if let Some(err) = err {
+        return Err(err.into())
+    }
+    inner.conn = Some(connection);
+    
+    Ok(())
+}
+
 pub struct DartHwExtra {
     pub version: String,
     pub protocol_version: u32,

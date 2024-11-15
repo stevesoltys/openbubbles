@@ -843,6 +843,8 @@ class RustPushBackend implements BackendService {
         message: api.DartMessage.renameMessage(api.DartRenameMessage(newName: newName)));
     await sendMsg(msg);
     msg.sentTimestamp = DateTime.now().millisecondsSinceEpoch;
+    chat.apnTitle = newName;
+    chat.save(updateAPNTitle: true);
     inq.queue(IncomingItem(
       chat: chat,
       message: (await pushService.reflectMessageDyn(msg))!,
@@ -1776,13 +1778,16 @@ class RustPushService extends GetxService {
         return;
       }
     }
-    var service = backend as RustPushBackend;
-    service.markDelivered(myMsg);
-    inq.queue(IncomingItem(
-      chat: chat,
-      message: (await pushService.reflectMessageDyn(myMsg))!,
-      type: QueueType.newMessage
-    ));
+    var reflected = await pushService.reflectMessageDyn(myMsg);
+    if (reflected != null) {
+      var service = backend as RustPushBackend;
+      service.markDelivered(myMsg);
+      inq.queue(IncomingItem(
+        chat: chat,
+        message: reflected,
+        type: QueueType.newMessage
+      ));
+    }
   }
 
   Uint8List getQrInfo(bool allowSharing, Uint8List data) {

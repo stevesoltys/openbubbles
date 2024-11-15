@@ -41,6 +41,9 @@ class _FinalizePageState extends OptimizedState<FinalizePage> {
 
   @override
   Widget build(BuildContext context) {
+    var handlesMapped = handles.map((handle) => handle.replaceFirst("tel:", "").replaceAll("mailto:", "")).toList();
+    var handle = ss.settings.defaultHandle.value.replaceFirst("tel:", "").replaceAll("mailto:", "");
+    var initHandle = handlesMapped.contains(handle) ? handle : handlesMapped[0];
     return SetupPageTemplate(
       title: "Done!",
       subtitle: "",
@@ -67,11 +70,12 @@ class _FinalizePageState extends OptimizedState<FinalizePage> {
             const Text(
               "Note: Phone numbers cannot be registered without an iOS device"
             ),
+            if (handles.length > 1)
             SettingsOptions<String>(
               title: "Start Chats Using",
-              initial: ss.settings.defaultHandle.value.replaceFirst("tel:", "").replaceAll("mailto:", ""),
+              initial: initHandle,
               clampWidth: false,
-              options: handles.map((handle) => handle.replaceFirst("tel:", "").replaceAll("mailto:", "")).toList(),
+              options: handlesMapped,
               secondaryColor: headerColor,
               useCupertino: false,
               textProcessing: (str) => ss.settings.redactedMode.value ? (GetUtils.isEmail(str) ? "Redacted Email" : "Redacted Phone") : str,
@@ -132,7 +136,7 @@ class _FinalizePageState extends OptimizedState<FinalizePage> {
                         if (ss.settings.macIsMine.value)
                           const Padding(padding: EdgeInsets.symmetric(vertical: 5),
                             child: Text(
-                              "You can manage your hardware identifiers in settings.",
+                              "Share your Mac with up to 20 friends in settings!",
                               textAlign: TextAlign.center,
                             ),
                           ),

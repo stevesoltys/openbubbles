@@ -5,6 +5,7 @@ import 'package:bluebubbles/helpers/helpers.dart';
 import 'package:bluebubbles/app/layouts/settings/pages/conversation_list/pinned_order_panel.dart';
 import 'package:bluebubbles/app/layouts/settings/widgets/settings_widgets.dart';
 import 'package:bluebubbles/app/wrappers/stateful_boilerplate.dart';
+import 'package:bluebubbles/main.dart';
 import 'package:bluebubbles/services/network/backend_service.dart';
 import 'package:bluebubbles/services/services.dart';
 import 'package:flutter/cupertino.dart';
@@ -34,6 +35,7 @@ class _ChatListPanelState extends OptimizedState<ChatListPanel> {
                 SettingsSection(
                   backgroundColor: tileColor,
                   children: [
+                    if (!usingRustPush)
                     Obx(() => SettingsSwitch(
                           onChanged: (bool val) {
                             ss.settings.showConnectionIndicator.value = val;
@@ -59,6 +61,7 @@ class _ChatListPanelState extends OptimizedState<ChatListPanel> {
                           backgroundColor: tileColor,
                           isThreeLine: true,
                         )),
+                    if (!usingRustPush)
                     const SettingsDivider(padding: EdgeInsets.only(left: 16.0)),
                     Obx(() => SettingsSwitch(
                           onChanged: (bool val) {

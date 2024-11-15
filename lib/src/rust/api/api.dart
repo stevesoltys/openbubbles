@@ -32,6 +32,9 @@ Future<void> configureMacos(
     RustLib.instance.api
         .crateApiApiConfigureMacos(state: state, config: config);
 
+Future<void> refreshToken({required ArcPushState state}) =>
+    RustLib.instance.api.crateApiApiRefreshToken(state: state);
+
 Future<JoinedOsConfig> configFromValidationData(
         {required List<int> data, required DartHwExtra extra}) =>
     RustLib.instance.api

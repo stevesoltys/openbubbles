@@ -144,7 +144,7 @@ class _ChatInfoState extends OptimizedState<ChatInfo> {
 
     bool canCall = !kIsWeb &&
         !kIsDesktop &&
-        !chat.chatIdentifier!.startsWith("urn:biz") &&
+        !(chat.chatIdentifier?.startsWith("urn:biz") ?? false) &&
         (chat.participants.isNotEmpty &&
             ((chat.participants.first.contact?.phones.isNotEmpty ?? false) ||
                 !chat.participants.first.address.contains("@")));

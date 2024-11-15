@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:bluebubbles/app/layouts/conversation_list/pages/conversation_list.dart';
 import 'package:bluebubbles/app/layouts/setup/pages/rustpush/appleid_2fa.dart';
 import 'package:bluebubbles/app/layouts/setup/pages/rustpush/appleid_login.dart';
+import 'package:bluebubbles/app/layouts/setup/pages/rustpush/finalize.dart';
 import 'package:bluebubbles/app/layouts/setup/pages/rustpush/hw_inp.dart';
 import 'package:bluebubbles/app/layouts/setup/pages/rustpush/phone_number.dart';
 import 'package:bluebubbles/helpers/helpers.dart';
@@ -285,6 +286,7 @@ class _SetupViewState extends OptimizedState<SetupView> {
         ss.saveSettings();
         print("Migrated sms auth");
       }
+      await pushService.initFuture; // wait for ready
       var list = ss.settings.cachedCodes.entries.toList();
       for (var items in list) {
         if (!items.key.startsWith("sms-auth-")) continue;
@@ -295,7 +297,7 @@ class _SetupViewState extends OptimizedState<SetupView> {
           print("restore validating!");
           await api.validateCert(state: pushService.state, user: user);
         } catch (e) {
-          print("restore resetting!");
+          print("restore resetting! $e");
           ss.settings.cachedCodes.remove(items.key);
           ss.saveSettings();
           continue;
@@ -506,6 +508,8 @@ class SetupPages extends StatelessWidget {
             AppleIdLogin(),
           if (usingRustPush)
             AppleId2FA(),
+          if (usingRustPush)
+            FinalizePage(),
           //ThemeSelector(),
         ],
       ),)

@@ -58,6 +58,7 @@ class MethodChannelService extends GetxService {
     switch (call.method) {
       case "SMSMsg":
         try {
+          if (!ss.settings.isSmsRouter.value) return true;
           List<Object?> addresses = call.arguments["recipients"];
           String sender = call.arguments["sender"];
           List<Object?> body = call.arguments["body"];

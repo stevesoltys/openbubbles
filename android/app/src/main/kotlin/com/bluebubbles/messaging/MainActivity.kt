@@ -2,7 +2,10 @@ package com.bluebubbles.messaging
 
 import android.util.Log
 import android.app.Activity
+import android.content.ComponentCallbacks2
 import android.content.Intent
+import android.os.Build
+import android.os.Bundle
 import androidx.activity.ComponentActivity
 import com.bluebubbles.messaging.services.backend_ui_interop.MethodCallHandler
 import com.bluebubbles.messaging.services.foreground.ForegroundServiceBroadcastReceiver
@@ -14,9 +17,18 @@ import io.flutter.embedding.android.FlutterFragmentActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 
-class MainActivity : FlutterFragmentActivity() {
+class MainActivity : FlutterFragmentActivity(), ComponentCallbacks2 {
     companion object {
         var engine: FlutterEngine? = null
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(Intent(this, APNService::class.java))
+        } else {
+            startService(Intent(this, APNService::class.java))
+        }
     }
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
