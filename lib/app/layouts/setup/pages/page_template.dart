@@ -115,7 +115,7 @@ class PageContent extends StatelessWidget {
       child: Align(
         alignment: Alignment.centerLeft,
         child: Container(
-          width: context.width * 2 / 3,
+          width: context.width * 3 / 4,
           child: Text(
               title,
               style: context.theme.textTheme.displayMedium!.apply(

@@ -46,8 +46,8 @@ class _AppleIdLoginState extends OptimizedState<AppleIdLogin> {
   @override
   Widget build(BuildContext context) {
     return SetupPageTemplate(
-      title: "Login with your Apple ID",
-      subtitle: "Start using OpenBubbles with your Apple ID",
+      title: "Apple Account",
+      subtitle: "Use OpenBubbles with your Apple Account",
       customButton: Column(
         children: [
           ErrorText(parentController: controller),
@@ -91,7 +91,7 @@ class _AppleIdLoginState extends OptimizedState<AppleIdLogin> {
                                 focusedBorder: OutlineInputBorder(
                                     borderSide: BorderSide(color: context.theme.colorScheme.primary),
                                     borderRadius: BorderRadius.circular(20)),
-                                labelText: "Apple ID",
+                                labelText: "Apple Account",
                               ),
                             ),
                           ),
@@ -148,12 +148,12 @@ class _AppleIdLoginState extends OptimizedState<AppleIdLogin> {
                             await showDialog(
                               context: Get.context!,
                               builder: (context) => AlertDialog(
-                                title: const Text('Create Apple ID'),
+                                title: const Text('Create Apple Account'),
                                 content: Column(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     Text(
-                                      "Visit icloud.com to create an Apple ID. You may need to contact Apple support if it won't let you..",
+                                      "Visit icloud.com to create an Apple Account. You may need to contact Apple support if it won't let you..",
                                       style: Get.textTheme.bodyLarge,
                                     ),
                                     const SizedBox(height: 20),
@@ -186,7 +186,7 @@ class _AppleIdLoginState extends OptimizedState<AppleIdLogin> {
                             );
                           },
                           child: Text(
-                            "Create new Apple ID",
+                            "Create new Apple Account",
                             style: context.theme.textTheme.bodyLarge!.apply(fontSizeFactor: 1.1, color: HexColor('2772C3'))
                           )
                         ),
