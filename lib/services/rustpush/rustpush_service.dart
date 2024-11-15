@@ -1354,9 +1354,11 @@ class RustPushService extends GetxService {
         balloonBundleId: innerMsg.field0.app?.balloon != null ? innerMsg.field0.app?.bundleId : innerMsg.field0.linkMeta != null ? "com.apple.messages.URLBalloonProvider" : null,
         payloadData: innerMsg.field0.app?.balloon != null ? appToData(innerMsg.field0.app!) : innerMsg.field0.linkMeta != null ? linkToData(innerMsg.field0.linkMeta!) : null,
         amkSessionId: innerMsg.field0.app?.balloon != null ? myMsg.id : null,
+        verificationFailed: myMsg.verificationFailed,
       );
     } else if (myMsg.message is api.DartMessage_RenameMessage) {
       var msg = myMsg.message as api.DartMessage_RenameMessage;
+      if (myMsg.verificationFailed) return null;
       
       return Message(
         guid: myMsg.id,
@@ -1365,10 +1367,11 @@ class RustPushService extends GetxService {
         dateCreated: DateTime.fromMillisecondsSinceEpoch(myMsg.sentTimestamp),
         itemType: 2,
         groupActionType: 2,
-        groupTitle: msg.field0.newName
+        groupTitle: msg.field0.newName,
       );
     } else if (myMsg.message is api.DartMessage_ChangeParticipants) {
       var msg = myMsg.message as api.DartMessage_ChangeParticipants;
+      if (myMsg.verificationFailed) return null;
       await updateChatParticipants(chat!, myMsg, myMsg.conversation!.participants, msg.field0.newParticipants);
       chat.groupVersion = msg.field0.groupVersion;
       chat.save(updateGroupVersion: true);
@@ -1455,6 +1458,7 @@ class RustPushService extends GetxService {
         balloonBundleId: app?.bundleId,
         payloadData: app?.balloon != null ? appToData(app!) : null,
         amkSessionId: app?.balloon != null ? msg.field0.toUuid : null,
+        verificationFailed: myMsg.verificationFailed,
       );
 
       if (app?.balloon != null) {
@@ -1465,6 +1469,7 @@ class RustPushService extends GetxService {
     } else if (myMsg.message is api.DartMessage_Unsend) {
       var msg = myMsg.message as api.DartMessage_Unsend;
       var msgObj = Message.findOne(guid: msg.field0.tuuid)!;
+      msgObj.verificationFailed = myMsg.verificationFailed;
       msgObj.dateEdited = DateTime.now();
       var summaryInfo = msgObj.messageSummaryInfo.firstOrNull;
       if (summaryInfo == null) {
@@ -1479,6 +1484,8 @@ class RustPushService extends GetxService {
       if (msgObj == null) {
         throw Exception("Cannot find msg!");
       }
+
+      msgObj.verificationFailed = myMsg.verificationFailed;
       
       var attributedBodyDataInclusive = await indexedPartsToAttributedBodyDyn(
           msg.field0.newParts.field0, myMsg.id, msgObj.attributedBody.firstOrNull);
@@ -1607,6 +1614,7 @@ class RustPushService extends GetxService {
 
   Future handleMsg(api.DartIMessage myMsg) async {
     if (myMsg.message is api.DartMessage_EnableSmsActivation) {
+      if (myMsg.verificationFailed) return;
       var message = myMsg.message as api.DartMessage_EnableSmsActivation;
       try {
         var peerUuid = await api.convertTokenToUuid(state: pushService.state, handle: myMsg.sender!, token: (myMsg.target!.first as api.DartMessageTarget_Token).field0);
@@ -1639,6 +1647,7 @@ class RustPushService extends GetxService {
       var message = myMsg.message as api.DartMessage_UpdateExtension;
       var subject = Message.findOne(guid: message.field0.forUuid);
       if (subject == null) return;
+      subject.verificationFailed = myMsg.verificationFailed;
       var data = message.field0.ext;
       if (data is! api.DartPartExtension_Sticker) return;
       var body = subject.attributedBody.first.toMap();
@@ -1675,6 +1684,7 @@ class RustPushService extends GetxService {
     }
     if (myMsg.message is api.DartMessage_SmsConfirmSent) {
       var message = Message.findOne(guid: myMsg.id)!;
+      if (myMsg.verificationFailed) return;
       var msg = myMsg.message as api.DartMessage_SmsConfirmSent;
       if (msg.field0) {
         message.guid = message.stagingGuid;
@@ -1701,6 +1711,7 @@ class RustPushService extends GetxService {
       if (message == null) {
         return;
       }
+      if (myMsg.verificationFailed) return;
       if (myHandles.contains(myMsg.sender)) {
         if (myMsg.message is api.DartMessage_Read) {
           var chat = message.chat.target!;
@@ -1725,6 +1736,7 @@ class RustPushService extends GetxService {
     var chat = await chatForMessage(myMsg);
     if (myMsg.message is api.DartMessage_RenameMessage) {
       var msg = myMsg.message as api.DartMessage_RenameMessage;
+      if (myMsg.verificationFailed) return; 
       if (!chat.lockChatName) {
         chat.displayName = msg.field0.newName;
       }
@@ -1738,6 +1750,7 @@ class RustPushService extends GetxService {
       return;
     }
     if (myMsg.message is api.DartMessage_Typing) {
+      if (myMsg.verificationFailed) return; 
       final controller = cvc(chat);
       controller.showTypingIndicator.value = true;
       var future = Future.delayed(const Duration(minutes: 1));
@@ -1749,6 +1762,7 @@ class RustPushService extends GetxService {
       return;
     }
     if (myMsg.message is api.DartMessage_StopTyping) {
+      if (myMsg.verificationFailed) return; 
       final controller = cvc(chat);
       controller.showTypingIndicator.value = false;
       if (controller.cancelTypingIndicator != null) {
@@ -1762,7 +1776,7 @@ class RustPushService extends GetxService {
       controller.showTypingIndicator.value = false;
       controller.cancelTypingIndicator?.cancel();
       controller.cancelTypingIndicator = null;
-      if (chat.isRpSms) {
+      if (chat.isRpSms && !myMsg.verificationFailed) {
         var otherIds = ss.settings.smsForwardingTargets.copy();
         var myToken = (myMsg.target!.first as api.DartMessageTarget_Token).field0;
         var myId = await api.convertTokenToUuid(state: pushService.state, handle: myMsg.sender!, token: myToken);

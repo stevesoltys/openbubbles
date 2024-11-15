@@ -903,6 +903,8 @@ pub struct DartIMessage {
     pub target: Option<Vec<DartMessageTarget>>,
     #[frb(non_final)]
     pub send_delivered: bool,
+    #[frb(non_final)]
+    pub verification_failed: bool,
 }
 
 impl Into<rustpush::Message> for DartMessage {

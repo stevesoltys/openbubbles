@@ -89,6 +89,15 @@ class _MessagePropertiesState extends CustomState<MessageProperties, void, Messa
         }
       ));
     }
+    if (message.verificationFailed) {
+      properties.add(TextSpan(
+        text: "Verification failed",
+        style: TextStyle(color: context.theme.colorScheme.error),
+        recognizer: TapGestureRecognizer()..onTap = () {
+          controller.showEdits.toggle();
+        }
+      ));
+    }
 
     return properties;
   }

@@ -280,6 +280,7 @@ class Message {
   bool wasDeliveredQuietly;
   bool didNotifyRecipient;
   bool isBookmarked;
+  bool verificationFailed;
 
   String? amkSessionId; // for sessioned messages
   bool hasBeenForwarded; // local SMS forwarding, used to keep track of this message needs to be sent
@@ -420,6 +421,7 @@ class Message {
     this.hasBeenForwarded = false,
     this.stagingGuid,
     this.amkSessionId,
+    this.verificationFailed = false,
   }) {
       if (handle != null && handleId == null) handleId = handle!.originalROWID;
       if (error != null) _error.value = error;
@@ -517,6 +519,7 @@ class Message {
       hasBeenForwarded: json['hasBeenForwarded'] ?? false,
       stagingGuid: json['stagingGuid'],
       amkSessionId: json['amkSessionId'],
+      verificationFailed: json['verificationFailed'],
     );
   }
 
@@ -660,6 +663,7 @@ class Message {
     existing.didNotifyRecipient = newMessage.didNotifyRecipient ? newMessage.didNotifyRecipient : existing.didNotifyRecipient;
     existing._error.value = newMessage._error.value;
     existing.stagingGuid = newMessage.stagingGuid;
+    existing.verificationFailed = newMessage.verificationFailed;
     existing.amkSessionId = newMessage.amkSessionId;
 
     try {
@@ -1182,6 +1186,7 @@ class Message {
 
     existing.hasBeenForwarded = newMessage.hasBeenForwarded;
     newMessage.stagingGuid = existing.stagingGuid;
+    newMessage.verificationFailed = existing.verificationFailed;
     newMessage.amkSessionId = existing.amkSessionId;
 
     return existing;
@@ -1278,6 +1283,7 @@ class Message {
       "isBookmarked": isBookmarked,
       "hasBeenForwarded": hasBeenForwarded,
       "stagingGuid": stagingGuid,
+      "verificationFailed": verificationFailed,
       "amkSessionId": amkSessionId,
     };
     if (includeObjects) {

@@ -411,7 +411,7 @@
     },
     {
       "id": "13:4148278195232901830",
-      "lastPropertyId": "53:2179513762379822209",
+      "lastPropertyId": "54:684200636816633360",
       "name": "Message",
       "properties": [
         {
@@ -635,6 +635,11 @@
         {
           "id": "53:2179513762379822209",
           "name": "isDelivered",
+          "type": 1
+        },
+        {
+          "id": "54:684200636816633360",
+          "name": "verificationFailed",
           "type": 1
         }
       ],

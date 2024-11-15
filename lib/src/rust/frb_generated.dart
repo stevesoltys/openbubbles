@@ -2079,8 +2079,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   DartIMessage dco_decode_dart_i_message(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 7)
-      throw Exception('unexpected arr length: expect 7 but see ${arr.length}');
+    if (arr.length != 8)
+      throw Exception('unexpected arr length: expect 8 but see ${arr.length}');
     return DartIMessage(
       id: dco_decode_String(arr[0]),
       sender: dco_decode_opt_String(arr[1]),
@@ -2089,6 +2089,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       sentTimestamp: dco_decode_CastedPrimitive_u_64(arr[4]),
       target: dco_decode_opt_list_dart_message_target(arr[5]),
       sendDelivered: dco_decode_bool(arr[6]),
+      verificationFailed: dco_decode_bool(arr[7]),
     );
   }
 
@@ -3585,6 +3586,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_sentTimestamp = sse_decode_CastedPrimitive_u_64(deserializer);
     var var_target = sse_decode_opt_list_dart_message_target(deserializer);
     var var_sendDelivered = sse_decode_bool(deserializer);
+    var var_verificationFailed = sse_decode_bool(deserializer);
     return DartIMessage(
         id: var_id,
         sender: var_sender,
@@ -3592,7 +3594,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         message: var_message,
         sentTimestamp: var_sentTimestamp,
         target: var_target,
-        sendDelivered: var_sendDelivered);
+        sendDelivered: var_sendDelivered,
+        verificationFailed: var_verificationFailed);
   }
 
   @protected
@@ -5235,6 +5238,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_CastedPrimitive_u_64(self.sentTimestamp, serializer);
     sse_encode_opt_list_dart_message_target(self.target, serializer);
     sse_encode_bool(self.sendDelivered, serializer);
+    sse_encode_bool(self.verificationFailed, serializer);
   }
 
   @protected
