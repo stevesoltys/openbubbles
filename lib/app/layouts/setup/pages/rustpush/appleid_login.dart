@@ -91,7 +91,7 @@ class _AppleIdLoginState extends OptimizedState<AppleIdLogin> {
                                 focusedBorder: OutlineInputBorder(
                                     borderSide: BorderSide(color: context.theme.colorScheme.primary),
                                     borderRadius: BorderRadius.circular(20)),
-                                labelText: "Apple Account",
+                                labelText: "Email or Phone Number",
                               ),
                             ),
                           ),

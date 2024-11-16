@@ -127,7 +127,7 @@ Future<Null> initApp(bool bubble, List<String> arguments) async {
           /* ----- WINDOW INITIALIZATION ----- */
           await windowManager.ensureInitialized();
           await windowManager.setPreventClose(ss.settings.closeToTray.value);
-          await windowManager.setTitle('BlueBubbles');
+          await windowManager.setTitle('OpenBubbles');
           await Window.initialize();
           if (Platform.isWindows) {
             await Window.hideWindowControls();
@@ -161,7 +161,7 @@ Future<Null> initApp(bool bubble, List<String> arguments) async {
             await ss.prefs.setDouble("window-x", posX);
             await ss.prefs.setDouble("window-y", posY);
 
-            await windowManager.setTitle('BlueBubbles');
+            await windowManager.setTitle('OpenBubbles');
             if (arguments.firstOrNull != "minimized") {
               await windowManager.show();
             }
