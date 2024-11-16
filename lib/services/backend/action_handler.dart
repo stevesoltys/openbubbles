@@ -90,7 +90,8 @@ class ActionHandler extends GetxService {
     if (existingReplacementMessage != null) {
       Logger.debug("Found existing message with GUID ${replacement.guid}...", tag: "MessageStatus");
 
-      if (replacement.isNewerThan(existingReplacementMessage)) {
+      // if we are the source of truth (eg there is no remote omniscient DB) partial updates are good and intended. Always do them.
+      if (backend.getRemoteService() == null || replacement.isNewerThan(existingReplacementMessage)) {
         Logger.debug("Replacing existing message with newer message (GUID: ${replacement.guid})...", tag: "MessageStatus");
         await Message.replaceMessage(replacement.guid, replacement);
       } else {
