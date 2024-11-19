@@ -56,7 +56,6 @@ class ChatCreatorState extends OptimizedState<ChatCreator> {
   final TextEditingController addressController = TextEditingController();
   final messageNode = FocusNode();
   late final MentionTextEditingController textController = MentionTextEditingController(text: widget.initialText, focusNode: messageNode);
-  final SpellCheckTextEditingController subjectController = SpellCheckTextEditingController(); // Chat creator doesn't have subject line
   final FocusNode addressNode = FocusNode();
   final ScrollController addressScrollController = ScrollController();
 
@@ -720,7 +719,6 @@ class ChatCreatorState extends OptimizedState<ChatCreator> {
                     },
                     child: Obx(() => TextFieldComponent(
                         focusNode: messageNode,
-                        subjectTextController: subjectController,
                         textController: textController,
                         controller: fakeController.value,
                         recorderController: null,
@@ -771,13 +769,12 @@ class ChatCreatorState extends OptimizedState<ChatCreator> {
                               } else {
                                 fakeController.value!.textController.text = textController.text;
                                 fakeController.value!.pickedAttachments.value = widget.initialAttachments;
-                                fakeController.value!.subjectTextController.text = subjectController.text;
                               }
 
                               await fakeController.value!.send(
                                 widget.initialAttachments,
                                 fakeController.value!.textController.text,
-                                subjectController.text,
+                                "",
                                 fakeController.value!.replyToMessage?.item1.threadOriginatorGuid ??
                                     fakeController.value!.replyToMessage?.item1.guid,
                                 fakeController.value!.replyToMessage?.item2,
