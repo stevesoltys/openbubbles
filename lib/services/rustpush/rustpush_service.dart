@@ -330,7 +330,7 @@ class RustPushBackend implements BackendService {
       await api.send(state: pushService.state, msg: msg);
     } catch (e) {
       if (e is AnyhowException) {
-        if (e.message == "Do not retry Resource Failure") {
+        if (e.message.contains("Failed to generate resource") && e.message.contains("not retrying")) {
           markFailedToLogin();
         }
       }
@@ -1065,7 +1065,7 @@ class RustPushService extends GetxService {
       available = await api.validateTargets(state: pushService.state, targets: targets, sender: handle);
     } catch (e) {
       if (e is AnyhowException) {
-        if (e.message == "Do not retry Resource Failure") {
+        if (e.message.contains("Failed to generate resource") && e.message.contains("not retrying")) {
           (backend as RustPushBackend).markFailedToLogin();
         }
       }
