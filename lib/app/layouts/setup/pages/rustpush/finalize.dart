@@ -43,7 +43,7 @@ class _FinalizePageState extends OptimizedState<FinalizePage> {
   Widget build(BuildContext context) {
     var handlesMapped = handles.map((handle) => handle.replaceFirst("tel:", "").replaceAll("mailto:", "")).toList();
     var handle = ss.settings.defaultHandle.value.replaceFirst("tel:", "").replaceAll("mailto:", "");
-    var initHandle = handlesMapped.contains(handle) ? handle : handlesMapped[0];
+    var initHandle = handlesMapped.contains(handle) ? handle : handlesMapped.firstOrNull;
     return SetupPageTemplate(
       title: "Done!",
       subtitle: "",
@@ -73,7 +73,7 @@ class _FinalizePageState extends OptimizedState<FinalizePage> {
             if (handles.length > 1)
             SettingsOptions<String>(
               title: "Start Chats Using",
-              initial: initHandle,
+              initial: initHandle ?? "",
               clampWidth: false,
               options: handlesMapped,
               secondaryColor: headerColor,
