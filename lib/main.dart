@@ -654,7 +654,7 @@ Future<void> initSystemTray() async {
   if (Platform.isWindows) {
     await systemTray.initSystemTray(
       iconPath: 'assets/icon/icon.ico',
-      toolTip: "BlueBubbles",
+      toolTip: "OpenBubbles",
     );
   } else {
     String path;
