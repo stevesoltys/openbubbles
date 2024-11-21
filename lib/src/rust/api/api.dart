@@ -804,6 +804,7 @@ class DartNormalMessage {
   String? subject;
   DartExtensionApp? app;
   DartLinkMeta? linkMeta;
+  bool? voice;
 
   DartNormalMessage({
     required this.parts,
@@ -814,6 +815,7 @@ class DartNormalMessage {
     this.subject,
     this.app,
     this.linkMeta,
+    this.voice,
   });
 
   @override
@@ -825,7 +827,8 @@ class DartNormalMessage {
       service.hashCode ^
       subject.hashCode ^
       app.hashCode ^
-      linkMeta.hashCode;
+      linkMeta.hashCode ^
+      voice.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -839,7 +842,8 @@ class DartNormalMessage {
           service == other.service &&
           subject == other.subject &&
           app == other.app &&
-          linkMeta == other.linkMeta;
+          linkMeta == other.linkMeta &&
+          voice == other.voice;
 }
 
 @freezed

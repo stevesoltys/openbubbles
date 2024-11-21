@@ -17,6 +17,7 @@ import 'package:bluebubbles/services/services.dart';
 import 'package:bluebubbles/utils/crypto_utils.dart';
 import 'package:collection/collection.dart';
 import 'package:crypto/crypto.dart';
+import 'package:ffmpeg_kit_flutter/ffmpeg_kit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge.dart';
@@ -387,6 +388,21 @@ class RustPushBackend implements BackendService {
         onReceiveProgress(event.prog, event.total);
       }
     }
+
+    // android doesn't support CAF, convert to m4a
+    if (attachment.uti == "com.apple.coreaudio-format" && Platform.isAndroid) {
+      await File(attachment.path).rename("${attachment.directory}/encode.caf");
+      var session = await FFmpegKit.execute("-i \"${attachment.directory}/encode.caf\" \"${attachment.directory}/encode.m4a\"");
+
+      var output = (await session.getOutput())!;
+      while (output.isNotEmpty) {
+        print(output.substring(0, min(output.length, 300)));
+        output = output.substring(min(output.length, 300));
+      }
+
+      await File("${attachment.directory}/encode.m4a").rename(attachment.path);
+    }
+
     return attachment.getFile();
   }
 
@@ -434,6 +450,7 @@ class RustPushBackend implements BackendService {
           service: await getService(chat.isRpSms, forMessage: m),
           subject: m.subject,
           app: m.payloadData == null ? null : pushService.dataToApp(m.payloadData!),
+          voice: isAudioMessage,
         )));
     if (m.stagingGuid != null) {
       msg.id = m.stagingGuid!;

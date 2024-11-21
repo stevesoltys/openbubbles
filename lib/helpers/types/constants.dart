@@ -48,6 +48,8 @@ const balloonBundleIdMap = {
     'com.apple.PassbookUIService.PeerPaymentMessagesExtension': 'Apple Pay',
     'com.apple.icloud.apps.messages.business.extension': 'Business Interactive Message',
     'com.google.Maps.MessagesExtension': 'Google Maps',
+    'com.apple.Animoji.StickersApp.MessagesExtension': 'Animoji Sticker',
+    'com.apple.Stickers.UserGenerated.MessagesExtension': 'Sticker',
   }
 };
 

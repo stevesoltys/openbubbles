@@ -313,7 +313,10 @@ class _AppleIdLoginState extends OptimizedState<AppleIdLogin> {
                                     loading = true;
                                   });
                                   try {
+                                    ss.settings.iCloudAccount.value = "";
+                                    ss.settings.userName.value = "You";
                                     ss.settings.customHeaders.value = {};
+                                    await ss.settings.saveAsync();
                                     http.onInit();
                                     await controller.doRegister();
                                     if (!controller.success) {

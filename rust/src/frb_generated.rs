@@ -3135,6 +3135,7 @@ impl SseDecode for crate::api::api::DartNormalMessage {
         let mut var_subject = <Option<String>>::sse_decode(deserializer);
         let mut var_app = <Option<crate::api::api::DartExtensionApp>>::sse_decode(deserializer);
         let mut var_linkMeta = <Option<crate::api::api::DartLinkMeta>>::sse_decode(deserializer);
+        let mut var_voice = <Option<bool>>::sse_decode(deserializer);
         return crate::api::api::DartNormalMessage {
             parts: var_parts,
             effect: var_effect,
@@ -3144,6 +3145,7 @@ impl SseDecode for crate::api::api::DartNormalMessage {
             subject: var_subject,
             app: var_app,
             link_meta: var_linkMeta,
+            voice: var_voice,
         };
     }
 }
@@ -4810,6 +4812,7 @@ impl flutter_rust_bridge::IntoDart for crate::api::api::DartNormalMessage {
             self.subject.into_into_dart().into_dart(),
             self.app.into_into_dart().into_dart(),
             self.link_meta.into_into_dart().into_dart(),
+            self.voice.into_into_dart().into_dart(),
         ]
         .into_dart()
     }
@@ -5935,6 +5938,7 @@ impl SseEncode for crate::api::api::DartNormalMessage {
         <Option<String>>::sse_encode(self.subject, serializer);
         <Option<crate::api::api::DartExtensionApp>>::sse_encode(self.app, serializer);
         <Option<crate::api::api::DartLinkMeta>>::sse_encode(self.link_meta, serializer);
+        <Option<bool>>::sse_encode(self.voice, serializer);
     }
 }
 

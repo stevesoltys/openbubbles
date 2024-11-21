@@ -317,7 +317,7 @@ class _ProfilePanelState extends OptimizedState<ProfilePanel> with WidgetsBindin
                 SettingsHeader(
                     iosSubtitle: iosSubtitle,
                     materialSubtitle: materialSubtitle,
-                    text: "iCloud Account Info"),
+                    text: "Apple Account Info"),
                 Skeletonizer(
                   enabled: accountInfo.isEmpty,
                   child: SettingsSection(

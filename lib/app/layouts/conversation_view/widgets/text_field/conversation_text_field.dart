@@ -585,7 +585,7 @@ class ConversationTextFieldState extends CustomState<ConversationTextField, void
                   }
                 },
               ),
-              if (!kIsWeb && !Platform.isAndroid)
+              if (!kIsWeb && !Platform.isAndroid && (kIsWeb ? GIPHY_API_KEY : dotenv.get('GIPHY_API_KEY')) != "")
                 IconButton(
                     icon: Icon(Icons.gif, color: context.theme.colorScheme.outline, size: 28),
                     onPressed: () async {

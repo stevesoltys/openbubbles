@@ -2315,8 +2315,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   DartNormalMessage dco_decode_dart_normal_message(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 8)
-      throw Exception('unexpected arr length: expect 8 but see ${arr.length}');
+    if (arr.length != 9)
+      throw Exception('unexpected arr length: expect 9 but see ${arr.length}');
     return DartNormalMessage(
       parts: dco_decode_dart_message_parts(arr[0]),
       effect: dco_decode_opt_String(arr[1]),
@@ -2326,6 +2326,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       subject: dco_decode_opt_String(arr[5]),
       app: dco_decode_opt_box_autoadd_dart_extension_app(arr[6]),
       linkMeta: dco_decode_opt_box_autoadd_dart_link_meta(arr[7]),
+      voice: dco_decode_opt_box_autoadd_bool(arr[8]),
     );
   }
 
@@ -3819,6 +3820,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_subject = sse_decode_opt_String(deserializer);
     var var_app = sse_decode_opt_box_autoadd_dart_extension_app(deserializer);
     var var_linkMeta = sse_decode_opt_box_autoadd_dart_link_meta(deserializer);
+    var var_voice = sse_decode_opt_box_autoadd_bool(deserializer);
     return DartNormalMessage(
         parts: var_parts,
         effect: var_effect,
@@ -3827,7 +3829,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         service: var_service,
         subject: var_subject,
         app: var_app,
-        linkMeta: var_linkMeta);
+        linkMeta: var_linkMeta,
+        voice: var_voice);
   }
 
   @protected
@@ -5439,6 +5442,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_opt_String(self.subject, serializer);
     sse_encode_opt_box_autoadd_dart_extension_app(self.app, serializer);
     sse_encode_opt_box_autoadd_dart_link_meta(self.linkMeta, serializer);
+    sse_encode_opt_box_autoadd_bool(self.voice, serializer);
   }
 
   @protected
