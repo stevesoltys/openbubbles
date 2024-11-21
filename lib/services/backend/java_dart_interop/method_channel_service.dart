@@ -70,8 +70,7 @@ class MethodChannelService extends GetxService {
           }).toList());
           await chat.deliverSMS(sender, mapped);
         } catch (e, s) {
-          Logger.error(e);
-          Logger.error(s);
+          Logger.error("SMS deliver error", error: e, trace: s);
           rethrow;
         }
         return true;
@@ -82,8 +81,7 @@ class MethodChannelService extends GetxService {
           await pushService.recievedMsgPointer(pointer);
           Logger.info("finish message $pointer");
         } catch (e, s) {
-          Logger.error(e);
-          Logger.error(s);
+          Logger.error("APN MSG error", error: e, trace: s);
           rethrow;
         }
         return true;
@@ -93,8 +91,7 @@ class MethodChannelService extends GetxService {
           var address = info.map((e) => (e as Map<Object?, Object?>).cast<String, dynamic>()).toList();
           simInfo.value = address;
         } catch (e, s) {
-          Logger.error(e);
-          Logger.error(s);
+          Logger.error("SIM info error", error: e, trace: s);
           rethrow;
         }
         return true;
@@ -103,8 +100,7 @@ class MethodChannelService extends GetxService {
           es.addMessage(arguments!);
           return true;
         } catch (e, s) {
-          Logger.error(e);
-          Logger.error(s);
+          Logger.error("Add extension error", error: e, trace: s);
           return Future.error(PlatformException(code: "500", message: e.toString()), s);
         }
       case "extension-update-message":
@@ -112,8 +108,7 @@ class MethodChannelService extends GetxService {
           await es.updateMessage(arguments!);
           return true;
         } catch (e, s) {
-          Logger.error(e);
-          Logger.error(s);
+          Logger.error("Extension update error", error: e, trace: s);
           return Future.error(PlatformException(code: "500", message: e.toString()), s);
         }
       case "NewServerUrl":

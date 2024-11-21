@@ -1203,8 +1203,7 @@ class _BackupRestorePanelState extends OptimizedState<BackupRestorePanel> {
                                         rethrow;
                                       }
                                     } catch (e, s) {
-                                      Logger.error(e);
-                                      Logger.error(s);
+                                      Logger.error("Chat restore error", error: e, trace: s);
                                       showSnackbar("Error", "Something went wrong");
                                     } finally {
                                       chats.restoring = false;
