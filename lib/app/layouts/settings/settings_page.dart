@@ -81,12 +81,14 @@ class _SettingsPageState extends OptimizedState<SettingsPage> {
         );
       });
     }
-
-    api.getDeviceInfoState(state: pushService.state).then((value) {
+    
+    (() async {
+      await pushService.initFuture;
+      var value = await api.getDeviceInfoState(state: pushService.state);
       setState(() {
         deviceInfo = value;
       });
-    });
+    })();
   }
 
   @override
