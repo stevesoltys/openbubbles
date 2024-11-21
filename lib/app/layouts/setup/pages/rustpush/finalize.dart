@@ -133,8 +133,7 @@ class _FinalizePageState extends OptimizedState<FinalizePage> {
                     ),
                     child: Column(
                       children: [
-                        // TODO hide
-                        if (ss.settings.macIsMine.value)
+                        if (ss.settings.macIsMine.value && !controller.supportsPhoneReg.value)
                           const Padding(padding: EdgeInsets.symmetric(vertical: 5),
                             child: Text(
                               "Share your Mac with up to 20 friends in settings!",

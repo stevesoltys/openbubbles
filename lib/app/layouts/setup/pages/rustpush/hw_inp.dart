@@ -370,7 +370,7 @@ class HwInpState extends OptimizedState<HwInp> {
                   },
                 ),
                 const TextSpan(
-                  text: ". The Mac does not need to remain online. Compatible with macOS Beeper codes."
+                  text: ". The Mac does not need to remain online. Compatible with iOS relay codes."
                 )
               ]
             ),
