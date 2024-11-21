@@ -850,10 +850,19 @@ class Chat {
       await Future.delayed(const Duration(milliseconds: 500));
     }
     List<Message> messages = Chat.getMessages(chat);
+    List<Attachment> attachments = await chat.getAttachmentsAsync();
+    for (Attachment attachment in attachments) {
+      try {
+        File(attachment.getFile().path!).deleteSync();
+      } catch(e) {
+        print("Failed to rm attachment $e");
+      }
+    }
     Database.runInTransaction(TxMode.write, () {
       /// Remove all references of chat and its messages
       Database.chats.remove(chat.id!);
       Database.messages.removeMany(messages.map((e) => e.id!).toList());
+      Database.attachments.removeMany(attachments.map((e) => e.id!).toList());
     });
   }
 
