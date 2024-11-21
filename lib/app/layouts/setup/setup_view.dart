@@ -21,6 +21,7 @@ import 'package:bluebubbles/services/rustpush/rustpush_service.dart';
 import 'package:bluebubbles/services/services.dart';
 import 'package:bluebubbles/src/rust/api/api.dart';
 import 'package:bluebubbles/utils/crypto_utils.dart';
+import 'package:bluebubbles/utils/logger/logger.dart';
 import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
 import 'package:disable_battery_optimization/disable_battery_optimization.dart';
@@ -188,9 +189,9 @@ class SetupViewController extends StatefulController {
       success = true;
       // persisting SMS auth certs is actually really useful
       // ss.settings.cachedCodes.clear();
-      print("Success registered!");
+      Logger.debug("Success registered!");
       await pushService.configured();
-      print("Finishing!");
+      Logger.debug("Finishing!");
       await setup.finishSetup();
     } catch(e) {
       // reset currentPhoneUser because frb *insists* on taking ownership.
@@ -225,7 +226,7 @@ class SetupViewController extends StatefulController {
     var data = response.data["data"];
     
      var myData = Uint8List.fromList(decryptAESCryptoJS(data, code));
-    print("cached code");
+    Logger.debug("cached code");
     ss.settings.cachedCodes[code] = base64Encode(myData);
     ss.saveSettings();
   }
@@ -284,7 +285,7 @@ class _SetupViewState extends OptimizedState<SetupView> {
         ss.settings.cachedCodes["sms-auth-1"] = ss.settings.cachedCodes["sms-auth"]!;
         ss.settings.cachedCodes.remove("sms-auth");
         ss.saveSettings();
-        print("Migrated sms auth");
+        Logger.debug("Migrated sms auth");
       }
       await pushService.initFuture; // wait for ready
       var list = ss.settings.cachedCodes.entries.toList();
@@ -294,15 +295,15 @@ class _SetupViewState extends OptimizedState<SetupView> {
         var user = await api.restoreUser(user: items.value);
         controller.phoneValidating.value = true;
         try {
-          print("restore validating!");
+          Logger.debug("restore validating!");
           await api.validateCert(state: pushService.state, user: user);
         } catch (e) {
-          print("restore resetting! $e");
+          Logger.debug("restore resetting! $e");
           ss.settings.cachedCodes.remove(items.key);
           ss.saveSettings();
           continue;
         } finally {
-          print("restore done!");
+          Logger.debug("restore done!");
           controller.phoneValidating.value = false;
         }
 
@@ -319,7 +320,7 @@ class _SetupViewState extends OptimizedState<SetupView> {
         var text = uri.toString();
         var header = "$rpApiRoot/";
         if (text.startsWith(header)) {
-          print("caching code");
+          Logger.debug("caching code");
           await controller.cacheCode(text.replaceFirst(header, ""));
           controller._childKey.currentState?.updateInitial();
         }
@@ -329,7 +330,7 @@ class _SetupViewState extends OptimizedState<SetupView> {
         var text = link.toString();
         var header = "$rpApiRoot/";
         if (text.startsWith(header)) {
-          print("caching code");
+          Logger.debug("caching code");
           await controller.cacheCode(text.replaceFirst(header, ""));
         }
       }

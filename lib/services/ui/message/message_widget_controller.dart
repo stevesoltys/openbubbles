@@ -12,6 +12,7 @@ import 'package:bluebubbles/services/services.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
+import 'package:bluebubbles/utils/logger/logger.dart';
 
 MessageWidgetController mwc(Message message) => Get.isRegistered<MessageWidgetController>(tag: message.guid)
     ? Get.find<MessageWidgetController>(tag: message.guid)
@@ -87,7 +88,7 @@ class MessageWidgetController extends StatefulController with GetSingleTickerPro
 
   void buildMessageParts() {
     if (message.guid?.startsWith("error") ?? false) {
-      print("hi");
+      Logger.debug("hi");
     }
     // go through the attributed body
     if (message.attributedBody.firstOrNull?.runs.isNotEmpty ?? false) {

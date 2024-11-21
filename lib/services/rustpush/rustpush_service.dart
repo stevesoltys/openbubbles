@@ -15,6 +15,7 @@ import 'package:bluebubbles/helpers/helpers.dart';
 import 'package:bluebubbles/database/models.dart';
 import 'package:bluebubbles/services/services.dart';
 import 'package:bluebubbles/utils/crypto_utils.dart';
+import 'package:bluebubbles/utils/logger/logger.dart';
 import 'package:collection/collection.dart';
 import 'package:crypto/crypto.dart';
 import 'package:ffmpeg_kit_flutter/ffmpeg_kit.dart';
@@ -314,7 +315,7 @@ class RustPushBackend implements BackendService {
   
 
   void markFailedToLogin() async {
-    print("markingfailed");
+    Logger.error("markingfailed");
     if (usingRustPush) {
       await pushService.reset(false);
     }
@@ -396,7 +397,7 @@ class RustPushBackend implements BackendService {
 
       var output = (await session.getOutput())!;
       while (output.isNotEmpty) {
-        print(output.substring(0, min(output.length, 300)));
+        Logger.info(output.substring(0, min(output.length, 300)));
         output = output.substring(min(output.length, 300));
       }
 
@@ -424,14 +425,14 @@ class RustPushBackend implements BackendService {
     api.DartAttachment? attachment;
     await for (final event in stream) {
       if (event.attachment != null) {
-        print("upload finish");
+        Logger.info("upload finish");
         attachment = event.attachment;
       } else if (onSendProgress != null) {
-        print("upload progress ${event.prog} of ${event.total}");
+        Logger.info("upload progress ${event.prog} of ${event.total}");
         onSendProgress(event.prog, event.total);
       }
     }
-    print("uploaded");
+    Logger.info("uploaded");
     var partIndex = int.tryParse(m.threadOriginatorPart?.split(":").firstOrNull ?? "");
     var msg = await api.newMsg(
         state: pushService.state,
@@ -480,7 +481,7 @@ class RustPushBackend implements BackendService {
       name: att.transferName!,
       iris: false,
     );
-    print("uploaded");
+    Logger.info("uploaded");
     var partIndex = int.tryParse(m.threadOriginatorPart?.split(":").firstOrNull ?? "");
     var service = await getService(chat.isRpSms, forMessage: m);
     var msg = await api.newMsg(
@@ -619,10 +620,10 @@ class RustPushBackend implements BackendService {
     api.DartMMCSFile? mmcs;
     await for (final event in mmcsStream) {
       if (event.file != null) {
-        print("upload finish");
+        Logger.info("upload finish");
         mmcs = event.file;
       } else if (onSendProgress != null) {
-        print("upload progress ${event.prog} of ${event.total}");
+        Logger.info("upload progress ${event.prog} of ${event.total}");
         onSendProgress(event.prog, event.total);
       }
     }
@@ -718,7 +719,7 @@ class RustPushBackend implements BackendService {
         }
       }
     } catch (e, s) {
-      print("Failed to generate meta $e $s");
+      Logger.error("Failed to generate meta $e $s");
     }
     // await Future.delayed(const Duration(seconds: 15));
     var partIndex = int.tryParse(m.threadOriginatorPart?.split(":").firstOrNull ?? "");
@@ -748,7 +749,7 @@ class RustPushBackend implements BackendService {
         linkMeta: linkMeta,
       )),
     );
-    print("sending ${msg.id}");
+    Logger.info("sending ${msg.id}");
     if (m.stagingGuid != null || (chat.isRpSms && m.guid != null && m.guid!.contains("error") && m.guid!.contains("temp"))) {
       msg.id = m.stagingGuid ?? m.guid!; // make sure we pass forwarded messages's original GUID so it doesn't get overwritten and marked as a different msg
     }
@@ -760,7 +761,7 @@ class RustPushBackend implements BackendService {
     try {
       await sendMsg(msg);
     } catch (e) {
-      print(e);
+      Logger.error(e);
       if (!chat.isRpSms) {
         rethrow; // APN errors are fatal for non-SMS messages
       }
@@ -1330,7 +1331,7 @@ class RustPushService extends GetxService {
   }
 
   Future<Message?> reflectMessageDyn(api.DartIMessage myMsg) async {
-    print("reflecting msg");
+    Logger.info("reflecting msg");
     var chat = myMsg.conversation != null ? await chatForMessage(myMsg) : null;
     var myHandles = (await api.getHandles(state: pushService.state));
     if (myMsg.message is api.DartMessage_Message) {
@@ -1402,7 +1403,7 @@ class RustPushService extends GetxService {
           var path = chat.getIconPath(file.size);
           var stream = api.downloadMmcs(state: pushService.state, attachment: file, path: path);
           await for (final event in stream) {
-            print("Downloaded attachment ${event.prog} bytes of ${event.total}");
+            Logger.info("Downloaded attachment ${event.prog} bytes of ${event.total}");
           }
           chat.customAvatarPath = path;
         } else {
@@ -1895,11 +1896,13 @@ class RustPushService extends GetxService {
 
   Future recievedMsgPointer(String pointer) async {
     var message = await api.ptrToDart(ptr: pointer);
+    Logger.info("waitingForInit");
     await initFuture;
     try {
+      Logger.info("Handling");
       await handleMsg(message);
     } catch (e, s) {
-      print("$e\n$s");
+      Logger.error("$e\n$s");
       rethrow;
     }
   }
@@ -1924,7 +1927,7 @@ class RustPushService extends GetxService {
       } catch (e, t) {
         // if there was an error somewhere, log it and move on.
         // don't stop our loop
-        print("$e: $t");
+        Logger.error("$e: $t");
       }
     }
   }
@@ -1956,7 +1959,7 @@ class RustPushService extends GetxService {
                 child: Text("Got it", style: Get.textTheme.bodyLarge!.copyWith(color: Get.theme.colorScheme.primary)))
           ],
         ));
-      print("VPN connected.");
+      Logger.info("VPN connected.");
     }
   }
 
@@ -1994,13 +1997,13 @@ class RustPushService extends GetxService {
         tryWarnVpn();
       });
       if (Platform.isAndroid) {
-        print("tryingService");
+        Logger.info("tryingService");
         String result = await mcs.invokeMethod("get-native-handle");
         state = await api.serviceFromPtr(ptr: result);
         if ((await api.getPhase(state: state)) == api.RegistrationPhase.registered) {
           ss.settings.finishedSetup.value = true;
         }
-        print("service");
+        Logger.info("service");
         await stdout.flush();
       } else {
         state = await api.newPushState(dir: fs.appDocDir.path);

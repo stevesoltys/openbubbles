@@ -12,6 +12,7 @@ import 'package:bluebubbles/app/wrappers/stateful_boilerplate.dart';
 import 'package:bluebubbles/database/database.dart';
 import 'package:bluebubbles/database/models.dart';
 import 'package:bluebubbles/services/services.dart';
+import 'package:bluebubbles/utils/logger/logger.dart';
 import 'package:bluebubbles/utils/string_utils.dart';
 import 'package:bluebubbles/services/network/backend_service.dart';
 import 'package:bluebubbles/services/rustpush/rustpush_service.dart';
@@ -80,7 +81,7 @@ class ChatCreatorState extends OptimizedState<ChatCreator> {
 
     addressController.addListener(() {
       _debounce?.cancel();
-      print("right app");
+      Logger.debug("right app");
       _debounce = Timer(const Duration(milliseconds: 250), () async {
         final tuple = await SchedulerBinding.instance.scheduleTask(() async {
           // If you type and then delete everything, show selected chat view
@@ -99,14 +100,14 @@ class ChatCreatorState extends OptimizedState<ChatCreator> {
             }
           }
           final query = addressController.text.toLowerCase();
-          print("here");
+          Logger.debug("here");
           final _contacts = contacts
               .where((e) =>
                   e.displayName.toLowerCase().contains(query) ||
                   e.phones.firstWhereOrNull((e) => cleansePhoneNumber(e.toLowerCase()).contains(query)) != null ||
                   e.emails.firstWhereOrNull((e) => e.toLowerCase().contains(query)) != null)
               .toList();
-          print("contacts  $_contacts");
+          Logger.debug("contacts  $_contacts");
           final ids = _contacts.map((e) => e.id);
           final _chats = existingChats.where((e) =>
               ((iMessage && e.isIMessage) || (sms && !e.isIMessage)) &&

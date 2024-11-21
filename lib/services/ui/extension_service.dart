@@ -8,6 +8,7 @@ import 'package:bluebubbles/main.dart';
 import 'package:bluebubbles/database/models.dart';
 import 'package:bluebubbles/services/network/backend_service.dart';
 import 'package:bluebubbles/services/services.dart';
+import 'package:bluebubbles/utils/logger/logger.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:bluebubbles/helpers/types/constants.dart' as constants;
@@ -120,7 +121,7 @@ class ExtensionService extends GetxService {
   }
 
   Future<void> refreshCache() async {
-    print("Refreshing extension state");
+    Logger.debug("Refreshing extension state");
     if (ss.settings.developerEnabled.value) {
       for (var item in ss.settings.developerMode) {
         await addDevExtension(item);
@@ -130,7 +131,7 @@ class ExtensionService extends GetxService {
     if (result == null) return;
     List<dynamic> parsed = json.decode(result);
     cachedStatus = parsed.map((item) => App.fromMap(item)).toList();
-    print("Extension state refreshed");
+    Logger.debug("Extension state refreshed");
   }
 
   Future<void> addDevExtension(String package) async {
@@ -186,6 +187,6 @@ class ExtensionService extends GetxService {
     }
 
     cm.activeChat!.controller!.pickedApp.value = (file, payload);
-    print("set");
+    Logger.debug("set");
   }
 }

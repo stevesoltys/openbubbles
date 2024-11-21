@@ -15,6 +15,7 @@ import 'package:bluebubbles/helpers/helpers.dart';
 import 'package:bluebubbles/services/rustpush/rustpush_service.dart';
 import 'package:bluebubbles/services/services.dart';
 import 'package:bluebubbles/utils/crypto_utils.dart';
+import 'package:bluebubbles/utils/logger/logger.dart';
 import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
@@ -134,7 +135,7 @@ class HwInpState extends OptimizedState<HwInp> {
 
       api.JoinedOsConfig parsed;
       if (response2.data["versions"]["software_name"] == "iPhone OS") {
-        print("Using as iOS");
+        Logger.debug("Using as iOS");
         parsed = await api.configFromRelay(code: code, host: "https://registration-relay.beeper.com", token: "5c175851953ecaf5209185d897591badb6c3e712");
         usingBeeper = false;
       } else {
@@ -230,7 +231,7 @@ class HwInpState extends OptimizedState<HwInp> {
   }
 
   Future<void> checkCode(String text) async {
-    print("Here $text");
+    Logger.debug("Here $text");
     if (text == "testing-please-letmein") {
       FocusManager.instance.primaryFocus?.unfocus();
       setState(() {
@@ -270,12 +271,12 @@ class HwInpState extends OptimizedState<HwInp> {
     }
     var firstDashPos = text.split("-").firstOrNull?.length ?? 0;
     if (firstDashPos == 6 && "-".allMatches(text).length == 3 && text.length == 21) {
-      print("here");
+      Logger.debug("here");
       await handleOpenAbsinthe(text);
       return;
     }
     if (firstDashPos == 4 && "-".allMatches(text).length == 3 && text.length == 19) {
-      print("here");
+      Logger.debug("here");
       await handleBeeper(text);
       return;
     }
@@ -298,7 +299,7 @@ class HwInpState extends OptimizedState<HwInp> {
         ));
         select(parsed, true);
       } else {
-        print("resettingb");
+        Logger.debug("resettingb");
         setState(() => staging = stagingInfo = null);
       }
     } catch (e) {
@@ -308,7 +309,7 @@ class HwInpState extends OptimizedState<HwInp> {
   }
 
   void updateInitial() async {
-    print("updating app link");
+    Logger.debug("updating app link");
     final _appLinks = AppLinks();
     var link = await _appLinks.getLatestLink();
 

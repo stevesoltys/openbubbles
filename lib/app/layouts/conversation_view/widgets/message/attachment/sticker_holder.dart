@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bluebubbles/app/wrappers/stateful_boilerplate.dart';
 import 'package:bluebubbles/database/models.dart';
 import 'package:bluebubbles/services/services.dart';
+import 'package:bluebubbles/utils/logger/logger.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:universal_io/io.dart';
@@ -67,14 +68,14 @@ class _StickerHolderState extends OptimizedState<StickerHolder> with AutomaticKe
     controller.stickerData[message.guid!] = {
       attachment.guid!: (bytes, stickerData)
     };
-    print("sticker count ${controller.stickerData.length}");
+    Logger.debug("sticker count ${controller.stickerData.length}");
     setState(() {});
   }
 
   @override
   void didUpdateWidget(StickerHolder oldWidget) { 
     super.didUpdateWidget(oldWidget);
-    print("ugh why ${messages.length}");
+    Logger.debug("ugh why ${messages.length}");
     updateObx(() {
       loadStickers();
     });

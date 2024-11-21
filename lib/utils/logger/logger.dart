@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:archive/archive_io.dart';
 import 'package:bluebubbles/services/services.dart';
@@ -217,7 +218,7 @@ class BaseLogger extends GetxService {
     if (logFiles.isEmpty) return [];
 
     final File logFile = logFiles.first as File;
-    List<String> lines = await logFile.readAsLines();
+    List<String> lines = await logFile.readAsLines(encoding: Encoding.getByName("latin1")!);
 
     // Combine lines that are part of the same log message
     List<String> logs = [];

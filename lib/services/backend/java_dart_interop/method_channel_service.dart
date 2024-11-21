@@ -70,20 +70,20 @@ class MethodChannelService extends GetxService {
           }).toList());
           await chat.deliverSMS(sender, mapped);
         } catch (e, s) {
-          print(e);
-          print(s);
+          Logger.error(e);
+          Logger.error(s);
           rethrow;
         }
         return true;
       case "APNMsg":
         try {
           String pointer = call.arguments["pointer"];
-          print("got message $pointer");
+          Logger.info("got message $pointer");
           await pushService.recievedMsgPointer(pointer);
-          print("finish message $pointer");
+          Logger.info("finish message $pointer");
         } catch (e, s) {
-          print(e);
-          print(s);
+          Logger.error(e);
+          Logger.error(s);
           rethrow;
         }
         return true;
@@ -93,8 +93,8 @@ class MethodChannelService extends GetxService {
           var address = info.map((e) => (e as Map<Object?, Object?>).cast<String, dynamic>()).toList();
           simInfo.value = address;
         } catch (e, s) {
-          print(e);
-          print(s);
+          Logger.error(e);
+          Logger.error(s);
           rethrow;
         }
         return true;

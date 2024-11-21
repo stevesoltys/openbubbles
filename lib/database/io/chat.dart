@@ -655,7 +655,7 @@ class Chat {
             type: QueueType.newMessage
           ));
         } catch (e) {
-          print("Failed to forward sms! $e");
+          Logger.debug("Failed to forward sms! $e");
           inq.queue(IncomingItem(
             chat: this,
             message: _message,
@@ -710,7 +710,7 @@ class Chat {
           ));
         } catch (e) {
           // TODO resend later
-          print("Failed to forward mms! $e");
+          Logger.debug("Failed to forward mms! $e");
           inq.queue(IncomingItem(
             chat: this,
             message: _message,
@@ -855,7 +855,7 @@ class Chat {
       try {
         File(attachment.getFile().path!).deleteSync();
       } catch(e) {
-        print("Failed to rm attachment $e");
+        Logger.debug("Failed to rm attachment $e");
       }
     }
     Database.runInTransaction(TxMode.write, () {
