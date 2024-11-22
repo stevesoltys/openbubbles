@@ -2004,7 +2004,6 @@ class RustPushService extends GetxService {
           ss.settings.finishedSetup.value = true;
         }
         Logger.info("service");
-        await stdout.flush();
       } else {
         state = await api.newPushState(dir: fs.appDocDir.path);
         if ((await api.getPhase(state: state)) == api.RegistrationPhase.registered) {
@@ -2012,10 +2011,11 @@ class RustPushService extends GetxService {
           doPoll();
         }
       }
-      await cs.refreshContacts();
     })();
     await initFuture;
     await correctState();
+    if (ls.isUiThread) await cs.refreshContacts();
+    Logger.info("finishInit");
   }
 
   Future reset(bool hw) async {

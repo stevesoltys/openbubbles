@@ -375,6 +375,10 @@ class Settings {
       'windowEffectCustomOpacityLight': windowEffectCustomOpacityLight.value,
       'windowEffectCustomOpacityDark': windowEffectCustomOpacityDark.value,
       'useWindowsAccent': useWindowsAccent.value,
+      'logLevel': logLevel.value.index,
+      'hideNamesForReactions': hideNamesForReactions.value,
+      'replaceEmoticonsWithEmoji': replaceEmoticonsWithEmoji.value,
+      'lastReviewRequestTimestamp': lastReviewRequestTimestamp.value,
       'defaultHandle': defaultHandle.value,
       'macIsMine': macIsMine.value,
       'isSmsRouter': isSmsRouter.value,
@@ -521,6 +525,10 @@ class Settings {
     ss.settings.windowEffectCustomOpacityLight.value = map['windowEffectCustomOpacityLight']?.toDouble() ?? 0.5;
     ss.settings.windowEffectCustomOpacityDark.value = map['windowEffectCustomOpacityDark']?.toDouble() ?? 0.5;
     ss.settings.useWindowsAccent.value = map['useWindowsAccent'] ?? false;
+    ss.settings.firstFcmRegisterDate.value = map['firstFcmRegisterDate'] ?? 0;
+    ss.settings.logLevel.value = map['logLevel'] != null ? Level.values[map['logLevel']] : Level.info;
+    ss.settings.hideNamesForReactions.value = map['hideNamesForReactions'] ?? false;
+    ss.settings.replaceEmoticonsWithEmoji.value = map['replaceEmoticonsWithEmoji'] ?? false;
     ss.settings.defaultHandle.value = map['defaultHandle'] ?? "";
     ss.settings.macIsMine.value = map['macIsMine'] ?? true;
     ss.settings.isSmsRouter.value = map['isSmsRouter'] ?? false;
@@ -664,6 +672,11 @@ class Settings {
     s.windowEffectCustomOpacityLight.value = map['windowEffectCustomOpacityLight']?.toDouble() ?? 0.5;
     s.windowEffectCustomOpacityDark.value = map['windowEffectCustomOpacityDark']?.toDouble() ?? 0.5;
     s.useWindowsAccent.value = map['useWindowsAccent'] ?? false;
+    s.firstFcmRegisterDate.value = map['firstFcmRegisterDate'] ?? 0;
+    s.logLevel.value = map['logLevel'] != null ? Level.values[map['logLevel']] : Level.info;
+    s.hideNamesForReactions.value = map['hideNamesForReactions'] ?? false;
+    s.replaceEmoticonsWithEmoji.value = map['replaceEmoticonsWithEmoji'] ?? false;
+    s.lastReviewRequestTimestamp.value = map['lastReviewRequestTimestamp'] ?? 0;
     s.defaultHandle.value = map['defaultHandle'] ?? "";
     s.macIsMine.value = map['macIsMine'] ?? true;
     s.isSmsRouter.value = map['isSmsRouter'] ?? false;
