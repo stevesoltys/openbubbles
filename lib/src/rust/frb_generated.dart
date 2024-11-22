@@ -2326,7 +2326,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       subject: dco_decode_opt_String(arr[5]),
       app: dco_decode_opt_box_autoadd_dart_extension_app(arr[6]),
       linkMeta: dco_decode_opt_box_autoadd_dart_link_meta(arr[7]),
-      voice: dco_decode_opt_box_autoadd_bool(arr[8]),
+      voice: dco_decode_bool(arr[8]),
     );
   }
 
@@ -3820,7 +3820,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_subject = sse_decode_opt_String(deserializer);
     var var_app = sse_decode_opt_box_autoadd_dart_extension_app(deserializer);
     var var_linkMeta = sse_decode_opt_box_autoadd_dart_link_meta(deserializer);
-    var var_voice = sse_decode_opt_box_autoadd_bool(deserializer);
+    var var_voice = sse_decode_bool(deserializer);
     return DartNormalMessage(
         parts: var_parts,
         effect: var_effect,
@@ -5442,7 +5442,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_opt_String(self.subject, serializer);
     sse_encode_opt_box_autoadd_dart_extension_app(self.app, serializer);
     sse_encode_opt_box_autoadd_dart_link_meta(self.linkMeta, serializer);
-    sse_encode_opt_box_autoadd_bool(self.voice, serializer);
+    sse_encode_bool(self.voice, serializer);
   }
 
   @protected

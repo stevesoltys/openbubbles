@@ -710,7 +710,7 @@ pub struct DartNormalMessage {
     #[frb(non_final)]
     pub link_meta: Option<DartLinkMeta>,
     #[frb(non_final)]
-    pub voice: Option<bool>,
+    pub voice: bool,
 }
 
 #[repr(C)]

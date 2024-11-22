@@ -261,6 +261,9 @@ class SetupViewController extends StatefulController {
   }
 
   void updateConnectError(String newError) {
+    if (newError.contains("6001")) {
+      newError += " Make sure Contact Key Verification and Advanced Data Protection are off.";
+    }
     error = newError;
     updateWidgets<ErrorText>(newError);
   }

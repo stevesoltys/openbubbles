@@ -361,7 +361,8 @@ class RustPushBackend implements BackendService {
           message: api.DartMessage.message(api.DartNormalMessage(
               parts: api.DartMessageParts(
                   field0: [api.DartIndexedMessagePart(part_: api.DartMessagePart.text(message))]),
-                  service: await getService(chat.isRpSms)
+                  service: await getService(chat.isRpSms),
+                  voice: false,
                   )),
           sender: handle);
       if (chat.isRpSms) {
@@ -495,6 +496,7 @@ class RustPushBackend implements BackendService {
           replyPart: m.threadOriginatorGuid == null ? null : "$partIndex:0:0",
           effect: m.expressiveSendStyleId,
           service: service,
+          voice: false
         )));
     if (m.stagingGuid != null || (m.guid != null && m.guid!.contains("error") && m.guid!.contains("temp"))) {
       msg.id = m.stagingGuid ?? m.guid!;
@@ -747,6 +749,7 @@ class RustPushBackend implements BackendService {
         subject: m.subject == "" ? null : m.subject,
         app: m.payloadData == null ? null : pushService.dataToApp(m.payloadData!),
         linkMeta: linkMeta,
+        voice: false
       )),
     );
     Logger.info("sending ${msg.id}");
@@ -1612,7 +1615,7 @@ class RustPushService extends GetxService {
     var result = await chatForMessageInner(myMsg);
     if (myMsg.conversation != null) {
       // conformance stuff
-      if (myMsg.conversation!.senderGuid != null) {
+      if (myMsg.conversation!.senderGuid != null && !result.guidRefs.contains(myMsg.conversation!.senderGuid!)) {
         result.guidRefs.add(myMsg.conversation!.senderGuid!);
         result.save(updateGuidRefs: true);
       }

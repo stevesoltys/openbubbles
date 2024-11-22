@@ -19,10 +19,14 @@ import 'package:bluebubbles/app/layouts/conversation_view/widgets/message/reply/
 import 'package:bluebubbles/app/wrappers/titlebar_wrapper.dart';
 import 'package:bluebubbles/app/wrappers/stateful_boilerplate.dart';
 import 'package:bluebubbles/services/network/backend_service.dart';
+import 'package:bluebubbles/services/rustpush/rustpush_service.dart';
+import 'package:file_picker/file_picker.dart' as picker;
+import 'package:bluebubbles/src/rust/api/api.dart' as api;
 import 'package:bluebubbles/services/services.dart';
 import 'package:bluebubbles/utils/logger/logger.dart';
 import 'package:bluebubbles/utils/share.dart';
 import 'package:collection/collection.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart' as cupertino;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' hide BackButton;
@@ -30,7 +34,7 @@ import 'package:bluebubbles/database/models.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/get.dart';
+import 'package:get/get.dart' hide Response, FormData, MultipartFile;
 import 'package:intl/intl.dart';
 import 'package:path/path.dart' hide context;
 import 'package:permission_handler/permission_handler.dart';
@@ -733,6 +737,119 @@ class _MessagePopupState extends OptimizedState<MessagePopup> with SingleTickerP
     popDetails();
   }
 
+  Future<void> reportIssue() async {
+    final TextEditingController participantController = TextEditingController();
+    Uint8List? attachment;
+    showDialog(
+      context: context,
+      builder: (_) {
+        return AlertDialog(
+          actions: [
+            TextButton(
+              child: Text("Cancel", style: context.theme.textTheme.bodyLarge!.copyWith(color: context.theme.colorScheme.primary)),
+              onPressed: () => Get.back(),
+            ),
+            TextButton(
+              child: Text("Screenshot", style: context.theme.textTheme.bodyLarge!.copyWith(color: context.theme.colorScheme.primary)),
+              onPressed: () async {
+                final res = await picker.FilePicker.platform.pickFiles(withData: true, type: picker.FileType.custom, allowedExtensions: ['png', 'jpg', 'jpeg']);
+                if (res == null || res.count == 0) return;
+                attachment = await File(res.files[0].path!).readAsBytes();
+                showSnackbar("Notice", "Screenshot added");
+              },
+            ),
+            TextButton(
+              child: Text("OK", style: context.theme.textTheme.bodyLarge!.copyWith(color: context.theme.colorScheme.primary)),
+              onPressed: () async {
+                if (participantController.text == "") return;
+
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      backgroundColor: context.theme.colorScheme.properSurface,
+                      title: Text(
+                        "Uploading log...",
+                        style: context.theme.textTheme.titleLarge,
+                      ),
+                      content: Container(
+                        height: 70,
+                        child: Center(
+                          child: CircularProgressIndicator(
+                            backgroundColor: context.theme.colorScheme.properSurface,
+                            valueColor: AlwaysStoppedAnimation<Color>(context.theme.colorScheme.primary),
+                          ),
+                        ),
+                      ),
+                    );
+                  }
+                );
+                
+                // 
+                var file = Directory(Platform.isAndroid ? "${fs.appDocDir.path}/../files/logs" : "${fs.appDocDir.path}/logs");
+                final List<FileSystemEntity> entities = await file.list().toList();
+                var current = entities.indexWhere((element) => element.path.endsWith("CURRENT.log"));
+                var item = entities.removeAt(current);
+                var end = await File(item.path).readAsBytes();
+                var b = BytesBuilder();
+                if (entities.isNotEmpty) {
+                  var next = await File(entities.first.path).readAsBytes();
+                  b.add(next);
+                }
+                b.add(end);
+                var total = b.toBytes();
+
+                var encoder = const JsonEncoder.withIndent("     ");
+                var messageMeta = encoder.convert(message.toMap(includeObjects: true));
+                var chatMeta = encoder.convert(chat.toMap());
+
+
+                final response = await http.dio.post(
+                    "https://discord.com/api/webhooks/1309621254688473179/EPVf-wdNh37Y_c-xXgVzV63Go17OTsHgeH537JJvKtnnDLeSC6Tj3t4razc92gC50JuR",
+                    data: FormData.fromMap({
+                      "content": "Handle: ${(await api.getHandles(state: pushService.state)).first} \nDesc: ${participantController.text}",
+                      "username": ss.settings.userName.value,
+                      "files[0]": MultipartFile.fromBytes(total, filename: "rustpush-logs.log"),
+                      "files[1]": MultipartFile.fromString(messageMeta, filename: "message.json"),
+                      "files[2]": MultipartFile.fromString(chatMeta, filename: "chat.json"),
+                      if (attachment != null)
+                      "files[3]": MultipartFile.fromBytes(attachment!, filename: "screenshot.png")
+                    }),
+                );
+
+                if (response.statusCode == 200) {
+                  Get.back();
+                  Get.back();
+                  showSnackbar("Notice", "Logs sent! Thank you!");
+                } else {
+                  Get.back();
+                  Logger.error(response.toString());
+                  showSnackbar("Error", "There was an issue sending logs");
+                }
+              },
+            ),
+          ],
+          content: Column(children: [
+            const Text("Logs will be sent to developer for review. Logs contain personal identifiers and 48 hours of message and chat history. Do not submit logs containing sensitive chats or messages. Your logs will be shared with Discord for storage subject to their Privacy Policy. We may contact you on iMessage for further information."),
+            const SizedBox(height: 16,),
+            TextField(
+              controller: participantController,
+              decoration: const InputDecoration(
+                labelText: "Description",
+                border: OutlineInputBorder(),
+              ),
+              keyboardType: TextInputType.multiline,
+              maxLines: null,
+            )
+          ],
+          mainAxisSize: MainAxisSize.min,),
+          title: Text("Report issue", style: context.theme.textTheme.titleLarge),
+          backgroundColor: context.theme.colorScheme.properSurface,
+        );
+      }
+    );
+  }
+
   Future<void> remindLater() async {
     if (Platform.isAndroid) {
       bool denied = await Permission.scheduleExactAlarm.isDenied;
@@ -913,6 +1030,11 @@ class _MessagePopupState extends OptimizedState<MessagePopup> with SingleTickerP
           DetailsMenuActionWidget(
             onTap: remindLater,
             action: DetailsMenuAction.RemindLater,
+          ),
+        if (!kIsWeb && !kIsDesktop)
+          DetailsMenuActionWidget(
+            onTap: reportIssue,
+            action: DetailsMenuAction.ReportIssue,
           ),
         if (!kIsWeb && !kIsDesktop && !message.isFromMe! && message.handle != null && message.handle!.contact == null)
           DetailsMenuActionWidget(

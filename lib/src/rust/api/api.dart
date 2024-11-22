@@ -804,7 +804,7 @@ class DartNormalMessage {
   String? subject;
   DartExtensionApp? app;
   DartLinkMeta? linkMeta;
-  bool? voice;
+  bool voice;
 
   DartNormalMessage({
     required this.parts,
@@ -815,7 +815,7 @@ class DartNormalMessage {
     this.subject,
     this.app,
     this.linkMeta,
-    this.voice,
+    required this.voice,
   });
 
   @override
