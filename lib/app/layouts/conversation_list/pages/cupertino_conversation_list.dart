@@ -71,7 +71,7 @@ class CupertinoConversationListState extends OptimizedState<CupertinoConversatio
               title: Text(showArchived ? "Archive" : "Unknown Senders", style: context.theme.textTheme.titleLarge),
             )
           : null,
-      body: Stack(
+      body: Obx(() => Stack(
         children: [
           ScrollbarWrapper(
             showScrollbar: true,
@@ -330,7 +330,7 @@ class CupertinoConversationListState extends OptimizedState<CupertinoConversatio
             )
           )), bottom: 0, right: 0, left: 0,),
         ],
-      ),
+      )),
     );
   }
 }
