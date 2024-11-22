@@ -14,6 +14,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart';
 import 'package:get/get.dart';
+import 'package:bluebubbles/src/rust/api/api.dart' as api;
+import 'package:bluebubbles/services/rustpush/rustpush_service.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class CupertinoConversationList extends StatefulWidget {
@@ -30,6 +32,7 @@ class CupertinoConversationListState extends OptimizedState<CupertinoConversatio
 
   bool get showUnknown => widget.parentController.showUnknownSenders;
 
+  List<String> handles = [];
   Color get backgroundColor => ss.settings.windowEffect.value == WindowEffect.disabled ? context.theme.colorScheme.background : Colors.transparent;
 
   ConversationListController get controller => widget.parentController;
@@ -43,6 +46,11 @@ class CupertinoConversationListState extends OptimizedState<CupertinoConversatio
         setState(() {});
       });
     }
+    (() async {
+      await pushService.initFuture;
+      handles = await api.getHandles(state: pushService.state);
+      setState(() { });
+    })();
   }
 
   @override
@@ -264,6 +272,63 @@ class CupertinoConversationListState extends OptimizedState<CupertinoConversatio
                 )),
           ),
           if (!showArchived && !showUnknown) CupertinoMiniHeader(controller: controller),
+          if (chats.chats.isEmpty)
+          Positioned(child: IgnorePointer(child: Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomLeft,
+                colors: [
+                  Color(0x005CA7F8),
+                  Color(0xFF5CA7F8),
+                ],
+              )
+            ),
+            padding: const EdgeInsets.fromLTRB(10, 200, 10, 100),
+            child: Column(
+              children: [
+                Center(
+                  child: Text(
+                    'Start chatting',
+                    style: TextStyle(
+                      fontSize: 32.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      shadows: context.theme.brightness == Brightness.dark ? <Shadow>[] : <Shadow>[
+                        const Shadow(
+                          offset: Offset(1.0, 1.0),
+                          blurRadius: 20.0,
+                          color: Color.fromARGB(50, 50, 50, 50),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 32),
+                Text(
+                  "You can be reached on iMessage at",
+                  style: context.theme.textTheme.bodyLarge!.apply(
+                    fontSizeDelta: 1.5,
+                    color: Colors.white,
+                    shadows: context.theme.brightness == Brightness.dark ? <Shadow>[] : const <Shadow>[
+                      Shadow(
+                        offset: Offset(1.0, 1.0),
+                        blurRadius: 20.0,
+                        color: Color.fromARGB(50, 50, 50, 50),
+                      ),
+                    ]
+                  ).copyWith(height: 2)
+                ),
+                ...handles.map((e) => Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
+                  child: Text(
+                    e.replaceFirst("tel:", "").replaceAll("mailto:", ""),
+                    style: context.theme.textTheme.titleMedium?.apply(color: Colors.white),
+                  ),
+                )),
+              ],
+            )
+          )), bottom: 0, right: 0, left: 0,),
         ],
       ),
     );

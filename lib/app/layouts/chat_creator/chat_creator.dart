@@ -440,6 +440,8 @@ class ChatCreatorState extends OptimizedState<ChatCreator> {
                                     )),
                               ),
                             ),
+                            if (selectedContacts.isNotEmpty)
+                            const SizedBox(width: 4),
                             ConstrainedBox(
                               constraints: BoxConstraints(maxWidth: ns.width(context) - 50),
                               child: Focus(
@@ -574,7 +576,7 @@ class ChatCreatorState extends OptimizedState<ChatCreator> {
                                 SliverList(
                                   delegate: SliverChildBuilderDelegate((context, index) {
                                     if (filteredChats.isEmpty) {
-                                      return Column(
+                                      return chats.chats.isEmpty ? const SizedBox.shrink() : Column(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
                                           Padding(

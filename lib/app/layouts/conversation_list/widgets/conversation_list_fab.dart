@@ -74,19 +74,28 @@ class _ConversationListFABState extends CustomState<ConversationListFAB, void, C
           const SizedBox(
             height: 10,
           ),
-        InkWell(
-          onLongPress: iOS || !ss.settings.cameraFAB.value || kIsWeb || kIsDesktop
-            ? null : () => controller.openCamera(context),
-          child: FloatingActionButton(
-            backgroundColor: context.theme.colorScheme.primary,
-            child: Icon(
-              iOS ? CupertinoIcons.pencil : Icons.message,
-              color: context.theme.colorScheme.onPrimary,
-              size: 25
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            if (chats.chats.isEmpty)
+            Text("Start a Chat >", style: context.textTheme.labelLarge?.copyWith(color: Colors.white)),
+            if (chats.chats.isEmpty)
+            const SizedBox(width: 16),
+            InkWell(
+              onLongPress: iOS || !ss.settings.cameraFAB.value || kIsWeb || kIsDesktop
+                ? null : () => controller.openCamera(context),
+              child: FloatingActionButton(
+                backgroundColor: context.theme.colorScheme.primary,
+                child: Icon(
+                  iOS ? CupertinoIcons.pencil : Icons.message,
+                  color: context.theme.colorScheme.onPrimary,
+                  size: 25
+                ),
+                onPressed: () => controller.openNewChatCreator(context)
+              ),
             ),
-            onPressed: () => controller.openNewChatCreator(context)
-          ),
-        ),
+          ],
+        )
       ],
     ));
 
