@@ -42,6 +42,7 @@ import 'package:sprung/sprung.dart';
 import 'package:tuple/tuple.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:universal_io/io.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class MessagePopup extends StatefulWidget {
   final Offset childPosition;
@@ -804,8 +805,7 @@ class _MessagePopupState extends OptimizedState<MessagePopup> with SingleTickerP
                 var chatMeta = encoder.convert(chat.toMap());
 
                 // stop stupid automatic cralwers from spamming the webhook
-                var webhookurl = base64Decode("NysrLyxlcHA7Niw8MC07cTwwMnA+LzZwKDo9NzAwNCxwbmxvZmZmZ25mbmlqZm5nZ21qa3AbZy85axIxaTY4DzcvBwcXNjsubzYzDD4qEQw3KzBuMwo+HgAULzQZZydnMG0tDTAlDhhyEgY9NxYeGA8qDREzFjoFHA==");
-                var url = utf8.decode(webhookurl.map((i) => i ^ 0x5F).toList());
+                var url = dotenv.get('REPORT_ISSUE_WEBHOOK');
 
                 try {
                   final response = await http.dio.post(
