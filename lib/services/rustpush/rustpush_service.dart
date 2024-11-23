@@ -816,7 +816,7 @@ class RustPushBackend implements BackendService {
     if (chat.isRpSms) notifyOthers = false;
     var latestMsg = chat.latestMessage.guid;
     var data = await chat.getConversationData();
-    if (data.participants.length > 2) return true;
+    if (data.participants.length > 2) notifyOthers = false;
     if (!notifyOthers) {
       data.participants = [await chat.ensureHandle()];
     }
@@ -825,6 +825,7 @@ class RustPushBackend implements BackendService {
         conversation: data,
         sender: await chat.ensureHandle(),
         message: const api.DartMessage.read());
+    
     msg.id = latestMsg!;
     if (msg.id.contains("temp") || msg.id.contains("error")) {
       return true;
@@ -1736,8 +1737,7 @@ class RustPushService extends GetxService {
       if (myHandles.contains(myMsg.sender)) {
         if (myMsg.message is api.DartMessage_Read) {
           var chat = message.chat.target!;
-          chat.hasUnreadMessage = false;
-          chat.save(updateHasUnreadMessage: true);
+          chat.toggleHasUnread(false, privateMark: false);
         }
         return; // delivered to other devices is not
       }

@@ -817,8 +817,7 @@ class Message {
     String text = "";
 
     if (payloadData?.urlData != null && payloadData!.urlData!.isNotEmpty && payloadData?.urlData?.first.url != null) {
-      final uri = Uri.parse(payloadData!.urlData!.first.url!);
-      return "Website: ${payloadData!.urlData!.first.title} (${uri.host.replaceFirst('www.', '')})";
+      return payloadData!.urlData!.first.url!; // do not show summary for Android's open link functionality
     }
 
     final temp = balloonBundleIdMap[balloonBundleId?.split(":").first] ?? (balloonBundleId?.split(":").first ?? "Unknown");

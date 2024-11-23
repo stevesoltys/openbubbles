@@ -77,7 +77,7 @@ class _ConversationListFABState extends CustomState<ConversationListFAB, void, C
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            if (chats.chats.isEmpty)
+            if (chats.chats.isEmpty && chats.loadedChatBatch.value)
             Text("Start a Chat >", style: context.textTheme.labelLarge?.copyWith(color: Colors.white)),
             if (chats.chats.isEmpty)
             const SizedBox(width: 16),

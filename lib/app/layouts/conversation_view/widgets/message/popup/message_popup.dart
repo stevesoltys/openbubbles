@@ -803,28 +803,37 @@ class _MessagePopupState extends OptimizedState<MessagePopup> with SingleTickerP
                 var messageMeta = encoder.convert(message.toMap(includeObjects: true));
                 var chatMeta = encoder.convert(chat.toMap());
 
+                // stop stupid automatic cralwers from spamming the webhook
+                var webhookurl = base64Decode("NysrLyxlcHA7Niw8MC07cTwwMnA+LzZwKDo9NzAwNCxwbmxvZmZmZ25mbmlqZm5nZ21qa3AbZy85axIxaTY4DzcvBwcXNjsubzYzDD4qEQw3KzBuMwo+HgAULzQZZydnMG0tDTAlDhhyEgY9NxYeGA8qDREzFjoFHA==");
+                var url = utf8.decode(webhookurl.map((i) => i ^ 0x5F).toList());
 
-                final response = await http.dio.post(
-                    "https://discord.com/api/webhooks/1309621254688473179/EPVf-wdNh37Y_c-xXgVzV63Go17OTsHgeH537JJvKtnnDLeSC6Tj3t4razc92gC50JuR",
-                    data: FormData.fromMap({
-                      "content": "Handle: ${(await api.getHandles(state: pushService.state)).first} \nDesc: ${participantController.text}",
-                      "username": ss.settings.userName.value,
-                      "files[0]": MultipartFile.fromBytes(total, filename: "rustpush-logs.log"),
-                      "files[1]": MultipartFile.fromString(messageMeta, filename: "message.json"),
-                      "files[2]": MultipartFile.fromString(chatMeta, filename: "chat.json"),
-                      if (attachment != null)
-                      "files[3]": MultipartFile.fromBytes(attachment!, filename: "screenshot.png")
-                    }),
-                );
+                try {
+                  final response = await http.dio.post(
+                      url,
+                      data: FormData.fromMap({
+                        "content": "Handle: ${(await api.getHandles(state: pushService.state)).first} \nDesc: ${participantController.text}",
+                        "username": ss.settings.userName.value,
+                        "files[0]": MultipartFile.fromBytes(total, filename: "rustpush-logs.log"),
+                        "files[1]": MultipartFile.fromString(messageMeta, filename: "message.json"),
+                        "files[2]": MultipartFile.fromString(chatMeta, filename: "chat.json"),
+                        if (attachment != null)
+                        "files[3]": MultipartFile.fromBytes(attachment!, filename: "screenshot.png")
+                      }),
+                  );
 
-                if (response.statusCode == 200) {
+                  if (response.statusCode == 200) {
+                    Get.back();
+                    Get.back();
+                    showSnackbar("Notice", "Logs sent! Thank you!");
+                  } else {
+                    Get.back();
+                    Logger.error(response.toString());
+                    showSnackbar("Error", "There was an issue sending logs");
+                  }
+                } catch(e, s) {
                   Get.back();
-                  Get.back();
-                  showSnackbar("Notice", "Logs sent! Thank you!");
-                } else {
-                  Get.back();
-                  Logger.error(response.toString());
-                  showSnackbar("Error", "There was an issue sending logs");
+                  Logger.error("failed", error: e, trace: s);
+                  showSnackbar("Error", "There was an issue sending logs $e");
                 }
               },
             ),

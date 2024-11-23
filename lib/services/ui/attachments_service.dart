@@ -60,7 +60,9 @@ class AttachmentsService extends GetxService {
 
     final pathName = path ?? attachment.path;
     if (attachmentDownloader.getController(attachment.guid) != null) {
-      return attachmentDownloader.getController(attachment.guid);
+      var controller = attachmentDownloader.getController(attachment.guid)!;
+      if (onComplete != null) controller.completeFuncs.add(onComplete);
+      return controller;
     } else if (File(pathName).existsSync()) {
       return PlatformFile(
         name: attachment.transferName!,

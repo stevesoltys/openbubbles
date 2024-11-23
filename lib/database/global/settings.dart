@@ -46,7 +46,7 @@ class Settings {
   final RxBool showSyncIndicator = true.obs;
   final RxInt sendDelay = 0.obs;
   final RxBool recipientAsPlaceholder = false.obs;
-  final RxBool hideKeyboardOnScroll = false.obs;
+  final RxBool hideKeyboardOnScroll = true.obs;
   final RxBool moveChatCreatorToHeader = false.obs;
   final RxBool cameraFAB = false.obs;
   final RxBool swipeToCloseKeyboard = false.obs;

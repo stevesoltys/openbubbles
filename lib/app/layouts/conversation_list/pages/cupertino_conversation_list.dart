@@ -272,7 +272,7 @@ class CupertinoConversationListState extends OptimizedState<CupertinoConversatio
                 )),
           ),
           if (!showArchived && !showUnknown) CupertinoMiniHeader(controller: controller),
-          if (chats.chats.isEmpty)
+          if (chats.chats.isEmpty && chats.loadedChatBatch.value)
           Positioned(child: IgnorePointer(child: Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
