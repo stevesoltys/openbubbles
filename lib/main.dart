@@ -171,9 +171,8 @@ Future<Null> initApp(bool bubble, List<String> arguments) async {
             }
           });
 
-          /* ----- GIPHY API KEY INITIALIZATION ----- */
-          await dotenv.load(fileName: '.env', isOptional: true);
         }
+        await dotenv.load(fileName: '.env', isOptional: true);
 
         /* ----- EMOJI FONT INITIALIZATION ----- */
         fs.checkFont();
