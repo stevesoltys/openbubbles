@@ -1,6 +1,6 @@
 use std::{path::Path, sync::OnceLock};
 
-use flexi_logger::{Age, Cleanup, Criterion, FileSpec, Logger, Naming, WriteMode};
+use flexi_logger::{opt_format, Age, Cleanup, Criterion, FileSpec, Logger, Naming, WriteMode};
 use tokio::runtime::Runtime;
 use uniffi::deps::log::info;
 
@@ -40,6 +40,7 @@ pub fn init_logger(path: &Path) {
     let (logger, _) = Logger::try_with_str("debug").expect("No logger?")
         .log_to_file(FileSpec::default().directory(path.join("logs")).suppress_timestamp())
         .append()
+        .format(opt_format)
         .cleanup_in_background_thread(false)
         .rotate(Criterion::AgeOrSize(Age::Day, 1024 * 1024 * 10 /* 10 MB */), Naming::Numbers, Cleanup::KeepLogFiles(1))
         .write_mode(WriteMode::BufferAndFlush)

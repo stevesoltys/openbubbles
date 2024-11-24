@@ -98,6 +98,7 @@ class MethodCallHandler {
             MessageUpdateHandler.tag -> MessageUpdateHandler().handleMethodCall(call, result, context)
             DevExtensionHandler.tag -> DevExtensionHandler().handleMethodCall(call, result, context)
             SIMInfoQuery.tag -> SIMInfoQuery().handleMethodCall(call, result, context)
+            "ready" -> { MainActivity.engine_ready = true }
             else -> {
                 val error = "Could not find method call handler for ${call.method}!"
                 Log.d(Constants.logTag, error)

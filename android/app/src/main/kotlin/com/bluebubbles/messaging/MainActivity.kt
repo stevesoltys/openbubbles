@@ -20,6 +20,7 @@ import io.flutter.plugin.common.MethodChannel
 class MainActivity : FlutterFragmentActivity(), ComponentCallbacks2 {
     companion object {
         var engine: FlutterEngine? = null
+        var engine_ready = false
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,6 +33,7 @@ class MainActivity : FlutterFragmentActivity(), ComponentCallbacks2 {
     }
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
+        engine_ready = false
         engine = flutterEngine
         super.configureFlutterEngine(flutterEngine)
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, Constants.methodChannel).setMethodCallHandler { call, result ->

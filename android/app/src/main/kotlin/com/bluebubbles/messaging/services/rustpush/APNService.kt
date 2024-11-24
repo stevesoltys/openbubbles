@@ -55,7 +55,7 @@ class APNService : Service(), MsgReceiver {
 
     override fun receievedMsg(ptr: ULong) {
         Handler(Looper.getMainLooper()).post {
-            if (MainActivity.engine != null) {
+            if (MainActivity.engine != null && MainActivity.engine_ready) {
                 Log.i("ugh running", "here $ptr")
                 // app is alive, deliver directly there
                 MethodCallHandler.invokeMethod("APNMsg", mapOf("pointer" to ptr.toString()))
@@ -94,7 +94,7 @@ class APNService : Service(), MsgReceiver {
     fun launchAgent() {
         Log.i("launching agent", "herer")
         SMSObserver.init(applicationContext) { context, map ->
-            if (MainActivity.engine != null) {
+            if (MainActivity.engine != null && MainActivity.engine_ready) {
                 // app is alive, deliver directly there
                 MethodCallHandler.invokeMethod("SMSMsg", map)
                 return@init
