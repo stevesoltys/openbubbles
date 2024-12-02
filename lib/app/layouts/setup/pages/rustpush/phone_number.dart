@@ -89,7 +89,7 @@ class PhoneNumberState extends OptimizedState<PhoneNumber> {
                       children: [
                         if (failed.value)
                         SettingsTile(
-                          title: "Load SIMs",
+                          title: "Load Available Numbers",
                           leading: const Icon(Icons.sim_card),
                           onTap: () async {
                             try {
@@ -121,7 +121,7 @@ class PhoneNumberState extends OptimizedState<PhoneNumber> {
                                     return;
                                   }
                                   // always get new token for PNR
-                                  await api.refreshToken(state: pushService.state);
+                                  if (controller.currentPhoneUsers.isEmpty) await api.refreshToken(state: pushService.state);
                                   var token = await api.getToken(state: pushService.state);
 
                                   String resp = await mcs.invokeMethod("sms-auth-gateway", {'token': hex.encode(token).toUpperCase(), 'subscription': subscription});

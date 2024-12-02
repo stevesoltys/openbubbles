@@ -12,7 +12,7 @@ use prost::Message;
 pub use rustpush::{PushError, IDSUser, IMClient, ConversationData, register};
 
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
-use tokio::{runtime::Runtime, select, sync::{broadcast, oneshot::{self, Sender}, Mutex, RwLock}};
+use tokio::{runtime::Runtime, select, sync::{broadcast, mpsc, oneshot::{self, Sender}, Mutex, RwLock}};
 use rustpush::{authenticate_apple, authenticate_phone, get_gsa_config, APSConnection, APSConnectionResource, APSState, Attachment, AuthPhone, IDSUserIdentity, MMCSFile, MessageInst, MessagePart, MessageParts, OSConfig, RelayConfig, ResourceState};
 pub use rustpush::{MacOSConfig, HardwareConfig};
 use uniffi::{deps::log::{info, error}, HandleAlloc};
@@ -98,6 +98,8 @@ pub struct InnerPushState {
     pub account: Option<AppleAccount>,
     pub cancel_poll: Mutex<Option<Sender<()>>>,
     pub identity: Option<IDSUserIdentity>,
+    pub local_messages: Mutex<mpsc::Receiver<DartPushMessage>>,
+    pub local_broadcast: mpsc::Sender<DartPushMessage>,
 }
 
 #[frb(opaque)]
@@ -106,6 +108,7 @@ pub struct PushState (RwLock<InnerPushState>);
 pub async fn new_push_state(dir: String) -> Arc<PushState> {
     let dir = PathBuf::from_str(&dir).unwrap();
     init_logger(&dir);
+    let (sender, recv) = mpsc::channel(999);
     // flutter_rust_bridge::setup_default_user_utils();
     let state = PushState(RwLock::new(InnerPushState {
         conn: None,
@@ -115,6 +118,8 @@ pub async fn new_push_state(dir: String) -> Arc<PushState> {
         account: None,
         cancel_poll: Mutex::new(None),
         identity: None,
+        local_broadcast: sender,
+        local_messages: Mutex::new(recv),
     }));
     restore(&state).await;
     Arc::new(state)
@@ -469,11 +474,11 @@ pub fn config_from_encoded(encoded: Vec<u8>) -> anyhow::Result<JoinedOSConfig> {
 }
 
 
-pub fn ptr_to_dart(ptr: String) -> DartIMessage {
+pub fn ptr_to_dart(ptr: String) -> DartPushMessage {
     let pointer: u64 = ptr.parse().unwrap();
     info!("using pointer {pointer}");
     let recieved = unsafe {
-        Box::from_raw(pointer as *mut DartIMessage)
+        Box::from_raw(pointer as *mut DartPushMessage)
     };
     *recieved
 }
@@ -909,6 +914,15 @@ pub struct DartIMessage {
     pub verification_failed: bool,
 }
 
+#[repr(C)]
+pub enum DartPushMessage {
+    IMessage(DartIMessage),
+    SendConfirm {
+        uuid: String,
+        error: Option<String>,
+    }
+}
+
 impl Into<rustpush::Message> for DartMessage {
     fn into(self) -> rustpush::Message {
         unsafe { std::mem::transmute(self) }
@@ -935,7 +949,7 @@ impl DartIMessage {
 
 pub enum PollResult {
     Stop,
-    Cont(Option<DartIMessage>),
+    Cont(Option<DartPushMessage>),
 }
 
 pub async fn recv_wait(state: &Arc<PushState>) -> PollResult {
@@ -944,19 +958,24 @@ pub async fn recv_wait(state: &Arc<PushState>) -> PollResult {
     }
     let (send, recv) = oneshot::channel();
     let recv_path = state.0.read().await;
+    let mut local_lock = recv_path.local_messages.lock().await;
     *recv_path.cancel_poll.lock().await = Some(send);
     select! {
         msg = recv_path.client.as_ref().expect("no client??/").receive_wait() => {
             *recv_path.cancel_poll.lock().await = None;
             let msg = match msg {
-                Ok(msg) => msg,
+                Ok(Some(msg)) => Some(DartPushMessage::IMessage(unsafe { std::mem::transmute(msg) })),
+                Ok(None) => None,
                 Err(err) => {
                     // log and ignore for now
                     error!("{}", err);
                     return PollResult::Cont(None);
                 }
             };
-            PollResult::Cont(unsafe { std::mem::transmute(msg) })
+            PollResult::Cont(msg)
+        },
+        reader = local_lock.recv() => {
+            PollResult::Cont(Some(reader.unwrap()))
         }
         _cancel = recv => {
             PollResult::Stop
@@ -964,17 +983,29 @@ pub async fn recv_wait(state: &Arc<PushState>) -> PollResult {
     }
 }
 
-pub async fn send(state: &Arc<PushState>, msg: DartIMessage) -> anyhow::Result<()> {
+pub async fn send(state: &Arc<PushState>, msg: DartIMessage) -> anyhow::Result<bool> {
     if !matches!(state.get_phase().await, RegistrationPhase::Registered) {
         panic!("Wrong phase! (send)")
     }
     let mut msg = msg.to_imsg();
     println!("sending_1");
+    let state_cpy = state.clone();
     let inner = state.0.read().await;
     println!("sending_2");
-    inner.client.as_ref().unwrap().send(&mut msg).await?;
-    println!("sending_3");
-    Ok(())
+    let result = inner.client.as_ref().unwrap().send(&mut msg).await?;
+
+    if let Some(handle) = result.handle {
+        let uuid = msg.id.clone();
+        tokio::spawn(async move {
+            let result = handle.await.unwrap();
+            let locked = state_cpy.0.read().await;
+            let maybeerr = result.err().map(|err| format!("{}", err));
+            let _ = locked.local_broadcast.send(DartPushMessage::SendConfirm { uuid, error: maybeerr }).await;
+        });
+        Ok(true)
+    } else {
+        Ok(false)
+    }
 }
 
 pub async fn get_handles(state: &Arc<PushState>) -> anyhow::Result<Vec<String>> {

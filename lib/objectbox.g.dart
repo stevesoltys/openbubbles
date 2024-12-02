@@ -432,7 +432,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
       id: const obx_int.IdUid(13, 4148278195232901830),
       name: 'Message',
-      lastPropertyId: const obx_int.IdUid(54, 684200636816633360),
+      lastPropertyId: const obx_int.IdUid(55, 5249321850957672701),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
@@ -658,6 +658,11 @@ final _entities = <obx_int.ModelEntity>[
             id: const obx_int.IdUid(54, 684200636816633360),
             name: 'verificationFailed',
             type: 1,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(55, 5249321850957672701),
+            name: 'sendingServiceId',
+            type: 9,
             flags: 0)
       ],
       relations: <obx_int.ModelRelation>[],
@@ -1494,7 +1499,10 @@ obx_int.ModelDefinition getObjectBoxModel() {
           final amkSessionIdOffset = object.amkSessionId == null
               ? null
               : fbb.writeString(object.amkSessionId!);
-          fbb.startTable(55);
+          final sendingServiceIdOffset = object.sendingServiceId == null
+              ? null
+              : fbb.writeString(object.sendingServiceId!);
+          fbb.startTable(56);
           fbb.addInt64(0, object.id ?? 0);
           fbb.addInt64(1, object.originalROWID);
           fbb.addOffset(2, guidOffset);
@@ -1539,6 +1547,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
           fbb.addOffset(51, amkSessionIdOffset);
           fbb.addBool(52, object.isDelivered);
           fbb.addBool(53, object.verificationFailed);
+          fbb.addOffset(54, sendingServiceIdOffset);
           fbb.finish(fbb.endTable());
           return object.id ?? 0;
         },
@@ -1645,6 +1654,9 @@ obx_int.ModelDefinition getObjectBoxModel() {
                   .vTableGetNullable(buffer, rootOffset, 106);
           final verificationFailedParam =
               const fb.BoolReader().vTableGet(buffer, rootOffset, 110, false);
+          final sendingServiceIdParam =
+              const fb.StringReader(asciiOptimization: true)
+                  .vTableGetNullable(buffer, rootOffset, 112);
           final object = Message(
               id: idParam,
               originalROWID: originalROWIDParam,
@@ -1682,7 +1694,8 @@ obx_int.ModelDefinition getObjectBoxModel() {
               hasBeenForwarded: hasBeenForwardedParam,
               stagingGuid: stagingGuidParam,
               amkSessionId: amkSessionIdParam,
-              verificationFailed: verificationFailedParam)
+              verificationFailed: verificationFailedParam,
+              sendingServiceId: sendingServiceIdParam)
             ..bigEmoji =
                 const fb.BoolReader().vTableGetNullable(buffer, rootOffset, 76)
             ..dbAttributedBody = const fb.StringReader(asciiOptimization: true)
@@ -2343,6 +2356,10 @@ class Message_ {
   /// See [Message.verificationFailed].
   static final verificationFailed =
       obx.QueryBooleanProperty<Message>(_entities[5].properties[43]);
+
+  /// See [Message.sendingServiceId].
+  static final sendingServiceId =
+      obx.QueryStringProperty<Message>(_entities[5].properties[44]);
 
   /// see [Message.dbAttachments]
   static final dbAttachments =

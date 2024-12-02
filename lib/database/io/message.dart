@@ -281,6 +281,10 @@ class Message {
   bool didNotifyRecipient;
   bool isBookmarked;
   bool verificationFailed;
+  // service that is sending this message.
+  // null if message is not in progress of sending
+  // if service is mismatched with current running service, something crashed. Mark as failed.
+  String? sendingServiceId;
 
   String? amkSessionId; // for sessioned messages
   bool hasBeenForwarded; // local SMS forwarding, used to keep track of this message needs to be sent
@@ -422,6 +426,7 @@ class Message {
     this.stagingGuid,
     this.amkSessionId,
     this.verificationFailed = false,
+    this.sendingServiceId,
   }) {
       if (handle != null && handleId == null) handleId = handle!.originalROWID;
       if (error != null) _error.value = error;
@@ -520,12 +525,13 @@ class Message {
       stagingGuid: json['stagingGuid'],
       amkSessionId: json['amkSessionId'],
       verificationFailed: json['verificationFailed'],
+      sendingServiceId: json['sendingServiceId'],
     );
   }
 
   /// Save a single message - prefer [bulkSave] for multiple messages rather
   /// than iterating through them
-  Message save({Chat? chat, bool updateIsBookmarked = false}) {
+  Message save({Chat? chat, bool updateIsBookmarked = false, bool updateSendingServiceId = false}) {
     if (kIsWeb) return this;
     Database.runInTransaction(TxMode.write, () {
       Message? existing = Message.findOne(guid: guid);
@@ -561,6 +567,9 @@ class Message {
       }
       if (!updateIsBookmarked) {
         isBookmarked = existing?.isBookmarked ?? isBookmarked;
+      }
+      if (!updateSendingServiceId) {
+        sendingServiceId = existing?.sendingServiceId ?? sendingServiceId;
       }
 
       try {
@@ -1284,6 +1293,7 @@ class Message {
       "stagingGuid": stagingGuid,
       "verificationFailed": verificationFailed,
       "amkSessionId": amkSessionId,
+      "sendingServiceId": sendingServiceId,
     };
     if (includeObjects) {
       map['attachments'] = (attachments).map((e) => e!.toMap()).toList();

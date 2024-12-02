@@ -328,8 +328,14 @@ class RustPushBackend implements BackendService {
   }
 
   Future<void> sendMsg(api.DartIMessage msg) async {
+    var message = Message.findOne(guid: msg.id);
+    if (message != null) {
+      message.sendingServiceId = pushService.serviceId;
+      message.save(updateSendingServiceId: true);
+    }
+    var stillRunning = false;
     try {
-      await api.send(state: pushService.state, msg: msg);
+      stillRunning = await api.send(state: pushService.state, msg: msg);
     } catch (e) {
       if (e is AnyhowException) {
         if (e.message.contains("Failed to generate resource") && e.message.contains("not retrying")) {
@@ -337,6 +343,14 @@ class RustPushBackend implements BackendService {
         }
       }
       rethrow;
+    } finally {
+      if (!stillRunning) {
+        message = Message.findOne(guid: msg.id);
+        if (message != null) {
+          message.sendingServiceId = null;
+          message.save(updateSendingServiceId: true);
+        }
+      }
     }
   }
 
@@ -1626,15 +1640,40 @@ class RustPushService extends GetxService {
         result.save(updateUsingHandle: true);
       }
       if (myMsg.message is! api.DartMessage_ChangeParticipants) {
-        var data = await result.getConversationData();
-        // make sure we are in consensus
-        await updateChatParticipants(result, myMsg, data.participants, myMsg.conversation!.participants);
+        var isNormal = myMsg.message is api.DartMessage_Message;
+        var isSms = isNormal && (myMsg.message as api.DartMessage_Message).field0.service is api.DartMessageType_SMS;
+        if (!isSms) {
+          var data = await result.getConversationData();
+          // make sure we are in consensus
+          await updateChatParticipants(result, myMsg, data.participants, myMsg.conversation!.participants);
+        }
       }
     }
     return result;
   }
 
-  Future handleMsg(api.DartIMessage myMsg) async {
+  Future<void> markFailed(Message mistakeFor, String error) async {
+      mistakeFor.stagingGuid = mistakeFor.guid;
+      mistakeFor.generateTempGuid();
+      mistakeFor.guid = mistakeFor.guid!.replaceAll("temp", "error-protocol: $error");
+      var chat = mistakeFor.chat.target!;
+      if (!ls.isAlive || !(cm.getChatController(chat.guid)?.isAlive ?? false)) {
+        await notif.createFailedToSend(chat);
+      }
+      await Message.replaceMessage(mistakeFor.stagingGuid, mistakeFor);
+  }
+
+  Future handleMsg(api.DartPushMessage push) async {
+
+    if (push is api.DartPushMessage_SendConfirm) {
+      var message = Message.findOne(guid: push.uuid)!;
+      print("SendFinished");
+      message.sendingServiceId = null;
+      message.save();
+      return;
+    }
+
+    var myMsg = (push as api.DartPushMessage_IMessage).field0;
     if (myMsg.message is api.DartMessage_EnableSmsActivation) {
       if (myMsg.verificationFailed) return;
       var message = myMsg.message as api.DartMessage_EnableSmsActivation;
@@ -1656,13 +1695,7 @@ class RustPushService extends GetxService {
       var message = myMsg.message as api.DartMessage_Error;
       var mistakeFor = Message.findOne(guid: message.field0.forUuid);
       if (mistakeFor == null) return; // multiple errors will likely come in, at which point guid will be bad.
-      mistakeFor.stagingGuid = mistakeFor.guid;
-      mistakeFor.guid = "error-protocol: ${message.field0.statusStr}";
-      var chat = mistakeFor.chat.target!;
-      if (!ls.isAlive || !(cm.getChatController(chat.guid)?.isAlive ?? false)) {
-        await notif.createFailedToSend(chat);
-      }
-      await Message.replaceMessage(mistakeFor.guid, mistakeFor);
+      markFailed(mistakeFor, message.field0.statusStr);
       return;
     }
     if (myMsg.message is api.DartMessage_UpdateExtension) {
@@ -1991,6 +2024,9 @@ class RustPushService extends GetxService {
     }
   }
 
+  // uniquely identify the backend service that is running
+  String serviceId = "";
+
   @override
   Future<void> onInit() async {
     super.onInit();
@@ -2001,14 +2037,16 @@ class RustPushService extends GetxService {
       });
       if (Platform.isAndroid) {
         Logger.info("tryingService");
-        String result = await mcs.invokeMethod("get-native-handle");
-        state = await api.serviceFromPtr(ptr: result);
+        serviceId = await mcs.invokeMethod("get-native-handle");
+        state = await api.serviceFromPtr(ptr: serviceId);
+        Logger.info("statecheck");
         if ((await api.getPhase(state: state)) == api.RegistrationPhase.registered) {
           ss.settings.finishedSetup.value = true;
         }
         Logger.info("service");
       } else {
         state = await api.newPushState(dir: fs.appDocDir.path);
+        serviceId = randomString(8);
         if ((await api.getPhase(state: state)) == api.RegistrationPhase.registered) {
           ss.settings.finishedSetup.value = true;
           doPoll();
@@ -2016,7 +2054,16 @@ class RustPushService extends GetxService {
       }
     })();
     await initFuture;
+    Logger.info("initDone");
     await correctState();
+    final sendingProgress = Database.messages.query(Message_.sendingServiceId.notNull()).build().find();
+    for (var item in sendingProgress) {
+      // we are still sending
+      if (item.sendingServiceId == serviceId) continue;
+      item.sendingServiceId = null;
+      item = item.save(updateSendingServiceId: true);
+      markFailed(item, "Crashed while still sending");
+    }
     if (ls.isUiThread) await cs.refreshContacts();
     Logger.info("finishInit");
   }

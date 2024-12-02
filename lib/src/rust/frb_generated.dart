@@ -164,7 +164,7 @@ abstract class RustLibApi extends BaseApi {
 
   Future<ArcPushState> crateApiApiNewPushState({required String dir});
 
-  Future<DartIMessage> crateApiApiPtrToDart({required String ptr});
+  Future<DartPushMessage> crateApiApiPtrToDart({required String ptr});
 
   Future<PollResult> crateApiApiRecvWait({required ArcPushState state});
 
@@ -180,7 +180,7 @@ abstract class RustLibApi extends BaseApi {
 
   Future<String> crateApiApiSaveUser({required IdsUser user});
 
-  Future<void> crateApiApiSend(
+  Future<bool> crateApiApiSend(
       {required ArcPushState state, required DartIMessage msg});
 
   Future<DartLoginState> crateApiApiSend2FaSms(
@@ -1026,7 +1026,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
-  Future<DartIMessage> crateApiApiPtrToDart({required String ptr}) {
+  Future<DartPushMessage> crateApiApiPtrToDart({required String ptr}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         final serializer = SseSerializer(generalizedFrbRustBinding);
@@ -1035,7 +1035,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             funcId: 29, port: port_);
       },
       codec: SseCodec(
-        decodeSuccessData: sse_decode_dart_i_message,
+        decodeSuccessData: sse_decode_dart_push_message,
         decodeErrorData: null,
       ),
       constMeta: kCrateApiApiPtrToDartConstMeta,
@@ -1205,7 +1205,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
-  Future<void> crateApiApiSend(
+  Future<bool> crateApiApiSend(
       {required ArcPushState state, required DartIMessage msg}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
@@ -1217,7 +1217,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             funcId: 36, port: port_);
       },
       codec: SseCodec(
-        decodeSuccessData: sse_decode_unit,
+        decodeSuccessData: sse_decode_bool,
         decodeErrorData: sse_decode_AnyhowException,
       ),
       constMeta: kCrateApiApiSendConstMeta,
@@ -1831,6 +1831,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  DartPushMessage dco_decode_box_autoadd_dart_push_message(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_dart_push_message(raw);
+  }
+
+  @protected
   DartReactMessage dco_decode_box_autoadd_dart_react_message(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return dco_decode_dart_react_message(raw);
@@ -2372,6 +2378,24 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  DartPushMessage dco_decode_dart_push_message(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    switch (raw[0]) {
+      case 0:
+        return DartPushMessage_IMessage(
+          dco_decode_box_autoadd_dart_i_message(raw[1]),
+        );
+      case 1:
+        return DartPushMessage_SendConfirm(
+          uuid: dco_decode_String(raw[1]),
+          error: dco_decode_opt_String(raw[2]),
+        );
+      default:
+        throw Exception("unreachable");
+    }
+  }
+
+  @protected
   DartReactMessage dco_decode_dart_react_message(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
@@ -2795,12 +2819,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  DartIMessage? dco_decode_opt_box_autoadd_dart_i_message(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return raw == null ? null : dco_decode_box_autoadd_dart_i_message(raw);
-  }
-
-  @protected
   DartLinkMeta? dco_decode_opt_box_autoadd_dart_link_meta(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw == null ? null : dco_decode_box_autoadd_dart_link_meta(raw);
@@ -2823,6 +2841,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw == null ? null : dco_decode_box_autoadd_dart_part_extension(raw);
+  }
+
+  @protected
+  DartPushMessage? dco_decode_opt_box_autoadd_dart_push_message(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_box_autoadd_dart_push_message(raw);
   }
 
   @protected
@@ -2909,7 +2933,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         return PollResult_Stop();
       case 1:
         return PollResult_Cont(
-          dco_decode_opt_box_autoadd_dart_i_message(raw[1]),
+          dco_decode_opt_box_autoadd_dart_push_message(raw[1]),
         );
       default:
         throw Exception("unreachable");
@@ -3312,6 +3336,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return (sse_decode_dart_part_extension(deserializer));
+  }
+
+  @protected
+  DartPushMessage sse_decode_box_autoadd_dart_push_message(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_dart_push_message(deserializer));
   }
 
   @protected
@@ -3893,6 +3924,24 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  DartPushMessage sse_decode_dart_push_message(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var tag_ = sse_decode_i_32(deserializer);
+    switch (tag_) {
+      case 0:
+        var var_field0 = sse_decode_box_autoadd_dart_i_message(deserializer);
+        return DartPushMessage_IMessage(var_field0);
+      case 1:
+        var var_uuid = sse_decode_String(deserializer);
+        var var_error = sse_decode_opt_String(deserializer);
+        return DartPushMessage_SendConfirm(uuid: var_uuid, error: var_error);
+      default:
+        throw UnimplementedError('');
+    }
+  }
+
+  @protected
   DartReactMessage sse_decode_dart_react_message(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var var_toUuid = sse_decode_String(deserializer);
@@ -4400,18 +4449,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  DartIMessage? sse_decode_opt_box_autoadd_dart_i_message(
-      SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-
-    if (sse_decode_bool(deserializer)) {
-      return (sse_decode_box_autoadd_dart_i_message(deserializer));
-    } else {
-      return null;
-    }
-  }
-
-  @protected
   DartLinkMeta? sse_decode_opt_box_autoadd_dart_link_meta(
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -4454,6 +4491,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
     if (sse_decode_bool(deserializer)) {
       return (sse_decode_box_autoadd_dart_part_extension(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
+  DartPushMessage? sse_decode_opt_box_autoadd_dart_push_message(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_box_autoadd_dart_push_message(deserializer));
     } else {
       return null;
     }
@@ -4600,7 +4649,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         return PollResult_Stop();
       case 1:
         var var_field0 =
-            sse_decode_opt_box_autoadd_dart_i_message(deserializer);
+            sse_decode_opt_box_autoadd_dart_push_message(deserializer);
         return PollResult_Cont(var_field0);
       default:
         throw UnimplementedError('');
@@ -5007,6 +5056,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       DartPartExtension self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_dart_part_extension(self, serializer);
+  }
+
+  @protected
+  void sse_encode_box_autoadd_dart_push_message(
+      DartPushMessage self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_dart_push_message(self, serializer);
   }
 
   @protected
@@ -5497,6 +5553,23 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_dart_push_message(
+      DartPushMessage self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    switch (self) {
+      case DartPushMessage_IMessage(field0: final field0):
+        sse_encode_i_32(0, serializer);
+        sse_encode_box_autoadd_dart_i_message(field0, serializer);
+      case DartPushMessage_SendConfirm(uuid: final uuid, error: final error):
+        sse_encode_i_32(1, serializer);
+        sse_encode_String(uuid, serializer);
+        sse_encode_opt_String(error, serializer);
+      default:
+        throw UnimplementedError('');
+    }
+  }
+
+  @protected
   void sse_encode_dart_react_message(
       DartReactMessage self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -5932,17 +6005,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  void sse_encode_opt_box_autoadd_dart_i_message(
-      DartIMessage? self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-
-    sse_encode_bool(self != null, serializer);
-    if (self != null) {
-      sse_encode_box_autoadd_dart_i_message(self, serializer);
-    }
-  }
-
-  @protected
   void sse_encode_opt_box_autoadd_dart_link_meta(
       DartLinkMeta? self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -5983,6 +6045,17 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_bool(self != null, serializer);
     if (self != null) {
       sse_encode_box_autoadd_dart_part_extension(self, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_opt_box_autoadd_dart_push_message(
+      DartPushMessage? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_box_autoadd_dart_push_message(self, serializer);
     }
   }
 
@@ -6114,7 +6187,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_i_32(0, serializer);
       case PollResult_Cont(field0: final field0):
         sse_encode_i_32(1, serializer);
-        sse_encode_opt_box_autoadd_dart_i_message(field0, serializer);
+        sse_encode_opt_box_autoadd_dart_push_message(field0, serializer);
       default:
         throw UnimplementedError('');
     }

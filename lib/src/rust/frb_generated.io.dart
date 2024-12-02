@@ -184,6 +184,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   DartPartExtension dco_decode_box_autoadd_dart_part_extension(dynamic raw);
 
   @protected
+  DartPushMessage dco_decode_box_autoadd_dart_push_message(dynamic raw);
+
+  @protected
   DartReactMessage dco_decode_box_autoadd_dart_react_message(dynamic raw);
 
   @protected
@@ -299,6 +302,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   DartPrivateDeviceInfo dco_decode_dart_private_device_info(dynamic raw);
+
+  @protected
+  DartPushMessage dco_decode_dart_push_message(dynamic raw);
 
   @protected
   DartReactMessage dco_decode_dart_react_message(dynamic raw);
@@ -444,9 +450,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   DartExtensionApp? dco_decode_opt_box_autoadd_dart_extension_app(dynamic raw);
 
   @protected
-  DartIMessage? dco_decode_opt_box_autoadd_dart_i_message(dynamic raw);
-
-  @protected
   DartLinkMeta? dco_decode_opt_box_autoadd_dart_link_meta(dynamic raw);
 
   @protected
@@ -458,6 +461,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   DartPartExtension? dco_decode_opt_box_autoadd_dart_part_extension(
       dynamic raw);
+
+  @protected
+  DartPushMessage? dco_decode_opt_box_autoadd_dart_push_message(dynamic raw);
 
   @protected
   DartSupportAction? dco_decode_opt_box_autoadd_dart_support_action(
@@ -703,6 +709,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       SseDeserializer deserializer);
 
   @protected
+  DartPushMessage sse_decode_box_autoadd_dart_push_message(
+      SseDeserializer deserializer);
+
+  @protected
   DartReactMessage sse_decode_box_autoadd_dart_react_message(
       SseDeserializer deserializer);
 
@@ -838,6 +848,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   DartPrivateDeviceInfo sse_decode_dart_private_device_info(
       SseDeserializer deserializer);
+
+  @protected
+  DartPushMessage sse_decode_dart_push_message(SseDeserializer deserializer);
 
   @protected
   DartReactMessage sse_decode_dart_react_message(SseDeserializer deserializer);
@@ -999,10 +1012,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       SseDeserializer deserializer);
 
   @protected
-  DartIMessage? sse_decode_opt_box_autoadd_dart_i_message(
-      SseDeserializer deserializer);
-
-  @protected
   DartLinkMeta? sse_decode_opt_box_autoadd_dart_link_meta(
       SseDeserializer deserializer);
 
@@ -1016,6 +1025,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   DartPartExtension? sse_decode_opt_box_autoadd_dart_part_extension(
+      SseDeserializer deserializer);
+
+  @protected
+  DartPushMessage? sse_decode_opt_box_autoadd_dart_push_message(
       SseDeserializer deserializer);
 
   @protected
@@ -1269,6 +1282,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       DartPartExtension self, SseSerializer serializer);
 
   @protected
+  void sse_encode_box_autoadd_dart_push_message(
+      DartPushMessage self, SseSerializer serializer);
+
+  @protected
   void sse_encode_box_autoadd_dart_react_message(
       DartReactMessage self, SseSerializer serializer);
 
@@ -1411,6 +1428,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_dart_private_device_info(
       DartPrivateDeviceInfo self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_dart_push_message(
+      DartPushMessage self, SseSerializer serializer);
 
   @protected
   void sse_encode_dart_react_message(
@@ -1581,10 +1602,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       DartExtensionApp? self, SseSerializer serializer);
 
   @protected
-  void sse_encode_opt_box_autoadd_dart_i_message(
-      DartIMessage? self, SseSerializer serializer);
-
-  @protected
   void sse_encode_opt_box_autoadd_dart_link_meta(
       DartLinkMeta? self, SseSerializer serializer);
 
@@ -1599,6 +1616,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_opt_box_autoadd_dart_part_extension(
       DartPartExtension? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_dart_push_message(
+      DartPushMessage? self, SseSerializer serializer);
 
   @protected
   void sse_encode_opt_box_autoadd_dart_support_action(

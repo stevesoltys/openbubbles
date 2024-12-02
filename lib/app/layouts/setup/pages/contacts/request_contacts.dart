@@ -70,7 +70,7 @@ class RequestContacts extends StatelessWidget {
           );
         } else {
           if (usingRustPush) {
-            await cs.refreshContacts();
+            cs.refreshContacts();
           }
           return true;
         }

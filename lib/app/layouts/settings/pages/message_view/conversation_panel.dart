@@ -459,7 +459,7 @@ class _ConversationPanelState extends OptimizedState<ConversationPanel> {
               ),
 
               SettingsHeader(iosSubtitle: iosSubtitle, materialSubtitle: materialSubtitle, text: "Interaction Settings"),
-                SettingsSection(
+                Obx(() => SettingsSection(
                   backgroundColor: tileColor,
                   children: [
                     SettingsSwitch(
@@ -682,7 +682,7 @@ class _ConversationPanelState extends OptimizedState<ConversationPanel> {
                       ),
                     ),
                   ],
-                )
+                ))
             ],
           ),
         ),

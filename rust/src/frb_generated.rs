@@ -3212,6 +3212,30 @@ impl SseDecode for crate::api::api::DartPrivateDeviceInfo {
     }
 }
 
+impl SseDecode for crate::api::api::DartPushMessage {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut tag_ = <i32>::sse_decode(deserializer);
+        match tag_ {
+            0 => {
+                let mut var_field0 = <crate::api::api::DartIMessage>::sse_decode(deserializer);
+                return crate::api::api::DartPushMessage::IMessage(var_field0);
+            }
+            1 => {
+                let mut var_uuid = <String>::sse_decode(deserializer);
+                let mut var_error = <Option<String>>::sse_decode(deserializer);
+                return crate::api::api::DartPushMessage::SendConfirm {
+                    uuid: var_uuid,
+                    error: var_error,
+                };
+            }
+            _ => {
+                unimplemented!("");
+            }
+        }
+    }
+}
+
 impl SseDecode for crate::api::api::DartReactMessage {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -3768,17 +3792,6 @@ impl SseDecode for Option<crate::api::api::DartExtensionApp> {
     }
 }
 
-impl SseDecode for Option<crate::api::api::DartIMessage> {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        if (<bool>::sse_decode(deserializer)) {
-            return Some(<crate::api::api::DartIMessage>::sse_decode(deserializer));
-        } else {
-            return None;
-        }
-    }
-}
-
 impl SseDecode for Option<crate::api::api::DartLinkMeta> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -3819,6 +3832,17 @@ impl SseDecode for Option<crate::api::api::DartPartExtension> {
             return Some(<crate::api::api::DartPartExtension>::sse_decode(
                 deserializer,
             ));
+        } else {
+            return None;
+        }
+    }
+}
+
+impl SseDecode for Option<crate::api::api::DartPushMessage> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<crate::api::api::DartPushMessage>::sse_decode(deserializer));
         } else {
             return None;
         }
@@ -3968,7 +3992,7 @@ impl SseDecode for crate::api::api::PollResult {
             }
             1 => {
                 let mut var_field0 =
-                    <Option<crate::api::api::DartIMessage>>::sse_decode(deserializer);
+                    <Option<crate::api::api::DartPushMessage>>::sse_decode(deserializer);
                 return crate::api::api::PollResult::Cont(var_field0);
             }
             _ => {
@@ -4902,6 +4926,36 @@ impl flutter_rust_bridge::IntoIntoDart<crate::api::api::DartPrivateDeviceInfo>
     for crate::api::api::DartPrivateDeviceInfo
 {
     fn into_into_dart(self) -> crate::api::api::DartPrivateDeviceInfo {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::api::DartPushMessage {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        match self {
+            crate::api::api::DartPushMessage::IMessage(field0) => {
+                [0.into_dart(), field0.into_into_dart().into_dart()].into_dart()
+            }
+            crate::api::api::DartPushMessage::SendConfirm { uuid, error } => [
+                1.into_dart(),
+                uuid.into_into_dart().into_dart(),
+                error.into_into_dart().into_dart(),
+            ]
+            .into_dart(),
+            _ => {
+                unimplemented!("");
+            }
+        }
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::api::api::DartPushMessage
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::api::DartPushMessage>
+    for crate::api::api::DartPushMessage
+{
+    fn into_into_dart(self) -> crate::api::api::DartPushMessage {
         self
     }
 }
@@ -5995,6 +6049,26 @@ impl SseEncode for crate::api::api::DartPrivateDeviceInfo {
     }
 }
 
+impl SseEncode for crate::api::api::DartPushMessage {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        match self {
+            crate::api::api::DartPushMessage::IMessage(field0) => {
+                <i32>::sse_encode(0, serializer);
+                <crate::api::api::DartIMessage>::sse_encode(field0, serializer);
+            }
+            crate::api::api::DartPushMessage::SendConfirm { uuid, error } => {
+                <i32>::sse_encode(1, serializer);
+                <String>::sse_encode(uuid, serializer);
+                <Option<String>>::sse_encode(error, serializer);
+            }
+            _ => {
+                unimplemented!("");
+            }
+        }
+    }
+}
+
 impl SseEncode for crate::api::api::DartReactMessage {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -6438,16 +6512,6 @@ impl SseEncode for Option<crate::api::api::DartExtensionApp> {
     }
 }
 
-impl SseEncode for Option<crate::api::api::DartIMessage> {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <bool>::sse_encode(self.is_some(), serializer);
-        if let Some(value) = self {
-            <crate::api::api::DartIMessage>::sse_encode(value, serializer);
-        }
-    }
-}
-
 impl SseEncode for Option<crate::api::api::DartLinkMeta> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -6484,6 +6548,16 @@ impl SseEncode for Option<crate::api::api::DartPartExtension> {
         <bool>::sse_encode(self.is_some(), serializer);
         if let Some(value) = self {
             <crate::api::api::DartPartExtension>::sse_encode(value, serializer);
+        }
+    }
+}
+
+impl SseEncode for Option<crate::api::api::DartPushMessage> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <crate::api::api::DartPushMessage>::sse_encode(value, serializer);
         }
     }
 }
@@ -6607,7 +6681,7 @@ impl SseEncode for crate::api::api::PollResult {
             }
             crate::api::api::PollResult::Cont(field0) => {
                 <i32>::sse_encode(1, serializer);
-                <Option<crate::api::api::DartIMessage>>::sse_encode(field0, serializer);
+                <Option<crate::api::api::DartPushMessage>>::sse_encode(field0, serializer);
             }
             _ => {
                 unimplemented!("");

@@ -69,6 +69,7 @@ class _CupertinoConversationTileState extends CustomState<CupertinoConversationT
                         color: controller.shouldHighlight.value ? context.theme.colorScheme.onBubble(context, controller.chat.isIMessage) : null),
                   ),
                 ),
+                const SizedBox(width: 10,),
                 CupertinoTrailing(parentController: controller),
               ],
             ),
@@ -220,7 +221,8 @@ class _CupertinoTrailingState extends CustomState<CupertinoTrailing, void, Conve
             return Text(
               (cachedLatestMessage?.error ?? 0) > 0
                   ? "Error"
-                  : "${indicatorText.isNotEmpty && indicatorText != "None" ? "$indicatorText\n" : ""}${buildDate(dateCreated)}",
+                  // fix layout
+                  : "${indicatorText.isNotEmpty && indicatorText != "None" ? "$indicatorText " : ""}${buildDate(dateCreated)}",
               textAlign: TextAlign.right,
               style: context.theme.textTheme.bodySmall!
                   .copyWith(

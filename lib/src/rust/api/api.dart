@@ -57,13 +57,13 @@ Future<DartDeviceInfo> getDeviceInfo({required JoinedOsConfig config}) =>
 Future<JoinedOsConfig> configFromEncoded({required List<int> encoded}) =>
     RustLib.instance.api.crateApiApiConfigFromEncoded(encoded: encoded);
 
-Future<DartIMessage> ptrToDart({required String ptr}) =>
+Future<DartPushMessage> ptrToDart({required String ptr}) =>
     RustLib.instance.api.crateApiApiPtrToDart(ptr: ptr);
 
 Future<PollResult> recvWait({required ArcPushState state}) =>
     RustLib.instance.api.crateApiApiRecvWait(state: state);
 
-Future<void> send({required ArcPushState state, required DartIMessage msg}) =>
+Future<bool> send({required ArcPushState state, required DartIMessage msg}) =>
     RustLib.instance.api.crateApiApiSend(state: state, msg: msg);
 
 Future<List<String>> getHandles({required ArcPushState state}) =>
@@ -906,6 +906,19 @@ class DartPrivateDeviceInfo {
           subServices == other.subServices;
 }
 
+@freezed
+sealed class DartPushMessage with _$DartPushMessage {
+  const DartPushMessage._();
+
+  const factory DartPushMessage.iMessage(
+    DartIMessage field0,
+  ) = DartPushMessage_IMessage;
+  const factory DartPushMessage.sendConfirm({
+    required String uuid,
+    String? error,
+  }) = DartPushMessage_SendConfirm;
+}
+
 class DartReactMessage {
   final String toUuid;
   final int? toPart;
@@ -1332,7 +1345,7 @@ sealed class PollResult with _$PollResult {
 
   const factory PollResult.stop() = PollResult_Stop;
   const factory PollResult.cont([
-    DartIMessage? field0,
+    DartPushMessage? field0,
   ]) = PollResult_Cont;
 }
 

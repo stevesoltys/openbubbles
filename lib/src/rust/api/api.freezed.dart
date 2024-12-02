@@ -8487,6 +8487,371 @@ abstract class DartPartExtension_Sticker extends DartPartExtension {
 }
 
 /// @nodoc
+mixin _$DartPushMessage {
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(DartIMessage field0) iMessage,
+    required TResult Function(String uuid, String? error) sendConfirm,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(DartIMessage field0)? iMessage,
+    TResult? Function(String uuid, String? error)? sendConfirm,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(DartIMessage field0)? iMessage,
+    TResult Function(String uuid, String? error)? sendConfirm,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(DartPushMessage_IMessage value) iMessage,
+    required TResult Function(DartPushMessage_SendConfirm value) sendConfirm,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(DartPushMessage_IMessage value)? iMessage,
+    TResult? Function(DartPushMessage_SendConfirm value)? sendConfirm,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(DartPushMessage_IMessage value)? iMessage,
+    TResult Function(DartPushMessage_SendConfirm value)? sendConfirm,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $DartPushMessageCopyWith<$Res> {
+  factory $DartPushMessageCopyWith(
+          DartPushMessage value, $Res Function(DartPushMessage) then) =
+      _$DartPushMessageCopyWithImpl<$Res, DartPushMessage>;
+}
+
+/// @nodoc
+class _$DartPushMessageCopyWithImpl<$Res, $Val extends DartPushMessage>
+    implements $DartPushMessageCopyWith<$Res> {
+  _$DartPushMessageCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of DartPushMessage
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+abstract class _$$DartPushMessage_IMessageImplCopyWith<$Res> {
+  factory _$$DartPushMessage_IMessageImplCopyWith(
+          _$DartPushMessage_IMessageImpl value,
+          $Res Function(_$DartPushMessage_IMessageImpl) then) =
+      __$$DartPushMessage_IMessageImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({DartIMessage field0});
+}
+
+/// @nodoc
+class __$$DartPushMessage_IMessageImplCopyWithImpl<$Res>
+    extends _$DartPushMessageCopyWithImpl<$Res, _$DartPushMessage_IMessageImpl>
+    implements _$$DartPushMessage_IMessageImplCopyWith<$Res> {
+  __$$DartPushMessage_IMessageImplCopyWithImpl(
+      _$DartPushMessage_IMessageImpl _value,
+      $Res Function(_$DartPushMessage_IMessageImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of DartPushMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? field0 = null,
+  }) {
+    return _then(_$DartPushMessage_IMessageImpl(
+      null == field0
+          ? _value.field0
+          : field0 // ignore: cast_nullable_to_non_nullable
+              as DartIMessage,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$DartPushMessage_IMessageImpl extends DartPushMessage_IMessage {
+  const _$DartPushMessage_IMessageImpl(this.field0) : super._();
+
+  @override
+  final DartIMessage field0;
+
+  @override
+  String toString() {
+    return 'DartPushMessage.iMessage(field0: $field0)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$DartPushMessage_IMessageImpl &&
+            (identical(other.field0, field0) || other.field0 == field0));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, field0);
+
+  /// Create a copy of DartPushMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$DartPushMessage_IMessageImplCopyWith<_$DartPushMessage_IMessageImpl>
+      get copyWith => __$$DartPushMessage_IMessageImplCopyWithImpl<
+          _$DartPushMessage_IMessageImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(DartIMessage field0) iMessage,
+    required TResult Function(String uuid, String? error) sendConfirm,
+  }) {
+    return iMessage(field0);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(DartIMessage field0)? iMessage,
+    TResult? Function(String uuid, String? error)? sendConfirm,
+  }) {
+    return iMessage?.call(field0);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(DartIMessage field0)? iMessage,
+    TResult Function(String uuid, String? error)? sendConfirm,
+    required TResult orElse(),
+  }) {
+    if (iMessage != null) {
+      return iMessage(field0);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(DartPushMessage_IMessage value) iMessage,
+    required TResult Function(DartPushMessage_SendConfirm value) sendConfirm,
+  }) {
+    return iMessage(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(DartPushMessage_IMessage value)? iMessage,
+    TResult? Function(DartPushMessage_SendConfirm value)? sendConfirm,
+  }) {
+    return iMessage?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(DartPushMessage_IMessage value)? iMessage,
+    TResult Function(DartPushMessage_SendConfirm value)? sendConfirm,
+    required TResult orElse(),
+  }) {
+    if (iMessage != null) {
+      return iMessage(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class DartPushMessage_IMessage extends DartPushMessage {
+  const factory DartPushMessage_IMessage(final DartIMessage field0) =
+      _$DartPushMessage_IMessageImpl;
+  const DartPushMessage_IMessage._() : super._();
+
+  DartIMessage get field0;
+
+  /// Create a copy of DartPushMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$DartPushMessage_IMessageImplCopyWith<_$DartPushMessage_IMessageImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$DartPushMessage_SendConfirmImplCopyWith<$Res> {
+  factory _$$DartPushMessage_SendConfirmImplCopyWith(
+          _$DartPushMessage_SendConfirmImpl value,
+          $Res Function(_$DartPushMessage_SendConfirmImpl) then) =
+      __$$DartPushMessage_SendConfirmImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String uuid, String? error});
+}
+
+/// @nodoc
+class __$$DartPushMessage_SendConfirmImplCopyWithImpl<$Res>
+    extends _$DartPushMessageCopyWithImpl<$Res,
+        _$DartPushMessage_SendConfirmImpl>
+    implements _$$DartPushMessage_SendConfirmImplCopyWith<$Res> {
+  __$$DartPushMessage_SendConfirmImplCopyWithImpl(
+      _$DartPushMessage_SendConfirmImpl _value,
+      $Res Function(_$DartPushMessage_SendConfirmImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of DartPushMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? uuid = null,
+    Object? error = freezed,
+  }) {
+    return _then(_$DartPushMessage_SendConfirmImpl(
+      uuid: null == uuid
+          ? _value.uuid
+          : uuid // ignore: cast_nullable_to_non_nullable
+              as String,
+      error: freezed == error
+          ? _value.error
+          : error // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$DartPushMessage_SendConfirmImpl extends DartPushMessage_SendConfirm {
+  const _$DartPushMessage_SendConfirmImpl({required this.uuid, this.error})
+      : super._();
+
+  @override
+  final String uuid;
+  @override
+  final String? error;
+
+  @override
+  String toString() {
+    return 'DartPushMessage.sendConfirm(uuid: $uuid, error: $error)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$DartPushMessage_SendConfirmImpl &&
+            (identical(other.uuid, uuid) || other.uuid == uuid) &&
+            (identical(other.error, error) || other.error == error));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, uuid, error);
+
+  /// Create a copy of DartPushMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$DartPushMessage_SendConfirmImplCopyWith<_$DartPushMessage_SendConfirmImpl>
+      get copyWith => __$$DartPushMessage_SendConfirmImplCopyWithImpl<
+          _$DartPushMessage_SendConfirmImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(DartIMessage field0) iMessage,
+    required TResult Function(String uuid, String? error) sendConfirm,
+  }) {
+    return sendConfirm(uuid, error);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(DartIMessage field0)? iMessage,
+    TResult? Function(String uuid, String? error)? sendConfirm,
+  }) {
+    return sendConfirm?.call(uuid, error);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(DartIMessage field0)? iMessage,
+    TResult Function(String uuid, String? error)? sendConfirm,
+    required TResult orElse(),
+  }) {
+    if (sendConfirm != null) {
+      return sendConfirm(uuid, error);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(DartPushMessage_IMessage value) iMessage,
+    required TResult Function(DartPushMessage_SendConfirm value) sendConfirm,
+  }) {
+    return sendConfirm(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(DartPushMessage_IMessage value)? iMessage,
+    TResult? Function(DartPushMessage_SendConfirm value)? sendConfirm,
+  }) {
+    return sendConfirm?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(DartPushMessage_IMessage value)? iMessage,
+    TResult Function(DartPushMessage_SendConfirm value)? sendConfirm,
+    required TResult orElse(),
+  }) {
+    if (sendConfirm != null) {
+      return sendConfirm(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class DartPushMessage_SendConfirm extends DartPushMessage {
+  const factory DartPushMessage_SendConfirm(
+      {required final String uuid,
+      final String? error}) = _$DartPushMessage_SendConfirmImpl;
+  const DartPushMessage_SendConfirm._() : super._();
+
+  String get uuid;
+  String? get error;
+
+  /// Create a copy of DartPushMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$DartPushMessage_SendConfirmImplCopyWith<_$DartPushMessage_SendConfirmImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
 mixin _$DartReactMessageType {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
@@ -9384,19 +9749,19 @@ mixin _$PollResult {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() stop,
-    required TResult Function(DartIMessage? field0) cont,
+    required TResult Function(DartPushMessage? field0) cont,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? stop,
-    TResult? Function(DartIMessage? field0)? cont,
+    TResult? Function(DartPushMessage? field0)? cont,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? stop,
-    TResult Function(DartIMessage? field0)? cont,
+    TResult Function(DartPushMessage? field0)? cont,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -9484,7 +9849,7 @@ class _$PollResult_StopImpl extends PollResult_Stop {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() stop,
-    required TResult Function(DartIMessage? field0) cont,
+    required TResult Function(DartPushMessage? field0) cont,
   }) {
     return stop();
   }
@@ -9493,7 +9858,7 @@ class _$PollResult_StopImpl extends PollResult_Stop {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? stop,
-    TResult? Function(DartIMessage? field0)? cont,
+    TResult? Function(DartPushMessage? field0)? cont,
   }) {
     return stop?.call();
   }
@@ -9502,7 +9867,7 @@ class _$PollResult_StopImpl extends PollResult_Stop {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? stop,
-    TResult Function(DartIMessage? field0)? cont,
+    TResult Function(DartPushMessage? field0)? cont,
     required TResult orElse(),
   }) {
     if (stop != null) {
@@ -9554,7 +9919,9 @@ abstract class _$$PollResult_ContImplCopyWith<$Res> {
           $Res Function(_$PollResult_ContImpl) then) =
       __$$PollResult_ContImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({DartIMessage? field0});
+  $Res call({DartPushMessage? field0});
+
+  $DartPushMessageCopyWith<$Res>? get field0;
 }
 
 /// @nodoc
@@ -9576,8 +9943,22 @@ class __$$PollResult_ContImplCopyWithImpl<$Res>
       freezed == field0
           ? _value.field0
           : field0 // ignore: cast_nullable_to_non_nullable
-              as DartIMessage?,
+              as DartPushMessage?,
     ));
+  }
+
+  /// Create a copy of PollResult
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $DartPushMessageCopyWith<$Res>? get field0 {
+    if (_value.field0 == null) {
+      return null;
+    }
+
+    return $DartPushMessageCopyWith<$Res>(_value.field0!, (value) {
+      return _then(_value.copyWith(field0: value));
+    });
   }
 }
 
@@ -9587,7 +9968,7 @@ class _$PollResult_ContImpl extends PollResult_Cont {
   const _$PollResult_ContImpl([this.field0]) : super._();
 
   @override
-  final DartIMessage? field0;
+  final DartPushMessage? field0;
 
   @override
   String toString() {
@@ -9618,7 +9999,7 @@ class _$PollResult_ContImpl extends PollResult_Cont {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() stop,
-    required TResult Function(DartIMessage? field0) cont,
+    required TResult Function(DartPushMessage? field0) cont,
   }) {
     return cont(field0);
   }
@@ -9627,7 +10008,7 @@ class _$PollResult_ContImpl extends PollResult_Cont {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? stop,
-    TResult? Function(DartIMessage? field0)? cont,
+    TResult? Function(DartPushMessage? field0)? cont,
   }) {
     return cont?.call(field0);
   }
@@ -9636,7 +10017,7 @@ class _$PollResult_ContImpl extends PollResult_Cont {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? stop,
-    TResult Function(DartIMessage? field0)? cont,
+    TResult Function(DartPushMessage? field0)? cont,
     required TResult orElse(),
   }) {
     if (cont != null) {
@@ -9678,11 +10059,11 @@ class _$PollResult_ContImpl extends PollResult_Cont {
 }
 
 abstract class PollResult_Cont extends PollResult {
-  const factory PollResult_Cont([final DartIMessage? field0]) =
+  const factory PollResult_Cont([final DartPushMessage? field0]) =
       _$PollResult_ContImpl;
   const PollResult_Cont._() : super._();
 
-  DartIMessage? get field0;
+  DartPushMessage? get field0;
 
   /// Create a copy of PollResult
   /// with the given fields replaced by the non-null parameter values.
