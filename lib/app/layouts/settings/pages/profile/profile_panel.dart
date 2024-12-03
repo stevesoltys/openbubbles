@@ -450,7 +450,7 @@ class _ProfilePanelState extends OptimizedState<ProfilePanel> with WidgetsBindin
                             });
                           },
                           initialVal: ss.settings.isSmsRouter.value,
-                          title: "Use SMS with this phone",
+                          title: "Use SMS with this phone (BETA)",
                           subtitle: "Use this phone with OpenBubbles and your other Apple devices${(accountInfo['vetted_aliases']?.any((i) => !GetUtils.isEmail(i['Alias'])) ?? false) ? "" : ". Warning: no phone handles are registered; official Apple clients will only be able to receive forwarded SMS"}",
                           backgroundColor: tileColor,
                           isThreeLine: true,

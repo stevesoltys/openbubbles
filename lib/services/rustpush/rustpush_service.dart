@@ -1669,7 +1669,7 @@ class RustPushService extends GetxService {
       var message = Message.findOne(guid: push.uuid)!;
       print("SendFinished");
       message.sendingServiceId = null;
-      message.save();
+      message.save(updateSendingServiceId: true);
       return;
     }
 

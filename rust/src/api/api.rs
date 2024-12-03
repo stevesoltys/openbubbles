@@ -998,6 +998,7 @@ pub async fn send(state: &Arc<PushState>, msg: DartIMessage) -> anyhow::Result<b
         let uuid = msg.id.clone();
         tokio::spawn(async move {
             let result = handle.await.unwrap();
+            info!("Finished handle");
             let locked = state_cpy.0.read().await;
             let maybeerr = result.err().map(|err| format!("{}", err));
             let _ = locked.local_broadcast.send(DartPushMessage::SendConfirm { uuid, error: maybeerr }).await;

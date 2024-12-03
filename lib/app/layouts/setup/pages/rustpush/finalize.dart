@@ -104,7 +104,7 @@ class _FinalizePageState extends OptimizedState<FinalizePage> {
                     });
                   },
                   initialVal: ss.settings.isSmsRouter.value,
-                  title: "Use SMS with this phone",
+                  title: "Use SMS with this phone (BETA)",
                   subtitle: "Use this phone with OpenBubbles and your other Apple devices",
                   backgroundColor: tileColor,
                   isThreeLine: true,
