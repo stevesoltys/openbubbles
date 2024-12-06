@@ -1016,12 +1016,19 @@ class RustPushBackend implements BackendService {
   Future<bool> downloadLivePhoto(Attachment attachment, String target,
       {void Function(int p1, int p2)? onReceiveProgress, CancelToken? cancelToken}) async {
     var rustAttachment = await api.DartAttachment.restore(saved: attachment.metadata!["myIris"]);
-    var stream = api.downloadAttachment(state: pushService.state, attachment: rustAttachment, path: target);
+    var stream = api.downloadAttachment(state: pushService.state, attachment: rustAttachment, path: "${attachment.directory}/$target");
     await for (final event in stream) {
       if (onReceiveProgress != null) {
         onReceiveProgress(event.prog, event.total);
       }
     }
+    final file = PlatformFile(
+      name: target,
+      size: await rustAttachment.getSize(),
+      path: "${attachment.directory}/$target"
+    );
+    await as.saveToDisk(file);
+
     return true;
   }
 
