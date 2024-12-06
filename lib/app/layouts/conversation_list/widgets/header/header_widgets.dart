@@ -236,7 +236,7 @@ class CupertinoOverflowMenu extends StatelessWidget {
       animationAlignmentOverride: Alignment.topRight,
       itemBuilder: (context) => [
         PullDownMenuHeader(
-          title: ss.settings.userName.value,
+          title: ss.settings.redactedMode.value ? "User Name" : ss.settings.userName.value,
           icon: CupertinoIcons.chevron_right,
           leadingBuilder: (context, constraints) {
             return Container(constraints: constraints, child: ContactAvatarWidget(

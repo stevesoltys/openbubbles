@@ -135,7 +135,18 @@ class SearchViewState extends OptimizedState<SearchView> {
       final results = query.find();
       query.close();
 
-      List<Chat> chats = [];
+      if (selectedChat == null) {
+        final q2query = Database.chats.query(Chat_.title.contains(currentSearchTerm!, caseSensitive: false)
+          .and(Chat_.dateDeleted.isNull())).build();
+        q2query.limit = 10;
+        final results = q2query.find();
+        q2query.close();
+        results.sort(Chat.sort);
+        for (var result in results) {
+          search.results.add(Tuple2(result, result.dbLatestMessage));
+        }
+      }
+
       List<Message> messages = [];
       messages = results.map((e) {
         // grab attachments, associated messages, and handle
@@ -144,11 +155,12 @@ class SearchViewState extends OptimizedState<SearchView> {
         e.handle = e.getHandle();
         return e;
       }).toList();
-      chats = results.map((e) => e.chat.target!).toList();
+      List<Chat> chats = results.map((e) => e.chat.target!).toList();
       chats.forEachIndexed((index, element) {
         element.latestMessage = messages[index];
         search.results.add(Tuple2(element, messages[index]));
       });
+
     } else {
       final whereClause = [
         {

@@ -68,6 +68,8 @@ class _SendAnimationState
         controller.preparePlayer(path: ss.settings.sendSoundPath.value!, volume: ss.settings.soundVolume.value / 100).then((_) => controller.startPlayer());
       }
     }
+
+    String? replyRun = part != null ? Message.findOne(guid: replyGuid)?.replyPart(part) : null;
     for (int i = 0; i < attachments.length; i++) {
       final file = attachments[i];
       String data = await DefaultAssetBundle.of(context).loadString("assets/rustpush/uti-map.json");
@@ -90,7 +92,7 @@ class _SendAnimationState
         isFromMe: true,
         handleId: 0,
         threadOriginatorGuid: i == 0 ? replyGuid : null,
-        threadOriginatorPart: i == 0 ? "${part ?? 0}:0:0" : null,
+        threadOriginatorPart: i == 0 ? replyRun : null,
         expressiveSendStyleId: effectId,
         payloadData: payload,
         balloonBundleId: payload?.bundleId,
@@ -125,7 +127,7 @@ class _SendAnimationState
         text: text.isEmpty && subject.isNotEmpty ? subject : text,
         subject: text.isEmpty && subject.isNotEmpty ? null : subject,
         threadOriginatorGuid: attachments.isEmpty ? replyGuid : null,
-        threadOriginatorPart: attachments.isEmpty ? "${part ?? 0}:0:0" : null,
+        threadOriginatorPart: attachments.isEmpty ? replyRun : null,
         expressiveSendStyleId: effectId,
         dateCreated: DateTime.now(),
         hasAttachments: false,

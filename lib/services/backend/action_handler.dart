@@ -338,10 +338,12 @@ class ActionHandler extends GetxService {
   }
 
   Future<void> handleNewMessage(Chat c, Message m, String? tempGuid, {bool checkExisting = true}) async {
+    Logger.info("handling new ${m.id}");
     // sanity check
     if (checkExisting) {
       final existing = Message.findOne(guid: tempGuid ?? m.guid);
       if (existing != null) {
+        Logger.info("handling exsting ${m.id}");
         return await handleUpdatedMessage(c, m, tempGuid, checkExisting: false);
       }
     }

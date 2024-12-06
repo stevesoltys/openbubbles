@@ -64,12 +64,14 @@ void sendEffectAction(
     }
     text = newText.join("");
   }
+  
+  String? replyRun = part != null ? Message.findOne(guid: threadOriginatorGuid)?.replyPart(part) : null;
   int currentPos = 0;
   final message = Message(
     text: text,
     subject: subjectText,
     threadOriginatorGuid: threadOriginatorGuid,
-    threadOriginatorPart: "${part ?? 0}:0:0",
+    threadOriginatorPart: replyRun,
     expressiveSendStyleId: effectMap["slam"],
     dateCreated: DateTime.now(),
     hasAttachments: false,

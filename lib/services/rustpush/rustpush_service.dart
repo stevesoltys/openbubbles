@@ -448,7 +448,6 @@ class RustPushBackend implements BackendService {
       }
     }
     Logger.info("uploaded");
-    var partIndex = int.tryParse(m.threadOriginatorPart?.split(":").firstOrNull ?? "");
     var msg = await api.newMsg(
         state: pushService.state,
         conversation: await chat.getConversationData(),
@@ -461,7 +460,7 @@ class RustPushBackend implements BackendService {
                 api.DartIndexedMessagePart(part_: api.DartMessagePart.attachment(attachment!))
               ]),
           replyGuid: m.threadOriginatorGuid,
-          replyPart: m.threadOriginatorGuid == null ? null : "$partIndex:0:0",
+          replyPart: m.threadOriginatorGuid == null ? null : m.threadOriginatorPart,
           effect: m.expressiveSendStyleId,
           service: await getService(chat.isRpSms, forMessage: m),
           subject: m.subject,
@@ -497,7 +496,6 @@ class RustPushBackend implements BackendService {
       iris: false,
     );
     Logger.info("uploaded");
-    var partIndex = int.tryParse(m.threadOriginatorPart?.split(":").firstOrNull ?? "");
     var service = await getService(chat.isRpSms, forMessage: m);
     var msg = await api.newMsg(
         state: pushService.state,
@@ -507,7 +505,7 @@ class RustPushBackend implements BackendService {
           parts: api.DartMessageParts(
               field0: [api.DartIndexedMessagePart(part_: api.DartMessagePart.attachment(attachment))]),
           replyGuid: m.threadOriginatorGuid,
-          replyPart: m.threadOriginatorGuid == null ? null : "$partIndex:0:0",
+          replyPart: m.threadOriginatorGuid == null ? null : m.threadOriginatorPart,
           effect: m.expressiveSendStyleId,
           service: service,
           voice: false
@@ -738,7 +736,6 @@ class RustPushBackend implements BackendService {
       Logger.error("Failed to generate meta $e $s");
     }
     // await Future.delayed(const Duration(seconds: 15));
-    var partIndex = int.tryParse(m.threadOriginatorPart?.split(":").firstOrNull ?? "");
     api.DartMessageParts parts;
     if (m.attributedBody.isNotEmpty) {
       parts = api.DartMessageParts(field0: m.attributedBody.first.runs.map((e) {
@@ -757,7 +754,7 @@ class RustPushBackend implements BackendService {
       message: api.DartMessage.message(api.DartNormalMessage(
         parts: parts,
         replyGuid: m.threadOriginatorGuid,
-        replyPart: m.threadOriginatorGuid == null ? null : "$partIndex:0:0",
+        replyPart: m.threadOriginatorGuid == null ? null : m.threadOriginatorPart,
         effect: m.expressiveSendStyleId,
         service: await getService(chat.isRpSms, forMessage: m),
         subject: m.subject == "" ? null : m.subject,
@@ -1667,13 +1664,14 @@ class RustPushService extends GetxService {
 
     if (push is api.DartPushMessage_SendConfirm) {
       var message = Message.findOne(guid: push.uuid)!;
-      print("SendFinished");
+      Logger.info("SendFinished");
       message.sendingServiceId = null;
       message.save(updateSendingServiceId: true);
       return;
     }
 
     var myMsg = (push as api.DartPushMessage_IMessage).field0;
+    Logger.info("starting ${myMsg.id}");
     if (myMsg.message is api.DartMessage_EnableSmsActivation) {
       if (myMsg.verificationFailed) return;
       var message = myMsg.message as api.DartMessage_EnableSmsActivation;
@@ -1846,8 +1844,11 @@ class RustPushService extends GetxService {
         return;
       }
     }
+    Logger.info("Reflecting ${myMsg.id}");
     var reflected = await pushService.reflectMessageDyn(myMsg);
+    Logger.info("Reflect finished ${myMsg.id}");
     if (reflected != null) {
+      Logger.info("Queing");
       var service = backend as RustPushBackend;
       service.markDelivered(myMsg);
       inq.queue(IncomingItem(
@@ -1932,13 +1933,13 @@ class RustPushService extends GetxService {
 
   Future recievedMsgPointer(String pointer) async {
     var message = await api.ptrToDart(ptr: pointer);
-    Logger.info("waitingForInit");
+    Logger.info("waitingForInit $pointer");
     await initFuture;
     try {
-      Logger.info("Handling");
+      Logger.info("Handling $pointer");
       await handleMsg(message);
     } catch (e, s) {
-      Logger.error("$e\n$s");
+      Logger.error("Handle failed", error: e, trace: s);
       rethrow;
     }
   }
