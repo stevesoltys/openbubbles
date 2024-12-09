@@ -9,10 +9,9 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'package:freezed_annotation/freezed_annotation.dart' hide protected;
 part 'api.freezed.dart';
 
-// These functions are ignored because they are not marked as `pub`: `config`, `get_phase`, `get_raw`, `plist_to_bin`, `plist_to_buf`, `plist_to_string`, `restore`, `setup_push`, `to_imsg`, `wrap_sink`
-// These functions are ignored because they have generic arguments: `bin_deserialize`, `bin_serialize`
+// These functions are ignored because they are not marked as `pub`: `config`, `get_phase`, `plist_to_bin`, `plist_to_buf`, `plist_to_string`, `restore`, `setup_push`, `wrap_sink`
 // These types are ignored because they are not used by any `pub` functions: `FLUTTER_RUST_BRIDGE_HANDLER`, `InnerPushState`, `NSArrayClass`, `NSArrayIconArray`, `NSArrayImageArray`, `SavedHardwareState`
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `deref`, `deref`, `eq`, `fmt`, `from`, `from`, `initialize`, `into`, `into`, `spawn`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `deref`, `deref`, `eq`, `fmt`, `initialize`, `spawn`
 
 Future<ArcPushState> newPushState({required String dir}) =>
     RustLib.instance.api.crateApiApiNewPushState(dir: dir);
