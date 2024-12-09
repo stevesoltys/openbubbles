@@ -1,4 +1,4 @@
-use std::{path::Path, sync::OnceLock};
+use std::{path::Path, sync::{LazyLock, OnceLock}};
 
 use flexi_logger::{opt_format, Age, Cleanup, Criterion, FileSpec, Logger, Naming, WriteMode};
 use tokio::runtime::Runtime;
@@ -7,15 +7,14 @@ use uniffi::deps::log::info;
 
 uniffi::setup_scaffolding!();
 
-pub fn runtime() -> &'static tokio::runtime::Runtime {
-    static RUNTIME: OnceLock<tokio::runtime::Runtime> = OnceLock::new();
+pub static RUNTIME: LazyLock<tokio::runtime::Runtime> = LazyLock::new(|| {
     info!("creating runner");
-    RUNTIME.get_or_init(|| tokio::runtime::Builder::new_multi_thread()
+    tokio::runtime::Builder::new_multi_thread()
         .worker_threads(1)
         .thread_name("tokio-rustpush")
         .enable_all()
-        .build().unwrap())
-}
+        .build().unwrap()
+});
 
 pub mod bbhwinfo {
     include!(concat!(env!("OUT_DIR"), "/bbhwinfo.rs"));

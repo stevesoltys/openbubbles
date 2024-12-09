@@ -1,13 +1,13 @@
-use std::{fmt::Debug, sync::{Arc, RwLock}};
+use std::{collections::{BTreeMap, HashMap}, fmt::Debug, sync::{Arc, LazyLock, OnceLock, RwLock}};
 
 use flexi_logger::{FileSpec, Logger, WriteMode};
 use log::error;
 use rustpush::get_gateways_for_mccmnc;
-use tokio::runtime::{Handle, Runtime};
+use tokio::{runtime::{Handle, Runtime}, sync::Mutex};
 use uniffi::deps::log::info;
 
 use futures::FutureExt;
-use crate::{api::api::{get_phase, new_push_state, recv_wait, PollResult, PushState, RegistrationPhase}, frb_generated::FLUTTER_RUST_BRIDGE_HANDLER, init_logger, runtime};
+use crate::{api::api::{get_phase, new_push_state, recv_wait, DartPushMessage, PollResult, PushState, RegistrationPhase}, frb_generated::FLUTTER_RUST_BRIDGE_HANDLER, init_logger, RUNTIME};
 
 #[uniffi::export(with_foreign)]
 pub trait MsgReceiver: Send + Sync + Debug {
@@ -28,7 +28,7 @@ pub struct NativePushState {
 #[uniffi::export]
 pub fn init_native(dir: String, handler: Arc<dyn MsgReceiver>) {
     info!("rpljslf start");
-    runtime().spawn(async move {
+    RUNTIME.spawn(async move {
         info!("rpljslf initting");
         // TODO retry if this *unwrap* fails
         let state = Arc::new(NativePushState {
@@ -42,7 +42,7 @@ pub fn init_native(dir: String, handler: Arc<dyn MsgReceiver>) {
 
 #[uniffi::export]
 pub fn get_carrier(handler: Arc<dyn CarrierHandler>, mccmnc: String) {
-    runtime().spawn(async move {
+    RUNTIME.spawn(async move {
         match get_gateways_for_mccmnc(&mccmnc).await {
             Ok(gateway) => handler.got_gateway(Some(gateway), None),
             Err(err) => handler.got_gateway(None, Some(err.to_string())),
@@ -54,7 +54,7 @@ pub fn get_carrier(handler: Arc<dyn CarrierHandler>, mccmnc: String) {
 impl NativePushState {
 
     pub fn start_loop(self: Arc<NativePushState>, handler: Arc<dyn MsgReceiver>) {
-        runtime().spawn(async move {
+        RUNTIME.spawn(async move {
             loop {
                 match std::panic::AssertUnwindSafe(recv_wait(&self.state)).catch_unwind().await {
                     Ok(yes) => {

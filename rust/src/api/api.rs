@@ -20,7 +20,7 @@ use uuid::Uuid;
 use std::io::Seek;
 use async_recursion::async_recursion;
 
-use crate::{frb_generated::{SseEncode, StreamSink}, init_logger, runtime};
+use crate::{frb_generated::{SseEncode, StreamSink}, init_logger, RUNTIME};
 
 use flutter_rust_bridge::for_generated::{SimpleHandler, SimpleExecutor, NoOpErrorListener, SimpleThreadPool, BaseAsyncRuntime, lazy_static};
 
@@ -35,7 +35,7 @@ impl BaseAsyncRuntime for MyAsyncRuntime {
         F: Future + Send + 'static,
         F::Output: Send + 'static,
     {
-        runtime().spawn(future)
+        RUNTIME.spawn(future)
     }
 }
 
