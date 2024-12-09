@@ -4,17 +4,17 @@ use std::{borrow::{Borrow, BorrowMut}, fs, future::Future, io::{Cursor, Write}, 
 
 use anyhow::anyhow;
 use flutter_rust_bridge::{frb, IntoDart, JoinHandle};
-use icloud_auth::{LoginState, AnisetteConfiguration, AppleAccount};
+pub use icloud_auth::{LoginState, AnisetteConfiguration, AppleAccount};
 pub use icloud_auth::{VerifyBody, TrustedPhoneNumber};
 use plist::{Data, Dictionary};
 pub use plist::Value;
-use prost::Message;
 pub use rustpush::{PushError, IDSUser, IMClient, ConversationData, register};
 
+use prost::Message as prostMessage;
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use tokio::{runtime::Runtime, select, sync::{broadcast, mpsc, oneshot::{self, Sender}, Mutex, RwLock}};
-use rustpush::{authenticate_apple, authenticate_phone, get_gsa_config, APSConnection, APSConnectionResource, APSState, Attachment, AuthPhone, IDSUserIdentity, MMCSFile, MessageInst, MessagePart, MessageParts, OSConfig, RelayConfig, ResourceState};
-pub use rustpush::{MacOSConfig, HardwareConfig};
+use rustpush::{authenticate_apple, authenticate_phone, get_gsa_config};
+pub use rustpush::{NSArrayClass, SupportAction, NSArray, SupportAlert, PrivateDeviceInfo, NormalMessage, MessageType, UpdateExtensionMessage, ErrorMessage, UnsendMessage, EditMessage, PartExtension, IconChangeMessage, RichLinkImageAttachmentSubstitute, ChangeParticipantMessage, ReactMessage, Reaction, ReactMessageType, RenameMessage, LPLinkMetadata, NSURL, LPIconMetadata, LPImageMetadata, LinkMeta, ExtensionApp, NSDictionaryClass, BalloonLayout, Balloon, IndexedMessagePart, AttachmentType, MacOSConfig, Message, MessageTarget, HardwareConfig, APSConnection, APSConnectionResource, APSState, Attachment, AuthPhone, IDSUserIdentity, MMCSFile, MessageInst, MessagePart, MessageParts, OSConfig, RelayConfig, ResourceState};
 use uniffi::{deps::log::{info, error}, HandleAlloc};
 use uuid::Uuid;
 use std::io::Seek;
@@ -98,8 +98,8 @@ pub struct InnerPushState {
     pub account: Option<AppleAccount>,
     pub cancel_poll: Mutex<Option<Sender<()>>>,
     pub identity: Option<IDSUserIdentity>,
-    pub local_messages: Mutex<mpsc::Receiver<DartPushMessage>>,
-    pub local_broadcast: mpsc::Sender<DartPushMessage>,
+    pub local_messages: Mutex<mpsc::Receiver<PushMessage>>,
+    pub local_broadcast: mpsc::Sender<PushMessage>,
 }
 
 #[frb(opaque)]
@@ -238,19 +238,21 @@ async fn restore(curr_state: &PushState) {
 }
 
 #[repr(C)]
+#[frb(mirror(SupportAction))]
 pub struct DartSupportAction {
     pub url: String,
     pub button: String,
 }
 
 #[repr(C)]
+#[frb(mirror(SupportAlert))]
 pub struct DartSupportAlert {
     pub title: String,
     pub body: String,
-    pub action: Option<DartSupportAction>,
+    pub action: Option<SupportAction>,
 }
 
-pub async fn register_ids(state: &Arc<PushState>, users: &Vec<IDSUser>) -> anyhow::Result<Option<DartSupportAlert>> {
+pub async fn register_ids(state: &Arc<PushState>, users: &Vec<IDSUser>) -> anyhow::Result<Option<SupportAlert>> {
     let mut users = users.clone(); // don't take ownership in case of failure
     if !matches!(state.get_phase().await, RegistrationPhase::WantsRegister) {
         panic!("Wrong phase! (register_ids)")
@@ -260,7 +262,7 @@ pub async fn register_ids(state: &Arc<PushState>, users: &Vec<IDSUser>) -> anyho
 
     if let Err(err) = register(inner.os_config.as_deref().unwrap(), &*conn_state.state.read().await, &mut users, inner.identity.as_ref().unwrap()).await {
         return if let PushError::CustomerMessage(support) = err {
-            Ok(Some(unsafe { std::mem::transmute(support) }))
+            Ok(Some(support))
         } else {
             Err(anyhow!(err))
         }
@@ -357,7 +359,7 @@ pub async fn refresh_token(state: &Arc<PushState>) -> anyhow::Result<()> {
     Ok(())
 }
 
-pub struct DartHwExtra {
+pub struct HwExtra {
     pub version: String,
     pub protocol_version: u32,
     pub device_id: String,
@@ -365,7 +367,7 @@ pub struct DartHwExtra {
     pub aoskit_version: String,
 }
 
-pub fn config_from_validation_data(data: Vec<u8>, extra: DartHwExtra) -> anyhow::Result<JoinedOSConfig> {
+pub fn config_from_validation_data(data: Vec<u8>, extra: HwExtra) -> anyhow::Result<JoinedOSConfig> {
     let inner = HardwareConfig::from_validation_data(&data)?;
     Ok(JoinedOSConfig::MacOS(Arc::new(MacOSConfig {
         inner,
@@ -390,14 +392,14 @@ pub async fn config_from_relay(code: String, host: String, token: &Option<String
     })))
 }
 
-pub struct DartDeviceInfo {
+pub struct DeviceInfo {
     pub name: String,
     pub serial: String,
     pub os_version: String,
     pub encoded_data: Option<Vec<u8>>,
 }
 
-pub async fn get_device_info_state(state: &Arc<PushState>) -> anyhow::Result<DartDeviceInfo> {
+pub async fn get_device_info_state(state: &Arc<PushState>) -> anyhow::Result<DeviceInfo> {
     let locked = state.0.read().await;
     get_device_info(locked.os_config.as_ref().unwrap())
 }
@@ -407,9 +409,9 @@ pub async fn get_config_state(state: &Arc<PushState>) -> Option<JoinedOSConfig> 
     locked.os_config.clone()
 }
 
-pub fn get_device_info(config: &JoinedOSConfig) -> anyhow::Result<DartDeviceInfo> {
+pub fn get_device_info(config: &JoinedOSConfig) -> anyhow::Result<DeviceInfo> {
     let debug_info = config.get_debug_meta();
-    Ok(DartDeviceInfo {
+    Ok(DeviceInfo {
         name: debug_info.hardware_version.clone(),
         serial: debug_info.serial_number.clone(),
         os_version: debug_info.user_version.clone(),
@@ -474,17 +476,17 @@ pub fn config_from_encoded(encoded: Vec<u8>) -> anyhow::Result<JoinedOSConfig> {
 }
 
 
-pub fn ptr_to_dart(ptr: String) -> DartPushMessage {
+pub fn ptr_to_dart(ptr: String) -> PushMessage {
     let pointer: u64 = ptr.parse().unwrap();
     info!("using pointer {pointer}");
     let recieved = unsafe {
-        Box::from_raw(pointer as *mut DartPushMessage)
+        Box::from_raw(pointer as *mut PushMessage)
     };
     *recieved
 }
 
 
-#[frb]
+#[frb(mirror(ConversationData))]
 #[repr(C)]
 pub struct DartConversationData {
     #[frb(non_final)]
@@ -498,7 +500,7 @@ pub struct DartConversationData {
 }
 
 
-#[frb(non_opaque)]
+#[frb(non_opaque, mirror(LoginState))]
 #[repr(C)]
 pub enum DartLoginState {
     LoggedIn,
@@ -513,7 +515,7 @@ pub enum DartLoginState {
 
 #[repr(C)]
 #[derive(Serialize, Deserialize)]
-#[frb(type_64bit_int)]
+#[frb(type_64bit_int, mirror(MMCSFile))]
 pub struct DartMMCSFile {
     #[serde(serialize_with = "bin_serialize", deserialize_with = "bin_deserialize")]
     pub signature: Vec<u8>,
@@ -552,59 +554,62 @@ where
 }
 
 #[repr(C)]
-#[derive(Serialize, Deserialize)]
+#[frb(mirror(AttachmentType))]
 pub enum DartAttachmentType {
-    Inline(#[serde(serialize_with = "bin_serialize", deserialize_with = "bin_deserialize")] Vec<u8>),
-    MMCS(DartMMCSFile)
+    Inline(Vec<u8>),
+    MMCS(MMCSFile)
 }
 
 #[repr(C)]
-#[derive(Serialize, Deserialize)]
-#[frb(type_64bit_int)]
+#[frb(type_64bit_int, mirror(Attachment))]
 pub struct DartAttachment {
-    pub a_type: DartAttachmentType,
-    pub part_idx: u64,
+    pub a_type: AttachmentType,
+    pub part: u64,
     pub uti_type: String,
     pub mime: String,
     pub name: String,
     pub iris: bool
 }
 
-impl DartAttachment {
-    pub fn save(&self) -> String {
-        plist_to_string(self).unwrap()
-    }
-
-    pub fn restore(saved: String) -> DartAttachment {
-        plist::from_reader_xml(Cursor::new(saved)).unwrap()
-    }
-
+#[frb(external)]
+impl Attachment {
     #[frb(type_64bit_int)]
-    pub fn get_size(&self) -> usize {
-        self.get_raw().get_size()
-    }
+    pub fn get_size(&self) -> usize { }
+}
 
-    fn get_raw(&self) -> &Attachment {
-        unsafe { std::mem::transmute(self) }
+pub fn restore_attachment(data: String) -> Attachment {
+    plist::from_reader_xml(Cursor::new(data)).unwrap()
+}
+
+pub fn save_attachment(att: &Attachment) -> String {
+    plist_to_string(att).unwrap()
+}
+
+pub fn create_image_array(img: LPImageMetadata) -> NSArray<LPImageMetadata> {
+    NSArray {
+        objects: vec![img],
+        class: NSArrayClass::NSArray,
     }
 }
 
-impl From<Attachment> for DartAttachment {
-    fn from(value: Attachment) -> Self {
-        unsafe { std::mem::transmute(value) }
+pub fn create_icon_array(img: LPIconMetadata) -> NSArray<LPIconMetadata> {
+    NSArray {
+        objects: vec![img],
+        class: NSArrayClass::NSArray,
     }
 }
 
 #[repr(C)]
+#[frb(mirror(MessagePart))]
 pub enum DartMessagePart {
     Text(String),
-    Attachment(DartAttachment),
+    Attachment(Attachment),
     Mention(String, String),
     Object(String),
 }
 
 #[repr(C)]
-#[frb(type_64bit_int)]
+#[frb(type_64bit_int, mirror(PartExtension))]
 pub enum DartPartExtension {
     Sticker {
         msg_width: f64,
@@ -624,27 +629,24 @@ pub enum DartPartExtension {
 }
 
 #[repr(C)]
-#[frb(type_64bit_int)]
+#[frb(type_64bit_int, mirror(IndexedMessagePart))]
 pub struct DartIndexedMessagePart {
-    pub part: DartMessagePart,
+    pub part: MessagePart,
     pub idx: Option<usize>,
-    pub ext: Option<DartPartExtension>,
+    pub ext: Option<PartExtension>,
 }
 
+#[frb(mirror(MessageParts))]
 #[repr(C)]
-pub struct DartMessageParts(pub Vec<DartIndexedMessagePart>);
+pub struct DartMessageParts(pub Vec<IndexedMessagePart>);
 
-impl DartMessageParts {
-    fn get_raw(&self) -> &MessageParts {
-        unsafe { std::mem::transmute(self) }
-    }
-
-    pub fn as_plain(&self) -> String {
-        self.get_raw().raw_text()
-    }
+#[frb(external)]
+impl MessageParts {
+    pub fn raw_text(&self) -> String { }
 }
 
 
+#[frb(mirror(MessageType))]
 #[repr(C)]
 #[derive(PartialEq, Clone)]
 pub enum DartMessageType {
@@ -657,12 +659,14 @@ pub enum DartMessageType {
 }
 
 #[repr(C)]
-pub enum NSDictionaryClass {
+#[frb(mirror(NSDictionaryClass))]
+pub enum DartNSDictionaryClass {
     NSDictionary,
     NSMutableDictionary,
 }
 
 #[repr(C)]
+#[frb(non_opaque, mirror(BalloonLayout))]
 pub enum DartBalloonLayout {
     TemplateLayout {
         image_subtitle: String,
@@ -676,10 +680,11 @@ pub enum DartBalloonLayout {
 }
 
 #[repr(C)]
+#[frb(non_opaque, mirror(Balloon))]
 pub struct DartBalloon {
     pub url: String,
     pub session: Option<String>, // UUID
-    pub layout: DartBalloonLayout,
+    pub layout: BalloonLayout,
     pub ld_text: Option<String>,
     pub is_live: bool,
 
@@ -687,64 +692,69 @@ pub struct DartBalloon {
 }
 
 #[repr(C)]
-#[frb(type_64bit_int)]
+#[frb(type_64bit_int, mirror(ExtensionApp))]
 pub struct DartExtensionApp {
     pub name: String,
     pub app_id: Option<u64>,
     pub bundle_id: String,
 
-    pub balloon: Option<DartBalloon>,
+    pub balloon: Option<Balloon>,
 }
 
-#[frb]
+#[frb(mirror(NormalMessage))]
 #[repr(C)]
 pub struct DartNormalMessage {
     #[frb(non_final)]
-    pub parts: DartMessageParts,
+    pub parts: MessageParts,
     #[frb(non_final)]
     pub effect: Option<String>,
     #[frb(non_final)]
     pub reply_guid: Option<String>,
     #[frb(non_final)]
     pub reply_part: Option<String>,
-    pub service: DartMessageType,
+    pub service: MessageType,
     #[frb(non_final)]
     pub subject: Option<String>,
     #[frb(non_final)]
-    pub app: Option<DartExtensionApp>,
+    pub app: Option<ExtensionApp>,
     #[frb(non_final)]
-    pub link_meta: Option<DartLinkMeta>,
+    pub link_meta: Option<LinkMeta>,
     #[frb(non_final)]
     pub voice: bool,
 }
 
 #[repr(C)]
-pub struct NSURL {
+#[frb(mirror(NSURL))]
+pub struct DartNSURL {
     pub base: String,
     pub relative: String,
 }
 
 #[repr(C)]
-pub struct LPImageMetadata {
+#[frb(mirror(LPImageMetadata))]
+pub struct DartLPImageMetadata {
     pub size: String,
     pub url: NSURL,
     pub version: u8,
 }
 
 #[repr(C)]
-pub struct LPIconMetadata {
+#[frb(mirror(LPIconMetadata))]
+pub struct DartLPIconMetadata {
     pub url: NSURL,
     pub version: u8,
 }
 
 #[repr(C)]
-pub struct RichLinkImageAttachmentSubstitute {
+#[frb(mirror(RichLinkImageAttachmentSubstitute))]
+pub struct DartRichLinkImageAttachmentSubstitute {
     pub mime_type: String,
     pub rich_link_image_attachment_substitute_index: u64,
 }
 
 #[repr(C)]
-pub enum NSArrayClass {
+#[frb(mirror(NSArrayClass))]
+pub enum DartNSArrayClass {
     NSArray,
     NSMutableArray,
 }
@@ -752,19 +762,23 @@ pub enum NSArrayClass {
 // FRB doesn't support generics
 // the things i do for this bridge...
 #[repr(C)]
+#[frb(non_opaque, mirror(NSArray<LPImageMetadata>))]
 pub struct NSArrayImageArray {
     pub objects: Vec<LPImageMetadata>,
     pub class: NSArrayClass,
 }
 
 #[repr(C)]
+#[frb(non_opaque, mirror(NSArray<LPIconMetadata>))]
 pub struct NSArrayIconArray {
     pub objects: Vec<LPIconMetadata>,
     pub class: NSArrayClass,
 }
 
+
 #[repr(C)]
-pub struct LPLinkMetadata {
+#[frb(mirror(LPLinkMetadata))]
+pub struct DartLPLinkMetadata {
     pub image_metadata: Option<LPImageMetadata>,
     pub version: u8,
     pub icon_metadata: Option<LPIconMetadata>,
@@ -774,11 +788,12 @@ pub struct LPLinkMetadata {
     pub summary: Option<String>,
     pub image: Option<RichLinkImageAttachmentSubstitute>,
     pub icon: Option<RichLinkImageAttachmentSubstitute>,
-    pub images: Option<NSArrayImageArray>,
-    pub icons: Option<NSArrayIconArray>,
+    pub images: Option<NSArray<LPImageMetadata>>,
+    pub icons: Option<NSArray<LPIconMetadata>>,
 }
 
 
+#[frb(mirror(LinkMeta))]
 #[repr(C)]
 pub struct DartLinkMeta {
     pub data: LPLinkMetadata,
@@ -786,18 +801,20 @@ pub struct DartLinkMeta {
 }
 
 #[repr(C)]
+#[frb(mirror(RenameMessage))]
 pub struct DartRenameMessage {
     pub new_name: String
 }
 
 #[repr(C)]
-#[frb(type_64bit_int)]
+#[frb(type_64bit_int, mirror(ChangeParticipantMessage))]
 pub struct DartChangeParticipantMessage {
     pub new_participants: Vec<String>,
     pub group_version: u64
 }
 
 #[repr(C)]
+#[frb(mirror(Reaction))]
 pub enum DartReaction {
     Heart,
     Like,
@@ -808,56 +825,58 @@ pub enum DartReaction {
 }
 
 #[repr(C)]
-#[frb(non_opaque)]
+#[frb(non_opaque, mirror(ReactMessageType))]
 pub enum DartReactMessageType {
     React {
-        reaction: DartReaction,
+        reaction: Reaction,
         enable: bool,
     },
     Extension {
-        spec: DartExtensionApp,
-        body: DartMessageParts
+        spec: ExtensionApp,
+        body: MessageParts
     },
 }
 
 #[repr(C)]
-#[frb(type_64bit_int)]
+#[frb(type_64bit_int, mirror(ReactMessage))]
 pub struct DartReactMessage {
     pub to_uuid: String,
     pub to_part: Option<u64>,
-    pub reaction: DartReactMessageType,
+    pub reaction: ReactMessageType,
     pub to_text: String,
 }
 
 #[repr(C)]
-#[frb(type_64bit_int)]
+#[frb(type_64bit_int, mirror(UnsendMessage))]
 pub struct DartUnsendMessage {
     pub tuuid: String,
     pub edit_part: u64,
 }
 
 #[repr(C)]
-#[frb(type_64bit_int)]
+#[frb(type_64bit_int, mirror(EditMessage))]
 pub struct DartEditMessage {
     pub tuuid: String,
     pub edit_part: u64,
-    pub new_parts: DartMessageParts
+    pub new_parts: MessageParts
 }
 
 #[repr(C)]
-#[frb(type_64bit_int)]
+#[frb(type_64bit_int, mirror(IconChangeMessage))]
 pub struct DartIconChangeMessage {
-    pub file: Option<DartMMCSFile>,
+    pub file: Option<MMCSFile>,
     pub group_version: u64
 }
 
 #[repr(C)]
+#[frb(mirror(UpdateExtensionMessage))]
 pub struct DartUpdateExtensionMessage {
     pub for_uuid: String,
-    pub ext: DartPartExtension,
+    pub ext: PartExtension,
 }
 
 #[repr(C)]
+#[frb(mirror(ErrorMessage))]
 pub struct DartErrorMessage {
     pub for_uuid: String,
     pub status: u64,
@@ -865,35 +884,36 @@ pub struct DartErrorMessage {
 }
 
 #[repr(C)]
-#[frb(non_opaque)]
+#[frb(non_opaque, mirror(Message))]
 pub enum DartMessage {
-    Message(DartNormalMessage),
-    RenameMessage(DartRenameMessage),
-    ChangeParticipants(DartChangeParticipantMessage),
-    React(DartReactMessage),
+    Message(NormalMessage),
+    RenameMessage(RenameMessage),
+    ChangeParticipants(ChangeParticipantMessage),
+    React(ReactMessage),
     Delivered,
     Read,
     Typing,
-    Unsend(DartUnsendMessage),
-    Edit(DartEditMessage),
-    IconChange(DartIconChangeMessage),
+    Unsend(UnsendMessage),
+    Edit(EditMessage),
+    IconChange(IconChangeMessage),
     StopTyping,
     EnableSmsActivation(bool),
     MessageReadOnDevice,
     SmsConfirmSent(bool),
     MarkUnread, // send for last message from other participant
     PeerCacheInvalidate,
-    UpdateExtension(DartUpdateExtensionMessage),
-    Error(DartErrorMessage),
+    UpdateExtension(UpdateExtensionMessage),
+    Error(ErrorMessage),
 }
 
+#[frb(mirror(MessageTarget))]
 #[repr(C)]
 pub enum DartMessageTarget {
     Token(Vec<u8>),
     Uuid(String),
 }
 
-#[frb(type_64bit_int)]
+#[frb(type_64bit_int, mirror(MessageInst))]
 #[repr(C)]
 pub struct DartIMessage {
     #[frb(non_final)]
@@ -901,13 +921,13 @@ pub struct DartIMessage {
     #[frb(non_final)]
     pub sender: Option<String>,
     #[frb(non_final)]
-    pub conversation: Option<DartConversationData>,
+    pub conversation: Option<ConversationData>,
     #[frb(non_final)]
-    pub message: DartMessage,
+    pub message: Message,
     #[frb(non_final)]
     pub sent_timestamp: u64,
     #[frb(non_final)]
-    pub target: Option<Vec<DartMessageTarget>>,
+    pub target: Option<Vec<MessageTarget>>,
     #[frb(non_final)]
     pub send_delivered: bool,
     #[frb(non_final)]
@@ -915,8 +935,8 @@ pub struct DartIMessage {
 }
 
 #[repr(C)]
-pub enum DartPushMessage {
-    IMessage(DartIMessage),
+pub enum PushMessage {
+    IMessage(MessageInst),
     SendConfirm {
         uuid: String,
         error: Option<String>,
@@ -949,7 +969,7 @@ impl DartIMessage {
 
 pub enum PollResult {
     Stop,
-    Cont(Option<DartPushMessage>),
+    Cont(Option<PushMessage>),
 }
 
 pub async fn recv_wait(state: &Arc<PushState>) -> PollResult {
@@ -964,7 +984,7 @@ pub async fn recv_wait(state: &Arc<PushState>) -> PollResult {
         msg = recv_path.client.as_ref().expect("no client??/").receive_wait() => {
             *recv_path.cancel_poll.lock().await = None;
             let msg = match msg {
-                Ok(Some(msg)) => Some(DartPushMessage::IMessage(unsafe { std::mem::transmute(msg) })),
+                Ok(Some(msg)) => Some(PushMessage::IMessage(msg)),
                 Ok(None) => None,
                 Err(err) => {
                     // log and ignore for now
@@ -983,11 +1003,10 @@ pub async fn recv_wait(state: &Arc<PushState>) -> PollResult {
     }
 }
 
-pub async fn send(state: &Arc<PushState>, msg: DartIMessage) -> anyhow::Result<bool> {
+pub async fn send(state: &Arc<PushState>, mut msg: MessageInst) -> anyhow::Result<bool> {
     if !matches!(state.get_phase().await, RegistrationPhase::Registered) {
         panic!("Wrong phase! (send)")
     }
-    let mut msg = msg.to_imsg();
     println!("sending_1");
     let state_cpy = state.clone();
     let inner = state.0.read().await;
@@ -1001,7 +1020,7 @@ pub async fn send(state: &Arc<PushState>, msg: DartIMessage) -> anyhow::Result<b
             info!("Finished handle");
             let locked = state_cpy.0.read().await;
             let maybeerr = result.err().map(|err| format!("{}", err));
-            let _ = locked.local_broadcast.send(DartPushMessage::SendConfirm { uuid, error: maybeerr }).await;
+            let _ = locked.local_broadcast.send(PushMessage::SendConfirm { uuid, error: maybeerr }).await;
         });
         Ok(true)
     } else {
@@ -1024,11 +1043,11 @@ pub async fn do_reregister(state: &Arc<PushState>) -> anyhow::Result<()> {
     Ok(())
 }
 
-pub async fn new_msg(state: &Arc<PushState>, conversation: DartConversationData, sender: String, message: DartMessage) -> DartIMessage {
+pub async fn new_msg(state: &Arc<PushState>, conversation: ConversationData, sender: String, message: Message) -> MessageInst {
     if !matches!(state.get_phase().await, RegistrationPhase::Registered) {
         panic!("Wrong phase! (new_msg)")
     }
-    MessageInst::new(conversation.into(), &sender, message.into()).into()
+    MessageInst::new(conversation, &sender, message)
 }
 
 pub async fn validate_targets(state: &Arc<PushState>, targets: Vec<String>, sender: String) -> anyhow::Result<Vec<String>> {
@@ -1046,10 +1065,10 @@ pub async fn get_phase(state: &Arc<PushState>) -> RegistrationPhase {
 pub struct TransferProgress {
     pub prog: usize,
     pub total: usize,
-    pub attachment: Option<DartAttachment>
+    pub attachment: Option<Attachment>
 }
 
-pub async fn download_attachment(sink: StreamSink<TransferProgress>, state: &Arc<PushState>, attachment: DartAttachment, path: String) {
+pub async fn download_attachment(sink: StreamSink<TransferProgress>, state: &Arc<PushState>, attachment: Attachment, path: String) {
     wrap_sink(&sink, || async {
         let inner = state.0.read().await;
         println!("donwloading file {}", path);
@@ -1057,7 +1076,7 @@ pub async fn download_attachment(sink: StreamSink<TransferProgress>, state: &Arc
         let prefix = path.parent().unwrap();
         std::fs::create_dir_all(prefix)?;
         let mut file = std::fs::File::create(path)?;
-        attachment.get_raw().get_attachment(inner.conn.as_ref().unwrap(), &mut file, &mut |prog, total| {
+        attachment.get_attachment(inner.conn.as_ref().unwrap(), &mut file, &mut |prog, total| {
             println!("donwloading file {} of {}", prog, total);
             sink.add(TransferProgress {
                 prog,
@@ -1070,7 +1089,7 @@ pub async fn download_attachment(sink: StreamSink<TransferProgress>, state: &Arc
     }).await
 }
 
-pub async fn download_mmcs(sink: StreamSink<TransferProgress>, state: &Arc<PushState>, attachment: DartMMCSFile, path: String) {
+pub async fn download_mmcs(sink: StreamSink<TransferProgress>, state: &Arc<PushState>, attachment: MMCSFile, path: String) {
     wrap_sink(&sink, || async {
         let inner = state.0.read().await;
         let path = std::path::Path::new(&path);
@@ -1078,7 +1097,7 @@ pub async fn download_mmcs(sink: StreamSink<TransferProgress>, state: &Arc<PushS
         std::fs::create_dir_all(prefix)?;
 
         let mut file = std::fs::File::create(path)?;
-        attachment.get_raw().get_attachment(inner.conn.as_ref().unwrap(), &mut file, &mut |prog, total| {
+        attachment.get_attachment(inner.conn.as_ref().unwrap(), &mut file, &mut |prog, total| {
             sink.add(TransferProgress {
                 prog,
                 total,
@@ -1101,7 +1120,7 @@ async fn wrap_sink<Fut, T: SseEncode + Send + Sync>(sink: &StreamSink<T>, f: imp
 pub struct MMCSTransferProgress {
     pub prog: usize,
     pub total: usize,
-    pub file: Option<DartMMCSFile>
+    pub file: Option<MMCSFile>
 }
 
 pub async fn upload_mmcs(sink: StreamSink<MMCSTransferProgress>, state: &Arc<PushState>, path: String) {
@@ -1118,7 +1137,7 @@ pub async fn upload_mmcs(sink: StreamSink<MMCSTransferProgress>, state: &Arc<Pus
                 file: None
             }).unwrap();
         }).await?;
-        sink.add(MMCSTransferProgress { prog: 0, total: 0, file: Some(attachment.into()) }).unwrap();
+        sink.add(MMCSTransferProgress { prog: 0, total: 0, file: Some(attachment) }).unwrap();
         Ok(())
     }).await
 }
@@ -1137,7 +1156,7 @@ pub async fn upload_attachment(sink: StreamSink<TransferProgress>, state: &Arc<P
                 attachment: None
             }).unwrap();
         }).await?;
-        sink.add(TransferProgress { prog: 0, total: 0, attachment: Some(attachment.into()) }).unwrap();
+        sink.add(TransferProgress { prog: 0, total: 0, attachment: Some(attachment) }).unwrap();
         Ok(())
     }).await
 }
@@ -1156,7 +1175,7 @@ pub fn restore_user(user: String) -> anyhow::Result<IDSUser> {
     Ok(plist::from_reader(Cursor::new(user))?)
 }
 
-pub async fn try_auth(state: &Arc<PushState>, username: String, password: String) -> anyhow::Result<(DartLoginState, Option<IDSUser>)> {
+pub async fn try_auth(state: &Arc<PushState>, username: String, password: String) -> anyhow::Result<(LoginState, Option<IDSUser>)> {
     let mut inner = state.0.write().await;
     let anisette_config = AnisetteConfiguration::new()
         .set_client_info(get_gsa_config(&*inner.conn.as_ref().unwrap().state.read().await, inner.os_config.as_deref().unwrap()))
@@ -1178,7 +1197,7 @@ pub async fn try_auth(state: &Arc<PushState>, username: String, password: String
 
     inner.account = Some(apple_account);
     
-    Ok((unsafe { std::mem::transmute(login_state) }, user))
+    Ok((login_state, user))
 }
 
 pub async fn auth_phone(state: &Arc<PushState>, number: String, sig: Vec<u8>) -> anyhow::Result<IDSUser> {
@@ -1192,14 +1211,14 @@ pub async fn auth_phone(state: &Arc<PushState>, number: String, sig: Vec<u8>) ->
     Ok(identity)
 }
 
-pub async fn send_2fa_to_devices(state: &Arc<PushState>) -> anyhow::Result<DartLoginState> {
+pub async fn send_2fa_to_devices(state: &Arc<PushState>) -> anyhow::Result<LoginState> {
     let inner = state.0.read().await;
     let account = inner.account.as_ref().unwrap();
-    Ok(unsafe { std::mem::transmute(account.send_2fa_to_devices().await?) })
+    Ok(account.send_2fa_to_devices().await?)
     
 }
 
-pub async fn verify_2fa(state: &Arc<PushState>, code: String) -> anyhow::Result<(DartLoginState, Option<IDSUser>)> {
+pub async fn verify_2fa(state: &Arc<PushState>, code: String) -> anyhow::Result<(LoginState, Option<IDSUser>)> {
     let mut inner = state.0.write().await;
     let account = inner.account.as_mut().unwrap();
     let mut login_state = account.verify_2fa(code).await?;
@@ -1217,10 +1236,11 @@ pub async fn verify_2fa(state: &Arc<PushState>, code: String) -> anyhow::Result<
         }
     }
 
-    Ok((unsafe { std::mem::transmute(login_state) }, user))
+    Ok((login_state, user))
 }
 
 #[repr(C)]
+#[frb(mirror(TrustedPhoneNumber))]
 pub struct DartTrustedPhoneNumber {
     pub number_with_dial_code: String,
     pub last_two_digits: String,
@@ -1228,23 +1248,23 @@ pub struct DartTrustedPhoneNumber {
     pub id: u32
 }
 
-pub async fn get_2fa_sms_opts(state: &Arc<PushState>) -> anyhow::Result<(Vec<DartTrustedPhoneNumber>, Option<DartLoginState>)> {
+pub async fn get_2fa_sms_opts(state: &Arc<PushState>) -> anyhow::Result<(Vec<TrustedPhoneNumber>, Option<LoginState>)> {
     let inner = state.0.read().await;
     let account = inner.account.as_ref().unwrap();
     let extras = account.get_auth_extras().await?;
     Ok((
-        extras.trusted_phone_numbers.into_iter().map(|i| unsafe { std::mem::transmute(i) }).collect(),
-        extras.new_state.map(|i| unsafe { std::mem::transmute(i) })
+        extras.trusted_phone_numbers,
+        extras.new_state
     ))
 }
 
-pub async fn send_2fa_sms(state: &Arc<PushState>, phone_id: u32) -> anyhow::Result<DartLoginState> {
+pub async fn send_2fa_sms(state: &Arc<PushState>, phone_id: u32) -> anyhow::Result<LoginState> {
     let inner = state.0.read().await;
     let account = inner.account.as_ref().unwrap();
-    Ok(unsafe { std::mem::transmute(account.send_sms_2fa_to_devices(phone_id).await?) })
+    Ok(account.send_sms_2fa_to_devices(phone_id).await?)
 }
 
-pub async fn verify_2fa_sms(state: &Arc<PushState>, body: &VerifyBody, code: String) -> anyhow::Result<(DartLoginState, Option<IDSUser>)> {
+pub async fn verify_2fa_sms(state: &Arc<PushState>, body: &VerifyBody, code: String) -> anyhow::Result<(LoginState, Option<IDSUser>)> {
     let mut inner = state.0.write().await;
     let account = inner.account.as_mut().unwrap();
     let mut login_state = account.verify_sms_2fa(code, body.clone()).await?;
@@ -1262,7 +1282,7 @@ pub async fn verify_2fa_sms(state: &Arc<PushState>, body: &VerifyBody, code: Str
         }
     }
 
-    Ok((unsafe { std::mem::transmute(login_state) }, user))
+    Ok((login_state, user))
 }
 
 pub async fn validate_cert(state: &Arc<PushState>, user: &IDSUser) -> anyhow::Result<Vec<String>> {
@@ -1328,7 +1348,7 @@ pub async fn get_user_name(state: &Arc<PushState>) -> anyhow::Result<String> {
 
 
 #[frb(type_64bit_int)]
-pub enum DartRegisterState {
+pub enum RegisterState {
     Registered {
         next_s: i64,
     },
@@ -1339,16 +1359,16 @@ pub enum DartRegisterState {
     }
 }
 
-pub async fn get_regstate(state: &Arc<PushState>) -> anyhow::Result<DartRegisterState> {
+pub async fn get_regstate(state: &Arc<PushState>) -> anyhow::Result<RegisterState> {
     let inner = state.0.read().await;
     let mutex_ref = inner.client.as_ref().unwrap().identity.resource_state.lock().await;
     Ok(match &*mutex_ref {
-        ResourceState::Generating => DartRegisterState::Registering,
-        ResourceState::Generated => DartRegisterState::Registered {
+        ResourceState::Generating => RegisterState::Registering,
+        ResourceState::Generated => RegisterState::Registered {
             next_s: inner.client.as_ref().unwrap().identity.calculate_rereg_time_s().await
         },
         ResourceState::Failed(failure) => 
-            DartRegisterState::Failed { retry_wait: failure.retry_wait, error: format!("{}", failure.error) },
+            RegisterState::Failed { retry_wait: failure.retry_wait, error: format!("{}", failure.error) },
     })
 }
 
@@ -1359,6 +1379,7 @@ pub async fn convert_token_to_uuid(state: &Arc<PushState>, handle: String, token
 }
 
 #[repr(C)]
+#[frb(mirror(PrivateDeviceInfo))]
 pub struct DartPrivateDeviceInfo {
     pub uuid: Option<String>,
     pub device_name: Option<String>,
@@ -1368,8 +1389,8 @@ pub struct DartPrivateDeviceInfo {
     pub sub_services: Vec<String>,
 }
 
-pub async fn get_sms_targets(state: &Arc<PushState>, handle: String, refresh: bool) -> anyhow::Result<Vec<DartPrivateDeviceInfo>> {
+pub async fn get_sms_targets(state: &Arc<PushState>, handle: String, refresh: bool) -> anyhow::Result<Vec<PrivateDeviceInfo>> {
     let inner = state.0.read().await;
     let targets = inner.client.as_ref().unwrap().identity.get_sms_targets(&handle, refresh).await?;
-    Ok(unsafe { std::mem::transmute(targets) })
+    Ok(targets)
 }

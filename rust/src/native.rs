@@ -7,7 +7,7 @@ use tokio::{runtime::{Handle, Runtime}, sync::Mutex};
 use uniffi::deps::log::info;
 
 use futures::FutureExt;
-use crate::{api::api::{get_phase, new_push_state, recv_wait, DartPushMessage, PollResult, PushState, RegistrationPhase}, frb_generated::FLUTTER_RUST_BRIDGE_HANDLER, init_logger, RUNTIME};
+use crate::{api::api::{get_phase, new_push_state, recv_wait, PollResult, PushState, RegistrationPhase}, frb_generated::FLUTTER_RUST_BRIDGE_HANDLER, init_logger, RUNTIME};
 
 #[uniffi::export(with_foreign)]
 pub trait MsgReceiver: Send + Sync + Debug {

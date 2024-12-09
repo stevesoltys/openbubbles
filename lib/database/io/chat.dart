@@ -726,7 +726,7 @@ class Chat {
     }
   }
   
-  Future<api.DartConversationData> getConversationData() async {
+  Future<api.ConversationData> getConversationData() async {
     var handles = participants.map((e) {
       if (e.address.isEmail) {
         return "mailto:${e.address}";
@@ -735,7 +735,7 @@ class Chat {
       }
     }).toList();
     handles.add(await ensureHandle());
-    return api.DartConversationData(participants: handles, cvName: apnTitle, senderGuid: guid, afterGuid: sendLastMessage.stagingGuid ?? sendLastMessage.guid);
+    return api.ConversationData(participants: handles, cvName: apnTitle, senderGuid: guid, afterGuid: sendLastMessage.stagingGuid ?? sendLastMessage.guid);
   }
 
   /// Change a chat's display name
@@ -1158,7 +1158,7 @@ class Chat {
 
   // if soft is false, return is never null
   // only null if soft is true and no matching chat is found
-  static Future<Chat?> findByRust(api.DartConversationData data, String service, {bool soft = false}) async {
+  static Future<Chat?> findByRust(api.ConversationData data, String service, {bool soft = false}) async {
     if (data.participants.isEmpty) {
       throw Exception("empty participants!??");
     }

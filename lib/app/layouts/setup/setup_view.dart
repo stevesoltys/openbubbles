@@ -19,7 +19,6 @@ import 'package:bluebubbles/app/wrappers/stateful_boilerplate.dart';
 import 'package:bluebubbles/main.dart';
 import 'package:bluebubbles/services/rustpush/rustpush_service.dart';
 import 'package:bluebubbles/services/services.dart';
-import 'package:bluebubbles/src/rust/api/api.dart';
 import 'package:bluebubbles/utils/crypto_utils.dart';
 import 'package:bluebubbles/utils/logger/logger.dart';
 import 'package:crypto/crypto.dart';
@@ -54,23 +53,23 @@ class SetupViewController extends StatefulController {
   bool goingTo2fa = true;
   bool success = false;
 
-  DartLoginState state = const api.DartLoginState.needsLogin();
+  api.LoginState state = const api.LoginState.needsLogin();
   api.IdsUser? currentAppleUser;
   Map<int, api.IdsUser> currentPhoneUsers = {};
 
   RxBool phoneValidating = false.obs;
 
-  Future<DartLoginState> updateLoginState(DartLoginState ret) async {
-    if (ret is DartLoginState_NeedsLogin) {
+  Future<api.LoginState> updateLoginState(api.LoginState ret) async {
+    if (ret is api.LoginState_NeedsLogin) {
       api.IdsUser? user;
       (ret, user) = await api.tryAuth(state: pushService.state, username: twoFaUser, password: twoFaPass);
       currentAppleUser = user;
     }
-    if (ret is DartLoginState_NeedsDevice2FA) {
+    if (ret is api.LoginState_NeedsDevice2FA) {
       ret = await api.send2FaToDevices(state: pushService.state);
       isSms.value = false;
     }
-    if (ret is DartLoginState_NeedsSMS2FA) {
+    if (ret is api.LoginState_NeedsSMS2FA) {
       var options = await api.get2FaSmsOpts(state: pushService.state);
       if (options.$2 != null) {
         ret = options.$2!;
@@ -122,7 +121,7 @@ class SetupViewController extends StatefulController {
       isSms.value = true;
     }
     state = ret;
-    if (ret is DartLoginState_LoggedIn) {
+    if (ret is api.LoginState_LoggedIn) {
       ss.settings.userName.value = await api.getUserName(state: pushService.state);
       await doRegister();
     }
@@ -130,7 +129,7 @@ class SetupViewController extends StatefulController {
   }
 
   Future<void> doRegister() async {
-    List<IdsUser> users = [];
+    List<api.IdsUser> users = [];
 
     if (currentAppleUser != null) {
       users.add(currentAppleUser!);
@@ -231,13 +230,13 @@ class SetupViewController extends StatefulController {
     ss.saveSettings();
   }
 
-  Future<DartLoginState> submitCode(String code) async {
-    if (state is DartLoginState_Needs2FAVerification) {
+  Future<api.LoginState> submitCode(String code) async {
+    if (state is api.LoginState_Needs2FAVerification) {
       var (dart, isAnnoying) = await api.verify2Fa(state: pushService.state, code: code);
       state = dart;
       currentAppleUser = isAnnoying;
-    } else if (state is DartLoginState_NeedsSMS2FAVerification) {
-      var myState = state as DartLoginState_NeedsSMS2FAVerification;
+    } else if (state is api.LoginState_NeedsSMS2FAVerification) {
+      var myState = state as api.LoginState_NeedsSMS2FAVerification;
       var (dart, isAnnoying) = await api.verify2FaSms(state: pushService.state, body: myState.field0, code: code);
       state = dart;
       currentAppleUser = isAnnoying;

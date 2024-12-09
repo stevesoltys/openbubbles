@@ -9,10 +9,10 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'package:freezed_annotation/freezed_annotation.dart' hide protected;
 part 'api.freezed.dart';
 
-// These functions are ignored because they are not marked as `pub`: `config`, `get_phase`, `get_raw`, `get_raw`, `get_raw`, `plist_to_bin`, `plist_to_buf`, `plist_to_string`, `restore`, `setup_push`, `to_imsg`, `wrap_sink`
+// These functions are ignored because they are not marked as `pub`: `config`, `get_phase`, `get_raw`, `plist_to_bin`, `plist_to_buf`, `plist_to_string`, `restore`, `setup_push`, `to_imsg`, `wrap_sink`
 // These functions are ignored because they have generic arguments: `bin_deserialize`, `bin_serialize`
-// These types are ignored because they are not used by any `pub` functions: `FLUTTER_RUST_BRIDGE_HANDLER`, `InnerPushState`, `SavedHardwareState`
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `deref`, `deref`, `eq`, `fmt`, `from`, `from`, `from`, `initialize`, `into`, `into`, `spawn`
+// These types are ignored because they are not used by any `pub` functions: `FLUTTER_RUST_BRIDGE_HANDLER`, `InnerPushState`, `NSArrayClass`, `NSArrayIconArray`, `NSArrayImageArray`, `SavedHardwareState`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `deref`, `deref`, `eq`, `fmt`, `from`, `from`, `initialize`, `into`, `into`, `spawn`
 
 Future<ArcPushState> newPushState({required String dir}) =>
     RustLib.instance.api.crateApiApiNewPushState(dir: dir);
@@ -20,7 +20,7 @@ Future<ArcPushState> newPushState({required String dir}) =>
 Future<ArcPushState> serviceFromPtr({required String ptr}) =>
     RustLib.instance.api.crateApiApiServiceFromPtr(ptr: ptr);
 
-Future<DartSupportAlert?> registerIds(
+Future<SupportAlert?> registerIds(
         {required ArcPushState state, required List<IdsUser> users}) =>
     RustLib.instance.api.crateApiApiRegisterIds(state: state, users: users);
 
@@ -36,7 +36,7 @@ Future<void> refreshToken({required ArcPushState state}) =>
     RustLib.instance.api.crateApiApiRefreshToken(state: state);
 
 Future<JoinedOsConfig> configFromValidationData(
-        {required List<int> data, required DartHwExtra extra}) =>
+        {required List<int> data, required HwExtra extra}) =>
     RustLib.instance.api
         .crateApiApiConfigFromValidationData(data: data, extra: extra);
 
@@ -45,25 +45,38 @@ Future<JoinedOsConfig> configFromRelay(
     RustLib.instance.api
         .crateApiApiConfigFromRelay(code: code, host: host, token: token);
 
-Future<DartDeviceInfo> getDeviceInfoState({required ArcPushState state}) =>
+Future<DeviceInfo> getDeviceInfoState({required ArcPushState state}) =>
     RustLib.instance.api.crateApiApiGetDeviceInfoState(state: state);
 
 Future<JoinedOsConfig?> getConfigState({required ArcPushState state}) =>
     RustLib.instance.api.crateApiApiGetConfigState(state: state);
 
-Future<DartDeviceInfo> getDeviceInfo({required JoinedOsConfig config}) =>
+Future<DeviceInfo> getDeviceInfo({required JoinedOsConfig config}) =>
     RustLib.instance.api.crateApiApiGetDeviceInfo(config: config);
 
 Future<JoinedOsConfig> configFromEncoded({required List<int> encoded}) =>
     RustLib.instance.api.crateApiApiConfigFromEncoded(encoded: encoded);
 
-Future<DartPushMessage> ptrToDart({required String ptr}) =>
+Future<PushMessage> ptrToDart({required String ptr}) =>
     RustLib.instance.api.crateApiApiPtrToDart(ptr: ptr);
+
+Future<Attachment> restoreAttachment({required String data}) =>
+    RustLib.instance.api.crateApiApiRestoreAttachment(data: data);
+
+Future<String> saveAttachment({required Attachment att}) =>
+    RustLib.instance.api.crateApiApiSaveAttachment(att: att);
+
+Future<NsArrayLpImageMetadata> createImageArray(
+        {required LPImageMetadata img}) =>
+    RustLib.instance.api.crateApiApiCreateImageArray(img: img);
+
+Future<NsArrayLpIconMetadata> createIconArray({required LPIconMetadata img}) =>
+    RustLib.instance.api.crateApiApiCreateIconArray(img: img);
 
 Future<PollResult> recvWait({required ArcPushState state}) =>
     RustLib.instance.api.crateApiApiRecvWait(state: state);
 
-Future<bool> send({required ArcPushState state, required DartIMessage msg}) =>
+Future<bool> send({required ArcPushState state, required MessageInst msg}) =>
     RustLib.instance.api.crateApiApiSend(state: state, msg: msg);
 
 Future<List<String>> getHandles({required ArcPushState state}) =>
@@ -72,11 +85,11 @@ Future<List<String>> getHandles({required ArcPushState state}) =>
 Future<void> doReregister({required ArcPushState state}) =>
     RustLib.instance.api.crateApiApiDoReregister(state: state);
 
-Future<DartIMessage> newMsg(
+Future<MessageInst> newMsg(
         {required ArcPushState state,
-        required DartConversationData conversation,
+        required ConversationData conversation,
         required String sender,
-        required DartMessage message}) =>
+        required Message message}) =>
     RustLib.instance.api.crateApiApiNewMsg(
         state: state,
         conversation: conversation,
@@ -95,14 +108,14 @@ Future<RegistrationPhase> getPhase({required ArcPushState state}) =>
 
 Stream<TransferProgress> downloadAttachment(
         {required ArcPushState state,
-        required DartAttachment attachment,
+        required Attachment attachment,
         required String path}) =>
     RustLib.instance.api.crateApiApiDownloadAttachment(
         state: state, attachment: attachment, path: path);
 
 Stream<TransferProgress> downloadMmcs(
         {required ArcPushState state,
-        required DartMMCSFile attachment,
+        required MMCSFile attachment,
         required String path}) =>
     RustLib.instance.api.crateApiApiDownloadMmcs(
         state: state, attachment: attachment, path: path);
@@ -129,7 +142,7 @@ Future<String> saveUser({required IdsUser user}) =>
 Future<IdsUser> restoreUser({required String user}) =>
     RustLib.instance.api.crateApiApiRestoreUser(user: user);
 
-Future<(DartLoginState, IdsUser?)> tryAuth(
+Future<(LoginState, IdsUser?)> tryAuth(
         {required ArcPushState state,
         required String username,
         required String password}) =>
@@ -143,22 +156,22 @@ Future<IdsUser> authPhone(
     RustLib.instance.api
         .crateApiApiAuthPhone(state: state, number: number, sig: sig);
 
-Future<DartLoginState> send2FaToDevices({required ArcPushState state}) =>
+Future<LoginState> send2FaToDevices({required ArcPushState state}) =>
     RustLib.instance.api.crateApiApiSend2FaToDevices(state: state);
 
-Future<(DartLoginState, IdsUser?)> verify2Fa(
+Future<(LoginState, IdsUser?)> verify2Fa(
         {required ArcPushState state, required String code}) =>
     RustLib.instance.api.crateApiApiVerify2Fa(state: state, code: code);
 
-Future<(List<DartTrustedPhoneNumber>, DartLoginState?)> get2FaSmsOpts(
+Future<(List<TrustedPhoneNumber>, LoginState?)> get2FaSmsOpts(
         {required ArcPushState state}) =>
     RustLib.instance.api.crateApiApiGet2FaSmsOpts(state: state);
 
-Future<DartLoginState> send2FaSms(
+Future<LoginState> send2FaSms(
         {required ArcPushState state, required int phoneId}) =>
     RustLib.instance.api.crateApiApiSend2FaSms(state: state, phoneId: phoneId);
 
-Future<(DartLoginState, IdsUser?)> verify2FaSms(
+Future<(LoginState, IdsUser?)> verify2FaSms(
         {required ArcPushState state,
         required VerifyBody body,
         required String code}) =>
@@ -178,7 +191,7 @@ Future<void> invalidateIdCache({required ArcPushState state}) =>
 Future<String> getUserName({required ArcPushState state}) =>
     RustLib.instance.api.crateApiApiGetUserName(state: state);
 
-Future<DartRegisterState> getRegstate({required ArcPushState state}) =>
+Future<RegisterState> getRegstate({required ArcPushState state}) =>
     RustLib.instance.api.crateApiApiGetRegstate(state: state);
 
 Future<String> convertTokenToUuid(
@@ -188,7 +201,7 @@ Future<String> convertTokenToUuid(
     RustLib.instance.api.crateApiApiConvertTokenToUuid(
         state: state, handle: handle, token: token);
 
-Future<List<DartPrivateDeviceInfo>> getSmsTargets(
+Future<List<PrivateDeviceInfo>> getSmsTargets(
         {required ArcPushState state,
         required String handle,
         required bool refresh}) =>
@@ -201,42 +214,40 @@ abstract class IdsUser implements RustOpaqueInterface {}
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<JoinedOSConfig>>
 abstract class JoinedOsConfig implements RustOpaqueInterface {}
 
+// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<NSArray < LPIconMetadata >>>
+abstract class NsArrayLpIconMetadata implements RustOpaqueInterface {}
+
+// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<NSArray < LPImageMetadata >>>
+abstract class NsArrayLpImageMetadata implements RustOpaqueInterface {}
+
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<VerifyBody>>
 abstract class VerifyBody implements RustOpaqueInterface {}
 
-class DartAttachment {
-  final DartAttachmentType aType;
-  final int partIdx;
+class Attachment {
+  final AttachmentType aType;
+  final int part_;
   final String utiType;
   final String mime;
   final String name;
   final bool iris;
 
-  const DartAttachment({
+  const Attachment({
     required this.aType,
-    required this.partIdx,
+    required this.part_,
     required this.utiType,
     required this.mime,
     required this.name,
     required this.iris,
   });
 
-  Future<int> getSize() =>
-      RustLib.instance.api.crateApiApiDartAttachmentGetSize(
-        that: this,
-      );
-
-  static Future<DartAttachment> restore({required String saved}) =>
-      RustLib.instance.api.crateApiApiDartAttachmentRestore(saved: saved);
-
-  Future<String> save() => RustLib.instance.api.crateApiApiDartAttachmentSave(
+  Future<int> getSize() => RustLib.instance.api.crateApiApiAttachmentGetSize(
         that: this,
       );
 
   @override
   int get hashCode =>
       aType.hashCode ^
-      partIdx.hashCode ^
+      part_.hashCode ^
       utiType.hashCode ^
       mime.hashCode ^
       name.hashCode ^
@@ -245,10 +256,10 @@ class DartAttachment {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is DartAttachment &&
+      other is Attachment &&
           runtimeType == other.runtimeType &&
           aType == other.aType &&
-          partIdx == other.partIdx &&
+          part_ == other.part_ &&
           utiType == other.utiType &&
           mime == other.mime &&
           name == other.name &&
@@ -256,26 +267,26 @@ class DartAttachment {
 }
 
 @freezed
-sealed class DartAttachmentType with _$DartAttachmentType {
-  const DartAttachmentType._();
+sealed class AttachmentType with _$AttachmentType {
+  const AttachmentType._();
 
-  const factory DartAttachmentType.inline(
+  const factory AttachmentType.inline(
     Uint8List field0,
-  ) = DartAttachmentType_Inline;
-  const factory DartAttachmentType.mmcs(
-    DartMMCSFile field0,
-  ) = DartAttachmentType_MMCS;
+  ) = AttachmentType_Inline;
+  const factory AttachmentType.mmcs(
+    MMCSFile field0,
+  ) = AttachmentType_MMCS;
 }
 
-class DartBalloon {
+class Balloon {
   final String url;
   final String? session;
-  final DartBalloonLayout layout;
+  final BalloonLayout layout;
   final String? ldText;
   final bool isLive;
   final Uint8List icon;
 
-  const DartBalloon({
+  const Balloon({
     required this.url,
     this.session,
     required this.layout,
@@ -296,7 +307,7 @@ class DartBalloon {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is DartBalloon &&
+      other is Balloon &&
           runtimeType == other.runtimeType &&
           url == other.url &&
           session == other.session &&
@@ -307,10 +318,10 @@ class DartBalloon {
 }
 
 @freezed
-sealed class DartBalloonLayout with _$DartBalloonLayout {
-  const DartBalloonLayout._();
+sealed class BalloonLayout with _$BalloonLayout {
+  const BalloonLayout._();
 
-  const factory DartBalloonLayout.templateLayout({
+  const factory BalloonLayout.templateLayout({
     required String imageSubtitle,
     required String imageTitle,
     required String caption,
@@ -318,14 +329,14 @@ sealed class DartBalloonLayout with _$DartBalloonLayout {
     required String tertiarySubcaption,
     required String subcaption,
     required NSDictionaryClass class_,
-  }) = DartBalloonLayout_TemplateLayout;
+  }) = BalloonLayout_TemplateLayout;
 }
 
-class DartChangeParticipantMessage {
+class ChangeParticipantMessage {
   final List<String> newParticipants;
   final int groupVersion;
 
-  const DartChangeParticipantMessage({
+  const ChangeParticipantMessage({
     required this.newParticipants,
     required this.groupVersion,
   });
@@ -336,19 +347,19 @@ class DartChangeParticipantMessage {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is DartChangeParticipantMessage &&
+      other is ChangeParticipantMessage &&
           runtimeType == other.runtimeType &&
           newParticipants == other.newParticipants &&
           groupVersion == other.groupVersion;
 }
 
-class DartConversationData {
+class ConversationData {
   List<String> participants;
   String? cvName;
   String? senderGuid;
   String? afterGuid;
 
-  DartConversationData({
+  ConversationData({
     required this.participants,
     this.cvName,
     this.senderGuid,
@@ -365,7 +376,7 @@ class DartConversationData {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is DartConversationData &&
+      other is ConversationData &&
           runtimeType == other.runtimeType &&
           participants == other.participants &&
           cvName == other.cvName &&
@@ -373,13 +384,13 @@ class DartConversationData {
           afterGuid == other.afterGuid;
 }
 
-class DartDeviceInfo {
+class DeviceInfo {
   final String name;
   final String serial;
   final String osVersion;
   final Uint8List? encodedData;
 
-  const DartDeviceInfo({
+  const DeviceInfo({
     required this.name,
     required this.serial,
     required this.osVersion,
@@ -396,7 +407,7 @@ class DartDeviceInfo {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is DartDeviceInfo &&
+      other is DeviceInfo &&
           runtimeType == other.runtimeType &&
           name == other.name &&
           serial == other.serial &&
@@ -404,12 +415,12 @@ class DartDeviceInfo {
           encodedData == other.encodedData;
 }
 
-class DartEditMessage {
+class EditMessage {
   final String tuuid;
   final int editPart;
-  final DartMessageParts newParts;
+  final MessageParts newParts;
 
-  const DartEditMessage({
+  const EditMessage({
     required this.tuuid,
     required this.editPart,
     required this.newParts,
@@ -421,19 +432,19 @@ class DartEditMessage {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is DartEditMessage &&
+      other is EditMessage &&
           runtimeType == other.runtimeType &&
           tuuid == other.tuuid &&
           editPart == other.editPart &&
           newParts == other.newParts;
 }
 
-class DartErrorMessage {
+class ErrorMessage {
   final String forUuid;
   final BigInt status;
   final String statusStr;
 
-  const DartErrorMessage({
+  const ErrorMessage({
     required this.forUuid,
     required this.status,
     required this.statusStr,
@@ -445,20 +456,20 @@ class DartErrorMessage {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is DartErrorMessage &&
+      other is ErrorMessage &&
           runtimeType == other.runtimeType &&
           forUuid == other.forUuid &&
           status == other.status &&
           statusStr == other.statusStr;
 }
 
-class DartExtensionApp {
+class ExtensionApp {
   final String name;
   final int? appId;
   final String bundleId;
-  final DartBalloon? balloon;
+  final Balloon? balloon;
 
-  const DartExtensionApp({
+  const ExtensionApp({
     required this.name,
     this.appId,
     required this.bundleId,
@@ -472,7 +483,7 @@ class DartExtensionApp {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is DartExtensionApp &&
+      other is ExtensionApp &&
           runtimeType == other.runtimeType &&
           name == other.name &&
           appId == other.appId &&
@@ -480,14 +491,14 @@ class DartExtensionApp {
           balloon == other.balloon;
 }
 
-class DartHwExtra {
+class HwExtra {
   final String version;
   final int protocolVersion;
   final String deviceId;
   final String icloudUa;
   final String aoskitVersion;
 
-  const DartHwExtra({
+  const HwExtra({
     required this.version,
     required this.protocolVersion,
     required this.deviceId,
@@ -506,7 +517,7 @@ class DartHwExtra {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is DartHwExtra &&
+      other is HwExtra &&
           runtimeType == other.runtimeType &&
           version == other.version &&
           protocolVersion == other.protocolVersion &&
@@ -515,58 +526,11 @@ class DartHwExtra {
           aoskitVersion == other.aoskitVersion;
 }
 
-class DartIMessage {
-  String id;
-  String? sender;
-  DartConversationData? conversation;
-  DartMessage message;
-  int sentTimestamp;
-  List<DartMessageTarget>? target;
-  bool sendDelivered;
-  bool verificationFailed;
-
-  DartIMessage({
-    required this.id,
-    this.sender,
-    this.conversation,
-    required this.message,
-    required this.sentTimestamp,
-    this.target,
-    required this.sendDelivered,
-    required this.verificationFailed,
-  });
-
-  @override
-  int get hashCode =>
-      id.hashCode ^
-      sender.hashCode ^
-      conversation.hashCode ^
-      message.hashCode ^
-      sentTimestamp.hashCode ^
-      target.hashCode ^
-      sendDelivered.hashCode ^
-      verificationFailed.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is DartIMessage &&
-          runtimeType == other.runtimeType &&
-          id == other.id &&
-          sender == other.sender &&
-          conversation == other.conversation &&
-          message == other.message &&
-          sentTimestamp == other.sentTimestamp &&
-          target == other.target &&
-          sendDelivered == other.sendDelivered &&
-          verificationFailed == other.verificationFailed;
-}
-
-class DartIconChangeMessage {
-  final DartMMCSFile? file;
+class IconChangeMessage {
+  final MMCSFile? file;
   final int groupVersion;
 
-  const DartIconChangeMessage({
+  const IconChangeMessage({
     this.file,
     required this.groupVersion,
   });
@@ -577,18 +541,18 @@ class DartIconChangeMessage {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is DartIconChangeMessage &&
+      other is IconChangeMessage &&
           runtimeType == other.runtimeType &&
           file == other.file &&
           groupVersion == other.groupVersion;
 }
 
-class DartIndexedMessagePart {
-  final DartMessagePart part_;
+class IndexedMessagePart {
+  final MessagePart part_;
   final int? idx;
-  final DartPartExtension? ext;
+  final PartExtension? ext;
 
-  const DartIndexedMessagePart({
+  const IndexedMessagePart({
     required this.part_,
     this.idx,
     this.ext,
@@ -600,18 +564,18 @@ class DartIndexedMessagePart {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is DartIndexedMessagePart &&
+      other is IndexedMessagePart &&
           runtimeType == other.runtimeType &&
           part_ == other.part_ &&
           idx == other.idx &&
           ext == other.ext;
 }
 
-class DartLinkMeta {
+class LinkMeta {
   final LPLinkMetadata data;
   final List<Uint8List> attachments;
 
-  const DartLinkMeta({
+  const LinkMeta({
     required this.data,
     required this.attachments,
   });
@@ -622,503 +586,28 @@ class DartLinkMeta {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is DartLinkMeta &&
+      other is LinkMeta &&
           runtimeType == other.runtimeType &&
           data == other.data &&
           attachments == other.attachments;
 }
 
 @freezed
-sealed class DartLoginState with _$DartLoginState {
-  const DartLoginState._();
+sealed class LoginState with _$LoginState {
+  const LoginState._();
 
-  const factory DartLoginState.loggedIn() = DartLoginState_LoggedIn;
-  const factory DartLoginState.needsDevice2Fa() = DartLoginState_NeedsDevice2FA;
-  const factory DartLoginState.needs2FaVerification() =
-      DartLoginState_Needs2FAVerification;
-  const factory DartLoginState.needsSms2Fa() = DartLoginState_NeedsSMS2FA;
-  const factory DartLoginState.needsSms2FaVerification(
+  const factory LoginState.loggedIn() = LoginState_LoggedIn;
+  const factory LoginState.needsDevice2Fa() = LoginState_NeedsDevice2FA;
+  const factory LoginState.needs2FaVerification() =
+      LoginState_Needs2FAVerification;
+  const factory LoginState.needsSms2Fa() = LoginState_NeedsSMS2FA;
+  const factory LoginState.needsSms2FaVerification(
     VerifyBody field0,
-  ) = DartLoginState_NeedsSMS2FAVerification;
-  const factory DartLoginState.needsExtraStep(
+  ) = LoginState_NeedsSMS2FAVerification;
+  const factory LoginState.needsExtraStep(
     String field0,
-  ) = DartLoginState_NeedsExtraStep;
-  const factory DartLoginState.needsLogin() = DartLoginState_NeedsLogin;
-}
-
-@freezed
-sealed class DartMessage with _$DartMessage {
-  const DartMessage._();
-
-  const factory DartMessage.message(
-    DartNormalMessage field0,
-  ) = DartMessage_Message;
-  const factory DartMessage.renameMessage(
-    DartRenameMessage field0,
-  ) = DartMessage_RenameMessage;
-  const factory DartMessage.changeParticipants(
-    DartChangeParticipantMessage field0,
-  ) = DartMessage_ChangeParticipants;
-  const factory DartMessage.react(
-    DartReactMessage field0,
-  ) = DartMessage_React;
-  const factory DartMessage.delivered() = DartMessage_Delivered;
-  const factory DartMessage.read() = DartMessage_Read;
-  const factory DartMessage.typing() = DartMessage_Typing;
-  const factory DartMessage.unsend(
-    DartUnsendMessage field0,
-  ) = DartMessage_Unsend;
-  const factory DartMessage.edit(
-    DartEditMessage field0,
-  ) = DartMessage_Edit;
-  const factory DartMessage.iconChange(
-    DartIconChangeMessage field0,
-  ) = DartMessage_IconChange;
-  const factory DartMessage.stopTyping() = DartMessage_StopTyping;
-  const factory DartMessage.enableSmsActivation(
-    bool field0,
-  ) = DartMessage_EnableSmsActivation;
-  const factory DartMessage.messageReadOnDevice() =
-      DartMessage_MessageReadOnDevice;
-  const factory DartMessage.smsConfirmSent(
-    bool field0,
-  ) = DartMessage_SmsConfirmSent;
-  const factory DartMessage.markUnread() = DartMessage_MarkUnread;
-  const factory DartMessage.peerCacheInvalidate() =
-      DartMessage_PeerCacheInvalidate;
-  const factory DartMessage.updateExtension(
-    DartUpdateExtensionMessage field0,
-  ) = DartMessage_UpdateExtension;
-  const factory DartMessage.error(
-    DartErrorMessage field0,
-  ) = DartMessage_Error;
-}
-
-@freezed
-sealed class DartMessagePart with _$DartMessagePart {
-  const DartMessagePart._();
-
-  const factory DartMessagePart.text(
-    String field0,
-  ) = DartMessagePart_Text;
-  const factory DartMessagePart.attachment(
-    DartAttachment field0,
-  ) = DartMessagePart_Attachment;
-  const factory DartMessagePart.mention(
-    String field0,
-    String field1,
-  ) = DartMessagePart_Mention;
-  const factory DartMessagePart.object(
-    String field0,
-  ) = DartMessagePart_Object;
-}
-
-class DartMessageParts {
-  final List<DartIndexedMessagePart> field0;
-
-  const DartMessageParts({
-    required this.field0,
-  });
-
-  Future<String> asPlain() =>
-      RustLib.instance.api.crateApiApiDartMessagePartsAsPlain(
-        that: this,
-      );
-
-  @override
-  int get hashCode => field0.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is DartMessageParts &&
-          runtimeType == other.runtimeType &&
-          field0 == other.field0;
-}
-
-@freezed
-sealed class DartMessageTarget with _$DartMessageTarget {
-  const DartMessageTarget._();
-
-  const factory DartMessageTarget.token(
-    Uint8List field0,
-  ) = DartMessageTarget_Token;
-  const factory DartMessageTarget.uuid(
-    String field0,
-  ) = DartMessageTarget_Uuid;
-}
-
-@freezed
-sealed class DartMessageType with _$DartMessageType {
-  const DartMessageType._();
-
-  const factory DartMessageType.iMessage() = DartMessageType_IMessage;
-  const factory DartMessageType.sms({
-    required bool isPhone,
-    required String usingNumber,
-    String? fromHandle,
-  }) = DartMessageType_SMS;
-}
-
-class DartMMCSFile {
-  final Uint8List signature;
-  final String object;
-  final String url;
-  final Uint8List key;
-  final int size;
-
-  const DartMMCSFile({
-    required this.signature,
-    required this.object,
-    required this.url,
-    required this.key,
-    required this.size,
-  });
-
-  @override
-  int get hashCode =>
-      signature.hashCode ^
-      object.hashCode ^
-      url.hashCode ^
-      key.hashCode ^
-      size.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is DartMMCSFile &&
-          runtimeType == other.runtimeType &&
-          signature == other.signature &&
-          object == other.object &&
-          url == other.url &&
-          key == other.key &&
-          size == other.size;
-}
-
-class DartNormalMessage {
-  DartMessageParts parts;
-  String? effect;
-  String? replyGuid;
-  String? replyPart;
-  final DartMessageType service;
-  String? subject;
-  DartExtensionApp? app;
-  DartLinkMeta? linkMeta;
-  bool voice;
-
-  DartNormalMessage({
-    required this.parts,
-    this.effect,
-    this.replyGuid,
-    this.replyPart,
-    required this.service,
-    this.subject,
-    this.app,
-    this.linkMeta,
-    required this.voice,
-  });
-
-  @override
-  int get hashCode =>
-      parts.hashCode ^
-      effect.hashCode ^
-      replyGuid.hashCode ^
-      replyPart.hashCode ^
-      service.hashCode ^
-      subject.hashCode ^
-      app.hashCode ^
-      linkMeta.hashCode ^
-      voice.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is DartNormalMessage &&
-          runtimeType == other.runtimeType &&
-          parts == other.parts &&
-          effect == other.effect &&
-          replyGuid == other.replyGuid &&
-          replyPart == other.replyPart &&
-          service == other.service &&
-          subject == other.subject &&
-          app == other.app &&
-          linkMeta == other.linkMeta &&
-          voice == other.voice;
-}
-
-@freezed
-sealed class DartPartExtension with _$DartPartExtension {
-  const DartPartExtension._();
-
-  const factory DartPartExtension.sticker({
-    required double msgWidth,
-    required double rotation,
-    required BigInt sai,
-    required double scale,
-    bool? update,
-    required BigInt sli,
-    required double normalizedX,
-    required double normalizedY,
-    required BigInt version,
-    required String hash,
-    required BigInt safi,
-    required PlatformInt64 effectType,
-    required String stickerId,
-  }) = DartPartExtension_Sticker;
-}
-
-class DartPrivateDeviceInfo {
-  final String? uuid;
-  final String? deviceName;
-  final Uint8List token;
-  final bool isHsaTrusted;
-  final List<String> identites;
-  final List<String> subServices;
-
-  const DartPrivateDeviceInfo({
-    this.uuid,
-    this.deviceName,
-    required this.token,
-    required this.isHsaTrusted,
-    required this.identites,
-    required this.subServices,
-  });
-
-  @override
-  int get hashCode =>
-      uuid.hashCode ^
-      deviceName.hashCode ^
-      token.hashCode ^
-      isHsaTrusted.hashCode ^
-      identites.hashCode ^
-      subServices.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is DartPrivateDeviceInfo &&
-          runtimeType == other.runtimeType &&
-          uuid == other.uuid &&
-          deviceName == other.deviceName &&
-          token == other.token &&
-          isHsaTrusted == other.isHsaTrusted &&
-          identites == other.identites &&
-          subServices == other.subServices;
-}
-
-@freezed
-sealed class DartPushMessage with _$DartPushMessage {
-  const DartPushMessage._();
-
-  const factory DartPushMessage.iMessage(
-    DartIMessage field0,
-  ) = DartPushMessage_IMessage;
-  const factory DartPushMessage.sendConfirm({
-    required String uuid,
-    String? error,
-  }) = DartPushMessage_SendConfirm;
-}
-
-class DartReactMessage {
-  final String toUuid;
-  final int? toPart;
-  final DartReactMessageType reaction;
-  final String toText;
-
-  const DartReactMessage({
-    required this.toUuid,
-    this.toPart,
-    required this.reaction,
-    required this.toText,
-  });
-
-  @override
-  int get hashCode =>
-      toUuid.hashCode ^ toPart.hashCode ^ reaction.hashCode ^ toText.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is DartReactMessage &&
-          runtimeType == other.runtimeType &&
-          toUuid == other.toUuid &&
-          toPart == other.toPart &&
-          reaction == other.reaction &&
-          toText == other.toText;
-}
-
-@freezed
-sealed class DartReactMessageType with _$DartReactMessageType {
-  const DartReactMessageType._();
-
-  const factory DartReactMessageType.react({
-    required DartReaction reaction,
-    required bool enable,
-  }) = DartReactMessageType_React;
-  const factory DartReactMessageType.extension_({
-    required DartExtensionApp spec,
-    required DartMessageParts body,
-  }) = DartReactMessageType_Extension;
-}
-
-enum DartReaction {
-  heart,
-  like,
-  dislike,
-  laugh,
-  emphsize,
-  question,
-  ;
-}
-
-@freezed
-sealed class DartRegisterState with _$DartRegisterState {
-  const DartRegisterState._();
-
-  const factory DartRegisterState.registered({
-    required PlatformInt64 nextS,
-  }) = DartRegisterState_Registered;
-  const factory DartRegisterState.registering() = DartRegisterState_Registering;
-  const factory DartRegisterState.failed({
-    BigInt? retryWait,
-    required String error,
-  }) = DartRegisterState_Failed;
-}
-
-class DartRenameMessage {
-  final String newName;
-
-  const DartRenameMessage({
-    required this.newName,
-  });
-
-  @override
-  int get hashCode => newName.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is DartRenameMessage &&
-          runtimeType == other.runtimeType &&
-          newName == other.newName;
-}
-
-class DartSupportAction {
-  final String url;
-  final String button;
-
-  const DartSupportAction({
-    required this.url,
-    required this.button,
-  });
-
-  @override
-  int get hashCode => url.hashCode ^ button.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is DartSupportAction &&
-          runtimeType == other.runtimeType &&
-          url == other.url &&
-          button == other.button;
-}
-
-class DartSupportAlert {
-  final String title;
-  final String body;
-  final DartSupportAction? action;
-
-  const DartSupportAlert({
-    required this.title,
-    required this.body,
-    this.action,
-  });
-
-  @override
-  int get hashCode => title.hashCode ^ body.hashCode ^ action.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is DartSupportAlert &&
-          runtimeType == other.runtimeType &&
-          title == other.title &&
-          body == other.body &&
-          action == other.action;
-}
-
-class DartTrustedPhoneNumber {
-  final String numberWithDialCode;
-  final String lastTwoDigits;
-  final String pushMode;
-  final int id;
-
-  const DartTrustedPhoneNumber({
-    required this.numberWithDialCode,
-    required this.lastTwoDigits,
-    required this.pushMode,
-    required this.id,
-  });
-
-  @override
-  int get hashCode =>
-      numberWithDialCode.hashCode ^
-      lastTwoDigits.hashCode ^
-      pushMode.hashCode ^
-      id.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is DartTrustedPhoneNumber &&
-          runtimeType == other.runtimeType &&
-          numberWithDialCode == other.numberWithDialCode &&
-          lastTwoDigits == other.lastTwoDigits &&
-          pushMode == other.pushMode &&
-          id == other.id;
-}
-
-class DartUnsendMessage {
-  final String tuuid;
-  final int editPart;
-
-  const DartUnsendMessage({
-    required this.tuuid,
-    required this.editPart,
-  });
-
-  @override
-  int get hashCode => tuuid.hashCode ^ editPart.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is DartUnsendMessage &&
-          runtimeType == other.runtimeType &&
-          tuuid == other.tuuid &&
-          editPart == other.editPart;
-}
-
-class DartUpdateExtensionMessage {
-  final String forUuid;
-  final DartPartExtension ext;
-
-  const DartUpdateExtensionMessage({
-    required this.forUuid,
-    required this.ext,
-  });
-
-  @override
-  int get hashCode => forUuid.hashCode ^ ext.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is DartUpdateExtensionMessage &&
-          runtimeType == other.runtimeType &&
-          forUuid == other.forUuid &&
-          ext == other.ext;
+  ) = LoginState_NeedsExtraStep;
+  const factory LoginState.needsLogin() = LoginState_NeedsLogin;
 }
 
 class LPIconMetadata {
@@ -1176,8 +665,8 @@ class LPLinkMetadata {
   final String? summary;
   final RichLinkImageAttachmentSubstitute? image;
   final RichLinkImageAttachmentSubstitute? icon;
-  final NSArrayImageArray? images;
-  final NSArrayIconArray? icons;
+  final NsArrayLpImageMetadata? images;
+  final NsArrayLpIconMetadata? icons;
 
   const LPLinkMetadata({
     this.imageMetadata,
@@ -1225,10 +714,204 @@ class LPLinkMetadata {
           icons == other.icons;
 }
 
+@freezed
+sealed class Message with _$Message {
+  const Message._();
+
+  const factory Message.message(
+    NormalMessage field0,
+  ) = Message_Message;
+  const factory Message.renameMessage(
+    RenameMessage field0,
+  ) = Message_RenameMessage;
+  const factory Message.changeParticipants(
+    ChangeParticipantMessage field0,
+  ) = Message_ChangeParticipants;
+  const factory Message.react(
+    ReactMessage field0,
+  ) = Message_React;
+  const factory Message.delivered() = Message_Delivered;
+  const factory Message.read() = Message_Read;
+  const factory Message.typing() = Message_Typing;
+  const factory Message.unsend(
+    UnsendMessage field0,
+  ) = Message_Unsend;
+  const factory Message.edit(
+    EditMessage field0,
+  ) = Message_Edit;
+  const factory Message.iconChange(
+    IconChangeMessage field0,
+  ) = Message_IconChange;
+  const factory Message.stopTyping() = Message_StopTyping;
+  const factory Message.enableSmsActivation(
+    bool field0,
+  ) = Message_EnableSmsActivation;
+  const factory Message.messageReadOnDevice() = Message_MessageReadOnDevice;
+  const factory Message.smsConfirmSent(
+    bool field0,
+  ) = Message_SmsConfirmSent;
+  const factory Message.markUnread() = Message_MarkUnread;
+  const factory Message.peerCacheInvalidate() = Message_PeerCacheInvalidate;
+  const factory Message.updateExtension(
+    UpdateExtensionMessage field0,
+  ) = Message_UpdateExtension;
+  const factory Message.error(
+    ErrorMessage field0,
+  ) = Message_Error;
+}
+
+class MessageInst {
+  String id;
+  String? sender;
+  ConversationData? conversation;
+  Message message;
+  int sentTimestamp;
+  List<MessageTarget>? target;
+  bool sendDelivered;
+  bool verificationFailed;
+
+  MessageInst({
+    required this.id,
+    this.sender,
+    this.conversation,
+    required this.message,
+    required this.sentTimestamp,
+    this.target,
+    required this.sendDelivered,
+    required this.verificationFailed,
+  });
+
+  @override
+  int get hashCode =>
+      id.hashCode ^
+      sender.hashCode ^
+      conversation.hashCode ^
+      message.hashCode ^
+      sentTimestamp.hashCode ^
+      target.hashCode ^
+      sendDelivered.hashCode ^
+      verificationFailed.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is MessageInst &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          sender == other.sender &&
+          conversation == other.conversation &&
+          message == other.message &&
+          sentTimestamp == other.sentTimestamp &&
+          target == other.target &&
+          sendDelivered == other.sendDelivered &&
+          verificationFailed == other.verificationFailed;
+}
+
+@freezed
+sealed class MessagePart with _$MessagePart {
+  const MessagePart._();
+
+  const factory MessagePart.text(
+    String field0,
+  ) = MessagePart_Text;
+  const factory MessagePart.attachment(
+    Attachment field0,
+  ) = MessagePart_Attachment;
+  const factory MessagePart.mention(
+    String field0,
+    String field1,
+  ) = MessagePart_Mention;
+  const factory MessagePart.object(
+    String field0,
+  ) = MessagePart_Object;
+}
+
+class MessageParts {
+  final List<IndexedMessagePart> field0;
+
+  const MessageParts({
+    required this.field0,
+  });
+
+  Future<String> rawText() =>
+      RustLib.instance.api.crateApiApiMessagePartsRawText(
+        that: this,
+      );
+
+  @override
+  int get hashCode => field0.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is MessageParts &&
+          runtimeType == other.runtimeType &&
+          field0 == other.field0;
+}
+
+@freezed
+sealed class MessageTarget with _$MessageTarget {
+  const MessageTarget._();
+
+  const factory MessageTarget.token(
+    Uint8List field0,
+  ) = MessageTarget_Token;
+  const factory MessageTarget.uuid(
+    String field0,
+  ) = MessageTarget_Uuid;
+}
+
+@freezed
+sealed class MessageType with _$MessageType {
+  const MessageType._();
+
+  const factory MessageType.iMessage() = MessageType_IMessage;
+  const factory MessageType.sms({
+    required bool isPhone,
+    required String usingNumber,
+    String? fromHandle,
+  }) = MessageType_SMS;
+}
+
+class MMCSFile {
+  final Uint8List signature;
+  final String object;
+  final String url;
+  final Uint8List key;
+  final int size;
+
+  const MMCSFile({
+    required this.signature,
+    required this.object,
+    required this.url,
+    required this.key,
+    required this.size,
+  });
+
+  @override
+  int get hashCode =>
+      signature.hashCode ^
+      object.hashCode ^
+      url.hashCode ^
+      key.hashCode ^
+      size.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is MMCSFile &&
+          runtimeType == other.runtimeType &&
+          signature == other.signature &&
+          object == other.object &&
+          url == other.url &&
+          key == other.key &&
+          size == other.size;
+}
+
 class MMCSTransferProgress {
   final int prog;
   final int total;
-  final DartMMCSFile? file;
+  final MMCSFile? file;
 
   const MMCSTransferProgress({
     required this.prog,
@@ -1264,52 +947,55 @@ class MyAsyncRuntime {
       other is MyAsyncRuntime && runtimeType == other.runtimeType;
 }
 
-enum NSArrayClass {
-  nsArray,
-  nsMutableArray,
-  ;
-}
+class NormalMessage {
+  MessageParts parts;
+  String? effect;
+  String? replyGuid;
+  String? replyPart;
+  final MessageType service;
+  String? subject;
+  ExtensionApp? app;
+  LinkMeta? linkMeta;
+  bool voice;
 
-class NSArrayIconArray {
-  final List<LPIconMetadata> objects;
-  final NSArrayClass class_;
-
-  const NSArrayIconArray({
-    required this.objects,
-    required this.class_,
+  NormalMessage({
+    required this.parts,
+    this.effect,
+    this.replyGuid,
+    this.replyPart,
+    required this.service,
+    this.subject,
+    this.app,
+    this.linkMeta,
+    required this.voice,
   });
 
   @override
-  int get hashCode => objects.hashCode ^ class_.hashCode;
+  int get hashCode =>
+      parts.hashCode ^
+      effect.hashCode ^
+      replyGuid.hashCode ^
+      replyPart.hashCode ^
+      service.hashCode ^
+      subject.hashCode ^
+      app.hashCode ^
+      linkMeta.hashCode ^
+      voice.hashCode;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is NSArrayIconArray &&
+      other is NormalMessage &&
           runtimeType == other.runtimeType &&
-          objects == other.objects &&
-          class_ == other.class_;
-}
-
-class NSArrayImageArray {
-  final List<LPImageMetadata> objects;
-  final NSArrayClass class_;
-
-  const NSArrayImageArray({
-    required this.objects,
-    required this.class_,
-  });
-
-  @override
-  int get hashCode => objects.hashCode ^ class_.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is NSArrayImageArray &&
-          runtimeType == other.runtimeType &&
-          objects == other.objects &&
-          class_ == other.class_;
+          parts == other.parts &&
+          effect == other.effect &&
+          replyGuid == other.replyGuid &&
+          replyPart == other.replyPart &&
+          service == other.service &&
+          subject == other.subject &&
+          app == other.app &&
+          linkMeta == other.linkMeta &&
+          voice == other.voice;
 }
 
 enum NSDictionaryClass {
@@ -1340,13 +1026,152 @@ class NSURL {
 }
 
 @freezed
+sealed class PartExtension with _$PartExtension {
+  const PartExtension._();
+
+  const factory PartExtension.sticker({
+    required double msgWidth,
+    required double rotation,
+    required BigInt sai,
+    required double scale,
+    bool? update,
+    required BigInt sli,
+    required double normalizedX,
+    required double normalizedY,
+    required BigInt version,
+    required String hash,
+    required BigInt safi,
+    required PlatformInt64 effectType,
+    required String stickerId,
+  }) = PartExtension_Sticker;
+}
+
+@freezed
 sealed class PollResult with _$PollResult {
   const PollResult._();
 
   const factory PollResult.stop() = PollResult_Stop;
   const factory PollResult.cont([
-    DartPushMessage? field0,
+    PushMessage? field0,
   ]) = PollResult_Cont;
+}
+
+class PrivateDeviceInfo {
+  final String? uuid;
+  final String? deviceName;
+  final Uint8List token;
+  final bool isHsaTrusted;
+  final List<String> identites;
+  final List<String> subServices;
+
+  const PrivateDeviceInfo({
+    this.uuid,
+    this.deviceName,
+    required this.token,
+    required this.isHsaTrusted,
+    required this.identites,
+    required this.subServices,
+  });
+
+  @override
+  int get hashCode =>
+      uuid.hashCode ^
+      deviceName.hashCode ^
+      token.hashCode ^
+      isHsaTrusted.hashCode ^
+      identites.hashCode ^
+      subServices.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PrivateDeviceInfo &&
+          runtimeType == other.runtimeType &&
+          uuid == other.uuid &&
+          deviceName == other.deviceName &&
+          token == other.token &&
+          isHsaTrusted == other.isHsaTrusted &&
+          identites == other.identites &&
+          subServices == other.subServices;
+}
+
+@freezed
+sealed class PushMessage with _$PushMessage {
+  const PushMessage._();
+
+  const factory PushMessage.iMessage(
+    MessageInst field0,
+  ) = PushMessage_IMessage;
+  const factory PushMessage.sendConfirm({
+    required String uuid,
+    String? error,
+  }) = PushMessage_SendConfirm;
+}
+
+class ReactMessage {
+  final String toUuid;
+  final int? toPart;
+  final ReactMessageType reaction;
+  final String toText;
+
+  const ReactMessage({
+    required this.toUuid,
+    this.toPart,
+    required this.reaction,
+    required this.toText,
+  });
+
+  @override
+  int get hashCode =>
+      toUuid.hashCode ^ toPart.hashCode ^ reaction.hashCode ^ toText.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ReactMessage &&
+          runtimeType == other.runtimeType &&
+          toUuid == other.toUuid &&
+          toPart == other.toPart &&
+          reaction == other.reaction &&
+          toText == other.toText;
+}
+
+@freezed
+sealed class ReactMessageType with _$ReactMessageType {
+  const ReactMessageType._();
+
+  const factory ReactMessageType.react({
+    required Reaction reaction,
+    required bool enable,
+  }) = ReactMessageType_React;
+  const factory ReactMessageType.extension_({
+    required ExtensionApp spec,
+    required MessageParts body,
+  }) = ReactMessageType_Extension;
+}
+
+enum Reaction {
+  heart,
+  like,
+  dislike,
+  laugh,
+  emphsize,
+  question,
+  ;
+}
+
+@freezed
+sealed class RegisterState with _$RegisterState {
+  const RegisterState._();
+
+  const factory RegisterState.registered({
+    required PlatformInt64 nextS,
+  }) = RegisterState_Registered;
+  const factory RegisterState.registering() = RegisterState_Registering;
+  const factory RegisterState.failed({
+    BigInt? retryWait,
+    required String error,
+  }) = RegisterState_Failed;
 }
 
 enum RegistrationPhase {
@@ -1354,6 +1179,24 @@ enum RegistrationPhase {
   wantsRegister,
   registered,
   ;
+}
+
+class RenameMessage {
+  final String newName;
+
+  const RenameMessage({
+    required this.newName,
+  });
+
+  @override
+  int get hashCode => newName.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is RenameMessage &&
+          runtimeType == other.runtimeType &&
+          newName == other.newName;
 }
 
 class RichLinkImageAttachmentSubstitute {
@@ -1379,10 +1222,55 @@ class RichLinkImageAttachmentSubstitute {
               other.richLinkImageAttachmentSubstituteIndex;
 }
 
+class SupportAction {
+  final String url;
+  final String button;
+
+  const SupportAction({
+    required this.url,
+    required this.button,
+  });
+
+  @override
+  int get hashCode => url.hashCode ^ button.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is SupportAction &&
+          runtimeType == other.runtimeType &&
+          url == other.url &&
+          button == other.button;
+}
+
+class SupportAlert {
+  final String title;
+  final String body;
+  final SupportAction? action;
+
+  const SupportAlert({
+    required this.title,
+    required this.body,
+    this.action,
+  });
+
+  @override
+  int get hashCode => title.hashCode ^ body.hashCode ^ action.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is SupportAlert &&
+          runtimeType == other.runtimeType &&
+          title == other.title &&
+          body == other.body &&
+          action == other.action;
+}
+
 class TransferProgress {
   final int prog;
   final int total;
-  final DartAttachment? attachment;
+  final Attachment? attachment;
 
   const TransferProgress({
     required this.prog,
@@ -1401,4 +1289,77 @@ class TransferProgress {
           prog == other.prog &&
           total == other.total &&
           attachment == other.attachment;
+}
+
+class TrustedPhoneNumber {
+  final String numberWithDialCode;
+  final String lastTwoDigits;
+  final String pushMode;
+  final int id;
+
+  const TrustedPhoneNumber({
+    required this.numberWithDialCode,
+    required this.lastTwoDigits,
+    required this.pushMode,
+    required this.id,
+  });
+
+  @override
+  int get hashCode =>
+      numberWithDialCode.hashCode ^
+      lastTwoDigits.hashCode ^
+      pushMode.hashCode ^
+      id.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is TrustedPhoneNumber &&
+          runtimeType == other.runtimeType &&
+          numberWithDialCode == other.numberWithDialCode &&
+          lastTwoDigits == other.lastTwoDigits &&
+          pushMode == other.pushMode &&
+          id == other.id;
+}
+
+class UnsendMessage {
+  final String tuuid;
+  final int editPart;
+
+  const UnsendMessage({
+    required this.tuuid,
+    required this.editPart,
+  });
+
+  @override
+  int get hashCode => tuuid.hashCode ^ editPart.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is UnsendMessage &&
+          runtimeType == other.runtimeType &&
+          tuuid == other.tuuid &&
+          editPart == other.editPart;
+}
+
+class UpdateExtensionMessage {
+  final String forUuid;
+  final PartExtension ext;
+
+  const UpdateExtensionMessage({
+    required this.forUuid,
+    required this.ext,
+  });
+
+  @override
+  int get hashCode => forUuid.hashCode ^ ext.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is UpdateExtensionMessage &&
+          runtimeType == other.runtimeType &&
+          forUuid == other.forUuid &&
+          ext == other.ext;
 }

@@ -15,97 +15,95 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
-mixin _$DartAttachmentType {
+mixin _$AttachmentType {
   Object get field0 => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(Uint8List field0) inline,
-    required TResult Function(DartMMCSFile field0) mmcs,
+    required TResult Function(MMCSFile field0) mmcs,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(Uint8List field0)? inline,
-    TResult? Function(DartMMCSFile field0)? mmcs,
+    TResult? Function(MMCSFile field0)? mmcs,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(Uint8List field0)? inline,
-    TResult Function(DartMMCSFile field0)? mmcs,
+    TResult Function(MMCSFile field0)? mmcs,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(DartAttachmentType_Inline value) inline,
-    required TResult Function(DartAttachmentType_MMCS value) mmcs,
+    required TResult Function(AttachmentType_Inline value) inline,
+    required TResult Function(AttachmentType_MMCS value) mmcs,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(DartAttachmentType_Inline value)? inline,
-    TResult? Function(DartAttachmentType_MMCS value)? mmcs,
+    TResult? Function(AttachmentType_Inline value)? inline,
+    TResult? Function(AttachmentType_MMCS value)? mmcs,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(DartAttachmentType_Inline value)? inline,
-    TResult Function(DartAttachmentType_MMCS value)? mmcs,
+    TResult Function(AttachmentType_Inline value)? inline,
+    TResult Function(AttachmentType_MMCS value)? mmcs,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $DartAttachmentTypeCopyWith<$Res> {
-  factory $DartAttachmentTypeCopyWith(
-          DartAttachmentType value, $Res Function(DartAttachmentType) then) =
-      _$DartAttachmentTypeCopyWithImpl<$Res, DartAttachmentType>;
+abstract class $AttachmentTypeCopyWith<$Res> {
+  factory $AttachmentTypeCopyWith(
+          AttachmentType value, $Res Function(AttachmentType) then) =
+      _$AttachmentTypeCopyWithImpl<$Res, AttachmentType>;
 }
 
 /// @nodoc
-class _$DartAttachmentTypeCopyWithImpl<$Res, $Val extends DartAttachmentType>
-    implements $DartAttachmentTypeCopyWith<$Res> {
-  _$DartAttachmentTypeCopyWithImpl(this._value, this._then);
+class _$AttachmentTypeCopyWithImpl<$Res, $Val extends AttachmentType>
+    implements $AttachmentTypeCopyWith<$Res> {
+  _$AttachmentTypeCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of DartAttachmentType
+  /// Create a copy of AttachmentType
   /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
-abstract class _$$DartAttachmentType_InlineImplCopyWith<$Res> {
-  factory _$$DartAttachmentType_InlineImplCopyWith(
-          _$DartAttachmentType_InlineImpl value,
-          $Res Function(_$DartAttachmentType_InlineImpl) then) =
-      __$$DartAttachmentType_InlineImplCopyWithImpl<$Res>;
+abstract class _$$AttachmentType_InlineImplCopyWith<$Res> {
+  factory _$$AttachmentType_InlineImplCopyWith(
+          _$AttachmentType_InlineImpl value,
+          $Res Function(_$AttachmentType_InlineImpl) then) =
+      __$$AttachmentType_InlineImplCopyWithImpl<$Res>;
   @useResult
   $Res call({Uint8List field0});
 }
 
 /// @nodoc
-class __$$DartAttachmentType_InlineImplCopyWithImpl<$Res>
-    extends _$DartAttachmentTypeCopyWithImpl<$Res,
-        _$DartAttachmentType_InlineImpl>
-    implements _$$DartAttachmentType_InlineImplCopyWith<$Res> {
-  __$$DartAttachmentType_InlineImplCopyWithImpl(
-      _$DartAttachmentType_InlineImpl _value,
-      $Res Function(_$DartAttachmentType_InlineImpl) _then)
+class __$$AttachmentType_InlineImplCopyWithImpl<$Res>
+    extends _$AttachmentTypeCopyWithImpl<$Res, _$AttachmentType_InlineImpl>
+    implements _$$AttachmentType_InlineImplCopyWith<$Res> {
+  __$$AttachmentType_InlineImplCopyWithImpl(_$AttachmentType_InlineImpl _value,
+      $Res Function(_$AttachmentType_InlineImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of DartAttachmentType
+  /// Create a copy of AttachmentType
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? field0 = null,
   }) {
-    return _then(_$DartAttachmentType_InlineImpl(
+    return _then(_$AttachmentType_InlineImpl(
       null == field0
           ? _value.field0
           : field0 // ignore: cast_nullable_to_non_nullable
@@ -116,22 +114,22 @@ class __$$DartAttachmentType_InlineImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$DartAttachmentType_InlineImpl extends DartAttachmentType_Inline {
-  const _$DartAttachmentType_InlineImpl(this.field0) : super._();
+class _$AttachmentType_InlineImpl extends AttachmentType_Inline {
+  const _$AttachmentType_InlineImpl(this.field0) : super._();
 
   @override
   final Uint8List field0;
 
   @override
   String toString() {
-    return 'DartAttachmentType.inline(field0: $field0)';
+    return 'AttachmentType.inline(field0: $field0)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$DartAttachmentType_InlineImpl &&
+            other is _$AttachmentType_InlineImpl &&
             const DeepCollectionEquality().equals(other.field0, field0));
   }
 
@@ -139,20 +137,20 @@ class _$DartAttachmentType_InlineImpl extends DartAttachmentType_Inline {
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(field0));
 
-  /// Create a copy of DartAttachmentType
+  /// Create a copy of AttachmentType
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$DartAttachmentType_InlineImplCopyWith<_$DartAttachmentType_InlineImpl>
-      get copyWith => __$$DartAttachmentType_InlineImplCopyWithImpl<
-          _$DartAttachmentType_InlineImpl>(this, _$identity);
+  _$$AttachmentType_InlineImplCopyWith<_$AttachmentType_InlineImpl>
+      get copyWith => __$$AttachmentType_InlineImplCopyWithImpl<
+          _$AttachmentType_InlineImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(Uint8List field0) inline,
-    required TResult Function(DartMMCSFile field0) mmcs,
+    required TResult Function(MMCSFile field0) mmcs,
   }) {
     return inline(field0);
   }
@@ -161,7 +159,7 @@ class _$DartAttachmentType_InlineImpl extends DartAttachmentType_Inline {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(Uint8List field0)? inline,
-    TResult? Function(DartMMCSFile field0)? mmcs,
+    TResult? Function(MMCSFile field0)? mmcs,
   }) {
     return inline?.call(field0);
   }
@@ -170,7 +168,7 @@ class _$DartAttachmentType_InlineImpl extends DartAttachmentType_Inline {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(Uint8List field0)? inline,
-    TResult Function(DartMMCSFile field0)? mmcs,
+    TResult Function(MMCSFile field0)? mmcs,
     required TResult orElse(),
   }) {
     if (inline != null) {
@@ -182,8 +180,8 @@ class _$DartAttachmentType_InlineImpl extends DartAttachmentType_Inline {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(DartAttachmentType_Inline value) inline,
-    required TResult Function(DartAttachmentType_MMCS value) mmcs,
+    required TResult Function(AttachmentType_Inline value) inline,
+    required TResult Function(AttachmentType_MMCS value) mmcs,
   }) {
     return inline(this);
   }
@@ -191,8 +189,8 @@ class _$DartAttachmentType_InlineImpl extends DartAttachmentType_Inline {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(DartAttachmentType_Inline value)? inline,
-    TResult? Function(DartAttachmentType_MMCS value)? mmcs,
+    TResult? Function(AttachmentType_Inline value)? inline,
+    TResult? Function(AttachmentType_MMCS value)? mmcs,
   }) {
     return inline?.call(this);
   }
@@ -200,8 +198,8 @@ class _$DartAttachmentType_InlineImpl extends DartAttachmentType_Inline {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(DartAttachmentType_Inline value)? inline,
-    TResult Function(DartAttachmentType_MMCS value)? mmcs,
+    TResult Function(AttachmentType_Inline value)? inline,
+    TResult Function(AttachmentType_MMCS value)? mmcs,
     required TResult orElse(),
   }) {
     if (inline != null) {
@@ -211,95 +209,92 @@ class _$DartAttachmentType_InlineImpl extends DartAttachmentType_Inline {
   }
 }
 
-abstract class DartAttachmentType_Inline extends DartAttachmentType {
-  const factory DartAttachmentType_Inline(final Uint8List field0) =
-      _$DartAttachmentType_InlineImpl;
-  const DartAttachmentType_Inline._() : super._();
+abstract class AttachmentType_Inline extends AttachmentType {
+  const factory AttachmentType_Inline(final Uint8List field0) =
+      _$AttachmentType_InlineImpl;
+  const AttachmentType_Inline._() : super._();
 
   @override
   Uint8List get field0;
 
-  /// Create a copy of DartAttachmentType
+  /// Create a copy of AttachmentType
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$DartAttachmentType_InlineImplCopyWith<_$DartAttachmentType_InlineImpl>
+  _$$AttachmentType_InlineImplCopyWith<_$AttachmentType_InlineImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$DartAttachmentType_MMCSImplCopyWith<$Res> {
-  factory _$$DartAttachmentType_MMCSImplCopyWith(
-          _$DartAttachmentType_MMCSImpl value,
-          $Res Function(_$DartAttachmentType_MMCSImpl) then) =
-      __$$DartAttachmentType_MMCSImplCopyWithImpl<$Res>;
+abstract class _$$AttachmentType_MMCSImplCopyWith<$Res> {
+  factory _$$AttachmentType_MMCSImplCopyWith(_$AttachmentType_MMCSImpl value,
+          $Res Function(_$AttachmentType_MMCSImpl) then) =
+      __$$AttachmentType_MMCSImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({DartMMCSFile field0});
+  $Res call({MMCSFile field0});
 }
 
 /// @nodoc
-class __$$DartAttachmentType_MMCSImplCopyWithImpl<$Res>
-    extends _$DartAttachmentTypeCopyWithImpl<$Res,
-        _$DartAttachmentType_MMCSImpl>
-    implements _$$DartAttachmentType_MMCSImplCopyWith<$Res> {
-  __$$DartAttachmentType_MMCSImplCopyWithImpl(
-      _$DartAttachmentType_MMCSImpl _value,
-      $Res Function(_$DartAttachmentType_MMCSImpl) _then)
+class __$$AttachmentType_MMCSImplCopyWithImpl<$Res>
+    extends _$AttachmentTypeCopyWithImpl<$Res, _$AttachmentType_MMCSImpl>
+    implements _$$AttachmentType_MMCSImplCopyWith<$Res> {
+  __$$AttachmentType_MMCSImplCopyWithImpl(_$AttachmentType_MMCSImpl _value,
+      $Res Function(_$AttachmentType_MMCSImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of DartAttachmentType
+  /// Create a copy of AttachmentType
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? field0 = null,
   }) {
-    return _then(_$DartAttachmentType_MMCSImpl(
+    return _then(_$AttachmentType_MMCSImpl(
       null == field0
           ? _value.field0
           : field0 // ignore: cast_nullable_to_non_nullable
-              as DartMMCSFile,
+              as MMCSFile,
     ));
   }
 }
 
 /// @nodoc
 
-class _$DartAttachmentType_MMCSImpl extends DartAttachmentType_MMCS {
-  const _$DartAttachmentType_MMCSImpl(this.field0) : super._();
+class _$AttachmentType_MMCSImpl extends AttachmentType_MMCS {
+  const _$AttachmentType_MMCSImpl(this.field0) : super._();
 
   @override
-  final DartMMCSFile field0;
+  final MMCSFile field0;
 
   @override
   String toString() {
-    return 'DartAttachmentType.mmcs(field0: $field0)';
+    return 'AttachmentType.mmcs(field0: $field0)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$DartAttachmentType_MMCSImpl &&
+            other is _$AttachmentType_MMCSImpl &&
             (identical(other.field0, field0) || other.field0 == field0));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, field0);
 
-  /// Create a copy of DartAttachmentType
+  /// Create a copy of AttachmentType
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$DartAttachmentType_MMCSImplCopyWith<_$DartAttachmentType_MMCSImpl>
-      get copyWith => __$$DartAttachmentType_MMCSImplCopyWithImpl<
-          _$DartAttachmentType_MMCSImpl>(this, _$identity);
+  _$$AttachmentType_MMCSImplCopyWith<_$AttachmentType_MMCSImpl> get copyWith =>
+      __$$AttachmentType_MMCSImplCopyWithImpl<_$AttachmentType_MMCSImpl>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(Uint8List field0) inline,
-    required TResult Function(DartMMCSFile field0) mmcs,
+    required TResult Function(MMCSFile field0) mmcs,
   }) {
     return mmcs(field0);
   }
@@ -308,7 +303,7 @@ class _$DartAttachmentType_MMCSImpl extends DartAttachmentType_MMCS {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(Uint8List field0)? inline,
-    TResult? Function(DartMMCSFile field0)? mmcs,
+    TResult? Function(MMCSFile field0)? mmcs,
   }) {
     return mmcs?.call(field0);
   }
@@ -317,7 +312,7 @@ class _$DartAttachmentType_MMCSImpl extends DartAttachmentType_MMCS {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(Uint8List field0)? inline,
-    TResult Function(DartMMCSFile field0)? mmcs,
+    TResult Function(MMCSFile field0)? mmcs,
     required TResult orElse(),
   }) {
     if (mmcs != null) {
@@ -329,8 +324,8 @@ class _$DartAttachmentType_MMCSImpl extends DartAttachmentType_MMCS {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(DartAttachmentType_Inline value) inline,
-    required TResult Function(DartAttachmentType_MMCS value) mmcs,
+    required TResult Function(AttachmentType_Inline value) inline,
+    required TResult Function(AttachmentType_MMCS value) mmcs,
   }) {
     return mmcs(this);
   }
@@ -338,8 +333,8 @@ class _$DartAttachmentType_MMCSImpl extends DartAttachmentType_MMCS {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(DartAttachmentType_Inline value)? inline,
-    TResult? Function(DartAttachmentType_MMCS value)? mmcs,
+    TResult? Function(AttachmentType_Inline value)? inline,
+    TResult? Function(AttachmentType_MMCS value)? mmcs,
   }) {
     return mmcs?.call(this);
   }
@@ -347,8 +342,8 @@ class _$DartAttachmentType_MMCSImpl extends DartAttachmentType_MMCS {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(DartAttachmentType_Inline value)? inline,
-    TResult Function(DartAttachmentType_MMCS value)? mmcs,
+    TResult Function(AttachmentType_Inline value)? inline,
+    TResult Function(AttachmentType_MMCS value)? mmcs,
     required TResult orElse(),
   }) {
     if (mmcs != null) {
@@ -358,23 +353,23 @@ class _$DartAttachmentType_MMCSImpl extends DartAttachmentType_MMCS {
   }
 }
 
-abstract class DartAttachmentType_MMCS extends DartAttachmentType {
-  const factory DartAttachmentType_MMCS(final DartMMCSFile field0) =
-      _$DartAttachmentType_MMCSImpl;
-  const DartAttachmentType_MMCS._() : super._();
+abstract class AttachmentType_MMCS extends AttachmentType {
+  const factory AttachmentType_MMCS(final MMCSFile field0) =
+      _$AttachmentType_MMCSImpl;
+  const AttachmentType_MMCS._() : super._();
 
   @override
-  DartMMCSFile get field0;
+  MMCSFile get field0;
 
-  /// Create a copy of DartAttachmentType
+  /// Create a copy of AttachmentType
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$DartAttachmentType_MMCSImplCopyWith<_$DartAttachmentType_MMCSImpl>
-      get copyWith => throw _privateConstructorUsedError;
+  _$$AttachmentType_MMCSImplCopyWith<_$AttachmentType_MMCSImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-mixin _$DartBalloonLayout {
+mixin _$BalloonLayout {
   String get imageSubtitle => throw _privateConstructorUsedError;
   String get imageTitle => throw _privateConstructorUsedError;
   String get caption => throw _privateConstructorUsedError;
@@ -424,34 +419,34 @@ mixin _$DartBalloonLayout {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(DartBalloonLayout_TemplateLayout value)
+    required TResult Function(BalloonLayout_TemplateLayout value)
         templateLayout,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(DartBalloonLayout_TemplateLayout value)? templateLayout,
+    TResult? Function(BalloonLayout_TemplateLayout value)? templateLayout,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(DartBalloonLayout_TemplateLayout value)? templateLayout,
+    TResult Function(BalloonLayout_TemplateLayout value)? templateLayout,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
 
-  /// Create a copy of DartBalloonLayout
+  /// Create a copy of BalloonLayout
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $DartBalloonLayoutCopyWith<DartBalloonLayout> get copyWith =>
+  $BalloonLayoutCopyWith<BalloonLayout> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $DartBalloonLayoutCopyWith<$Res> {
-  factory $DartBalloonLayoutCopyWith(
-          DartBalloonLayout value, $Res Function(DartBalloonLayout) then) =
-      _$DartBalloonLayoutCopyWithImpl<$Res, DartBalloonLayout>;
+abstract class $BalloonLayoutCopyWith<$Res> {
+  factory $BalloonLayoutCopyWith(
+          BalloonLayout value, $Res Function(BalloonLayout) then) =
+      _$BalloonLayoutCopyWithImpl<$Res, BalloonLayout>;
   @useResult
   $Res call(
       {String imageSubtitle,
@@ -464,16 +459,16 @@ abstract class $DartBalloonLayoutCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$DartBalloonLayoutCopyWithImpl<$Res, $Val extends DartBalloonLayout>
-    implements $DartBalloonLayoutCopyWith<$Res> {
-  _$DartBalloonLayoutCopyWithImpl(this._value, this._then);
+class _$BalloonLayoutCopyWithImpl<$Res, $Val extends BalloonLayout>
+    implements $BalloonLayoutCopyWith<$Res> {
+  _$BalloonLayoutCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of DartBalloonLayout
+  /// Create a copy of BalloonLayout
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -520,12 +515,12 @@ class _$DartBalloonLayoutCopyWithImpl<$Res, $Val extends DartBalloonLayout>
 }
 
 /// @nodoc
-abstract class _$$DartBalloonLayout_TemplateLayoutImplCopyWith<$Res>
-    implements $DartBalloonLayoutCopyWith<$Res> {
-  factory _$$DartBalloonLayout_TemplateLayoutImplCopyWith(
-          _$DartBalloonLayout_TemplateLayoutImpl value,
-          $Res Function(_$DartBalloonLayout_TemplateLayoutImpl) then) =
-      __$$DartBalloonLayout_TemplateLayoutImplCopyWithImpl<$Res>;
+abstract class _$$BalloonLayout_TemplateLayoutImplCopyWith<$Res>
+    implements $BalloonLayoutCopyWith<$Res> {
+  factory _$$BalloonLayout_TemplateLayoutImplCopyWith(
+          _$BalloonLayout_TemplateLayoutImpl value,
+          $Res Function(_$BalloonLayout_TemplateLayoutImpl) then) =
+      __$$BalloonLayout_TemplateLayoutImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -539,16 +534,16 @@ abstract class _$$DartBalloonLayout_TemplateLayoutImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$DartBalloonLayout_TemplateLayoutImplCopyWithImpl<$Res>
-    extends _$DartBalloonLayoutCopyWithImpl<$Res,
-        _$DartBalloonLayout_TemplateLayoutImpl>
-    implements _$$DartBalloonLayout_TemplateLayoutImplCopyWith<$Res> {
-  __$$DartBalloonLayout_TemplateLayoutImplCopyWithImpl(
-      _$DartBalloonLayout_TemplateLayoutImpl _value,
-      $Res Function(_$DartBalloonLayout_TemplateLayoutImpl) _then)
+class __$$BalloonLayout_TemplateLayoutImplCopyWithImpl<$Res>
+    extends _$BalloonLayoutCopyWithImpl<$Res,
+        _$BalloonLayout_TemplateLayoutImpl>
+    implements _$$BalloonLayout_TemplateLayoutImplCopyWith<$Res> {
+  __$$BalloonLayout_TemplateLayoutImplCopyWithImpl(
+      _$BalloonLayout_TemplateLayoutImpl _value,
+      $Res Function(_$BalloonLayout_TemplateLayoutImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of DartBalloonLayout
+  /// Create a copy of BalloonLayout
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -561,7 +556,7 @@ class __$$DartBalloonLayout_TemplateLayoutImplCopyWithImpl<$Res>
     Object? subcaption = null,
     Object? class_ = null,
   }) {
-    return _then(_$DartBalloonLayout_TemplateLayoutImpl(
+    return _then(_$BalloonLayout_TemplateLayoutImpl(
       imageSubtitle: null == imageSubtitle
           ? _value.imageSubtitle
           : imageSubtitle // ignore: cast_nullable_to_non_nullable
@@ -596,9 +591,8 @@ class __$$DartBalloonLayout_TemplateLayoutImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$DartBalloonLayout_TemplateLayoutImpl
-    extends DartBalloonLayout_TemplateLayout {
-  const _$DartBalloonLayout_TemplateLayoutImpl(
+class _$BalloonLayout_TemplateLayoutImpl extends BalloonLayout_TemplateLayout {
+  const _$BalloonLayout_TemplateLayoutImpl(
       {required this.imageSubtitle,
       required this.imageTitle,
       required this.caption,
@@ -625,14 +619,14 @@ class _$DartBalloonLayout_TemplateLayoutImpl
 
   @override
   String toString() {
-    return 'DartBalloonLayout.templateLayout(imageSubtitle: $imageSubtitle, imageTitle: $imageTitle, caption: $caption, secondarySubcaption: $secondarySubcaption, tertiarySubcaption: $tertiarySubcaption, subcaption: $subcaption, class_: $class_)';
+    return 'BalloonLayout.templateLayout(imageSubtitle: $imageSubtitle, imageTitle: $imageTitle, caption: $caption, secondarySubcaption: $secondarySubcaption, tertiarySubcaption: $tertiarySubcaption, subcaption: $subcaption, class_: $class_)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$DartBalloonLayout_TemplateLayoutImpl &&
+            other is _$BalloonLayout_TemplateLayoutImpl &&
             (identical(other.imageSubtitle, imageSubtitle) ||
                 other.imageSubtitle == imageSubtitle) &&
             (identical(other.imageTitle, imageTitle) ||
@@ -651,15 +645,15 @@ class _$DartBalloonLayout_TemplateLayoutImpl
   int get hashCode => Object.hash(runtimeType, imageSubtitle, imageTitle,
       caption, secondarySubcaption, tertiarySubcaption, subcaption, class_);
 
-  /// Create a copy of DartBalloonLayout
+  /// Create a copy of BalloonLayout
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$DartBalloonLayout_TemplateLayoutImplCopyWith<
-          _$DartBalloonLayout_TemplateLayoutImpl>
-      get copyWith => __$$DartBalloonLayout_TemplateLayoutImplCopyWithImpl<
-          _$DartBalloonLayout_TemplateLayoutImpl>(this, _$identity);
+  _$$BalloonLayout_TemplateLayoutImplCopyWith<
+          _$BalloonLayout_TemplateLayoutImpl>
+      get copyWith => __$$BalloonLayout_TemplateLayoutImplCopyWithImpl<
+          _$BalloonLayout_TemplateLayoutImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -719,7 +713,7 @@ class _$DartBalloonLayout_TemplateLayoutImpl
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(DartBalloonLayout_TemplateLayout value)
+    required TResult Function(BalloonLayout_TemplateLayout value)
         templateLayout,
   }) {
     return templateLayout(this);
@@ -728,7 +722,7 @@ class _$DartBalloonLayout_TemplateLayoutImpl
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(DartBalloonLayout_TemplateLayout value)? templateLayout,
+    TResult? Function(BalloonLayout_TemplateLayout value)? templateLayout,
   }) {
     return templateLayout?.call(this);
   }
@@ -736,7 +730,7 @@ class _$DartBalloonLayout_TemplateLayoutImpl
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(DartBalloonLayout_TemplateLayout value)? templateLayout,
+    TResult Function(BalloonLayout_TemplateLayout value)? templateLayout,
     required TResult orElse(),
   }) {
     if (templateLayout != null) {
@@ -746,8 +740,8 @@ class _$DartBalloonLayout_TemplateLayoutImpl
   }
 }
 
-abstract class DartBalloonLayout_TemplateLayout extends DartBalloonLayout {
-  const factory DartBalloonLayout_TemplateLayout(
+abstract class BalloonLayout_TemplateLayout extends BalloonLayout {
+  const factory BalloonLayout_TemplateLayout(
           {required final String imageSubtitle,
           required final String imageTitle,
           required final String caption,
@@ -755,8 +749,8 @@ abstract class DartBalloonLayout_TemplateLayout extends DartBalloonLayout {
           required final String tertiarySubcaption,
           required final String subcaption,
           required final NSDictionaryClass class_}) =
-      _$DartBalloonLayout_TemplateLayoutImpl;
-  const DartBalloonLayout_TemplateLayout._() : super._();
+      _$BalloonLayout_TemplateLayoutImpl;
+  const BalloonLayout_TemplateLayout._() : super._();
 
   @override
   String get imageSubtitle;
@@ -773,17 +767,17 @@ abstract class DartBalloonLayout_TemplateLayout extends DartBalloonLayout {
   @override
   NSDictionaryClass get class_;
 
-  /// Create a copy of DartBalloonLayout
+  /// Create a copy of BalloonLayout
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$DartBalloonLayout_TemplateLayoutImplCopyWith<
-          _$DartBalloonLayout_TemplateLayoutImpl>
+  _$$BalloonLayout_TemplateLayoutImplCopyWith<
+          _$BalloonLayout_TemplateLayoutImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-mixin _$DartLoginState {
+mixin _$LoginState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loggedIn,
@@ -820,105 +814,101 @@ mixin _$DartLoginState {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(DartLoginState_LoggedIn value) loggedIn,
-    required TResult Function(DartLoginState_NeedsDevice2FA value)
-        needsDevice2Fa,
-    required TResult Function(DartLoginState_Needs2FAVerification value)
+    required TResult Function(LoginState_LoggedIn value) loggedIn,
+    required TResult Function(LoginState_NeedsDevice2FA value) needsDevice2Fa,
+    required TResult Function(LoginState_Needs2FAVerification value)
         needs2FaVerification,
-    required TResult Function(DartLoginState_NeedsSMS2FA value) needsSms2Fa,
-    required TResult Function(DartLoginState_NeedsSMS2FAVerification value)
+    required TResult Function(LoginState_NeedsSMS2FA value) needsSms2Fa,
+    required TResult Function(LoginState_NeedsSMS2FAVerification value)
         needsSms2FaVerification,
-    required TResult Function(DartLoginState_NeedsExtraStep value)
-        needsExtraStep,
-    required TResult Function(DartLoginState_NeedsLogin value) needsLogin,
+    required TResult Function(LoginState_NeedsExtraStep value) needsExtraStep,
+    required TResult Function(LoginState_NeedsLogin value) needsLogin,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(DartLoginState_LoggedIn value)? loggedIn,
-    TResult? Function(DartLoginState_NeedsDevice2FA value)? needsDevice2Fa,
-    TResult? Function(DartLoginState_Needs2FAVerification value)?
+    TResult? Function(LoginState_LoggedIn value)? loggedIn,
+    TResult? Function(LoginState_NeedsDevice2FA value)? needsDevice2Fa,
+    TResult? Function(LoginState_Needs2FAVerification value)?
         needs2FaVerification,
-    TResult? Function(DartLoginState_NeedsSMS2FA value)? needsSms2Fa,
-    TResult? Function(DartLoginState_NeedsSMS2FAVerification value)?
+    TResult? Function(LoginState_NeedsSMS2FA value)? needsSms2Fa,
+    TResult? Function(LoginState_NeedsSMS2FAVerification value)?
         needsSms2FaVerification,
-    TResult? Function(DartLoginState_NeedsExtraStep value)? needsExtraStep,
-    TResult? Function(DartLoginState_NeedsLogin value)? needsLogin,
+    TResult? Function(LoginState_NeedsExtraStep value)? needsExtraStep,
+    TResult? Function(LoginState_NeedsLogin value)? needsLogin,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(DartLoginState_LoggedIn value)? loggedIn,
-    TResult Function(DartLoginState_NeedsDevice2FA value)? needsDevice2Fa,
-    TResult Function(DartLoginState_Needs2FAVerification value)?
+    TResult Function(LoginState_LoggedIn value)? loggedIn,
+    TResult Function(LoginState_NeedsDevice2FA value)? needsDevice2Fa,
+    TResult Function(LoginState_Needs2FAVerification value)?
         needs2FaVerification,
-    TResult Function(DartLoginState_NeedsSMS2FA value)? needsSms2Fa,
-    TResult Function(DartLoginState_NeedsSMS2FAVerification value)?
+    TResult Function(LoginState_NeedsSMS2FA value)? needsSms2Fa,
+    TResult Function(LoginState_NeedsSMS2FAVerification value)?
         needsSms2FaVerification,
-    TResult Function(DartLoginState_NeedsExtraStep value)? needsExtraStep,
-    TResult Function(DartLoginState_NeedsLogin value)? needsLogin,
+    TResult Function(LoginState_NeedsExtraStep value)? needsExtraStep,
+    TResult Function(LoginState_NeedsLogin value)? needsLogin,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $DartLoginStateCopyWith<$Res> {
-  factory $DartLoginStateCopyWith(
-          DartLoginState value, $Res Function(DartLoginState) then) =
-      _$DartLoginStateCopyWithImpl<$Res, DartLoginState>;
+abstract class $LoginStateCopyWith<$Res> {
+  factory $LoginStateCopyWith(
+          LoginState value, $Res Function(LoginState) then) =
+      _$LoginStateCopyWithImpl<$Res, LoginState>;
 }
 
 /// @nodoc
-class _$DartLoginStateCopyWithImpl<$Res, $Val extends DartLoginState>
-    implements $DartLoginStateCopyWith<$Res> {
-  _$DartLoginStateCopyWithImpl(this._value, this._then);
+class _$LoginStateCopyWithImpl<$Res, $Val extends LoginState>
+    implements $LoginStateCopyWith<$Res> {
+  _$LoginStateCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of DartLoginState
+  /// Create a copy of LoginState
   /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
-abstract class _$$DartLoginState_LoggedInImplCopyWith<$Res> {
-  factory _$$DartLoginState_LoggedInImplCopyWith(
-          _$DartLoginState_LoggedInImpl value,
-          $Res Function(_$DartLoginState_LoggedInImpl) then) =
-      __$$DartLoginState_LoggedInImplCopyWithImpl<$Res>;
+abstract class _$$LoginState_LoggedInImplCopyWith<$Res> {
+  factory _$$LoginState_LoggedInImplCopyWith(_$LoginState_LoggedInImpl value,
+          $Res Function(_$LoginState_LoggedInImpl) then) =
+      __$$LoginState_LoggedInImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$DartLoginState_LoggedInImplCopyWithImpl<$Res>
-    extends _$DartLoginStateCopyWithImpl<$Res, _$DartLoginState_LoggedInImpl>
-    implements _$$DartLoginState_LoggedInImplCopyWith<$Res> {
-  __$$DartLoginState_LoggedInImplCopyWithImpl(
-      _$DartLoginState_LoggedInImpl _value,
-      $Res Function(_$DartLoginState_LoggedInImpl) _then)
+class __$$LoginState_LoggedInImplCopyWithImpl<$Res>
+    extends _$LoginStateCopyWithImpl<$Res, _$LoginState_LoggedInImpl>
+    implements _$$LoginState_LoggedInImplCopyWith<$Res> {
+  __$$LoginState_LoggedInImplCopyWithImpl(_$LoginState_LoggedInImpl _value,
+      $Res Function(_$LoginState_LoggedInImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of DartLoginState
+  /// Create a copy of LoginState
   /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
 
-class _$DartLoginState_LoggedInImpl extends DartLoginState_LoggedIn {
-  const _$DartLoginState_LoggedInImpl() : super._();
+class _$LoginState_LoggedInImpl extends LoginState_LoggedIn {
+  const _$LoginState_LoggedInImpl() : super._();
 
   @override
   String toString() {
-    return 'DartLoginState.loggedIn()';
+    return 'LoginState.loggedIn()';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$DartLoginState_LoggedInImpl);
+            other is _$LoginState_LoggedInImpl);
   }
 
   @override
@@ -973,17 +963,15 @@ class _$DartLoginState_LoggedInImpl extends DartLoginState_LoggedIn {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(DartLoginState_LoggedIn value) loggedIn,
-    required TResult Function(DartLoginState_NeedsDevice2FA value)
-        needsDevice2Fa,
-    required TResult Function(DartLoginState_Needs2FAVerification value)
+    required TResult Function(LoginState_LoggedIn value) loggedIn,
+    required TResult Function(LoginState_NeedsDevice2FA value) needsDevice2Fa,
+    required TResult Function(LoginState_Needs2FAVerification value)
         needs2FaVerification,
-    required TResult Function(DartLoginState_NeedsSMS2FA value) needsSms2Fa,
-    required TResult Function(DartLoginState_NeedsSMS2FAVerification value)
+    required TResult Function(LoginState_NeedsSMS2FA value) needsSms2Fa,
+    required TResult Function(LoginState_NeedsSMS2FAVerification value)
         needsSms2FaVerification,
-    required TResult Function(DartLoginState_NeedsExtraStep value)
-        needsExtraStep,
-    required TResult Function(DartLoginState_NeedsLogin value) needsLogin,
+    required TResult Function(LoginState_NeedsExtraStep value) needsExtraStep,
+    required TResult Function(LoginState_NeedsLogin value) needsLogin,
   }) {
     return loggedIn(this);
   }
@@ -991,15 +979,15 @@ class _$DartLoginState_LoggedInImpl extends DartLoginState_LoggedIn {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(DartLoginState_LoggedIn value)? loggedIn,
-    TResult? Function(DartLoginState_NeedsDevice2FA value)? needsDevice2Fa,
-    TResult? Function(DartLoginState_Needs2FAVerification value)?
+    TResult? Function(LoginState_LoggedIn value)? loggedIn,
+    TResult? Function(LoginState_NeedsDevice2FA value)? needsDevice2Fa,
+    TResult? Function(LoginState_Needs2FAVerification value)?
         needs2FaVerification,
-    TResult? Function(DartLoginState_NeedsSMS2FA value)? needsSms2Fa,
-    TResult? Function(DartLoginState_NeedsSMS2FAVerification value)?
+    TResult? Function(LoginState_NeedsSMS2FA value)? needsSms2Fa,
+    TResult? Function(LoginState_NeedsSMS2FAVerification value)?
         needsSms2FaVerification,
-    TResult? Function(DartLoginState_NeedsExtraStep value)? needsExtraStep,
-    TResult? Function(DartLoginState_NeedsLogin value)? needsLogin,
+    TResult? Function(LoginState_NeedsExtraStep value)? needsExtraStep,
+    TResult? Function(LoginState_NeedsLogin value)? needsLogin,
   }) {
     return loggedIn?.call(this);
   }
@@ -1007,15 +995,15 @@ class _$DartLoginState_LoggedInImpl extends DartLoginState_LoggedIn {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(DartLoginState_LoggedIn value)? loggedIn,
-    TResult Function(DartLoginState_NeedsDevice2FA value)? needsDevice2Fa,
-    TResult Function(DartLoginState_Needs2FAVerification value)?
+    TResult Function(LoginState_LoggedIn value)? loggedIn,
+    TResult Function(LoginState_NeedsDevice2FA value)? needsDevice2Fa,
+    TResult Function(LoginState_Needs2FAVerification value)?
         needs2FaVerification,
-    TResult Function(DartLoginState_NeedsSMS2FA value)? needsSms2Fa,
-    TResult Function(DartLoginState_NeedsSMS2FAVerification value)?
+    TResult Function(LoginState_NeedsSMS2FA value)? needsSms2Fa,
+    TResult Function(LoginState_NeedsSMS2FAVerification value)?
         needsSms2FaVerification,
-    TResult Function(DartLoginState_NeedsExtraStep value)? needsExtraStep,
-    TResult Function(DartLoginState_NeedsLogin value)? needsLogin,
+    TResult Function(LoginState_NeedsExtraStep value)? needsExtraStep,
+    TResult Function(LoginState_NeedsLogin value)? needsLogin,
     required TResult orElse(),
   }) {
     if (loggedIn != null) {
@@ -1025,49 +1013,47 @@ class _$DartLoginState_LoggedInImpl extends DartLoginState_LoggedIn {
   }
 }
 
-abstract class DartLoginState_LoggedIn extends DartLoginState {
-  const factory DartLoginState_LoggedIn() = _$DartLoginState_LoggedInImpl;
-  const DartLoginState_LoggedIn._() : super._();
+abstract class LoginState_LoggedIn extends LoginState {
+  const factory LoginState_LoggedIn() = _$LoginState_LoggedInImpl;
+  const LoginState_LoggedIn._() : super._();
 }
 
 /// @nodoc
-abstract class _$$DartLoginState_NeedsDevice2FAImplCopyWith<$Res> {
-  factory _$$DartLoginState_NeedsDevice2FAImplCopyWith(
-          _$DartLoginState_NeedsDevice2FAImpl value,
-          $Res Function(_$DartLoginState_NeedsDevice2FAImpl) then) =
-      __$$DartLoginState_NeedsDevice2FAImplCopyWithImpl<$Res>;
+abstract class _$$LoginState_NeedsDevice2FAImplCopyWith<$Res> {
+  factory _$$LoginState_NeedsDevice2FAImplCopyWith(
+          _$LoginState_NeedsDevice2FAImpl value,
+          $Res Function(_$LoginState_NeedsDevice2FAImpl) then) =
+      __$$LoginState_NeedsDevice2FAImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$DartLoginState_NeedsDevice2FAImplCopyWithImpl<$Res>
-    extends _$DartLoginStateCopyWithImpl<$Res,
-        _$DartLoginState_NeedsDevice2FAImpl>
-    implements _$$DartLoginState_NeedsDevice2FAImplCopyWith<$Res> {
-  __$$DartLoginState_NeedsDevice2FAImplCopyWithImpl(
-      _$DartLoginState_NeedsDevice2FAImpl _value,
-      $Res Function(_$DartLoginState_NeedsDevice2FAImpl) _then)
+class __$$LoginState_NeedsDevice2FAImplCopyWithImpl<$Res>
+    extends _$LoginStateCopyWithImpl<$Res, _$LoginState_NeedsDevice2FAImpl>
+    implements _$$LoginState_NeedsDevice2FAImplCopyWith<$Res> {
+  __$$LoginState_NeedsDevice2FAImplCopyWithImpl(
+      _$LoginState_NeedsDevice2FAImpl _value,
+      $Res Function(_$LoginState_NeedsDevice2FAImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of DartLoginState
+  /// Create a copy of LoginState
   /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
 
-class _$DartLoginState_NeedsDevice2FAImpl
-    extends DartLoginState_NeedsDevice2FA {
-  const _$DartLoginState_NeedsDevice2FAImpl() : super._();
+class _$LoginState_NeedsDevice2FAImpl extends LoginState_NeedsDevice2FA {
+  const _$LoginState_NeedsDevice2FAImpl() : super._();
 
   @override
   String toString() {
-    return 'DartLoginState.needsDevice2Fa()';
+    return 'LoginState.needsDevice2Fa()';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$DartLoginState_NeedsDevice2FAImpl);
+            other is _$LoginState_NeedsDevice2FAImpl);
   }
 
   @override
@@ -1122,17 +1108,15 @@ class _$DartLoginState_NeedsDevice2FAImpl
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(DartLoginState_LoggedIn value) loggedIn,
-    required TResult Function(DartLoginState_NeedsDevice2FA value)
-        needsDevice2Fa,
-    required TResult Function(DartLoginState_Needs2FAVerification value)
+    required TResult Function(LoginState_LoggedIn value) loggedIn,
+    required TResult Function(LoginState_NeedsDevice2FA value) needsDevice2Fa,
+    required TResult Function(LoginState_Needs2FAVerification value)
         needs2FaVerification,
-    required TResult Function(DartLoginState_NeedsSMS2FA value) needsSms2Fa,
-    required TResult Function(DartLoginState_NeedsSMS2FAVerification value)
+    required TResult Function(LoginState_NeedsSMS2FA value) needsSms2Fa,
+    required TResult Function(LoginState_NeedsSMS2FAVerification value)
         needsSms2FaVerification,
-    required TResult Function(DartLoginState_NeedsExtraStep value)
-        needsExtraStep,
-    required TResult Function(DartLoginState_NeedsLogin value) needsLogin,
+    required TResult Function(LoginState_NeedsExtraStep value) needsExtraStep,
+    required TResult Function(LoginState_NeedsLogin value) needsLogin,
   }) {
     return needsDevice2Fa(this);
   }
@@ -1140,15 +1124,15 @@ class _$DartLoginState_NeedsDevice2FAImpl
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(DartLoginState_LoggedIn value)? loggedIn,
-    TResult? Function(DartLoginState_NeedsDevice2FA value)? needsDevice2Fa,
-    TResult? Function(DartLoginState_Needs2FAVerification value)?
+    TResult? Function(LoginState_LoggedIn value)? loggedIn,
+    TResult? Function(LoginState_NeedsDevice2FA value)? needsDevice2Fa,
+    TResult? Function(LoginState_Needs2FAVerification value)?
         needs2FaVerification,
-    TResult? Function(DartLoginState_NeedsSMS2FA value)? needsSms2Fa,
-    TResult? Function(DartLoginState_NeedsSMS2FAVerification value)?
+    TResult? Function(LoginState_NeedsSMS2FA value)? needsSms2Fa,
+    TResult? Function(LoginState_NeedsSMS2FAVerification value)?
         needsSms2FaVerification,
-    TResult? Function(DartLoginState_NeedsExtraStep value)? needsExtraStep,
-    TResult? Function(DartLoginState_NeedsLogin value)? needsLogin,
+    TResult? Function(LoginState_NeedsExtraStep value)? needsExtraStep,
+    TResult? Function(LoginState_NeedsLogin value)? needsLogin,
   }) {
     return needsDevice2Fa?.call(this);
   }
@@ -1156,15 +1140,15 @@ class _$DartLoginState_NeedsDevice2FAImpl
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(DartLoginState_LoggedIn value)? loggedIn,
-    TResult Function(DartLoginState_NeedsDevice2FA value)? needsDevice2Fa,
-    TResult Function(DartLoginState_Needs2FAVerification value)?
+    TResult Function(LoginState_LoggedIn value)? loggedIn,
+    TResult Function(LoginState_NeedsDevice2FA value)? needsDevice2Fa,
+    TResult Function(LoginState_Needs2FAVerification value)?
         needs2FaVerification,
-    TResult Function(DartLoginState_NeedsSMS2FA value)? needsSms2Fa,
-    TResult Function(DartLoginState_NeedsSMS2FAVerification value)?
+    TResult Function(LoginState_NeedsSMS2FA value)? needsSms2Fa,
+    TResult Function(LoginState_NeedsSMS2FAVerification value)?
         needsSms2FaVerification,
-    TResult Function(DartLoginState_NeedsExtraStep value)? needsExtraStep,
-    TResult Function(DartLoginState_NeedsLogin value)? needsLogin,
+    TResult Function(LoginState_NeedsExtraStep value)? needsExtraStep,
+    TResult Function(LoginState_NeedsLogin value)? needsLogin,
     required TResult orElse(),
   }) {
     if (needsDevice2Fa != null) {
@@ -1174,50 +1158,49 @@ class _$DartLoginState_NeedsDevice2FAImpl
   }
 }
 
-abstract class DartLoginState_NeedsDevice2FA extends DartLoginState {
-  const factory DartLoginState_NeedsDevice2FA() =
-      _$DartLoginState_NeedsDevice2FAImpl;
-  const DartLoginState_NeedsDevice2FA._() : super._();
+abstract class LoginState_NeedsDevice2FA extends LoginState {
+  const factory LoginState_NeedsDevice2FA() = _$LoginState_NeedsDevice2FAImpl;
+  const LoginState_NeedsDevice2FA._() : super._();
 }
 
 /// @nodoc
-abstract class _$$DartLoginState_Needs2FAVerificationImplCopyWith<$Res> {
-  factory _$$DartLoginState_Needs2FAVerificationImplCopyWith(
-          _$DartLoginState_Needs2FAVerificationImpl value,
-          $Res Function(_$DartLoginState_Needs2FAVerificationImpl) then) =
-      __$$DartLoginState_Needs2FAVerificationImplCopyWithImpl<$Res>;
+abstract class _$$LoginState_Needs2FAVerificationImplCopyWith<$Res> {
+  factory _$$LoginState_Needs2FAVerificationImplCopyWith(
+          _$LoginState_Needs2FAVerificationImpl value,
+          $Res Function(_$LoginState_Needs2FAVerificationImpl) then) =
+      __$$LoginState_Needs2FAVerificationImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$DartLoginState_Needs2FAVerificationImplCopyWithImpl<$Res>
-    extends _$DartLoginStateCopyWithImpl<$Res,
-        _$DartLoginState_Needs2FAVerificationImpl>
-    implements _$$DartLoginState_Needs2FAVerificationImplCopyWith<$Res> {
-  __$$DartLoginState_Needs2FAVerificationImplCopyWithImpl(
-      _$DartLoginState_Needs2FAVerificationImpl _value,
-      $Res Function(_$DartLoginState_Needs2FAVerificationImpl) _then)
+class __$$LoginState_Needs2FAVerificationImplCopyWithImpl<$Res>
+    extends _$LoginStateCopyWithImpl<$Res,
+        _$LoginState_Needs2FAVerificationImpl>
+    implements _$$LoginState_Needs2FAVerificationImplCopyWith<$Res> {
+  __$$LoginState_Needs2FAVerificationImplCopyWithImpl(
+      _$LoginState_Needs2FAVerificationImpl _value,
+      $Res Function(_$LoginState_Needs2FAVerificationImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of DartLoginState
+  /// Create a copy of LoginState
   /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
 
-class _$DartLoginState_Needs2FAVerificationImpl
-    extends DartLoginState_Needs2FAVerification {
-  const _$DartLoginState_Needs2FAVerificationImpl() : super._();
+class _$LoginState_Needs2FAVerificationImpl
+    extends LoginState_Needs2FAVerification {
+  const _$LoginState_Needs2FAVerificationImpl() : super._();
 
   @override
   String toString() {
-    return 'DartLoginState.needs2FaVerification()';
+    return 'LoginState.needs2FaVerification()';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$DartLoginState_Needs2FAVerificationImpl);
+            other is _$LoginState_Needs2FAVerificationImpl);
   }
 
   @override
@@ -1272,17 +1255,15 @@ class _$DartLoginState_Needs2FAVerificationImpl
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(DartLoginState_LoggedIn value) loggedIn,
-    required TResult Function(DartLoginState_NeedsDevice2FA value)
-        needsDevice2Fa,
-    required TResult Function(DartLoginState_Needs2FAVerification value)
+    required TResult Function(LoginState_LoggedIn value) loggedIn,
+    required TResult Function(LoginState_NeedsDevice2FA value) needsDevice2Fa,
+    required TResult Function(LoginState_Needs2FAVerification value)
         needs2FaVerification,
-    required TResult Function(DartLoginState_NeedsSMS2FA value) needsSms2Fa,
-    required TResult Function(DartLoginState_NeedsSMS2FAVerification value)
+    required TResult Function(LoginState_NeedsSMS2FA value) needsSms2Fa,
+    required TResult Function(LoginState_NeedsSMS2FAVerification value)
         needsSms2FaVerification,
-    required TResult Function(DartLoginState_NeedsExtraStep value)
-        needsExtraStep,
-    required TResult Function(DartLoginState_NeedsLogin value) needsLogin,
+    required TResult Function(LoginState_NeedsExtraStep value) needsExtraStep,
+    required TResult Function(LoginState_NeedsLogin value) needsLogin,
   }) {
     return needs2FaVerification(this);
   }
@@ -1290,15 +1271,15 @@ class _$DartLoginState_Needs2FAVerificationImpl
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(DartLoginState_LoggedIn value)? loggedIn,
-    TResult? Function(DartLoginState_NeedsDevice2FA value)? needsDevice2Fa,
-    TResult? Function(DartLoginState_Needs2FAVerification value)?
+    TResult? Function(LoginState_LoggedIn value)? loggedIn,
+    TResult? Function(LoginState_NeedsDevice2FA value)? needsDevice2Fa,
+    TResult? Function(LoginState_Needs2FAVerification value)?
         needs2FaVerification,
-    TResult? Function(DartLoginState_NeedsSMS2FA value)? needsSms2Fa,
-    TResult? Function(DartLoginState_NeedsSMS2FAVerification value)?
+    TResult? Function(LoginState_NeedsSMS2FA value)? needsSms2Fa,
+    TResult? Function(LoginState_NeedsSMS2FAVerification value)?
         needsSms2FaVerification,
-    TResult? Function(DartLoginState_NeedsExtraStep value)? needsExtraStep,
-    TResult? Function(DartLoginState_NeedsLogin value)? needsLogin,
+    TResult? Function(LoginState_NeedsExtraStep value)? needsExtraStep,
+    TResult? Function(LoginState_NeedsLogin value)? needsLogin,
   }) {
     return needs2FaVerification?.call(this);
   }
@@ -1306,15 +1287,15 @@ class _$DartLoginState_Needs2FAVerificationImpl
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(DartLoginState_LoggedIn value)? loggedIn,
-    TResult Function(DartLoginState_NeedsDevice2FA value)? needsDevice2Fa,
-    TResult Function(DartLoginState_Needs2FAVerification value)?
+    TResult Function(LoginState_LoggedIn value)? loggedIn,
+    TResult Function(LoginState_NeedsDevice2FA value)? needsDevice2Fa,
+    TResult Function(LoginState_Needs2FAVerification value)?
         needs2FaVerification,
-    TResult Function(DartLoginState_NeedsSMS2FA value)? needsSms2Fa,
-    TResult Function(DartLoginState_NeedsSMS2FAVerification value)?
+    TResult Function(LoginState_NeedsSMS2FA value)? needsSms2Fa,
+    TResult Function(LoginState_NeedsSMS2FAVerification value)?
         needsSms2FaVerification,
-    TResult Function(DartLoginState_NeedsExtraStep value)? needsExtraStep,
-    TResult Function(DartLoginState_NeedsLogin value)? needsLogin,
+    TResult Function(LoginState_NeedsExtraStep value)? needsExtraStep,
+    TResult Function(LoginState_NeedsLogin value)? needsLogin,
     required TResult orElse(),
   }) {
     if (needs2FaVerification != null) {
@@ -1324,48 +1305,48 @@ class _$DartLoginState_Needs2FAVerificationImpl
   }
 }
 
-abstract class DartLoginState_Needs2FAVerification extends DartLoginState {
-  const factory DartLoginState_Needs2FAVerification() =
-      _$DartLoginState_Needs2FAVerificationImpl;
-  const DartLoginState_Needs2FAVerification._() : super._();
+abstract class LoginState_Needs2FAVerification extends LoginState {
+  const factory LoginState_Needs2FAVerification() =
+      _$LoginState_Needs2FAVerificationImpl;
+  const LoginState_Needs2FAVerification._() : super._();
 }
 
 /// @nodoc
-abstract class _$$DartLoginState_NeedsSMS2FAImplCopyWith<$Res> {
-  factory _$$DartLoginState_NeedsSMS2FAImplCopyWith(
-          _$DartLoginState_NeedsSMS2FAImpl value,
-          $Res Function(_$DartLoginState_NeedsSMS2FAImpl) then) =
-      __$$DartLoginState_NeedsSMS2FAImplCopyWithImpl<$Res>;
+abstract class _$$LoginState_NeedsSMS2FAImplCopyWith<$Res> {
+  factory _$$LoginState_NeedsSMS2FAImplCopyWith(
+          _$LoginState_NeedsSMS2FAImpl value,
+          $Res Function(_$LoginState_NeedsSMS2FAImpl) then) =
+      __$$LoginState_NeedsSMS2FAImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$DartLoginState_NeedsSMS2FAImplCopyWithImpl<$Res>
-    extends _$DartLoginStateCopyWithImpl<$Res, _$DartLoginState_NeedsSMS2FAImpl>
-    implements _$$DartLoginState_NeedsSMS2FAImplCopyWith<$Res> {
-  __$$DartLoginState_NeedsSMS2FAImplCopyWithImpl(
-      _$DartLoginState_NeedsSMS2FAImpl _value,
-      $Res Function(_$DartLoginState_NeedsSMS2FAImpl) _then)
+class __$$LoginState_NeedsSMS2FAImplCopyWithImpl<$Res>
+    extends _$LoginStateCopyWithImpl<$Res, _$LoginState_NeedsSMS2FAImpl>
+    implements _$$LoginState_NeedsSMS2FAImplCopyWith<$Res> {
+  __$$LoginState_NeedsSMS2FAImplCopyWithImpl(
+      _$LoginState_NeedsSMS2FAImpl _value,
+      $Res Function(_$LoginState_NeedsSMS2FAImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of DartLoginState
+  /// Create a copy of LoginState
   /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
 
-class _$DartLoginState_NeedsSMS2FAImpl extends DartLoginState_NeedsSMS2FA {
-  const _$DartLoginState_NeedsSMS2FAImpl() : super._();
+class _$LoginState_NeedsSMS2FAImpl extends LoginState_NeedsSMS2FA {
+  const _$LoginState_NeedsSMS2FAImpl() : super._();
 
   @override
   String toString() {
-    return 'DartLoginState.needsSms2Fa()';
+    return 'LoginState.needsSms2Fa()';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$DartLoginState_NeedsSMS2FAImpl);
+            other is _$LoginState_NeedsSMS2FAImpl);
   }
 
   @override
@@ -1420,17 +1401,15 @@ class _$DartLoginState_NeedsSMS2FAImpl extends DartLoginState_NeedsSMS2FA {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(DartLoginState_LoggedIn value) loggedIn,
-    required TResult Function(DartLoginState_NeedsDevice2FA value)
-        needsDevice2Fa,
-    required TResult Function(DartLoginState_Needs2FAVerification value)
+    required TResult Function(LoginState_LoggedIn value) loggedIn,
+    required TResult Function(LoginState_NeedsDevice2FA value) needsDevice2Fa,
+    required TResult Function(LoginState_Needs2FAVerification value)
         needs2FaVerification,
-    required TResult Function(DartLoginState_NeedsSMS2FA value) needsSms2Fa,
-    required TResult Function(DartLoginState_NeedsSMS2FAVerification value)
+    required TResult Function(LoginState_NeedsSMS2FA value) needsSms2Fa,
+    required TResult Function(LoginState_NeedsSMS2FAVerification value)
         needsSms2FaVerification,
-    required TResult Function(DartLoginState_NeedsExtraStep value)
-        needsExtraStep,
-    required TResult Function(DartLoginState_NeedsLogin value) needsLogin,
+    required TResult Function(LoginState_NeedsExtraStep value) needsExtraStep,
+    required TResult Function(LoginState_NeedsLogin value) needsLogin,
   }) {
     return needsSms2Fa(this);
   }
@@ -1438,15 +1417,15 @@ class _$DartLoginState_NeedsSMS2FAImpl extends DartLoginState_NeedsSMS2FA {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(DartLoginState_LoggedIn value)? loggedIn,
-    TResult? Function(DartLoginState_NeedsDevice2FA value)? needsDevice2Fa,
-    TResult? Function(DartLoginState_Needs2FAVerification value)?
+    TResult? Function(LoginState_LoggedIn value)? loggedIn,
+    TResult? Function(LoginState_NeedsDevice2FA value)? needsDevice2Fa,
+    TResult? Function(LoginState_Needs2FAVerification value)?
         needs2FaVerification,
-    TResult? Function(DartLoginState_NeedsSMS2FA value)? needsSms2Fa,
-    TResult? Function(DartLoginState_NeedsSMS2FAVerification value)?
+    TResult? Function(LoginState_NeedsSMS2FA value)? needsSms2Fa,
+    TResult? Function(LoginState_NeedsSMS2FAVerification value)?
         needsSms2FaVerification,
-    TResult? Function(DartLoginState_NeedsExtraStep value)? needsExtraStep,
-    TResult? Function(DartLoginState_NeedsLogin value)? needsLogin,
+    TResult? Function(LoginState_NeedsExtraStep value)? needsExtraStep,
+    TResult? Function(LoginState_NeedsLogin value)? needsLogin,
   }) {
     return needsSms2Fa?.call(this);
   }
@@ -1454,15 +1433,15 @@ class _$DartLoginState_NeedsSMS2FAImpl extends DartLoginState_NeedsSMS2FA {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(DartLoginState_LoggedIn value)? loggedIn,
-    TResult Function(DartLoginState_NeedsDevice2FA value)? needsDevice2Fa,
-    TResult Function(DartLoginState_Needs2FAVerification value)?
+    TResult Function(LoginState_LoggedIn value)? loggedIn,
+    TResult Function(LoginState_NeedsDevice2FA value)? needsDevice2Fa,
+    TResult Function(LoginState_Needs2FAVerification value)?
         needs2FaVerification,
-    TResult Function(DartLoginState_NeedsSMS2FA value)? needsSms2Fa,
-    TResult Function(DartLoginState_NeedsSMS2FAVerification value)?
+    TResult Function(LoginState_NeedsSMS2FA value)? needsSms2Fa,
+    TResult Function(LoginState_NeedsSMS2FAVerification value)?
         needsSms2FaVerification,
-    TResult Function(DartLoginState_NeedsExtraStep value)? needsExtraStep,
-    TResult Function(DartLoginState_NeedsLogin value)? needsLogin,
+    TResult Function(LoginState_NeedsExtraStep value)? needsExtraStep,
+    TResult Function(LoginState_NeedsLogin value)? needsLogin,
     required TResult orElse(),
   }) {
     if (needsSms2Fa != null) {
@@ -1472,39 +1451,39 @@ class _$DartLoginState_NeedsSMS2FAImpl extends DartLoginState_NeedsSMS2FA {
   }
 }
 
-abstract class DartLoginState_NeedsSMS2FA extends DartLoginState {
-  const factory DartLoginState_NeedsSMS2FA() = _$DartLoginState_NeedsSMS2FAImpl;
-  const DartLoginState_NeedsSMS2FA._() : super._();
+abstract class LoginState_NeedsSMS2FA extends LoginState {
+  const factory LoginState_NeedsSMS2FA() = _$LoginState_NeedsSMS2FAImpl;
+  const LoginState_NeedsSMS2FA._() : super._();
 }
 
 /// @nodoc
-abstract class _$$DartLoginState_NeedsSMS2FAVerificationImplCopyWith<$Res> {
-  factory _$$DartLoginState_NeedsSMS2FAVerificationImplCopyWith(
-          _$DartLoginState_NeedsSMS2FAVerificationImpl value,
-          $Res Function(_$DartLoginState_NeedsSMS2FAVerificationImpl) then) =
-      __$$DartLoginState_NeedsSMS2FAVerificationImplCopyWithImpl<$Res>;
+abstract class _$$LoginState_NeedsSMS2FAVerificationImplCopyWith<$Res> {
+  factory _$$LoginState_NeedsSMS2FAVerificationImplCopyWith(
+          _$LoginState_NeedsSMS2FAVerificationImpl value,
+          $Res Function(_$LoginState_NeedsSMS2FAVerificationImpl) then) =
+      __$$LoginState_NeedsSMS2FAVerificationImplCopyWithImpl<$Res>;
   @useResult
   $Res call({VerifyBody field0});
 }
 
 /// @nodoc
-class __$$DartLoginState_NeedsSMS2FAVerificationImplCopyWithImpl<$Res>
-    extends _$DartLoginStateCopyWithImpl<$Res,
-        _$DartLoginState_NeedsSMS2FAVerificationImpl>
-    implements _$$DartLoginState_NeedsSMS2FAVerificationImplCopyWith<$Res> {
-  __$$DartLoginState_NeedsSMS2FAVerificationImplCopyWithImpl(
-      _$DartLoginState_NeedsSMS2FAVerificationImpl _value,
-      $Res Function(_$DartLoginState_NeedsSMS2FAVerificationImpl) _then)
+class __$$LoginState_NeedsSMS2FAVerificationImplCopyWithImpl<$Res>
+    extends _$LoginStateCopyWithImpl<$Res,
+        _$LoginState_NeedsSMS2FAVerificationImpl>
+    implements _$$LoginState_NeedsSMS2FAVerificationImplCopyWith<$Res> {
+  __$$LoginState_NeedsSMS2FAVerificationImplCopyWithImpl(
+      _$LoginState_NeedsSMS2FAVerificationImpl _value,
+      $Res Function(_$LoginState_NeedsSMS2FAVerificationImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of DartLoginState
+  /// Create a copy of LoginState
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? field0 = null,
   }) {
-    return _then(_$DartLoginState_NeedsSMS2FAVerificationImpl(
+    return _then(_$LoginState_NeedsSMS2FAVerificationImpl(
       null == field0
           ? _value.field0
           : field0 // ignore: cast_nullable_to_non_nullable
@@ -1515,39 +1494,38 @@ class __$$DartLoginState_NeedsSMS2FAVerificationImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$DartLoginState_NeedsSMS2FAVerificationImpl
-    extends DartLoginState_NeedsSMS2FAVerification {
-  const _$DartLoginState_NeedsSMS2FAVerificationImpl(this.field0) : super._();
+class _$LoginState_NeedsSMS2FAVerificationImpl
+    extends LoginState_NeedsSMS2FAVerification {
+  const _$LoginState_NeedsSMS2FAVerificationImpl(this.field0) : super._();
 
   @override
   final VerifyBody field0;
 
   @override
   String toString() {
-    return 'DartLoginState.needsSms2FaVerification(field0: $field0)';
+    return 'LoginState.needsSms2FaVerification(field0: $field0)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$DartLoginState_NeedsSMS2FAVerificationImpl &&
+            other is _$LoginState_NeedsSMS2FAVerificationImpl &&
             (identical(other.field0, field0) || other.field0 == field0));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, field0);
 
-  /// Create a copy of DartLoginState
+  /// Create a copy of LoginState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$DartLoginState_NeedsSMS2FAVerificationImplCopyWith<
-          _$DartLoginState_NeedsSMS2FAVerificationImpl>
-      get copyWith =>
-          __$$DartLoginState_NeedsSMS2FAVerificationImplCopyWithImpl<
-              _$DartLoginState_NeedsSMS2FAVerificationImpl>(this, _$identity);
+  _$$LoginState_NeedsSMS2FAVerificationImplCopyWith<
+          _$LoginState_NeedsSMS2FAVerificationImpl>
+      get copyWith => __$$LoginState_NeedsSMS2FAVerificationImplCopyWithImpl<
+          _$LoginState_NeedsSMS2FAVerificationImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -1598,17 +1576,15 @@ class _$DartLoginState_NeedsSMS2FAVerificationImpl
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(DartLoginState_LoggedIn value) loggedIn,
-    required TResult Function(DartLoginState_NeedsDevice2FA value)
-        needsDevice2Fa,
-    required TResult Function(DartLoginState_Needs2FAVerification value)
+    required TResult Function(LoginState_LoggedIn value) loggedIn,
+    required TResult Function(LoginState_NeedsDevice2FA value) needsDevice2Fa,
+    required TResult Function(LoginState_Needs2FAVerification value)
         needs2FaVerification,
-    required TResult Function(DartLoginState_NeedsSMS2FA value) needsSms2Fa,
-    required TResult Function(DartLoginState_NeedsSMS2FAVerification value)
+    required TResult Function(LoginState_NeedsSMS2FA value) needsSms2Fa,
+    required TResult Function(LoginState_NeedsSMS2FAVerification value)
         needsSms2FaVerification,
-    required TResult Function(DartLoginState_NeedsExtraStep value)
-        needsExtraStep,
-    required TResult Function(DartLoginState_NeedsLogin value) needsLogin,
+    required TResult Function(LoginState_NeedsExtraStep value) needsExtraStep,
+    required TResult Function(LoginState_NeedsLogin value) needsLogin,
   }) {
     return needsSms2FaVerification(this);
   }
@@ -1616,15 +1592,15 @@ class _$DartLoginState_NeedsSMS2FAVerificationImpl
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(DartLoginState_LoggedIn value)? loggedIn,
-    TResult? Function(DartLoginState_NeedsDevice2FA value)? needsDevice2Fa,
-    TResult? Function(DartLoginState_Needs2FAVerification value)?
+    TResult? Function(LoginState_LoggedIn value)? loggedIn,
+    TResult? Function(LoginState_NeedsDevice2FA value)? needsDevice2Fa,
+    TResult? Function(LoginState_Needs2FAVerification value)?
         needs2FaVerification,
-    TResult? Function(DartLoginState_NeedsSMS2FA value)? needsSms2Fa,
-    TResult? Function(DartLoginState_NeedsSMS2FAVerification value)?
+    TResult? Function(LoginState_NeedsSMS2FA value)? needsSms2Fa,
+    TResult? Function(LoginState_NeedsSMS2FAVerification value)?
         needsSms2FaVerification,
-    TResult? Function(DartLoginState_NeedsExtraStep value)? needsExtraStep,
-    TResult? Function(DartLoginState_NeedsLogin value)? needsLogin,
+    TResult? Function(LoginState_NeedsExtraStep value)? needsExtraStep,
+    TResult? Function(LoginState_NeedsLogin value)? needsLogin,
   }) {
     return needsSms2FaVerification?.call(this);
   }
@@ -1632,15 +1608,15 @@ class _$DartLoginState_NeedsSMS2FAVerificationImpl
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(DartLoginState_LoggedIn value)? loggedIn,
-    TResult Function(DartLoginState_NeedsDevice2FA value)? needsDevice2Fa,
-    TResult Function(DartLoginState_Needs2FAVerification value)?
+    TResult Function(LoginState_LoggedIn value)? loggedIn,
+    TResult Function(LoginState_NeedsDevice2FA value)? needsDevice2Fa,
+    TResult Function(LoginState_Needs2FAVerification value)?
         needs2FaVerification,
-    TResult Function(DartLoginState_NeedsSMS2FA value)? needsSms2Fa,
-    TResult Function(DartLoginState_NeedsSMS2FAVerification value)?
+    TResult Function(LoginState_NeedsSMS2FA value)? needsSms2Fa,
+    TResult Function(LoginState_NeedsSMS2FAVerification value)?
         needsSms2FaVerification,
-    TResult Function(DartLoginState_NeedsExtraStep value)? needsExtraStep,
-    TResult Function(DartLoginState_NeedsLogin value)? needsLogin,
+    TResult Function(LoginState_NeedsExtraStep value)? needsExtraStep,
+    TResult Function(LoginState_NeedsLogin value)? needsLogin,
     required TResult orElse(),
   }) {
     if (needsSms2FaVerification != null) {
@@ -1650,49 +1626,48 @@ class _$DartLoginState_NeedsSMS2FAVerificationImpl
   }
 }
 
-abstract class DartLoginState_NeedsSMS2FAVerification extends DartLoginState {
-  const factory DartLoginState_NeedsSMS2FAVerification(
-      final VerifyBody field0) = _$DartLoginState_NeedsSMS2FAVerificationImpl;
-  const DartLoginState_NeedsSMS2FAVerification._() : super._();
+abstract class LoginState_NeedsSMS2FAVerification extends LoginState {
+  const factory LoginState_NeedsSMS2FAVerification(final VerifyBody field0) =
+      _$LoginState_NeedsSMS2FAVerificationImpl;
+  const LoginState_NeedsSMS2FAVerification._() : super._();
 
   VerifyBody get field0;
 
-  /// Create a copy of DartLoginState
+  /// Create a copy of LoginState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$DartLoginState_NeedsSMS2FAVerificationImplCopyWith<
-          _$DartLoginState_NeedsSMS2FAVerificationImpl>
+  _$$LoginState_NeedsSMS2FAVerificationImplCopyWith<
+          _$LoginState_NeedsSMS2FAVerificationImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$DartLoginState_NeedsExtraStepImplCopyWith<$Res> {
-  factory _$$DartLoginState_NeedsExtraStepImplCopyWith(
-          _$DartLoginState_NeedsExtraStepImpl value,
-          $Res Function(_$DartLoginState_NeedsExtraStepImpl) then) =
-      __$$DartLoginState_NeedsExtraStepImplCopyWithImpl<$Res>;
+abstract class _$$LoginState_NeedsExtraStepImplCopyWith<$Res> {
+  factory _$$LoginState_NeedsExtraStepImplCopyWith(
+          _$LoginState_NeedsExtraStepImpl value,
+          $Res Function(_$LoginState_NeedsExtraStepImpl) then) =
+      __$$LoginState_NeedsExtraStepImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String field0});
 }
 
 /// @nodoc
-class __$$DartLoginState_NeedsExtraStepImplCopyWithImpl<$Res>
-    extends _$DartLoginStateCopyWithImpl<$Res,
-        _$DartLoginState_NeedsExtraStepImpl>
-    implements _$$DartLoginState_NeedsExtraStepImplCopyWith<$Res> {
-  __$$DartLoginState_NeedsExtraStepImplCopyWithImpl(
-      _$DartLoginState_NeedsExtraStepImpl _value,
-      $Res Function(_$DartLoginState_NeedsExtraStepImpl) _then)
+class __$$LoginState_NeedsExtraStepImplCopyWithImpl<$Res>
+    extends _$LoginStateCopyWithImpl<$Res, _$LoginState_NeedsExtraStepImpl>
+    implements _$$LoginState_NeedsExtraStepImplCopyWith<$Res> {
+  __$$LoginState_NeedsExtraStepImplCopyWithImpl(
+      _$LoginState_NeedsExtraStepImpl _value,
+      $Res Function(_$LoginState_NeedsExtraStepImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of DartLoginState
+  /// Create a copy of LoginState
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? field0 = null,
   }) {
-    return _then(_$DartLoginState_NeedsExtraStepImpl(
+    return _then(_$LoginState_NeedsExtraStepImpl(
       null == field0
           ? _value.field0
           : field0 // ignore: cast_nullable_to_non_nullable
@@ -1703,38 +1678,36 @@ class __$$DartLoginState_NeedsExtraStepImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$DartLoginState_NeedsExtraStepImpl
-    extends DartLoginState_NeedsExtraStep {
-  const _$DartLoginState_NeedsExtraStepImpl(this.field0) : super._();
+class _$LoginState_NeedsExtraStepImpl extends LoginState_NeedsExtraStep {
+  const _$LoginState_NeedsExtraStepImpl(this.field0) : super._();
 
   @override
   final String field0;
 
   @override
   String toString() {
-    return 'DartLoginState.needsExtraStep(field0: $field0)';
+    return 'LoginState.needsExtraStep(field0: $field0)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$DartLoginState_NeedsExtraStepImpl &&
+            other is _$LoginState_NeedsExtraStepImpl &&
             (identical(other.field0, field0) || other.field0 == field0));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, field0);
 
-  /// Create a copy of DartLoginState
+  /// Create a copy of LoginState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$DartLoginState_NeedsExtraStepImplCopyWith<
-          _$DartLoginState_NeedsExtraStepImpl>
-      get copyWith => __$$DartLoginState_NeedsExtraStepImplCopyWithImpl<
-          _$DartLoginState_NeedsExtraStepImpl>(this, _$identity);
+  _$$LoginState_NeedsExtraStepImplCopyWith<_$LoginState_NeedsExtraStepImpl>
+      get copyWith => __$$LoginState_NeedsExtraStepImplCopyWithImpl<
+          _$LoginState_NeedsExtraStepImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -1785,17 +1758,15 @@ class _$DartLoginState_NeedsExtraStepImpl
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(DartLoginState_LoggedIn value) loggedIn,
-    required TResult Function(DartLoginState_NeedsDevice2FA value)
-        needsDevice2Fa,
-    required TResult Function(DartLoginState_Needs2FAVerification value)
+    required TResult Function(LoginState_LoggedIn value) loggedIn,
+    required TResult Function(LoginState_NeedsDevice2FA value) needsDevice2Fa,
+    required TResult Function(LoginState_Needs2FAVerification value)
         needs2FaVerification,
-    required TResult Function(DartLoginState_NeedsSMS2FA value) needsSms2Fa,
-    required TResult Function(DartLoginState_NeedsSMS2FAVerification value)
+    required TResult Function(LoginState_NeedsSMS2FA value) needsSms2Fa,
+    required TResult Function(LoginState_NeedsSMS2FAVerification value)
         needsSms2FaVerification,
-    required TResult Function(DartLoginState_NeedsExtraStep value)
-        needsExtraStep,
-    required TResult Function(DartLoginState_NeedsLogin value) needsLogin,
+    required TResult Function(LoginState_NeedsExtraStep value) needsExtraStep,
+    required TResult Function(LoginState_NeedsLogin value) needsLogin,
   }) {
     return needsExtraStep(this);
   }
@@ -1803,15 +1774,15 @@ class _$DartLoginState_NeedsExtraStepImpl
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(DartLoginState_LoggedIn value)? loggedIn,
-    TResult? Function(DartLoginState_NeedsDevice2FA value)? needsDevice2Fa,
-    TResult? Function(DartLoginState_Needs2FAVerification value)?
+    TResult? Function(LoginState_LoggedIn value)? loggedIn,
+    TResult? Function(LoginState_NeedsDevice2FA value)? needsDevice2Fa,
+    TResult? Function(LoginState_Needs2FAVerification value)?
         needs2FaVerification,
-    TResult? Function(DartLoginState_NeedsSMS2FA value)? needsSms2Fa,
-    TResult? Function(DartLoginState_NeedsSMS2FAVerification value)?
+    TResult? Function(LoginState_NeedsSMS2FA value)? needsSms2Fa,
+    TResult? Function(LoginState_NeedsSMS2FAVerification value)?
         needsSms2FaVerification,
-    TResult? Function(DartLoginState_NeedsExtraStep value)? needsExtraStep,
-    TResult? Function(DartLoginState_NeedsLogin value)? needsLogin,
+    TResult? Function(LoginState_NeedsExtraStep value)? needsExtraStep,
+    TResult? Function(LoginState_NeedsLogin value)? needsLogin,
   }) {
     return needsExtraStep?.call(this);
   }
@@ -1819,15 +1790,15 @@ class _$DartLoginState_NeedsExtraStepImpl
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(DartLoginState_LoggedIn value)? loggedIn,
-    TResult Function(DartLoginState_NeedsDevice2FA value)? needsDevice2Fa,
-    TResult Function(DartLoginState_Needs2FAVerification value)?
+    TResult Function(LoginState_LoggedIn value)? loggedIn,
+    TResult Function(LoginState_NeedsDevice2FA value)? needsDevice2Fa,
+    TResult Function(LoginState_Needs2FAVerification value)?
         needs2FaVerification,
-    TResult Function(DartLoginState_NeedsSMS2FA value)? needsSms2Fa,
-    TResult Function(DartLoginState_NeedsSMS2FAVerification value)?
+    TResult Function(LoginState_NeedsSMS2FA value)? needsSms2Fa,
+    TResult Function(LoginState_NeedsSMS2FAVerification value)?
         needsSms2FaVerification,
-    TResult Function(DartLoginState_NeedsExtraStep value)? needsExtraStep,
-    TResult Function(DartLoginState_NeedsLogin value)? needsLogin,
+    TResult Function(LoginState_NeedsExtraStep value)? needsExtraStep,
+    TResult Function(LoginState_NeedsLogin value)? needsLogin,
     required TResult orElse(),
   }) {
     if (needsExtraStep != null) {
@@ -1837,57 +1808,55 @@ class _$DartLoginState_NeedsExtraStepImpl
   }
 }
 
-abstract class DartLoginState_NeedsExtraStep extends DartLoginState {
-  const factory DartLoginState_NeedsExtraStep(final String field0) =
-      _$DartLoginState_NeedsExtraStepImpl;
-  const DartLoginState_NeedsExtraStep._() : super._();
+abstract class LoginState_NeedsExtraStep extends LoginState {
+  const factory LoginState_NeedsExtraStep(final String field0) =
+      _$LoginState_NeedsExtraStepImpl;
+  const LoginState_NeedsExtraStep._() : super._();
 
   String get field0;
 
-  /// Create a copy of DartLoginState
+  /// Create a copy of LoginState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$DartLoginState_NeedsExtraStepImplCopyWith<
-          _$DartLoginState_NeedsExtraStepImpl>
+  _$$LoginState_NeedsExtraStepImplCopyWith<_$LoginState_NeedsExtraStepImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$DartLoginState_NeedsLoginImplCopyWith<$Res> {
-  factory _$$DartLoginState_NeedsLoginImplCopyWith(
-          _$DartLoginState_NeedsLoginImpl value,
-          $Res Function(_$DartLoginState_NeedsLoginImpl) then) =
-      __$$DartLoginState_NeedsLoginImplCopyWithImpl<$Res>;
+abstract class _$$LoginState_NeedsLoginImplCopyWith<$Res> {
+  factory _$$LoginState_NeedsLoginImplCopyWith(
+          _$LoginState_NeedsLoginImpl value,
+          $Res Function(_$LoginState_NeedsLoginImpl) then) =
+      __$$LoginState_NeedsLoginImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$DartLoginState_NeedsLoginImplCopyWithImpl<$Res>
-    extends _$DartLoginStateCopyWithImpl<$Res, _$DartLoginState_NeedsLoginImpl>
-    implements _$$DartLoginState_NeedsLoginImplCopyWith<$Res> {
-  __$$DartLoginState_NeedsLoginImplCopyWithImpl(
-      _$DartLoginState_NeedsLoginImpl _value,
-      $Res Function(_$DartLoginState_NeedsLoginImpl) _then)
+class __$$LoginState_NeedsLoginImplCopyWithImpl<$Res>
+    extends _$LoginStateCopyWithImpl<$Res, _$LoginState_NeedsLoginImpl>
+    implements _$$LoginState_NeedsLoginImplCopyWith<$Res> {
+  __$$LoginState_NeedsLoginImplCopyWithImpl(_$LoginState_NeedsLoginImpl _value,
+      $Res Function(_$LoginState_NeedsLoginImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of DartLoginState
+  /// Create a copy of LoginState
   /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
 
-class _$DartLoginState_NeedsLoginImpl extends DartLoginState_NeedsLogin {
-  const _$DartLoginState_NeedsLoginImpl() : super._();
+class _$LoginState_NeedsLoginImpl extends LoginState_NeedsLogin {
+  const _$LoginState_NeedsLoginImpl() : super._();
 
   @override
   String toString() {
-    return 'DartLoginState.needsLogin()';
+    return 'LoginState.needsLogin()';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$DartLoginState_NeedsLoginImpl);
+            other is _$LoginState_NeedsLoginImpl);
   }
 
   @override
@@ -1942,17 +1911,15 @@ class _$DartLoginState_NeedsLoginImpl extends DartLoginState_NeedsLogin {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(DartLoginState_LoggedIn value) loggedIn,
-    required TResult Function(DartLoginState_NeedsDevice2FA value)
-        needsDevice2Fa,
-    required TResult Function(DartLoginState_Needs2FAVerification value)
+    required TResult Function(LoginState_LoggedIn value) loggedIn,
+    required TResult Function(LoginState_NeedsDevice2FA value) needsDevice2Fa,
+    required TResult Function(LoginState_Needs2FAVerification value)
         needs2FaVerification,
-    required TResult Function(DartLoginState_NeedsSMS2FA value) needsSms2Fa,
-    required TResult Function(DartLoginState_NeedsSMS2FAVerification value)
+    required TResult Function(LoginState_NeedsSMS2FA value) needsSms2Fa,
+    required TResult Function(LoginState_NeedsSMS2FAVerification value)
         needsSms2FaVerification,
-    required TResult Function(DartLoginState_NeedsExtraStep value)
-        needsExtraStep,
-    required TResult Function(DartLoginState_NeedsLogin value) needsLogin,
+    required TResult Function(LoginState_NeedsExtraStep value) needsExtraStep,
+    required TResult Function(LoginState_NeedsLogin value) needsLogin,
   }) {
     return needsLogin(this);
   }
@@ -1960,15 +1927,15 @@ class _$DartLoginState_NeedsLoginImpl extends DartLoginState_NeedsLogin {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(DartLoginState_LoggedIn value)? loggedIn,
-    TResult? Function(DartLoginState_NeedsDevice2FA value)? needsDevice2Fa,
-    TResult? Function(DartLoginState_Needs2FAVerification value)?
+    TResult? Function(LoginState_LoggedIn value)? loggedIn,
+    TResult? Function(LoginState_NeedsDevice2FA value)? needsDevice2Fa,
+    TResult? Function(LoginState_Needs2FAVerification value)?
         needs2FaVerification,
-    TResult? Function(DartLoginState_NeedsSMS2FA value)? needsSms2Fa,
-    TResult? Function(DartLoginState_NeedsSMS2FAVerification value)?
+    TResult? Function(LoginState_NeedsSMS2FA value)? needsSms2Fa,
+    TResult? Function(LoginState_NeedsSMS2FAVerification value)?
         needsSms2FaVerification,
-    TResult? Function(DartLoginState_NeedsExtraStep value)? needsExtraStep,
-    TResult? Function(DartLoginState_NeedsLogin value)? needsLogin,
+    TResult? Function(LoginState_NeedsExtraStep value)? needsExtraStep,
+    TResult? Function(LoginState_NeedsLogin value)? needsLogin,
   }) {
     return needsLogin?.call(this);
   }
@@ -1976,15 +1943,15 @@ class _$DartLoginState_NeedsLoginImpl extends DartLoginState_NeedsLogin {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(DartLoginState_LoggedIn value)? loggedIn,
-    TResult Function(DartLoginState_NeedsDevice2FA value)? needsDevice2Fa,
-    TResult Function(DartLoginState_Needs2FAVerification value)?
+    TResult Function(LoginState_LoggedIn value)? loggedIn,
+    TResult Function(LoginState_NeedsDevice2FA value)? needsDevice2Fa,
+    TResult Function(LoginState_Needs2FAVerification value)?
         needs2FaVerification,
-    TResult Function(DartLoginState_NeedsSMS2FA value)? needsSms2Fa,
-    TResult Function(DartLoginState_NeedsSMS2FAVerification value)?
+    TResult Function(LoginState_NeedsSMS2FA value)? needsSms2Fa,
+    TResult Function(LoginState_NeedsSMS2FAVerification value)?
         needsSms2FaVerification,
-    TResult Function(DartLoginState_NeedsExtraStep value)? needsExtraStep,
-    TResult Function(DartLoginState_NeedsLogin value)? needsLogin,
+    TResult Function(LoginState_NeedsExtraStep value)? needsExtraStep,
+    TResult Function(LoginState_NeedsLogin value)? needsLogin,
     required TResult orElse(),
   }) {
     if (needsLogin != null) {
@@ -1994,272 +1961,262 @@ class _$DartLoginState_NeedsLoginImpl extends DartLoginState_NeedsLogin {
   }
 }
 
-abstract class DartLoginState_NeedsLogin extends DartLoginState {
-  const factory DartLoginState_NeedsLogin() = _$DartLoginState_NeedsLoginImpl;
-  const DartLoginState_NeedsLogin._() : super._();
+abstract class LoginState_NeedsLogin extends LoginState {
+  const factory LoginState_NeedsLogin() = _$LoginState_NeedsLoginImpl;
+  const LoginState_NeedsLogin._() : super._();
 }
 
 /// @nodoc
-mixin _$DartMessage {
+mixin _$Message {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(DartNormalMessage field0) message,
-    required TResult Function(DartRenameMessage field0) renameMessage,
-    required TResult Function(DartChangeParticipantMessage field0)
+    required TResult Function(NormalMessage field0) message,
+    required TResult Function(RenameMessage field0) renameMessage,
+    required TResult Function(ChangeParticipantMessage field0)
         changeParticipants,
-    required TResult Function(DartReactMessage field0) react,
+    required TResult Function(ReactMessage field0) react,
     required TResult Function() delivered,
     required TResult Function() read,
     required TResult Function() typing,
-    required TResult Function(DartUnsendMessage field0) unsend,
-    required TResult Function(DartEditMessage field0) edit,
-    required TResult Function(DartIconChangeMessage field0) iconChange,
+    required TResult Function(UnsendMessage field0) unsend,
+    required TResult Function(EditMessage field0) edit,
+    required TResult Function(IconChangeMessage field0) iconChange,
     required TResult Function() stopTyping,
     required TResult Function(bool field0) enableSmsActivation,
     required TResult Function() messageReadOnDevice,
     required TResult Function(bool field0) smsConfirmSent,
     required TResult Function() markUnread,
     required TResult Function() peerCacheInvalidate,
-    required TResult Function(DartUpdateExtensionMessage field0)
-        updateExtension,
-    required TResult Function(DartErrorMessage field0) error,
+    required TResult Function(UpdateExtensionMessage field0) updateExtension,
+    required TResult Function(ErrorMessage field0) error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(DartNormalMessage field0)? message,
-    TResult? Function(DartRenameMessage field0)? renameMessage,
-    TResult? Function(DartChangeParticipantMessage field0)? changeParticipants,
-    TResult? Function(DartReactMessage field0)? react,
+    TResult? Function(NormalMessage field0)? message,
+    TResult? Function(RenameMessage field0)? renameMessage,
+    TResult? Function(ChangeParticipantMessage field0)? changeParticipants,
+    TResult? Function(ReactMessage field0)? react,
     TResult? Function()? delivered,
     TResult? Function()? read,
     TResult? Function()? typing,
-    TResult? Function(DartUnsendMessage field0)? unsend,
-    TResult? Function(DartEditMessage field0)? edit,
-    TResult? Function(DartIconChangeMessage field0)? iconChange,
+    TResult? Function(UnsendMessage field0)? unsend,
+    TResult? Function(EditMessage field0)? edit,
+    TResult? Function(IconChangeMessage field0)? iconChange,
     TResult? Function()? stopTyping,
     TResult? Function(bool field0)? enableSmsActivation,
     TResult? Function()? messageReadOnDevice,
     TResult? Function(bool field0)? smsConfirmSent,
     TResult? Function()? markUnread,
     TResult? Function()? peerCacheInvalidate,
-    TResult? Function(DartUpdateExtensionMessage field0)? updateExtension,
-    TResult? Function(DartErrorMessage field0)? error,
+    TResult? Function(UpdateExtensionMessage field0)? updateExtension,
+    TResult? Function(ErrorMessage field0)? error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(DartNormalMessage field0)? message,
-    TResult Function(DartRenameMessage field0)? renameMessage,
-    TResult Function(DartChangeParticipantMessage field0)? changeParticipants,
-    TResult Function(DartReactMessage field0)? react,
+    TResult Function(NormalMessage field0)? message,
+    TResult Function(RenameMessage field0)? renameMessage,
+    TResult Function(ChangeParticipantMessage field0)? changeParticipants,
+    TResult Function(ReactMessage field0)? react,
     TResult Function()? delivered,
     TResult Function()? read,
     TResult Function()? typing,
-    TResult Function(DartUnsendMessage field0)? unsend,
-    TResult Function(DartEditMessage field0)? edit,
-    TResult Function(DartIconChangeMessage field0)? iconChange,
+    TResult Function(UnsendMessage field0)? unsend,
+    TResult Function(EditMessage field0)? edit,
+    TResult Function(IconChangeMessage field0)? iconChange,
     TResult Function()? stopTyping,
     TResult Function(bool field0)? enableSmsActivation,
     TResult Function()? messageReadOnDevice,
     TResult Function(bool field0)? smsConfirmSent,
     TResult Function()? markUnread,
     TResult Function()? peerCacheInvalidate,
-    TResult Function(DartUpdateExtensionMessage field0)? updateExtension,
-    TResult Function(DartErrorMessage field0)? error,
+    TResult Function(UpdateExtensionMessage field0)? updateExtension,
+    TResult Function(ErrorMessage field0)? error,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(DartMessage_Message value) message,
-    required TResult Function(DartMessage_RenameMessage value) renameMessage,
-    required TResult Function(DartMessage_ChangeParticipants value)
+    required TResult Function(Message_Message value) message,
+    required TResult Function(Message_RenameMessage value) renameMessage,
+    required TResult Function(Message_ChangeParticipants value)
         changeParticipants,
-    required TResult Function(DartMessage_React value) react,
-    required TResult Function(DartMessage_Delivered value) delivered,
-    required TResult Function(DartMessage_Read value) read,
-    required TResult Function(DartMessage_Typing value) typing,
-    required TResult Function(DartMessage_Unsend value) unsend,
-    required TResult Function(DartMessage_Edit value) edit,
-    required TResult Function(DartMessage_IconChange value) iconChange,
-    required TResult Function(DartMessage_StopTyping value) stopTyping,
-    required TResult Function(DartMessage_EnableSmsActivation value)
+    required TResult Function(Message_React value) react,
+    required TResult Function(Message_Delivered value) delivered,
+    required TResult Function(Message_Read value) read,
+    required TResult Function(Message_Typing value) typing,
+    required TResult Function(Message_Unsend value) unsend,
+    required TResult Function(Message_Edit value) edit,
+    required TResult Function(Message_IconChange value) iconChange,
+    required TResult Function(Message_StopTyping value) stopTyping,
+    required TResult Function(Message_EnableSmsActivation value)
         enableSmsActivation,
-    required TResult Function(DartMessage_MessageReadOnDevice value)
+    required TResult Function(Message_MessageReadOnDevice value)
         messageReadOnDevice,
-    required TResult Function(DartMessage_SmsConfirmSent value) smsConfirmSent,
-    required TResult Function(DartMessage_MarkUnread value) markUnread,
-    required TResult Function(DartMessage_PeerCacheInvalidate value)
+    required TResult Function(Message_SmsConfirmSent value) smsConfirmSent,
+    required TResult Function(Message_MarkUnread value) markUnread,
+    required TResult Function(Message_PeerCacheInvalidate value)
         peerCacheInvalidate,
-    required TResult Function(DartMessage_UpdateExtension value)
-        updateExtension,
-    required TResult Function(DartMessage_Error value) error,
+    required TResult Function(Message_UpdateExtension value) updateExtension,
+    required TResult Function(Message_Error value) error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(DartMessage_Message value)? message,
-    TResult? Function(DartMessage_RenameMessage value)? renameMessage,
-    TResult? Function(DartMessage_ChangeParticipants value)? changeParticipants,
-    TResult? Function(DartMessage_React value)? react,
-    TResult? Function(DartMessage_Delivered value)? delivered,
-    TResult? Function(DartMessage_Read value)? read,
-    TResult? Function(DartMessage_Typing value)? typing,
-    TResult? Function(DartMessage_Unsend value)? unsend,
-    TResult? Function(DartMessage_Edit value)? edit,
-    TResult? Function(DartMessage_IconChange value)? iconChange,
-    TResult? Function(DartMessage_StopTyping value)? stopTyping,
-    TResult? Function(DartMessage_EnableSmsActivation value)?
-        enableSmsActivation,
-    TResult? Function(DartMessage_MessageReadOnDevice value)?
-        messageReadOnDevice,
-    TResult? Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
-    TResult? Function(DartMessage_MarkUnread value)? markUnread,
-    TResult? Function(DartMessage_PeerCacheInvalidate value)?
-        peerCacheInvalidate,
-    TResult? Function(DartMessage_UpdateExtension value)? updateExtension,
-    TResult? Function(DartMessage_Error value)? error,
+    TResult? Function(Message_Message value)? message,
+    TResult? Function(Message_RenameMessage value)? renameMessage,
+    TResult? Function(Message_ChangeParticipants value)? changeParticipants,
+    TResult? Function(Message_React value)? react,
+    TResult? Function(Message_Delivered value)? delivered,
+    TResult? Function(Message_Read value)? read,
+    TResult? Function(Message_Typing value)? typing,
+    TResult? Function(Message_Unsend value)? unsend,
+    TResult? Function(Message_Edit value)? edit,
+    TResult? Function(Message_IconChange value)? iconChange,
+    TResult? Function(Message_StopTyping value)? stopTyping,
+    TResult? Function(Message_EnableSmsActivation value)? enableSmsActivation,
+    TResult? Function(Message_MessageReadOnDevice value)? messageReadOnDevice,
+    TResult? Function(Message_SmsConfirmSent value)? smsConfirmSent,
+    TResult? Function(Message_MarkUnread value)? markUnread,
+    TResult? Function(Message_PeerCacheInvalidate value)? peerCacheInvalidate,
+    TResult? Function(Message_UpdateExtension value)? updateExtension,
+    TResult? Function(Message_Error value)? error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(DartMessage_Message value)? message,
-    TResult Function(DartMessage_RenameMessage value)? renameMessage,
-    TResult Function(DartMessage_ChangeParticipants value)? changeParticipants,
-    TResult Function(DartMessage_React value)? react,
-    TResult Function(DartMessage_Delivered value)? delivered,
-    TResult Function(DartMessage_Read value)? read,
-    TResult Function(DartMessage_Typing value)? typing,
-    TResult Function(DartMessage_Unsend value)? unsend,
-    TResult Function(DartMessage_Edit value)? edit,
-    TResult Function(DartMessage_IconChange value)? iconChange,
-    TResult Function(DartMessage_StopTyping value)? stopTyping,
-    TResult Function(DartMessage_EnableSmsActivation value)?
-        enableSmsActivation,
-    TResult Function(DartMessage_MessageReadOnDevice value)?
-        messageReadOnDevice,
-    TResult Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
-    TResult Function(DartMessage_MarkUnread value)? markUnread,
-    TResult Function(DartMessage_PeerCacheInvalidate value)?
-        peerCacheInvalidate,
-    TResult Function(DartMessage_UpdateExtension value)? updateExtension,
-    TResult Function(DartMessage_Error value)? error,
+    TResult Function(Message_Message value)? message,
+    TResult Function(Message_RenameMessage value)? renameMessage,
+    TResult Function(Message_ChangeParticipants value)? changeParticipants,
+    TResult Function(Message_React value)? react,
+    TResult Function(Message_Delivered value)? delivered,
+    TResult Function(Message_Read value)? read,
+    TResult Function(Message_Typing value)? typing,
+    TResult Function(Message_Unsend value)? unsend,
+    TResult Function(Message_Edit value)? edit,
+    TResult Function(Message_IconChange value)? iconChange,
+    TResult Function(Message_StopTyping value)? stopTyping,
+    TResult Function(Message_EnableSmsActivation value)? enableSmsActivation,
+    TResult Function(Message_MessageReadOnDevice value)? messageReadOnDevice,
+    TResult Function(Message_SmsConfirmSent value)? smsConfirmSent,
+    TResult Function(Message_MarkUnread value)? markUnread,
+    TResult Function(Message_PeerCacheInvalidate value)? peerCacheInvalidate,
+    TResult Function(Message_UpdateExtension value)? updateExtension,
+    TResult Function(Message_Error value)? error,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $DartMessageCopyWith<$Res> {
-  factory $DartMessageCopyWith(
-          DartMessage value, $Res Function(DartMessage) then) =
-      _$DartMessageCopyWithImpl<$Res, DartMessage>;
+abstract class $MessageCopyWith<$Res> {
+  factory $MessageCopyWith(Message value, $Res Function(Message) then) =
+      _$MessageCopyWithImpl<$Res, Message>;
 }
 
 /// @nodoc
-class _$DartMessageCopyWithImpl<$Res, $Val extends DartMessage>
-    implements $DartMessageCopyWith<$Res> {
-  _$DartMessageCopyWithImpl(this._value, this._then);
+class _$MessageCopyWithImpl<$Res, $Val extends Message>
+    implements $MessageCopyWith<$Res> {
+  _$MessageCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of DartMessage
+  /// Create a copy of Message
   /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
-abstract class _$$DartMessage_MessageImplCopyWith<$Res> {
-  factory _$$DartMessage_MessageImplCopyWith(_$DartMessage_MessageImpl value,
-          $Res Function(_$DartMessage_MessageImpl) then) =
-      __$$DartMessage_MessageImplCopyWithImpl<$Res>;
+abstract class _$$Message_MessageImplCopyWith<$Res> {
+  factory _$$Message_MessageImplCopyWith(_$Message_MessageImpl value,
+          $Res Function(_$Message_MessageImpl) then) =
+      __$$Message_MessageImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({DartNormalMessage field0});
+  $Res call({NormalMessage field0});
 }
 
 /// @nodoc
-class __$$DartMessage_MessageImplCopyWithImpl<$Res>
-    extends _$DartMessageCopyWithImpl<$Res, _$DartMessage_MessageImpl>
-    implements _$$DartMessage_MessageImplCopyWith<$Res> {
-  __$$DartMessage_MessageImplCopyWithImpl(_$DartMessage_MessageImpl _value,
-      $Res Function(_$DartMessage_MessageImpl) _then)
+class __$$Message_MessageImplCopyWithImpl<$Res>
+    extends _$MessageCopyWithImpl<$Res, _$Message_MessageImpl>
+    implements _$$Message_MessageImplCopyWith<$Res> {
+  __$$Message_MessageImplCopyWithImpl(
+      _$Message_MessageImpl _value, $Res Function(_$Message_MessageImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of DartMessage
+  /// Create a copy of Message
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? field0 = null,
   }) {
-    return _then(_$DartMessage_MessageImpl(
+    return _then(_$Message_MessageImpl(
       null == field0
           ? _value.field0
           : field0 // ignore: cast_nullable_to_non_nullable
-              as DartNormalMessage,
+              as NormalMessage,
     ));
   }
 }
 
 /// @nodoc
 
-class _$DartMessage_MessageImpl extends DartMessage_Message {
-  const _$DartMessage_MessageImpl(this.field0) : super._();
+class _$Message_MessageImpl extends Message_Message {
+  const _$Message_MessageImpl(this.field0) : super._();
 
   @override
-  final DartNormalMessage field0;
+  final NormalMessage field0;
 
   @override
   String toString() {
-    return 'DartMessage.message(field0: $field0)';
+    return 'Message.message(field0: $field0)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$DartMessage_MessageImpl &&
+            other is _$Message_MessageImpl &&
             (identical(other.field0, field0) || other.field0 == field0));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, field0);
 
-  /// Create a copy of DartMessage
+  /// Create a copy of Message
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$DartMessage_MessageImplCopyWith<_$DartMessage_MessageImpl> get copyWith =>
-      __$$DartMessage_MessageImplCopyWithImpl<_$DartMessage_MessageImpl>(
+  _$$Message_MessageImplCopyWith<_$Message_MessageImpl> get copyWith =>
+      __$$Message_MessageImplCopyWithImpl<_$Message_MessageImpl>(
           this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(DartNormalMessage field0) message,
-    required TResult Function(DartRenameMessage field0) renameMessage,
-    required TResult Function(DartChangeParticipantMessage field0)
+    required TResult Function(NormalMessage field0) message,
+    required TResult Function(RenameMessage field0) renameMessage,
+    required TResult Function(ChangeParticipantMessage field0)
         changeParticipants,
-    required TResult Function(DartReactMessage field0) react,
+    required TResult Function(ReactMessage field0) react,
     required TResult Function() delivered,
     required TResult Function() read,
     required TResult Function() typing,
-    required TResult Function(DartUnsendMessage field0) unsend,
-    required TResult Function(DartEditMessage field0) edit,
-    required TResult Function(DartIconChangeMessage field0) iconChange,
+    required TResult Function(UnsendMessage field0) unsend,
+    required TResult Function(EditMessage field0) edit,
+    required TResult Function(IconChangeMessage field0) iconChange,
     required TResult Function() stopTyping,
     required TResult Function(bool field0) enableSmsActivation,
     required TResult Function() messageReadOnDevice,
     required TResult Function(bool field0) smsConfirmSent,
     required TResult Function() markUnread,
     required TResult Function() peerCacheInvalidate,
-    required TResult Function(DartUpdateExtensionMessage field0)
-        updateExtension,
-    required TResult Function(DartErrorMessage field0) error,
+    required TResult Function(UpdateExtensionMessage field0) updateExtension,
+    required TResult Function(ErrorMessage field0) error,
   }) {
     return message(field0);
   }
@@ -2267,24 +2224,24 @@ class _$DartMessage_MessageImpl extends DartMessage_Message {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(DartNormalMessage field0)? message,
-    TResult? Function(DartRenameMessage field0)? renameMessage,
-    TResult? Function(DartChangeParticipantMessage field0)? changeParticipants,
-    TResult? Function(DartReactMessage field0)? react,
+    TResult? Function(NormalMessage field0)? message,
+    TResult? Function(RenameMessage field0)? renameMessage,
+    TResult? Function(ChangeParticipantMessage field0)? changeParticipants,
+    TResult? Function(ReactMessage field0)? react,
     TResult? Function()? delivered,
     TResult? Function()? read,
     TResult? Function()? typing,
-    TResult? Function(DartUnsendMessage field0)? unsend,
-    TResult? Function(DartEditMessage field0)? edit,
-    TResult? Function(DartIconChangeMessage field0)? iconChange,
+    TResult? Function(UnsendMessage field0)? unsend,
+    TResult? Function(EditMessage field0)? edit,
+    TResult? Function(IconChangeMessage field0)? iconChange,
     TResult? Function()? stopTyping,
     TResult? Function(bool field0)? enableSmsActivation,
     TResult? Function()? messageReadOnDevice,
     TResult? Function(bool field0)? smsConfirmSent,
     TResult? Function()? markUnread,
     TResult? Function()? peerCacheInvalidate,
-    TResult? Function(DartUpdateExtensionMessage field0)? updateExtension,
-    TResult? Function(DartErrorMessage field0)? error,
+    TResult? Function(UpdateExtensionMessage field0)? updateExtension,
+    TResult? Function(ErrorMessage field0)? error,
   }) {
     return message?.call(field0);
   }
@@ -2292,24 +2249,24 @@ class _$DartMessage_MessageImpl extends DartMessage_Message {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(DartNormalMessage field0)? message,
-    TResult Function(DartRenameMessage field0)? renameMessage,
-    TResult Function(DartChangeParticipantMessage field0)? changeParticipants,
-    TResult Function(DartReactMessage field0)? react,
+    TResult Function(NormalMessage field0)? message,
+    TResult Function(RenameMessage field0)? renameMessage,
+    TResult Function(ChangeParticipantMessage field0)? changeParticipants,
+    TResult Function(ReactMessage field0)? react,
     TResult Function()? delivered,
     TResult Function()? read,
     TResult Function()? typing,
-    TResult Function(DartUnsendMessage field0)? unsend,
-    TResult Function(DartEditMessage field0)? edit,
-    TResult Function(DartIconChangeMessage field0)? iconChange,
+    TResult Function(UnsendMessage field0)? unsend,
+    TResult Function(EditMessage field0)? edit,
+    TResult Function(IconChangeMessage field0)? iconChange,
     TResult Function()? stopTyping,
     TResult Function(bool field0)? enableSmsActivation,
     TResult Function()? messageReadOnDevice,
     TResult Function(bool field0)? smsConfirmSent,
     TResult Function()? markUnread,
     TResult Function()? peerCacheInvalidate,
-    TResult Function(DartUpdateExtensionMessage field0)? updateExtension,
-    TResult Function(DartErrorMessage field0)? error,
+    TResult Function(UpdateExtensionMessage field0)? updateExtension,
+    TResult Function(ErrorMessage field0)? error,
     required TResult orElse(),
   }) {
     if (message != null) {
@@ -2321,29 +2278,28 @@ class _$DartMessage_MessageImpl extends DartMessage_Message {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(DartMessage_Message value) message,
-    required TResult Function(DartMessage_RenameMessage value) renameMessage,
-    required TResult Function(DartMessage_ChangeParticipants value)
+    required TResult Function(Message_Message value) message,
+    required TResult Function(Message_RenameMessage value) renameMessage,
+    required TResult Function(Message_ChangeParticipants value)
         changeParticipants,
-    required TResult Function(DartMessage_React value) react,
-    required TResult Function(DartMessage_Delivered value) delivered,
-    required TResult Function(DartMessage_Read value) read,
-    required TResult Function(DartMessage_Typing value) typing,
-    required TResult Function(DartMessage_Unsend value) unsend,
-    required TResult Function(DartMessage_Edit value) edit,
-    required TResult Function(DartMessage_IconChange value) iconChange,
-    required TResult Function(DartMessage_StopTyping value) stopTyping,
-    required TResult Function(DartMessage_EnableSmsActivation value)
+    required TResult Function(Message_React value) react,
+    required TResult Function(Message_Delivered value) delivered,
+    required TResult Function(Message_Read value) read,
+    required TResult Function(Message_Typing value) typing,
+    required TResult Function(Message_Unsend value) unsend,
+    required TResult Function(Message_Edit value) edit,
+    required TResult Function(Message_IconChange value) iconChange,
+    required TResult Function(Message_StopTyping value) stopTyping,
+    required TResult Function(Message_EnableSmsActivation value)
         enableSmsActivation,
-    required TResult Function(DartMessage_MessageReadOnDevice value)
+    required TResult Function(Message_MessageReadOnDevice value)
         messageReadOnDevice,
-    required TResult Function(DartMessage_SmsConfirmSent value) smsConfirmSent,
-    required TResult Function(DartMessage_MarkUnread value) markUnread,
-    required TResult Function(DartMessage_PeerCacheInvalidate value)
+    required TResult Function(Message_SmsConfirmSent value) smsConfirmSent,
+    required TResult Function(Message_MarkUnread value) markUnread,
+    required TResult Function(Message_PeerCacheInvalidate value)
         peerCacheInvalidate,
-    required TResult Function(DartMessage_UpdateExtension value)
-        updateExtension,
-    required TResult Function(DartMessage_Error value) error,
+    required TResult Function(Message_UpdateExtension value) updateExtension,
+    required TResult Function(Message_Error value) error,
   }) {
     return message(this);
   }
@@ -2351,27 +2307,24 @@ class _$DartMessage_MessageImpl extends DartMessage_Message {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(DartMessage_Message value)? message,
-    TResult? Function(DartMessage_RenameMessage value)? renameMessage,
-    TResult? Function(DartMessage_ChangeParticipants value)? changeParticipants,
-    TResult? Function(DartMessage_React value)? react,
-    TResult? Function(DartMessage_Delivered value)? delivered,
-    TResult? Function(DartMessage_Read value)? read,
-    TResult? Function(DartMessage_Typing value)? typing,
-    TResult? Function(DartMessage_Unsend value)? unsend,
-    TResult? Function(DartMessage_Edit value)? edit,
-    TResult? Function(DartMessage_IconChange value)? iconChange,
-    TResult? Function(DartMessage_StopTyping value)? stopTyping,
-    TResult? Function(DartMessage_EnableSmsActivation value)?
-        enableSmsActivation,
-    TResult? Function(DartMessage_MessageReadOnDevice value)?
-        messageReadOnDevice,
-    TResult? Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
-    TResult? Function(DartMessage_MarkUnread value)? markUnread,
-    TResult? Function(DartMessage_PeerCacheInvalidate value)?
-        peerCacheInvalidate,
-    TResult? Function(DartMessage_UpdateExtension value)? updateExtension,
-    TResult? Function(DartMessage_Error value)? error,
+    TResult? Function(Message_Message value)? message,
+    TResult? Function(Message_RenameMessage value)? renameMessage,
+    TResult? Function(Message_ChangeParticipants value)? changeParticipants,
+    TResult? Function(Message_React value)? react,
+    TResult? Function(Message_Delivered value)? delivered,
+    TResult? Function(Message_Read value)? read,
+    TResult? Function(Message_Typing value)? typing,
+    TResult? Function(Message_Unsend value)? unsend,
+    TResult? Function(Message_Edit value)? edit,
+    TResult? Function(Message_IconChange value)? iconChange,
+    TResult? Function(Message_StopTyping value)? stopTyping,
+    TResult? Function(Message_EnableSmsActivation value)? enableSmsActivation,
+    TResult? Function(Message_MessageReadOnDevice value)? messageReadOnDevice,
+    TResult? Function(Message_SmsConfirmSent value)? smsConfirmSent,
+    TResult? Function(Message_MarkUnread value)? markUnread,
+    TResult? Function(Message_PeerCacheInvalidate value)? peerCacheInvalidate,
+    TResult? Function(Message_UpdateExtension value)? updateExtension,
+    TResult? Function(Message_Error value)? error,
   }) {
     return message?.call(this);
   }
@@ -2379,27 +2332,24 @@ class _$DartMessage_MessageImpl extends DartMessage_Message {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(DartMessage_Message value)? message,
-    TResult Function(DartMessage_RenameMessage value)? renameMessage,
-    TResult Function(DartMessage_ChangeParticipants value)? changeParticipants,
-    TResult Function(DartMessage_React value)? react,
-    TResult Function(DartMessage_Delivered value)? delivered,
-    TResult Function(DartMessage_Read value)? read,
-    TResult Function(DartMessage_Typing value)? typing,
-    TResult Function(DartMessage_Unsend value)? unsend,
-    TResult Function(DartMessage_Edit value)? edit,
-    TResult Function(DartMessage_IconChange value)? iconChange,
-    TResult Function(DartMessage_StopTyping value)? stopTyping,
-    TResult Function(DartMessage_EnableSmsActivation value)?
-        enableSmsActivation,
-    TResult Function(DartMessage_MessageReadOnDevice value)?
-        messageReadOnDevice,
-    TResult Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
-    TResult Function(DartMessage_MarkUnread value)? markUnread,
-    TResult Function(DartMessage_PeerCacheInvalidate value)?
-        peerCacheInvalidate,
-    TResult Function(DartMessage_UpdateExtension value)? updateExtension,
-    TResult Function(DartMessage_Error value)? error,
+    TResult Function(Message_Message value)? message,
+    TResult Function(Message_RenameMessage value)? renameMessage,
+    TResult Function(Message_ChangeParticipants value)? changeParticipants,
+    TResult Function(Message_React value)? react,
+    TResult Function(Message_Delivered value)? delivered,
+    TResult Function(Message_Read value)? read,
+    TResult Function(Message_Typing value)? typing,
+    TResult Function(Message_Unsend value)? unsend,
+    TResult Function(Message_Edit value)? edit,
+    TResult Function(Message_IconChange value)? iconChange,
+    TResult Function(Message_StopTyping value)? stopTyping,
+    TResult Function(Message_EnableSmsActivation value)? enableSmsActivation,
+    TResult Function(Message_MessageReadOnDevice value)? messageReadOnDevice,
+    TResult Function(Message_SmsConfirmSent value)? smsConfirmSent,
+    TResult Function(Message_MarkUnread value)? markUnread,
+    TResult Function(Message_PeerCacheInvalidate value)? peerCacheInvalidate,
+    TResult Function(Message_UpdateExtension value)? updateExtension,
+    TResult Function(Message_Error value)? error,
     required TResult orElse(),
   }) {
     if (message != null) {
@@ -2409,111 +2359,109 @@ class _$DartMessage_MessageImpl extends DartMessage_Message {
   }
 }
 
-abstract class DartMessage_Message extends DartMessage {
-  const factory DartMessage_Message(final DartNormalMessage field0) =
-      _$DartMessage_MessageImpl;
-  const DartMessage_Message._() : super._();
+abstract class Message_Message extends Message {
+  const factory Message_Message(final NormalMessage field0) =
+      _$Message_MessageImpl;
+  const Message_Message._() : super._();
 
-  DartNormalMessage get field0;
+  NormalMessage get field0;
 
-  /// Create a copy of DartMessage
+  /// Create a copy of Message
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$DartMessage_MessageImplCopyWith<_$DartMessage_MessageImpl> get copyWith =>
+  _$$Message_MessageImplCopyWith<_$Message_MessageImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$DartMessage_RenameMessageImplCopyWith<$Res> {
-  factory _$$DartMessage_RenameMessageImplCopyWith(
-          _$DartMessage_RenameMessageImpl value,
-          $Res Function(_$DartMessage_RenameMessageImpl) then) =
-      __$$DartMessage_RenameMessageImplCopyWithImpl<$Res>;
+abstract class _$$Message_RenameMessageImplCopyWith<$Res> {
+  factory _$$Message_RenameMessageImplCopyWith(
+          _$Message_RenameMessageImpl value,
+          $Res Function(_$Message_RenameMessageImpl) then) =
+      __$$Message_RenameMessageImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({DartRenameMessage field0});
+  $Res call({RenameMessage field0});
 }
 
 /// @nodoc
-class __$$DartMessage_RenameMessageImplCopyWithImpl<$Res>
-    extends _$DartMessageCopyWithImpl<$Res, _$DartMessage_RenameMessageImpl>
-    implements _$$DartMessage_RenameMessageImplCopyWith<$Res> {
-  __$$DartMessage_RenameMessageImplCopyWithImpl(
-      _$DartMessage_RenameMessageImpl _value,
-      $Res Function(_$DartMessage_RenameMessageImpl) _then)
+class __$$Message_RenameMessageImplCopyWithImpl<$Res>
+    extends _$MessageCopyWithImpl<$Res, _$Message_RenameMessageImpl>
+    implements _$$Message_RenameMessageImplCopyWith<$Res> {
+  __$$Message_RenameMessageImplCopyWithImpl(_$Message_RenameMessageImpl _value,
+      $Res Function(_$Message_RenameMessageImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of DartMessage
+  /// Create a copy of Message
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? field0 = null,
   }) {
-    return _then(_$DartMessage_RenameMessageImpl(
+    return _then(_$Message_RenameMessageImpl(
       null == field0
           ? _value.field0
           : field0 // ignore: cast_nullable_to_non_nullable
-              as DartRenameMessage,
+              as RenameMessage,
     ));
   }
 }
 
 /// @nodoc
 
-class _$DartMessage_RenameMessageImpl extends DartMessage_RenameMessage {
-  const _$DartMessage_RenameMessageImpl(this.field0) : super._();
+class _$Message_RenameMessageImpl extends Message_RenameMessage {
+  const _$Message_RenameMessageImpl(this.field0) : super._();
 
   @override
-  final DartRenameMessage field0;
+  final RenameMessage field0;
 
   @override
   String toString() {
-    return 'DartMessage.renameMessage(field0: $field0)';
+    return 'Message.renameMessage(field0: $field0)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$DartMessage_RenameMessageImpl &&
+            other is _$Message_RenameMessageImpl &&
             (identical(other.field0, field0) || other.field0 == field0));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, field0);
 
-  /// Create a copy of DartMessage
+  /// Create a copy of Message
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$DartMessage_RenameMessageImplCopyWith<_$DartMessage_RenameMessageImpl>
-      get copyWith => __$$DartMessage_RenameMessageImplCopyWithImpl<
-          _$DartMessage_RenameMessageImpl>(this, _$identity);
+  _$$Message_RenameMessageImplCopyWith<_$Message_RenameMessageImpl>
+      get copyWith => __$$Message_RenameMessageImplCopyWithImpl<
+          _$Message_RenameMessageImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(DartNormalMessage field0) message,
-    required TResult Function(DartRenameMessage field0) renameMessage,
-    required TResult Function(DartChangeParticipantMessage field0)
+    required TResult Function(NormalMessage field0) message,
+    required TResult Function(RenameMessage field0) renameMessage,
+    required TResult Function(ChangeParticipantMessage field0)
         changeParticipants,
-    required TResult Function(DartReactMessage field0) react,
+    required TResult Function(ReactMessage field0) react,
     required TResult Function() delivered,
     required TResult Function() read,
     required TResult Function() typing,
-    required TResult Function(DartUnsendMessage field0) unsend,
-    required TResult Function(DartEditMessage field0) edit,
-    required TResult Function(DartIconChangeMessage field0) iconChange,
+    required TResult Function(UnsendMessage field0) unsend,
+    required TResult Function(EditMessage field0) edit,
+    required TResult Function(IconChangeMessage field0) iconChange,
     required TResult Function() stopTyping,
     required TResult Function(bool field0) enableSmsActivation,
     required TResult Function() messageReadOnDevice,
     required TResult Function(bool field0) smsConfirmSent,
     required TResult Function() markUnread,
     required TResult Function() peerCacheInvalidate,
-    required TResult Function(DartUpdateExtensionMessage field0)
-        updateExtension,
-    required TResult Function(DartErrorMessage field0) error,
+    required TResult Function(UpdateExtensionMessage field0) updateExtension,
+    required TResult Function(ErrorMessage field0) error,
   }) {
     return renameMessage(field0);
   }
@@ -2521,24 +2469,24 @@ class _$DartMessage_RenameMessageImpl extends DartMessage_RenameMessage {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(DartNormalMessage field0)? message,
-    TResult? Function(DartRenameMessage field0)? renameMessage,
-    TResult? Function(DartChangeParticipantMessage field0)? changeParticipants,
-    TResult? Function(DartReactMessage field0)? react,
+    TResult? Function(NormalMessage field0)? message,
+    TResult? Function(RenameMessage field0)? renameMessage,
+    TResult? Function(ChangeParticipantMessage field0)? changeParticipants,
+    TResult? Function(ReactMessage field0)? react,
     TResult? Function()? delivered,
     TResult? Function()? read,
     TResult? Function()? typing,
-    TResult? Function(DartUnsendMessage field0)? unsend,
-    TResult? Function(DartEditMessage field0)? edit,
-    TResult? Function(DartIconChangeMessage field0)? iconChange,
+    TResult? Function(UnsendMessage field0)? unsend,
+    TResult? Function(EditMessage field0)? edit,
+    TResult? Function(IconChangeMessage field0)? iconChange,
     TResult? Function()? stopTyping,
     TResult? Function(bool field0)? enableSmsActivation,
     TResult? Function()? messageReadOnDevice,
     TResult? Function(bool field0)? smsConfirmSent,
     TResult? Function()? markUnread,
     TResult? Function()? peerCacheInvalidate,
-    TResult? Function(DartUpdateExtensionMessage field0)? updateExtension,
-    TResult? Function(DartErrorMessage field0)? error,
+    TResult? Function(UpdateExtensionMessage field0)? updateExtension,
+    TResult? Function(ErrorMessage field0)? error,
   }) {
     return renameMessage?.call(field0);
   }
@@ -2546,24 +2494,24 @@ class _$DartMessage_RenameMessageImpl extends DartMessage_RenameMessage {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(DartNormalMessage field0)? message,
-    TResult Function(DartRenameMessage field0)? renameMessage,
-    TResult Function(DartChangeParticipantMessage field0)? changeParticipants,
-    TResult Function(DartReactMessage field0)? react,
+    TResult Function(NormalMessage field0)? message,
+    TResult Function(RenameMessage field0)? renameMessage,
+    TResult Function(ChangeParticipantMessage field0)? changeParticipants,
+    TResult Function(ReactMessage field0)? react,
     TResult Function()? delivered,
     TResult Function()? read,
     TResult Function()? typing,
-    TResult Function(DartUnsendMessage field0)? unsend,
-    TResult Function(DartEditMessage field0)? edit,
-    TResult Function(DartIconChangeMessage field0)? iconChange,
+    TResult Function(UnsendMessage field0)? unsend,
+    TResult Function(EditMessage field0)? edit,
+    TResult Function(IconChangeMessage field0)? iconChange,
     TResult Function()? stopTyping,
     TResult Function(bool field0)? enableSmsActivation,
     TResult Function()? messageReadOnDevice,
     TResult Function(bool field0)? smsConfirmSent,
     TResult Function()? markUnread,
     TResult Function()? peerCacheInvalidate,
-    TResult Function(DartUpdateExtensionMessage field0)? updateExtension,
-    TResult Function(DartErrorMessage field0)? error,
+    TResult Function(UpdateExtensionMessage field0)? updateExtension,
+    TResult Function(ErrorMessage field0)? error,
     required TResult orElse(),
   }) {
     if (renameMessage != null) {
@@ -2575,29 +2523,28 @@ class _$DartMessage_RenameMessageImpl extends DartMessage_RenameMessage {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(DartMessage_Message value) message,
-    required TResult Function(DartMessage_RenameMessage value) renameMessage,
-    required TResult Function(DartMessage_ChangeParticipants value)
+    required TResult Function(Message_Message value) message,
+    required TResult Function(Message_RenameMessage value) renameMessage,
+    required TResult Function(Message_ChangeParticipants value)
         changeParticipants,
-    required TResult Function(DartMessage_React value) react,
-    required TResult Function(DartMessage_Delivered value) delivered,
-    required TResult Function(DartMessage_Read value) read,
-    required TResult Function(DartMessage_Typing value) typing,
-    required TResult Function(DartMessage_Unsend value) unsend,
-    required TResult Function(DartMessage_Edit value) edit,
-    required TResult Function(DartMessage_IconChange value) iconChange,
-    required TResult Function(DartMessage_StopTyping value) stopTyping,
-    required TResult Function(DartMessage_EnableSmsActivation value)
+    required TResult Function(Message_React value) react,
+    required TResult Function(Message_Delivered value) delivered,
+    required TResult Function(Message_Read value) read,
+    required TResult Function(Message_Typing value) typing,
+    required TResult Function(Message_Unsend value) unsend,
+    required TResult Function(Message_Edit value) edit,
+    required TResult Function(Message_IconChange value) iconChange,
+    required TResult Function(Message_StopTyping value) stopTyping,
+    required TResult Function(Message_EnableSmsActivation value)
         enableSmsActivation,
-    required TResult Function(DartMessage_MessageReadOnDevice value)
+    required TResult Function(Message_MessageReadOnDevice value)
         messageReadOnDevice,
-    required TResult Function(DartMessage_SmsConfirmSent value) smsConfirmSent,
-    required TResult Function(DartMessage_MarkUnread value) markUnread,
-    required TResult Function(DartMessage_PeerCacheInvalidate value)
+    required TResult Function(Message_SmsConfirmSent value) smsConfirmSent,
+    required TResult Function(Message_MarkUnread value) markUnread,
+    required TResult Function(Message_PeerCacheInvalidate value)
         peerCacheInvalidate,
-    required TResult Function(DartMessage_UpdateExtension value)
-        updateExtension,
-    required TResult Function(DartMessage_Error value) error,
+    required TResult Function(Message_UpdateExtension value) updateExtension,
+    required TResult Function(Message_Error value) error,
   }) {
     return renameMessage(this);
   }
@@ -2605,27 +2552,24 @@ class _$DartMessage_RenameMessageImpl extends DartMessage_RenameMessage {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(DartMessage_Message value)? message,
-    TResult? Function(DartMessage_RenameMessage value)? renameMessage,
-    TResult? Function(DartMessage_ChangeParticipants value)? changeParticipants,
-    TResult? Function(DartMessage_React value)? react,
-    TResult? Function(DartMessage_Delivered value)? delivered,
-    TResult? Function(DartMessage_Read value)? read,
-    TResult? Function(DartMessage_Typing value)? typing,
-    TResult? Function(DartMessage_Unsend value)? unsend,
-    TResult? Function(DartMessage_Edit value)? edit,
-    TResult? Function(DartMessage_IconChange value)? iconChange,
-    TResult? Function(DartMessage_StopTyping value)? stopTyping,
-    TResult? Function(DartMessage_EnableSmsActivation value)?
-        enableSmsActivation,
-    TResult? Function(DartMessage_MessageReadOnDevice value)?
-        messageReadOnDevice,
-    TResult? Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
-    TResult? Function(DartMessage_MarkUnread value)? markUnread,
-    TResult? Function(DartMessage_PeerCacheInvalidate value)?
-        peerCacheInvalidate,
-    TResult? Function(DartMessage_UpdateExtension value)? updateExtension,
-    TResult? Function(DartMessage_Error value)? error,
+    TResult? Function(Message_Message value)? message,
+    TResult? Function(Message_RenameMessage value)? renameMessage,
+    TResult? Function(Message_ChangeParticipants value)? changeParticipants,
+    TResult? Function(Message_React value)? react,
+    TResult? Function(Message_Delivered value)? delivered,
+    TResult? Function(Message_Read value)? read,
+    TResult? Function(Message_Typing value)? typing,
+    TResult? Function(Message_Unsend value)? unsend,
+    TResult? Function(Message_Edit value)? edit,
+    TResult? Function(Message_IconChange value)? iconChange,
+    TResult? Function(Message_StopTyping value)? stopTyping,
+    TResult? Function(Message_EnableSmsActivation value)? enableSmsActivation,
+    TResult? Function(Message_MessageReadOnDevice value)? messageReadOnDevice,
+    TResult? Function(Message_SmsConfirmSent value)? smsConfirmSent,
+    TResult? Function(Message_MarkUnread value)? markUnread,
+    TResult? Function(Message_PeerCacheInvalidate value)? peerCacheInvalidate,
+    TResult? Function(Message_UpdateExtension value)? updateExtension,
+    TResult? Function(Message_Error value)? error,
   }) {
     return renameMessage?.call(this);
   }
@@ -2633,27 +2577,24 @@ class _$DartMessage_RenameMessageImpl extends DartMessage_RenameMessage {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(DartMessage_Message value)? message,
-    TResult Function(DartMessage_RenameMessage value)? renameMessage,
-    TResult Function(DartMessage_ChangeParticipants value)? changeParticipants,
-    TResult Function(DartMessage_React value)? react,
-    TResult Function(DartMessage_Delivered value)? delivered,
-    TResult Function(DartMessage_Read value)? read,
-    TResult Function(DartMessage_Typing value)? typing,
-    TResult Function(DartMessage_Unsend value)? unsend,
-    TResult Function(DartMessage_Edit value)? edit,
-    TResult Function(DartMessage_IconChange value)? iconChange,
-    TResult Function(DartMessage_StopTyping value)? stopTyping,
-    TResult Function(DartMessage_EnableSmsActivation value)?
-        enableSmsActivation,
-    TResult Function(DartMessage_MessageReadOnDevice value)?
-        messageReadOnDevice,
-    TResult Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
-    TResult Function(DartMessage_MarkUnread value)? markUnread,
-    TResult Function(DartMessage_PeerCacheInvalidate value)?
-        peerCacheInvalidate,
-    TResult Function(DartMessage_UpdateExtension value)? updateExtension,
-    TResult Function(DartMessage_Error value)? error,
+    TResult Function(Message_Message value)? message,
+    TResult Function(Message_RenameMessage value)? renameMessage,
+    TResult Function(Message_ChangeParticipants value)? changeParticipants,
+    TResult Function(Message_React value)? react,
+    TResult Function(Message_Delivered value)? delivered,
+    TResult Function(Message_Read value)? read,
+    TResult Function(Message_Typing value)? typing,
+    TResult Function(Message_Unsend value)? unsend,
+    TResult Function(Message_Edit value)? edit,
+    TResult Function(Message_IconChange value)? iconChange,
+    TResult Function(Message_StopTyping value)? stopTyping,
+    TResult Function(Message_EnableSmsActivation value)? enableSmsActivation,
+    TResult Function(Message_MessageReadOnDevice value)? messageReadOnDevice,
+    TResult Function(Message_SmsConfirmSent value)? smsConfirmSent,
+    TResult Function(Message_MarkUnread value)? markUnread,
+    TResult Function(Message_PeerCacheInvalidate value)? peerCacheInvalidate,
+    TResult Function(Message_UpdateExtension value)? updateExtension,
+    TResult Function(Message_Error value)? error,
     required TResult orElse(),
   }) {
     if (renameMessage != null) {
@@ -2663,114 +2604,110 @@ class _$DartMessage_RenameMessageImpl extends DartMessage_RenameMessage {
   }
 }
 
-abstract class DartMessage_RenameMessage extends DartMessage {
-  const factory DartMessage_RenameMessage(final DartRenameMessage field0) =
-      _$DartMessage_RenameMessageImpl;
-  const DartMessage_RenameMessage._() : super._();
+abstract class Message_RenameMessage extends Message {
+  const factory Message_RenameMessage(final RenameMessage field0) =
+      _$Message_RenameMessageImpl;
+  const Message_RenameMessage._() : super._();
 
-  DartRenameMessage get field0;
+  RenameMessage get field0;
 
-  /// Create a copy of DartMessage
+  /// Create a copy of Message
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$DartMessage_RenameMessageImplCopyWith<_$DartMessage_RenameMessageImpl>
+  _$$Message_RenameMessageImplCopyWith<_$Message_RenameMessageImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$DartMessage_ChangeParticipantsImplCopyWith<$Res> {
-  factory _$$DartMessage_ChangeParticipantsImplCopyWith(
-          _$DartMessage_ChangeParticipantsImpl value,
-          $Res Function(_$DartMessage_ChangeParticipantsImpl) then) =
-      __$$DartMessage_ChangeParticipantsImplCopyWithImpl<$Res>;
+abstract class _$$Message_ChangeParticipantsImplCopyWith<$Res> {
+  factory _$$Message_ChangeParticipantsImplCopyWith(
+          _$Message_ChangeParticipantsImpl value,
+          $Res Function(_$Message_ChangeParticipantsImpl) then) =
+      __$$Message_ChangeParticipantsImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({DartChangeParticipantMessage field0});
+  $Res call({ChangeParticipantMessage field0});
 }
 
 /// @nodoc
-class __$$DartMessage_ChangeParticipantsImplCopyWithImpl<$Res>
-    extends _$DartMessageCopyWithImpl<$Res,
-        _$DartMessage_ChangeParticipantsImpl>
-    implements _$$DartMessage_ChangeParticipantsImplCopyWith<$Res> {
-  __$$DartMessage_ChangeParticipantsImplCopyWithImpl(
-      _$DartMessage_ChangeParticipantsImpl _value,
-      $Res Function(_$DartMessage_ChangeParticipantsImpl) _then)
+class __$$Message_ChangeParticipantsImplCopyWithImpl<$Res>
+    extends _$MessageCopyWithImpl<$Res, _$Message_ChangeParticipantsImpl>
+    implements _$$Message_ChangeParticipantsImplCopyWith<$Res> {
+  __$$Message_ChangeParticipantsImplCopyWithImpl(
+      _$Message_ChangeParticipantsImpl _value,
+      $Res Function(_$Message_ChangeParticipantsImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of DartMessage
+  /// Create a copy of Message
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? field0 = null,
   }) {
-    return _then(_$DartMessage_ChangeParticipantsImpl(
+    return _then(_$Message_ChangeParticipantsImpl(
       null == field0
           ? _value.field0
           : field0 // ignore: cast_nullable_to_non_nullable
-              as DartChangeParticipantMessage,
+              as ChangeParticipantMessage,
     ));
   }
 }
 
 /// @nodoc
 
-class _$DartMessage_ChangeParticipantsImpl
-    extends DartMessage_ChangeParticipants {
-  const _$DartMessage_ChangeParticipantsImpl(this.field0) : super._();
+class _$Message_ChangeParticipantsImpl extends Message_ChangeParticipants {
+  const _$Message_ChangeParticipantsImpl(this.field0) : super._();
 
   @override
-  final DartChangeParticipantMessage field0;
+  final ChangeParticipantMessage field0;
 
   @override
   String toString() {
-    return 'DartMessage.changeParticipants(field0: $field0)';
+    return 'Message.changeParticipants(field0: $field0)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$DartMessage_ChangeParticipantsImpl &&
+            other is _$Message_ChangeParticipantsImpl &&
             (identical(other.field0, field0) || other.field0 == field0));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, field0);
 
-  /// Create a copy of DartMessage
+  /// Create a copy of Message
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$DartMessage_ChangeParticipantsImplCopyWith<
-          _$DartMessage_ChangeParticipantsImpl>
-      get copyWith => __$$DartMessage_ChangeParticipantsImplCopyWithImpl<
-          _$DartMessage_ChangeParticipantsImpl>(this, _$identity);
+  _$$Message_ChangeParticipantsImplCopyWith<_$Message_ChangeParticipantsImpl>
+      get copyWith => __$$Message_ChangeParticipantsImplCopyWithImpl<
+          _$Message_ChangeParticipantsImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(DartNormalMessage field0) message,
-    required TResult Function(DartRenameMessage field0) renameMessage,
-    required TResult Function(DartChangeParticipantMessage field0)
+    required TResult Function(NormalMessage field0) message,
+    required TResult Function(RenameMessage field0) renameMessage,
+    required TResult Function(ChangeParticipantMessage field0)
         changeParticipants,
-    required TResult Function(DartReactMessage field0) react,
+    required TResult Function(ReactMessage field0) react,
     required TResult Function() delivered,
     required TResult Function() read,
     required TResult Function() typing,
-    required TResult Function(DartUnsendMessage field0) unsend,
-    required TResult Function(DartEditMessage field0) edit,
-    required TResult Function(DartIconChangeMessage field0) iconChange,
+    required TResult Function(UnsendMessage field0) unsend,
+    required TResult Function(EditMessage field0) edit,
+    required TResult Function(IconChangeMessage field0) iconChange,
     required TResult Function() stopTyping,
     required TResult Function(bool field0) enableSmsActivation,
     required TResult Function() messageReadOnDevice,
     required TResult Function(bool field0) smsConfirmSent,
     required TResult Function() markUnread,
     required TResult Function() peerCacheInvalidate,
-    required TResult Function(DartUpdateExtensionMessage field0)
-        updateExtension,
-    required TResult Function(DartErrorMessage field0) error,
+    required TResult Function(UpdateExtensionMessage field0) updateExtension,
+    required TResult Function(ErrorMessage field0) error,
   }) {
     return changeParticipants(field0);
   }
@@ -2778,24 +2715,24 @@ class _$DartMessage_ChangeParticipantsImpl
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(DartNormalMessage field0)? message,
-    TResult? Function(DartRenameMessage field0)? renameMessage,
-    TResult? Function(DartChangeParticipantMessage field0)? changeParticipants,
-    TResult? Function(DartReactMessage field0)? react,
+    TResult? Function(NormalMessage field0)? message,
+    TResult? Function(RenameMessage field0)? renameMessage,
+    TResult? Function(ChangeParticipantMessage field0)? changeParticipants,
+    TResult? Function(ReactMessage field0)? react,
     TResult? Function()? delivered,
     TResult? Function()? read,
     TResult? Function()? typing,
-    TResult? Function(DartUnsendMessage field0)? unsend,
-    TResult? Function(DartEditMessage field0)? edit,
-    TResult? Function(DartIconChangeMessage field0)? iconChange,
+    TResult? Function(UnsendMessage field0)? unsend,
+    TResult? Function(EditMessage field0)? edit,
+    TResult? Function(IconChangeMessage field0)? iconChange,
     TResult? Function()? stopTyping,
     TResult? Function(bool field0)? enableSmsActivation,
     TResult? Function()? messageReadOnDevice,
     TResult? Function(bool field0)? smsConfirmSent,
     TResult? Function()? markUnread,
     TResult? Function()? peerCacheInvalidate,
-    TResult? Function(DartUpdateExtensionMessage field0)? updateExtension,
-    TResult? Function(DartErrorMessage field0)? error,
+    TResult? Function(UpdateExtensionMessage field0)? updateExtension,
+    TResult? Function(ErrorMessage field0)? error,
   }) {
     return changeParticipants?.call(field0);
   }
@@ -2803,24 +2740,24 @@ class _$DartMessage_ChangeParticipantsImpl
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(DartNormalMessage field0)? message,
-    TResult Function(DartRenameMessage field0)? renameMessage,
-    TResult Function(DartChangeParticipantMessage field0)? changeParticipants,
-    TResult Function(DartReactMessage field0)? react,
+    TResult Function(NormalMessage field0)? message,
+    TResult Function(RenameMessage field0)? renameMessage,
+    TResult Function(ChangeParticipantMessage field0)? changeParticipants,
+    TResult Function(ReactMessage field0)? react,
     TResult Function()? delivered,
     TResult Function()? read,
     TResult Function()? typing,
-    TResult Function(DartUnsendMessage field0)? unsend,
-    TResult Function(DartEditMessage field0)? edit,
-    TResult Function(DartIconChangeMessage field0)? iconChange,
+    TResult Function(UnsendMessage field0)? unsend,
+    TResult Function(EditMessage field0)? edit,
+    TResult Function(IconChangeMessage field0)? iconChange,
     TResult Function()? stopTyping,
     TResult Function(bool field0)? enableSmsActivation,
     TResult Function()? messageReadOnDevice,
     TResult Function(bool field0)? smsConfirmSent,
     TResult Function()? markUnread,
     TResult Function()? peerCacheInvalidate,
-    TResult Function(DartUpdateExtensionMessage field0)? updateExtension,
-    TResult Function(DartErrorMessage field0)? error,
+    TResult Function(UpdateExtensionMessage field0)? updateExtension,
+    TResult Function(ErrorMessage field0)? error,
     required TResult orElse(),
   }) {
     if (changeParticipants != null) {
@@ -2832,29 +2769,28 @@ class _$DartMessage_ChangeParticipantsImpl
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(DartMessage_Message value) message,
-    required TResult Function(DartMessage_RenameMessage value) renameMessage,
-    required TResult Function(DartMessage_ChangeParticipants value)
+    required TResult Function(Message_Message value) message,
+    required TResult Function(Message_RenameMessage value) renameMessage,
+    required TResult Function(Message_ChangeParticipants value)
         changeParticipants,
-    required TResult Function(DartMessage_React value) react,
-    required TResult Function(DartMessage_Delivered value) delivered,
-    required TResult Function(DartMessage_Read value) read,
-    required TResult Function(DartMessage_Typing value) typing,
-    required TResult Function(DartMessage_Unsend value) unsend,
-    required TResult Function(DartMessage_Edit value) edit,
-    required TResult Function(DartMessage_IconChange value) iconChange,
-    required TResult Function(DartMessage_StopTyping value) stopTyping,
-    required TResult Function(DartMessage_EnableSmsActivation value)
+    required TResult Function(Message_React value) react,
+    required TResult Function(Message_Delivered value) delivered,
+    required TResult Function(Message_Read value) read,
+    required TResult Function(Message_Typing value) typing,
+    required TResult Function(Message_Unsend value) unsend,
+    required TResult Function(Message_Edit value) edit,
+    required TResult Function(Message_IconChange value) iconChange,
+    required TResult Function(Message_StopTyping value) stopTyping,
+    required TResult Function(Message_EnableSmsActivation value)
         enableSmsActivation,
-    required TResult Function(DartMessage_MessageReadOnDevice value)
+    required TResult Function(Message_MessageReadOnDevice value)
         messageReadOnDevice,
-    required TResult Function(DartMessage_SmsConfirmSent value) smsConfirmSent,
-    required TResult Function(DartMessage_MarkUnread value) markUnread,
-    required TResult Function(DartMessage_PeerCacheInvalidate value)
+    required TResult Function(Message_SmsConfirmSent value) smsConfirmSent,
+    required TResult Function(Message_MarkUnread value) markUnread,
+    required TResult Function(Message_PeerCacheInvalidate value)
         peerCacheInvalidate,
-    required TResult Function(DartMessage_UpdateExtension value)
-        updateExtension,
-    required TResult Function(DartMessage_Error value) error,
+    required TResult Function(Message_UpdateExtension value) updateExtension,
+    required TResult Function(Message_Error value) error,
   }) {
     return changeParticipants(this);
   }
@@ -2862,27 +2798,24 @@ class _$DartMessage_ChangeParticipantsImpl
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(DartMessage_Message value)? message,
-    TResult? Function(DartMessage_RenameMessage value)? renameMessage,
-    TResult? Function(DartMessage_ChangeParticipants value)? changeParticipants,
-    TResult? Function(DartMessage_React value)? react,
-    TResult? Function(DartMessage_Delivered value)? delivered,
-    TResult? Function(DartMessage_Read value)? read,
-    TResult? Function(DartMessage_Typing value)? typing,
-    TResult? Function(DartMessage_Unsend value)? unsend,
-    TResult? Function(DartMessage_Edit value)? edit,
-    TResult? Function(DartMessage_IconChange value)? iconChange,
-    TResult? Function(DartMessage_StopTyping value)? stopTyping,
-    TResult? Function(DartMessage_EnableSmsActivation value)?
-        enableSmsActivation,
-    TResult? Function(DartMessage_MessageReadOnDevice value)?
-        messageReadOnDevice,
-    TResult? Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
-    TResult? Function(DartMessage_MarkUnread value)? markUnread,
-    TResult? Function(DartMessage_PeerCacheInvalidate value)?
-        peerCacheInvalidate,
-    TResult? Function(DartMessage_UpdateExtension value)? updateExtension,
-    TResult? Function(DartMessage_Error value)? error,
+    TResult? Function(Message_Message value)? message,
+    TResult? Function(Message_RenameMessage value)? renameMessage,
+    TResult? Function(Message_ChangeParticipants value)? changeParticipants,
+    TResult? Function(Message_React value)? react,
+    TResult? Function(Message_Delivered value)? delivered,
+    TResult? Function(Message_Read value)? read,
+    TResult? Function(Message_Typing value)? typing,
+    TResult? Function(Message_Unsend value)? unsend,
+    TResult? Function(Message_Edit value)? edit,
+    TResult? Function(Message_IconChange value)? iconChange,
+    TResult? Function(Message_StopTyping value)? stopTyping,
+    TResult? Function(Message_EnableSmsActivation value)? enableSmsActivation,
+    TResult? Function(Message_MessageReadOnDevice value)? messageReadOnDevice,
+    TResult? Function(Message_SmsConfirmSent value)? smsConfirmSent,
+    TResult? Function(Message_MarkUnread value)? markUnread,
+    TResult? Function(Message_PeerCacheInvalidate value)? peerCacheInvalidate,
+    TResult? Function(Message_UpdateExtension value)? updateExtension,
+    TResult? Function(Message_Error value)? error,
   }) {
     return changeParticipants?.call(this);
   }
@@ -2890,27 +2823,24 @@ class _$DartMessage_ChangeParticipantsImpl
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(DartMessage_Message value)? message,
-    TResult Function(DartMessage_RenameMessage value)? renameMessage,
-    TResult Function(DartMessage_ChangeParticipants value)? changeParticipants,
-    TResult Function(DartMessage_React value)? react,
-    TResult Function(DartMessage_Delivered value)? delivered,
-    TResult Function(DartMessage_Read value)? read,
-    TResult Function(DartMessage_Typing value)? typing,
-    TResult Function(DartMessage_Unsend value)? unsend,
-    TResult Function(DartMessage_Edit value)? edit,
-    TResult Function(DartMessage_IconChange value)? iconChange,
-    TResult Function(DartMessage_StopTyping value)? stopTyping,
-    TResult Function(DartMessage_EnableSmsActivation value)?
-        enableSmsActivation,
-    TResult Function(DartMessage_MessageReadOnDevice value)?
-        messageReadOnDevice,
-    TResult Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
-    TResult Function(DartMessage_MarkUnread value)? markUnread,
-    TResult Function(DartMessage_PeerCacheInvalidate value)?
-        peerCacheInvalidate,
-    TResult Function(DartMessage_UpdateExtension value)? updateExtension,
-    TResult Function(DartMessage_Error value)? error,
+    TResult Function(Message_Message value)? message,
+    TResult Function(Message_RenameMessage value)? renameMessage,
+    TResult Function(Message_ChangeParticipants value)? changeParticipants,
+    TResult Function(Message_React value)? react,
+    TResult Function(Message_Delivered value)? delivered,
+    TResult Function(Message_Read value)? read,
+    TResult Function(Message_Typing value)? typing,
+    TResult Function(Message_Unsend value)? unsend,
+    TResult Function(Message_Edit value)? edit,
+    TResult Function(Message_IconChange value)? iconChange,
+    TResult Function(Message_StopTyping value)? stopTyping,
+    TResult Function(Message_EnableSmsActivation value)? enableSmsActivation,
+    TResult Function(Message_MessageReadOnDevice value)? messageReadOnDevice,
+    TResult Function(Message_SmsConfirmSent value)? smsConfirmSent,
+    TResult Function(Message_MarkUnread value)? markUnread,
+    TResult Function(Message_PeerCacheInvalidate value)? peerCacheInvalidate,
+    TResult Function(Message_UpdateExtension value)? updateExtension,
+    TResult Function(Message_Error value)? error,
     required TResult orElse(),
   }) {
     if (changeParticipants != null) {
@@ -2920,111 +2850,107 @@ class _$DartMessage_ChangeParticipantsImpl
   }
 }
 
-abstract class DartMessage_ChangeParticipants extends DartMessage {
-  const factory DartMessage_ChangeParticipants(
-          final DartChangeParticipantMessage field0) =
-      _$DartMessage_ChangeParticipantsImpl;
-  const DartMessage_ChangeParticipants._() : super._();
+abstract class Message_ChangeParticipants extends Message {
+  const factory Message_ChangeParticipants(
+      final ChangeParticipantMessage field0) = _$Message_ChangeParticipantsImpl;
+  const Message_ChangeParticipants._() : super._();
 
-  DartChangeParticipantMessage get field0;
+  ChangeParticipantMessage get field0;
 
-  /// Create a copy of DartMessage
+  /// Create a copy of Message
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$DartMessage_ChangeParticipantsImplCopyWith<
-          _$DartMessage_ChangeParticipantsImpl>
+  _$$Message_ChangeParticipantsImplCopyWith<_$Message_ChangeParticipantsImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$DartMessage_ReactImplCopyWith<$Res> {
-  factory _$$DartMessage_ReactImplCopyWith(_$DartMessage_ReactImpl value,
-          $Res Function(_$DartMessage_ReactImpl) then) =
-      __$$DartMessage_ReactImplCopyWithImpl<$Res>;
+abstract class _$$Message_ReactImplCopyWith<$Res> {
+  factory _$$Message_ReactImplCopyWith(
+          _$Message_ReactImpl value, $Res Function(_$Message_ReactImpl) then) =
+      __$$Message_ReactImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({DartReactMessage field0});
+  $Res call({ReactMessage field0});
 }
 
 /// @nodoc
-class __$$DartMessage_ReactImplCopyWithImpl<$Res>
-    extends _$DartMessageCopyWithImpl<$Res, _$DartMessage_ReactImpl>
-    implements _$$DartMessage_ReactImplCopyWith<$Res> {
-  __$$DartMessage_ReactImplCopyWithImpl(_$DartMessage_ReactImpl _value,
-      $Res Function(_$DartMessage_ReactImpl) _then)
+class __$$Message_ReactImplCopyWithImpl<$Res>
+    extends _$MessageCopyWithImpl<$Res, _$Message_ReactImpl>
+    implements _$$Message_ReactImplCopyWith<$Res> {
+  __$$Message_ReactImplCopyWithImpl(
+      _$Message_ReactImpl _value, $Res Function(_$Message_ReactImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of DartMessage
+  /// Create a copy of Message
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? field0 = null,
   }) {
-    return _then(_$DartMessage_ReactImpl(
+    return _then(_$Message_ReactImpl(
       null == field0
           ? _value.field0
           : field0 // ignore: cast_nullable_to_non_nullable
-              as DartReactMessage,
+              as ReactMessage,
     ));
   }
 }
 
 /// @nodoc
 
-class _$DartMessage_ReactImpl extends DartMessage_React {
-  const _$DartMessage_ReactImpl(this.field0) : super._();
+class _$Message_ReactImpl extends Message_React {
+  const _$Message_ReactImpl(this.field0) : super._();
 
   @override
-  final DartReactMessage field0;
+  final ReactMessage field0;
 
   @override
   String toString() {
-    return 'DartMessage.react(field0: $field0)';
+    return 'Message.react(field0: $field0)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$DartMessage_ReactImpl &&
+            other is _$Message_ReactImpl &&
             (identical(other.field0, field0) || other.field0 == field0));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, field0);
 
-  /// Create a copy of DartMessage
+  /// Create a copy of Message
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$DartMessage_ReactImplCopyWith<_$DartMessage_ReactImpl> get copyWith =>
-      __$$DartMessage_ReactImplCopyWithImpl<_$DartMessage_ReactImpl>(
-          this, _$identity);
+  _$$Message_ReactImplCopyWith<_$Message_ReactImpl> get copyWith =>
+      __$$Message_ReactImplCopyWithImpl<_$Message_ReactImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(DartNormalMessage field0) message,
-    required TResult Function(DartRenameMessage field0) renameMessage,
-    required TResult Function(DartChangeParticipantMessage field0)
+    required TResult Function(NormalMessage field0) message,
+    required TResult Function(RenameMessage field0) renameMessage,
+    required TResult Function(ChangeParticipantMessage field0)
         changeParticipants,
-    required TResult Function(DartReactMessage field0) react,
+    required TResult Function(ReactMessage field0) react,
     required TResult Function() delivered,
     required TResult Function() read,
     required TResult Function() typing,
-    required TResult Function(DartUnsendMessage field0) unsend,
-    required TResult Function(DartEditMessage field0) edit,
-    required TResult Function(DartIconChangeMessage field0) iconChange,
+    required TResult Function(UnsendMessage field0) unsend,
+    required TResult Function(EditMessage field0) edit,
+    required TResult Function(IconChangeMessage field0) iconChange,
     required TResult Function() stopTyping,
     required TResult Function(bool field0) enableSmsActivation,
     required TResult Function() messageReadOnDevice,
     required TResult Function(bool field0) smsConfirmSent,
     required TResult Function() markUnread,
     required TResult Function() peerCacheInvalidate,
-    required TResult Function(DartUpdateExtensionMessage field0)
-        updateExtension,
-    required TResult Function(DartErrorMessage field0) error,
+    required TResult Function(UpdateExtensionMessage field0) updateExtension,
+    required TResult Function(ErrorMessage field0) error,
   }) {
     return react(field0);
   }
@@ -3032,24 +2958,24 @@ class _$DartMessage_ReactImpl extends DartMessage_React {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(DartNormalMessage field0)? message,
-    TResult? Function(DartRenameMessage field0)? renameMessage,
-    TResult? Function(DartChangeParticipantMessage field0)? changeParticipants,
-    TResult? Function(DartReactMessage field0)? react,
+    TResult? Function(NormalMessage field0)? message,
+    TResult? Function(RenameMessage field0)? renameMessage,
+    TResult? Function(ChangeParticipantMessage field0)? changeParticipants,
+    TResult? Function(ReactMessage field0)? react,
     TResult? Function()? delivered,
     TResult? Function()? read,
     TResult? Function()? typing,
-    TResult? Function(DartUnsendMessage field0)? unsend,
-    TResult? Function(DartEditMessage field0)? edit,
-    TResult? Function(DartIconChangeMessage field0)? iconChange,
+    TResult? Function(UnsendMessage field0)? unsend,
+    TResult? Function(EditMessage field0)? edit,
+    TResult? Function(IconChangeMessage field0)? iconChange,
     TResult? Function()? stopTyping,
     TResult? Function(bool field0)? enableSmsActivation,
     TResult? Function()? messageReadOnDevice,
     TResult? Function(bool field0)? smsConfirmSent,
     TResult? Function()? markUnread,
     TResult? Function()? peerCacheInvalidate,
-    TResult? Function(DartUpdateExtensionMessage field0)? updateExtension,
-    TResult? Function(DartErrorMessage field0)? error,
+    TResult? Function(UpdateExtensionMessage field0)? updateExtension,
+    TResult? Function(ErrorMessage field0)? error,
   }) {
     return react?.call(field0);
   }
@@ -3057,24 +2983,24 @@ class _$DartMessage_ReactImpl extends DartMessage_React {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(DartNormalMessage field0)? message,
-    TResult Function(DartRenameMessage field0)? renameMessage,
-    TResult Function(DartChangeParticipantMessage field0)? changeParticipants,
-    TResult Function(DartReactMessage field0)? react,
+    TResult Function(NormalMessage field0)? message,
+    TResult Function(RenameMessage field0)? renameMessage,
+    TResult Function(ChangeParticipantMessage field0)? changeParticipants,
+    TResult Function(ReactMessage field0)? react,
     TResult Function()? delivered,
     TResult Function()? read,
     TResult Function()? typing,
-    TResult Function(DartUnsendMessage field0)? unsend,
-    TResult Function(DartEditMessage field0)? edit,
-    TResult Function(DartIconChangeMessage field0)? iconChange,
+    TResult Function(UnsendMessage field0)? unsend,
+    TResult Function(EditMessage field0)? edit,
+    TResult Function(IconChangeMessage field0)? iconChange,
     TResult Function()? stopTyping,
     TResult Function(bool field0)? enableSmsActivation,
     TResult Function()? messageReadOnDevice,
     TResult Function(bool field0)? smsConfirmSent,
     TResult Function()? markUnread,
     TResult Function()? peerCacheInvalidate,
-    TResult Function(DartUpdateExtensionMessage field0)? updateExtension,
-    TResult Function(DartErrorMessage field0)? error,
+    TResult Function(UpdateExtensionMessage field0)? updateExtension,
+    TResult Function(ErrorMessage field0)? error,
     required TResult orElse(),
   }) {
     if (react != null) {
@@ -3086,29 +3012,28 @@ class _$DartMessage_ReactImpl extends DartMessage_React {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(DartMessage_Message value) message,
-    required TResult Function(DartMessage_RenameMessage value) renameMessage,
-    required TResult Function(DartMessage_ChangeParticipants value)
+    required TResult Function(Message_Message value) message,
+    required TResult Function(Message_RenameMessage value) renameMessage,
+    required TResult Function(Message_ChangeParticipants value)
         changeParticipants,
-    required TResult Function(DartMessage_React value) react,
-    required TResult Function(DartMessage_Delivered value) delivered,
-    required TResult Function(DartMessage_Read value) read,
-    required TResult Function(DartMessage_Typing value) typing,
-    required TResult Function(DartMessage_Unsend value) unsend,
-    required TResult Function(DartMessage_Edit value) edit,
-    required TResult Function(DartMessage_IconChange value) iconChange,
-    required TResult Function(DartMessage_StopTyping value) stopTyping,
-    required TResult Function(DartMessage_EnableSmsActivation value)
+    required TResult Function(Message_React value) react,
+    required TResult Function(Message_Delivered value) delivered,
+    required TResult Function(Message_Read value) read,
+    required TResult Function(Message_Typing value) typing,
+    required TResult Function(Message_Unsend value) unsend,
+    required TResult Function(Message_Edit value) edit,
+    required TResult Function(Message_IconChange value) iconChange,
+    required TResult Function(Message_StopTyping value) stopTyping,
+    required TResult Function(Message_EnableSmsActivation value)
         enableSmsActivation,
-    required TResult Function(DartMessage_MessageReadOnDevice value)
+    required TResult Function(Message_MessageReadOnDevice value)
         messageReadOnDevice,
-    required TResult Function(DartMessage_SmsConfirmSent value) smsConfirmSent,
-    required TResult Function(DartMessage_MarkUnread value) markUnread,
-    required TResult Function(DartMessage_PeerCacheInvalidate value)
+    required TResult Function(Message_SmsConfirmSent value) smsConfirmSent,
+    required TResult Function(Message_MarkUnread value) markUnread,
+    required TResult Function(Message_PeerCacheInvalidate value)
         peerCacheInvalidate,
-    required TResult Function(DartMessage_UpdateExtension value)
-        updateExtension,
-    required TResult Function(DartMessage_Error value) error,
+    required TResult Function(Message_UpdateExtension value) updateExtension,
+    required TResult Function(Message_Error value) error,
   }) {
     return react(this);
   }
@@ -3116,27 +3041,24 @@ class _$DartMessage_ReactImpl extends DartMessage_React {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(DartMessage_Message value)? message,
-    TResult? Function(DartMessage_RenameMessage value)? renameMessage,
-    TResult? Function(DartMessage_ChangeParticipants value)? changeParticipants,
-    TResult? Function(DartMessage_React value)? react,
-    TResult? Function(DartMessage_Delivered value)? delivered,
-    TResult? Function(DartMessage_Read value)? read,
-    TResult? Function(DartMessage_Typing value)? typing,
-    TResult? Function(DartMessage_Unsend value)? unsend,
-    TResult? Function(DartMessage_Edit value)? edit,
-    TResult? Function(DartMessage_IconChange value)? iconChange,
-    TResult? Function(DartMessage_StopTyping value)? stopTyping,
-    TResult? Function(DartMessage_EnableSmsActivation value)?
-        enableSmsActivation,
-    TResult? Function(DartMessage_MessageReadOnDevice value)?
-        messageReadOnDevice,
-    TResult? Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
-    TResult? Function(DartMessage_MarkUnread value)? markUnread,
-    TResult? Function(DartMessage_PeerCacheInvalidate value)?
-        peerCacheInvalidate,
-    TResult? Function(DartMessage_UpdateExtension value)? updateExtension,
-    TResult? Function(DartMessage_Error value)? error,
+    TResult? Function(Message_Message value)? message,
+    TResult? Function(Message_RenameMessage value)? renameMessage,
+    TResult? Function(Message_ChangeParticipants value)? changeParticipants,
+    TResult? Function(Message_React value)? react,
+    TResult? Function(Message_Delivered value)? delivered,
+    TResult? Function(Message_Read value)? read,
+    TResult? Function(Message_Typing value)? typing,
+    TResult? Function(Message_Unsend value)? unsend,
+    TResult? Function(Message_Edit value)? edit,
+    TResult? Function(Message_IconChange value)? iconChange,
+    TResult? Function(Message_StopTyping value)? stopTyping,
+    TResult? Function(Message_EnableSmsActivation value)? enableSmsActivation,
+    TResult? Function(Message_MessageReadOnDevice value)? messageReadOnDevice,
+    TResult? Function(Message_SmsConfirmSent value)? smsConfirmSent,
+    TResult? Function(Message_MarkUnread value)? markUnread,
+    TResult? Function(Message_PeerCacheInvalidate value)? peerCacheInvalidate,
+    TResult? Function(Message_UpdateExtension value)? updateExtension,
+    TResult? Function(Message_Error value)? error,
   }) {
     return react?.call(this);
   }
@@ -3144,27 +3066,24 @@ class _$DartMessage_ReactImpl extends DartMessage_React {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(DartMessage_Message value)? message,
-    TResult Function(DartMessage_RenameMessage value)? renameMessage,
-    TResult Function(DartMessage_ChangeParticipants value)? changeParticipants,
-    TResult Function(DartMessage_React value)? react,
-    TResult Function(DartMessage_Delivered value)? delivered,
-    TResult Function(DartMessage_Read value)? read,
-    TResult Function(DartMessage_Typing value)? typing,
-    TResult Function(DartMessage_Unsend value)? unsend,
-    TResult Function(DartMessage_Edit value)? edit,
-    TResult Function(DartMessage_IconChange value)? iconChange,
-    TResult Function(DartMessage_StopTyping value)? stopTyping,
-    TResult Function(DartMessage_EnableSmsActivation value)?
-        enableSmsActivation,
-    TResult Function(DartMessage_MessageReadOnDevice value)?
-        messageReadOnDevice,
-    TResult Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
-    TResult Function(DartMessage_MarkUnread value)? markUnread,
-    TResult Function(DartMessage_PeerCacheInvalidate value)?
-        peerCacheInvalidate,
-    TResult Function(DartMessage_UpdateExtension value)? updateExtension,
-    TResult Function(DartMessage_Error value)? error,
+    TResult Function(Message_Message value)? message,
+    TResult Function(Message_RenameMessage value)? renameMessage,
+    TResult Function(Message_ChangeParticipants value)? changeParticipants,
+    TResult Function(Message_React value)? react,
+    TResult Function(Message_Delivered value)? delivered,
+    TResult Function(Message_Read value)? read,
+    TResult Function(Message_Typing value)? typing,
+    TResult Function(Message_Unsend value)? unsend,
+    TResult Function(Message_Edit value)? edit,
+    TResult Function(Message_IconChange value)? iconChange,
+    TResult Function(Message_StopTyping value)? stopTyping,
+    TResult Function(Message_EnableSmsActivation value)? enableSmsActivation,
+    TResult Function(Message_MessageReadOnDevice value)? messageReadOnDevice,
+    TResult Function(Message_SmsConfirmSent value)? smsConfirmSent,
+    TResult Function(Message_MarkUnread value)? markUnread,
+    TResult Function(Message_PeerCacheInvalidate value)? peerCacheInvalidate,
+    TResult Function(Message_UpdateExtension value)? updateExtension,
+    TResult Function(Message_Error value)? error,
     required TResult orElse(),
   }) {
     if (react != null) {
@@ -3174,55 +3093,52 @@ class _$DartMessage_ReactImpl extends DartMessage_React {
   }
 }
 
-abstract class DartMessage_React extends DartMessage {
-  const factory DartMessage_React(final DartReactMessage field0) =
-      _$DartMessage_ReactImpl;
-  const DartMessage_React._() : super._();
+abstract class Message_React extends Message {
+  const factory Message_React(final ReactMessage field0) = _$Message_ReactImpl;
+  const Message_React._() : super._();
 
-  DartReactMessage get field0;
+  ReactMessage get field0;
 
-  /// Create a copy of DartMessage
+  /// Create a copy of Message
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$DartMessage_ReactImplCopyWith<_$DartMessage_ReactImpl> get copyWith =>
+  _$$Message_ReactImplCopyWith<_$Message_ReactImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$DartMessage_DeliveredImplCopyWith<$Res> {
-  factory _$$DartMessage_DeliveredImplCopyWith(
-          _$DartMessage_DeliveredImpl value,
-          $Res Function(_$DartMessage_DeliveredImpl) then) =
-      __$$DartMessage_DeliveredImplCopyWithImpl<$Res>;
+abstract class _$$Message_DeliveredImplCopyWith<$Res> {
+  factory _$$Message_DeliveredImplCopyWith(_$Message_DeliveredImpl value,
+          $Res Function(_$Message_DeliveredImpl) then) =
+      __$$Message_DeliveredImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$DartMessage_DeliveredImplCopyWithImpl<$Res>
-    extends _$DartMessageCopyWithImpl<$Res, _$DartMessage_DeliveredImpl>
-    implements _$$DartMessage_DeliveredImplCopyWith<$Res> {
-  __$$DartMessage_DeliveredImplCopyWithImpl(_$DartMessage_DeliveredImpl _value,
-      $Res Function(_$DartMessage_DeliveredImpl) _then)
+class __$$Message_DeliveredImplCopyWithImpl<$Res>
+    extends _$MessageCopyWithImpl<$Res, _$Message_DeliveredImpl>
+    implements _$$Message_DeliveredImplCopyWith<$Res> {
+  __$$Message_DeliveredImplCopyWithImpl(_$Message_DeliveredImpl _value,
+      $Res Function(_$Message_DeliveredImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of DartMessage
+  /// Create a copy of Message
   /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
 
-class _$DartMessage_DeliveredImpl extends DartMessage_Delivered {
-  const _$DartMessage_DeliveredImpl() : super._();
+class _$Message_DeliveredImpl extends Message_Delivered {
+  const _$Message_DeliveredImpl() : super._();
 
   @override
   String toString() {
-    return 'DartMessage.delivered()';
+    return 'Message.delivered()';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$DartMessage_DeliveredImpl);
+        (other.runtimeType == runtimeType && other is _$Message_DeliveredImpl);
   }
 
   @override
@@ -3231,26 +3147,25 @@ class _$DartMessage_DeliveredImpl extends DartMessage_Delivered {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(DartNormalMessage field0) message,
-    required TResult Function(DartRenameMessage field0) renameMessage,
-    required TResult Function(DartChangeParticipantMessage field0)
+    required TResult Function(NormalMessage field0) message,
+    required TResult Function(RenameMessage field0) renameMessage,
+    required TResult Function(ChangeParticipantMessage field0)
         changeParticipants,
-    required TResult Function(DartReactMessage field0) react,
+    required TResult Function(ReactMessage field0) react,
     required TResult Function() delivered,
     required TResult Function() read,
     required TResult Function() typing,
-    required TResult Function(DartUnsendMessage field0) unsend,
-    required TResult Function(DartEditMessage field0) edit,
-    required TResult Function(DartIconChangeMessage field0) iconChange,
+    required TResult Function(UnsendMessage field0) unsend,
+    required TResult Function(EditMessage field0) edit,
+    required TResult Function(IconChangeMessage field0) iconChange,
     required TResult Function() stopTyping,
     required TResult Function(bool field0) enableSmsActivation,
     required TResult Function() messageReadOnDevice,
     required TResult Function(bool field0) smsConfirmSent,
     required TResult Function() markUnread,
     required TResult Function() peerCacheInvalidate,
-    required TResult Function(DartUpdateExtensionMessage field0)
-        updateExtension,
-    required TResult Function(DartErrorMessage field0) error,
+    required TResult Function(UpdateExtensionMessage field0) updateExtension,
+    required TResult Function(ErrorMessage field0) error,
   }) {
     return delivered();
   }
@@ -3258,24 +3173,24 @@ class _$DartMessage_DeliveredImpl extends DartMessage_Delivered {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(DartNormalMessage field0)? message,
-    TResult? Function(DartRenameMessage field0)? renameMessage,
-    TResult? Function(DartChangeParticipantMessage field0)? changeParticipants,
-    TResult? Function(DartReactMessage field0)? react,
+    TResult? Function(NormalMessage field0)? message,
+    TResult? Function(RenameMessage field0)? renameMessage,
+    TResult? Function(ChangeParticipantMessage field0)? changeParticipants,
+    TResult? Function(ReactMessage field0)? react,
     TResult? Function()? delivered,
     TResult? Function()? read,
     TResult? Function()? typing,
-    TResult? Function(DartUnsendMessage field0)? unsend,
-    TResult? Function(DartEditMessage field0)? edit,
-    TResult? Function(DartIconChangeMessage field0)? iconChange,
+    TResult? Function(UnsendMessage field0)? unsend,
+    TResult? Function(EditMessage field0)? edit,
+    TResult? Function(IconChangeMessage field0)? iconChange,
     TResult? Function()? stopTyping,
     TResult? Function(bool field0)? enableSmsActivation,
     TResult? Function()? messageReadOnDevice,
     TResult? Function(bool field0)? smsConfirmSent,
     TResult? Function()? markUnread,
     TResult? Function()? peerCacheInvalidate,
-    TResult? Function(DartUpdateExtensionMessage field0)? updateExtension,
-    TResult? Function(DartErrorMessage field0)? error,
+    TResult? Function(UpdateExtensionMessage field0)? updateExtension,
+    TResult? Function(ErrorMessage field0)? error,
   }) {
     return delivered?.call();
   }
@@ -3283,24 +3198,24 @@ class _$DartMessage_DeliveredImpl extends DartMessage_Delivered {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(DartNormalMessage field0)? message,
-    TResult Function(DartRenameMessage field0)? renameMessage,
-    TResult Function(DartChangeParticipantMessage field0)? changeParticipants,
-    TResult Function(DartReactMessage field0)? react,
+    TResult Function(NormalMessage field0)? message,
+    TResult Function(RenameMessage field0)? renameMessage,
+    TResult Function(ChangeParticipantMessage field0)? changeParticipants,
+    TResult Function(ReactMessage field0)? react,
     TResult Function()? delivered,
     TResult Function()? read,
     TResult Function()? typing,
-    TResult Function(DartUnsendMessage field0)? unsend,
-    TResult Function(DartEditMessage field0)? edit,
-    TResult Function(DartIconChangeMessage field0)? iconChange,
+    TResult Function(UnsendMessage field0)? unsend,
+    TResult Function(EditMessage field0)? edit,
+    TResult Function(IconChangeMessage field0)? iconChange,
     TResult Function()? stopTyping,
     TResult Function(bool field0)? enableSmsActivation,
     TResult Function()? messageReadOnDevice,
     TResult Function(bool field0)? smsConfirmSent,
     TResult Function()? markUnread,
     TResult Function()? peerCacheInvalidate,
-    TResult Function(DartUpdateExtensionMessage field0)? updateExtension,
-    TResult Function(DartErrorMessage field0)? error,
+    TResult Function(UpdateExtensionMessage field0)? updateExtension,
+    TResult Function(ErrorMessage field0)? error,
     required TResult orElse(),
   }) {
     if (delivered != null) {
@@ -3312,29 +3227,28 @@ class _$DartMessage_DeliveredImpl extends DartMessage_Delivered {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(DartMessage_Message value) message,
-    required TResult Function(DartMessage_RenameMessage value) renameMessage,
-    required TResult Function(DartMessage_ChangeParticipants value)
+    required TResult Function(Message_Message value) message,
+    required TResult Function(Message_RenameMessage value) renameMessage,
+    required TResult Function(Message_ChangeParticipants value)
         changeParticipants,
-    required TResult Function(DartMessage_React value) react,
-    required TResult Function(DartMessage_Delivered value) delivered,
-    required TResult Function(DartMessage_Read value) read,
-    required TResult Function(DartMessage_Typing value) typing,
-    required TResult Function(DartMessage_Unsend value) unsend,
-    required TResult Function(DartMessage_Edit value) edit,
-    required TResult Function(DartMessage_IconChange value) iconChange,
-    required TResult Function(DartMessage_StopTyping value) stopTyping,
-    required TResult Function(DartMessage_EnableSmsActivation value)
+    required TResult Function(Message_React value) react,
+    required TResult Function(Message_Delivered value) delivered,
+    required TResult Function(Message_Read value) read,
+    required TResult Function(Message_Typing value) typing,
+    required TResult Function(Message_Unsend value) unsend,
+    required TResult Function(Message_Edit value) edit,
+    required TResult Function(Message_IconChange value) iconChange,
+    required TResult Function(Message_StopTyping value) stopTyping,
+    required TResult Function(Message_EnableSmsActivation value)
         enableSmsActivation,
-    required TResult Function(DartMessage_MessageReadOnDevice value)
+    required TResult Function(Message_MessageReadOnDevice value)
         messageReadOnDevice,
-    required TResult Function(DartMessage_SmsConfirmSent value) smsConfirmSent,
-    required TResult Function(DartMessage_MarkUnread value) markUnread,
-    required TResult Function(DartMessage_PeerCacheInvalidate value)
+    required TResult Function(Message_SmsConfirmSent value) smsConfirmSent,
+    required TResult Function(Message_MarkUnread value) markUnread,
+    required TResult Function(Message_PeerCacheInvalidate value)
         peerCacheInvalidate,
-    required TResult Function(DartMessage_UpdateExtension value)
-        updateExtension,
-    required TResult Function(DartMessage_Error value) error,
+    required TResult Function(Message_UpdateExtension value) updateExtension,
+    required TResult Function(Message_Error value) error,
   }) {
     return delivered(this);
   }
@@ -3342,27 +3256,24 @@ class _$DartMessage_DeliveredImpl extends DartMessage_Delivered {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(DartMessage_Message value)? message,
-    TResult? Function(DartMessage_RenameMessage value)? renameMessage,
-    TResult? Function(DartMessage_ChangeParticipants value)? changeParticipants,
-    TResult? Function(DartMessage_React value)? react,
-    TResult? Function(DartMessage_Delivered value)? delivered,
-    TResult? Function(DartMessage_Read value)? read,
-    TResult? Function(DartMessage_Typing value)? typing,
-    TResult? Function(DartMessage_Unsend value)? unsend,
-    TResult? Function(DartMessage_Edit value)? edit,
-    TResult? Function(DartMessage_IconChange value)? iconChange,
-    TResult? Function(DartMessage_StopTyping value)? stopTyping,
-    TResult? Function(DartMessage_EnableSmsActivation value)?
-        enableSmsActivation,
-    TResult? Function(DartMessage_MessageReadOnDevice value)?
-        messageReadOnDevice,
-    TResult? Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
-    TResult? Function(DartMessage_MarkUnread value)? markUnread,
-    TResult? Function(DartMessage_PeerCacheInvalidate value)?
-        peerCacheInvalidate,
-    TResult? Function(DartMessage_UpdateExtension value)? updateExtension,
-    TResult? Function(DartMessage_Error value)? error,
+    TResult? Function(Message_Message value)? message,
+    TResult? Function(Message_RenameMessage value)? renameMessage,
+    TResult? Function(Message_ChangeParticipants value)? changeParticipants,
+    TResult? Function(Message_React value)? react,
+    TResult? Function(Message_Delivered value)? delivered,
+    TResult? Function(Message_Read value)? read,
+    TResult? Function(Message_Typing value)? typing,
+    TResult? Function(Message_Unsend value)? unsend,
+    TResult? Function(Message_Edit value)? edit,
+    TResult? Function(Message_IconChange value)? iconChange,
+    TResult? Function(Message_StopTyping value)? stopTyping,
+    TResult? Function(Message_EnableSmsActivation value)? enableSmsActivation,
+    TResult? Function(Message_MessageReadOnDevice value)? messageReadOnDevice,
+    TResult? Function(Message_SmsConfirmSent value)? smsConfirmSent,
+    TResult? Function(Message_MarkUnread value)? markUnread,
+    TResult? Function(Message_PeerCacheInvalidate value)? peerCacheInvalidate,
+    TResult? Function(Message_UpdateExtension value)? updateExtension,
+    TResult? Function(Message_Error value)? error,
   }) {
     return delivered?.call(this);
   }
@@ -3370,27 +3281,24 @@ class _$DartMessage_DeliveredImpl extends DartMessage_Delivered {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(DartMessage_Message value)? message,
-    TResult Function(DartMessage_RenameMessage value)? renameMessage,
-    TResult Function(DartMessage_ChangeParticipants value)? changeParticipants,
-    TResult Function(DartMessage_React value)? react,
-    TResult Function(DartMessage_Delivered value)? delivered,
-    TResult Function(DartMessage_Read value)? read,
-    TResult Function(DartMessage_Typing value)? typing,
-    TResult Function(DartMessage_Unsend value)? unsend,
-    TResult Function(DartMessage_Edit value)? edit,
-    TResult Function(DartMessage_IconChange value)? iconChange,
-    TResult Function(DartMessage_StopTyping value)? stopTyping,
-    TResult Function(DartMessage_EnableSmsActivation value)?
-        enableSmsActivation,
-    TResult Function(DartMessage_MessageReadOnDevice value)?
-        messageReadOnDevice,
-    TResult Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
-    TResult Function(DartMessage_MarkUnread value)? markUnread,
-    TResult Function(DartMessage_PeerCacheInvalidate value)?
-        peerCacheInvalidate,
-    TResult Function(DartMessage_UpdateExtension value)? updateExtension,
-    TResult Function(DartMessage_Error value)? error,
+    TResult Function(Message_Message value)? message,
+    TResult Function(Message_RenameMessage value)? renameMessage,
+    TResult Function(Message_ChangeParticipants value)? changeParticipants,
+    TResult Function(Message_React value)? react,
+    TResult Function(Message_Delivered value)? delivered,
+    TResult Function(Message_Read value)? read,
+    TResult Function(Message_Typing value)? typing,
+    TResult Function(Message_Unsend value)? unsend,
+    TResult Function(Message_Edit value)? edit,
+    TResult Function(Message_IconChange value)? iconChange,
+    TResult Function(Message_StopTyping value)? stopTyping,
+    TResult Function(Message_EnableSmsActivation value)? enableSmsActivation,
+    TResult Function(Message_MessageReadOnDevice value)? messageReadOnDevice,
+    TResult Function(Message_SmsConfirmSent value)? smsConfirmSent,
+    TResult Function(Message_MarkUnread value)? markUnread,
+    TResult Function(Message_PeerCacheInvalidate value)? peerCacheInvalidate,
+    TResult Function(Message_UpdateExtension value)? updateExtension,
+    TResult Function(Message_Error value)? error,
     required TResult orElse(),
   }) {
     if (delivered != null) {
@@ -3400,44 +3308,44 @@ class _$DartMessage_DeliveredImpl extends DartMessage_Delivered {
   }
 }
 
-abstract class DartMessage_Delivered extends DartMessage {
-  const factory DartMessage_Delivered() = _$DartMessage_DeliveredImpl;
-  const DartMessage_Delivered._() : super._();
+abstract class Message_Delivered extends Message {
+  const factory Message_Delivered() = _$Message_DeliveredImpl;
+  const Message_Delivered._() : super._();
 }
 
 /// @nodoc
-abstract class _$$DartMessage_ReadImplCopyWith<$Res> {
-  factory _$$DartMessage_ReadImplCopyWith(_$DartMessage_ReadImpl value,
-          $Res Function(_$DartMessage_ReadImpl) then) =
-      __$$DartMessage_ReadImplCopyWithImpl<$Res>;
+abstract class _$$Message_ReadImplCopyWith<$Res> {
+  factory _$$Message_ReadImplCopyWith(
+          _$Message_ReadImpl value, $Res Function(_$Message_ReadImpl) then) =
+      __$$Message_ReadImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$DartMessage_ReadImplCopyWithImpl<$Res>
-    extends _$DartMessageCopyWithImpl<$Res, _$DartMessage_ReadImpl>
-    implements _$$DartMessage_ReadImplCopyWith<$Res> {
-  __$$DartMessage_ReadImplCopyWithImpl(_$DartMessage_ReadImpl _value,
-      $Res Function(_$DartMessage_ReadImpl) _then)
+class __$$Message_ReadImplCopyWithImpl<$Res>
+    extends _$MessageCopyWithImpl<$Res, _$Message_ReadImpl>
+    implements _$$Message_ReadImplCopyWith<$Res> {
+  __$$Message_ReadImplCopyWithImpl(
+      _$Message_ReadImpl _value, $Res Function(_$Message_ReadImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of DartMessage
+  /// Create a copy of Message
   /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
 
-class _$DartMessage_ReadImpl extends DartMessage_Read {
-  const _$DartMessage_ReadImpl() : super._();
+class _$Message_ReadImpl extends Message_Read {
+  const _$Message_ReadImpl() : super._();
 
   @override
   String toString() {
-    return 'DartMessage.read()';
+    return 'Message.read()';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$DartMessage_ReadImpl);
+        (other.runtimeType == runtimeType && other is _$Message_ReadImpl);
   }
 
   @override
@@ -3446,26 +3354,25 @@ class _$DartMessage_ReadImpl extends DartMessage_Read {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(DartNormalMessage field0) message,
-    required TResult Function(DartRenameMessage field0) renameMessage,
-    required TResult Function(DartChangeParticipantMessage field0)
+    required TResult Function(NormalMessage field0) message,
+    required TResult Function(RenameMessage field0) renameMessage,
+    required TResult Function(ChangeParticipantMessage field0)
         changeParticipants,
-    required TResult Function(DartReactMessage field0) react,
+    required TResult Function(ReactMessage field0) react,
     required TResult Function() delivered,
     required TResult Function() read,
     required TResult Function() typing,
-    required TResult Function(DartUnsendMessage field0) unsend,
-    required TResult Function(DartEditMessage field0) edit,
-    required TResult Function(DartIconChangeMessage field0) iconChange,
+    required TResult Function(UnsendMessage field0) unsend,
+    required TResult Function(EditMessage field0) edit,
+    required TResult Function(IconChangeMessage field0) iconChange,
     required TResult Function() stopTyping,
     required TResult Function(bool field0) enableSmsActivation,
     required TResult Function() messageReadOnDevice,
     required TResult Function(bool field0) smsConfirmSent,
     required TResult Function() markUnread,
     required TResult Function() peerCacheInvalidate,
-    required TResult Function(DartUpdateExtensionMessage field0)
-        updateExtension,
-    required TResult Function(DartErrorMessage field0) error,
+    required TResult Function(UpdateExtensionMessage field0) updateExtension,
+    required TResult Function(ErrorMessage field0) error,
   }) {
     return read();
   }
@@ -3473,24 +3380,24 @@ class _$DartMessage_ReadImpl extends DartMessage_Read {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(DartNormalMessage field0)? message,
-    TResult? Function(DartRenameMessage field0)? renameMessage,
-    TResult? Function(DartChangeParticipantMessage field0)? changeParticipants,
-    TResult? Function(DartReactMessage field0)? react,
+    TResult? Function(NormalMessage field0)? message,
+    TResult? Function(RenameMessage field0)? renameMessage,
+    TResult? Function(ChangeParticipantMessage field0)? changeParticipants,
+    TResult? Function(ReactMessage field0)? react,
     TResult? Function()? delivered,
     TResult? Function()? read,
     TResult? Function()? typing,
-    TResult? Function(DartUnsendMessage field0)? unsend,
-    TResult? Function(DartEditMessage field0)? edit,
-    TResult? Function(DartIconChangeMessage field0)? iconChange,
+    TResult? Function(UnsendMessage field0)? unsend,
+    TResult? Function(EditMessage field0)? edit,
+    TResult? Function(IconChangeMessage field0)? iconChange,
     TResult? Function()? stopTyping,
     TResult? Function(bool field0)? enableSmsActivation,
     TResult? Function()? messageReadOnDevice,
     TResult? Function(bool field0)? smsConfirmSent,
     TResult? Function()? markUnread,
     TResult? Function()? peerCacheInvalidate,
-    TResult? Function(DartUpdateExtensionMessage field0)? updateExtension,
-    TResult? Function(DartErrorMessage field0)? error,
+    TResult? Function(UpdateExtensionMessage field0)? updateExtension,
+    TResult? Function(ErrorMessage field0)? error,
   }) {
     return read?.call();
   }
@@ -3498,24 +3405,24 @@ class _$DartMessage_ReadImpl extends DartMessage_Read {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(DartNormalMessage field0)? message,
-    TResult Function(DartRenameMessage field0)? renameMessage,
-    TResult Function(DartChangeParticipantMessage field0)? changeParticipants,
-    TResult Function(DartReactMessage field0)? react,
+    TResult Function(NormalMessage field0)? message,
+    TResult Function(RenameMessage field0)? renameMessage,
+    TResult Function(ChangeParticipantMessage field0)? changeParticipants,
+    TResult Function(ReactMessage field0)? react,
     TResult Function()? delivered,
     TResult Function()? read,
     TResult Function()? typing,
-    TResult Function(DartUnsendMessage field0)? unsend,
-    TResult Function(DartEditMessage field0)? edit,
-    TResult Function(DartIconChangeMessage field0)? iconChange,
+    TResult Function(UnsendMessage field0)? unsend,
+    TResult Function(EditMessage field0)? edit,
+    TResult Function(IconChangeMessage field0)? iconChange,
     TResult Function()? stopTyping,
     TResult Function(bool field0)? enableSmsActivation,
     TResult Function()? messageReadOnDevice,
     TResult Function(bool field0)? smsConfirmSent,
     TResult Function()? markUnread,
     TResult Function()? peerCacheInvalidate,
-    TResult Function(DartUpdateExtensionMessage field0)? updateExtension,
-    TResult Function(DartErrorMessage field0)? error,
+    TResult Function(UpdateExtensionMessage field0)? updateExtension,
+    TResult Function(ErrorMessage field0)? error,
     required TResult orElse(),
   }) {
     if (read != null) {
@@ -3527,29 +3434,28 @@ class _$DartMessage_ReadImpl extends DartMessage_Read {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(DartMessage_Message value) message,
-    required TResult Function(DartMessage_RenameMessage value) renameMessage,
-    required TResult Function(DartMessage_ChangeParticipants value)
+    required TResult Function(Message_Message value) message,
+    required TResult Function(Message_RenameMessage value) renameMessage,
+    required TResult Function(Message_ChangeParticipants value)
         changeParticipants,
-    required TResult Function(DartMessage_React value) react,
-    required TResult Function(DartMessage_Delivered value) delivered,
-    required TResult Function(DartMessage_Read value) read,
-    required TResult Function(DartMessage_Typing value) typing,
-    required TResult Function(DartMessage_Unsend value) unsend,
-    required TResult Function(DartMessage_Edit value) edit,
-    required TResult Function(DartMessage_IconChange value) iconChange,
-    required TResult Function(DartMessage_StopTyping value) stopTyping,
-    required TResult Function(DartMessage_EnableSmsActivation value)
+    required TResult Function(Message_React value) react,
+    required TResult Function(Message_Delivered value) delivered,
+    required TResult Function(Message_Read value) read,
+    required TResult Function(Message_Typing value) typing,
+    required TResult Function(Message_Unsend value) unsend,
+    required TResult Function(Message_Edit value) edit,
+    required TResult Function(Message_IconChange value) iconChange,
+    required TResult Function(Message_StopTyping value) stopTyping,
+    required TResult Function(Message_EnableSmsActivation value)
         enableSmsActivation,
-    required TResult Function(DartMessage_MessageReadOnDevice value)
+    required TResult Function(Message_MessageReadOnDevice value)
         messageReadOnDevice,
-    required TResult Function(DartMessage_SmsConfirmSent value) smsConfirmSent,
-    required TResult Function(DartMessage_MarkUnread value) markUnread,
-    required TResult Function(DartMessage_PeerCacheInvalidate value)
+    required TResult Function(Message_SmsConfirmSent value) smsConfirmSent,
+    required TResult Function(Message_MarkUnread value) markUnread,
+    required TResult Function(Message_PeerCacheInvalidate value)
         peerCacheInvalidate,
-    required TResult Function(DartMessage_UpdateExtension value)
-        updateExtension,
-    required TResult Function(DartMessage_Error value) error,
+    required TResult Function(Message_UpdateExtension value) updateExtension,
+    required TResult Function(Message_Error value) error,
   }) {
     return read(this);
   }
@@ -3557,27 +3463,24 @@ class _$DartMessage_ReadImpl extends DartMessage_Read {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(DartMessage_Message value)? message,
-    TResult? Function(DartMessage_RenameMessage value)? renameMessage,
-    TResult? Function(DartMessage_ChangeParticipants value)? changeParticipants,
-    TResult? Function(DartMessage_React value)? react,
-    TResult? Function(DartMessage_Delivered value)? delivered,
-    TResult? Function(DartMessage_Read value)? read,
-    TResult? Function(DartMessage_Typing value)? typing,
-    TResult? Function(DartMessage_Unsend value)? unsend,
-    TResult? Function(DartMessage_Edit value)? edit,
-    TResult? Function(DartMessage_IconChange value)? iconChange,
-    TResult? Function(DartMessage_StopTyping value)? stopTyping,
-    TResult? Function(DartMessage_EnableSmsActivation value)?
-        enableSmsActivation,
-    TResult? Function(DartMessage_MessageReadOnDevice value)?
-        messageReadOnDevice,
-    TResult? Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
-    TResult? Function(DartMessage_MarkUnread value)? markUnread,
-    TResult? Function(DartMessage_PeerCacheInvalidate value)?
-        peerCacheInvalidate,
-    TResult? Function(DartMessage_UpdateExtension value)? updateExtension,
-    TResult? Function(DartMessage_Error value)? error,
+    TResult? Function(Message_Message value)? message,
+    TResult? Function(Message_RenameMessage value)? renameMessage,
+    TResult? Function(Message_ChangeParticipants value)? changeParticipants,
+    TResult? Function(Message_React value)? react,
+    TResult? Function(Message_Delivered value)? delivered,
+    TResult? Function(Message_Read value)? read,
+    TResult? Function(Message_Typing value)? typing,
+    TResult? Function(Message_Unsend value)? unsend,
+    TResult? Function(Message_Edit value)? edit,
+    TResult? Function(Message_IconChange value)? iconChange,
+    TResult? Function(Message_StopTyping value)? stopTyping,
+    TResult? Function(Message_EnableSmsActivation value)? enableSmsActivation,
+    TResult? Function(Message_MessageReadOnDevice value)? messageReadOnDevice,
+    TResult? Function(Message_SmsConfirmSent value)? smsConfirmSent,
+    TResult? Function(Message_MarkUnread value)? markUnread,
+    TResult? Function(Message_PeerCacheInvalidate value)? peerCacheInvalidate,
+    TResult? Function(Message_UpdateExtension value)? updateExtension,
+    TResult? Function(Message_Error value)? error,
   }) {
     return read?.call(this);
   }
@@ -3585,27 +3488,24 @@ class _$DartMessage_ReadImpl extends DartMessage_Read {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(DartMessage_Message value)? message,
-    TResult Function(DartMessage_RenameMessage value)? renameMessage,
-    TResult Function(DartMessage_ChangeParticipants value)? changeParticipants,
-    TResult Function(DartMessage_React value)? react,
-    TResult Function(DartMessage_Delivered value)? delivered,
-    TResult Function(DartMessage_Read value)? read,
-    TResult Function(DartMessage_Typing value)? typing,
-    TResult Function(DartMessage_Unsend value)? unsend,
-    TResult Function(DartMessage_Edit value)? edit,
-    TResult Function(DartMessage_IconChange value)? iconChange,
-    TResult Function(DartMessage_StopTyping value)? stopTyping,
-    TResult Function(DartMessage_EnableSmsActivation value)?
-        enableSmsActivation,
-    TResult Function(DartMessage_MessageReadOnDevice value)?
-        messageReadOnDevice,
-    TResult Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
-    TResult Function(DartMessage_MarkUnread value)? markUnread,
-    TResult Function(DartMessage_PeerCacheInvalidate value)?
-        peerCacheInvalidate,
-    TResult Function(DartMessage_UpdateExtension value)? updateExtension,
-    TResult Function(DartMessage_Error value)? error,
+    TResult Function(Message_Message value)? message,
+    TResult Function(Message_RenameMessage value)? renameMessage,
+    TResult Function(Message_ChangeParticipants value)? changeParticipants,
+    TResult Function(Message_React value)? react,
+    TResult Function(Message_Delivered value)? delivered,
+    TResult Function(Message_Read value)? read,
+    TResult Function(Message_Typing value)? typing,
+    TResult Function(Message_Unsend value)? unsend,
+    TResult Function(Message_Edit value)? edit,
+    TResult Function(Message_IconChange value)? iconChange,
+    TResult Function(Message_StopTyping value)? stopTyping,
+    TResult Function(Message_EnableSmsActivation value)? enableSmsActivation,
+    TResult Function(Message_MessageReadOnDevice value)? messageReadOnDevice,
+    TResult Function(Message_SmsConfirmSent value)? smsConfirmSent,
+    TResult Function(Message_MarkUnread value)? markUnread,
+    TResult Function(Message_PeerCacheInvalidate value)? peerCacheInvalidate,
+    TResult Function(Message_UpdateExtension value)? updateExtension,
+    TResult Function(Message_Error value)? error,
     required TResult orElse(),
   }) {
     if (read != null) {
@@ -3615,44 +3515,44 @@ class _$DartMessage_ReadImpl extends DartMessage_Read {
   }
 }
 
-abstract class DartMessage_Read extends DartMessage {
-  const factory DartMessage_Read() = _$DartMessage_ReadImpl;
-  const DartMessage_Read._() : super._();
+abstract class Message_Read extends Message {
+  const factory Message_Read() = _$Message_ReadImpl;
+  const Message_Read._() : super._();
 }
 
 /// @nodoc
-abstract class _$$DartMessage_TypingImplCopyWith<$Res> {
-  factory _$$DartMessage_TypingImplCopyWith(_$DartMessage_TypingImpl value,
-          $Res Function(_$DartMessage_TypingImpl) then) =
-      __$$DartMessage_TypingImplCopyWithImpl<$Res>;
+abstract class _$$Message_TypingImplCopyWith<$Res> {
+  factory _$$Message_TypingImplCopyWith(_$Message_TypingImpl value,
+          $Res Function(_$Message_TypingImpl) then) =
+      __$$Message_TypingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$DartMessage_TypingImplCopyWithImpl<$Res>
-    extends _$DartMessageCopyWithImpl<$Res, _$DartMessage_TypingImpl>
-    implements _$$DartMessage_TypingImplCopyWith<$Res> {
-  __$$DartMessage_TypingImplCopyWithImpl(_$DartMessage_TypingImpl _value,
-      $Res Function(_$DartMessage_TypingImpl) _then)
+class __$$Message_TypingImplCopyWithImpl<$Res>
+    extends _$MessageCopyWithImpl<$Res, _$Message_TypingImpl>
+    implements _$$Message_TypingImplCopyWith<$Res> {
+  __$$Message_TypingImplCopyWithImpl(
+      _$Message_TypingImpl _value, $Res Function(_$Message_TypingImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of DartMessage
+  /// Create a copy of Message
   /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
 
-class _$DartMessage_TypingImpl extends DartMessage_Typing {
-  const _$DartMessage_TypingImpl() : super._();
+class _$Message_TypingImpl extends Message_Typing {
+  const _$Message_TypingImpl() : super._();
 
   @override
   String toString() {
-    return 'DartMessage.typing()';
+    return 'Message.typing()';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$DartMessage_TypingImpl);
+        (other.runtimeType == runtimeType && other is _$Message_TypingImpl);
   }
 
   @override
@@ -3661,26 +3561,25 @@ class _$DartMessage_TypingImpl extends DartMessage_Typing {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(DartNormalMessage field0) message,
-    required TResult Function(DartRenameMessage field0) renameMessage,
-    required TResult Function(DartChangeParticipantMessage field0)
+    required TResult Function(NormalMessage field0) message,
+    required TResult Function(RenameMessage field0) renameMessage,
+    required TResult Function(ChangeParticipantMessage field0)
         changeParticipants,
-    required TResult Function(DartReactMessage field0) react,
+    required TResult Function(ReactMessage field0) react,
     required TResult Function() delivered,
     required TResult Function() read,
     required TResult Function() typing,
-    required TResult Function(DartUnsendMessage field0) unsend,
-    required TResult Function(DartEditMessage field0) edit,
-    required TResult Function(DartIconChangeMessage field0) iconChange,
+    required TResult Function(UnsendMessage field0) unsend,
+    required TResult Function(EditMessage field0) edit,
+    required TResult Function(IconChangeMessage field0) iconChange,
     required TResult Function() stopTyping,
     required TResult Function(bool field0) enableSmsActivation,
     required TResult Function() messageReadOnDevice,
     required TResult Function(bool field0) smsConfirmSent,
     required TResult Function() markUnread,
     required TResult Function() peerCacheInvalidate,
-    required TResult Function(DartUpdateExtensionMessage field0)
-        updateExtension,
-    required TResult Function(DartErrorMessage field0) error,
+    required TResult Function(UpdateExtensionMessage field0) updateExtension,
+    required TResult Function(ErrorMessage field0) error,
   }) {
     return typing();
   }
@@ -3688,24 +3587,24 @@ class _$DartMessage_TypingImpl extends DartMessage_Typing {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(DartNormalMessage field0)? message,
-    TResult? Function(DartRenameMessage field0)? renameMessage,
-    TResult? Function(DartChangeParticipantMessage field0)? changeParticipants,
-    TResult? Function(DartReactMessage field0)? react,
+    TResult? Function(NormalMessage field0)? message,
+    TResult? Function(RenameMessage field0)? renameMessage,
+    TResult? Function(ChangeParticipantMessage field0)? changeParticipants,
+    TResult? Function(ReactMessage field0)? react,
     TResult? Function()? delivered,
     TResult? Function()? read,
     TResult? Function()? typing,
-    TResult? Function(DartUnsendMessage field0)? unsend,
-    TResult? Function(DartEditMessage field0)? edit,
-    TResult? Function(DartIconChangeMessage field0)? iconChange,
+    TResult? Function(UnsendMessage field0)? unsend,
+    TResult? Function(EditMessage field0)? edit,
+    TResult? Function(IconChangeMessage field0)? iconChange,
     TResult? Function()? stopTyping,
     TResult? Function(bool field0)? enableSmsActivation,
     TResult? Function()? messageReadOnDevice,
     TResult? Function(bool field0)? smsConfirmSent,
     TResult? Function()? markUnread,
     TResult? Function()? peerCacheInvalidate,
-    TResult? Function(DartUpdateExtensionMessage field0)? updateExtension,
-    TResult? Function(DartErrorMessage field0)? error,
+    TResult? Function(UpdateExtensionMessage field0)? updateExtension,
+    TResult? Function(ErrorMessage field0)? error,
   }) {
     return typing?.call();
   }
@@ -3713,24 +3612,24 @@ class _$DartMessage_TypingImpl extends DartMessage_Typing {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(DartNormalMessage field0)? message,
-    TResult Function(DartRenameMessage field0)? renameMessage,
-    TResult Function(DartChangeParticipantMessage field0)? changeParticipants,
-    TResult Function(DartReactMessage field0)? react,
+    TResult Function(NormalMessage field0)? message,
+    TResult Function(RenameMessage field0)? renameMessage,
+    TResult Function(ChangeParticipantMessage field0)? changeParticipants,
+    TResult Function(ReactMessage field0)? react,
     TResult Function()? delivered,
     TResult Function()? read,
     TResult Function()? typing,
-    TResult Function(DartUnsendMessage field0)? unsend,
-    TResult Function(DartEditMessage field0)? edit,
-    TResult Function(DartIconChangeMessage field0)? iconChange,
+    TResult Function(UnsendMessage field0)? unsend,
+    TResult Function(EditMessage field0)? edit,
+    TResult Function(IconChangeMessage field0)? iconChange,
     TResult Function()? stopTyping,
     TResult Function(bool field0)? enableSmsActivation,
     TResult Function()? messageReadOnDevice,
     TResult Function(bool field0)? smsConfirmSent,
     TResult Function()? markUnread,
     TResult Function()? peerCacheInvalidate,
-    TResult Function(DartUpdateExtensionMessage field0)? updateExtension,
-    TResult Function(DartErrorMessage field0)? error,
+    TResult Function(UpdateExtensionMessage field0)? updateExtension,
+    TResult Function(ErrorMessage field0)? error,
     required TResult orElse(),
   }) {
     if (typing != null) {
@@ -3742,29 +3641,28 @@ class _$DartMessage_TypingImpl extends DartMessage_Typing {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(DartMessage_Message value) message,
-    required TResult Function(DartMessage_RenameMessage value) renameMessage,
-    required TResult Function(DartMessage_ChangeParticipants value)
+    required TResult Function(Message_Message value) message,
+    required TResult Function(Message_RenameMessage value) renameMessage,
+    required TResult Function(Message_ChangeParticipants value)
         changeParticipants,
-    required TResult Function(DartMessage_React value) react,
-    required TResult Function(DartMessage_Delivered value) delivered,
-    required TResult Function(DartMessage_Read value) read,
-    required TResult Function(DartMessage_Typing value) typing,
-    required TResult Function(DartMessage_Unsend value) unsend,
-    required TResult Function(DartMessage_Edit value) edit,
-    required TResult Function(DartMessage_IconChange value) iconChange,
-    required TResult Function(DartMessage_StopTyping value) stopTyping,
-    required TResult Function(DartMessage_EnableSmsActivation value)
+    required TResult Function(Message_React value) react,
+    required TResult Function(Message_Delivered value) delivered,
+    required TResult Function(Message_Read value) read,
+    required TResult Function(Message_Typing value) typing,
+    required TResult Function(Message_Unsend value) unsend,
+    required TResult Function(Message_Edit value) edit,
+    required TResult Function(Message_IconChange value) iconChange,
+    required TResult Function(Message_StopTyping value) stopTyping,
+    required TResult Function(Message_EnableSmsActivation value)
         enableSmsActivation,
-    required TResult Function(DartMessage_MessageReadOnDevice value)
+    required TResult Function(Message_MessageReadOnDevice value)
         messageReadOnDevice,
-    required TResult Function(DartMessage_SmsConfirmSent value) smsConfirmSent,
-    required TResult Function(DartMessage_MarkUnread value) markUnread,
-    required TResult Function(DartMessage_PeerCacheInvalidate value)
+    required TResult Function(Message_SmsConfirmSent value) smsConfirmSent,
+    required TResult Function(Message_MarkUnread value) markUnread,
+    required TResult Function(Message_PeerCacheInvalidate value)
         peerCacheInvalidate,
-    required TResult Function(DartMessage_UpdateExtension value)
-        updateExtension,
-    required TResult Function(DartMessage_Error value) error,
+    required TResult Function(Message_UpdateExtension value) updateExtension,
+    required TResult Function(Message_Error value) error,
   }) {
     return typing(this);
   }
@@ -3772,27 +3670,24 @@ class _$DartMessage_TypingImpl extends DartMessage_Typing {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(DartMessage_Message value)? message,
-    TResult? Function(DartMessage_RenameMessage value)? renameMessage,
-    TResult? Function(DartMessage_ChangeParticipants value)? changeParticipants,
-    TResult? Function(DartMessage_React value)? react,
-    TResult? Function(DartMessage_Delivered value)? delivered,
-    TResult? Function(DartMessage_Read value)? read,
-    TResult? Function(DartMessage_Typing value)? typing,
-    TResult? Function(DartMessage_Unsend value)? unsend,
-    TResult? Function(DartMessage_Edit value)? edit,
-    TResult? Function(DartMessage_IconChange value)? iconChange,
-    TResult? Function(DartMessage_StopTyping value)? stopTyping,
-    TResult? Function(DartMessage_EnableSmsActivation value)?
-        enableSmsActivation,
-    TResult? Function(DartMessage_MessageReadOnDevice value)?
-        messageReadOnDevice,
-    TResult? Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
-    TResult? Function(DartMessage_MarkUnread value)? markUnread,
-    TResult? Function(DartMessage_PeerCacheInvalidate value)?
-        peerCacheInvalidate,
-    TResult? Function(DartMessage_UpdateExtension value)? updateExtension,
-    TResult? Function(DartMessage_Error value)? error,
+    TResult? Function(Message_Message value)? message,
+    TResult? Function(Message_RenameMessage value)? renameMessage,
+    TResult? Function(Message_ChangeParticipants value)? changeParticipants,
+    TResult? Function(Message_React value)? react,
+    TResult? Function(Message_Delivered value)? delivered,
+    TResult? Function(Message_Read value)? read,
+    TResult? Function(Message_Typing value)? typing,
+    TResult? Function(Message_Unsend value)? unsend,
+    TResult? Function(Message_Edit value)? edit,
+    TResult? Function(Message_IconChange value)? iconChange,
+    TResult? Function(Message_StopTyping value)? stopTyping,
+    TResult? Function(Message_EnableSmsActivation value)? enableSmsActivation,
+    TResult? Function(Message_MessageReadOnDevice value)? messageReadOnDevice,
+    TResult? Function(Message_SmsConfirmSent value)? smsConfirmSent,
+    TResult? Function(Message_MarkUnread value)? markUnread,
+    TResult? Function(Message_PeerCacheInvalidate value)? peerCacheInvalidate,
+    TResult? Function(Message_UpdateExtension value)? updateExtension,
+    TResult? Function(Message_Error value)? error,
   }) {
     return typing?.call(this);
   }
@@ -3800,27 +3695,24 @@ class _$DartMessage_TypingImpl extends DartMessage_Typing {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(DartMessage_Message value)? message,
-    TResult Function(DartMessage_RenameMessage value)? renameMessage,
-    TResult Function(DartMessage_ChangeParticipants value)? changeParticipants,
-    TResult Function(DartMessage_React value)? react,
-    TResult Function(DartMessage_Delivered value)? delivered,
-    TResult Function(DartMessage_Read value)? read,
-    TResult Function(DartMessage_Typing value)? typing,
-    TResult Function(DartMessage_Unsend value)? unsend,
-    TResult Function(DartMessage_Edit value)? edit,
-    TResult Function(DartMessage_IconChange value)? iconChange,
-    TResult Function(DartMessage_StopTyping value)? stopTyping,
-    TResult Function(DartMessage_EnableSmsActivation value)?
-        enableSmsActivation,
-    TResult Function(DartMessage_MessageReadOnDevice value)?
-        messageReadOnDevice,
-    TResult Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
-    TResult Function(DartMessage_MarkUnread value)? markUnread,
-    TResult Function(DartMessage_PeerCacheInvalidate value)?
-        peerCacheInvalidate,
-    TResult Function(DartMessage_UpdateExtension value)? updateExtension,
-    TResult Function(DartMessage_Error value)? error,
+    TResult Function(Message_Message value)? message,
+    TResult Function(Message_RenameMessage value)? renameMessage,
+    TResult Function(Message_ChangeParticipants value)? changeParticipants,
+    TResult Function(Message_React value)? react,
+    TResult Function(Message_Delivered value)? delivered,
+    TResult Function(Message_Read value)? read,
+    TResult Function(Message_Typing value)? typing,
+    TResult Function(Message_Unsend value)? unsend,
+    TResult Function(Message_Edit value)? edit,
+    TResult Function(Message_IconChange value)? iconChange,
+    TResult Function(Message_StopTyping value)? stopTyping,
+    TResult Function(Message_EnableSmsActivation value)? enableSmsActivation,
+    TResult Function(Message_MessageReadOnDevice value)? messageReadOnDevice,
+    TResult Function(Message_SmsConfirmSent value)? smsConfirmSent,
+    TResult Function(Message_MarkUnread value)? markUnread,
+    TResult Function(Message_PeerCacheInvalidate value)? peerCacheInvalidate,
+    TResult Function(Message_UpdateExtension value)? updateExtension,
+    TResult Function(Message_Error value)? error,
     required TResult orElse(),
   }) {
     if (typing != null) {
@@ -3830,100 +3722,99 @@ class _$DartMessage_TypingImpl extends DartMessage_Typing {
   }
 }
 
-abstract class DartMessage_Typing extends DartMessage {
-  const factory DartMessage_Typing() = _$DartMessage_TypingImpl;
-  const DartMessage_Typing._() : super._();
+abstract class Message_Typing extends Message {
+  const factory Message_Typing() = _$Message_TypingImpl;
+  const Message_Typing._() : super._();
 }
 
 /// @nodoc
-abstract class _$$DartMessage_UnsendImplCopyWith<$Res> {
-  factory _$$DartMessage_UnsendImplCopyWith(_$DartMessage_UnsendImpl value,
-          $Res Function(_$DartMessage_UnsendImpl) then) =
-      __$$DartMessage_UnsendImplCopyWithImpl<$Res>;
+abstract class _$$Message_UnsendImplCopyWith<$Res> {
+  factory _$$Message_UnsendImplCopyWith(_$Message_UnsendImpl value,
+          $Res Function(_$Message_UnsendImpl) then) =
+      __$$Message_UnsendImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({DartUnsendMessage field0});
+  $Res call({UnsendMessage field0});
 }
 
 /// @nodoc
-class __$$DartMessage_UnsendImplCopyWithImpl<$Res>
-    extends _$DartMessageCopyWithImpl<$Res, _$DartMessage_UnsendImpl>
-    implements _$$DartMessage_UnsendImplCopyWith<$Res> {
-  __$$DartMessage_UnsendImplCopyWithImpl(_$DartMessage_UnsendImpl _value,
-      $Res Function(_$DartMessage_UnsendImpl) _then)
+class __$$Message_UnsendImplCopyWithImpl<$Res>
+    extends _$MessageCopyWithImpl<$Res, _$Message_UnsendImpl>
+    implements _$$Message_UnsendImplCopyWith<$Res> {
+  __$$Message_UnsendImplCopyWithImpl(
+      _$Message_UnsendImpl _value, $Res Function(_$Message_UnsendImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of DartMessage
+  /// Create a copy of Message
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? field0 = null,
   }) {
-    return _then(_$DartMessage_UnsendImpl(
+    return _then(_$Message_UnsendImpl(
       null == field0
           ? _value.field0
           : field0 // ignore: cast_nullable_to_non_nullable
-              as DartUnsendMessage,
+              as UnsendMessage,
     ));
   }
 }
 
 /// @nodoc
 
-class _$DartMessage_UnsendImpl extends DartMessage_Unsend {
-  const _$DartMessage_UnsendImpl(this.field0) : super._();
+class _$Message_UnsendImpl extends Message_Unsend {
+  const _$Message_UnsendImpl(this.field0) : super._();
 
   @override
-  final DartUnsendMessage field0;
+  final UnsendMessage field0;
 
   @override
   String toString() {
-    return 'DartMessage.unsend(field0: $field0)';
+    return 'Message.unsend(field0: $field0)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$DartMessage_UnsendImpl &&
+            other is _$Message_UnsendImpl &&
             (identical(other.field0, field0) || other.field0 == field0));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, field0);
 
-  /// Create a copy of DartMessage
+  /// Create a copy of Message
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$DartMessage_UnsendImplCopyWith<_$DartMessage_UnsendImpl> get copyWith =>
-      __$$DartMessage_UnsendImplCopyWithImpl<_$DartMessage_UnsendImpl>(
+  _$$Message_UnsendImplCopyWith<_$Message_UnsendImpl> get copyWith =>
+      __$$Message_UnsendImplCopyWithImpl<_$Message_UnsendImpl>(
           this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(DartNormalMessage field0) message,
-    required TResult Function(DartRenameMessage field0) renameMessage,
-    required TResult Function(DartChangeParticipantMessage field0)
+    required TResult Function(NormalMessage field0) message,
+    required TResult Function(RenameMessage field0) renameMessage,
+    required TResult Function(ChangeParticipantMessage field0)
         changeParticipants,
-    required TResult Function(DartReactMessage field0) react,
+    required TResult Function(ReactMessage field0) react,
     required TResult Function() delivered,
     required TResult Function() read,
     required TResult Function() typing,
-    required TResult Function(DartUnsendMessage field0) unsend,
-    required TResult Function(DartEditMessage field0) edit,
-    required TResult Function(DartIconChangeMessage field0) iconChange,
+    required TResult Function(UnsendMessage field0) unsend,
+    required TResult Function(EditMessage field0) edit,
+    required TResult Function(IconChangeMessage field0) iconChange,
     required TResult Function() stopTyping,
     required TResult Function(bool field0) enableSmsActivation,
     required TResult Function() messageReadOnDevice,
     required TResult Function(bool field0) smsConfirmSent,
     required TResult Function() markUnread,
     required TResult Function() peerCacheInvalidate,
-    required TResult Function(DartUpdateExtensionMessage field0)
-        updateExtension,
-    required TResult Function(DartErrorMessage field0) error,
+    required TResult Function(UpdateExtensionMessage field0) updateExtension,
+    required TResult Function(ErrorMessage field0) error,
   }) {
     return unsend(field0);
   }
@@ -3931,24 +3822,24 @@ class _$DartMessage_UnsendImpl extends DartMessage_Unsend {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(DartNormalMessage field0)? message,
-    TResult? Function(DartRenameMessage field0)? renameMessage,
-    TResult? Function(DartChangeParticipantMessage field0)? changeParticipants,
-    TResult? Function(DartReactMessage field0)? react,
+    TResult? Function(NormalMessage field0)? message,
+    TResult? Function(RenameMessage field0)? renameMessage,
+    TResult? Function(ChangeParticipantMessage field0)? changeParticipants,
+    TResult? Function(ReactMessage field0)? react,
     TResult? Function()? delivered,
     TResult? Function()? read,
     TResult? Function()? typing,
-    TResult? Function(DartUnsendMessage field0)? unsend,
-    TResult? Function(DartEditMessage field0)? edit,
-    TResult? Function(DartIconChangeMessage field0)? iconChange,
+    TResult? Function(UnsendMessage field0)? unsend,
+    TResult? Function(EditMessage field0)? edit,
+    TResult? Function(IconChangeMessage field0)? iconChange,
     TResult? Function()? stopTyping,
     TResult? Function(bool field0)? enableSmsActivation,
     TResult? Function()? messageReadOnDevice,
     TResult? Function(bool field0)? smsConfirmSent,
     TResult? Function()? markUnread,
     TResult? Function()? peerCacheInvalidate,
-    TResult? Function(DartUpdateExtensionMessage field0)? updateExtension,
-    TResult? Function(DartErrorMessage field0)? error,
+    TResult? Function(UpdateExtensionMessage field0)? updateExtension,
+    TResult? Function(ErrorMessage field0)? error,
   }) {
     return unsend?.call(field0);
   }
@@ -3956,24 +3847,24 @@ class _$DartMessage_UnsendImpl extends DartMessage_Unsend {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(DartNormalMessage field0)? message,
-    TResult Function(DartRenameMessage field0)? renameMessage,
-    TResult Function(DartChangeParticipantMessage field0)? changeParticipants,
-    TResult Function(DartReactMessage field0)? react,
+    TResult Function(NormalMessage field0)? message,
+    TResult Function(RenameMessage field0)? renameMessage,
+    TResult Function(ChangeParticipantMessage field0)? changeParticipants,
+    TResult Function(ReactMessage field0)? react,
     TResult Function()? delivered,
     TResult Function()? read,
     TResult Function()? typing,
-    TResult Function(DartUnsendMessage field0)? unsend,
-    TResult Function(DartEditMessage field0)? edit,
-    TResult Function(DartIconChangeMessage field0)? iconChange,
+    TResult Function(UnsendMessage field0)? unsend,
+    TResult Function(EditMessage field0)? edit,
+    TResult Function(IconChangeMessage field0)? iconChange,
     TResult Function()? stopTyping,
     TResult Function(bool field0)? enableSmsActivation,
     TResult Function()? messageReadOnDevice,
     TResult Function(bool field0)? smsConfirmSent,
     TResult Function()? markUnread,
     TResult Function()? peerCacheInvalidate,
-    TResult Function(DartUpdateExtensionMessage field0)? updateExtension,
-    TResult Function(DartErrorMessage field0)? error,
+    TResult Function(UpdateExtensionMessage field0)? updateExtension,
+    TResult Function(ErrorMessage field0)? error,
     required TResult orElse(),
   }) {
     if (unsend != null) {
@@ -3985,29 +3876,28 @@ class _$DartMessage_UnsendImpl extends DartMessage_Unsend {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(DartMessage_Message value) message,
-    required TResult Function(DartMessage_RenameMessage value) renameMessage,
-    required TResult Function(DartMessage_ChangeParticipants value)
+    required TResult Function(Message_Message value) message,
+    required TResult Function(Message_RenameMessage value) renameMessage,
+    required TResult Function(Message_ChangeParticipants value)
         changeParticipants,
-    required TResult Function(DartMessage_React value) react,
-    required TResult Function(DartMessage_Delivered value) delivered,
-    required TResult Function(DartMessage_Read value) read,
-    required TResult Function(DartMessage_Typing value) typing,
-    required TResult Function(DartMessage_Unsend value) unsend,
-    required TResult Function(DartMessage_Edit value) edit,
-    required TResult Function(DartMessage_IconChange value) iconChange,
-    required TResult Function(DartMessage_StopTyping value) stopTyping,
-    required TResult Function(DartMessage_EnableSmsActivation value)
+    required TResult Function(Message_React value) react,
+    required TResult Function(Message_Delivered value) delivered,
+    required TResult Function(Message_Read value) read,
+    required TResult Function(Message_Typing value) typing,
+    required TResult Function(Message_Unsend value) unsend,
+    required TResult Function(Message_Edit value) edit,
+    required TResult Function(Message_IconChange value) iconChange,
+    required TResult Function(Message_StopTyping value) stopTyping,
+    required TResult Function(Message_EnableSmsActivation value)
         enableSmsActivation,
-    required TResult Function(DartMessage_MessageReadOnDevice value)
+    required TResult Function(Message_MessageReadOnDevice value)
         messageReadOnDevice,
-    required TResult Function(DartMessage_SmsConfirmSent value) smsConfirmSent,
-    required TResult Function(DartMessage_MarkUnread value) markUnread,
-    required TResult Function(DartMessage_PeerCacheInvalidate value)
+    required TResult Function(Message_SmsConfirmSent value) smsConfirmSent,
+    required TResult Function(Message_MarkUnread value) markUnread,
+    required TResult Function(Message_PeerCacheInvalidate value)
         peerCacheInvalidate,
-    required TResult Function(DartMessage_UpdateExtension value)
-        updateExtension,
-    required TResult Function(DartMessage_Error value) error,
+    required TResult Function(Message_UpdateExtension value) updateExtension,
+    required TResult Function(Message_Error value) error,
   }) {
     return unsend(this);
   }
@@ -4015,27 +3905,24 @@ class _$DartMessage_UnsendImpl extends DartMessage_Unsend {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(DartMessage_Message value)? message,
-    TResult? Function(DartMessage_RenameMessage value)? renameMessage,
-    TResult? Function(DartMessage_ChangeParticipants value)? changeParticipants,
-    TResult? Function(DartMessage_React value)? react,
-    TResult? Function(DartMessage_Delivered value)? delivered,
-    TResult? Function(DartMessage_Read value)? read,
-    TResult? Function(DartMessage_Typing value)? typing,
-    TResult? Function(DartMessage_Unsend value)? unsend,
-    TResult? Function(DartMessage_Edit value)? edit,
-    TResult? Function(DartMessage_IconChange value)? iconChange,
-    TResult? Function(DartMessage_StopTyping value)? stopTyping,
-    TResult? Function(DartMessage_EnableSmsActivation value)?
-        enableSmsActivation,
-    TResult? Function(DartMessage_MessageReadOnDevice value)?
-        messageReadOnDevice,
-    TResult? Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
-    TResult? Function(DartMessage_MarkUnread value)? markUnread,
-    TResult? Function(DartMessage_PeerCacheInvalidate value)?
-        peerCacheInvalidate,
-    TResult? Function(DartMessage_UpdateExtension value)? updateExtension,
-    TResult? Function(DartMessage_Error value)? error,
+    TResult? Function(Message_Message value)? message,
+    TResult? Function(Message_RenameMessage value)? renameMessage,
+    TResult? Function(Message_ChangeParticipants value)? changeParticipants,
+    TResult? Function(Message_React value)? react,
+    TResult? Function(Message_Delivered value)? delivered,
+    TResult? Function(Message_Read value)? read,
+    TResult? Function(Message_Typing value)? typing,
+    TResult? Function(Message_Unsend value)? unsend,
+    TResult? Function(Message_Edit value)? edit,
+    TResult? Function(Message_IconChange value)? iconChange,
+    TResult? Function(Message_StopTyping value)? stopTyping,
+    TResult? Function(Message_EnableSmsActivation value)? enableSmsActivation,
+    TResult? Function(Message_MessageReadOnDevice value)? messageReadOnDevice,
+    TResult? Function(Message_SmsConfirmSent value)? smsConfirmSent,
+    TResult? Function(Message_MarkUnread value)? markUnread,
+    TResult? Function(Message_PeerCacheInvalidate value)? peerCacheInvalidate,
+    TResult? Function(Message_UpdateExtension value)? updateExtension,
+    TResult? Function(Message_Error value)? error,
   }) {
     return unsend?.call(this);
   }
@@ -4043,27 +3930,24 @@ class _$DartMessage_UnsendImpl extends DartMessage_Unsend {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(DartMessage_Message value)? message,
-    TResult Function(DartMessage_RenameMessage value)? renameMessage,
-    TResult Function(DartMessage_ChangeParticipants value)? changeParticipants,
-    TResult Function(DartMessage_React value)? react,
-    TResult Function(DartMessage_Delivered value)? delivered,
-    TResult Function(DartMessage_Read value)? read,
-    TResult Function(DartMessage_Typing value)? typing,
-    TResult Function(DartMessage_Unsend value)? unsend,
-    TResult Function(DartMessage_Edit value)? edit,
-    TResult Function(DartMessage_IconChange value)? iconChange,
-    TResult Function(DartMessage_StopTyping value)? stopTyping,
-    TResult Function(DartMessage_EnableSmsActivation value)?
-        enableSmsActivation,
-    TResult Function(DartMessage_MessageReadOnDevice value)?
-        messageReadOnDevice,
-    TResult Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
-    TResult Function(DartMessage_MarkUnread value)? markUnread,
-    TResult Function(DartMessage_PeerCacheInvalidate value)?
-        peerCacheInvalidate,
-    TResult Function(DartMessage_UpdateExtension value)? updateExtension,
-    TResult Function(DartMessage_Error value)? error,
+    TResult Function(Message_Message value)? message,
+    TResult Function(Message_RenameMessage value)? renameMessage,
+    TResult Function(Message_ChangeParticipants value)? changeParticipants,
+    TResult Function(Message_React value)? react,
+    TResult Function(Message_Delivered value)? delivered,
+    TResult Function(Message_Read value)? read,
+    TResult Function(Message_Typing value)? typing,
+    TResult Function(Message_Unsend value)? unsend,
+    TResult Function(Message_Edit value)? edit,
+    TResult Function(Message_IconChange value)? iconChange,
+    TResult Function(Message_StopTyping value)? stopTyping,
+    TResult Function(Message_EnableSmsActivation value)? enableSmsActivation,
+    TResult Function(Message_MessageReadOnDevice value)? messageReadOnDevice,
+    TResult Function(Message_SmsConfirmSent value)? smsConfirmSent,
+    TResult Function(Message_MarkUnread value)? markUnread,
+    TResult Function(Message_PeerCacheInvalidate value)? peerCacheInvalidate,
+    TResult Function(Message_UpdateExtension value)? updateExtension,
+    TResult Function(Message_Error value)? error,
     required TResult orElse(),
   }) {
     if (unsend != null) {
@@ -4073,109 +3957,107 @@ class _$DartMessage_UnsendImpl extends DartMessage_Unsend {
   }
 }
 
-abstract class DartMessage_Unsend extends DartMessage {
-  const factory DartMessage_Unsend(final DartUnsendMessage field0) =
-      _$DartMessage_UnsendImpl;
-  const DartMessage_Unsend._() : super._();
+abstract class Message_Unsend extends Message {
+  const factory Message_Unsend(final UnsendMessage field0) =
+      _$Message_UnsendImpl;
+  const Message_Unsend._() : super._();
 
-  DartUnsendMessage get field0;
+  UnsendMessage get field0;
 
-  /// Create a copy of DartMessage
+  /// Create a copy of Message
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$DartMessage_UnsendImplCopyWith<_$DartMessage_UnsendImpl> get copyWith =>
+  _$$Message_UnsendImplCopyWith<_$Message_UnsendImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$DartMessage_EditImplCopyWith<$Res> {
-  factory _$$DartMessage_EditImplCopyWith(_$DartMessage_EditImpl value,
-          $Res Function(_$DartMessage_EditImpl) then) =
-      __$$DartMessage_EditImplCopyWithImpl<$Res>;
+abstract class _$$Message_EditImplCopyWith<$Res> {
+  factory _$$Message_EditImplCopyWith(
+          _$Message_EditImpl value, $Res Function(_$Message_EditImpl) then) =
+      __$$Message_EditImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({DartEditMessage field0});
+  $Res call({EditMessage field0});
 }
 
 /// @nodoc
-class __$$DartMessage_EditImplCopyWithImpl<$Res>
-    extends _$DartMessageCopyWithImpl<$Res, _$DartMessage_EditImpl>
-    implements _$$DartMessage_EditImplCopyWith<$Res> {
-  __$$DartMessage_EditImplCopyWithImpl(_$DartMessage_EditImpl _value,
-      $Res Function(_$DartMessage_EditImpl) _then)
+class __$$Message_EditImplCopyWithImpl<$Res>
+    extends _$MessageCopyWithImpl<$Res, _$Message_EditImpl>
+    implements _$$Message_EditImplCopyWith<$Res> {
+  __$$Message_EditImplCopyWithImpl(
+      _$Message_EditImpl _value, $Res Function(_$Message_EditImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of DartMessage
+  /// Create a copy of Message
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? field0 = null,
   }) {
-    return _then(_$DartMessage_EditImpl(
+    return _then(_$Message_EditImpl(
       null == field0
           ? _value.field0
           : field0 // ignore: cast_nullable_to_non_nullable
-              as DartEditMessage,
+              as EditMessage,
     ));
   }
 }
 
 /// @nodoc
 
-class _$DartMessage_EditImpl extends DartMessage_Edit {
-  const _$DartMessage_EditImpl(this.field0) : super._();
+class _$Message_EditImpl extends Message_Edit {
+  const _$Message_EditImpl(this.field0) : super._();
 
   @override
-  final DartEditMessage field0;
+  final EditMessage field0;
 
   @override
   String toString() {
-    return 'DartMessage.edit(field0: $field0)';
+    return 'Message.edit(field0: $field0)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$DartMessage_EditImpl &&
+            other is _$Message_EditImpl &&
             (identical(other.field0, field0) || other.field0 == field0));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, field0);
 
-  /// Create a copy of DartMessage
+  /// Create a copy of Message
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$DartMessage_EditImplCopyWith<_$DartMessage_EditImpl> get copyWith =>
-      __$$DartMessage_EditImplCopyWithImpl<_$DartMessage_EditImpl>(
-          this, _$identity);
+  _$$Message_EditImplCopyWith<_$Message_EditImpl> get copyWith =>
+      __$$Message_EditImplCopyWithImpl<_$Message_EditImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(DartNormalMessage field0) message,
-    required TResult Function(DartRenameMessage field0) renameMessage,
-    required TResult Function(DartChangeParticipantMessage field0)
+    required TResult Function(NormalMessage field0) message,
+    required TResult Function(RenameMessage field0) renameMessage,
+    required TResult Function(ChangeParticipantMessage field0)
         changeParticipants,
-    required TResult Function(DartReactMessage field0) react,
+    required TResult Function(ReactMessage field0) react,
     required TResult Function() delivered,
     required TResult Function() read,
     required TResult Function() typing,
-    required TResult Function(DartUnsendMessage field0) unsend,
-    required TResult Function(DartEditMessage field0) edit,
-    required TResult Function(DartIconChangeMessage field0) iconChange,
+    required TResult Function(UnsendMessage field0) unsend,
+    required TResult Function(EditMessage field0) edit,
+    required TResult Function(IconChangeMessage field0) iconChange,
     required TResult Function() stopTyping,
     required TResult Function(bool field0) enableSmsActivation,
     required TResult Function() messageReadOnDevice,
     required TResult Function(bool field0) smsConfirmSent,
     required TResult Function() markUnread,
     required TResult Function() peerCacheInvalidate,
-    required TResult Function(DartUpdateExtensionMessage field0)
-        updateExtension,
-    required TResult Function(DartErrorMessage field0) error,
+    required TResult Function(UpdateExtensionMessage field0) updateExtension,
+    required TResult Function(ErrorMessage field0) error,
   }) {
     return edit(field0);
   }
@@ -4183,24 +4065,24 @@ class _$DartMessage_EditImpl extends DartMessage_Edit {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(DartNormalMessage field0)? message,
-    TResult? Function(DartRenameMessage field0)? renameMessage,
-    TResult? Function(DartChangeParticipantMessage field0)? changeParticipants,
-    TResult? Function(DartReactMessage field0)? react,
+    TResult? Function(NormalMessage field0)? message,
+    TResult? Function(RenameMessage field0)? renameMessage,
+    TResult? Function(ChangeParticipantMessage field0)? changeParticipants,
+    TResult? Function(ReactMessage field0)? react,
     TResult? Function()? delivered,
     TResult? Function()? read,
     TResult? Function()? typing,
-    TResult? Function(DartUnsendMessage field0)? unsend,
-    TResult? Function(DartEditMessage field0)? edit,
-    TResult? Function(DartIconChangeMessage field0)? iconChange,
+    TResult? Function(UnsendMessage field0)? unsend,
+    TResult? Function(EditMessage field0)? edit,
+    TResult? Function(IconChangeMessage field0)? iconChange,
     TResult? Function()? stopTyping,
     TResult? Function(bool field0)? enableSmsActivation,
     TResult? Function()? messageReadOnDevice,
     TResult? Function(bool field0)? smsConfirmSent,
     TResult? Function()? markUnread,
     TResult? Function()? peerCacheInvalidate,
-    TResult? Function(DartUpdateExtensionMessage field0)? updateExtension,
-    TResult? Function(DartErrorMessage field0)? error,
+    TResult? Function(UpdateExtensionMessage field0)? updateExtension,
+    TResult? Function(ErrorMessage field0)? error,
   }) {
     return edit?.call(field0);
   }
@@ -4208,24 +4090,24 @@ class _$DartMessage_EditImpl extends DartMessage_Edit {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(DartNormalMessage field0)? message,
-    TResult Function(DartRenameMessage field0)? renameMessage,
-    TResult Function(DartChangeParticipantMessage field0)? changeParticipants,
-    TResult Function(DartReactMessage field0)? react,
+    TResult Function(NormalMessage field0)? message,
+    TResult Function(RenameMessage field0)? renameMessage,
+    TResult Function(ChangeParticipantMessage field0)? changeParticipants,
+    TResult Function(ReactMessage field0)? react,
     TResult Function()? delivered,
     TResult Function()? read,
     TResult Function()? typing,
-    TResult Function(DartUnsendMessage field0)? unsend,
-    TResult Function(DartEditMessage field0)? edit,
-    TResult Function(DartIconChangeMessage field0)? iconChange,
+    TResult Function(UnsendMessage field0)? unsend,
+    TResult Function(EditMessage field0)? edit,
+    TResult Function(IconChangeMessage field0)? iconChange,
     TResult Function()? stopTyping,
     TResult Function(bool field0)? enableSmsActivation,
     TResult Function()? messageReadOnDevice,
     TResult Function(bool field0)? smsConfirmSent,
     TResult Function()? markUnread,
     TResult Function()? peerCacheInvalidate,
-    TResult Function(DartUpdateExtensionMessage field0)? updateExtension,
-    TResult Function(DartErrorMessage field0)? error,
+    TResult Function(UpdateExtensionMessage field0)? updateExtension,
+    TResult Function(ErrorMessage field0)? error,
     required TResult orElse(),
   }) {
     if (edit != null) {
@@ -4237,29 +4119,28 @@ class _$DartMessage_EditImpl extends DartMessage_Edit {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(DartMessage_Message value) message,
-    required TResult Function(DartMessage_RenameMessage value) renameMessage,
-    required TResult Function(DartMessage_ChangeParticipants value)
+    required TResult Function(Message_Message value) message,
+    required TResult Function(Message_RenameMessage value) renameMessage,
+    required TResult Function(Message_ChangeParticipants value)
         changeParticipants,
-    required TResult Function(DartMessage_React value) react,
-    required TResult Function(DartMessage_Delivered value) delivered,
-    required TResult Function(DartMessage_Read value) read,
-    required TResult Function(DartMessage_Typing value) typing,
-    required TResult Function(DartMessage_Unsend value) unsend,
-    required TResult Function(DartMessage_Edit value) edit,
-    required TResult Function(DartMessage_IconChange value) iconChange,
-    required TResult Function(DartMessage_StopTyping value) stopTyping,
-    required TResult Function(DartMessage_EnableSmsActivation value)
+    required TResult Function(Message_React value) react,
+    required TResult Function(Message_Delivered value) delivered,
+    required TResult Function(Message_Read value) read,
+    required TResult Function(Message_Typing value) typing,
+    required TResult Function(Message_Unsend value) unsend,
+    required TResult Function(Message_Edit value) edit,
+    required TResult Function(Message_IconChange value) iconChange,
+    required TResult Function(Message_StopTyping value) stopTyping,
+    required TResult Function(Message_EnableSmsActivation value)
         enableSmsActivation,
-    required TResult Function(DartMessage_MessageReadOnDevice value)
+    required TResult Function(Message_MessageReadOnDevice value)
         messageReadOnDevice,
-    required TResult Function(DartMessage_SmsConfirmSent value) smsConfirmSent,
-    required TResult Function(DartMessage_MarkUnread value) markUnread,
-    required TResult Function(DartMessage_PeerCacheInvalidate value)
+    required TResult Function(Message_SmsConfirmSent value) smsConfirmSent,
+    required TResult Function(Message_MarkUnread value) markUnread,
+    required TResult Function(Message_PeerCacheInvalidate value)
         peerCacheInvalidate,
-    required TResult Function(DartMessage_UpdateExtension value)
-        updateExtension,
-    required TResult Function(DartMessage_Error value) error,
+    required TResult Function(Message_UpdateExtension value) updateExtension,
+    required TResult Function(Message_Error value) error,
   }) {
     return edit(this);
   }
@@ -4267,27 +4148,24 @@ class _$DartMessage_EditImpl extends DartMessage_Edit {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(DartMessage_Message value)? message,
-    TResult? Function(DartMessage_RenameMessage value)? renameMessage,
-    TResult? Function(DartMessage_ChangeParticipants value)? changeParticipants,
-    TResult? Function(DartMessage_React value)? react,
-    TResult? Function(DartMessage_Delivered value)? delivered,
-    TResult? Function(DartMessage_Read value)? read,
-    TResult? Function(DartMessage_Typing value)? typing,
-    TResult? Function(DartMessage_Unsend value)? unsend,
-    TResult? Function(DartMessage_Edit value)? edit,
-    TResult? Function(DartMessage_IconChange value)? iconChange,
-    TResult? Function(DartMessage_StopTyping value)? stopTyping,
-    TResult? Function(DartMessage_EnableSmsActivation value)?
-        enableSmsActivation,
-    TResult? Function(DartMessage_MessageReadOnDevice value)?
-        messageReadOnDevice,
-    TResult? Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
-    TResult? Function(DartMessage_MarkUnread value)? markUnread,
-    TResult? Function(DartMessage_PeerCacheInvalidate value)?
-        peerCacheInvalidate,
-    TResult? Function(DartMessage_UpdateExtension value)? updateExtension,
-    TResult? Function(DartMessage_Error value)? error,
+    TResult? Function(Message_Message value)? message,
+    TResult? Function(Message_RenameMessage value)? renameMessage,
+    TResult? Function(Message_ChangeParticipants value)? changeParticipants,
+    TResult? Function(Message_React value)? react,
+    TResult? Function(Message_Delivered value)? delivered,
+    TResult? Function(Message_Read value)? read,
+    TResult? Function(Message_Typing value)? typing,
+    TResult? Function(Message_Unsend value)? unsend,
+    TResult? Function(Message_Edit value)? edit,
+    TResult? Function(Message_IconChange value)? iconChange,
+    TResult? Function(Message_StopTyping value)? stopTyping,
+    TResult? Function(Message_EnableSmsActivation value)? enableSmsActivation,
+    TResult? Function(Message_MessageReadOnDevice value)? messageReadOnDevice,
+    TResult? Function(Message_SmsConfirmSent value)? smsConfirmSent,
+    TResult? Function(Message_MarkUnread value)? markUnread,
+    TResult? Function(Message_PeerCacheInvalidate value)? peerCacheInvalidate,
+    TResult? Function(Message_UpdateExtension value)? updateExtension,
+    TResult? Function(Message_Error value)? error,
   }) {
     return edit?.call(this);
   }
@@ -4295,27 +4173,24 @@ class _$DartMessage_EditImpl extends DartMessage_Edit {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(DartMessage_Message value)? message,
-    TResult Function(DartMessage_RenameMessage value)? renameMessage,
-    TResult Function(DartMessage_ChangeParticipants value)? changeParticipants,
-    TResult Function(DartMessage_React value)? react,
-    TResult Function(DartMessage_Delivered value)? delivered,
-    TResult Function(DartMessage_Read value)? read,
-    TResult Function(DartMessage_Typing value)? typing,
-    TResult Function(DartMessage_Unsend value)? unsend,
-    TResult Function(DartMessage_Edit value)? edit,
-    TResult Function(DartMessage_IconChange value)? iconChange,
-    TResult Function(DartMessage_StopTyping value)? stopTyping,
-    TResult Function(DartMessage_EnableSmsActivation value)?
-        enableSmsActivation,
-    TResult Function(DartMessage_MessageReadOnDevice value)?
-        messageReadOnDevice,
-    TResult Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
-    TResult Function(DartMessage_MarkUnread value)? markUnread,
-    TResult Function(DartMessage_PeerCacheInvalidate value)?
-        peerCacheInvalidate,
-    TResult Function(DartMessage_UpdateExtension value)? updateExtension,
-    TResult Function(DartMessage_Error value)? error,
+    TResult Function(Message_Message value)? message,
+    TResult Function(Message_RenameMessage value)? renameMessage,
+    TResult Function(Message_ChangeParticipants value)? changeParticipants,
+    TResult Function(Message_React value)? react,
+    TResult Function(Message_Delivered value)? delivered,
+    TResult Function(Message_Read value)? read,
+    TResult Function(Message_Typing value)? typing,
+    TResult Function(Message_Unsend value)? unsend,
+    TResult Function(Message_Edit value)? edit,
+    TResult Function(Message_IconChange value)? iconChange,
+    TResult Function(Message_StopTyping value)? stopTyping,
+    TResult Function(Message_EnableSmsActivation value)? enableSmsActivation,
+    TResult Function(Message_MessageReadOnDevice value)? messageReadOnDevice,
+    TResult Function(Message_SmsConfirmSent value)? smsConfirmSent,
+    TResult Function(Message_MarkUnread value)? markUnread,
+    TResult Function(Message_PeerCacheInvalidate value)? peerCacheInvalidate,
+    TResult Function(Message_UpdateExtension value)? updateExtension,
+    TResult Function(Message_Error value)? error,
     required TResult orElse(),
   }) {
     if (edit != null) {
@@ -4325,111 +4200,107 @@ class _$DartMessage_EditImpl extends DartMessage_Edit {
   }
 }
 
-abstract class DartMessage_Edit extends DartMessage {
-  const factory DartMessage_Edit(final DartEditMessage field0) =
-      _$DartMessage_EditImpl;
-  const DartMessage_Edit._() : super._();
+abstract class Message_Edit extends Message {
+  const factory Message_Edit(final EditMessage field0) = _$Message_EditImpl;
+  const Message_Edit._() : super._();
 
-  DartEditMessage get field0;
+  EditMessage get field0;
 
-  /// Create a copy of DartMessage
+  /// Create a copy of Message
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$DartMessage_EditImplCopyWith<_$DartMessage_EditImpl> get copyWith =>
+  _$$Message_EditImplCopyWith<_$Message_EditImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$DartMessage_IconChangeImplCopyWith<$Res> {
-  factory _$$DartMessage_IconChangeImplCopyWith(
-          _$DartMessage_IconChangeImpl value,
-          $Res Function(_$DartMessage_IconChangeImpl) then) =
-      __$$DartMessage_IconChangeImplCopyWithImpl<$Res>;
+abstract class _$$Message_IconChangeImplCopyWith<$Res> {
+  factory _$$Message_IconChangeImplCopyWith(_$Message_IconChangeImpl value,
+          $Res Function(_$Message_IconChangeImpl) then) =
+      __$$Message_IconChangeImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({DartIconChangeMessage field0});
+  $Res call({IconChangeMessage field0});
 }
 
 /// @nodoc
-class __$$DartMessage_IconChangeImplCopyWithImpl<$Res>
-    extends _$DartMessageCopyWithImpl<$Res, _$DartMessage_IconChangeImpl>
-    implements _$$DartMessage_IconChangeImplCopyWith<$Res> {
-  __$$DartMessage_IconChangeImplCopyWithImpl(
-      _$DartMessage_IconChangeImpl _value,
-      $Res Function(_$DartMessage_IconChangeImpl) _then)
+class __$$Message_IconChangeImplCopyWithImpl<$Res>
+    extends _$MessageCopyWithImpl<$Res, _$Message_IconChangeImpl>
+    implements _$$Message_IconChangeImplCopyWith<$Res> {
+  __$$Message_IconChangeImplCopyWithImpl(_$Message_IconChangeImpl _value,
+      $Res Function(_$Message_IconChangeImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of DartMessage
+  /// Create a copy of Message
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? field0 = null,
   }) {
-    return _then(_$DartMessage_IconChangeImpl(
+    return _then(_$Message_IconChangeImpl(
       null == field0
           ? _value.field0
           : field0 // ignore: cast_nullable_to_non_nullable
-              as DartIconChangeMessage,
+              as IconChangeMessage,
     ));
   }
 }
 
 /// @nodoc
 
-class _$DartMessage_IconChangeImpl extends DartMessage_IconChange {
-  const _$DartMessage_IconChangeImpl(this.field0) : super._();
+class _$Message_IconChangeImpl extends Message_IconChange {
+  const _$Message_IconChangeImpl(this.field0) : super._();
 
   @override
-  final DartIconChangeMessage field0;
+  final IconChangeMessage field0;
 
   @override
   String toString() {
-    return 'DartMessage.iconChange(field0: $field0)';
+    return 'Message.iconChange(field0: $field0)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$DartMessage_IconChangeImpl &&
+            other is _$Message_IconChangeImpl &&
             (identical(other.field0, field0) || other.field0 == field0));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, field0);
 
-  /// Create a copy of DartMessage
+  /// Create a copy of Message
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$DartMessage_IconChangeImplCopyWith<_$DartMessage_IconChangeImpl>
-      get copyWith => __$$DartMessage_IconChangeImplCopyWithImpl<
-          _$DartMessage_IconChangeImpl>(this, _$identity);
+  _$$Message_IconChangeImplCopyWith<_$Message_IconChangeImpl> get copyWith =>
+      __$$Message_IconChangeImplCopyWithImpl<_$Message_IconChangeImpl>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(DartNormalMessage field0) message,
-    required TResult Function(DartRenameMessage field0) renameMessage,
-    required TResult Function(DartChangeParticipantMessage field0)
+    required TResult Function(NormalMessage field0) message,
+    required TResult Function(RenameMessage field0) renameMessage,
+    required TResult Function(ChangeParticipantMessage field0)
         changeParticipants,
-    required TResult Function(DartReactMessage field0) react,
+    required TResult Function(ReactMessage field0) react,
     required TResult Function() delivered,
     required TResult Function() read,
     required TResult Function() typing,
-    required TResult Function(DartUnsendMessage field0) unsend,
-    required TResult Function(DartEditMessage field0) edit,
-    required TResult Function(DartIconChangeMessage field0) iconChange,
+    required TResult Function(UnsendMessage field0) unsend,
+    required TResult Function(EditMessage field0) edit,
+    required TResult Function(IconChangeMessage field0) iconChange,
     required TResult Function() stopTyping,
     required TResult Function(bool field0) enableSmsActivation,
     required TResult Function() messageReadOnDevice,
     required TResult Function(bool field0) smsConfirmSent,
     required TResult Function() markUnread,
     required TResult Function() peerCacheInvalidate,
-    required TResult Function(DartUpdateExtensionMessage field0)
-        updateExtension,
-    required TResult Function(DartErrorMessage field0) error,
+    required TResult Function(UpdateExtensionMessage field0) updateExtension,
+    required TResult Function(ErrorMessage field0) error,
   }) {
     return iconChange(field0);
   }
@@ -4437,24 +4308,24 @@ class _$DartMessage_IconChangeImpl extends DartMessage_IconChange {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(DartNormalMessage field0)? message,
-    TResult? Function(DartRenameMessage field0)? renameMessage,
-    TResult? Function(DartChangeParticipantMessage field0)? changeParticipants,
-    TResult? Function(DartReactMessage field0)? react,
+    TResult? Function(NormalMessage field0)? message,
+    TResult? Function(RenameMessage field0)? renameMessage,
+    TResult? Function(ChangeParticipantMessage field0)? changeParticipants,
+    TResult? Function(ReactMessage field0)? react,
     TResult? Function()? delivered,
     TResult? Function()? read,
     TResult? Function()? typing,
-    TResult? Function(DartUnsendMessage field0)? unsend,
-    TResult? Function(DartEditMessage field0)? edit,
-    TResult? Function(DartIconChangeMessage field0)? iconChange,
+    TResult? Function(UnsendMessage field0)? unsend,
+    TResult? Function(EditMessage field0)? edit,
+    TResult? Function(IconChangeMessage field0)? iconChange,
     TResult? Function()? stopTyping,
     TResult? Function(bool field0)? enableSmsActivation,
     TResult? Function()? messageReadOnDevice,
     TResult? Function(bool field0)? smsConfirmSent,
     TResult? Function()? markUnread,
     TResult? Function()? peerCacheInvalidate,
-    TResult? Function(DartUpdateExtensionMessage field0)? updateExtension,
-    TResult? Function(DartErrorMessage field0)? error,
+    TResult? Function(UpdateExtensionMessage field0)? updateExtension,
+    TResult? Function(ErrorMessage field0)? error,
   }) {
     return iconChange?.call(field0);
   }
@@ -4462,24 +4333,24 @@ class _$DartMessage_IconChangeImpl extends DartMessage_IconChange {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(DartNormalMessage field0)? message,
-    TResult Function(DartRenameMessage field0)? renameMessage,
-    TResult Function(DartChangeParticipantMessage field0)? changeParticipants,
-    TResult Function(DartReactMessage field0)? react,
+    TResult Function(NormalMessage field0)? message,
+    TResult Function(RenameMessage field0)? renameMessage,
+    TResult Function(ChangeParticipantMessage field0)? changeParticipants,
+    TResult Function(ReactMessage field0)? react,
     TResult Function()? delivered,
     TResult Function()? read,
     TResult Function()? typing,
-    TResult Function(DartUnsendMessage field0)? unsend,
-    TResult Function(DartEditMessage field0)? edit,
-    TResult Function(DartIconChangeMessage field0)? iconChange,
+    TResult Function(UnsendMessage field0)? unsend,
+    TResult Function(EditMessage field0)? edit,
+    TResult Function(IconChangeMessage field0)? iconChange,
     TResult Function()? stopTyping,
     TResult Function(bool field0)? enableSmsActivation,
     TResult Function()? messageReadOnDevice,
     TResult Function(bool field0)? smsConfirmSent,
     TResult Function()? markUnread,
     TResult Function()? peerCacheInvalidate,
-    TResult Function(DartUpdateExtensionMessage field0)? updateExtension,
-    TResult Function(DartErrorMessage field0)? error,
+    TResult Function(UpdateExtensionMessage field0)? updateExtension,
+    TResult Function(ErrorMessage field0)? error,
     required TResult orElse(),
   }) {
     if (iconChange != null) {
@@ -4491,29 +4362,28 @@ class _$DartMessage_IconChangeImpl extends DartMessage_IconChange {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(DartMessage_Message value) message,
-    required TResult Function(DartMessage_RenameMessage value) renameMessage,
-    required TResult Function(DartMessage_ChangeParticipants value)
+    required TResult Function(Message_Message value) message,
+    required TResult Function(Message_RenameMessage value) renameMessage,
+    required TResult Function(Message_ChangeParticipants value)
         changeParticipants,
-    required TResult Function(DartMessage_React value) react,
-    required TResult Function(DartMessage_Delivered value) delivered,
-    required TResult Function(DartMessage_Read value) read,
-    required TResult Function(DartMessage_Typing value) typing,
-    required TResult Function(DartMessage_Unsend value) unsend,
-    required TResult Function(DartMessage_Edit value) edit,
-    required TResult Function(DartMessage_IconChange value) iconChange,
-    required TResult Function(DartMessage_StopTyping value) stopTyping,
-    required TResult Function(DartMessage_EnableSmsActivation value)
+    required TResult Function(Message_React value) react,
+    required TResult Function(Message_Delivered value) delivered,
+    required TResult Function(Message_Read value) read,
+    required TResult Function(Message_Typing value) typing,
+    required TResult Function(Message_Unsend value) unsend,
+    required TResult Function(Message_Edit value) edit,
+    required TResult Function(Message_IconChange value) iconChange,
+    required TResult Function(Message_StopTyping value) stopTyping,
+    required TResult Function(Message_EnableSmsActivation value)
         enableSmsActivation,
-    required TResult Function(DartMessage_MessageReadOnDevice value)
+    required TResult Function(Message_MessageReadOnDevice value)
         messageReadOnDevice,
-    required TResult Function(DartMessage_SmsConfirmSent value) smsConfirmSent,
-    required TResult Function(DartMessage_MarkUnread value) markUnread,
-    required TResult Function(DartMessage_PeerCacheInvalidate value)
+    required TResult Function(Message_SmsConfirmSent value) smsConfirmSent,
+    required TResult Function(Message_MarkUnread value) markUnread,
+    required TResult Function(Message_PeerCacheInvalidate value)
         peerCacheInvalidate,
-    required TResult Function(DartMessage_UpdateExtension value)
-        updateExtension,
-    required TResult Function(DartMessage_Error value) error,
+    required TResult Function(Message_UpdateExtension value) updateExtension,
+    required TResult Function(Message_Error value) error,
   }) {
     return iconChange(this);
   }
@@ -4521,27 +4391,24 @@ class _$DartMessage_IconChangeImpl extends DartMessage_IconChange {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(DartMessage_Message value)? message,
-    TResult? Function(DartMessage_RenameMessage value)? renameMessage,
-    TResult? Function(DartMessage_ChangeParticipants value)? changeParticipants,
-    TResult? Function(DartMessage_React value)? react,
-    TResult? Function(DartMessage_Delivered value)? delivered,
-    TResult? Function(DartMessage_Read value)? read,
-    TResult? Function(DartMessage_Typing value)? typing,
-    TResult? Function(DartMessage_Unsend value)? unsend,
-    TResult? Function(DartMessage_Edit value)? edit,
-    TResult? Function(DartMessage_IconChange value)? iconChange,
-    TResult? Function(DartMessage_StopTyping value)? stopTyping,
-    TResult? Function(DartMessage_EnableSmsActivation value)?
-        enableSmsActivation,
-    TResult? Function(DartMessage_MessageReadOnDevice value)?
-        messageReadOnDevice,
-    TResult? Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
-    TResult? Function(DartMessage_MarkUnread value)? markUnread,
-    TResult? Function(DartMessage_PeerCacheInvalidate value)?
-        peerCacheInvalidate,
-    TResult? Function(DartMessage_UpdateExtension value)? updateExtension,
-    TResult? Function(DartMessage_Error value)? error,
+    TResult? Function(Message_Message value)? message,
+    TResult? Function(Message_RenameMessage value)? renameMessage,
+    TResult? Function(Message_ChangeParticipants value)? changeParticipants,
+    TResult? Function(Message_React value)? react,
+    TResult? Function(Message_Delivered value)? delivered,
+    TResult? Function(Message_Read value)? read,
+    TResult? Function(Message_Typing value)? typing,
+    TResult? Function(Message_Unsend value)? unsend,
+    TResult? Function(Message_Edit value)? edit,
+    TResult? Function(Message_IconChange value)? iconChange,
+    TResult? Function(Message_StopTyping value)? stopTyping,
+    TResult? Function(Message_EnableSmsActivation value)? enableSmsActivation,
+    TResult? Function(Message_MessageReadOnDevice value)? messageReadOnDevice,
+    TResult? Function(Message_SmsConfirmSent value)? smsConfirmSent,
+    TResult? Function(Message_MarkUnread value)? markUnread,
+    TResult? Function(Message_PeerCacheInvalidate value)? peerCacheInvalidate,
+    TResult? Function(Message_UpdateExtension value)? updateExtension,
+    TResult? Function(Message_Error value)? error,
   }) {
     return iconChange?.call(this);
   }
@@ -4549,27 +4416,24 @@ class _$DartMessage_IconChangeImpl extends DartMessage_IconChange {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(DartMessage_Message value)? message,
-    TResult Function(DartMessage_RenameMessage value)? renameMessage,
-    TResult Function(DartMessage_ChangeParticipants value)? changeParticipants,
-    TResult Function(DartMessage_React value)? react,
-    TResult Function(DartMessage_Delivered value)? delivered,
-    TResult Function(DartMessage_Read value)? read,
-    TResult Function(DartMessage_Typing value)? typing,
-    TResult Function(DartMessage_Unsend value)? unsend,
-    TResult Function(DartMessage_Edit value)? edit,
-    TResult Function(DartMessage_IconChange value)? iconChange,
-    TResult Function(DartMessage_StopTyping value)? stopTyping,
-    TResult Function(DartMessage_EnableSmsActivation value)?
-        enableSmsActivation,
-    TResult Function(DartMessage_MessageReadOnDevice value)?
-        messageReadOnDevice,
-    TResult Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
-    TResult Function(DartMessage_MarkUnread value)? markUnread,
-    TResult Function(DartMessage_PeerCacheInvalidate value)?
-        peerCacheInvalidate,
-    TResult Function(DartMessage_UpdateExtension value)? updateExtension,
-    TResult Function(DartMessage_Error value)? error,
+    TResult Function(Message_Message value)? message,
+    TResult Function(Message_RenameMessage value)? renameMessage,
+    TResult Function(Message_ChangeParticipants value)? changeParticipants,
+    TResult Function(Message_React value)? react,
+    TResult Function(Message_Delivered value)? delivered,
+    TResult Function(Message_Read value)? read,
+    TResult Function(Message_Typing value)? typing,
+    TResult Function(Message_Unsend value)? unsend,
+    TResult Function(Message_Edit value)? edit,
+    TResult Function(Message_IconChange value)? iconChange,
+    TResult Function(Message_StopTyping value)? stopTyping,
+    TResult Function(Message_EnableSmsActivation value)? enableSmsActivation,
+    TResult Function(Message_MessageReadOnDevice value)? messageReadOnDevice,
+    TResult Function(Message_SmsConfirmSent value)? smsConfirmSent,
+    TResult Function(Message_MarkUnread value)? markUnread,
+    TResult Function(Message_PeerCacheInvalidate value)? peerCacheInvalidate,
+    TResult Function(Message_UpdateExtension value)? updateExtension,
+    TResult Function(Message_Error value)? error,
     required TResult orElse(),
   }) {
     if (iconChange != null) {
@@ -4579,56 +4443,53 @@ class _$DartMessage_IconChangeImpl extends DartMessage_IconChange {
   }
 }
 
-abstract class DartMessage_IconChange extends DartMessage {
-  const factory DartMessage_IconChange(final DartIconChangeMessage field0) =
-      _$DartMessage_IconChangeImpl;
-  const DartMessage_IconChange._() : super._();
+abstract class Message_IconChange extends Message {
+  const factory Message_IconChange(final IconChangeMessage field0) =
+      _$Message_IconChangeImpl;
+  const Message_IconChange._() : super._();
 
-  DartIconChangeMessage get field0;
+  IconChangeMessage get field0;
 
-  /// Create a copy of DartMessage
+  /// Create a copy of Message
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$DartMessage_IconChangeImplCopyWith<_$DartMessage_IconChangeImpl>
-      get copyWith => throw _privateConstructorUsedError;
+  _$$Message_IconChangeImplCopyWith<_$Message_IconChangeImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$DartMessage_StopTypingImplCopyWith<$Res> {
-  factory _$$DartMessage_StopTypingImplCopyWith(
-          _$DartMessage_StopTypingImpl value,
-          $Res Function(_$DartMessage_StopTypingImpl) then) =
-      __$$DartMessage_StopTypingImplCopyWithImpl<$Res>;
+abstract class _$$Message_StopTypingImplCopyWith<$Res> {
+  factory _$$Message_StopTypingImplCopyWith(_$Message_StopTypingImpl value,
+          $Res Function(_$Message_StopTypingImpl) then) =
+      __$$Message_StopTypingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$DartMessage_StopTypingImplCopyWithImpl<$Res>
-    extends _$DartMessageCopyWithImpl<$Res, _$DartMessage_StopTypingImpl>
-    implements _$$DartMessage_StopTypingImplCopyWith<$Res> {
-  __$$DartMessage_StopTypingImplCopyWithImpl(
-      _$DartMessage_StopTypingImpl _value,
-      $Res Function(_$DartMessage_StopTypingImpl) _then)
+class __$$Message_StopTypingImplCopyWithImpl<$Res>
+    extends _$MessageCopyWithImpl<$Res, _$Message_StopTypingImpl>
+    implements _$$Message_StopTypingImplCopyWith<$Res> {
+  __$$Message_StopTypingImplCopyWithImpl(_$Message_StopTypingImpl _value,
+      $Res Function(_$Message_StopTypingImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of DartMessage
+  /// Create a copy of Message
   /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
 
-class _$DartMessage_StopTypingImpl extends DartMessage_StopTyping {
-  const _$DartMessage_StopTypingImpl() : super._();
+class _$Message_StopTypingImpl extends Message_StopTyping {
+  const _$Message_StopTypingImpl() : super._();
 
   @override
   String toString() {
-    return 'DartMessage.stopTyping()';
+    return 'Message.stopTyping()';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$DartMessage_StopTypingImpl);
+        (other.runtimeType == runtimeType && other is _$Message_StopTypingImpl);
   }
 
   @override
@@ -4637,26 +4498,25 @@ class _$DartMessage_StopTypingImpl extends DartMessage_StopTyping {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(DartNormalMessage field0) message,
-    required TResult Function(DartRenameMessage field0) renameMessage,
-    required TResult Function(DartChangeParticipantMessage field0)
+    required TResult Function(NormalMessage field0) message,
+    required TResult Function(RenameMessage field0) renameMessage,
+    required TResult Function(ChangeParticipantMessage field0)
         changeParticipants,
-    required TResult Function(DartReactMessage field0) react,
+    required TResult Function(ReactMessage field0) react,
     required TResult Function() delivered,
     required TResult Function() read,
     required TResult Function() typing,
-    required TResult Function(DartUnsendMessage field0) unsend,
-    required TResult Function(DartEditMessage field0) edit,
-    required TResult Function(DartIconChangeMessage field0) iconChange,
+    required TResult Function(UnsendMessage field0) unsend,
+    required TResult Function(EditMessage field0) edit,
+    required TResult Function(IconChangeMessage field0) iconChange,
     required TResult Function() stopTyping,
     required TResult Function(bool field0) enableSmsActivation,
     required TResult Function() messageReadOnDevice,
     required TResult Function(bool field0) smsConfirmSent,
     required TResult Function() markUnread,
     required TResult Function() peerCacheInvalidate,
-    required TResult Function(DartUpdateExtensionMessage field0)
-        updateExtension,
-    required TResult Function(DartErrorMessage field0) error,
+    required TResult Function(UpdateExtensionMessage field0) updateExtension,
+    required TResult Function(ErrorMessage field0) error,
   }) {
     return stopTyping();
   }
@@ -4664,24 +4524,24 @@ class _$DartMessage_StopTypingImpl extends DartMessage_StopTyping {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(DartNormalMessage field0)? message,
-    TResult? Function(DartRenameMessage field0)? renameMessage,
-    TResult? Function(DartChangeParticipantMessage field0)? changeParticipants,
-    TResult? Function(DartReactMessage field0)? react,
+    TResult? Function(NormalMessage field0)? message,
+    TResult? Function(RenameMessage field0)? renameMessage,
+    TResult? Function(ChangeParticipantMessage field0)? changeParticipants,
+    TResult? Function(ReactMessage field0)? react,
     TResult? Function()? delivered,
     TResult? Function()? read,
     TResult? Function()? typing,
-    TResult? Function(DartUnsendMessage field0)? unsend,
-    TResult? Function(DartEditMessage field0)? edit,
-    TResult? Function(DartIconChangeMessage field0)? iconChange,
+    TResult? Function(UnsendMessage field0)? unsend,
+    TResult? Function(EditMessage field0)? edit,
+    TResult? Function(IconChangeMessage field0)? iconChange,
     TResult? Function()? stopTyping,
     TResult? Function(bool field0)? enableSmsActivation,
     TResult? Function()? messageReadOnDevice,
     TResult? Function(bool field0)? smsConfirmSent,
     TResult? Function()? markUnread,
     TResult? Function()? peerCacheInvalidate,
-    TResult? Function(DartUpdateExtensionMessage field0)? updateExtension,
-    TResult? Function(DartErrorMessage field0)? error,
+    TResult? Function(UpdateExtensionMessage field0)? updateExtension,
+    TResult? Function(ErrorMessage field0)? error,
   }) {
     return stopTyping?.call();
   }
@@ -4689,24 +4549,24 @@ class _$DartMessage_StopTypingImpl extends DartMessage_StopTyping {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(DartNormalMessage field0)? message,
-    TResult Function(DartRenameMessage field0)? renameMessage,
-    TResult Function(DartChangeParticipantMessage field0)? changeParticipants,
-    TResult Function(DartReactMessage field0)? react,
+    TResult Function(NormalMessage field0)? message,
+    TResult Function(RenameMessage field0)? renameMessage,
+    TResult Function(ChangeParticipantMessage field0)? changeParticipants,
+    TResult Function(ReactMessage field0)? react,
     TResult Function()? delivered,
     TResult Function()? read,
     TResult Function()? typing,
-    TResult Function(DartUnsendMessage field0)? unsend,
-    TResult Function(DartEditMessage field0)? edit,
-    TResult Function(DartIconChangeMessage field0)? iconChange,
+    TResult Function(UnsendMessage field0)? unsend,
+    TResult Function(EditMessage field0)? edit,
+    TResult Function(IconChangeMessage field0)? iconChange,
     TResult Function()? stopTyping,
     TResult Function(bool field0)? enableSmsActivation,
     TResult Function()? messageReadOnDevice,
     TResult Function(bool field0)? smsConfirmSent,
     TResult Function()? markUnread,
     TResult Function()? peerCacheInvalidate,
-    TResult Function(DartUpdateExtensionMessage field0)? updateExtension,
-    TResult Function(DartErrorMessage field0)? error,
+    TResult Function(UpdateExtensionMessage field0)? updateExtension,
+    TResult Function(ErrorMessage field0)? error,
     required TResult orElse(),
   }) {
     if (stopTyping != null) {
@@ -4718,29 +4578,28 @@ class _$DartMessage_StopTypingImpl extends DartMessage_StopTyping {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(DartMessage_Message value) message,
-    required TResult Function(DartMessage_RenameMessage value) renameMessage,
-    required TResult Function(DartMessage_ChangeParticipants value)
+    required TResult Function(Message_Message value) message,
+    required TResult Function(Message_RenameMessage value) renameMessage,
+    required TResult Function(Message_ChangeParticipants value)
         changeParticipants,
-    required TResult Function(DartMessage_React value) react,
-    required TResult Function(DartMessage_Delivered value) delivered,
-    required TResult Function(DartMessage_Read value) read,
-    required TResult Function(DartMessage_Typing value) typing,
-    required TResult Function(DartMessage_Unsend value) unsend,
-    required TResult Function(DartMessage_Edit value) edit,
-    required TResult Function(DartMessage_IconChange value) iconChange,
-    required TResult Function(DartMessage_StopTyping value) stopTyping,
-    required TResult Function(DartMessage_EnableSmsActivation value)
+    required TResult Function(Message_React value) react,
+    required TResult Function(Message_Delivered value) delivered,
+    required TResult Function(Message_Read value) read,
+    required TResult Function(Message_Typing value) typing,
+    required TResult Function(Message_Unsend value) unsend,
+    required TResult Function(Message_Edit value) edit,
+    required TResult Function(Message_IconChange value) iconChange,
+    required TResult Function(Message_StopTyping value) stopTyping,
+    required TResult Function(Message_EnableSmsActivation value)
         enableSmsActivation,
-    required TResult Function(DartMessage_MessageReadOnDevice value)
+    required TResult Function(Message_MessageReadOnDevice value)
         messageReadOnDevice,
-    required TResult Function(DartMessage_SmsConfirmSent value) smsConfirmSent,
-    required TResult Function(DartMessage_MarkUnread value) markUnread,
-    required TResult Function(DartMessage_PeerCacheInvalidate value)
+    required TResult Function(Message_SmsConfirmSent value) smsConfirmSent,
+    required TResult Function(Message_MarkUnread value) markUnread,
+    required TResult Function(Message_PeerCacheInvalidate value)
         peerCacheInvalidate,
-    required TResult Function(DartMessage_UpdateExtension value)
-        updateExtension,
-    required TResult Function(DartMessage_Error value) error,
+    required TResult Function(Message_UpdateExtension value) updateExtension,
+    required TResult Function(Message_Error value) error,
   }) {
     return stopTyping(this);
   }
@@ -4748,27 +4607,24 @@ class _$DartMessage_StopTypingImpl extends DartMessage_StopTyping {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(DartMessage_Message value)? message,
-    TResult? Function(DartMessage_RenameMessage value)? renameMessage,
-    TResult? Function(DartMessage_ChangeParticipants value)? changeParticipants,
-    TResult? Function(DartMessage_React value)? react,
-    TResult? Function(DartMessage_Delivered value)? delivered,
-    TResult? Function(DartMessage_Read value)? read,
-    TResult? Function(DartMessage_Typing value)? typing,
-    TResult? Function(DartMessage_Unsend value)? unsend,
-    TResult? Function(DartMessage_Edit value)? edit,
-    TResult? Function(DartMessage_IconChange value)? iconChange,
-    TResult? Function(DartMessage_StopTyping value)? stopTyping,
-    TResult? Function(DartMessage_EnableSmsActivation value)?
-        enableSmsActivation,
-    TResult? Function(DartMessage_MessageReadOnDevice value)?
-        messageReadOnDevice,
-    TResult? Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
-    TResult? Function(DartMessage_MarkUnread value)? markUnread,
-    TResult? Function(DartMessage_PeerCacheInvalidate value)?
-        peerCacheInvalidate,
-    TResult? Function(DartMessage_UpdateExtension value)? updateExtension,
-    TResult? Function(DartMessage_Error value)? error,
+    TResult? Function(Message_Message value)? message,
+    TResult? Function(Message_RenameMessage value)? renameMessage,
+    TResult? Function(Message_ChangeParticipants value)? changeParticipants,
+    TResult? Function(Message_React value)? react,
+    TResult? Function(Message_Delivered value)? delivered,
+    TResult? Function(Message_Read value)? read,
+    TResult? Function(Message_Typing value)? typing,
+    TResult? Function(Message_Unsend value)? unsend,
+    TResult? Function(Message_Edit value)? edit,
+    TResult? Function(Message_IconChange value)? iconChange,
+    TResult? Function(Message_StopTyping value)? stopTyping,
+    TResult? Function(Message_EnableSmsActivation value)? enableSmsActivation,
+    TResult? Function(Message_MessageReadOnDevice value)? messageReadOnDevice,
+    TResult? Function(Message_SmsConfirmSent value)? smsConfirmSent,
+    TResult? Function(Message_MarkUnread value)? markUnread,
+    TResult? Function(Message_PeerCacheInvalidate value)? peerCacheInvalidate,
+    TResult? Function(Message_UpdateExtension value)? updateExtension,
+    TResult? Function(Message_Error value)? error,
   }) {
     return stopTyping?.call(this);
   }
@@ -4776,27 +4632,24 @@ class _$DartMessage_StopTypingImpl extends DartMessage_StopTyping {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(DartMessage_Message value)? message,
-    TResult Function(DartMessage_RenameMessage value)? renameMessage,
-    TResult Function(DartMessage_ChangeParticipants value)? changeParticipants,
-    TResult Function(DartMessage_React value)? react,
-    TResult Function(DartMessage_Delivered value)? delivered,
-    TResult Function(DartMessage_Read value)? read,
-    TResult Function(DartMessage_Typing value)? typing,
-    TResult Function(DartMessage_Unsend value)? unsend,
-    TResult Function(DartMessage_Edit value)? edit,
-    TResult Function(DartMessage_IconChange value)? iconChange,
-    TResult Function(DartMessage_StopTyping value)? stopTyping,
-    TResult Function(DartMessage_EnableSmsActivation value)?
-        enableSmsActivation,
-    TResult Function(DartMessage_MessageReadOnDevice value)?
-        messageReadOnDevice,
-    TResult Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
-    TResult Function(DartMessage_MarkUnread value)? markUnread,
-    TResult Function(DartMessage_PeerCacheInvalidate value)?
-        peerCacheInvalidate,
-    TResult Function(DartMessage_UpdateExtension value)? updateExtension,
-    TResult Function(DartMessage_Error value)? error,
+    TResult Function(Message_Message value)? message,
+    TResult Function(Message_RenameMessage value)? renameMessage,
+    TResult Function(Message_ChangeParticipants value)? changeParticipants,
+    TResult Function(Message_React value)? react,
+    TResult Function(Message_Delivered value)? delivered,
+    TResult Function(Message_Read value)? read,
+    TResult Function(Message_Typing value)? typing,
+    TResult Function(Message_Unsend value)? unsend,
+    TResult Function(Message_Edit value)? edit,
+    TResult Function(Message_IconChange value)? iconChange,
+    TResult Function(Message_StopTyping value)? stopTyping,
+    TResult Function(Message_EnableSmsActivation value)? enableSmsActivation,
+    TResult Function(Message_MessageReadOnDevice value)? messageReadOnDevice,
+    TResult Function(Message_SmsConfirmSent value)? smsConfirmSent,
+    TResult Function(Message_MarkUnread value)? markUnread,
+    TResult Function(Message_PeerCacheInvalidate value)? peerCacheInvalidate,
+    TResult Function(Message_UpdateExtension value)? updateExtension,
+    TResult Function(Message_Error value)? error,
     required TResult orElse(),
   }) {
     if (stopTyping != null) {
@@ -4806,39 +4659,38 @@ class _$DartMessage_StopTypingImpl extends DartMessage_StopTyping {
   }
 }
 
-abstract class DartMessage_StopTyping extends DartMessage {
-  const factory DartMessage_StopTyping() = _$DartMessage_StopTypingImpl;
-  const DartMessage_StopTyping._() : super._();
+abstract class Message_StopTyping extends Message {
+  const factory Message_StopTyping() = _$Message_StopTypingImpl;
+  const Message_StopTyping._() : super._();
 }
 
 /// @nodoc
-abstract class _$$DartMessage_EnableSmsActivationImplCopyWith<$Res> {
-  factory _$$DartMessage_EnableSmsActivationImplCopyWith(
-          _$DartMessage_EnableSmsActivationImpl value,
-          $Res Function(_$DartMessage_EnableSmsActivationImpl) then) =
-      __$$DartMessage_EnableSmsActivationImplCopyWithImpl<$Res>;
+abstract class _$$Message_EnableSmsActivationImplCopyWith<$Res> {
+  factory _$$Message_EnableSmsActivationImplCopyWith(
+          _$Message_EnableSmsActivationImpl value,
+          $Res Function(_$Message_EnableSmsActivationImpl) then) =
+      __$$Message_EnableSmsActivationImplCopyWithImpl<$Res>;
   @useResult
   $Res call({bool field0});
 }
 
 /// @nodoc
-class __$$DartMessage_EnableSmsActivationImplCopyWithImpl<$Res>
-    extends _$DartMessageCopyWithImpl<$Res,
-        _$DartMessage_EnableSmsActivationImpl>
-    implements _$$DartMessage_EnableSmsActivationImplCopyWith<$Res> {
-  __$$DartMessage_EnableSmsActivationImplCopyWithImpl(
-      _$DartMessage_EnableSmsActivationImpl _value,
-      $Res Function(_$DartMessage_EnableSmsActivationImpl) _then)
+class __$$Message_EnableSmsActivationImplCopyWithImpl<$Res>
+    extends _$MessageCopyWithImpl<$Res, _$Message_EnableSmsActivationImpl>
+    implements _$$Message_EnableSmsActivationImplCopyWith<$Res> {
+  __$$Message_EnableSmsActivationImplCopyWithImpl(
+      _$Message_EnableSmsActivationImpl _value,
+      $Res Function(_$Message_EnableSmsActivationImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of DartMessage
+  /// Create a copy of Message
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? field0 = null,
   }) {
-    return _then(_$DartMessage_EnableSmsActivationImpl(
+    return _then(_$Message_EnableSmsActivationImpl(
       null == field0
           ? _value.field0
           : field0 // ignore: cast_nullable_to_non_nullable
@@ -4849,62 +4701,59 @@ class __$$DartMessage_EnableSmsActivationImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$DartMessage_EnableSmsActivationImpl
-    extends DartMessage_EnableSmsActivation {
-  const _$DartMessage_EnableSmsActivationImpl(this.field0) : super._();
+class _$Message_EnableSmsActivationImpl extends Message_EnableSmsActivation {
+  const _$Message_EnableSmsActivationImpl(this.field0) : super._();
 
   @override
   final bool field0;
 
   @override
   String toString() {
-    return 'DartMessage.enableSmsActivation(field0: $field0)';
+    return 'Message.enableSmsActivation(field0: $field0)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$DartMessage_EnableSmsActivationImpl &&
+            other is _$Message_EnableSmsActivationImpl &&
             (identical(other.field0, field0) || other.field0 == field0));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, field0);
 
-  /// Create a copy of DartMessage
+  /// Create a copy of Message
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$DartMessage_EnableSmsActivationImplCopyWith<
-          _$DartMessage_EnableSmsActivationImpl>
-      get copyWith => __$$DartMessage_EnableSmsActivationImplCopyWithImpl<
-          _$DartMessage_EnableSmsActivationImpl>(this, _$identity);
+  _$$Message_EnableSmsActivationImplCopyWith<_$Message_EnableSmsActivationImpl>
+      get copyWith => __$$Message_EnableSmsActivationImplCopyWithImpl<
+          _$Message_EnableSmsActivationImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(DartNormalMessage field0) message,
-    required TResult Function(DartRenameMessage field0) renameMessage,
-    required TResult Function(DartChangeParticipantMessage field0)
+    required TResult Function(NormalMessage field0) message,
+    required TResult Function(RenameMessage field0) renameMessage,
+    required TResult Function(ChangeParticipantMessage field0)
         changeParticipants,
-    required TResult Function(DartReactMessage field0) react,
+    required TResult Function(ReactMessage field0) react,
     required TResult Function() delivered,
     required TResult Function() read,
     required TResult Function() typing,
-    required TResult Function(DartUnsendMessage field0) unsend,
-    required TResult Function(DartEditMessage field0) edit,
-    required TResult Function(DartIconChangeMessage field0) iconChange,
+    required TResult Function(UnsendMessage field0) unsend,
+    required TResult Function(EditMessage field0) edit,
+    required TResult Function(IconChangeMessage field0) iconChange,
     required TResult Function() stopTyping,
     required TResult Function(bool field0) enableSmsActivation,
     required TResult Function() messageReadOnDevice,
     required TResult Function(bool field0) smsConfirmSent,
     required TResult Function() markUnread,
     required TResult Function() peerCacheInvalidate,
-    required TResult Function(DartUpdateExtensionMessage field0)
-        updateExtension,
-    required TResult Function(DartErrorMessage field0) error,
+    required TResult Function(UpdateExtensionMessage field0) updateExtension,
+    required TResult Function(ErrorMessage field0) error,
   }) {
     return enableSmsActivation(field0);
   }
@@ -4912,24 +4761,24 @@ class _$DartMessage_EnableSmsActivationImpl
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(DartNormalMessage field0)? message,
-    TResult? Function(DartRenameMessage field0)? renameMessage,
-    TResult? Function(DartChangeParticipantMessage field0)? changeParticipants,
-    TResult? Function(DartReactMessage field0)? react,
+    TResult? Function(NormalMessage field0)? message,
+    TResult? Function(RenameMessage field0)? renameMessage,
+    TResult? Function(ChangeParticipantMessage field0)? changeParticipants,
+    TResult? Function(ReactMessage field0)? react,
     TResult? Function()? delivered,
     TResult? Function()? read,
     TResult? Function()? typing,
-    TResult? Function(DartUnsendMessage field0)? unsend,
-    TResult? Function(DartEditMessage field0)? edit,
-    TResult? Function(DartIconChangeMessage field0)? iconChange,
+    TResult? Function(UnsendMessage field0)? unsend,
+    TResult? Function(EditMessage field0)? edit,
+    TResult? Function(IconChangeMessage field0)? iconChange,
     TResult? Function()? stopTyping,
     TResult? Function(bool field0)? enableSmsActivation,
     TResult? Function()? messageReadOnDevice,
     TResult? Function(bool field0)? smsConfirmSent,
     TResult? Function()? markUnread,
     TResult? Function()? peerCacheInvalidate,
-    TResult? Function(DartUpdateExtensionMessage field0)? updateExtension,
-    TResult? Function(DartErrorMessage field0)? error,
+    TResult? Function(UpdateExtensionMessage field0)? updateExtension,
+    TResult? Function(ErrorMessage field0)? error,
   }) {
     return enableSmsActivation?.call(field0);
   }
@@ -4937,24 +4786,24 @@ class _$DartMessage_EnableSmsActivationImpl
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(DartNormalMessage field0)? message,
-    TResult Function(DartRenameMessage field0)? renameMessage,
-    TResult Function(DartChangeParticipantMessage field0)? changeParticipants,
-    TResult Function(DartReactMessage field0)? react,
+    TResult Function(NormalMessage field0)? message,
+    TResult Function(RenameMessage field0)? renameMessage,
+    TResult Function(ChangeParticipantMessage field0)? changeParticipants,
+    TResult Function(ReactMessage field0)? react,
     TResult Function()? delivered,
     TResult Function()? read,
     TResult Function()? typing,
-    TResult Function(DartUnsendMessage field0)? unsend,
-    TResult Function(DartEditMessage field0)? edit,
-    TResult Function(DartIconChangeMessage field0)? iconChange,
+    TResult Function(UnsendMessage field0)? unsend,
+    TResult Function(EditMessage field0)? edit,
+    TResult Function(IconChangeMessage field0)? iconChange,
     TResult Function()? stopTyping,
     TResult Function(bool field0)? enableSmsActivation,
     TResult Function()? messageReadOnDevice,
     TResult Function(bool field0)? smsConfirmSent,
     TResult Function()? markUnread,
     TResult Function()? peerCacheInvalidate,
-    TResult Function(DartUpdateExtensionMessage field0)? updateExtension,
-    TResult Function(DartErrorMessage field0)? error,
+    TResult Function(UpdateExtensionMessage field0)? updateExtension,
+    TResult Function(ErrorMessage field0)? error,
     required TResult orElse(),
   }) {
     if (enableSmsActivation != null) {
@@ -4966,29 +4815,28 @@ class _$DartMessage_EnableSmsActivationImpl
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(DartMessage_Message value) message,
-    required TResult Function(DartMessage_RenameMessage value) renameMessage,
-    required TResult Function(DartMessage_ChangeParticipants value)
+    required TResult Function(Message_Message value) message,
+    required TResult Function(Message_RenameMessage value) renameMessage,
+    required TResult Function(Message_ChangeParticipants value)
         changeParticipants,
-    required TResult Function(DartMessage_React value) react,
-    required TResult Function(DartMessage_Delivered value) delivered,
-    required TResult Function(DartMessage_Read value) read,
-    required TResult Function(DartMessage_Typing value) typing,
-    required TResult Function(DartMessage_Unsend value) unsend,
-    required TResult Function(DartMessage_Edit value) edit,
-    required TResult Function(DartMessage_IconChange value) iconChange,
-    required TResult Function(DartMessage_StopTyping value) stopTyping,
-    required TResult Function(DartMessage_EnableSmsActivation value)
+    required TResult Function(Message_React value) react,
+    required TResult Function(Message_Delivered value) delivered,
+    required TResult Function(Message_Read value) read,
+    required TResult Function(Message_Typing value) typing,
+    required TResult Function(Message_Unsend value) unsend,
+    required TResult Function(Message_Edit value) edit,
+    required TResult Function(Message_IconChange value) iconChange,
+    required TResult Function(Message_StopTyping value) stopTyping,
+    required TResult Function(Message_EnableSmsActivation value)
         enableSmsActivation,
-    required TResult Function(DartMessage_MessageReadOnDevice value)
+    required TResult Function(Message_MessageReadOnDevice value)
         messageReadOnDevice,
-    required TResult Function(DartMessage_SmsConfirmSent value) smsConfirmSent,
-    required TResult Function(DartMessage_MarkUnread value) markUnread,
-    required TResult Function(DartMessage_PeerCacheInvalidate value)
+    required TResult Function(Message_SmsConfirmSent value) smsConfirmSent,
+    required TResult Function(Message_MarkUnread value) markUnread,
+    required TResult Function(Message_PeerCacheInvalidate value)
         peerCacheInvalidate,
-    required TResult Function(DartMessage_UpdateExtension value)
-        updateExtension,
-    required TResult Function(DartMessage_Error value) error,
+    required TResult Function(Message_UpdateExtension value) updateExtension,
+    required TResult Function(Message_Error value) error,
   }) {
     return enableSmsActivation(this);
   }
@@ -4996,27 +4844,24 @@ class _$DartMessage_EnableSmsActivationImpl
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(DartMessage_Message value)? message,
-    TResult? Function(DartMessage_RenameMessage value)? renameMessage,
-    TResult? Function(DartMessage_ChangeParticipants value)? changeParticipants,
-    TResult? Function(DartMessage_React value)? react,
-    TResult? Function(DartMessage_Delivered value)? delivered,
-    TResult? Function(DartMessage_Read value)? read,
-    TResult? Function(DartMessage_Typing value)? typing,
-    TResult? Function(DartMessage_Unsend value)? unsend,
-    TResult? Function(DartMessage_Edit value)? edit,
-    TResult? Function(DartMessage_IconChange value)? iconChange,
-    TResult? Function(DartMessage_StopTyping value)? stopTyping,
-    TResult? Function(DartMessage_EnableSmsActivation value)?
-        enableSmsActivation,
-    TResult? Function(DartMessage_MessageReadOnDevice value)?
-        messageReadOnDevice,
-    TResult? Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
-    TResult? Function(DartMessage_MarkUnread value)? markUnread,
-    TResult? Function(DartMessage_PeerCacheInvalidate value)?
-        peerCacheInvalidate,
-    TResult? Function(DartMessage_UpdateExtension value)? updateExtension,
-    TResult? Function(DartMessage_Error value)? error,
+    TResult? Function(Message_Message value)? message,
+    TResult? Function(Message_RenameMessage value)? renameMessage,
+    TResult? Function(Message_ChangeParticipants value)? changeParticipants,
+    TResult? Function(Message_React value)? react,
+    TResult? Function(Message_Delivered value)? delivered,
+    TResult? Function(Message_Read value)? read,
+    TResult? Function(Message_Typing value)? typing,
+    TResult? Function(Message_Unsend value)? unsend,
+    TResult? Function(Message_Edit value)? edit,
+    TResult? Function(Message_IconChange value)? iconChange,
+    TResult? Function(Message_StopTyping value)? stopTyping,
+    TResult? Function(Message_EnableSmsActivation value)? enableSmsActivation,
+    TResult? Function(Message_MessageReadOnDevice value)? messageReadOnDevice,
+    TResult? Function(Message_SmsConfirmSent value)? smsConfirmSent,
+    TResult? Function(Message_MarkUnread value)? markUnread,
+    TResult? Function(Message_PeerCacheInvalidate value)? peerCacheInvalidate,
+    TResult? Function(Message_UpdateExtension value)? updateExtension,
+    TResult? Function(Message_Error value)? error,
   }) {
     return enableSmsActivation?.call(this);
   }
@@ -5024,27 +4869,24 @@ class _$DartMessage_EnableSmsActivationImpl
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(DartMessage_Message value)? message,
-    TResult Function(DartMessage_RenameMessage value)? renameMessage,
-    TResult Function(DartMessage_ChangeParticipants value)? changeParticipants,
-    TResult Function(DartMessage_React value)? react,
-    TResult Function(DartMessage_Delivered value)? delivered,
-    TResult Function(DartMessage_Read value)? read,
-    TResult Function(DartMessage_Typing value)? typing,
-    TResult Function(DartMessage_Unsend value)? unsend,
-    TResult Function(DartMessage_Edit value)? edit,
-    TResult Function(DartMessage_IconChange value)? iconChange,
-    TResult Function(DartMessage_StopTyping value)? stopTyping,
-    TResult Function(DartMessage_EnableSmsActivation value)?
-        enableSmsActivation,
-    TResult Function(DartMessage_MessageReadOnDevice value)?
-        messageReadOnDevice,
-    TResult Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
-    TResult Function(DartMessage_MarkUnread value)? markUnread,
-    TResult Function(DartMessage_PeerCacheInvalidate value)?
-        peerCacheInvalidate,
-    TResult Function(DartMessage_UpdateExtension value)? updateExtension,
-    TResult Function(DartMessage_Error value)? error,
+    TResult Function(Message_Message value)? message,
+    TResult Function(Message_RenameMessage value)? renameMessage,
+    TResult Function(Message_ChangeParticipants value)? changeParticipants,
+    TResult Function(Message_React value)? react,
+    TResult Function(Message_Delivered value)? delivered,
+    TResult Function(Message_Read value)? read,
+    TResult Function(Message_Typing value)? typing,
+    TResult Function(Message_Unsend value)? unsend,
+    TResult Function(Message_Edit value)? edit,
+    TResult Function(Message_IconChange value)? iconChange,
+    TResult Function(Message_StopTyping value)? stopTyping,
+    TResult Function(Message_EnableSmsActivation value)? enableSmsActivation,
+    TResult Function(Message_MessageReadOnDevice value)? messageReadOnDevice,
+    TResult Function(Message_SmsConfirmSent value)? smsConfirmSent,
+    TResult Function(Message_MarkUnread value)? markUnread,
+    TResult Function(Message_PeerCacheInvalidate value)? peerCacheInvalidate,
+    TResult Function(Message_UpdateExtension value)? updateExtension,
+    TResult Function(Message_Error value)? error,
     required TResult orElse(),
   }) {
     if (enableSmsActivation != null) {
@@ -5054,59 +4896,56 @@ class _$DartMessage_EnableSmsActivationImpl
   }
 }
 
-abstract class DartMessage_EnableSmsActivation extends DartMessage {
-  const factory DartMessage_EnableSmsActivation(final bool field0) =
-      _$DartMessage_EnableSmsActivationImpl;
-  const DartMessage_EnableSmsActivation._() : super._();
+abstract class Message_EnableSmsActivation extends Message {
+  const factory Message_EnableSmsActivation(final bool field0) =
+      _$Message_EnableSmsActivationImpl;
+  const Message_EnableSmsActivation._() : super._();
 
   bool get field0;
 
-  /// Create a copy of DartMessage
+  /// Create a copy of Message
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$DartMessage_EnableSmsActivationImplCopyWith<
-          _$DartMessage_EnableSmsActivationImpl>
+  _$$Message_EnableSmsActivationImplCopyWith<_$Message_EnableSmsActivationImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$DartMessage_MessageReadOnDeviceImplCopyWith<$Res> {
-  factory _$$DartMessage_MessageReadOnDeviceImplCopyWith(
-          _$DartMessage_MessageReadOnDeviceImpl value,
-          $Res Function(_$DartMessage_MessageReadOnDeviceImpl) then) =
-      __$$DartMessage_MessageReadOnDeviceImplCopyWithImpl<$Res>;
+abstract class _$$Message_MessageReadOnDeviceImplCopyWith<$Res> {
+  factory _$$Message_MessageReadOnDeviceImplCopyWith(
+          _$Message_MessageReadOnDeviceImpl value,
+          $Res Function(_$Message_MessageReadOnDeviceImpl) then) =
+      __$$Message_MessageReadOnDeviceImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$DartMessage_MessageReadOnDeviceImplCopyWithImpl<$Res>
-    extends _$DartMessageCopyWithImpl<$Res,
-        _$DartMessage_MessageReadOnDeviceImpl>
-    implements _$$DartMessage_MessageReadOnDeviceImplCopyWith<$Res> {
-  __$$DartMessage_MessageReadOnDeviceImplCopyWithImpl(
-      _$DartMessage_MessageReadOnDeviceImpl _value,
-      $Res Function(_$DartMessage_MessageReadOnDeviceImpl) _then)
+class __$$Message_MessageReadOnDeviceImplCopyWithImpl<$Res>
+    extends _$MessageCopyWithImpl<$Res, _$Message_MessageReadOnDeviceImpl>
+    implements _$$Message_MessageReadOnDeviceImplCopyWith<$Res> {
+  __$$Message_MessageReadOnDeviceImplCopyWithImpl(
+      _$Message_MessageReadOnDeviceImpl _value,
+      $Res Function(_$Message_MessageReadOnDeviceImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of DartMessage
+  /// Create a copy of Message
   /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
 
-class _$DartMessage_MessageReadOnDeviceImpl
-    extends DartMessage_MessageReadOnDevice {
-  const _$DartMessage_MessageReadOnDeviceImpl() : super._();
+class _$Message_MessageReadOnDeviceImpl extends Message_MessageReadOnDevice {
+  const _$Message_MessageReadOnDeviceImpl() : super._();
 
   @override
   String toString() {
-    return 'DartMessage.messageReadOnDevice()';
+    return 'Message.messageReadOnDevice()';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$DartMessage_MessageReadOnDeviceImpl);
+            other is _$Message_MessageReadOnDeviceImpl);
   }
 
   @override
@@ -5115,26 +4954,25 @@ class _$DartMessage_MessageReadOnDeviceImpl
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(DartNormalMessage field0) message,
-    required TResult Function(DartRenameMessage field0) renameMessage,
-    required TResult Function(DartChangeParticipantMessage field0)
+    required TResult Function(NormalMessage field0) message,
+    required TResult Function(RenameMessage field0) renameMessage,
+    required TResult Function(ChangeParticipantMessage field0)
         changeParticipants,
-    required TResult Function(DartReactMessage field0) react,
+    required TResult Function(ReactMessage field0) react,
     required TResult Function() delivered,
     required TResult Function() read,
     required TResult Function() typing,
-    required TResult Function(DartUnsendMessage field0) unsend,
-    required TResult Function(DartEditMessage field0) edit,
-    required TResult Function(DartIconChangeMessage field0) iconChange,
+    required TResult Function(UnsendMessage field0) unsend,
+    required TResult Function(EditMessage field0) edit,
+    required TResult Function(IconChangeMessage field0) iconChange,
     required TResult Function() stopTyping,
     required TResult Function(bool field0) enableSmsActivation,
     required TResult Function() messageReadOnDevice,
     required TResult Function(bool field0) smsConfirmSent,
     required TResult Function() markUnread,
     required TResult Function() peerCacheInvalidate,
-    required TResult Function(DartUpdateExtensionMessage field0)
-        updateExtension,
-    required TResult Function(DartErrorMessage field0) error,
+    required TResult Function(UpdateExtensionMessage field0) updateExtension,
+    required TResult Function(ErrorMessage field0) error,
   }) {
     return messageReadOnDevice();
   }
@@ -5142,24 +4980,24 @@ class _$DartMessage_MessageReadOnDeviceImpl
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(DartNormalMessage field0)? message,
-    TResult? Function(DartRenameMessage field0)? renameMessage,
-    TResult? Function(DartChangeParticipantMessage field0)? changeParticipants,
-    TResult? Function(DartReactMessage field0)? react,
+    TResult? Function(NormalMessage field0)? message,
+    TResult? Function(RenameMessage field0)? renameMessage,
+    TResult? Function(ChangeParticipantMessage field0)? changeParticipants,
+    TResult? Function(ReactMessage field0)? react,
     TResult? Function()? delivered,
     TResult? Function()? read,
     TResult? Function()? typing,
-    TResult? Function(DartUnsendMessage field0)? unsend,
-    TResult? Function(DartEditMessage field0)? edit,
-    TResult? Function(DartIconChangeMessage field0)? iconChange,
+    TResult? Function(UnsendMessage field0)? unsend,
+    TResult? Function(EditMessage field0)? edit,
+    TResult? Function(IconChangeMessage field0)? iconChange,
     TResult? Function()? stopTyping,
     TResult? Function(bool field0)? enableSmsActivation,
     TResult? Function()? messageReadOnDevice,
     TResult? Function(bool field0)? smsConfirmSent,
     TResult? Function()? markUnread,
     TResult? Function()? peerCacheInvalidate,
-    TResult? Function(DartUpdateExtensionMessage field0)? updateExtension,
-    TResult? Function(DartErrorMessage field0)? error,
+    TResult? Function(UpdateExtensionMessage field0)? updateExtension,
+    TResult? Function(ErrorMessage field0)? error,
   }) {
     return messageReadOnDevice?.call();
   }
@@ -5167,24 +5005,24 @@ class _$DartMessage_MessageReadOnDeviceImpl
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(DartNormalMessage field0)? message,
-    TResult Function(DartRenameMessage field0)? renameMessage,
-    TResult Function(DartChangeParticipantMessage field0)? changeParticipants,
-    TResult Function(DartReactMessage field0)? react,
+    TResult Function(NormalMessage field0)? message,
+    TResult Function(RenameMessage field0)? renameMessage,
+    TResult Function(ChangeParticipantMessage field0)? changeParticipants,
+    TResult Function(ReactMessage field0)? react,
     TResult Function()? delivered,
     TResult Function()? read,
     TResult Function()? typing,
-    TResult Function(DartUnsendMessage field0)? unsend,
-    TResult Function(DartEditMessage field0)? edit,
-    TResult Function(DartIconChangeMessage field0)? iconChange,
+    TResult Function(UnsendMessage field0)? unsend,
+    TResult Function(EditMessage field0)? edit,
+    TResult Function(IconChangeMessage field0)? iconChange,
     TResult Function()? stopTyping,
     TResult Function(bool field0)? enableSmsActivation,
     TResult Function()? messageReadOnDevice,
     TResult Function(bool field0)? smsConfirmSent,
     TResult Function()? markUnread,
     TResult Function()? peerCacheInvalidate,
-    TResult Function(DartUpdateExtensionMessage field0)? updateExtension,
-    TResult Function(DartErrorMessage field0)? error,
+    TResult Function(UpdateExtensionMessage field0)? updateExtension,
+    TResult Function(ErrorMessage field0)? error,
     required TResult orElse(),
   }) {
     if (messageReadOnDevice != null) {
@@ -5196,29 +5034,28 @@ class _$DartMessage_MessageReadOnDeviceImpl
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(DartMessage_Message value) message,
-    required TResult Function(DartMessage_RenameMessage value) renameMessage,
-    required TResult Function(DartMessage_ChangeParticipants value)
+    required TResult Function(Message_Message value) message,
+    required TResult Function(Message_RenameMessage value) renameMessage,
+    required TResult Function(Message_ChangeParticipants value)
         changeParticipants,
-    required TResult Function(DartMessage_React value) react,
-    required TResult Function(DartMessage_Delivered value) delivered,
-    required TResult Function(DartMessage_Read value) read,
-    required TResult Function(DartMessage_Typing value) typing,
-    required TResult Function(DartMessage_Unsend value) unsend,
-    required TResult Function(DartMessage_Edit value) edit,
-    required TResult Function(DartMessage_IconChange value) iconChange,
-    required TResult Function(DartMessage_StopTyping value) stopTyping,
-    required TResult Function(DartMessage_EnableSmsActivation value)
+    required TResult Function(Message_React value) react,
+    required TResult Function(Message_Delivered value) delivered,
+    required TResult Function(Message_Read value) read,
+    required TResult Function(Message_Typing value) typing,
+    required TResult Function(Message_Unsend value) unsend,
+    required TResult Function(Message_Edit value) edit,
+    required TResult Function(Message_IconChange value) iconChange,
+    required TResult Function(Message_StopTyping value) stopTyping,
+    required TResult Function(Message_EnableSmsActivation value)
         enableSmsActivation,
-    required TResult Function(DartMessage_MessageReadOnDevice value)
+    required TResult Function(Message_MessageReadOnDevice value)
         messageReadOnDevice,
-    required TResult Function(DartMessage_SmsConfirmSent value) smsConfirmSent,
-    required TResult Function(DartMessage_MarkUnread value) markUnread,
-    required TResult Function(DartMessage_PeerCacheInvalidate value)
+    required TResult Function(Message_SmsConfirmSent value) smsConfirmSent,
+    required TResult Function(Message_MarkUnread value) markUnread,
+    required TResult Function(Message_PeerCacheInvalidate value)
         peerCacheInvalidate,
-    required TResult Function(DartMessage_UpdateExtension value)
-        updateExtension,
-    required TResult Function(DartMessage_Error value) error,
+    required TResult Function(Message_UpdateExtension value) updateExtension,
+    required TResult Function(Message_Error value) error,
   }) {
     return messageReadOnDevice(this);
   }
@@ -5226,27 +5063,24 @@ class _$DartMessage_MessageReadOnDeviceImpl
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(DartMessage_Message value)? message,
-    TResult? Function(DartMessage_RenameMessage value)? renameMessage,
-    TResult? Function(DartMessage_ChangeParticipants value)? changeParticipants,
-    TResult? Function(DartMessage_React value)? react,
-    TResult? Function(DartMessage_Delivered value)? delivered,
-    TResult? Function(DartMessage_Read value)? read,
-    TResult? Function(DartMessage_Typing value)? typing,
-    TResult? Function(DartMessage_Unsend value)? unsend,
-    TResult? Function(DartMessage_Edit value)? edit,
-    TResult? Function(DartMessage_IconChange value)? iconChange,
-    TResult? Function(DartMessage_StopTyping value)? stopTyping,
-    TResult? Function(DartMessage_EnableSmsActivation value)?
-        enableSmsActivation,
-    TResult? Function(DartMessage_MessageReadOnDevice value)?
-        messageReadOnDevice,
-    TResult? Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
-    TResult? Function(DartMessage_MarkUnread value)? markUnread,
-    TResult? Function(DartMessage_PeerCacheInvalidate value)?
-        peerCacheInvalidate,
-    TResult? Function(DartMessage_UpdateExtension value)? updateExtension,
-    TResult? Function(DartMessage_Error value)? error,
+    TResult? Function(Message_Message value)? message,
+    TResult? Function(Message_RenameMessage value)? renameMessage,
+    TResult? Function(Message_ChangeParticipants value)? changeParticipants,
+    TResult? Function(Message_React value)? react,
+    TResult? Function(Message_Delivered value)? delivered,
+    TResult? Function(Message_Read value)? read,
+    TResult? Function(Message_Typing value)? typing,
+    TResult? Function(Message_Unsend value)? unsend,
+    TResult? Function(Message_Edit value)? edit,
+    TResult? Function(Message_IconChange value)? iconChange,
+    TResult? Function(Message_StopTyping value)? stopTyping,
+    TResult? Function(Message_EnableSmsActivation value)? enableSmsActivation,
+    TResult? Function(Message_MessageReadOnDevice value)? messageReadOnDevice,
+    TResult? Function(Message_SmsConfirmSent value)? smsConfirmSent,
+    TResult? Function(Message_MarkUnread value)? markUnread,
+    TResult? Function(Message_PeerCacheInvalidate value)? peerCacheInvalidate,
+    TResult? Function(Message_UpdateExtension value)? updateExtension,
+    TResult? Function(Message_Error value)? error,
   }) {
     return messageReadOnDevice?.call(this);
   }
@@ -5254,27 +5088,24 @@ class _$DartMessage_MessageReadOnDeviceImpl
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(DartMessage_Message value)? message,
-    TResult Function(DartMessage_RenameMessage value)? renameMessage,
-    TResult Function(DartMessage_ChangeParticipants value)? changeParticipants,
-    TResult Function(DartMessage_React value)? react,
-    TResult Function(DartMessage_Delivered value)? delivered,
-    TResult Function(DartMessage_Read value)? read,
-    TResult Function(DartMessage_Typing value)? typing,
-    TResult Function(DartMessage_Unsend value)? unsend,
-    TResult Function(DartMessage_Edit value)? edit,
-    TResult Function(DartMessage_IconChange value)? iconChange,
-    TResult Function(DartMessage_StopTyping value)? stopTyping,
-    TResult Function(DartMessage_EnableSmsActivation value)?
-        enableSmsActivation,
-    TResult Function(DartMessage_MessageReadOnDevice value)?
-        messageReadOnDevice,
-    TResult Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
-    TResult Function(DartMessage_MarkUnread value)? markUnread,
-    TResult Function(DartMessage_PeerCacheInvalidate value)?
-        peerCacheInvalidate,
-    TResult Function(DartMessage_UpdateExtension value)? updateExtension,
-    TResult Function(DartMessage_Error value)? error,
+    TResult Function(Message_Message value)? message,
+    TResult Function(Message_RenameMessage value)? renameMessage,
+    TResult Function(Message_ChangeParticipants value)? changeParticipants,
+    TResult Function(Message_React value)? react,
+    TResult Function(Message_Delivered value)? delivered,
+    TResult Function(Message_Read value)? read,
+    TResult Function(Message_Typing value)? typing,
+    TResult Function(Message_Unsend value)? unsend,
+    TResult Function(Message_Edit value)? edit,
+    TResult Function(Message_IconChange value)? iconChange,
+    TResult Function(Message_StopTyping value)? stopTyping,
+    TResult Function(Message_EnableSmsActivation value)? enableSmsActivation,
+    TResult Function(Message_MessageReadOnDevice value)? messageReadOnDevice,
+    TResult Function(Message_SmsConfirmSent value)? smsConfirmSent,
+    TResult Function(Message_MarkUnread value)? markUnread,
+    TResult Function(Message_PeerCacheInvalidate value)? peerCacheInvalidate,
+    TResult Function(Message_UpdateExtension value)? updateExtension,
+    TResult Function(Message_Error value)? error,
     required TResult orElse(),
   }) {
     if (messageReadOnDevice != null) {
@@ -5284,39 +5115,39 @@ class _$DartMessage_MessageReadOnDeviceImpl
   }
 }
 
-abstract class DartMessage_MessageReadOnDevice extends DartMessage {
-  const factory DartMessage_MessageReadOnDevice() =
-      _$DartMessage_MessageReadOnDeviceImpl;
-  const DartMessage_MessageReadOnDevice._() : super._();
+abstract class Message_MessageReadOnDevice extends Message {
+  const factory Message_MessageReadOnDevice() =
+      _$Message_MessageReadOnDeviceImpl;
+  const Message_MessageReadOnDevice._() : super._();
 }
 
 /// @nodoc
-abstract class _$$DartMessage_SmsConfirmSentImplCopyWith<$Res> {
-  factory _$$DartMessage_SmsConfirmSentImplCopyWith(
-          _$DartMessage_SmsConfirmSentImpl value,
-          $Res Function(_$DartMessage_SmsConfirmSentImpl) then) =
-      __$$DartMessage_SmsConfirmSentImplCopyWithImpl<$Res>;
+abstract class _$$Message_SmsConfirmSentImplCopyWith<$Res> {
+  factory _$$Message_SmsConfirmSentImplCopyWith(
+          _$Message_SmsConfirmSentImpl value,
+          $Res Function(_$Message_SmsConfirmSentImpl) then) =
+      __$$Message_SmsConfirmSentImplCopyWithImpl<$Res>;
   @useResult
   $Res call({bool field0});
 }
 
 /// @nodoc
-class __$$DartMessage_SmsConfirmSentImplCopyWithImpl<$Res>
-    extends _$DartMessageCopyWithImpl<$Res, _$DartMessage_SmsConfirmSentImpl>
-    implements _$$DartMessage_SmsConfirmSentImplCopyWith<$Res> {
-  __$$DartMessage_SmsConfirmSentImplCopyWithImpl(
-      _$DartMessage_SmsConfirmSentImpl _value,
-      $Res Function(_$DartMessage_SmsConfirmSentImpl) _then)
+class __$$Message_SmsConfirmSentImplCopyWithImpl<$Res>
+    extends _$MessageCopyWithImpl<$Res, _$Message_SmsConfirmSentImpl>
+    implements _$$Message_SmsConfirmSentImplCopyWith<$Res> {
+  __$$Message_SmsConfirmSentImplCopyWithImpl(
+      _$Message_SmsConfirmSentImpl _value,
+      $Res Function(_$Message_SmsConfirmSentImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of DartMessage
+  /// Create a copy of Message
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? field0 = null,
   }) {
-    return _then(_$DartMessage_SmsConfirmSentImpl(
+    return _then(_$Message_SmsConfirmSentImpl(
       null == field0
           ? _value.field0
           : field0 // ignore: cast_nullable_to_non_nullable
@@ -5327,60 +5158,59 @@ class __$$DartMessage_SmsConfirmSentImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$DartMessage_SmsConfirmSentImpl extends DartMessage_SmsConfirmSent {
-  const _$DartMessage_SmsConfirmSentImpl(this.field0) : super._();
+class _$Message_SmsConfirmSentImpl extends Message_SmsConfirmSent {
+  const _$Message_SmsConfirmSentImpl(this.field0) : super._();
 
   @override
   final bool field0;
 
   @override
   String toString() {
-    return 'DartMessage.smsConfirmSent(field0: $field0)';
+    return 'Message.smsConfirmSent(field0: $field0)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$DartMessage_SmsConfirmSentImpl &&
+            other is _$Message_SmsConfirmSentImpl &&
             (identical(other.field0, field0) || other.field0 == field0));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, field0);
 
-  /// Create a copy of DartMessage
+  /// Create a copy of Message
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$DartMessage_SmsConfirmSentImplCopyWith<_$DartMessage_SmsConfirmSentImpl>
-      get copyWith => __$$DartMessage_SmsConfirmSentImplCopyWithImpl<
-          _$DartMessage_SmsConfirmSentImpl>(this, _$identity);
+  _$$Message_SmsConfirmSentImplCopyWith<_$Message_SmsConfirmSentImpl>
+      get copyWith => __$$Message_SmsConfirmSentImplCopyWithImpl<
+          _$Message_SmsConfirmSentImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(DartNormalMessage field0) message,
-    required TResult Function(DartRenameMessage field0) renameMessage,
-    required TResult Function(DartChangeParticipantMessage field0)
+    required TResult Function(NormalMessage field0) message,
+    required TResult Function(RenameMessage field0) renameMessage,
+    required TResult Function(ChangeParticipantMessage field0)
         changeParticipants,
-    required TResult Function(DartReactMessage field0) react,
+    required TResult Function(ReactMessage field0) react,
     required TResult Function() delivered,
     required TResult Function() read,
     required TResult Function() typing,
-    required TResult Function(DartUnsendMessage field0) unsend,
-    required TResult Function(DartEditMessage field0) edit,
-    required TResult Function(DartIconChangeMessage field0) iconChange,
+    required TResult Function(UnsendMessage field0) unsend,
+    required TResult Function(EditMessage field0) edit,
+    required TResult Function(IconChangeMessage field0) iconChange,
     required TResult Function() stopTyping,
     required TResult Function(bool field0) enableSmsActivation,
     required TResult Function() messageReadOnDevice,
     required TResult Function(bool field0) smsConfirmSent,
     required TResult Function() markUnread,
     required TResult Function() peerCacheInvalidate,
-    required TResult Function(DartUpdateExtensionMessage field0)
-        updateExtension,
-    required TResult Function(DartErrorMessage field0) error,
+    required TResult Function(UpdateExtensionMessage field0) updateExtension,
+    required TResult Function(ErrorMessage field0) error,
   }) {
     return smsConfirmSent(field0);
   }
@@ -5388,24 +5218,24 @@ class _$DartMessage_SmsConfirmSentImpl extends DartMessage_SmsConfirmSent {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(DartNormalMessage field0)? message,
-    TResult? Function(DartRenameMessage field0)? renameMessage,
-    TResult? Function(DartChangeParticipantMessage field0)? changeParticipants,
-    TResult? Function(DartReactMessage field0)? react,
+    TResult? Function(NormalMessage field0)? message,
+    TResult? Function(RenameMessage field0)? renameMessage,
+    TResult? Function(ChangeParticipantMessage field0)? changeParticipants,
+    TResult? Function(ReactMessage field0)? react,
     TResult? Function()? delivered,
     TResult? Function()? read,
     TResult? Function()? typing,
-    TResult? Function(DartUnsendMessage field0)? unsend,
-    TResult? Function(DartEditMessage field0)? edit,
-    TResult? Function(DartIconChangeMessage field0)? iconChange,
+    TResult? Function(UnsendMessage field0)? unsend,
+    TResult? Function(EditMessage field0)? edit,
+    TResult? Function(IconChangeMessage field0)? iconChange,
     TResult? Function()? stopTyping,
     TResult? Function(bool field0)? enableSmsActivation,
     TResult? Function()? messageReadOnDevice,
     TResult? Function(bool field0)? smsConfirmSent,
     TResult? Function()? markUnread,
     TResult? Function()? peerCacheInvalidate,
-    TResult? Function(DartUpdateExtensionMessage field0)? updateExtension,
-    TResult? Function(DartErrorMessage field0)? error,
+    TResult? Function(UpdateExtensionMessage field0)? updateExtension,
+    TResult? Function(ErrorMessage field0)? error,
   }) {
     return smsConfirmSent?.call(field0);
   }
@@ -5413,24 +5243,24 @@ class _$DartMessage_SmsConfirmSentImpl extends DartMessage_SmsConfirmSent {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(DartNormalMessage field0)? message,
-    TResult Function(DartRenameMessage field0)? renameMessage,
-    TResult Function(DartChangeParticipantMessage field0)? changeParticipants,
-    TResult Function(DartReactMessage field0)? react,
+    TResult Function(NormalMessage field0)? message,
+    TResult Function(RenameMessage field0)? renameMessage,
+    TResult Function(ChangeParticipantMessage field0)? changeParticipants,
+    TResult Function(ReactMessage field0)? react,
     TResult Function()? delivered,
     TResult Function()? read,
     TResult Function()? typing,
-    TResult Function(DartUnsendMessage field0)? unsend,
-    TResult Function(DartEditMessage field0)? edit,
-    TResult Function(DartIconChangeMessage field0)? iconChange,
+    TResult Function(UnsendMessage field0)? unsend,
+    TResult Function(EditMessage field0)? edit,
+    TResult Function(IconChangeMessage field0)? iconChange,
     TResult Function()? stopTyping,
     TResult Function(bool field0)? enableSmsActivation,
     TResult Function()? messageReadOnDevice,
     TResult Function(bool field0)? smsConfirmSent,
     TResult Function()? markUnread,
     TResult Function()? peerCacheInvalidate,
-    TResult Function(DartUpdateExtensionMessage field0)? updateExtension,
-    TResult Function(DartErrorMessage field0)? error,
+    TResult Function(UpdateExtensionMessage field0)? updateExtension,
+    TResult Function(ErrorMessage field0)? error,
     required TResult orElse(),
   }) {
     if (smsConfirmSent != null) {
@@ -5442,29 +5272,28 @@ class _$DartMessage_SmsConfirmSentImpl extends DartMessage_SmsConfirmSent {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(DartMessage_Message value) message,
-    required TResult Function(DartMessage_RenameMessage value) renameMessage,
-    required TResult Function(DartMessage_ChangeParticipants value)
+    required TResult Function(Message_Message value) message,
+    required TResult Function(Message_RenameMessage value) renameMessage,
+    required TResult Function(Message_ChangeParticipants value)
         changeParticipants,
-    required TResult Function(DartMessage_React value) react,
-    required TResult Function(DartMessage_Delivered value) delivered,
-    required TResult Function(DartMessage_Read value) read,
-    required TResult Function(DartMessage_Typing value) typing,
-    required TResult Function(DartMessage_Unsend value) unsend,
-    required TResult Function(DartMessage_Edit value) edit,
-    required TResult Function(DartMessage_IconChange value) iconChange,
-    required TResult Function(DartMessage_StopTyping value) stopTyping,
-    required TResult Function(DartMessage_EnableSmsActivation value)
+    required TResult Function(Message_React value) react,
+    required TResult Function(Message_Delivered value) delivered,
+    required TResult Function(Message_Read value) read,
+    required TResult Function(Message_Typing value) typing,
+    required TResult Function(Message_Unsend value) unsend,
+    required TResult Function(Message_Edit value) edit,
+    required TResult Function(Message_IconChange value) iconChange,
+    required TResult Function(Message_StopTyping value) stopTyping,
+    required TResult Function(Message_EnableSmsActivation value)
         enableSmsActivation,
-    required TResult Function(DartMessage_MessageReadOnDevice value)
+    required TResult Function(Message_MessageReadOnDevice value)
         messageReadOnDevice,
-    required TResult Function(DartMessage_SmsConfirmSent value) smsConfirmSent,
-    required TResult Function(DartMessage_MarkUnread value) markUnread,
-    required TResult Function(DartMessage_PeerCacheInvalidate value)
+    required TResult Function(Message_SmsConfirmSent value) smsConfirmSent,
+    required TResult Function(Message_MarkUnread value) markUnread,
+    required TResult Function(Message_PeerCacheInvalidate value)
         peerCacheInvalidate,
-    required TResult Function(DartMessage_UpdateExtension value)
-        updateExtension,
-    required TResult Function(DartMessage_Error value) error,
+    required TResult Function(Message_UpdateExtension value) updateExtension,
+    required TResult Function(Message_Error value) error,
   }) {
     return smsConfirmSent(this);
   }
@@ -5472,27 +5301,24 @@ class _$DartMessage_SmsConfirmSentImpl extends DartMessage_SmsConfirmSent {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(DartMessage_Message value)? message,
-    TResult? Function(DartMessage_RenameMessage value)? renameMessage,
-    TResult? Function(DartMessage_ChangeParticipants value)? changeParticipants,
-    TResult? Function(DartMessage_React value)? react,
-    TResult? Function(DartMessage_Delivered value)? delivered,
-    TResult? Function(DartMessage_Read value)? read,
-    TResult? Function(DartMessage_Typing value)? typing,
-    TResult? Function(DartMessage_Unsend value)? unsend,
-    TResult? Function(DartMessage_Edit value)? edit,
-    TResult? Function(DartMessage_IconChange value)? iconChange,
-    TResult? Function(DartMessage_StopTyping value)? stopTyping,
-    TResult? Function(DartMessage_EnableSmsActivation value)?
-        enableSmsActivation,
-    TResult? Function(DartMessage_MessageReadOnDevice value)?
-        messageReadOnDevice,
-    TResult? Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
-    TResult? Function(DartMessage_MarkUnread value)? markUnread,
-    TResult? Function(DartMessage_PeerCacheInvalidate value)?
-        peerCacheInvalidate,
-    TResult? Function(DartMessage_UpdateExtension value)? updateExtension,
-    TResult? Function(DartMessage_Error value)? error,
+    TResult? Function(Message_Message value)? message,
+    TResult? Function(Message_RenameMessage value)? renameMessage,
+    TResult? Function(Message_ChangeParticipants value)? changeParticipants,
+    TResult? Function(Message_React value)? react,
+    TResult? Function(Message_Delivered value)? delivered,
+    TResult? Function(Message_Read value)? read,
+    TResult? Function(Message_Typing value)? typing,
+    TResult? Function(Message_Unsend value)? unsend,
+    TResult? Function(Message_Edit value)? edit,
+    TResult? Function(Message_IconChange value)? iconChange,
+    TResult? Function(Message_StopTyping value)? stopTyping,
+    TResult? Function(Message_EnableSmsActivation value)? enableSmsActivation,
+    TResult? Function(Message_MessageReadOnDevice value)? messageReadOnDevice,
+    TResult? Function(Message_SmsConfirmSent value)? smsConfirmSent,
+    TResult? Function(Message_MarkUnread value)? markUnread,
+    TResult? Function(Message_PeerCacheInvalidate value)? peerCacheInvalidate,
+    TResult? Function(Message_UpdateExtension value)? updateExtension,
+    TResult? Function(Message_Error value)? error,
   }) {
     return smsConfirmSent?.call(this);
   }
@@ -5500,27 +5326,24 @@ class _$DartMessage_SmsConfirmSentImpl extends DartMessage_SmsConfirmSent {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(DartMessage_Message value)? message,
-    TResult Function(DartMessage_RenameMessage value)? renameMessage,
-    TResult Function(DartMessage_ChangeParticipants value)? changeParticipants,
-    TResult Function(DartMessage_React value)? react,
-    TResult Function(DartMessage_Delivered value)? delivered,
-    TResult Function(DartMessage_Read value)? read,
-    TResult Function(DartMessage_Typing value)? typing,
-    TResult Function(DartMessage_Unsend value)? unsend,
-    TResult Function(DartMessage_Edit value)? edit,
-    TResult Function(DartMessage_IconChange value)? iconChange,
-    TResult Function(DartMessage_StopTyping value)? stopTyping,
-    TResult Function(DartMessage_EnableSmsActivation value)?
-        enableSmsActivation,
-    TResult Function(DartMessage_MessageReadOnDevice value)?
-        messageReadOnDevice,
-    TResult Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
-    TResult Function(DartMessage_MarkUnread value)? markUnread,
-    TResult Function(DartMessage_PeerCacheInvalidate value)?
-        peerCacheInvalidate,
-    TResult Function(DartMessage_UpdateExtension value)? updateExtension,
-    TResult Function(DartMessage_Error value)? error,
+    TResult Function(Message_Message value)? message,
+    TResult Function(Message_RenameMessage value)? renameMessage,
+    TResult Function(Message_ChangeParticipants value)? changeParticipants,
+    TResult Function(Message_React value)? react,
+    TResult Function(Message_Delivered value)? delivered,
+    TResult Function(Message_Read value)? read,
+    TResult Function(Message_Typing value)? typing,
+    TResult Function(Message_Unsend value)? unsend,
+    TResult Function(Message_Edit value)? edit,
+    TResult Function(Message_IconChange value)? iconChange,
+    TResult Function(Message_StopTyping value)? stopTyping,
+    TResult Function(Message_EnableSmsActivation value)? enableSmsActivation,
+    TResult Function(Message_MessageReadOnDevice value)? messageReadOnDevice,
+    TResult Function(Message_SmsConfirmSent value)? smsConfirmSent,
+    TResult Function(Message_MarkUnread value)? markUnread,
+    TResult Function(Message_PeerCacheInvalidate value)? peerCacheInvalidate,
+    TResult Function(Message_UpdateExtension value)? updateExtension,
+    TResult Function(Message_Error value)? error,
     required TResult orElse(),
   }) {
     if (smsConfirmSent != null) {
@@ -5530,56 +5353,53 @@ class _$DartMessage_SmsConfirmSentImpl extends DartMessage_SmsConfirmSent {
   }
 }
 
-abstract class DartMessage_SmsConfirmSent extends DartMessage {
-  const factory DartMessage_SmsConfirmSent(final bool field0) =
-      _$DartMessage_SmsConfirmSentImpl;
-  const DartMessage_SmsConfirmSent._() : super._();
+abstract class Message_SmsConfirmSent extends Message {
+  const factory Message_SmsConfirmSent(final bool field0) =
+      _$Message_SmsConfirmSentImpl;
+  const Message_SmsConfirmSent._() : super._();
 
   bool get field0;
 
-  /// Create a copy of DartMessage
+  /// Create a copy of Message
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$DartMessage_SmsConfirmSentImplCopyWith<_$DartMessage_SmsConfirmSentImpl>
+  _$$Message_SmsConfirmSentImplCopyWith<_$Message_SmsConfirmSentImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$DartMessage_MarkUnreadImplCopyWith<$Res> {
-  factory _$$DartMessage_MarkUnreadImplCopyWith(
-          _$DartMessage_MarkUnreadImpl value,
-          $Res Function(_$DartMessage_MarkUnreadImpl) then) =
-      __$$DartMessage_MarkUnreadImplCopyWithImpl<$Res>;
+abstract class _$$Message_MarkUnreadImplCopyWith<$Res> {
+  factory _$$Message_MarkUnreadImplCopyWith(_$Message_MarkUnreadImpl value,
+          $Res Function(_$Message_MarkUnreadImpl) then) =
+      __$$Message_MarkUnreadImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$DartMessage_MarkUnreadImplCopyWithImpl<$Res>
-    extends _$DartMessageCopyWithImpl<$Res, _$DartMessage_MarkUnreadImpl>
-    implements _$$DartMessage_MarkUnreadImplCopyWith<$Res> {
-  __$$DartMessage_MarkUnreadImplCopyWithImpl(
-      _$DartMessage_MarkUnreadImpl _value,
-      $Res Function(_$DartMessage_MarkUnreadImpl) _then)
+class __$$Message_MarkUnreadImplCopyWithImpl<$Res>
+    extends _$MessageCopyWithImpl<$Res, _$Message_MarkUnreadImpl>
+    implements _$$Message_MarkUnreadImplCopyWith<$Res> {
+  __$$Message_MarkUnreadImplCopyWithImpl(_$Message_MarkUnreadImpl _value,
+      $Res Function(_$Message_MarkUnreadImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of DartMessage
+  /// Create a copy of Message
   /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
 
-class _$DartMessage_MarkUnreadImpl extends DartMessage_MarkUnread {
-  const _$DartMessage_MarkUnreadImpl() : super._();
+class _$Message_MarkUnreadImpl extends Message_MarkUnread {
+  const _$Message_MarkUnreadImpl() : super._();
 
   @override
   String toString() {
-    return 'DartMessage.markUnread()';
+    return 'Message.markUnread()';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$DartMessage_MarkUnreadImpl);
+        (other.runtimeType == runtimeType && other is _$Message_MarkUnreadImpl);
   }
 
   @override
@@ -5588,26 +5408,25 @@ class _$DartMessage_MarkUnreadImpl extends DartMessage_MarkUnread {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(DartNormalMessage field0) message,
-    required TResult Function(DartRenameMessage field0) renameMessage,
-    required TResult Function(DartChangeParticipantMessage field0)
+    required TResult Function(NormalMessage field0) message,
+    required TResult Function(RenameMessage field0) renameMessage,
+    required TResult Function(ChangeParticipantMessage field0)
         changeParticipants,
-    required TResult Function(DartReactMessage field0) react,
+    required TResult Function(ReactMessage field0) react,
     required TResult Function() delivered,
     required TResult Function() read,
     required TResult Function() typing,
-    required TResult Function(DartUnsendMessage field0) unsend,
-    required TResult Function(DartEditMessage field0) edit,
-    required TResult Function(DartIconChangeMessage field0) iconChange,
+    required TResult Function(UnsendMessage field0) unsend,
+    required TResult Function(EditMessage field0) edit,
+    required TResult Function(IconChangeMessage field0) iconChange,
     required TResult Function() stopTyping,
     required TResult Function(bool field0) enableSmsActivation,
     required TResult Function() messageReadOnDevice,
     required TResult Function(bool field0) smsConfirmSent,
     required TResult Function() markUnread,
     required TResult Function() peerCacheInvalidate,
-    required TResult Function(DartUpdateExtensionMessage field0)
-        updateExtension,
-    required TResult Function(DartErrorMessage field0) error,
+    required TResult Function(UpdateExtensionMessage field0) updateExtension,
+    required TResult Function(ErrorMessage field0) error,
   }) {
     return markUnread();
   }
@@ -5615,24 +5434,24 @@ class _$DartMessage_MarkUnreadImpl extends DartMessage_MarkUnread {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(DartNormalMessage field0)? message,
-    TResult? Function(DartRenameMessage field0)? renameMessage,
-    TResult? Function(DartChangeParticipantMessage field0)? changeParticipants,
-    TResult? Function(DartReactMessage field0)? react,
+    TResult? Function(NormalMessage field0)? message,
+    TResult? Function(RenameMessage field0)? renameMessage,
+    TResult? Function(ChangeParticipantMessage field0)? changeParticipants,
+    TResult? Function(ReactMessage field0)? react,
     TResult? Function()? delivered,
     TResult? Function()? read,
     TResult? Function()? typing,
-    TResult? Function(DartUnsendMessage field0)? unsend,
-    TResult? Function(DartEditMessage field0)? edit,
-    TResult? Function(DartIconChangeMessage field0)? iconChange,
+    TResult? Function(UnsendMessage field0)? unsend,
+    TResult? Function(EditMessage field0)? edit,
+    TResult? Function(IconChangeMessage field0)? iconChange,
     TResult? Function()? stopTyping,
     TResult? Function(bool field0)? enableSmsActivation,
     TResult? Function()? messageReadOnDevice,
     TResult? Function(bool field0)? smsConfirmSent,
     TResult? Function()? markUnread,
     TResult? Function()? peerCacheInvalidate,
-    TResult? Function(DartUpdateExtensionMessage field0)? updateExtension,
-    TResult? Function(DartErrorMessage field0)? error,
+    TResult? Function(UpdateExtensionMessage field0)? updateExtension,
+    TResult? Function(ErrorMessage field0)? error,
   }) {
     return markUnread?.call();
   }
@@ -5640,24 +5459,24 @@ class _$DartMessage_MarkUnreadImpl extends DartMessage_MarkUnread {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(DartNormalMessage field0)? message,
-    TResult Function(DartRenameMessage field0)? renameMessage,
-    TResult Function(DartChangeParticipantMessage field0)? changeParticipants,
-    TResult Function(DartReactMessage field0)? react,
+    TResult Function(NormalMessage field0)? message,
+    TResult Function(RenameMessage field0)? renameMessage,
+    TResult Function(ChangeParticipantMessage field0)? changeParticipants,
+    TResult Function(ReactMessage field0)? react,
     TResult Function()? delivered,
     TResult Function()? read,
     TResult Function()? typing,
-    TResult Function(DartUnsendMessage field0)? unsend,
-    TResult Function(DartEditMessage field0)? edit,
-    TResult Function(DartIconChangeMessage field0)? iconChange,
+    TResult Function(UnsendMessage field0)? unsend,
+    TResult Function(EditMessage field0)? edit,
+    TResult Function(IconChangeMessage field0)? iconChange,
     TResult Function()? stopTyping,
     TResult Function(bool field0)? enableSmsActivation,
     TResult Function()? messageReadOnDevice,
     TResult Function(bool field0)? smsConfirmSent,
     TResult Function()? markUnread,
     TResult Function()? peerCacheInvalidate,
-    TResult Function(DartUpdateExtensionMessage field0)? updateExtension,
-    TResult Function(DartErrorMessage field0)? error,
+    TResult Function(UpdateExtensionMessage field0)? updateExtension,
+    TResult Function(ErrorMessage field0)? error,
     required TResult orElse(),
   }) {
     if (markUnread != null) {
@@ -5669,29 +5488,28 @@ class _$DartMessage_MarkUnreadImpl extends DartMessage_MarkUnread {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(DartMessage_Message value) message,
-    required TResult Function(DartMessage_RenameMessage value) renameMessage,
-    required TResult Function(DartMessage_ChangeParticipants value)
+    required TResult Function(Message_Message value) message,
+    required TResult Function(Message_RenameMessage value) renameMessage,
+    required TResult Function(Message_ChangeParticipants value)
         changeParticipants,
-    required TResult Function(DartMessage_React value) react,
-    required TResult Function(DartMessage_Delivered value) delivered,
-    required TResult Function(DartMessage_Read value) read,
-    required TResult Function(DartMessage_Typing value) typing,
-    required TResult Function(DartMessage_Unsend value) unsend,
-    required TResult Function(DartMessage_Edit value) edit,
-    required TResult Function(DartMessage_IconChange value) iconChange,
-    required TResult Function(DartMessage_StopTyping value) stopTyping,
-    required TResult Function(DartMessage_EnableSmsActivation value)
+    required TResult Function(Message_React value) react,
+    required TResult Function(Message_Delivered value) delivered,
+    required TResult Function(Message_Read value) read,
+    required TResult Function(Message_Typing value) typing,
+    required TResult Function(Message_Unsend value) unsend,
+    required TResult Function(Message_Edit value) edit,
+    required TResult Function(Message_IconChange value) iconChange,
+    required TResult Function(Message_StopTyping value) stopTyping,
+    required TResult Function(Message_EnableSmsActivation value)
         enableSmsActivation,
-    required TResult Function(DartMessage_MessageReadOnDevice value)
+    required TResult Function(Message_MessageReadOnDevice value)
         messageReadOnDevice,
-    required TResult Function(DartMessage_SmsConfirmSent value) smsConfirmSent,
-    required TResult Function(DartMessage_MarkUnread value) markUnread,
-    required TResult Function(DartMessage_PeerCacheInvalidate value)
+    required TResult Function(Message_SmsConfirmSent value) smsConfirmSent,
+    required TResult Function(Message_MarkUnread value) markUnread,
+    required TResult Function(Message_PeerCacheInvalidate value)
         peerCacheInvalidate,
-    required TResult Function(DartMessage_UpdateExtension value)
-        updateExtension,
-    required TResult Function(DartMessage_Error value) error,
+    required TResult Function(Message_UpdateExtension value) updateExtension,
+    required TResult Function(Message_Error value) error,
   }) {
     return markUnread(this);
   }
@@ -5699,27 +5517,24 @@ class _$DartMessage_MarkUnreadImpl extends DartMessage_MarkUnread {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(DartMessage_Message value)? message,
-    TResult? Function(DartMessage_RenameMessage value)? renameMessage,
-    TResult? Function(DartMessage_ChangeParticipants value)? changeParticipants,
-    TResult? Function(DartMessage_React value)? react,
-    TResult? Function(DartMessage_Delivered value)? delivered,
-    TResult? Function(DartMessage_Read value)? read,
-    TResult? Function(DartMessage_Typing value)? typing,
-    TResult? Function(DartMessage_Unsend value)? unsend,
-    TResult? Function(DartMessage_Edit value)? edit,
-    TResult? Function(DartMessage_IconChange value)? iconChange,
-    TResult? Function(DartMessage_StopTyping value)? stopTyping,
-    TResult? Function(DartMessage_EnableSmsActivation value)?
-        enableSmsActivation,
-    TResult? Function(DartMessage_MessageReadOnDevice value)?
-        messageReadOnDevice,
-    TResult? Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
-    TResult? Function(DartMessage_MarkUnread value)? markUnread,
-    TResult? Function(DartMessage_PeerCacheInvalidate value)?
-        peerCacheInvalidate,
-    TResult? Function(DartMessage_UpdateExtension value)? updateExtension,
-    TResult? Function(DartMessage_Error value)? error,
+    TResult? Function(Message_Message value)? message,
+    TResult? Function(Message_RenameMessage value)? renameMessage,
+    TResult? Function(Message_ChangeParticipants value)? changeParticipants,
+    TResult? Function(Message_React value)? react,
+    TResult? Function(Message_Delivered value)? delivered,
+    TResult? Function(Message_Read value)? read,
+    TResult? Function(Message_Typing value)? typing,
+    TResult? Function(Message_Unsend value)? unsend,
+    TResult? Function(Message_Edit value)? edit,
+    TResult? Function(Message_IconChange value)? iconChange,
+    TResult? Function(Message_StopTyping value)? stopTyping,
+    TResult? Function(Message_EnableSmsActivation value)? enableSmsActivation,
+    TResult? Function(Message_MessageReadOnDevice value)? messageReadOnDevice,
+    TResult? Function(Message_SmsConfirmSent value)? smsConfirmSent,
+    TResult? Function(Message_MarkUnread value)? markUnread,
+    TResult? Function(Message_PeerCacheInvalidate value)? peerCacheInvalidate,
+    TResult? Function(Message_UpdateExtension value)? updateExtension,
+    TResult? Function(Message_Error value)? error,
   }) {
     return markUnread?.call(this);
   }
@@ -5727,27 +5542,24 @@ class _$DartMessage_MarkUnreadImpl extends DartMessage_MarkUnread {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(DartMessage_Message value)? message,
-    TResult Function(DartMessage_RenameMessage value)? renameMessage,
-    TResult Function(DartMessage_ChangeParticipants value)? changeParticipants,
-    TResult Function(DartMessage_React value)? react,
-    TResult Function(DartMessage_Delivered value)? delivered,
-    TResult Function(DartMessage_Read value)? read,
-    TResult Function(DartMessage_Typing value)? typing,
-    TResult Function(DartMessage_Unsend value)? unsend,
-    TResult Function(DartMessage_Edit value)? edit,
-    TResult Function(DartMessage_IconChange value)? iconChange,
-    TResult Function(DartMessage_StopTyping value)? stopTyping,
-    TResult Function(DartMessage_EnableSmsActivation value)?
-        enableSmsActivation,
-    TResult Function(DartMessage_MessageReadOnDevice value)?
-        messageReadOnDevice,
-    TResult Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
-    TResult Function(DartMessage_MarkUnread value)? markUnread,
-    TResult Function(DartMessage_PeerCacheInvalidate value)?
-        peerCacheInvalidate,
-    TResult Function(DartMessage_UpdateExtension value)? updateExtension,
-    TResult Function(DartMessage_Error value)? error,
+    TResult Function(Message_Message value)? message,
+    TResult Function(Message_RenameMessage value)? renameMessage,
+    TResult Function(Message_ChangeParticipants value)? changeParticipants,
+    TResult Function(Message_React value)? react,
+    TResult Function(Message_Delivered value)? delivered,
+    TResult Function(Message_Read value)? read,
+    TResult Function(Message_Typing value)? typing,
+    TResult Function(Message_Unsend value)? unsend,
+    TResult Function(Message_Edit value)? edit,
+    TResult Function(Message_IconChange value)? iconChange,
+    TResult Function(Message_StopTyping value)? stopTyping,
+    TResult Function(Message_EnableSmsActivation value)? enableSmsActivation,
+    TResult Function(Message_MessageReadOnDevice value)? messageReadOnDevice,
+    TResult Function(Message_SmsConfirmSent value)? smsConfirmSent,
+    TResult Function(Message_MarkUnread value)? markUnread,
+    TResult Function(Message_PeerCacheInvalidate value)? peerCacheInvalidate,
+    TResult Function(Message_UpdateExtension value)? updateExtension,
+    TResult Function(Message_Error value)? error,
     required TResult orElse(),
   }) {
     if (markUnread != null) {
@@ -5757,49 +5569,47 @@ class _$DartMessage_MarkUnreadImpl extends DartMessage_MarkUnread {
   }
 }
 
-abstract class DartMessage_MarkUnread extends DartMessage {
-  const factory DartMessage_MarkUnread() = _$DartMessage_MarkUnreadImpl;
-  const DartMessage_MarkUnread._() : super._();
+abstract class Message_MarkUnread extends Message {
+  const factory Message_MarkUnread() = _$Message_MarkUnreadImpl;
+  const Message_MarkUnread._() : super._();
 }
 
 /// @nodoc
-abstract class _$$DartMessage_PeerCacheInvalidateImplCopyWith<$Res> {
-  factory _$$DartMessage_PeerCacheInvalidateImplCopyWith(
-          _$DartMessage_PeerCacheInvalidateImpl value,
-          $Res Function(_$DartMessage_PeerCacheInvalidateImpl) then) =
-      __$$DartMessage_PeerCacheInvalidateImplCopyWithImpl<$Res>;
+abstract class _$$Message_PeerCacheInvalidateImplCopyWith<$Res> {
+  factory _$$Message_PeerCacheInvalidateImplCopyWith(
+          _$Message_PeerCacheInvalidateImpl value,
+          $Res Function(_$Message_PeerCacheInvalidateImpl) then) =
+      __$$Message_PeerCacheInvalidateImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$DartMessage_PeerCacheInvalidateImplCopyWithImpl<$Res>
-    extends _$DartMessageCopyWithImpl<$Res,
-        _$DartMessage_PeerCacheInvalidateImpl>
-    implements _$$DartMessage_PeerCacheInvalidateImplCopyWith<$Res> {
-  __$$DartMessage_PeerCacheInvalidateImplCopyWithImpl(
-      _$DartMessage_PeerCacheInvalidateImpl _value,
-      $Res Function(_$DartMessage_PeerCacheInvalidateImpl) _then)
+class __$$Message_PeerCacheInvalidateImplCopyWithImpl<$Res>
+    extends _$MessageCopyWithImpl<$Res, _$Message_PeerCacheInvalidateImpl>
+    implements _$$Message_PeerCacheInvalidateImplCopyWith<$Res> {
+  __$$Message_PeerCacheInvalidateImplCopyWithImpl(
+      _$Message_PeerCacheInvalidateImpl _value,
+      $Res Function(_$Message_PeerCacheInvalidateImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of DartMessage
+  /// Create a copy of Message
   /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
 
-class _$DartMessage_PeerCacheInvalidateImpl
-    extends DartMessage_PeerCacheInvalidate {
-  const _$DartMessage_PeerCacheInvalidateImpl() : super._();
+class _$Message_PeerCacheInvalidateImpl extends Message_PeerCacheInvalidate {
+  const _$Message_PeerCacheInvalidateImpl() : super._();
 
   @override
   String toString() {
-    return 'DartMessage.peerCacheInvalidate()';
+    return 'Message.peerCacheInvalidate()';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$DartMessage_PeerCacheInvalidateImpl);
+            other is _$Message_PeerCacheInvalidateImpl);
   }
 
   @override
@@ -5808,26 +5618,25 @@ class _$DartMessage_PeerCacheInvalidateImpl
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(DartNormalMessage field0) message,
-    required TResult Function(DartRenameMessage field0) renameMessage,
-    required TResult Function(DartChangeParticipantMessage field0)
+    required TResult Function(NormalMessage field0) message,
+    required TResult Function(RenameMessage field0) renameMessage,
+    required TResult Function(ChangeParticipantMessage field0)
         changeParticipants,
-    required TResult Function(DartReactMessage field0) react,
+    required TResult Function(ReactMessage field0) react,
     required TResult Function() delivered,
     required TResult Function() read,
     required TResult Function() typing,
-    required TResult Function(DartUnsendMessage field0) unsend,
-    required TResult Function(DartEditMessage field0) edit,
-    required TResult Function(DartIconChangeMessage field0) iconChange,
+    required TResult Function(UnsendMessage field0) unsend,
+    required TResult Function(EditMessage field0) edit,
+    required TResult Function(IconChangeMessage field0) iconChange,
     required TResult Function() stopTyping,
     required TResult Function(bool field0) enableSmsActivation,
     required TResult Function() messageReadOnDevice,
     required TResult Function(bool field0) smsConfirmSent,
     required TResult Function() markUnread,
     required TResult Function() peerCacheInvalidate,
-    required TResult Function(DartUpdateExtensionMessage field0)
-        updateExtension,
-    required TResult Function(DartErrorMessage field0) error,
+    required TResult Function(UpdateExtensionMessage field0) updateExtension,
+    required TResult Function(ErrorMessage field0) error,
   }) {
     return peerCacheInvalidate();
   }
@@ -5835,24 +5644,24 @@ class _$DartMessage_PeerCacheInvalidateImpl
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(DartNormalMessage field0)? message,
-    TResult? Function(DartRenameMessage field0)? renameMessage,
-    TResult? Function(DartChangeParticipantMessage field0)? changeParticipants,
-    TResult? Function(DartReactMessage field0)? react,
+    TResult? Function(NormalMessage field0)? message,
+    TResult? Function(RenameMessage field0)? renameMessage,
+    TResult? Function(ChangeParticipantMessage field0)? changeParticipants,
+    TResult? Function(ReactMessage field0)? react,
     TResult? Function()? delivered,
     TResult? Function()? read,
     TResult? Function()? typing,
-    TResult? Function(DartUnsendMessage field0)? unsend,
-    TResult? Function(DartEditMessage field0)? edit,
-    TResult? Function(DartIconChangeMessage field0)? iconChange,
+    TResult? Function(UnsendMessage field0)? unsend,
+    TResult? Function(EditMessage field0)? edit,
+    TResult? Function(IconChangeMessage field0)? iconChange,
     TResult? Function()? stopTyping,
     TResult? Function(bool field0)? enableSmsActivation,
     TResult? Function()? messageReadOnDevice,
     TResult? Function(bool field0)? smsConfirmSent,
     TResult? Function()? markUnread,
     TResult? Function()? peerCacheInvalidate,
-    TResult? Function(DartUpdateExtensionMessage field0)? updateExtension,
-    TResult? Function(DartErrorMessage field0)? error,
+    TResult? Function(UpdateExtensionMessage field0)? updateExtension,
+    TResult? Function(ErrorMessage field0)? error,
   }) {
     return peerCacheInvalidate?.call();
   }
@@ -5860,24 +5669,24 @@ class _$DartMessage_PeerCacheInvalidateImpl
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(DartNormalMessage field0)? message,
-    TResult Function(DartRenameMessage field0)? renameMessage,
-    TResult Function(DartChangeParticipantMessage field0)? changeParticipants,
-    TResult Function(DartReactMessage field0)? react,
+    TResult Function(NormalMessage field0)? message,
+    TResult Function(RenameMessage field0)? renameMessage,
+    TResult Function(ChangeParticipantMessage field0)? changeParticipants,
+    TResult Function(ReactMessage field0)? react,
     TResult Function()? delivered,
     TResult Function()? read,
     TResult Function()? typing,
-    TResult Function(DartUnsendMessage field0)? unsend,
-    TResult Function(DartEditMessage field0)? edit,
-    TResult Function(DartIconChangeMessage field0)? iconChange,
+    TResult Function(UnsendMessage field0)? unsend,
+    TResult Function(EditMessage field0)? edit,
+    TResult Function(IconChangeMessage field0)? iconChange,
     TResult Function()? stopTyping,
     TResult Function(bool field0)? enableSmsActivation,
     TResult Function()? messageReadOnDevice,
     TResult Function(bool field0)? smsConfirmSent,
     TResult Function()? markUnread,
     TResult Function()? peerCacheInvalidate,
-    TResult Function(DartUpdateExtensionMessage field0)? updateExtension,
-    TResult Function(DartErrorMessage field0)? error,
+    TResult Function(UpdateExtensionMessage field0)? updateExtension,
+    TResult Function(ErrorMessage field0)? error,
     required TResult orElse(),
   }) {
     if (peerCacheInvalidate != null) {
@@ -5889,29 +5698,28 @@ class _$DartMessage_PeerCacheInvalidateImpl
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(DartMessage_Message value) message,
-    required TResult Function(DartMessage_RenameMessage value) renameMessage,
-    required TResult Function(DartMessage_ChangeParticipants value)
+    required TResult Function(Message_Message value) message,
+    required TResult Function(Message_RenameMessage value) renameMessage,
+    required TResult Function(Message_ChangeParticipants value)
         changeParticipants,
-    required TResult Function(DartMessage_React value) react,
-    required TResult Function(DartMessage_Delivered value) delivered,
-    required TResult Function(DartMessage_Read value) read,
-    required TResult Function(DartMessage_Typing value) typing,
-    required TResult Function(DartMessage_Unsend value) unsend,
-    required TResult Function(DartMessage_Edit value) edit,
-    required TResult Function(DartMessage_IconChange value) iconChange,
-    required TResult Function(DartMessage_StopTyping value) stopTyping,
-    required TResult Function(DartMessage_EnableSmsActivation value)
+    required TResult Function(Message_React value) react,
+    required TResult Function(Message_Delivered value) delivered,
+    required TResult Function(Message_Read value) read,
+    required TResult Function(Message_Typing value) typing,
+    required TResult Function(Message_Unsend value) unsend,
+    required TResult Function(Message_Edit value) edit,
+    required TResult Function(Message_IconChange value) iconChange,
+    required TResult Function(Message_StopTyping value) stopTyping,
+    required TResult Function(Message_EnableSmsActivation value)
         enableSmsActivation,
-    required TResult Function(DartMessage_MessageReadOnDevice value)
+    required TResult Function(Message_MessageReadOnDevice value)
         messageReadOnDevice,
-    required TResult Function(DartMessage_SmsConfirmSent value) smsConfirmSent,
-    required TResult Function(DartMessage_MarkUnread value) markUnread,
-    required TResult Function(DartMessage_PeerCacheInvalidate value)
+    required TResult Function(Message_SmsConfirmSent value) smsConfirmSent,
+    required TResult Function(Message_MarkUnread value) markUnread,
+    required TResult Function(Message_PeerCacheInvalidate value)
         peerCacheInvalidate,
-    required TResult Function(DartMessage_UpdateExtension value)
-        updateExtension,
-    required TResult Function(DartMessage_Error value) error,
+    required TResult Function(Message_UpdateExtension value) updateExtension,
+    required TResult Function(Message_Error value) error,
   }) {
     return peerCacheInvalidate(this);
   }
@@ -5919,27 +5727,24 @@ class _$DartMessage_PeerCacheInvalidateImpl
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(DartMessage_Message value)? message,
-    TResult? Function(DartMessage_RenameMessage value)? renameMessage,
-    TResult? Function(DartMessage_ChangeParticipants value)? changeParticipants,
-    TResult? Function(DartMessage_React value)? react,
-    TResult? Function(DartMessage_Delivered value)? delivered,
-    TResult? Function(DartMessage_Read value)? read,
-    TResult? Function(DartMessage_Typing value)? typing,
-    TResult? Function(DartMessage_Unsend value)? unsend,
-    TResult? Function(DartMessage_Edit value)? edit,
-    TResult? Function(DartMessage_IconChange value)? iconChange,
-    TResult? Function(DartMessage_StopTyping value)? stopTyping,
-    TResult? Function(DartMessage_EnableSmsActivation value)?
-        enableSmsActivation,
-    TResult? Function(DartMessage_MessageReadOnDevice value)?
-        messageReadOnDevice,
-    TResult? Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
-    TResult? Function(DartMessage_MarkUnread value)? markUnread,
-    TResult? Function(DartMessage_PeerCacheInvalidate value)?
-        peerCacheInvalidate,
-    TResult? Function(DartMessage_UpdateExtension value)? updateExtension,
-    TResult? Function(DartMessage_Error value)? error,
+    TResult? Function(Message_Message value)? message,
+    TResult? Function(Message_RenameMessage value)? renameMessage,
+    TResult? Function(Message_ChangeParticipants value)? changeParticipants,
+    TResult? Function(Message_React value)? react,
+    TResult? Function(Message_Delivered value)? delivered,
+    TResult? Function(Message_Read value)? read,
+    TResult? Function(Message_Typing value)? typing,
+    TResult? Function(Message_Unsend value)? unsend,
+    TResult? Function(Message_Edit value)? edit,
+    TResult? Function(Message_IconChange value)? iconChange,
+    TResult? Function(Message_StopTyping value)? stopTyping,
+    TResult? Function(Message_EnableSmsActivation value)? enableSmsActivation,
+    TResult? Function(Message_MessageReadOnDevice value)? messageReadOnDevice,
+    TResult? Function(Message_SmsConfirmSent value)? smsConfirmSent,
+    TResult? Function(Message_MarkUnread value)? markUnread,
+    TResult? Function(Message_PeerCacheInvalidate value)? peerCacheInvalidate,
+    TResult? Function(Message_UpdateExtension value)? updateExtension,
+    TResult? Function(Message_Error value)? error,
   }) {
     return peerCacheInvalidate?.call(this);
   }
@@ -5947,27 +5752,24 @@ class _$DartMessage_PeerCacheInvalidateImpl
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(DartMessage_Message value)? message,
-    TResult Function(DartMessage_RenameMessage value)? renameMessage,
-    TResult Function(DartMessage_ChangeParticipants value)? changeParticipants,
-    TResult Function(DartMessage_React value)? react,
-    TResult Function(DartMessage_Delivered value)? delivered,
-    TResult Function(DartMessage_Read value)? read,
-    TResult Function(DartMessage_Typing value)? typing,
-    TResult Function(DartMessage_Unsend value)? unsend,
-    TResult Function(DartMessage_Edit value)? edit,
-    TResult Function(DartMessage_IconChange value)? iconChange,
-    TResult Function(DartMessage_StopTyping value)? stopTyping,
-    TResult Function(DartMessage_EnableSmsActivation value)?
-        enableSmsActivation,
-    TResult Function(DartMessage_MessageReadOnDevice value)?
-        messageReadOnDevice,
-    TResult Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
-    TResult Function(DartMessage_MarkUnread value)? markUnread,
-    TResult Function(DartMessage_PeerCacheInvalidate value)?
-        peerCacheInvalidate,
-    TResult Function(DartMessage_UpdateExtension value)? updateExtension,
-    TResult Function(DartMessage_Error value)? error,
+    TResult Function(Message_Message value)? message,
+    TResult Function(Message_RenameMessage value)? renameMessage,
+    TResult Function(Message_ChangeParticipants value)? changeParticipants,
+    TResult Function(Message_React value)? react,
+    TResult Function(Message_Delivered value)? delivered,
+    TResult Function(Message_Read value)? read,
+    TResult Function(Message_Typing value)? typing,
+    TResult Function(Message_Unsend value)? unsend,
+    TResult Function(Message_Edit value)? edit,
+    TResult Function(Message_IconChange value)? iconChange,
+    TResult Function(Message_StopTyping value)? stopTyping,
+    TResult Function(Message_EnableSmsActivation value)? enableSmsActivation,
+    TResult Function(Message_MessageReadOnDevice value)? messageReadOnDevice,
+    TResult Function(Message_SmsConfirmSent value)? smsConfirmSent,
+    TResult Function(Message_MarkUnread value)? markUnread,
+    TResult Function(Message_PeerCacheInvalidate value)? peerCacheInvalidate,
+    TResult Function(Message_UpdateExtension value)? updateExtension,
+    TResult Function(Message_Error value)? error,
     required TResult orElse(),
   }) {
     if (peerCacheInvalidate != null) {
@@ -5977,103 +5779,102 @@ class _$DartMessage_PeerCacheInvalidateImpl
   }
 }
 
-abstract class DartMessage_PeerCacheInvalidate extends DartMessage {
-  const factory DartMessage_PeerCacheInvalidate() =
-      _$DartMessage_PeerCacheInvalidateImpl;
-  const DartMessage_PeerCacheInvalidate._() : super._();
+abstract class Message_PeerCacheInvalidate extends Message {
+  const factory Message_PeerCacheInvalidate() =
+      _$Message_PeerCacheInvalidateImpl;
+  const Message_PeerCacheInvalidate._() : super._();
 }
 
 /// @nodoc
-abstract class _$$DartMessage_UpdateExtensionImplCopyWith<$Res> {
-  factory _$$DartMessage_UpdateExtensionImplCopyWith(
-          _$DartMessage_UpdateExtensionImpl value,
-          $Res Function(_$DartMessage_UpdateExtensionImpl) then) =
-      __$$DartMessage_UpdateExtensionImplCopyWithImpl<$Res>;
+abstract class _$$Message_UpdateExtensionImplCopyWith<$Res> {
+  factory _$$Message_UpdateExtensionImplCopyWith(
+          _$Message_UpdateExtensionImpl value,
+          $Res Function(_$Message_UpdateExtensionImpl) then) =
+      __$$Message_UpdateExtensionImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({DartUpdateExtensionMessage field0});
+  $Res call({UpdateExtensionMessage field0});
 }
 
 /// @nodoc
-class __$$DartMessage_UpdateExtensionImplCopyWithImpl<$Res>
-    extends _$DartMessageCopyWithImpl<$Res, _$DartMessage_UpdateExtensionImpl>
-    implements _$$DartMessage_UpdateExtensionImplCopyWith<$Res> {
-  __$$DartMessage_UpdateExtensionImplCopyWithImpl(
-      _$DartMessage_UpdateExtensionImpl _value,
-      $Res Function(_$DartMessage_UpdateExtensionImpl) _then)
+class __$$Message_UpdateExtensionImplCopyWithImpl<$Res>
+    extends _$MessageCopyWithImpl<$Res, _$Message_UpdateExtensionImpl>
+    implements _$$Message_UpdateExtensionImplCopyWith<$Res> {
+  __$$Message_UpdateExtensionImplCopyWithImpl(
+      _$Message_UpdateExtensionImpl _value,
+      $Res Function(_$Message_UpdateExtensionImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of DartMessage
+  /// Create a copy of Message
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? field0 = null,
   }) {
-    return _then(_$DartMessage_UpdateExtensionImpl(
+    return _then(_$Message_UpdateExtensionImpl(
       null == field0
           ? _value.field0
           : field0 // ignore: cast_nullable_to_non_nullable
-              as DartUpdateExtensionMessage,
+              as UpdateExtensionMessage,
     ));
   }
 }
 
 /// @nodoc
 
-class _$DartMessage_UpdateExtensionImpl extends DartMessage_UpdateExtension {
-  const _$DartMessage_UpdateExtensionImpl(this.field0) : super._();
+class _$Message_UpdateExtensionImpl extends Message_UpdateExtension {
+  const _$Message_UpdateExtensionImpl(this.field0) : super._();
 
   @override
-  final DartUpdateExtensionMessage field0;
+  final UpdateExtensionMessage field0;
 
   @override
   String toString() {
-    return 'DartMessage.updateExtension(field0: $field0)';
+    return 'Message.updateExtension(field0: $field0)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$DartMessage_UpdateExtensionImpl &&
+            other is _$Message_UpdateExtensionImpl &&
             (identical(other.field0, field0) || other.field0 == field0));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, field0);
 
-  /// Create a copy of DartMessage
+  /// Create a copy of Message
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$DartMessage_UpdateExtensionImplCopyWith<_$DartMessage_UpdateExtensionImpl>
-      get copyWith => __$$DartMessage_UpdateExtensionImplCopyWithImpl<
-          _$DartMessage_UpdateExtensionImpl>(this, _$identity);
+  _$$Message_UpdateExtensionImplCopyWith<_$Message_UpdateExtensionImpl>
+      get copyWith => __$$Message_UpdateExtensionImplCopyWithImpl<
+          _$Message_UpdateExtensionImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(DartNormalMessage field0) message,
-    required TResult Function(DartRenameMessage field0) renameMessage,
-    required TResult Function(DartChangeParticipantMessage field0)
+    required TResult Function(NormalMessage field0) message,
+    required TResult Function(RenameMessage field0) renameMessage,
+    required TResult Function(ChangeParticipantMessage field0)
         changeParticipants,
-    required TResult Function(DartReactMessage field0) react,
+    required TResult Function(ReactMessage field0) react,
     required TResult Function() delivered,
     required TResult Function() read,
     required TResult Function() typing,
-    required TResult Function(DartUnsendMessage field0) unsend,
-    required TResult Function(DartEditMessage field0) edit,
-    required TResult Function(DartIconChangeMessage field0) iconChange,
+    required TResult Function(UnsendMessage field0) unsend,
+    required TResult Function(EditMessage field0) edit,
+    required TResult Function(IconChangeMessage field0) iconChange,
     required TResult Function() stopTyping,
     required TResult Function(bool field0) enableSmsActivation,
     required TResult Function() messageReadOnDevice,
     required TResult Function(bool field0) smsConfirmSent,
     required TResult Function() markUnread,
     required TResult Function() peerCacheInvalidate,
-    required TResult Function(DartUpdateExtensionMessage field0)
-        updateExtension,
-    required TResult Function(DartErrorMessage field0) error,
+    required TResult Function(UpdateExtensionMessage field0) updateExtension,
+    required TResult Function(ErrorMessage field0) error,
   }) {
     return updateExtension(field0);
   }
@@ -6081,24 +5882,24 @@ class _$DartMessage_UpdateExtensionImpl extends DartMessage_UpdateExtension {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(DartNormalMessage field0)? message,
-    TResult? Function(DartRenameMessage field0)? renameMessage,
-    TResult? Function(DartChangeParticipantMessage field0)? changeParticipants,
-    TResult? Function(DartReactMessage field0)? react,
+    TResult? Function(NormalMessage field0)? message,
+    TResult? Function(RenameMessage field0)? renameMessage,
+    TResult? Function(ChangeParticipantMessage field0)? changeParticipants,
+    TResult? Function(ReactMessage field0)? react,
     TResult? Function()? delivered,
     TResult? Function()? read,
     TResult? Function()? typing,
-    TResult? Function(DartUnsendMessage field0)? unsend,
-    TResult? Function(DartEditMessage field0)? edit,
-    TResult? Function(DartIconChangeMessage field0)? iconChange,
+    TResult? Function(UnsendMessage field0)? unsend,
+    TResult? Function(EditMessage field0)? edit,
+    TResult? Function(IconChangeMessage field0)? iconChange,
     TResult? Function()? stopTyping,
     TResult? Function(bool field0)? enableSmsActivation,
     TResult? Function()? messageReadOnDevice,
     TResult? Function(bool field0)? smsConfirmSent,
     TResult? Function()? markUnread,
     TResult? Function()? peerCacheInvalidate,
-    TResult? Function(DartUpdateExtensionMessage field0)? updateExtension,
-    TResult? Function(DartErrorMessage field0)? error,
+    TResult? Function(UpdateExtensionMessage field0)? updateExtension,
+    TResult? Function(ErrorMessage field0)? error,
   }) {
     return updateExtension?.call(field0);
   }
@@ -6106,24 +5907,24 @@ class _$DartMessage_UpdateExtensionImpl extends DartMessage_UpdateExtension {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(DartNormalMessage field0)? message,
-    TResult Function(DartRenameMessage field0)? renameMessage,
-    TResult Function(DartChangeParticipantMessage field0)? changeParticipants,
-    TResult Function(DartReactMessage field0)? react,
+    TResult Function(NormalMessage field0)? message,
+    TResult Function(RenameMessage field0)? renameMessage,
+    TResult Function(ChangeParticipantMessage field0)? changeParticipants,
+    TResult Function(ReactMessage field0)? react,
     TResult Function()? delivered,
     TResult Function()? read,
     TResult Function()? typing,
-    TResult Function(DartUnsendMessage field0)? unsend,
-    TResult Function(DartEditMessage field0)? edit,
-    TResult Function(DartIconChangeMessage field0)? iconChange,
+    TResult Function(UnsendMessage field0)? unsend,
+    TResult Function(EditMessage field0)? edit,
+    TResult Function(IconChangeMessage field0)? iconChange,
     TResult Function()? stopTyping,
     TResult Function(bool field0)? enableSmsActivation,
     TResult Function()? messageReadOnDevice,
     TResult Function(bool field0)? smsConfirmSent,
     TResult Function()? markUnread,
     TResult Function()? peerCacheInvalidate,
-    TResult Function(DartUpdateExtensionMessage field0)? updateExtension,
-    TResult Function(DartErrorMessage field0)? error,
+    TResult Function(UpdateExtensionMessage field0)? updateExtension,
+    TResult Function(ErrorMessage field0)? error,
     required TResult orElse(),
   }) {
     if (updateExtension != null) {
@@ -6135,29 +5936,28 @@ class _$DartMessage_UpdateExtensionImpl extends DartMessage_UpdateExtension {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(DartMessage_Message value) message,
-    required TResult Function(DartMessage_RenameMessage value) renameMessage,
-    required TResult Function(DartMessage_ChangeParticipants value)
+    required TResult Function(Message_Message value) message,
+    required TResult Function(Message_RenameMessage value) renameMessage,
+    required TResult Function(Message_ChangeParticipants value)
         changeParticipants,
-    required TResult Function(DartMessage_React value) react,
-    required TResult Function(DartMessage_Delivered value) delivered,
-    required TResult Function(DartMessage_Read value) read,
-    required TResult Function(DartMessage_Typing value) typing,
-    required TResult Function(DartMessage_Unsend value) unsend,
-    required TResult Function(DartMessage_Edit value) edit,
-    required TResult Function(DartMessage_IconChange value) iconChange,
-    required TResult Function(DartMessage_StopTyping value) stopTyping,
-    required TResult Function(DartMessage_EnableSmsActivation value)
+    required TResult Function(Message_React value) react,
+    required TResult Function(Message_Delivered value) delivered,
+    required TResult Function(Message_Read value) read,
+    required TResult Function(Message_Typing value) typing,
+    required TResult Function(Message_Unsend value) unsend,
+    required TResult Function(Message_Edit value) edit,
+    required TResult Function(Message_IconChange value) iconChange,
+    required TResult Function(Message_StopTyping value) stopTyping,
+    required TResult Function(Message_EnableSmsActivation value)
         enableSmsActivation,
-    required TResult Function(DartMessage_MessageReadOnDevice value)
+    required TResult Function(Message_MessageReadOnDevice value)
         messageReadOnDevice,
-    required TResult Function(DartMessage_SmsConfirmSent value) smsConfirmSent,
-    required TResult Function(DartMessage_MarkUnread value) markUnread,
-    required TResult Function(DartMessage_PeerCacheInvalidate value)
+    required TResult Function(Message_SmsConfirmSent value) smsConfirmSent,
+    required TResult Function(Message_MarkUnread value) markUnread,
+    required TResult Function(Message_PeerCacheInvalidate value)
         peerCacheInvalidate,
-    required TResult Function(DartMessage_UpdateExtension value)
-        updateExtension,
-    required TResult Function(DartMessage_Error value) error,
+    required TResult Function(Message_UpdateExtension value) updateExtension,
+    required TResult Function(Message_Error value) error,
   }) {
     return updateExtension(this);
   }
@@ -6165,27 +5965,24 @@ class _$DartMessage_UpdateExtensionImpl extends DartMessage_UpdateExtension {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(DartMessage_Message value)? message,
-    TResult? Function(DartMessage_RenameMessage value)? renameMessage,
-    TResult? Function(DartMessage_ChangeParticipants value)? changeParticipants,
-    TResult? Function(DartMessage_React value)? react,
-    TResult? Function(DartMessage_Delivered value)? delivered,
-    TResult? Function(DartMessage_Read value)? read,
-    TResult? Function(DartMessage_Typing value)? typing,
-    TResult? Function(DartMessage_Unsend value)? unsend,
-    TResult? Function(DartMessage_Edit value)? edit,
-    TResult? Function(DartMessage_IconChange value)? iconChange,
-    TResult? Function(DartMessage_StopTyping value)? stopTyping,
-    TResult? Function(DartMessage_EnableSmsActivation value)?
-        enableSmsActivation,
-    TResult? Function(DartMessage_MessageReadOnDevice value)?
-        messageReadOnDevice,
-    TResult? Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
-    TResult? Function(DartMessage_MarkUnread value)? markUnread,
-    TResult? Function(DartMessage_PeerCacheInvalidate value)?
-        peerCacheInvalidate,
-    TResult? Function(DartMessage_UpdateExtension value)? updateExtension,
-    TResult? Function(DartMessage_Error value)? error,
+    TResult? Function(Message_Message value)? message,
+    TResult? Function(Message_RenameMessage value)? renameMessage,
+    TResult? Function(Message_ChangeParticipants value)? changeParticipants,
+    TResult? Function(Message_React value)? react,
+    TResult? Function(Message_Delivered value)? delivered,
+    TResult? Function(Message_Read value)? read,
+    TResult? Function(Message_Typing value)? typing,
+    TResult? Function(Message_Unsend value)? unsend,
+    TResult? Function(Message_Edit value)? edit,
+    TResult? Function(Message_IconChange value)? iconChange,
+    TResult? Function(Message_StopTyping value)? stopTyping,
+    TResult? Function(Message_EnableSmsActivation value)? enableSmsActivation,
+    TResult? Function(Message_MessageReadOnDevice value)? messageReadOnDevice,
+    TResult? Function(Message_SmsConfirmSent value)? smsConfirmSent,
+    TResult? Function(Message_MarkUnread value)? markUnread,
+    TResult? Function(Message_PeerCacheInvalidate value)? peerCacheInvalidate,
+    TResult? Function(Message_UpdateExtension value)? updateExtension,
+    TResult? Function(Message_Error value)? error,
   }) {
     return updateExtension?.call(this);
   }
@@ -6193,27 +5990,24 @@ class _$DartMessage_UpdateExtensionImpl extends DartMessage_UpdateExtension {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(DartMessage_Message value)? message,
-    TResult Function(DartMessage_RenameMessage value)? renameMessage,
-    TResult Function(DartMessage_ChangeParticipants value)? changeParticipants,
-    TResult Function(DartMessage_React value)? react,
-    TResult Function(DartMessage_Delivered value)? delivered,
-    TResult Function(DartMessage_Read value)? read,
-    TResult Function(DartMessage_Typing value)? typing,
-    TResult Function(DartMessage_Unsend value)? unsend,
-    TResult Function(DartMessage_Edit value)? edit,
-    TResult Function(DartMessage_IconChange value)? iconChange,
-    TResult Function(DartMessage_StopTyping value)? stopTyping,
-    TResult Function(DartMessage_EnableSmsActivation value)?
-        enableSmsActivation,
-    TResult Function(DartMessage_MessageReadOnDevice value)?
-        messageReadOnDevice,
-    TResult Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
-    TResult Function(DartMessage_MarkUnread value)? markUnread,
-    TResult Function(DartMessage_PeerCacheInvalidate value)?
-        peerCacheInvalidate,
-    TResult Function(DartMessage_UpdateExtension value)? updateExtension,
-    TResult Function(DartMessage_Error value)? error,
+    TResult Function(Message_Message value)? message,
+    TResult Function(Message_RenameMessage value)? renameMessage,
+    TResult Function(Message_ChangeParticipants value)? changeParticipants,
+    TResult Function(Message_React value)? react,
+    TResult Function(Message_Delivered value)? delivered,
+    TResult Function(Message_Read value)? read,
+    TResult Function(Message_Typing value)? typing,
+    TResult Function(Message_Unsend value)? unsend,
+    TResult Function(Message_Edit value)? edit,
+    TResult Function(Message_IconChange value)? iconChange,
+    TResult Function(Message_StopTyping value)? stopTyping,
+    TResult Function(Message_EnableSmsActivation value)? enableSmsActivation,
+    TResult Function(Message_MessageReadOnDevice value)? messageReadOnDevice,
+    TResult Function(Message_SmsConfirmSent value)? smsConfirmSent,
+    TResult Function(Message_MarkUnread value)? markUnread,
+    TResult Function(Message_PeerCacheInvalidate value)? peerCacheInvalidate,
+    TResult Function(Message_UpdateExtension value)? updateExtension,
+    TResult Function(Message_Error value)? error,
     required TResult orElse(),
   }) {
     if (updateExtension != null) {
@@ -6223,110 +6017,107 @@ class _$DartMessage_UpdateExtensionImpl extends DartMessage_UpdateExtension {
   }
 }
 
-abstract class DartMessage_UpdateExtension extends DartMessage {
-  const factory DartMessage_UpdateExtension(
-          final DartUpdateExtensionMessage field0) =
-      _$DartMessage_UpdateExtensionImpl;
-  const DartMessage_UpdateExtension._() : super._();
+abstract class Message_UpdateExtension extends Message {
+  const factory Message_UpdateExtension(final UpdateExtensionMessage field0) =
+      _$Message_UpdateExtensionImpl;
+  const Message_UpdateExtension._() : super._();
 
-  DartUpdateExtensionMessage get field0;
+  UpdateExtensionMessage get field0;
 
-  /// Create a copy of DartMessage
+  /// Create a copy of Message
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$DartMessage_UpdateExtensionImplCopyWith<_$DartMessage_UpdateExtensionImpl>
+  _$$Message_UpdateExtensionImplCopyWith<_$Message_UpdateExtensionImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$DartMessage_ErrorImplCopyWith<$Res> {
-  factory _$$DartMessage_ErrorImplCopyWith(_$DartMessage_ErrorImpl value,
-          $Res Function(_$DartMessage_ErrorImpl) then) =
-      __$$DartMessage_ErrorImplCopyWithImpl<$Res>;
+abstract class _$$Message_ErrorImplCopyWith<$Res> {
+  factory _$$Message_ErrorImplCopyWith(
+          _$Message_ErrorImpl value, $Res Function(_$Message_ErrorImpl) then) =
+      __$$Message_ErrorImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({DartErrorMessage field0});
+  $Res call({ErrorMessage field0});
 }
 
 /// @nodoc
-class __$$DartMessage_ErrorImplCopyWithImpl<$Res>
-    extends _$DartMessageCopyWithImpl<$Res, _$DartMessage_ErrorImpl>
-    implements _$$DartMessage_ErrorImplCopyWith<$Res> {
-  __$$DartMessage_ErrorImplCopyWithImpl(_$DartMessage_ErrorImpl _value,
-      $Res Function(_$DartMessage_ErrorImpl) _then)
+class __$$Message_ErrorImplCopyWithImpl<$Res>
+    extends _$MessageCopyWithImpl<$Res, _$Message_ErrorImpl>
+    implements _$$Message_ErrorImplCopyWith<$Res> {
+  __$$Message_ErrorImplCopyWithImpl(
+      _$Message_ErrorImpl _value, $Res Function(_$Message_ErrorImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of DartMessage
+  /// Create a copy of Message
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? field0 = null,
   }) {
-    return _then(_$DartMessage_ErrorImpl(
+    return _then(_$Message_ErrorImpl(
       null == field0
           ? _value.field0
           : field0 // ignore: cast_nullable_to_non_nullable
-              as DartErrorMessage,
+              as ErrorMessage,
     ));
   }
 }
 
 /// @nodoc
 
-class _$DartMessage_ErrorImpl extends DartMessage_Error {
-  const _$DartMessage_ErrorImpl(this.field0) : super._();
+class _$Message_ErrorImpl extends Message_Error {
+  const _$Message_ErrorImpl(this.field0) : super._();
 
   @override
-  final DartErrorMessage field0;
+  final ErrorMessage field0;
 
   @override
   String toString() {
-    return 'DartMessage.error(field0: $field0)';
+    return 'Message.error(field0: $field0)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$DartMessage_ErrorImpl &&
+            other is _$Message_ErrorImpl &&
             (identical(other.field0, field0) || other.field0 == field0));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, field0);
 
-  /// Create a copy of DartMessage
+  /// Create a copy of Message
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$DartMessage_ErrorImplCopyWith<_$DartMessage_ErrorImpl> get copyWith =>
-      __$$DartMessage_ErrorImplCopyWithImpl<_$DartMessage_ErrorImpl>(
-          this, _$identity);
+  _$$Message_ErrorImplCopyWith<_$Message_ErrorImpl> get copyWith =>
+      __$$Message_ErrorImplCopyWithImpl<_$Message_ErrorImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(DartNormalMessage field0) message,
-    required TResult Function(DartRenameMessage field0) renameMessage,
-    required TResult Function(DartChangeParticipantMessage field0)
+    required TResult Function(NormalMessage field0) message,
+    required TResult Function(RenameMessage field0) renameMessage,
+    required TResult Function(ChangeParticipantMessage field0)
         changeParticipants,
-    required TResult Function(DartReactMessage field0) react,
+    required TResult Function(ReactMessage field0) react,
     required TResult Function() delivered,
     required TResult Function() read,
     required TResult Function() typing,
-    required TResult Function(DartUnsendMessage field0) unsend,
-    required TResult Function(DartEditMessage field0) edit,
-    required TResult Function(DartIconChangeMessage field0) iconChange,
+    required TResult Function(UnsendMessage field0) unsend,
+    required TResult Function(EditMessage field0) edit,
+    required TResult Function(IconChangeMessage field0) iconChange,
     required TResult Function() stopTyping,
     required TResult Function(bool field0) enableSmsActivation,
     required TResult Function() messageReadOnDevice,
     required TResult Function(bool field0) smsConfirmSent,
     required TResult Function() markUnread,
     required TResult Function() peerCacheInvalidate,
-    required TResult Function(DartUpdateExtensionMessage field0)
-        updateExtension,
-    required TResult Function(DartErrorMessage field0) error,
+    required TResult Function(UpdateExtensionMessage field0) updateExtension,
+    required TResult Function(ErrorMessage field0) error,
   }) {
     return error(field0);
   }
@@ -6334,24 +6125,24 @@ class _$DartMessage_ErrorImpl extends DartMessage_Error {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(DartNormalMessage field0)? message,
-    TResult? Function(DartRenameMessage field0)? renameMessage,
-    TResult? Function(DartChangeParticipantMessage field0)? changeParticipants,
-    TResult? Function(DartReactMessage field0)? react,
+    TResult? Function(NormalMessage field0)? message,
+    TResult? Function(RenameMessage field0)? renameMessage,
+    TResult? Function(ChangeParticipantMessage field0)? changeParticipants,
+    TResult? Function(ReactMessage field0)? react,
     TResult? Function()? delivered,
     TResult? Function()? read,
     TResult? Function()? typing,
-    TResult? Function(DartUnsendMessage field0)? unsend,
-    TResult? Function(DartEditMessage field0)? edit,
-    TResult? Function(DartIconChangeMessage field0)? iconChange,
+    TResult? Function(UnsendMessage field0)? unsend,
+    TResult? Function(EditMessage field0)? edit,
+    TResult? Function(IconChangeMessage field0)? iconChange,
     TResult? Function()? stopTyping,
     TResult? Function(bool field0)? enableSmsActivation,
     TResult? Function()? messageReadOnDevice,
     TResult? Function(bool field0)? smsConfirmSent,
     TResult? Function()? markUnread,
     TResult? Function()? peerCacheInvalidate,
-    TResult? Function(DartUpdateExtensionMessage field0)? updateExtension,
-    TResult? Function(DartErrorMessage field0)? error,
+    TResult? Function(UpdateExtensionMessage field0)? updateExtension,
+    TResult? Function(ErrorMessage field0)? error,
   }) {
     return error?.call(field0);
   }
@@ -6359,24 +6150,24 @@ class _$DartMessage_ErrorImpl extends DartMessage_Error {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(DartNormalMessage field0)? message,
-    TResult Function(DartRenameMessage field0)? renameMessage,
-    TResult Function(DartChangeParticipantMessage field0)? changeParticipants,
-    TResult Function(DartReactMessage field0)? react,
+    TResult Function(NormalMessage field0)? message,
+    TResult Function(RenameMessage field0)? renameMessage,
+    TResult Function(ChangeParticipantMessage field0)? changeParticipants,
+    TResult Function(ReactMessage field0)? react,
     TResult Function()? delivered,
     TResult Function()? read,
     TResult Function()? typing,
-    TResult Function(DartUnsendMessage field0)? unsend,
-    TResult Function(DartEditMessage field0)? edit,
-    TResult Function(DartIconChangeMessage field0)? iconChange,
+    TResult Function(UnsendMessage field0)? unsend,
+    TResult Function(EditMessage field0)? edit,
+    TResult Function(IconChangeMessage field0)? iconChange,
     TResult Function()? stopTyping,
     TResult Function(bool field0)? enableSmsActivation,
     TResult Function()? messageReadOnDevice,
     TResult Function(bool field0)? smsConfirmSent,
     TResult Function()? markUnread,
     TResult Function()? peerCacheInvalidate,
-    TResult Function(DartUpdateExtensionMessage field0)? updateExtension,
-    TResult Function(DartErrorMessage field0)? error,
+    TResult Function(UpdateExtensionMessage field0)? updateExtension,
+    TResult Function(ErrorMessage field0)? error,
     required TResult orElse(),
   }) {
     if (error != null) {
@@ -6388,29 +6179,28 @@ class _$DartMessage_ErrorImpl extends DartMessage_Error {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(DartMessage_Message value) message,
-    required TResult Function(DartMessage_RenameMessage value) renameMessage,
-    required TResult Function(DartMessage_ChangeParticipants value)
+    required TResult Function(Message_Message value) message,
+    required TResult Function(Message_RenameMessage value) renameMessage,
+    required TResult Function(Message_ChangeParticipants value)
         changeParticipants,
-    required TResult Function(DartMessage_React value) react,
-    required TResult Function(DartMessage_Delivered value) delivered,
-    required TResult Function(DartMessage_Read value) read,
-    required TResult Function(DartMessage_Typing value) typing,
-    required TResult Function(DartMessage_Unsend value) unsend,
-    required TResult Function(DartMessage_Edit value) edit,
-    required TResult Function(DartMessage_IconChange value) iconChange,
-    required TResult Function(DartMessage_StopTyping value) stopTyping,
-    required TResult Function(DartMessage_EnableSmsActivation value)
+    required TResult Function(Message_React value) react,
+    required TResult Function(Message_Delivered value) delivered,
+    required TResult Function(Message_Read value) read,
+    required TResult Function(Message_Typing value) typing,
+    required TResult Function(Message_Unsend value) unsend,
+    required TResult Function(Message_Edit value) edit,
+    required TResult Function(Message_IconChange value) iconChange,
+    required TResult Function(Message_StopTyping value) stopTyping,
+    required TResult Function(Message_EnableSmsActivation value)
         enableSmsActivation,
-    required TResult Function(DartMessage_MessageReadOnDevice value)
+    required TResult Function(Message_MessageReadOnDevice value)
         messageReadOnDevice,
-    required TResult Function(DartMessage_SmsConfirmSent value) smsConfirmSent,
-    required TResult Function(DartMessage_MarkUnread value) markUnread,
-    required TResult Function(DartMessage_PeerCacheInvalidate value)
+    required TResult Function(Message_SmsConfirmSent value) smsConfirmSent,
+    required TResult Function(Message_MarkUnread value) markUnread,
+    required TResult Function(Message_PeerCacheInvalidate value)
         peerCacheInvalidate,
-    required TResult Function(DartMessage_UpdateExtension value)
-        updateExtension,
-    required TResult Function(DartMessage_Error value) error,
+    required TResult Function(Message_UpdateExtension value) updateExtension,
+    required TResult Function(Message_Error value) error,
   }) {
     return error(this);
   }
@@ -6418,27 +6208,24 @@ class _$DartMessage_ErrorImpl extends DartMessage_Error {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(DartMessage_Message value)? message,
-    TResult? Function(DartMessage_RenameMessage value)? renameMessage,
-    TResult? Function(DartMessage_ChangeParticipants value)? changeParticipants,
-    TResult? Function(DartMessage_React value)? react,
-    TResult? Function(DartMessage_Delivered value)? delivered,
-    TResult? Function(DartMessage_Read value)? read,
-    TResult? Function(DartMessage_Typing value)? typing,
-    TResult? Function(DartMessage_Unsend value)? unsend,
-    TResult? Function(DartMessage_Edit value)? edit,
-    TResult? Function(DartMessage_IconChange value)? iconChange,
-    TResult? Function(DartMessage_StopTyping value)? stopTyping,
-    TResult? Function(DartMessage_EnableSmsActivation value)?
-        enableSmsActivation,
-    TResult? Function(DartMessage_MessageReadOnDevice value)?
-        messageReadOnDevice,
-    TResult? Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
-    TResult? Function(DartMessage_MarkUnread value)? markUnread,
-    TResult? Function(DartMessage_PeerCacheInvalidate value)?
-        peerCacheInvalidate,
-    TResult? Function(DartMessage_UpdateExtension value)? updateExtension,
-    TResult? Function(DartMessage_Error value)? error,
+    TResult? Function(Message_Message value)? message,
+    TResult? Function(Message_RenameMessage value)? renameMessage,
+    TResult? Function(Message_ChangeParticipants value)? changeParticipants,
+    TResult? Function(Message_React value)? react,
+    TResult? Function(Message_Delivered value)? delivered,
+    TResult? Function(Message_Read value)? read,
+    TResult? Function(Message_Typing value)? typing,
+    TResult? Function(Message_Unsend value)? unsend,
+    TResult? Function(Message_Edit value)? edit,
+    TResult? Function(Message_IconChange value)? iconChange,
+    TResult? Function(Message_StopTyping value)? stopTyping,
+    TResult? Function(Message_EnableSmsActivation value)? enableSmsActivation,
+    TResult? Function(Message_MessageReadOnDevice value)? messageReadOnDevice,
+    TResult? Function(Message_SmsConfirmSent value)? smsConfirmSent,
+    TResult? Function(Message_MarkUnread value)? markUnread,
+    TResult? Function(Message_PeerCacheInvalidate value)? peerCacheInvalidate,
+    TResult? Function(Message_UpdateExtension value)? updateExtension,
+    TResult? Function(Message_Error value)? error,
   }) {
     return error?.call(this);
   }
@@ -6446,27 +6233,24 @@ class _$DartMessage_ErrorImpl extends DartMessage_Error {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(DartMessage_Message value)? message,
-    TResult Function(DartMessage_RenameMessage value)? renameMessage,
-    TResult Function(DartMessage_ChangeParticipants value)? changeParticipants,
-    TResult Function(DartMessage_React value)? react,
-    TResult Function(DartMessage_Delivered value)? delivered,
-    TResult Function(DartMessage_Read value)? read,
-    TResult Function(DartMessage_Typing value)? typing,
-    TResult Function(DartMessage_Unsend value)? unsend,
-    TResult Function(DartMessage_Edit value)? edit,
-    TResult Function(DartMessage_IconChange value)? iconChange,
-    TResult Function(DartMessage_StopTyping value)? stopTyping,
-    TResult Function(DartMessage_EnableSmsActivation value)?
-        enableSmsActivation,
-    TResult Function(DartMessage_MessageReadOnDevice value)?
-        messageReadOnDevice,
-    TResult Function(DartMessage_SmsConfirmSent value)? smsConfirmSent,
-    TResult Function(DartMessage_MarkUnread value)? markUnread,
-    TResult Function(DartMessage_PeerCacheInvalidate value)?
-        peerCacheInvalidate,
-    TResult Function(DartMessage_UpdateExtension value)? updateExtension,
-    TResult Function(DartMessage_Error value)? error,
+    TResult Function(Message_Message value)? message,
+    TResult Function(Message_RenameMessage value)? renameMessage,
+    TResult Function(Message_ChangeParticipants value)? changeParticipants,
+    TResult Function(Message_React value)? react,
+    TResult Function(Message_Delivered value)? delivered,
+    TResult Function(Message_Read value)? read,
+    TResult Function(Message_Typing value)? typing,
+    TResult Function(Message_Unsend value)? unsend,
+    TResult Function(Message_Edit value)? edit,
+    TResult Function(Message_IconChange value)? iconChange,
+    TResult Function(Message_StopTyping value)? stopTyping,
+    TResult Function(Message_EnableSmsActivation value)? enableSmsActivation,
+    TResult Function(Message_MessageReadOnDevice value)? messageReadOnDevice,
+    TResult Function(Message_SmsConfirmSent value)? smsConfirmSent,
+    TResult Function(Message_MarkUnread value)? markUnread,
+    TResult Function(Message_PeerCacheInvalidate value)? peerCacheInvalidate,
+    TResult Function(Message_UpdateExtension value)? updateExtension,
+    TResult Function(Message_Error value)? error,
     required TResult orElse(),
   }) {
     if (error != null) {
@@ -6476,27 +6260,26 @@ class _$DartMessage_ErrorImpl extends DartMessage_Error {
   }
 }
 
-abstract class DartMessage_Error extends DartMessage {
-  const factory DartMessage_Error(final DartErrorMessage field0) =
-      _$DartMessage_ErrorImpl;
-  const DartMessage_Error._() : super._();
+abstract class Message_Error extends Message {
+  const factory Message_Error(final ErrorMessage field0) = _$Message_ErrorImpl;
+  const Message_Error._() : super._();
 
-  DartErrorMessage get field0;
+  ErrorMessage get field0;
 
-  /// Create a copy of DartMessage
+  /// Create a copy of Message
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$DartMessage_ErrorImplCopyWith<_$DartMessage_ErrorImpl> get copyWith =>
+  _$$Message_ErrorImplCopyWith<_$Message_ErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-mixin _$DartMessagePart {
+mixin _$MessagePart {
   Object get field0 => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String field0) text,
-    required TResult Function(DartAttachment field0) attachment,
+    required TResult Function(Attachment field0) attachment,
     required TResult Function(String field0, String field1) mention,
     required TResult Function(String field0) object,
   }) =>
@@ -6504,7 +6287,7 @@ mixin _$DartMessagePart {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String field0)? text,
-    TResult? Function(DartAttachment field0)? attachment,
+    TResult? Function(Attachment field0)? attachment,
     TResult? Function(String field0, String field1)? mention,
     TResult? Function(String field0)? object,
   }) =>
@@ -6512,7 +6295,7 @@ mixin _$DartMessagePart {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String field0)? text,
-    TResult Function(DartAttachment field0)? attachment,
+    TResult Function(Attachment field0)? attachment,
     TResult Function(String field0, String field1)? mention,
     TResult Function(String field0)? object,
     required TResult orElse(),
@@ -6520,77 +6303,77 @@ mixin _$DartMessagePart {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(DartMessagePart_Text value) text,
-    required TResult Function(DartMessagePart_Attachment value) attachment,
-    required TResult Function(DartMessagePart_Mention value) mention,
-    required TResult Function(DartMessagePart_Object value) object,
+    required TResult Function(MessagePart_Text value) text,
+    required TResult Function(MessagePart_Attachment value) attachment,
+    required TResult Function(MessagePart_Mention value) mention,
+    required TResult Function(MessagePart_Object value) object,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(DartMessagePart_Text value)? text,
-    TResult? Function(DartMessagePart_Attachment value)? attachment,
-    TResult? Function(DartMessagePart_Mention value)? mention,
-    TResult? Function(DartMessagePart_Object value)? object,
+    TResult? Function(MessagePart_Text value)? text,
+    TResult? Function(MessagePart_Attachment value)? attachment,
+    TResult? Function(MessagePart_Mention value)? mention,
+    TResult? Function(MessagePart_Object value)? object,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(DartMessagePart_Text value)? text,
-    TResult Function(DartMessagePart_Attachment value)? attachment,
-    TResult Function(DartMessagePart_Mention value)? mention,
-    TResult Function(DartMessagePart_Object value)? object,
+    TResult Function(MessagePart_Text value)? text,
+    TResult Function(MessagePart_Attachment value)? attachment,
+    TResult Function(MessagePart_Mention value)? mention,
+    TResult Function(MessagePart_Object value)? object,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $DartMessagePartCopyWith<$Res> {
-  factory $DartMessagePartCopyWith(
-          DartMessagePart value, $Res Function(DartMessagePart) then) =
-      _$DartMessagePartCopyWithImpl<$Res, DartMessagePart>;
+abstract class $MessagePartCopyWith<$Res> {
+  factory $MessagePartCopyWith(
+          MessagePart value, $Res Function(MessagePart) then) =
+      _$MessagePartCopyWithImpl<$Res, MessagePart>;
 }
 
 /// @nodoc
-class _$DartMessagePartCopyWithImpl<$Res, $Val extends DartMessagePart>
-    implements $DartMessagePartCopyWith<$Res> {
-  _$DartMessagePartCopyWithImpl(this._value, this._then);
+class _$MessagePartCopyWithImpl<$Res, $Val extends MessagePart>
+    implements $MessagePartCopyWith<$Res> {
+  _$MessagePartCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of DartMessagePart
+  /// Create a copy of MessagePart
   /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
-abstract class _$$DartMessagePart_TextImplCopyWith<$Res> {
-  factory _$$DartMessagePart_TextImplCopyWith(_$DartMessagePart_TextImpl value,
-          $Res Function(_$DartMessagePart_TextImpl) then) =
-      __$$DartMessagePart_TextImplCopyWithImpl<$Res>;
+abstract class _$$MessagePart_TextImplCopyWith<$Res> {
+  factory _$$MessagePart_TextImplCopyWith(_$MessagePart_TextImpl value,
+          $Res Function(_$MessagePart_TextImpl) then) =
+      __$$MessagePart_TextImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String field0});
 }
 
 /// @nodoc
-class __$$DartMessagePart_TextImplCopyWithImpl<$Res>
-    extends _$DartMessagePartCopyWithImpl<$Res, _$DartMessagePart_TextImpl>
-    implements _$$DartMessagePart_TextImplCopyWith<$Res> {
-  __$$DartMessagePart_TextImplCopyWithImpl(_$DartMessagePart_TextImpl _value,
-      $Res Function(_$DartMessagePart_TextImpl) _then)
+class __$$MessagePart_TextImplCopyWithImpl<$Res>
+    extends _$MessagePartCopyWithImpl<$Res, _$MessagePart_TextImpl>
+    implements _$$MessagePart_TextImplCopyWith<$Res> {
+  __$$MessagePart_TextImplCopyWithImpl(_$MessagePart_TextImpl _value,
+      $Res Function(_$MessagePart_TextImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of DartMessagePart
+  /// Create a copy of MessagePart
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? field0 = null,
   }) {
-    return _then(_$DartMessagePart_TextImpl(
+    return _then(_$MessagePart_TextImpl(
       null == field0
           ? _value.field0
           : field0 // ignore: cast_nullable_to_non_nullable
@@ -6601,43 +6384,42 @@ class __$$DartMessagePart_TextImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$DartMessagePart_TextImpl extends DartMessagePart_Text {
-  const _$DartMessagePart_TextImpl(this.field0) : super._();
+class _$MessagePart_TextImpl extends MessagePart_Text {
+  const _$MessagePart_TextImpl(this.field0) : super._();
 
   @override
   final String field0;
 
   @override
   String toString() {
-    return 'DartMessagePart.text(field0: $field0)';
+    return 'MessagePart.text(field0: $field0)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$DartMessagePart_TextImpl &&
+            other is _$MessagePart_TextImpl &&
             (identical(other.field0, field0) || other.field0 == field0));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, field0);
 
-  /// Create a copy of DartMessagePart
+  /// Create a copy of MessagePart
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$DartMessagePart_TextImplCopyWith<_$DartMessagePart_TextImpl>
-      get copyWith =>
-          __$$DartMessagePart_TextImplCopyWithImpl<_$DartMessagePart_TextImpl>(
-              this, _$identity);
+  _$$MessagePart_TextImplCopyWith<_$MessagePart_TextImpl> get copyWith =>
+      __$$MessagePart_TextImplCopyWithImpl<_$MessagePart_TextImpl>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String field0) text,
-    required TResult Function(DartAttachment field0) attachment,
+    required TResult Function(Attachment field0) attachment,
     required TResult Function(String field0, String field1) mention,
     required TResult Function(String field0) object,
   }) {
@@ -6648,7 +6430,7 @@ class _$DartMessagePart_TextImpl extends DartMessagePart_Text {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String field0)? text,
-    TResult? Function(DartAttachment field0)? attachment,
+    TResult? Function(Attachment field0)? attachment,
     TResult? Function(String field0, String field1)? mention,
     TResult? Function(String field0)? object,
   }) {
@@ -6659,7 +6441,7 @@ class _$DartMessagePart_TextImpl extends DartMessagePart_Text {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String field0)? text,
-    TResult Function(DartAttachment field0)? attachment,
+    TResult Function(Attachment field0)? attachment,
     TResult Function(String field0, String field1)? mention,
     TResult Function(String field0)? object,
     required TResult orElse(),
@@ -6673,10 +6455,10 @@ class _$DartMessagePart_TextImpl extends DartMessagePart_Text {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(DartMessagePart_Text value) text,
-    required TResult Function(DartMessagePart_Attachment value) attachment,
-    required TResult Function(DartMessagePart_Mention value) mention,
-    required TResult Function(DartMessagePart_Object value) object,
+    required TResult Function(MessagePart_Text value) text,
+    required TResult Function(MessagePart_Attachment value) attachment,
+    required TResult Function(MessagePart_Mention value) mention,
+    required TResult Function(MessagePart_Object value) object,
   }) {
     return text(this);
   }
@@ -6684,10 +6466,10 @@ class _$DartMessagePart_TextImpl extends DartMessagePart_Text {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(DartMessagePart_Text value)? text,
-    TResult? Function(DartMessagePart_Attachment value)? attachment,
-    TResult? Function(DartMessagePart_Mention value)? mention,
-    TResult? Function(DartMessagePart_Object value)? object,
+    TResult? Function(MessagePart_Text value)? text,
+    TResult? Function(MessagePart_Attachment value)? attachment,
+    TResult? Function(MessagePart_Mention value)? mention,
+    TResult? Function(MessagePart_Object value)? object,
   }) {
     return text?.call(this);
   }
@@ -6695,10 +6477,10 @@ class _$DartMessagePart_TextImpl extends DartMessagePart_Text {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(DartMessagePart_Text value)? text,
-    TResult Function(DartMessagePart_Attachment value)? attachment,
-    TResult Function(DartMessagePart_Mention value)? mention,
-    TResult Function(DartMessagePart_Object value)? object,
+    TResult Function(MessagePart_Text value)? text,
+    TResult Function(MessagePart_Attachment value)? attachment,
+    TResult Function(MessagePart_Mention value)? mention,
+    TResult Function(MessagePart_Object value)? object,
     required TResult orElse(),
   }) {
     if (text != null) {
@@ -6708,95 +6490,93 @@ class _$DartMessagePart_TextImpl extends DartMessagePart_Text {
   }
 }
 
-abstract class DartMessagePart_Text extends DartMessagePart {
-  const factory DartMessagePart_Text(final String field0) =
-      _$DartMessagePart_TextImpl;
-  const DartMessagePart_Text._() : super._();
+abstract class MessagePart_Text extends MessagePart {
+  const factory MessagePart_Text(final String field0) = _$MessagePart_TextImpl;
+  const MessagePart_Text._() : super._();
 
   @override
   String get field0;
 
-  /// Create a copy of DartMessagePart
+  /// Create a copy of MessagePart
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$DartMessagePart_TextImplCopyWith<_$DartMessagePart_TextImpl>
-      get copyWith => throw _privateConstructorUsedError;
+  _$$MessagePart_TextImplCopyWith<_$MessagePart_TextImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$DartMessagePart_AttachmentImplCopyWith<$Res> {
-  factory _$$DartMessagePart_AttachmentImplCopyWith(
-          _$DartMessagePart_AttachmentImpl value,
-          $Res Function(_$DartMessagePart_AttachmentImpl) then) =
-      __$$DartMessagePart_AttachmentImplCopyWithImpl<$Res>;
+abstract class _$$MessagePart_AttachmentImplCopyWith<$Res> {
+  factory _$$MessagePart_AttachmentImplCopyWith(
+          _$MessagePart_AttachmentImpl value,
+          $Res Function(_$MessagePart_AttachmentImpl) then) =
+      __$$MessagePart_AttachmentImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({DartAttachment field0});
+  $Res call({Attachment field0});
 }
 
 /// @nodoc
-class __$$DartMessagePart_AttachmentImplCopyWithImpl<$Res>
-    extends _$DartMessagePartCopyWithImpl<$Res,
-        _$DartMessagePart_AttachmentImpl>
-    implements _$$DartMessagePart_AttachmentImplCopyWith<$Res> {
-  __$$DartMessagePart_AttachmentImplCopyWithImpl(
-      _$DartMessagePart_AttachmentImpl _value,
-      $Res Function(_$DartMessagePart_AttachmentImpl) _then)
+class __$$MessagePart_AttachmentImplCopyWithImpl<$Res>
+    extends _$MessagePartCopyWithImpl<$Res, _$MessagePart_AttachmentImpl>
+    implements _$$MessagePart_AttachmentImplCopyWith<$Res> {
+  __$$MessagePart_AttachmentImplCopyWithImpl(
+      _$MessagePart_AttachmentImpl _value,
+      $Res Function(_$MessagePart_AttachmentImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of DartMessagePart
+  /// Create a copy of MessagePart
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? field0 = null,
   }) {
-    return _then(_$DartMessagePart_AttachmentImpl(
+    return _then(_$MessagePart_AttachmentImpl(
       null == field0
           ? _value.field0
           : field0 // ignore: cast_nullable_to_non_nullable
-              as DartAttachment,
+              as Attachment,
     ));
   }
 }
 
 /// @nodoc
 
-class _$DartMessagePart_AttachmentImpl extends DartMessagePart_Attachment {
-  const _$DartMessagePart_AttachmentImpl(this.field0) : super._();
+class _$MessagePart_AttachmentImpl extends MessagePart_Attachment {
+  const _$MessagePart_AttachmentImpl(this.field0) : super._();
 
   @override
-  final DartAttachment field0;
+  final Attachment field0;
 
   @override
   String toString() {
-    return 'DartMessagePart.attachment(field0: $field0)';
+    return 'MessagePart.attachment(field0: $field0)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$DartMessagePart_AttachmentImpl &&
+            other is _$MessagePart_AttachmentImpl &&
             (identical(other.field0, field0) || other.field0 == field0));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, field0);
 
-  /// Create a copy of DartMessagePart
+  /// Create a copy of MessagePart
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$DartMessagePart_AttachmentImplCopyWith<_$DartMessagePart_AttachmentImpl>
-      get copyWith => __$$DartMessagePart_AttachmentImplCopyWithImpl<
-          _$DartMessagePart_AttachmentImpl>(this, _$identity);
+  _$$MessagePart_AttachmentImplCopyWith<_$MessagePart_AttachmentImpl>
+      get copyWith => __$$MessagePart_AttachmentImplCopyWithImpl<
+          _$MessagePart_AttachmentImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String field0) text,
-    required TResult Function(DartAttachment field0) attachment,
+    required TResult Function(Attachment field0) attachment,
     required TResult Function(String field0, String field1) mention,
     required TResult Function(String field0) object,
   }) {
@@ -6807,7 +6587,7 @@ class _$DartMessagePart_AttachmentImpl extends DartMessagePart_Attachment {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String field0)? text,
-    TResult? Function(DartAttachment field0)? attachment,
+    TResult? Function(Attachment field0)? attachment,
     TResult? Function(String field0, String field1)? mention,
     TResult? Function(String field0)? object,
   }) {
@@ -6818,7 +6598,7 @@ class _$DartMessagePart_AttachmentImpl extends DartMessagePart_Attachment {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String field0)? text,
-    TResult Function(DartAttachment field0)? attachment,
+    TResult Function(Attachment field0)? attachment,
     TResult Function(String field0, String field1)? mention,
     TResult Function(String field0)? object,
     required TResult orElse(),
@@ -6832,10 +6612,10 @@ class _$DartMessagePart_AttachmentImpl extends DartMessagePart_Attachment {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(DartMessagePart_Text value) text,
-    required TResult Function(DartMessagePart_Attachment value) attachment,
-    required TResult Function(DartMessagePart_Mention value) mention,
-    required TResult Function(DartMessagePart_Object value) object,
+    required TResult Function(MessagePart_Text value) text,
+    required TResult Function(MessagePart_Attachment value) attachment,
+    required TResult Function(MessagePart_Mention value) mention,
+    required TResult Function(MessagePart_Object value) object,
   }) {
     return attachment(this);
   }
@@ -6843,10 +6623,10 @@ class _$DartMessagePart_AttachmentImpl extends DartMessagePart_Attachment {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(DartMessagePart_Text value)? text,
-    TResult? Function(DartMessagePart_Attachment value)? attachment,
-    TResult? Function(DartMessagePart_Mention value)? mention,
-    TResult? Function(DartMessagePart_Object value)? object,
+    TResult? Function(MessagePart_Text value)? text,
+    TResult? Function(MessagePart_Attachment value)? attachment,
+    TResult? Function(MessagePart_Mention value)? mention,
+    TResult? Function(MessagePart_Object value)? object,
   }) {
     return attachment?.call(this);
   }
@@ -6854,10 +6634,10 @@ class _$DartMessagePart_AttachmentImpl extends DartMessagePart_Attachment {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(DartMessagePart_Text value)? text,
-    TResult Function(DartMessagePart_Attachment value)? attachment,
-    TResult Function(DartMessagePart_Mention value)? mention,
-    TResult Function(DartMessagePart_Object value)? object,
+    TResult Function(MessagePart_Text value)? text,
+    TResult Function(MessagePart_Attachment value)? attachment,
+    TResult Function(MessagePart_Mention value)? mention,
+    TResult Function(MessagePart_Object value)? object,
     required TResult orElse(),
   }) {
     if (attachment != null) {
@@ -6867,41 +6647,39 @@ class _$DartMessagePart_AttachmentImpl extends DartMessagePart_Attachment {
   }
 }
 
-abstract class DartMessagePart_Attachment extends DartMessagePart {
-  const factory DartMessagePart_Attachment(final DartAttachment field0) =
-      _$DartMessagePart_AttachmentImpl;
-  const DartMessagePart_Attachment._() : super._();
+abstract class MessagePart_Attachment extends MessagePart {
+  const factory MessagePart_Attachment(final Attachment field0) =
+      _$MessagePart_AttachmentImpl;
+  const MessagePart_Attachment._() : super._();
 
   @override
-  DartAttachment get field0;
+  Attachment get field0;
 
-  /// Create a copy of DartMessagePart
+  /// Create a copy of MessagePart
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$DartMessagePart_AttachmentImplCopyWith<_$DartMessagePart_AttachmentImpl>
+  _$$MessagePart_AttachmentImplCopyWith<_$MessagePart_AttachmentImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$DartMessagePart_MentionImplCopyWith<$Res> {
-  factory _$$DartMessagePart_MentionImplCopyWith(
-          _$DartMessagePart_MentionImpl value,
-          $Res Function(_$DartMessagePart_MentionImpl) then) =
-      __$$DartMessagePart_MentionImplCopyWithImpl<$Res>;
+abstract class _$$MessagePart_MentionImplCopyWith<$Res> {
+  factory _$$MessagePart_MentionImplCopyWith(_$MessagePart_MentionImpl value,
+          $Res Function(_$MessagePart_MentionImpl) then) =
+      __$$MessagePart_MentionImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String field0, String field1});
 }
 
 /// @nodoc
-class __$$DartMessagePart_MentionImplCopyWithImpl<$Res>
-    extends _$DartMessagePartCopyWithImpl<$Res, _$DartMessagePart_MentionImpl>
-    implements _$$DartMessagePart_MentionImplCopyWith<$Res> {
-  __$$DartMessagePart_MentionImplCopyWithImpl(
-      _$DartMessagePart_MentionImpl _value,
-      $Res Function(_$DartMessagePart_MentionImpl) _then)
+class __$$MessagePart_MentionImplCopyWithImpl<$Res>
+    extends _$MessagePartCopyWithImpl<$Res, _$MessagePart_MentionImpl>
+    implements _$$MessagePart_MentionImplCopyWith<$Res> {
+  __$$MessagePart_MentionImplCopyWithImpl(_$MessagePart_MentionImpl _value,
+      $Res Function(_$MessagePart_MentionImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of DartMessagePart
+  /// Create a copy of MessagePart
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -6909,7 +6687,7 @@ class __$$DartMessagePart_MentionImplCopyWithImpl<$Res>
     Object? field0 = null,
     Object? field1 = null,
   }) {
-    return _then(_$DartMessagePart_MentionImpl(
+    return _then(_$MessagePart_MentionImpl(
       null == field0
           ? _value.field0
           : field0 // ignore: cast_nullable_to_non_nullable
@@ -6924,8 +6702,8 @@ class __$$DartMessagePart_MentionImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$DartMessagePart_MentionImpl extends DartMessagePart_Mention {
-  const _$DartMessagePart_MentionImpl(this.field0, this.field1) : super._();
+class _$MessagePart_MentionImpl extends MessagePart_Mention {
+  const _$MessagePart_MentionImpl(this.field0, this.field1) : super._();
 
   @override
   final String field0;
@@ -6934,14 +6712,14 @@ class _$DartMessagePart_MentionImpl extends DartMessagePart_Mention {
 
   @override
   String toString() {
-    return 'DartMessagePart.mention(field0: $field0, field1: $field1)';
+    return 'MessagePart.mention(field0: $field0, field1: $field1)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$DartMessagePart_MentionImpl &&
+            other is _$MessagePart_MentionImpl &&
             (identical(other.field0, field0) || other.field0 == field0) &&
             (identical(other.field1, field1) || other.field1 == field1));
   }
@@ -6949,20 +6727,20 @@ class _$DartMessagePart_MentionImpl extends DartMessagePart_Mention {
   @override
   int get hashCode => Object.hash(runtimeType, field0, field1);
 
-  /// Create a copy of DartMessagePart
+  /// Create a copy of MessagePart
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$DartMessagePart_MentionImplCopyWith<_$DartMessagePart_MentionImpl>
-      get copyWith => __$$DartMessagePart_MentionImplCopyWithImpl<
-          _$DartMessagePart_MentionImpl>(this, _$identity);
+  _$$MessagePart_MentionImplCopyWith<_$MessagePart_MentionImpl> get copyWith =>
+      __$$MessagePart_MentionImplCopyWithImpl<_$MessagePart_MentionImpl>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String field0) text,
-    required TResult Function(DartAttachment field0) attachment,
+    required TResult Function(Attachment field0) attachment,
     required TResult Function(String field0, String field1) mention,
     required TResult Function(String field0) object,
   }) {
@@ -6973,7 +6751,7 @@ class _$DartMessagePart_MentionImpl extends DartMessagePart_Mention {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String field0)? text,
-    TResult? Function(DartAttachment field0)? attachment,
+    TResult? Function(Attachment field0)? attachment,
     TResult? Function(String field0, String field1)? mention,
     TResult? Function(String field0)? object,
   }) {
@@ -6984,7 +6762,7 @@ class _$DartMessagePart_MentionImpl extends DartMessagePart_Mention {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String field0)? text,
-    TResult Function(DartAttachment field0)? attachment,
+    TResult Function(Attachment field0)? attachment,
     TResult Function(String field0, String field1)? mention,
     TResult Function(String field0)? object,
     required TResult orElse(),
@@ -6998,10 +6776,10 @@ class _$DartMessagePart_MentionImpl extends DartMessagePart_Mention {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(DartMessagePart_Text value) text,
-    required TResult Function(DartMessagePart_Attachment value) attachment,
-    required TResult Function(DartMessagePart_Mention value) mention,
-    required TResult Function(DartMessagePart_Object value) object,
+    required TResult Function(MessagePart_Text value) text,
+    required TResult Function(MessagePart_Attachment value) attachment,
+    required TResult Function(MessagePart_Mention value) mention,
+    required TResult Function(MessagePart_Object value) object,
   }) {
     return mention(this);
   }
@@ -7009,10 +6787,10 @@ class _$DartMessagePart_MentionImpl extends DartMessagePart_Mention {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(DartMessagePart_Text value)? text,
-    TResult? Function(DartMessagePart_Attachment value)? attachment,
-    TResult? Function(DartMessagePart_Mention value)? mention,
-    TResult? Function(DartMessagePart_Object value)? object,
+    TResult? Function(MessagePart_Text value)? text,
+    TResult? Function(MessagePart_Attachment value)? attachment,
+    TResult? Function(MessagePart_Mention value)? mention,
+    TResult? Function(MessagePart_Object value)? object,
   }) {
     return mention?.call(this);
   }
@@ -7020,10 +6798,10 @@ class _$DartMessagePart_MentionImpl extends DartMessagePart_Mention {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(DartMessagePart_Text value)? text,
-    TResult Function(DartMessagePart_Attachment value)? attachment,
-    TResult Function(DartMessagePart_Mention value)? mention,
-    TResult Function(DartMessagePart_Object value)? object,
+    TResult Function(MessagePart_Text value)? text,
+    TResult Function(MessagePart_Attachment value)? attachment,
+    TResult Function(MessagePart_Mention value)? mention,
+    TResult Function(MessagePart_Object value)? object,
     required TResult orElse(),
   }) {
     if (mention != null) {
@@ -7033,49 +6811,47 @@ class _$DartMessagePart_MentionImpl extends DartMessagePart_Mention {
   }
 }
 
-abstract class DartMessagePart_Mention extends DartMessagePart {
-  const factory DartMessagePart_Mention(
-      final String field0, final String field1) = _$DartMessagePart_MentionImpl;
-  const DartMessagePart_Mention._() : super._();
+abstract class MessagePart_Mention extends MessagePart {
+  const factory MessagePart_Mention(final String field0, final String field1) =
+      _$MessagePart_MentionImpl;
+  const MessagePart_Mention._() : super._();
 
   @override
   String get field0;
   String get field1;
 
-  /// Create a copy of DartMessagePart
+  /// Create a copy of MessagePart
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$DartMessagePart_MentionImplCopyWith<_$DartMessagePart_MentionImpl>
-      get copyWith => throw _privateConstructorUsedError;
+  _$$MessagePart_MentionImplCopyWith<_$MessagePart_MentionImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$DartMessagePart_ObjectImplCopyWith<$Res> {
-  factory _$$DartMessagePart_ObjectImplCopyWith(
-          _$DartMessagePart_ObjectImpl value,
-          $Res Function(_$DartMessagePart_ObjectImpl) then) =
-      __$$DartMessagePart_ObjectImplCopyWithImpl<$Res>;
+abstract class _$$MessagePart_ObjectImplCopyWith<$Res> {
+  factory _$$MessagePart_ObjectImplCopyWith(_$MessagePart_ObjectImpl value,
+          $Res Function(_$MessagePart_ObjectImpl) then) =
+      __$$MessagePart_ObjectImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String field0});
 }
 
 /// @nodoc
-class __$$DartMessagePart_ObjectImplCopyWithImpl<$Res>
-    extends _$DartMessagePartCopyWithImpl<$Res, _$DartMessagePart_ObjectImpl>
-    implements _$$DartMessagePart_ObjectImplCopyWith<$Res> {
-  __$$DartMessagePart_ObjectImplCopyWithImpl(
-      _$DartMessagePart_ObjectImpl _value,
-      $Res Function(_$DartMessagePart_ObjectImpl) _then)
+class __$$MessagePart_ObjectImplCopyWithImpl<$Res>
+    extends _$MessagePartCopyWithImpl<$Res, _$MessagePart_ObjectImpl>
+    implements _$$MessagePart_ObjectImplCopyWith<$Res> {
+  __$$MessagePart_ObjectImplCopyWithImpl(_$MessagePart_ObjectImpl _value,
+      $Res Function(_$MessagePart_ObjectImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of DartMessagePart
+  /// Create a copy of MessagePart
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? field0 = null,
   }) {
-    return _then(_$DartMessagePart_ObjectImpl(
+    return _then(_$MessagePart_ObjectImpl(
       null == field0
           ? _value.field0
           : field0 // ignore: cast_nullable_to_non_nullable
@@ -7086,42 +6862,42 @@ class __$$DartMessagePart_ObjectImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$DartMessagePart_ObjectImpl extends DartMessagePart_Object {
-  const _$DartMessagePart_ObjectImpl(this.field0) : super._();
+class _$MessagePart_ObjectImpl extends MessagePart_Object {
+  const _$MessagePart_ObjectImpl(this.field0) : super._();
 
   @override
   final String field0;
 
   @override
   String toString() {
-    return 'DartMessagePart.object(field0: $field0)';
+    return 'MessagePart.object(field0: $field0)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$DartMessagePart_ObjectImpl &&
+            other is _$MessagePart_ObjectImpl &&
             (identical(other.field0, field0) || other.field0 == field0));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, field0);
 
-  /// Create a copy of DartMessagePart
+  /// Create a copy of MessagePart
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$DartMessagePart_ObjectImplCopyWith<_$DartMessagePart_ObjectImpl>
-      get copyWith => __$$DartMessagePart_ObjectImplCopyWithImpl<
-          _$DartMessagePart_ObjectImpl>(this, _$identity);
+  _$$MessagePart_ObjectImplCopyWith<_$MessagePart_ObjectImpl> get copyWith =>
+      __$$MessagePart_ObjectImplCopyWithImpl<_$MessagePart_ObjectImpl>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String field0) text,
-    required TResult Function(DartAttachment field0) attachment,
+    required TResult Function(Attachment field0) attachment,
     required TResult Function(String field0, String field1) mention,
     required TResult Function(String field0) object,
   }) {
@@ -7132,7 +6908,7 @@ class _$DartMessagePart_ObjectImpl extends DartMessagePart_Object {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String field0)? text,
-    TResult? Function(DartAttachment field0)? attachment,
+    TResult? Function(Attachment field0)? attachment,
     TResult? Function(String field0, String field1)? mention,
     TResult? Function(String field0)? object,
   }) {
@@ -7143,7 +6919,7 @@ class _$DartMessagePart_ObjectImpl extends DartMessagePart_Object {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String field0)? text,
-    TResult Function(DartAttachment field0)? attachment,
+    TResult Function(Attachment field0)? attachment,
     TResult Function(String field0, String field1)? mention,
     TResult Function(String field0)? object,
     required TResult orElse(),
@@ -7157,10 +6933,10 @@ class _$DartMessagePart_ObjectImpl extends DartMessagePart_Object {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(DartMessagePart_Text value) text,
-    required TResult Function(DartMessagePart_Attachment value) attachment,
-    required TResult Function(DartMessagePart_Mention value) mention,
-    required TResult Function(DartMessagePart_Object value) object,
+    required TResult Function(MessagePart_Text value) text,
+    required TResult Function(MessagePart_Attachment value) attachment,
+    required TResult Function(MessagePart_Mention value) mention,
+    required TResult Function(MessagePart_Object value) object,
   }) {
     return object(this);
   }
@@ -7168,10 +6944,10 @@ class _$DartMessagePart_ObjectImpl extends DartMessagePart_Object {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(DartMessagePart_Text value)? text,
-    TResult? Function(DartMessagePart_Attachment value)? attachment,
-    TResult? Function(DartMessagePart_Mention value)? mention,
-    TResult? Function(DartMessagePart_Object value)? object,
+    TResult? Function(MessagePart_Text value)? text,
+    TResult? Function(MessagePart_Attachment value)? attachment,
+    TResult? Function(MessagePart_Mention value)? mention,
+    TResult? Function(MessagePart_Object value)? object,
   }) {
     return object?.call(this);
   }
@@ -7179,10 +6955,10 @@ class _$DartMessagePart_ObjectImpl extends DartMessagePart_Object {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(DartMessagePart_Text value)? text,
-    TResult Function(DartMessagePart_Attachment value)? attachment,
-    TResult Function(DartMessagePart_Mention value)? mention,
-    TResult Function(DartMessagePart_Object value)? object,
+    TResult Function(MessagePart_Text value)? text,
+    TResult Function(MessagePart_Attachment value)? attachment,
+    TResult Function(MessagePart_Mention value)? mention,
+    TResult Function(MessagePart_Object value)? object,
     required TResult orElse(),
   }) {
     if (object != null) {
@@ -7192,23 +6968,23 @@ class _$DartMessagePart_ObjectImpl extends DartMessagePart_Object {
   }
 }
 
-abstract class DartMessagePart_Object extends DartMessagePart {
-  const factory DartMessagePart_Object(final String field0) =
-      _$DartMessagePart_ObjectImpl;
-  const DartMessagePart_Object._() : super._();
+abstract class MessagePart_Object extends MessagePart {
+  const factory MessagePart_Object(final String field0) =
+      _$MessagePart_ObjectImpl;
+  const MessagePart_Object._() : super._();
 
   @override
   String get field0;
 
-  /// Create a copy of DartMessagePart
+  /// Create a copy of MessagePart
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$DartMessagePart_ObjectImplCopyWith<_$DartMessagePart_ObjectImpl>
-      get copyWith => throw _privateConstructorUsedError;
+  _$$MessagePart_ObjectImplCopyWith<_$MessagePart_ObjectImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-mixin _$DartMessageTarget {
+mixin _$MessageTarget {
   Object get field0 => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
@@ -7231,73 +7007,71 @@ mixin _$DartMessageTarget {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(DartMessageTarget_Token value) token,
-    required TResult Function(DartMessageTarget_Uuid value) uuid,
+    required TResult Function(MessageTarget_Token value) token,
+    required TResult Function(MessageTarget_Uuid value) uuid,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(DartMessageTarget_Token value)? token,
-    TResult? Function(DartMessageTarget_Uuid value)? uuid,
+    TResult? Function(MessageTarget_Token value)? token,
+    TResult? Function(MessageTarget_Uuid value)? uuid,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(DartMessageTarget_Token value)? token,
-    TResult Function(DartMessageTarget_Uuid value)? uuid,
+    TResult Function(MessageTarget_Token value)? token,
+    TResult Function(MessageTarget_Uuid value)? uuid,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $DartMessageTargetCopyWith<$Res> {
-  factory $DartMessageTargetCopyWith(
-          DartMessageTarget value, $Res Function(DartMessageTarget) then) =
-      _$DartMessageTargetCopyWithImpl<$Res, DartMessageTarget>;
+abstract class $MessageTargetCopyWith<$Res> {
+  factory $MessageTargetCopyWith(
+          MessageTarget value, $Res Function(MessageTarget) then) =
+      _$MessageTargetCopyWithImpl<$Res, MessageTarget>;
 }
 
 /// @nodoc
-class _$DartMessageTargetCopyWithImpl<$Res, $Val extends DartMessageTarget>
-    implements $DartMessageTargetCopyWith<$Res> {
-  _$DartMessageTargetCopyWithImpl(this._value, this._then);
+class _$MessageTargetCopyWithImpl<$Res, $Val extends MessageTarget>
+    implements $MessageTargetCopyWith<$Res> {
+  _$MessageTargetCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of DartMessageTarget
+  /// Create a copy of MessageTarget
   /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
-abstract class _$$DartMessageTarget_TokenImplCopyWith<$Res> {
-  factory _$$DartMessageTarget_TokenImplCopyWith(
-          _$DartMessageTarget_TokenImpl value,
-          $Res Function(_$DartMessageTarget_TokenImpl) then) =
-      __$$DartMessageTarget_TokenImplCopyWithImpl<$Res>;
+abstract class _$$MessageTarget_TokenImplCopyWith<$Res> {
+  factory _$$MessageTarget_TokenImplCopyWith(_$MessageTarget_TokenImpl value,
+          $Res Function(_$MessageTarget_TokenImpl) then) =
+      __$$MessageTarget_TokenImplCopyWithImpl<$Res>;
   @useResult
   $Res call({Uint8List field0});
 }
 
 /// @nodoc
-class __$$DartMessageTarget_TokenImplCopyWithImpl<$Res>
-    extends _$DartMessageTargetCopyWithImpl<$Res, _$DartMessageTarget_TokenImpl>
-    implements _$$DartMessageTarget_TokenImplCopyWith<$Res> {
-  __$$DartMessageTarget_TokenImplCopyWithImpl(
-      _$DartMessageTarget_TokenImpl _value,
-      $Res Function(_$DartMessageTarget_TokenImpl) _then)
+class __$$MessageTarget_TokenImplCopyWithImpl<$Res>
+    extends _$MessageTargetCopyWithImpl<$Res, _$MessageTarget_TokenImpl>
+    implements _$$MessageTarget_TokenImplCopyWith<$Res> {
+  __$$MessageTarget_TokenImplCopyWithImpl(_$MessageTarget_TokenImpl _value,
+      $Res Function(_$MessageTarget_TokenImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of DartMessageTarget
+  /// Create a copy of MessageTarget
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? field0 = null,
   }) {
-    return _then(_$DartMessageTarget_TokenImpl(
+    return _then(_$MessageTarget_TokenImpl(
       null == field0
           ? _value.field0
           : field0 // ignore: cast_nullable_to_non_nullable
@@ -7308,22 +7082,22 @@ class __$$DartMessageTarget_TokenImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$DartMessageTarget_TokenImpl extends DartMessageTarget_Token {
-  const _$DartMessageTarget_TokenImpl(this.field0) : super._();
+class _$MessageTarget_TokenImpl extends MessageTarget_Token {
+  const _$MessageTarget_TokenImpl(this.field0) : super._();
 
   @override
   final Uint8List field0;
 
   @override
   String toString() {
-    return 'DartMessageTarget.token(field0: $field0)';
+    return 'MessageTarget.token(field0: $field0)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$DartMessageTarget_TokenImpl &&
+            other is _$MessageTarget_TokenImpl &&
             const DeepCollectionEquality().equals(other.field0, field0));
   }
 
@@ -7331,14 +7105,14 @@ class _$DartMessageTarget_TokenImpl extends DartMessageTarget_Token {
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(field0));
 
-  /// Create a copy of DartMessageTarget
+  /// Create a copy of MessageTarget
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$DartMessageTarget_TokenImplCopyWith<_$DartMessageTarget_TokenImpl>
-      get copyWith => __$$DartMessageTarget_TokenImplCopyWithImpl<
-          _$DartMessageTarget_TokenImpl>(this, _$identity);
+  _$$MessageTarget_TokenImplCopyWith<_$MessageTarget_TokenImpl> get copyWith =>
+      __$$MessageTarget_TokenImplCopyWithImpl<_$MessageTarget_TokenImpl>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -7374,8 +7148,8 @@ class _$DartMessageTarget_TokenImpl extends DartMessageTarget_Token {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(DartMessageTarget_Token value) token,
-    required TResult Function(DartMessageTarget_Uuid value) uuid,
+    required TResult Function(MessageTarget_Token value) token,
+    required TResult Function(MessageTarget_Uuid value) uuid,
   }) {
     return token(this);
   }
@@ -7383,8 +7157,8 @@ class _$DartMessageTarget_TokenImpl extends DartMessageTarget_Token {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(DartMessageTarget_Token value)? token,
-    TResult? Function(DartMessageTarget_Uuid value)? uuid,
+    TResult? Function(MessageTarget_Token value)? token,
+    TResult? Function(MessageTarget_Uuid value)? uuid,
   }) {
     return token?.call(this);
   }
@@ -7392,8 +7166,8 @@ class _$DartMessageTarget_TokenImpl extends DartMessageTarget_Token {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(DartMessageTarget_Token value)? token,
-    TResult Function(DartMessageTarget_Uuid value)? uuid,
+    TResult Function(MessageTarget_Token value)? token,
+    TResult Function(MessageTarget_Uuid value)? uuid,
     required TResult orElse(),
   }) {
     if (token != null) {
@@ -7403,48 +7177,46 @@ class _$DartMessageTarget_TokenImpl extends DartMessageTarget_Token {
   }
 }
 
-abstract class DartMessageTarget_Token extends DartMessageTarget {
-  const factory DartMessageTarget_Token(final Uint8List field0) =
-      _$DartMessageTarget_TokenImpl;
-  const DartMessageTarget_Token._() : super._();
+abstract class MessageTarget_Token extends MessageTarget {
+  const factory MessageTarget_Token(final Uint8List field0) =
+      _$MessageTarget_TokenImpl;
+  const MessageTarget_Token._() : super._();
 
   @override
   Uint8List get field0;
 
-  /// Create a copy of DartMessageTarget
+  /// Create a copy of MessageTarget
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$DartMessageTarget_TokenImplCopyWith<_$DartMessageTarget_TokenImpl>
-      get copyWith => throw _privateConstructorUsedError;
+  _$$MessageTarget_TokenImplCopyWith<_$MessageTarget_TokenImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$DartMessageTarget_UuidImplCopyWith<$Res> {
-  factory _$$DartMessageTarget_UuidImplCopyWith(
-          _$DartMessageTarget_UuidImpl value,
-          $Res Function(_$DartMessageTarget_UuidImpl) then) =
-      __$$DartMessageTarget_UuidImplCopyWithImpl<$Res>;
+abstract class _$$MessageTarget_UuidImplCopyWith<$Res> {
+  factory _$$MessageTarget_UuidImplCopyWith(_$MessageTarget_UuidImpl value,
+          $Res Function(_$MessageTarget_UuidImpl) then) =
+      __$$MessageTarget_UuidImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String field0});
 }
 
 /// @nodoc
-class __$$DartMessageTarget_UuidImplCopyWithImpl<$Res>
-    extends _$DartMessageTargetCopyWithImpl<$Res, _$DartMessageTarget_UuidImpl>
-    implements _$$DartMessageTarget_UuidImplCopyWith<$Res> {
-  __$$DartMessageTarget_UuidImplCopyWithImpl(
-      _$DartMessageTarget_UuidImpl _value,
-      $Res Function(_$DartMessageTarget_UuidImpl) _then)
+class __$$MessageTarget_UuidImplCopyWithImpl<$Res>
+    extends _$MessageTargetCopyWithImpl<$Res, _$MessageTarget_UuidImpl>
+    implements _$$MessageTarget_UuidImplCopyWith<$Res> {
+  __$$MessageTarget_UuidImplCopyWithImpl(_$MessageTarget_UuidImpl _value,
+      $Res Function(_$MessageTarget_UuidImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of DartMessageTarget
+  /// Create a copy of MessageTarget
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? field0 = null,
   }) {
-    return _then(_$DartMessageTarget_UuidImpl(
+    return _then(_$MessageTarget_UuidImpl(
       null == field0
           ? _value.field0
           : field0 // ignore: cast_nullable_to_non_nullable
@@ -7455,36 +7227,36 @@ class __$$DartMessageTarget_UuidImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$DartMessageTarget_UuidImpl extends DartMessageTarget_Uuid {
-  const _$DartMessageTarget_UuidImpl(this.field0) : super._();
+class _$MessageTarget_UuidImpl extends MessageTarget_Uuid {
+  const _$MessageTarget_UuidImpl(this.field0) : super._();
 
   @override
   final String field0;
 
   @override
   String toString() {
-    return 'DartMessageTarget.uuid(field0: $field0)';
+    return 'MessageTarget.uuid(field0: $field0)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$DartMessageTarget_UuidImpl &&
+            other is _$MessageTarget_UuidImpl &&
             (identical(other.field0, field0) || other.field0 == field0));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, field0);
 
-  /// Create a copy of DartMessageTarget
+  /// Create a copy of MessageTarget
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$DartMessageTarget_UuidImplCopyWith<_$DartMessageTarget_UuidImpl>
-      get copyWith => __$$DartMessageTarget_UuidImplCopyWithImpl<
-          _$DartMessageTarget_UuidImpl>(this, _$identity);
+  _$$MessageTarget_UuidImplCopyWith<_$MessageTarget_UuidImpl> get copyWith =>
+      __$$MessageTarget_UuidImplCopyWithImpl<_$MessageTarget_UuidImpl>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -7520,8 +7292,8 @@ class _$DartMessageTarget_UuidImpl extends DartMessageTarget_Uuid {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(DartMessageTarget_Token value) token,
-    required TResult Function(DartMessageTarget_Uuid value) uuid,
+    required TResult Function(MessageTarget_Token value) token,
+    required TResult Function(MessageTarget_Uuid value) uuid,
   }) {
     return uuid(this);
   }
@@ -7529,8 +7301,8 @@ class _$DartMessageTarget_UuidImpl extends DartMessageTarget_Uuid {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(DartMessageTarget_Token value)? token,
-    TResult? Function(DartMessageTarget_Uuid value)? uuid,
+    TResult? Function(MessageTarget_Token value)? token,
+    TResult? Function(MessageTarget_Uuid value)? uuid,
   }) {
     return uuid?.call(this);
   }
@@ -7538,8 +7310,8 @@ class _$DartMessageTarget_UuidImpl extends DartMessageTarget_Uuid {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(DartMessageTarget_Token value)? token,
-    TResult Function(DartMessageTarget_Uuid value)? uuid,
+    TResult Function(MessageTarget_Token value)? token,
+    TResult Function(MessageTarget_Uuid value)? uuid,
     required TResult orElse(),
   }) {
     if (uuid != null) {
@@ -7549,23 +7321,23 @@ class _$DartMessageTarget_UuidImpl extends DartMessageTarget_Uuid {
   }
 }
 
-abstract class DartMessageTarget_Uuid extends DartMessageTarget {
-  const factory DartMessageTarget_Uuid(final String field0) =
-      _$DartMessageTarget_UuidImpl;
-  const DartMessageTarget_Uuid._() : super._();
+abstract class MessageTarget_Uuid extends MessageTarget {
+  const factory MessageTarget_Uuid(final String field0) =
+      _$MessageTarget_UuidImpl;
+  const MessageTarget_Uuid._() : super._();
 
   @override
   String get field0;
 
-  /// Create a copy of DartMessageTarget
+  /// Create a copy of MessageTarget
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$DartMessageTarget_UuidImplCopyWith<_$DartMessageTarget_UuidImpl>
-      get copyWith => throw _privateConstructorUsedError;
+  _$$MessageTarget_UuidImplCopyWith<_$MessageTarget_UuidImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-mixin _$DartMessageType {
+mixin _$MessageType {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() iMessage,
@@ -7590,82 +7362,80 @@ mixin _$DartMessageType {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(DartMessageType_IMessage value) iMessage,
-    required TResult Function(DartMessageType_SMS value) sms,
+    required TResult Function(MessageType_IMessage value) iMessage,
+    required TResult Function(MessageType_SMS value) sms,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(DartMessageType_IMessage value)? iMessage,
-    TResult? Function(DartMessageType_SMS value)? sms,
+    TResult? Function(MessageType_IMessage value)? iMessage,
+    TResult? Function(MessageType_SMS value)? sms,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(DartMessageType_IMessage value)? iMessage,
-    TResult Function(DartMessageType_SMS value)? sms,
+    TResult Function(MessageType_IMessage value)? iMessage,
+    TResult Function(MessageType_SMS value)? sms,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $DartMessageTypeCopyWith<$Res> {
-  factory $DartMessageTypeCopyWith(
-          DartMessageType value, $Res Function(DartMessageType) then) =
-      _$DartMessageTypeCopyWithImpl<$Res, DartMessageType>;
+abstract class $MessageTypeCopyWith<$Res> {
+  factory $MessageTypeCopyWith(
+          MessageType value, $Res Function(MessageType) then) =
+      _$MessageTypeCopyWithImpl<$Res, MessageType>;
 }
 
 /// @nodoc
-class _$DartMessageTypeCopyWithImpl<$Res, $Val extends DartMessageType>
-    implements $DartMessageTypeCopyWith<$Res> {
-  _$DartMessageTypeCopyWithImpl(this._value, this._then);
+class _$MessageTypeCopyWithImpl<$Res, $Val extends MessageType>
+    implements $MessageTypeCopyWith<$Res> {
+  _$MessageTypeCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of DartMessageType
+  /// Create a copy of MessageType
   /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
-abstract class _$$DartMessageType_IMessageImplCopyWith<$Res> {
-  factory _$$DartMessageType_IMessageImplCopyWith(
-          _$DartMessageType_IMessageImpl value,
-          $Res Function(_$DartMessageType_IMessageImpl) then) =
-      __$$DartMessageType_IMessageImplCopyWithImpl<$Res>;
+abstract class _$$MessageType_IMessageImplCopyWith<$Res> {
+  factory _$$MessageType_IMessageImplCopyWith(_$MessageType_IMessageImpl value,
+          $Res Function(_$MessageType_IMessageImpl) then) =
+      __$$MessageType_IMessageImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$DartMessageType_IMessageImplCopyWithImpl<$Res>
-    extends _$DartMessageTypeCopyWithImpl<$Res, _$DartMessageType_IMessageImpl>
-    implements _$$DartMessageType_IMessageImplCopyWith<$Res> {
-  __$$DartMessageType_IMessageImplCopyWithImpl(
-      _$DartMessageType_IMessageImpl _value,
-      $Res Function(_$DartMessageType_IMessageImpl) _then)
+class __$$MessageType_IMessageImplCopyWithImpl<$Res>
+    extends _$MessageTypeCopyWithImpl<$Res, _$MessageType_IMessageImpl>
+    implements _$$MessageType_IMessageImplCopyWith<$Res> {
+  __$$MessageType_IMessageImplCopyWithImpl(_$MessageType_IMessageImpl _value,
+      $Res Function(_$MessageType_IMessageImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of DartMessageType
+  /// Create a copy of MessageType
   /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
 
-class _$DartMessageType_IMessageImpl extends DartMessageType_IMessage {
-  const _$DartMessageType_IMessageImpl() : super._();
+class _$MessageType_IMessageImpl extends MessageType_IMessage {
+  const _$MessageType_IMessageImpl() : super._();
 
   @override
   String toString() {
-    return 'DartMessageType.iMessage()';
+    return 'MessageType.iMessage()';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$DartMessageType_IMessageImpl);
+            other is _$MessageType_IMessageImpl);
   }
 
   @override
@@ -7708,8 +7478,8 @@ class _$DartMessageType_IMessageImpl extends DartMessageType_IMessage {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(DartMessageType_IMessage value) iMessage,
-    required TResult Function(DartMessageType_SMS value) sms,
+    required TResult Function(MessageType_IMessage value) iMessage,
+    required TResult Function(MessageType_SMS value) sms,
   }) {
     return iMessage(this);
   }
@@ -7717,8 +7487,8 @@ class _$DartMessageType_IMessageImpl extends DartMessageType_IMessage {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(DartMessageType_IMessage value)? iMessage,
-    TResult? Function(DartMessageType_SMS value)? sms,
+    TResult? Function(MessageType_IMessage value)? iMessage,
+    TResult? Function(MessageType_SMS value)? sms,
   }) {
     return iMessage?.call(this);
   }
@@ -7726,8 +7496,8 @@ class _$DartMessageType_IMessageImpl extends DartMessageType_IMessage {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(DartMessageType_IMessage value)? iMessage,
-    TResult Function(DartMessageType_SMS value)? sms,
+    TResult Function(MessageType_IMessage value)? iMessage,
+    TResult Function(MessageType_SMS value)? sms,
     required TResult orElse(),
   }) {
     if (iMessage != null) {
@@ -7737,29 +7507,29 @@ class _$DartMessageType_IMessageImpl extends DartMessageType_IMessage {
   }
 }
 
-abstract class DartMessageType_IMessage extends DartMessageType {
-  const factory DartMessageType_IMessage() = _$DartMessageType_IMessageImpl;
-  const DartMessageType_IMessage._() : super._();
+abstract class MessageType_IMessage extends MessageType {
+  const factory MessageType_IMessage() = _$MessageType_IMessageImpl;
+  const MessageType_IMessage._() : super._();
 }
 
 /// @nodoc
-abstract class _$$DartMessageType_SMSImplCopyWith<$Res> {
-  factory _$$DartMessageType_SMSImplCopyWith(_$DartMessageType_SMSImpl value,
-          $Res Function(_$DartMessageType_SMSImpl) then) =
-      __$$DartMessageType_SMSImplCopyWithImpl<$Res>;
+abstract class _$$MessageType_SMSImplCopyWith<$Res> {
+  factory _$$MessageType_SMSImplCopyWith(_$MessageType_SMSImpl value,
+          $Res Function(_$MessageType_SMSImpl) then) =
+      __$$MessageType_SMSImplCopyWithImpl<$Res>;
   @useResult
   $Res call({bool isPhone, String usingNumber, String? fromHandle});
 }
 
 /// @nodoc
-class __$$DartMessageType_SMSImplCopyWithImpl<$Res>
-    extends _$DartMessageTypeCopyWithImpl<$Res, _$DartMessageType_SMSImpl>
-    implements _$$DartMessageType_SMSImplCopyWith<$Res> {
-  __$$DartMessageType_SMSImplCopyWithImpl(_$DartMessageType_SMSImpl _value,
-      $Res Function(_$DartMessageType_SMSImpl) _then)
+class __$$MessageType_SMSImplCopyWithImpl<$Res>
+    extends _$MessageTypeCopyWithImpl<$Res, _$MessageType_SMSImpl>
+    implements _$$MessageType_SMSImplCopyWith<$Res> {
+  __$$MessageType_SMSImplCopyWithImpl(
+      _$MessageType_SMSImpl _value, $Res Function(_$MessageType_SMSImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of DartMessageType
+  /// Create a copy of MessageType
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -7768,7 +7538,7 @@ class __$$DartMessageType_SMSImplCopyWithImpl<$Res>
     Object? usingNumber = null,
     Object? fromHandle = freezed,
   }) {
-    return _then(_$DartMessageType_SMSImpl(
+    return _then(_$MessageType_SMSImpl(
       isPhone: null == isPhone
           ? _value.isPhone
           : isPhone // ignore: cast_nullable_to_non_nullable
@@ -7787,8 +7557,8 @@ class __$$DartMessageType_SMSImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$DartMessageType_SMSImpl extends DartMessageType_SMS {
-  const _$DartMessageType_SMSImpl(
+class _$MessageType_SMSImpl extends MessageType_SMS {
+  const _$MessageType_SMSImpl(
       {required this.isPhone, required this.usingNumber, this.fromHandle})
       : super._();
 
@@ -7801,14 +7571,14 @@ class _$DartMessageType_SMSImpl extends DartMessageType_SMS {
 
   @override
   String toString() {
-    return 'DartMessageType.sms(isPhone: $isPhone, usingNumber: $usingNumber, fromHandle: $fromHandle)';
+    return 'MessageType.sms(isPhone: $isPhone, usingNumber: $usingNumber, fromHandle: $fromHandle)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$DartMessageType_SMSImpl &&
+            other is _$MessageType_SMSImpl &&
             (identical(other.isPhone, isPhone) || other.isPhone == isPhone) &&
             (identical(other.usingNumber, usingNumber) ||
                 other.usingNumber == usingNumber) &&
@@ -7820,13 +7590,13 @@ class _$DartMessageType_SMSImpl extends DartMessageType_SMS {
   int get hashCode =>
       Object.hash(runtimeType, isPhone, usingNumber, fromHandle);
 
-  /// Create a copy of DartMessageType
+  /// Create a copy of MessageType
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$DartMessageType_SMSImplCopyWith<_$DartMessageType_SMSImpl> get copyWith =>
-      __$$DartMessageType_SMSImplCopyWithImpl<_$DartMessageType_SMSImpl>(
+  _$$MessageType_SMSImplCopyWith<_$MessageType_SMSImpl> get copyWith =>
+      __$$MessageType_SMSImplCopyWithImpl<_$MessageType_SMSImpl>(
           this, _$identity);
 
   @override
@@ -7866,8 +7636,8 @@ class _$DartMessageType_SMSImpl extends DartMessageType_SMS {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(DartMessageType_IMessage value) iMessage,
-    required TResult Function(DartMessageType_SMS value) sms,
+    required TResult Function(MessageType_IMessage value) iMessage,
+    required TResult Function(MessageType_SMS value) sms,
   }) {
     return sms(this);
   }
@@ -7875,8 +7645,8 @@ class _$DartMessageType_SMSImpl extends DartMessageType_SMS {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(DartMessageType_IMessage value)? iMessage,
-    TResult? Function(DartMessageType_SMS value)? sms,
+    TResult? Function(MessageType_IMessage value)? iMessage,
+    TResult? Function(MessageType_SMS value)? sms,
   }) {
     return sms?.call(this);
   }
@@ -7884,8 +7654,8 @@ class _$DartMessageType_SMSImpl extends DartMessageType_SMS {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(DartMessageType_IMessage value)? iMessage,
-    TResult Function(DartMessageType_SMS value)? sms,
+    TResult Function(MessageType_IMessage value)? iMessage,
+    TResult Function(MessageType_SMS value)? sms,
     required TResult orElse(),
   }) {
     if (sms != null) {
@@ -7895,26 +7665,26 @@ class _$DartMessageType_SMSImpl extends DartMessageType_SMS {
   }
 }
 
-abstract class DartMessageType_SMS extends DartMessageType {
-  const factory DartMessageType_SMS(
+abstract class MessageType_SMS extends MessageType {
+  const factory MessageType_SMS(
       {required final bool isPhone,
       required final String usingNumber,
-      final String? fromHandle}) = _$DartMessageType_SMSImpl;
-  const DartMessageType_SMS._() : super._();
+      final String? fromHandle}) = _$MessageType_SMSImpl;
+  const MessageType_SMS._() : super._();
 
   bool get isPhone;
   String get usingNumber;
   String? get fromHandle;
 
-  /// Create a copy of DartMessageType
+  /// Create a copy of MessageType
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$DartMessageType_SMSImplCopyWith<_$DartMessageType_SMSImpl> get copyWith =>
+  _$$MessageType_SMSImplCopyWith<_$MessageType_SMSImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-mixin _$DartPartExtension {
+mixin _$PartExtension {
   double get msgWidth => throw _privateConstructorUsedError;
   double get rotation => throw _privateConstructorUsedError;
   BigInt get sai => throw _privateConstructorUsedError;
@@ -7988,33 +7758,33 @@ mixin _$DartPartExtension {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(DartPartExtension_Sticker value) sticker,
+    required TResult Function(PartExtension_Sticker value) sticker,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(DartPartExtension_Sticker value)? sticker,
+    TResult? Function(PartExtension_Sticker value)? sticker,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(DartPartExtension_Sticker value)? sticker,
+    TResult Function(PartExtension_Sticker value)? sticker,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
 
-  /// Create a copy of DartPartExtension
+  /// Create a copy of PartExtension
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $DartPartExtensionCopyWith<DartPartExtension> get copyWith =>
+  $PartExtensionCopyWith<PartExtension> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $DartPartExtensionCopyWith<$Res> {
-  factory $DartPartExtensionCopyWith(
-          DartPartExtension value, $Res Function(DartPartExtension) then) =
-      _$DartPartExtensionCopyWithImpl<$Res, DartPartExtension>;
+abstract class $PartExtensionCopyWith<$Res> {
+  factory $PartExtensionCopyWith(
+          PartExtension value, $Res Function(PartExtension) then) =
+      _$PartExtensionCopyWithImpl<$Res, PartExtension>;
   @useResult
   $Res call(
       {double msgWidth,
@@ -8033,16 +7803,16 @@ abstract class $DartPartExtensionCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$DartPartExtensionCopyWithImpl<$Res, $Val extends DartPartExtension>
-    implements $DartPartExtensionCopyWith<$Res> {
-  _$DartPartExtensionCopyWithImpl(this._value, this._then);
+class _$PartExtensionCopyWithImpl<$Res, $Val extends PartExtension>
+    implements $PartExtensionCopyWith<$Res> {
+  _$PartExtensionCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of DartPartExtension
+  /// Create a copy of PartExtension
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -8119,12 +7889,12 @@ class _$DartPartExtensionCopyWithImpl<$Res, $Val extends DartPartExtension>
 }
 
 /// @nodoc
-abstract class _$$DartPartExtension_StickerImplCopyWith<$Res>
-    implements $DartPartExtensionCopyWith<$Res> {
-  factory _$$DartPartExtension_StickerImplCopyWith(
-          _$DartPartExtension_StickerImpl value,
-          $Res Function(_$DartPartExtension_StickerImpl) then) =
-      __$$DartPartExtension_StickerImplCopyWithImpl<$Res>;
+abstract class _$$PartExtension_StickerImplCopyWith<$Res>
+    implements $PartExtensionCopyWith<$Res> {
+  factory _$$PartExtension_StickerImplCopyWith(
+          _$PartExtension_StickerImpl value,
+          $Res Function(_$PartExtension_StickerImpl) then) =
+      __$$PartExtension_StickerImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -8144,16 +7914,14 @@ abstract class _$$DartPartExtension_StickerImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$DartPartExtension_StickerImplCopyWithImpl<$Res>
-    extends _$DartPartExtensionCopyWithImpl<$Res,
-        _$DartPartExtension_StickerImpl>
-    implements _$$DartPartExtension_StickerImplCopyWith<$Res> {
-  __$$DartPartExtension_StickerImplCopyWithImpl(
-      _$DartPartExtension_StickerImpl _value,
-      $Res Function(_$DartPartExtension_StickerImpl) _then)
+class __$$PartExtension_StickerImplCopyWithImpl<$Res>
+    extends _$PartExtensionCopyWithImpl<$Res, _$PartExtension_StickerImpl>
+    implements _$$PartExtension_StickerImplCopyWith<$Res> {
+  __$$PartExtension_StickerImplCopyWithImpl(_$PartExtension_StickerImpl _value,
+      $Res Function(_$PartExtension_StickerImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of DartPartExtension
+  /// Create a copy of PartExtension
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -8172,7 +7940,7 @@ class __$$DartPartExtension_StickerImplCopyWithImpl<$Res>
     Object? effectType = null,
     Object? stickerId = null,
   }) {
-    return _then(_$DartPartExtension_StickerImpl(
+    return _then(_$PartExtension_StickerImpl(
       msgWidth: null == msgWidth
           ? _value.msgWidth
           : msgWidth // ignore: cast_nullable_to_non_nullable
@@ -8231,8 +7999,8 @@ class __$$DartPartExtension_StickerImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$DartPartExtension_StickerImpl extends DartPartExtension_Sticker {
-  const _$DartPartExtension_StickerImpl(
+class _$PartExtension_StickerImpl extends PartExtension_Sticker {
+  const _$PartExtension_StickerImpl(
       {required this.msgWidth,
       required this.rotation,
       required this.sai,
@@ -8277,14 +8045,14 @@ class _$DartPartExtension_StickerImpl extends DartPartExtension_Sticker {
 
   @override
   String toString() {
-    return 'DartPartExtension.sticker(msgWidth: $msgWidth, rotation: $rotation, sai: $sai, scale: $scale, update: $update, sli: $sli, normalizedX: $normalizedX, normalizedY: $normalizedY, version: $version, hash: $hash, safi: $safi, effectType: $effectType, stickerId: $stickerId)';
+    return 'PartExtension.sticker(msgWidth: $msgWidth, rotation: $rotation, sai: $sai, scale: $scale, update: $update, sli: $sli, normalizedX: $normalizedX, normalizedY: $normalizedY, version: $version, hash: $hash, safi: $safi, effectType: $effectType, stickerId: $stickerId)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$DartPartExtension_StickerImpl &&
+            other is _$PartExtension_StickerImpl &&
             (identical(other.msgWidth, msgWidth) ||
                 other.msgWidth == msgWidth) &&
             (identical(other.rotation, rotation) ||
@@ -8323,14 +8091,14 @@ class _$DartPartExtension_StickerImpl extends DartPartExtension_Sticker {
       effectType,
       stickerId);
 
-  /// Create a copy of DartPartExtension
+  /// Create a copy of PartExtension
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$DartPartExtension_StickerImplCopyWith<_$DartPartExtension_StickerImpl>
-      get copyWith => __$$DartPartExtension_StickerImplCopyWithImpl<
-          _$DartPartExtension_StickerImpl>(this, _$identity);
+  _$$PartExtension_StickerImplCopyWith<_$PartExtension_StickerImpl>
+      get copyWith => __$$PartExtension_StickerImplCopyWithImpl<
+          _$PartExtension_StickerImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -8408,7 +8176,7 @@ class _$DartPartExtension_StickerImpl extends DartPartExtension_Sticker {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(DartPartExtension_Sticker value) sticker,
+    required TResult Function(PartExtension_Sticker value) sticker,
   }) {
     return sticker(this);
   }
@@ -8416,7 +8184,7 @@ class _$DartPartExtension_StickerImpl extends DartPartExtension_Sticker {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(DartPartExtension_Sticker value)? sticker,
+    TResult? Function(PartExtension_Sticker value)? sticker,
   }) {
     return sticker?.call(this);
   }
@@ -8424,7 +8192,7 @@ class _$DartPartExtension_StickerImpl extends DartPartExtension_Sticker {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(DartPartExtension_Sticker value)? sticker,
+    TResult Function(PartExtension_Sticker value)? sticker,
     required TResult orElse(),
   }) {
     if (sticker != null) {
@@ -8434,8 +8202,8 @@ class _$DartPartExtension_StickerImpl extends DartPartExtension_Sticker {
   }
 }
 
-abstract class DartPartExtension_Sticker extends DartPartExtension {
-  const factory DartPartExtension_Sticker(
+abstract class PartExtension_Sticker extends PartExtension {
+  const factory PartExtension_Sticker(
       {required final double msgWidth,
       required final double rotation,
       required final BigInt sai,
@@ -8448,8 +8216,8 @@ abstract class DartPartExtension_Sticker extends DartPartExtension {
       required final String hash,
       required final BigInt safi,
       required final int effectType,
-      required final String stickerId}) = _$DartPartExtension_StickerImpl;
-  const DartPartExtension_Sticker._() : super._();
+      required final String stickerId}) = _$PartExtension_StickerImpl;
+  const PartExtension_Sticker._() : super._();
 
   @override
   double get msgWidth;
@@ -8478,1269 +8246,11 @@ abstract class DartPartExtension_Sticker extends DartPartExtension {
   @override
   String get stickerId;
 
-  /// Create a copy of DartPartExtension
+  /// Create a copy of PartExtension
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$DartPartExtension_StickerImplCopyWith<_$DartPartExtension_StickerImpl>
-      get copyWith => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-mixin _$DartPushMessage {
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(DartIMessage field0) iMessage,
-    required TResult Function(String uuid, String? error) sendConfirm,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(DartIMessage field0)? iMessage,
-    TResult? Function(String uuid, String? error)? sendConfirm,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(DartIMessage field0)? iMessage,
-    TResult Function(String uuid, String? error)? sendConfirm,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(DartPushMessage_IMessage value) iMessage,
-    required TResult Function(DartPushMessage_SendConfirm value) sendConfirm,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(DartPushMessage_IMessage value)? iMessage,
-    TResult? Function(DartPushMessage_SendConfirm value)? sendConfirm,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(DartPushMessage_IMessage value)? iMessage,
-    TResult Function(DartPushMessage_SendConfirm value)? sendConfirm,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $DartPushMessageCopyWith<$Res> {
-  factory $DartPushMessageCopyWith(
-          DartPushMessage value, $Res Function(DartPushMessage) then) =
-      _$DartPushMessageCopyWithImpl<$Res, DartPushMessage>;
-}
-
-/// @nodoc
-class _$DartPushMessageCopyWithImpl<$Res, $Val extends DartPushMessage>
-    implements $DartPushMessageCopyWith<$Res> {
-  _$DartPushMessageCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of DartPushMessage
-  /// with the given fields replaced by the non-null parameter values.
-}
-
-/// @nodoc
-abstract class _$$DartPushMessage_IMessageImplCopyWith<$Res> {
-  factory _$$DartPushMessage_IMessageImplCopyWith(
-          _$DartPushMessage_IMessageImpl value,
-          $Res Function(_$DartPushMessage_IMessageImpl) then) =
-      __$$DartPushMessage_IMessageImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({DartIMessage field0});
-}
-
-/// @nodoc
-class __$$DartPushMessage_IMessageImplCopyWithImpl<$Res>
-    extends _$DartPushMessageCopyWithImpl<$Res, _$DartPushMessage_IMessageImpl>
-    implements _$$DartPushMessage_IMessageImplCopyWith<$Res> {
-  __$$DartPushMessage_IMessageImplCopyWithImpl(
-      _$DartPushMessage_IMessageImpl _value,
-      $Res Function(_$DartPushMessage_IMessageImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of DartPushMessage
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? field0 = null,
-  }) {
-    return _then(_$DartPushMessage_IMessageImpl(
-      null == field0
-          ? _value.field0
-          : field0 // ignore: cast_nullable_to_non_nullable
-              as DartIMessage,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$DartPushMessage_IMessageImpl extends DartPushMessage_IMessage {
-  const _$DartPushMessage_IMessageImpl(this.field0) : super._();
-
-  @override
-  final DartIMessage field0;
-
-  @override
-  String toString() {
-    return 'DartPushMessage.iMessage(field0: $field0)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$DartPushMessage_IMessageImpl &&
-            (identical(other.field0, field0) || other.field0 == field0));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, field0);
-
-  /// Create a copy of DartPushMessage
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$DartPushMessage_IMessageImplCopyWith<_$DartPushMessage_IMessageImpl>
-      get copyWith => __$$DartPushMessage_IMessageImplCopyWithImpl<
-          _$DartPushMessage_IMessageImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(DartIMessage field0) iMessage,
-    required TResult Function(String uuid, String? error) sendConfirm,
-  }) {
-    return iMessage(field0);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(DartIMessage field0)? iMessage,
-    TResult? Function(String uuid, String? error)? sendConfirm,
-  }) {
-    return iMessage?.call(field0);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(DartIMessage field0)? iMessage,
-    TResult Function(String uuid, String? error)? sendConfirm,
-    required TResult orElse(),
-  }) {
-    if (iMessage != null) {
-      return iMessage(field0);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(DartPushMessage_IMessage value) iMessage,
-    required TResult Function(DartPushMessage_SendConfirm value) sendConfirm,
-  }) {
-    return iMessage(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(DartPushMessage_IMessage value)? iMessage,
-    TResult? Function(DartPushMessage_SendConfirm value)? sendConfirm,
-  }) {
-    return iMessage?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(DartPushMessage_IMessage value)? iMessage,
-    TResult Function(DartPushMessage_SendConfirm value)? sendConfirm,
-    required TResult orElse(),
-  }) {
-    if (iMessage != null) {
-      return iMessage(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class DartPushMessage_IMessage extends DartPushMessage {
-  const factory DartPushMessage_IMessage(final DartIMessage field0) =
-      _$DartPushMessage_IMessageImpl;
-  const DartPushMessage_IMessage._() : super._();
-
-  DartIMessage get field0;
-
-  /// Create a copy of DartPushMessage
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$DartPushMessage_IMessageImplCopyWith<_$DartPushMessage_IMessageImpl>
-      get copyWith => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$DartPushMessage_SendConfirmImplCopyWith<$Res> {
-  factory _$$DartPushMessage_SendConfirmImplCopyWith(
-          _$DartPushMessage_SendConfirmImpl value,
-          $Res Function(_$DartPushMessage_SendConfirmImpl) then) =
-      __$$DartPushMessage_SendConfirmImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({String uuid, String? error});
-}
-
-/// @nodoc
-class __$$DartPushMessage_SendConfirmImplCopyWithImpl<$Res>
-    extends _$DartPushMessageCopyWithImpl<$Res,
-        _$DartPushMessage_SendConfirmImpl>
-    implements _$$DartPushMessage_SendConfirmImplCopyWith<$Res> {
-  __$$DartPushMessage_SendConfirmImplCopyWithImpl(
-      _$DartPushMessage_SendConfirmImpl _value,
-      $Res Function(_$DartPushMessage_SendConfirmImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of DartPushMessage
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? uuid = null,
-    Object? error = freezed,
-  }) {
-    return _then(_$DartPushMessage_SendConfirmImpl(
-      uuid: null == uuid
-          ? _value.uuid
-          : uuid // ignore: cast_nullable_to_non_nullable
-              as String,
-      error: freezed == error
-          ? _value.error
-          : error // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$DartPushMessage_SendConfirmImpl extends DartPushMessage_SendConfirm {
-  const _$DartPushMessage_SendConfirmImpl({required this.uuid, this.error})
-      : super._();
-
-  @override
-  final String uuid;
-  @override
-  final String? error;
-
-  @override
-  String toString() {
-    return 'DartPushMessage.sendConfirm(uuid: $uuid, error: $error)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$DartPushMessage_SendConfirmImpl &&
-            (identical(other.uuid, uuid) || other.uuid == uuid) &&
-            (identical(other.error, error) || other.error == error));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, uuid, error);
-
-  /// Create a copy of DartPushMessage
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$DartPushMessage_SendConfirmImplCopyWith<_$DartPushMessage_SendConfirmImpl>
-      get copyWith => __$$DartPushMessage_SendConfirmImplCopyWithImpl<
-          _$DartPushMessage_SendConfirmImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(DartIMessage field0) iMessage,
-    required TResult Function(String uuid, String? error) sendConfirm,
-  }) {
-    return sendConfirm(uuid, error);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(DartIMessage field0)? iMessage,
-    TResult? Function(String uuid, String? error)? sendConfirm,
-  }) {
-    return sendConfirm?.call(uuid, error);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(DartIMessage field0)? iMessage,
-    TResult Function(String uuid, String? error)? sendConfirm,
-    required TResult orElse(),
-  }) {
-    if (sendConfirm != null) {
-      return sendConfirm(uuid, error);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(DartPushMessage_IMessage value) iMessage,
-    required TResult Function(DartPushMessage_SendConfirm value) sendConfirm,
-  }) {
-    return sendConfirm(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(DartPushMessage_IMessage value)? iMessage,
-    TResult? Function(DartPushMessage_SendConfirm value)? sendConfirm,
-  }) {
-    return sendConfirm?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(DartPushMessage_IMessage value)? iMessage,
-    TResult Function(DartPushMessage_SendConfirm value)? sendConfirm,
-    required TResult orElse(),
-  }) {
-    if (sendConfirm != null) {
-      return sendConfirm(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class DartPushMessage_SendConfirm extends DartPushMessage {
-  const factory DartPushMessage_SendConfirm(
-      {required final String uuid,
-      final String? error}) = _$DartPushMessage_SendConfirmImpl;
-  const DartPushMessage_SendConfirm._() : super._();
-
-  String get uuid;
-  String? get error;
-
-  /// Create a copy of DartPushMessage
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$DartPushMessage_SendConfirmImplCopyWith<_$DartPushMessage_SendConfirmImpl>
-      get copyWith => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-mixin _$DartReactMessageType {
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(DartReaction reaction, bool enable) react,
-    required TResult Function(DartExtensionApp spec, DartMessageParts body)
-        extension_,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(DartReaction reaction, bool enable)? react,
-    TResult? Function(DartExtensionApp spec, DartMessageParts body)? extension_,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(DartReaction reaction, bool enable)? react,
-    TResult Function(DartExtensionApp spec, DartMessageParts body)? extension_,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(DartReactMessageType_React value) react,
-    required TResult Function(DartReactMessageType_Extension value) extension_,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(DartReactMessageType_React value)? react,
-    TResult? Function(DartReactMessageType_Extension value)? extension_,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(DartReactMessageType_React value)? react,
-    TResult Function(DartReactMessageType_Extension value)? extension_,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $DartReactMessageTypeCopyWith<$Res> {
-  factory $DartReactMessageTypeCopyWith(DartReactMessageType value,
-          $Res Function(DartReactMessageType) then) =
-      _$DartReactMessageTypeCopyWithImpl<$Res, DartReactMessageType>;
-}
-
-/// @nodoc
-class _$DartReactMessageTypeCopyWithImpl<$Res,
-        $Val extends DartReactMessageType>
-    implements $DartReactMessageTypeCopyWith<$Res> {
-  _$DartReactMessageTypeCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of DartReactMessageType
-  /// with the given fields replaced by the non-null parameter values.
-}
-
-/// @nodoc
-abstract class _$$DartReactMessageType_ReactImplCopyWith<$Res> {
-  factory _$$DartReactMessageType_ReactImplCopyWith(
-          _$DartReactMessageType_ReactImpl value,
-          $Res Function(_$DartReactMessageType_ReactImpl) then) =
-      __$$DartReactMessageType_ReactImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({DartReaction reaction, bool enable});
-}
-
-/// @nodoc
-class __$$DartReactMessageType_ReactImplCopyWithImpl<$Res>
-    extends _$DartReactMessageTypeCopyWithImpl<$Res,
-        _$DartReactMessageType_ReactImpl>
-    implements _$$DartReactMessageType_ReactImplCopyWith<$Res> {
-  __$$DartReactMessageType_ReactImplCopyWithImpl(
-      _$DartReactMessageType_ReactImpl _value,
-      $Res Function(_$DartReactMessageType_ReactImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of DartReactMessageType
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? reaction = null,
-    Object? enable = null,
-  }) {
-    return _then(_$DartReactMessageType_ReactImpl(
-      reaction: null == reaction
-          ? _value.reaction
-          : reaction // ignore: cast_nullable_to_non_nullable
-              as DartReaction,
-      enable: null == enable
-          ? _value.enable
-          : enable // ignore: cast_nullable_to_non_nullable
-              as bool,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$DartReactMessageType_ReactImpl extends DartReactMessageType_React {
-  const _$DartReactMessageType_ReactImpl(
-      {required this.reaction, required this.enable})
-      : super._();
-
-  @override
-  final DartReaction reaction;
-  @override
-  final bool enable;
-
-  @override
-  String toString() {
-    return 'DartReactMessageType.react(reaction: $reaction, enable: $enable)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$DartReactMessageType_ReactImpl &&
-            (identical(other.reaction, reaction) ||
-                other.reaction == reaction) &&
-            (identical(other.enable, enable) || other.enable == enable));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, reaction, enable);
-
-  /// Create a copy of DartReactMessageType
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$DartReactMessageType_ReactImplCopyWith<_$DartReactMessageType_ReactImpl>
-      get copyWith => __$$DartReactMessageType_ReactImplCopyWithImpl<
-          _$DartReactMessageType_ReactImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(DartReaction reaction, bool enable) react,
-    required TResult Function(DartExtensionApp spec, DartMessageParts body)
-        extension_,
-  }) {
-    return react(reaction, enable);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(DartReaction reaction, bool enable)? react,
-    TResult? Function(DartExtensionApp spec, DartMessageParts body)? extension_,
-  }) {
-    return react?.call(reaction, enable);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(DartReaction reaction, bool enable)? react,
-    TResult Function(DartExtensionApp spec, DartMessageParts body)? extension_,
-    required TResult orElse(),
-  }) {
-    if (react != null) {
-      return react(reaction, enable);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(DartReactMessageType_React value) react,
-    required TResult Function(DartReactMessageType_Extension value) extension_,
-  }) {
-    return react(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(DartReactMessageType_React value)? react,
-    TResult? Function(DartReactMessageType_Extension value)? extension_,
-  }) {
-    return react?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(DartReactMessageType_React value)? react,
-    TResult Function(DartReactMessageType_Extension value)? extension_,
-    required TResult orElse(),
-  }) {
-    if (react != null) {
-      return react(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class DartReactMessageType_React extends DartReactMessageType {
-  const factory DartReactMessageType_React(
-      {required final DartReaction reaction,
-      required final bool enable}) = _$DartReactMessageType_ReactImpl;
-  const DartReactMessageType_React._() : super._();
-
-  DartReaction get reaction;
-  bool get enable;
-
-  /// Create a copy of DartReactMessageType
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$DartReactMessageType_ReactImplCopyWith<_$DartReactMessageType_ReactImpl>
-      get copyWith => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$DartReactMessageType_ExtensionImplCopyWith<$Res> {
-  factory _$$DartReactMessageType_ExtensionImplCopyWith(
-          _$DartReactMessageType_ExtensionImpl value,
-          $Res Function(_$DartReactMessageType_ExtensionImpl) then) =
-      __$$DartReactMessageType_ExtensionImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({DartExtensionApp spec, DartMessageParts body});
-}
-
-/// @nodoc
-class __$$DartReactMessageType_ExtensionImplCopyWithImpl<$Res>
-    extends _$DartReactMessageTypeCopyWithImpl<$Res,
-        _$DartReactMessageType_ExtensionImpl>
-    implements _$$DartReactMessageType_ExtensionImplCopyWith<$Res> {
-  __$$DartReactMessageType_ExtensionImplCopyWithImpl(
-      _$DartReactMessageType_ExtensionImpl _value,
-      $Res Function(_$DartReactMessageType_ExtensionImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of DartReactMessageType
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? spec = null,
-    Object? body = null,
-  }) {
-    return _then(_$DartReactMessageType_ExtensionImpl(
-      spec: null == spec
-          ? _value.spec
-          : spec // ignore: cast_nullable_to_non_nullable
-              as DartExtensionApp,
-      body: null == body
-          ? _value.body
-          : body // ignore: cast_nullable_to_non_nullable
-              as DartMessageParts,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$DartReactMessageType_ExtensionImpl
-    extends DartReactMessageType_Extension {
-  const _$DartReactMessageType_ExtensionImpl(
-      {required this.spec, required this.body})
-      : super._();
-
-  @override
-  final DartExtensionApp spec;
-  @override
-  final DartMessageParts body;
-
-  @override
-  String toString() {
-    return 'DartReactMessageType.extension_(spec: $spec, body: $body)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$DartReactMessageType_ExtensionImpl &&
-            (identical(other.spec, spec) || other.spec == spec) &&
-            (identical(other.body, body) || other.body == body));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, spec, body);
-
-  /// Create a copy of DartReactMessageType
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$DartReactMessageType_ExtensionImplCopyWith<
-          _$DartReactMessageType_ExtensionImpl>
-      get copyWith => __$$DartReactMessageType_ExtensionImplCopyWithImpl<
-          _$DartReactMessageType_ExtensionImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(DartReaction reaction, bool enable) react,
-    required TResult Function(DartExtensionApp spec, DartMessageParts body)
-        extension_,
-  }) {
-    return extension_(spec, body);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(DartReaction reaction, bool enable)? react,
-    TResult? Function(DartExtensionApp spec, DartMessageParts body)? extension_,
-  }) {
-    return extension_?.call(spec, body);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(DartReaction reaction, bool enable)? react,
-    TResult Function(DartExtensionApp spec, DartMessageParts body)? extension_,
-    required TResult orElse(),
-  }) {
-    if (extension_ != null) {
-      return extension_(spec, body);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(DartReactMessageType_React value) react,
-    required TResult Function(DartReactMessageType_Extension value) extension_,
-  }) {
-    return extension_(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(DartReactMessageType_React value)? react,
-    TResult? Function(DartReactMessageType_Extension value)? extension_,
-  }) {
-    return extension_?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(DartReactMessageType_React value)? react,
-    TResult Function(DartReactMessageType_Extension value)? extension_,
-    required TResult orElse(),
-  }) {
-    if (extension_ != null) {
-      return extension_(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class DartReactMessageType_Extension extends DartReactMessageType {
-  const factory DartReactMessageType_Extension(
-          {required final DartExtensionApp spec,
-          required final DartMessageParts body}) =
-      _$DartReactMessageType_ExtensionImpl;
-  const DartReactMessageType_Extension._() : super._();
-
-  DartExtensionApp get spec;
-  DartMessageParts get body;
-
-  /// Create a copy of DartReactMessageType
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$DartReactMessageType_ExtensionImplCopyWith<
-          _$DartReactMessageType_ExtensionImpl>
-      get copyWith => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-mixin _$DartRegisterState {
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(int nextS) registered,
-    required TResult Function() registering,
-    required TResult Function(BigInt? retryWait, String error) failed,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(int nextS)? registered,
-    TResult? Function()? registering,
-    TResult? Function(BigInt? retryWait, String error)? failed,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(int nextS)? registered,
-    TResult Function()? registering,
-    TResult Function(BigInt? retryWait, String error)? failed,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(DartRegisterState_Registered value) registered,
-    required TResult Function(DartRegisterState_Registering value) registering,
-    required TResult Function(DartRegisterState_Failed value) failed,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(DartRegisterState_Registered value)? registered,
-    TResult? Function(DartRegisterState_Registering value)? registering,
-    TResult? Function(DartRegisterState_Failed value)? failed,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(DartRegisterState_Registered value)? registered,
-    TResult Function(DartRegisterState_Registering value)? registering,
-    TResult Function(DartRegisterState_Failed value)? failed,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $DartRegisterStateCopyWith<$Res> {
-  factory $DartRegisterStateCopyWith(
-          DartRegisterState value, $Res Function(DartRegisterState) then) =
-      _$DartRegisterStateCopyWithImpl<$Res, DartRegisterState>;
-}
-
-/// @nodoc
-class _$DartRegisterStateCopyWithImpl<$Res, $Val extends DartRegisterState>
-    implements $DartRegisterStateCopyWith<$Res> {
-  _$DartRegisterStateCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of DartRegisterState
-  /// with the given fields replaced by the non-null parameter values.
-}
-
-/// @nodoc
-abstract class _$$DartRegisterState_RegisteredImplCopyWith<$Res> {
-  factory _$$DartRegisterState_RegisteredImplCopyWith(
-          _$DartRegisterState_RegisteredImpl value,
-          $Res Function(_$DartRegisterState_RegisteredImpl) then) =
-      __$$DartRegisterState_RegisteredImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({int nextS});
-}
-
-/// @nodoc
-class __$$DartRegisterState_RegisteredImplCopyWithImpl<$Res>
-    extends _$DartRegisterStateCopyWithImpl<$Res,
-        _$DartRegisterState_RegisteredImpl>
-    implements _$$DartRegisterState_RegisteredImplCopyWith<$Res> {
-  __$$DartRegisterState_RegisteredImplCopyWithImpl(
-      _$DartRegisterState_RegisteredImpl _value,
-      $Res Function(_$DartRegisterState_RegisteredImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of DartRegisterState
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? nextS = null,
-  }) {
-    return _then(_$DartRegisterState_RegisteredImpl(
-      nextS: null == nextS
-          ? _value.nextS
-          : nextS // ignore: cast_nullable_to_non_nullable
-              as int,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$DartRegisterState_RegisteredImpl extends DartRegisterState_Registered {
-  const _$DartRegisterState_RegisteredImpl({required this.nextS}) : super._();
-
-  @override
-  final int nextS;
-
-  @override
-  String toString() {
-    return 'DartRegisterState.registered(nextS: $nextS)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$DartRegisterState_RegisteredImpl &&
-            (identical(other.nextS, nextS) || other.nextS == nextS));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, nextS);
-
-  /// Create a copy of DartRegisterState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$DartRegisterState_RegisteredImplCopyWith<
-          _$DartRegisterState_RegisteredImpl>
-      get copyWith => __$$DartRegisterState_RegisteredImplCopyWithImpl<
-          _$DartRegisterState_RegisteredImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(int nextS) registered,
-    required TResult Function() registering,
-    required TResult Function(BigInt? retryWait, String error) failed,
-  }) {
-    return registered(nextS);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(int nextS)? registered,
-    TResult? Function()? registering,
-    TResult? Function(BigInt? retryWait, String error)? failed,
-  }) {
-    return registered?.call(nextS);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(int nextS)? registered,
-    TResult Function()? registering,
-    TResult Function(BigInt? retryWait, String error)? failed,
-    required TResult orElse(),
-  }) {
-    if (registered != null) {
-      return registered(nextS);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(DartRegisterState_Registered value) registered,
-    required TResult Function(DartRegisterState_Registering value) registering,
-    required TResult Function(DartRegisterState_Failed value) failed,
-  }) {
-    return registered(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(DartRegisterState_Registered value)? registered,
-    TResult? Function(DartRegisterState_Registering value)? registering,
-    TResult? Function(DartRegisterState_Failed value)? failed,
-  }) {
-    return registered?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(DartRegisterState_Registered value)? registered,
-    TResult Function(DartRegisterState_Registering value)? registering,
-    TResult Function(DartRegisterState_Failed value)? failed,
-    required TResult orElse(),
-  }) {
-    if (registered != null) {
-      return registered(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class DartRegisterState_Registered extends DartRegisterState {
-  const factory DartRegisterState_Registered({required final int nextS}) =
-      _$DartRegisterState_RegisteredImpl;
-  const DartRegisterState_Registered._() : super._();
-
-  int get nextS;
-
-  /// Create a copy of DartRegisterState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$DartRegisterState_RegisteredImplCopyWith<
-          _$DartRegisterState_RegisteredImpl>
-      get copyWith => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$DartRegisterState_RegisteringImplCopyWith<$Res> {
-  factory _$$DartRegisterState_RegisteringImplCopyWith(
-          _$DartRegisterState_RegisteringImpl value,
-          $Res Function(_$DartRegisterState_RegisteringImpl) then) =
-      __$$DartRegisterState_RegisteringImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$DartRegisterState_RegisteringImplCopyWithImpl<$Res>
-    extends _$DartRegisterStateCopyWithImpl<$Res,
-        _$DartRegisterState_RegisteringImpl>
-    implements _$$DartRegisterState_RegisteringImplCopyWith<$Res> {
-  __$$DartRegisterState_RegisteringImplCopyWithImpl(
-      _$DartRegisterState_RegisteringImpl _value,
-      $Res Function(_$DartRegisterState_RegisteringImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of DartRegisterState
-  /// with the given fields replaced by the non-null parameter values.
-}
-
-/// @nodoc
-
-class _$DartRegisterState_RegisteringImpl
-    extends DartRegisterState_Registering {
-  const _$DartRegisterState_RegisteringImpl() : super._();
-
-  @override
-  String toString() {
-    return 'DartRegisterState.registering()';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$DartRegisterState_RegisteringImpl);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(int nextS) registered,
-    required TResult Function() registering,
-    required TResult Function(BigInt? retryWait, String error) failed,
-  }) {
-    return registering();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(int nextS)? registered,
-    TResult? Function()? registering,
-    TResult? Function(BigInt? retryWait, String error)? failed,
-  }) {
-    return registering?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(int nextS)? registered,
-    TResult Function()? registering,
-    TResult Function(BigInt? retryWait, String error)? failed,
-    required TResult orElse(),
-  }) {
-    if (registering != null) {
-      return registering();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(DartRegisterState_Registered value) registered,
-    required TResult Function(DartRegisterState_Registering value) registering,
-    required TResult Function(DartRegisterState_Failed value) failed,
-  }) {
-    return registering(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(DartRegisterState_Registered value)? registered,
-    TResult? Function(DartRegisterState_Registering value)? registering,
-    TResult? Function(DartRegisterState_Failed value)? failed,
-  }) {
-    return registering?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(DartRegisterState_Registered value)? registered,
-    TResult Function(DartRegisterState_Registering value)? registering,
-    TResult Function(DartRegisterState_Failed value)? failed,
-    required TResult orElse(),
-  }) {
-    if (registering != null) {
-      return registering(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class DartRegisterState_Registering extends DartRegisterState {
-  const factory DartRegisterState_Registering() =
-      _$DartRegisterState_RegisteringImpl;
-  const DartRegisterState_Registering._() : super._();
-}
-
-/// @nodoc
-abstract class _$$DartRegisterState_FailedImplCopyWith<$Res> {
-  factory _$$DartRegisterState_FailedImplCopyWith(
-          _$DartRegisterState_FailedImpl value,
-          $Res Function(_$DartRegisterState_FailedImpl) then) =
-      __$$DartRegisterState_FailedImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({BigInt? retryWait, String error});
-}
-
-/// @nodoc
-class __$$DartRegisterState_FailedImplCopyWithImpl<$Res>
-    extends _$DartRegisterStateCopyWithImpl<$Res,
-        _$DartRegisterState_FailedImpl>
-    implements _$$DartRegisterState_FailedImplCopyWith<$Res> {
-  __$$DartRegisterState_FailedImplCopyWithImpl(
-      _$DartRegisterState_FailedImpl _value,
-      $Res Function(_$DartRegisterState_FailedImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of DartRegisterState
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? retryWait = freezed,
-    Object? error = null,
-  }) {
-    return _then(_$DartRegisterState_FailedImpl(
-      retryWait: freezed == retryWait
-          ? _value.retryWait
-          : retryWait // ignore: cast_nullable_to_non_nullable
-              as BigInt?,
-      error: null == error
-          ? _value.error
-          : error // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$DartRegisterState_FailedImpl extends DartRegisterState_Failed {
-  const _$DartRegisterState_FailedImpl({this.retryWait, required this.error})
-      : super._();
-
-  @override
-  final BigInt? retryWait;
-  @override
-  final String error;
-
-  @override
-  String toString() {
-    return 'DartRegisterState.failed(retryWait: $retryWait, error: $error)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$DartRegisterState_FailedImpl &&
-            (identical(other.retryWait, retryWait) ||
-                other.retryWait == retryWait) &&
-            (identical(other.error, error) || other.error == error));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, retryWait, error);
-
-  /// Create a copy of DartRegisterState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$DartRegisterState_FailedImplCopyWith<_$DartRegisterState_FailedImpl>
-      get copyWith => __$$DartRegisterState_FailedImplCopyWithImpl<
-          _$DartRegisterState_FailedImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(int nextS) registered,
-    required TResult Function() registering,
-    required TResult Function(BigInt? retryWait, String error) failed,
-  }) {
-    return failed(retryWait, error);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(int nextS)? registered,
-    TResult? Function()? registering,
-    TResult? Function(BigInt? retryWait, String error)? failed,
-  }) {
-    return failed?.call(retryWait, error);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(int nextS)? registered,
-    TResult Function()? registering,
-    TResult Function(BigInt? retryWait, String error)? failed,
-    required TResult orElse(),
-  }) {
-    if (failed != null) {
-      return failed(retryWait, error);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(DartRegisterState_Registered value) registered,
-    required TResult Function(DartRegisterState_Registering value) registering,
-    required TResult Function(DartRegisterState_Failed value) failed,
-  }) {
-    return failed(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(DartRegisterState_Registered value)? registered,
-    TResult? Function(DartRegisterState_Registering value)? registering,
-    TResult? Function(DartRegisterState_Failed value)? failed,
-  }) {
-    return failed?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(DartRegisterState_Registered value)? registered,
-    TResult Function(DartRegisterState_Registering value)? registering,
-    TResult Function(DartRegisterState_Failed value)? failed,
-    required TResult orElse(),
-  }) {
-    if (failed != null) {
-      return failed(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class DartRegisterState_Failed extends DartRegisterState {
-  const factory DartRegisterState_Failed(
-      {final BigInt? retryWait,
-      required final String error}) = _$DartRegisterState_FailedImpl;
-  const DartRegisterState_Failed._() : super._();
-
-  BigInt? get retryWait;
-  String get error;
-
-  /// Create a copy of DartRegisterState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$DartRegisterState_FailedImplCopyWith<_$DartRegisterState_FailedImpl>
+  _$$PartExtension_StickerImplCopyWith<_$PartExtension_StickerImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -9749,19 +8259,19 @@ mixin _$PollResult {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() stop,
-    required TResult Function(DartPushMessage? field0) cont,
+    required TResult Function(PushMessage? field0) cont,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? stop,
-    TResult? Function(DartPushMessage? field0)? cont,
+    TResult? Function(PushMessage? field0)? cont,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? stop,
-    TResult Function(DartPushMessage? field0)? cont,
+    TResult Function(PushMessage? field0)? cont,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -9849,7 +8359,7 @@ class _$PollResult_StopImpl extends PollResult_Stop {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() stop,
-    required TResult Function(DartPushMessage? field0) cont,
+    required TResult Function(PushMessage? field0) cont,
   }) {
     return stop();
   }
@@ -9858,7 +8368,7 @@ class _$PollResult_StopImpl extends PollResult_Stop {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? stop,
-    TResult? Function(DartPushMessage? field0)? cont,
+    TResult? Function(PushMessage? field0)? cont,
   }) {
     return stop?.call();
   }
@@ -9867,7 +8377,7 @@ class _$PollResult_StopImpl extends PollResult_Stop {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? stop,
-    TResult Function(DartPushMessage? field0)? cont,
+    TResult Function(PushMessage? field0)? cont,
     required TResult orElse(),
   }) {
     if (stop != null) {
@@ -9919,9 +8429,9 @@ abstract class _$$PollResult_ContImplCopyWith<$Res> {
           $Res Function(_$PollResult_ContImpl) then) =
       __$$PollResult_ContImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({DartPushMessage? field0});
+  $Res call({PushMessage? field0});
 
-  $DartPushMessageCopyWith<$Res>? get field0;
+  $PushMessageCopyWith<$Res>? get field0;
 }
 
 /// @nodoc
@@ -9943,7 +8453,7 @@ class __$$PollResult_ContImplCopyWithImpl<$Res>
       freezed == field0
           ? _value.field0
           : field0 // ignore: cast_nullable_to_non_nullable
-              as DartPushMessage?,
+              as PushMessage?,
     ));
   }
 
@@ -9951,12 +8461,12 @@ class __$$PollResult_ContImplCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $DartPushMessageCopyWith<$Res>? get field0 {
+  $PushMessageCopyWith<$Res>? get field0 {
     if (_value.field0 == null) {
       return null;
     }
 
-    return $DartPushMessageCopyWith<$Res>(_value.field0!, (value) {
+    return $PushMessageCopyWith<$Res>(_value.field0!, (value) {
       return _then(_value.copyWith(field0: value));
     });
   }
@@ -9968,7 +8478,7 @@ class _$PollResult_ContImpl extends PollResult_Cont {
   const _$PollResult_ContImpl([this.field0]) : super._();
 
   @override
-  final DartPushMessage? field0;
+  final PushMessage? field0;
 
   @override
   String toString() {
@@ -9999,7 +8509,7 @@ class _$PollResult_ContImpl extends PollResult_Cont {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() stop,
-    required TResult Function(DartPushMessage? field0) cont,
+    required TResult Function(PushMessage? field0) cont,
   }) {
     return cont(field0);
   }
@@ -10008,7 +8518,7 @@ class _$PollResult_ContImpl extends PollResult_Cont {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? stop,
-    TResult? Function(DartPushMessage? field0)? cont,
+    TResult? Function(PushMessage? field0)? cont,
   }) {
     return cont?.call(field0);
   }
@@ -10017,7 +8527,7 @@ class _$PollResult_ContImpl extends PollResult_Cont {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? stop,
-    TResult Function(DartPushMessage? field0)? cont,
+    TResult Function(PushMessage? field0)? cont,
     required TResult orElse(),
   }) {
     if (cont != null) {
@@ -10059,15 +8569,1254 @@ class _$PollResult_ContImpl extends PollResult_Cont {
 }
 
 abstract class PollResult_Cont extends PollResult {
-  const factory PollResult_Cont([final DartPushMessage? field0]) =
+  const factory PollResult_Cont([final PushMessage? field0]) =
       _$PollResult_ContImpl;
   const PollResult_Cont._() : super._();
 
-  DartPushMessage? get field0;
+  PushMessage? get field0;
 
   /// Create a copy of PollResult
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$PollResult_ContImplCopyWith<_$PollResult_ContImpl> get copyWith =>
       throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+mixin _$PushMessage {
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(MessageInst field0) iMessage,
+    required TResult Function(String uuid, String? error) sendConfirm,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(MessageInst field0)? iMessage,
+    TResult? Function(String uuid, String? error)? sendConfirm,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(MessageInst field0)? iMessage,
+    TResult Function(String uuid, String? error)? sendConfirm,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(PushMessage_IMessage value) iMessage,
+    required TResult Function(PushMessage_SendConfirm value) sendConfirm,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(PushMessage_IMessage value)? iMessage,
+    TResult? Function(PushMessage_SendConfirm value)? sendConfirm,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(PushMessage_IMessage value)? iMessage,
+    TResult Function(PushMessage_SendConfirm value)? sendConfirm,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $PushMessageCopyWith<$Res> {
+  factory $PushMessageCopyWith(
+          PushMessage value, $Res Function(PushMessage) then) =
+      _$PushMessageCopyWithImpl<$Res, PushMessage>;
+}
+
+/// @nodoc
+class _$PushMessageCopyWithImpl<$Res, $Val extends PushMessage>
+    implements $PushMessageCopyWith<$Res> {
+  _$PushMessageCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of PushMessage
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+abstract class _$$PushMessage_IMessageImplCopyWith<$Res> {
+  factory _$$PushMessage_IMessageImplCopyWith(_$PushMessage_IMessageImpl value,
+          $Res Function(_$PushMessage_IMessageImpl) then) =
+      __$$PushMessage_IMessageImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({MessageInst field0});
+}
+
+/// @nodoc
+class __$$PushMessage_IMessageImplCopyWithImpl<$Res>
+    extends _$PushMessageCopyWithImpl<$Res, _$PushMessage_IMessageImpl>
+    implements _$$PushMessage_IMessageImplCopyWith<$Res> {
+  __$$PushMessage_IMessageImplCopyWithImpl(_$PushMessage_IMessageImpl _value,
+      $Res Function(_$PushMessage_IMessageImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of PushMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? field0 = null,
+  }) {
+    return _then(_$PushMessage_IMessageImpl(
+      null == field0
+          ? _value.field0
+          : field0 // ignore: cast_nullable_to_non_nullable
+              as MessageInst,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$PushMessage_IMessageImpl extends PushMessage_IMessage {
+  const _$PushMessage_IMessageImpl(this.field0) : super._();
+
+  @override
+  final MessageInst field0;
+
+  @override
+  String toString() {
+    return 'PushMessage.iMessage(field0: $field0)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$PushMessage_IMessageImpl &&
+            (identical(other.field0, field0) || other.field0 == field0));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, field0);
+
+  /// Create a copy of PushMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$PushMessage_IMessageImplCopyWith<_$PushMessage_IMessageImpl>
+      get copyWith =>
+          __$$PushMessage_IMessageImplCopyWithImpl<_$PushMessage_IMessageImpl>(
+              this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(MessageInst field0) iMessage,
+    required TResult Function(String uuid, String? error) sendConfirm,
+  }) {
+    return iMessage(field0);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(MessageInst field0)? iMessage,
+    TResult? Function(String uuid, String? error)? sendConfirm,
+  }) {
+    return iMessage?.call(field0);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(MessageInst field0)? iMessage,
+    TResult Function(String uuid, String? error)? sendConfirm,
+    required TResult orElse(),
+  }) {
+    if (iMessage != null) {
+      return iMessage(field0);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(PushMessage_IMessage value) iMessage,
+    required TResult Function(PushMessage_SendConfirm value) sendConfirm,
+  }) {
+    return iMessage(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(PushMessage_IMessage value)? iMessage,
+    TResult? Function(PushMessage_SendConfirm value)? sendConfirm,
+  }) {
+    return iMessage?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(PushMessage_IMessage value)? iMessage,
+    TResult Function(PushMessage_SendConfirm value)? sendConfirm,
+    required TResult orElse(),
+  }) {
+    if (iMessage != null) {
+      return iMessage(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class PushMessage_IMessage extends PushMessage {
+  const factory PushMessage_IMessage(final MessageInst field0) =
+      _$PushMessage_IMessageImpl;
+  const PushMessage_IMessage._() : super._();
+
+  MessageInst get field0;
+
+  /// Create a copy of PushMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$PushMessage_IMessageImplCopyWith<_$PushMessage_IMessageImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$PushMessage_SendConfirmImplCopyWith<$Res> {
+  factory _$$PushMessage_SendConfirmImplCopyWith(
+          _$PushMessage_SendConfirmImpl value,
+          $Res Function(_$PushMessage_SendConfirmImpl) then) =
+      __$$PushMessage_SendConfirmImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String uuid, String? error});
+}
+
+/// @nodoc
+class __$$PushMessage_SendConfirmImplCopyWithImpl<$Res>
+    extends _$PushMessageCopyWithImpl<$Res, _$PushMessage_SendConfirmImpl>
+    implements _$$PushMessage_SendConfirmImplCopyWith<$Res> {
+  __$$PushMessage_SendConfirmImplCopyWithImpl(
+      _$PushMessage_SendConfirmImpl _value,
+      $Res Function(_$PushMessage_SendConfirmImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of PushMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? uuid = null,
+    Object? error = freezed,
+  }) {
+    return _then(_$PushMessage_SendConfirmImpl(
+      uuid: null == uuid
+          ? _value.uuid
+          : uuid // ignore: cast_nullable_to_non_nullable
+              as String,
+      error: freezed == error
+          ? _value.error
+          : error // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$PushMessage_SendConfirmImpl extends PushMessage_SendConfirm {
+  const _$PushMessage_SendConfirmImpl({required this.uuid, this.error})
+      : super._();
+
+  @override
+  final String uuid;
+  @override
+  final String? error;
+
+  @override
+  String toString() {
+    return 'PushMessage.sendConfirm(uuid: $uuid, error: $error)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$PushMessage_SendConfirmImpl &&
+            (identical(other.uuid, uuid) || other.uuid == uuid) &&
+            (identical(other.error, error) || other.error == error));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, uuid, error);
+
+  /// Create a copy of PushMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$PushMessage_SendConfirmImplCopyWith<_$PushMessage_SendConfirmImpl>
+      get copyWith => __$$PushMessage_SendConfirmImplCopyWithImpl<
+          _$PushMessage_SendConfirmImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(MessageInst field0) iMessage,
+    required TResult Function(String uuid, String? error) sendConfirm,
+  }) {
+    return sendConfirm(uuid, error);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(MessageInst field0)? iMessage,
+    TResult? Function(String uuid, String? error)? sendConfirm,
+  }) {
+    return sendConfirm?.call(uuid, error);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(MessageInst field0)? iMessage,
+    TResult Function(String uuid, String? error)? sendConfirm,
+    required TResult orElse(),
+  }) {
+    if (sendConfirm != null) {
+      return sendConfirm(uuid, error);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(PushMessage_IMessage value) iMessage,
+    required TResult Function(PushMessage_SendConfirm value) sendConfirm,
+  }) {
+    return sendConfirm(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(PushMessage_IMessage value)? iMessage,
+    TResult? Function(PushMessage_SendConfirm value)? sendConfirm,
+  }) {
+    return sendConfirm?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(PushMessage_IMessage value)? iMessage,
+    TResult Function(PushMessage_SendConfirm value)? sendConfirm,
+    required TResult orElse(),
+  }) {
+    if (sendConfirm != null) {
+      return sendConfirm(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class PushMessage_SendConfirm extends PushMessage {
+  const factory PushMessage_SendConfirm(
+      {required final String uuid,
+      final String? error}) = _$PushMessage_SendConfirmImpl;
+  const PushMessage_SendConfirm._() : super._();
+
+  String get uuid;
+  String? get error;
+
+  /// Create a copy of PushMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$PushMessage_SendConfirmImplCopyWith<_$PushMessage_SendConfirmImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+mixin _$ReactMessageType {
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(Reaction reaction, bool enable) react,
+    required TResult Function(ExtensionApp spec, MessageParts body) extension_,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(Reaction reaction, bool enable)? react,
+    TResult? Function(ExtensionApp spec, MessageParts body)? extension_,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(Reaction reaction, bool enable)? react,
+    TResult Function(ExtensionApp spec, MessageParts body)? extension_,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(ReactMessageType_React value) react,
+    required TResult Function(ReactMessageType_Extension value) extension_,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(ReactMessageType_React value)? react,
+    TResult? Function(ReactMessageType_Extension value)? extension_,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(ReactMessageType_React value)? react,
+    TResult Function(ReactMessageType_Extension value)? extension_,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $ReactMessageTypeCopyWith<$Res> {
+  factory $ReactMessageTypeCopyWith(
+          ReactMessageType value, $Res Function(ReactMessageType) then) =
+      _$ReactMessageTypeCopyWithImpl<$Res, ReactMessageType>;
+}
+
+/// @nodoc
+class _$ReactMessageTypeCopyWithImpl<$Res, $Val extends ReactMessageType>
+    implements $ReactMessageTypeCopyWith<$Res> {
+  _$ReactMessageTypeCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of ReactMessageType
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+abstract class _$$ReactMessageType_ReactImplCopyWith<$Res> {
+  factory _$$ReactMessageType_ReactImplCopyWith(
+          _$ReactMessageType_ReactImpl value,
+          $Res Function(_$ReactMessageType_ReactImpl) then) =
+      __$$ReactMessageType_ReactImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({Reaction reaction, bool enable});
+}
+
+/// @nodoc
+class __$$ReactMessageType_ReactImplCopyWithImpl<$Res>
+    extends _$ReactMessageTypeCopyWithImpl<$Res, _$ReactMessageType_ReactImpl>
+    implements _$$ReactMessageType_ReactImplCopyWith<$Res> {
+  __$$ReactMessageType_ReactImplCopyWithImpl(
+      _$ReactMessageType_ReactImpl _value,
+      $Res Function(_$ReactMessageType_ReactImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of ReactMessageType
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? reaction = null,
+    Object? enable = null,
+  }) {
+    return _then(_$ReactMessageType_ReactImpl(
+      reaction: null == reaction
+          ? _value.reaction
+          : reaction // ignore: cast_nullable_to_non_nullable
+              as Reaction,
+      enable: null == enable
+          ? _value.enable
+          : enable // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$ReactMessageType_ReactImpl extends ReactMessageType_React {
+  const _$ReactMessageType_ReactImpl(
+      {required this.reaction, required this.enable})
+      : super._();
+
+  @override
+  final Reaction reaction;
+  @override
+  final bool enable;
+
+  @override
+  String toString() {
+    return 'ReactMessageType.react(reaction: $reaction, enable: $enable)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ReactMessageType_ReactImpl &&
+            (identical(other.reaction, reaction) ||
+                other.reaction == reaction) &&
+            (identical(other.enable, enable) || other.enable == enable));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, reaction, enable);
+
+  /// Create a copy of ReactMessageType
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ReactMessageType_ReactImplCopyWith<_$ReactMessageType_ReactImpl>
+      get copyWith => __$$ReactMessageType_ReactImplCopyWithImpl<
+          _$ReactMessageType_ReactImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(Reaction reaction, bool enable) react,
+    required TResult Function(ExtensionApp spec, MessageParts body) extension_,
+  }) {
+    return react(reaction, enable);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(Reaction reaction, bool enable)? react,
+    TResult? Function(ExtensionApp spec, MessageParts body)? extension_,
+  }) {
+    return react?.call(reaction, enable);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(Reaction reaction, bool enable)? react,
+    TResult Function(ExtensionApp spec, MessageParts body)? extension_,
+    required TResult orElse(),
+  }) {
+    if (react != null) {
+      return react(reaction, enable);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(ReactMessageType_React value) react,
+    required TResult Function(ReactMessageType_Extension value) extension_,
+  }) {
+    return react(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(ReactMessageType_React value)? react,
+    TResult? Function(ReactMessageType_Extension value)? extension_,
+  }) {
+    return react?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(ReactMessageType_React value)? react,
+    TResult Function(ReactMessageType_Extension value)? extension_,
+    required TResult orElse(),
+  }) {
+    if (react != null) {
+      return react(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class ReactMessageType_React extends ReactMessageType {
+  const factory ReactMessageType_React(
+      {required final Reaction reaction,
+      required final bool enable}) = _$ReactMessageType_ReactImpl;
+  const ReactMessageType_React._() : super._();
+
+  Reaction get reaction;
+  bool get enable;
+
+  /// Create a copy of ReactMessageType
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$ReactMessageType_ReactImplCopyWith<_$ReactMessageType_ReactImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$ReactMessageType_ExtensionImplCopyWith<$Res> {
+  factory _$$ReactMessageType_ExtensionImplCopyWith(
+          _$ReactMessageType_ExtensionImpl value,
+          $Res Function(_$ReactMessageType_ExtensionImpl) then) =
+      __$$ReactMessageType_ExtensionImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({ExtensionApp spec, MessageParts body});
+}
+
+/// @nodoc
+class __$$ReactMessageType_ExtensionImplCopyWithImpl<$Res>
+    extends _$ReactMessageTypeCopyWithImpl<$Res,
+        _$ReactMessageType_ExtensionImpl>
+    implements _$$ReactMessageType_ExtensionImplCopyWith<$Res> {
+  __$$ReactMessageType_ExtensionImplCopyWithImpl(
+      _$ReactMessageType_ExtensionImpl _value,
+      $Res Function(_$ReactMessageType_ExtensionImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of ReactMessageType
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? spec = null,
+    Object? body = null,
+  }) {
+    return _then(_$ReactMessageType_ExtensionImpl(
+      spec: null == spec
+          ? _value.spec
+          : spec // ignore: cast_nullable_to_non_nullable
+              as ExtensionApp,
+      body: null == body
+          ? _value.body
+          : body // ignore: cast_nullable_to_non_nullable
+              as MessageParts,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$ReactMessageType_ExtensionImpl extends ReactMessageType_Extension {
+  const _$ReactMessageType_ExtensionImpl(
+      {required this.spec, required this.body})
+      : super._();
+
+  @override
+  final ExtensionApp spec;
+  @override
+  final MessageParts body;
+
+  @override
+  String toString() {
+    return 'ReactMessageType.extension_(spec: $spec, body: $body)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ReactMessageType_ExtensionImpl &&
+            (identical(other.spec, spec) || other.spec == spec) &&
+            (identical(other.body, body) || other.body == body));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, spec, body);
+
+  /// Create a copy of ReactMessageType
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ReactMessageType_ExtensionImplCopyWith<_$ReactMessageType_ExtensionImpl>
+      get copyWith => __$$ReactMessageType_ExtensionImplCopyWithImpl<
+          _$ReactMessageType_ExtensionImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(Reaction reaction, bool enable) react,
+    required TResult Function(ExtensionApp spec, MessageParts body) extension_,
+  }) {
+    return extension_(spec, body);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(Reaction reaction, bool enable)? react,
+    TResult? Function(ExtensionApp spec, MessageParts body)? extension_,
+  }) {
+    return extension_?.call(spec, body);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(Reaction reaction, bool enable)? react,
+    TResult Function(ExtensionApp spec, MessageParts body)? extension_,
+    required TResult orElse(),
+  }) {
+    if (extension_ != null) {
+      return extension_(spec, body);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(ReactMessageType_React value) react,
+    required TResult Function(ReactMessageType_Extension value) extension_,
+  }) {
+    return extension_(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(ReactMessageType_React value)? react,
+    TResult? Function(ReactMessageType_Extension value)? extension_,
+  }) {
+    return extension_?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(ReactMessageType_React value)? react,
+    TResult Function(ReactMessageType_Extension value)? extension_,
+    required TResult orElse(),
+  }) {
+    if (extension_ != null) {
+      return extension_(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class ReactMessageType_Extension extends ReactMessageType {
+  const factory ReactMessageType_Extension(
+      {required final ExtensionApp spec,
+      required final MessageParts body}) = _$ReactMessageType_ExtensionImpl;
+  const ReactMessageType_Extension._() : super._();
+
+  ExtensionApp get spec;
+  MessageParts get body;
+
+  /// Create a copy of ReactMessageType
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$ReactMessageType_ExtensionImplCopyWith<_$ReactMessageType_ExtensionImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+mixin _$RegisterState {
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(int nextS) registered,
+    required TResult Function() registering,
+    required TResult Function(BigInt? retryWait, String error) failed,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(int nextS)? registered,
+    TResult? Function()? registering,
+    TResult? Function(BigInt? retryWait, String error)? failed,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(int nextS)? registered,
+    TResult Function()? registering,
+    TResult Function(BigInt? retryWait, String error)? failed,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(RegisterState_Registered value) registered,
+    required TResult Function(RegisterState_Registering value) registering,
+    required TResult Function(RegisterState_Failed value) failed,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(RegisterState_Registered value)? registered,
+    TResult? Function(RegisterState_Registering value)? registering,
+    TResult? Function(RegisterState_Failed value)? failed,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(RegisterState_Registered value)? registered,
+    TResult Function(RegisterState_Registering value)? registering,
+    TResult Function(RegisterState_Failed value)? failed,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $RegisterStateCopyWith<$Res> {
+  factory $RegisterStateCopyWith(
+          RegisterState value, $Res Function(RegisterState) then) =
+      _$RegisterStateCopyWithImpl<$Res, RegisterState>;
+}
+
+/// @nodoc
+class _$RegisterStateCopyWithImpl<$Res, $Val extends RegisterState>
+    implements $RegisterStateCopyWith<$Res> {
+  _$RegisterStateCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of RegisterState
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+abstract class _$$RegisterState_RegisteredImplCopyWith<$Res> {
+  factory _$$RegisterState_RegisteredImplCopyWith(
+          _$RegisterState_RegisteredImpl value,
+          $Res Function(_$RegisterState_RegisteredImpl) then) =
+      __$$RegisterState_RegisteredImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({int nextS});
+}
+
+/// @nodoc
+class __$$RegisterState_RegisteredImplCopyWithImpl<$Res>
+    extends _$RegisterStateCopyWithImpl<$Res, _$RegisterState_RegisteredImpl>
+    implements _$$RegisterState_RegisteredImplCopyWith<$Res> {
+  __$$RegisterState_RegisteredImplCopyWithImpl(
+      _$RegisterState_RegisteredImpl _value,
+      $Res Function(_$RegisterState_RegisteredImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of RegisterState
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? nextS = null,
+  }) {
+    return _then(_$RegisterState_RegisteredImpl(
+      nextS: null == nextS
+          ? _value.nextS
+          : nextS // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$RegisterState_RegisteredImpl extends RegisterState_Registered {
+  const _$RegisterState_RegisteredImpl({required this.nextS}) : super._();
+
+  @override
+  final int nextS;
+
+  @override
+  String toString() {
+    return 'RegisterState.registered(nextS: $nextS)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$RegisterState_RegisteredImpl &&
+            (identical(other.nextS, nextS) || other.nextS == nextS));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, nextS);
+
+  /// Create a copy of RegisterState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$RegisterState_RegisteredImplCopyWith<_$RegisterState_RegisteredImpl>
+      get copyWith => __$$RegisterState_RegisteredImplCopyWithImpl<
+          _$RegisterState_RegisteredImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(int nextS) registered,
+    required TResult Function() registering,
+    required TResult Function(BigInt? retryWait, String error) failed,
+  }) {
+    return registered(nextS);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(int nextS)? registered,
+    TResult? Function()? registering,
+    TResult? Function(BigInt? retryWait, String error)? failed,
+  }) {
+    return registered?.call(nextS);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(int nextS)? registered,
+    TResult Function()? registering,
+    TResult Function(BigInt? retryWait, String error)? failed,
+    required TResult orElse(),
+  }) {
+    if (registered != null) {
+      return registered(nextS);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(RegisterState_Registered value) registered,
+    required TResult Function(RegisterState_Registering value) registering,
+    required TResult Function(RegisterState_Failed value) failed,
+  }) {
+    return registered(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(RegisterState_Registered value)? registered,
+    TResult? Function(RegisterState_Registering value)? registering,
+    TResult? Function(RegisterState_Failed value)? failed,
+  }) {
+    return registered?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(RegisterState_Registered value)? registered,
+    TResult Function(RegisterState_Registering value)? registering,
+    TResult Function(RegisterState_Failed value)? failed,
+    required TResult orElse(),
+  }) {
+    if (registered != null) {
+      return registered(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class RegisterState_Registered extends RegisterState {
+  const factory RegisterState_Registered({required final int nextS}) =
+      _$RegisterState_RegisteredImpl;
+  const RegisterState_Registered._() : super._();
+
+  int get nextS;
+
+  /// Create a copy of RegisterState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$RegisterState_RegisteredImplCopyWith<_$RegisterState_RegisteredImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$RegisterState_RegisteringImplCopyWith<$Res> {
+  factory _$$RegisterState_RegisteringImplCopyWith(
+          _$RegisterState_RegisteringImpl value,
+          $Res Function(_$RegisterState_RegisteringImpl) then) =
+      __$$RegisterState_RegisteringImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$RegisterState_RegisteringImplCopyWithImpl<$Res>
+    extends _$RegisterStateCopyWithImpl<$Res, _$RegisterState_RegisteringImpl>
+    implements _$$RegisterState_RegisteringImplCopyWith<$Res> {
+  __$$RegisterState_RegisteringImplCopyWithImpl(
+      _$RegisterState_RegisteringImpl _value,
+      $Res Function(_$RegisterState_RegisteringImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of RegisterState
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$RegisterState_RegisteringImpl extends RegisterState_Registering {
+  const _$RegisterState_RegisteringImpl() : super._();
+
+  @override
+  String toString() {
+    return 'RegisterState.registering()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$RegisterState_RegisteringImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(int nextS) registered,
+    required TResult Function() registering,
+    required TResult Function(BigInt? retryWait, String error) failed,
+  }) {
+    return registering();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(int nextS)? registered,
+    TResult? Function()? registering,
+    TResult? Function(BigInt? retryWait, String error)? failed,
+  }) {
+    return registering?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(int nextS)? registered,
+    TResult Function()? registering,
+    TResult Function(BigInt? retryWait, String error)? failed,
+    required TResult orElse(),
+  }) {
+    if (registering != null) {
+      return registering();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(RegisterState_Registered value) registered,
+    required TResult Function(RegisterState_Registering value) registering,
+    required TResult Function(RegisterState_Failed value) failed,
+  }) {
+    return registering(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(RegisterState_Registered value)? registered,
+    TResult? Function(RegisterState_Registering value)? registering,
+    TResult? Function(RegisterState_Failed value)? failed,
+  }) {
+    return registering?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(RegisterState_Registered value)? registered,
+    TResult Function(RegisterState_Registering value)? registering,
+    TResult Function(RegisterState_Failed value)? failed,
+    required TResult orElse(),
+  }) {
+    if (registering != null) {
+      return registering(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class RegisterState_Registering extends RegisterState {
+  const factory RegisterState_Registering() = _$RegisterState_RegisteringImpl;
+  const RegisterState_Registering._() : super._();
+}
+
+/// @nodoc
+abstract class _$$RegisterState_FailedImplCopyWith<$Res> {
+  factory _$$RegisterState_FailedImplCopyWith(_$RegisterState_FailedImpl value,
+          $Res Function(_$RegisterState_FailedImpl) then) =
+      __$$RegisterState_FailedImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({BigInt? retryWait, String error});
+}
+
+/// @nodoc
+class __$$RegisterState_FailedImplCopyWithImpl<$Res>
+    extends _$RegisterStateCopyWithImpl<$Res, _$RegisterState_FailedImpl>
+    implements _$$RegisterState_FailedImplCopyWith<$Res> {
+  __$$RegisterState_FailedImplCopyWithImpl(_$RegisterState_FailedImpl _value,
+      $Res Function(_$RegisterState_FailedImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of RegisterState
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? retryWait = freezed,
+    Object? error = null,
+  }) {
+    return _then(_$RegisterState_FailedImpl(
+      retryWait: freezed == retryWait
+          ? _value.retryWait
+          : retryWait // ignore: cast_nullable_to_non_nullable
+              as BigInt?,
+      error: null == error
+          ? _value.error
+          : error // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$RegisterState_FailedImpl extends RegisterState_Failed {
+  const _$RegisterState_FailedImpl({this.retryWait, required this.error})
+      : super._();
+
+  @override
+  final BigInt? retryWait;
+  @override
+  final String error;
+
+  @override
+  String toString() {
+    return 'RegisterState.failed(retryWait: $retryWait, error: $error)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$RegisterState_FailedImpl &&
+            (identical(other.retryWait, retryWait) ||
+                other.retryWait == retryWait) &&
+            (identical(other.error, error) || other.error == error));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, retryWait, error);
+
+  /// Create a copy of RegisterState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$RegisterState_FailedImplCopyWith<_$RegisterState_FailedImpl>
+      get copyWith =>
+          __$$RegisterState_FailedImplCopyWithImpl<_$RegisterState_FailedImpl>(
+              this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(int nextS) registered,
+    required TResult Function() registering,
+    required TResult Function(BigInt? retryWait, String error) failed,
+  }) {
+    return failed(retryWait, error);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(int nextS)? registered,
+    TResult? Function()? registering,
+    TResult? Function(BigInt? retryWait, String error)? failed,
+  }) {
+    return failed?.call(retryWait, error);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(int nextS)? registered,
+    TResult Function()? registering,
+    TResult Function(BigInt? retryWait, String error)? failed,
+    required TResult orElse(),
+  }) {
+    if (failed != null) {
+      return failed(retryWait, error);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(RegisterState_Registered value) registered,
+    required TResult Function(RegisterState_Registering value) registering,
+    required TResult Function(RegisterState_Failed value) failed,
+  }) {
+    return failed(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(RegisterState_Registered value)? registered,
+    TResult? Function(RegisterState_Registering value)? registering,
+    TResult? Function(RegisterState_Failed value)? failed,
+  }) {
+    return failed?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(RegisterState_Registered value)? registered,
+    TResult Function(RegisterState_Registering value)? registering,
+    TResult Function(RegisterState_Failed value)? failed,
+    required TResult orElse(),
+  }) {
+    if (failed != null) {
+      return failed(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class RegisterState_Failed extends RegisterState {
+  const factory RegisterState_Failed(
+      {final BigInt? retryWait,
+      required final String error}) = _$RegisterState_FailedImpl;
+  const RegisterState_Failed._() : super._();
+
+  BigInt? get retryWait;
+  String get error;
+
+  /// Create a copy of RegisterState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$RegisterState_FailedImplCopyWith<_$RegisterState_FailedImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }

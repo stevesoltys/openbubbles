@@ -383,17 +383,17 @@ class _AppleIdLoginState extends OptimizedState<AppleIdLogin> {
       result = await controller.updateLoginState(result);
 
 
-      // if (result is api.DartLoginState_NeedsSMS2FA) {
-      //   result = api.DartLoginState.needsSms2FaVerification(api.VerifyBody(
+      // if (result is api.LoginState_NeedsSMS2FA) {
+      //   result = api.LoginState.needsSms2FaVerification(api.VerifyBody(
 
       //   ))
       // }
-      // if (result is api.DartLoginState_NeedsDevice2FA) {
-      //   result = const api.DartLoginState.needs2FaVerification();
+      // if (result is api.LoginState_NeedsDevice2FA) {
+      //   result = const api.LoginState.needs2FaVerification();
       // }
 
       ss.settings.iCloudAccount.value = appleId;
-      if (result is api.DartLoginState_Needs2FAVerification || result is api.DartLoginState_NeedsSMS2FAVerification) {
+      if (result is api.LoginState_Needs2FAVerification || result is api.LoginState_NeedsSMS2FAVerification) {
         // we need 2fa
         controller.goingTo2fa = true;
         controller.twoFaUser = appleId;
@@ -404,7 +404,7 @@ class _AppleIdLoginState extends OptimizedState<AppleIdLogin> {
         );
         return;
       }
-      if (result is api.DartLoginState_LoggedIn) {
+      if (result is api.LoginState_LoggedIn) {
         if (!controller.success) {
           return;
         }

@@ -59,7 +59,7 @@ class _SettingsPageState extends OptimizedState<SettingsPage> {
   final RxBool uploadingContacts = false.obs;
   final RxnDouble progress = RxnDouble();
   final RxnInt totalSize = RxnInt();
-  api.DartDeviceInfo? deviceInfo;
+  api.DeviceInfo? deviceInfo;
 
   @override
   void initState() {

@@ -45,7 +45,7 @@ class HwInpState extends OptimizedState<HwInp> {
 
   bool stagingMine = true;
   api.JoinedOsConfig? staging;
-  api.DartDeviceInfo? stagingInfo;
+  api.DeviceInfo? stagingInfo;
   String deviceName = "";
 
   bool stagingNonInp = false;
@@ -155,7 +155,7 @@ class HwInpState extends OptimizedState<HwInp> {
           showSnackbar("Fetching validation data", "Mac Offline");
           return;
         }
-        parsed = await api.configFromValidationData(data: base64Decode(response.data["data"]), extra: api.DartHwExtra(
+        parsed = await api.configFromValidationData(data: base64Decode(response.data["data"]), extra: api.HwExtra(
           version: response2.data["versions"]["software_version"],
           protocolVersion: 1660,
           deviceId: response2.data["versions"]["unique_device_id"],
@@ -290,7 +290,7 @@ class HwInpState extends OptimizedState<HwInp> {
         var parsed = await api.configFromEncoded(encoded: rawData);
         select(parsed, shared == 0);
       } else if (data.length == 517 && data[0] == 0x02) {
-        var parsed = await api.configFromValidationData(data: data, extra: api.DartHwExtra(
+        var parsed = await api.configFromValidationData(data: data, extra: api.HwExtra(
           version: "13.6.4",
           protocolVersion: 1660,
           deviceId: uuid.v4(),

@@ -35,7 +35,7 @@ class _ProfilePanelState extends OptimizedState<ProfilePanel> with WidgetsBindin
   final RxMap<String, dynamic> accountContact = RxMap({});
   final RxnBool reregisteringIds = RxnBool();
 
-  RxList<api.DartPrivateDeviceInfo> forwardingTargets = RxList([]);
+  RxList<api.PrivateDeviceInfo> forwardingTargets = RxList([]);
 
   @override
   void initState() {
@@ -54,7 +54,7 @@ class _ProfilePanelState extends OptimizedState<ProfilePanel> with WidgetsBindin
 
     }
     var myHandles = (await api.getHandles(state: pushService.state));
-    List<api.DartPrivateDeviceInfo> pendingTargets = ss.settings.isSmsRouter.value ? await api.getSmsTargets(state: pushService.state, handle: myHandles.first, refresh: true) : [];
+    List<api.PrivateDeviceInfo> pendingTargets = ss.settings.isSmsRouter.value ? await api.getSmsTargets(state: pushService.state, handle: myHandles.first, refresh: true) : [];
     ss.saveSettings();
     setState(() {
       forwardingTargets.value = pendingTargets;
@@ -439,7 +439,7 @@ class _ProfilePanelState extends OptimizedState<ProfilePanel> with WidgetsBindin
                             var myHandles = (await api.getHandles(state: pushService.state));
                             ss.settings.isSmsRouter.value = val;
 
-                            List<api.DartPrivateDeviceInfo> pendingTargets = val ? await api.getSmsTargets(state: pushService.state, handle: myHandles.first, refresh: true) : [];
+                            List<api.PrivateDeviceInfo> pendingTargets = val ? await api.getSmsTargets(state: pushService.state, handle: myHandles.first, refresh: true) : [];
                             if (!val) {
                               await (backend as RustPushBackend).broadcastSmsForwardingState(false, ss.settings.smsForwardingTargets);
                             }

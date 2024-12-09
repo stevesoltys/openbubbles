@@ -25,7 +25,7 @@ class DevicePanel extends CustomStateful<DevicePanelController> {
 
 class _DevicePanelState extends CustomState<DevicePanel, void, DevicePanelController> {
 
-  api.DartDeviceInfo? deviceInfo;
+  api.DeviceInfo? deviceInfo;
   String deviceName = "";
 
   @override

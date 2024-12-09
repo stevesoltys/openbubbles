@@ -30,6 +30,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       get rust_arc_decrement_strong_count_JoinedOsConfigPtr => wire
           ._rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerJoinedOSConfigPtr;
 
+  CrossPlatformFinalizerArg
+      get rust_arc_decrement_strong_count_NsArrayLpIconMetadataPtr => wire
+          ._rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNSArrayLPIconMetadataPtr;
+
+  CrossPlatformFinalizerArg
+      get rust_arc_decrement_strong_count_NsArrayLpImageMetadataPtr => wire
+          ._rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNSArrayLPImageMetadataPtr;
+
   CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_VerifyBodyPtr =>
       wire._rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyBodyPtr;
 
@@ -49,6 +57,16 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   JoinedOsConfig
       dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerJoinedOSConfig(
+          dynamic raw);
+
+  @protected
+  NsArrayLpIconMetadata
+      dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNSArrayLPIconMetadata(
+          dynamic raw);
+
+  @protected
+  NsArrayLpImageMetadata
+      dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNSArrayLPImageMetadata(
           dynamic raw);
 
   @protected
@@ -98,6 +116,16 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           dynamic raw);
 
   @protected
+  NsArrayLpIconMetadata
+      dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNSArrayLPIconMetadata(
+          dynamic raw);
+
+  @protected
+  NsArrayLpImageMetadata
+      dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNSArrayLPImageMetadata(
+          dynamic raw);
+
+  @protected
   VerifyBody
       dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyBody(
           dynamic raw);
@@ -114,6 +142,18 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   String dco_decode_String(dynamic raw);
 
   @protected
+  Attachment dco_decode_attachment(dynamic raw);
+
+  @protected
+  AttachmentType dco_decode_attachment_type(dynamic raw);
+
+  @protected
+  Balloon dco_decode_balloon(dynamic raw);
+
+  @protected
+  BalloonLayout dco_decode_balloon_layout(dynamic raw);
+
+  @protected
   bool dco_decode_bool(dynamic raw);
 
   @protected
@@ -127,83 +167,51 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           dynamic raw);
 
   @protected
+  NsArrayLpIconMetadata
+      dco_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNSArrayLPIconMetadata(
+          dynamic raw);
+
+  @protected
+  NsArrayLpImageMetadata
+      dco_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNSArrayLPImageMetadata(
+          dynamic raw);
+
+  @protected
+  Attachment dco_decode_box_autoadd_attachment(dynamic raw);
+
+  @protected
+  Balloon dco_decode_box_autoadd_balloon(dynamic raw);
+
+  @protected
   bool dco_decode_box_autoadd_bool(dynamic raw);
 
   @protected
-  DartAttachment dco_decode_box_autoadd_dart_attachment(dynamic raw);
-
-  @protected
-  DartBalloon dco_decode_box_autoadd_dart_balloon(dynamic raw);
-
-  @protected
-  DartChangeParticipantMessage
-      dco_decode_box_autoadd_dart_change_participant_message(dynamic raw);
-
-  @protected
-  DartConversationData dco_decode_box_autoadd_dart_conversation_data(
+  ChangeParticipantMessage dco_decode_box_autoadd_change_participant_message(
       dynamic raw);
 
   @protected
-  DartEditMessage dco_decode_box_autoadd_dart_edit_message(dynamic raw);
+  ConversationData dco_decode_box_autoadd_conversation_data(dynamic raw);
 
   @protected
-  DartErrorMessage dco_decode_box_autoadd_dart_error_message(dynamic raw);
+  EditMessage dco_decode_box_autoadd_edit_message(dynamic raw);
 
   @protected
-  DartExtensionApp dco_decode_box_autoadd_dart_extension_app(dynamic raw);
+  ErrorMessage dco_decode_box_autoadd_error_message(dynamic raw);
 
   @protected
-  DartHwExtra dco_decode_box_autoadd_dart_hw_extra(dynamic raw);
+  ExtensionApp dco_decode_box_autoadd_extension_app(dynamic raw);
 
   @protected
-  DartIMessage dco_decode_box_autoadd_dart_i_message(dynamic raw);
+  HwExtra dco_decode_box_autoadd_hw_extra(dynamic raw);
 
   @protected
-  DartIconChangeMessage dco_decode_box_autoadd_dart_icon_change_message(
-      dynamic raw);
+  IconChangeMessage dco_decode_box_autoadd_icon_change_message(dynamic raw);
 
   @protected
-  DartLinkMeta dco_decode_box_autoadd_dart_link_meta(dynamic raw);
+  LinkMeta dco_decode_box_autoadd_link_meta(dynamic raw);
 
   @protected
-  DartLoginState dco_decode_box_autoadd_dart_login_state(dynamic raw);
-
-  @protected
-  DartMessage dco_decode_box_autoadd_dart_message(dynamic raw);
-
-  @protected
-  DartMessageParts dco_decode_box_autoadd_dart_message_parts(dynamic raw);
-
-  @protected
-  DartMMCSFile dco_decode_box_autoadd_dart_mmcs_file(dynamic raw);
-
-  @protected
-  DartNormalMessage dco_decode_box_autoadd_dart_normal_message(dynamic raw);
-
-  @protected
-  DartPartExtension dco_decode_box_autoadd_dart_part_extension(dynamic raw);
-
-  @protected
-  DartPushMessage dco_decode_box_autoadd_dart_push_message(dynamic raw);
-
-  @protected
-  DartReactMessage dco_decode_box_autoadd_dart_react_message(dynamic raw);
-
-  @protected
-  DartRenameMessage dco_decode_box_autoadd_dart_rename_message(dynamic raw);
-
-  @protected
-  DartSupportAction dco_decode_box_autoadd_dart_support_action(dynamic raw);
-
-  @protected
-  DartSupportAlert dco_decode_box_autoadd_dart_support_alert(dynamic raw);
-
-  @protected
-  DartUnsendMessage dco_decode_box_autoadd_dart_unsend_message(dynamic raw);
-
-  @protected
-  DartUpdateExtensionMessage
-      dco_decode_box_autoadd_dart_update_extension_message(dynamic raw);
+  LoginState dco_decode_box_autoadd_login_state(dynamic raw);
 
   @protected
   LPIconMetadata dco_decode_box_autoadd_lp_icon_metadata(dynamic raw);
@@ -212,139 +220,93 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   LPImageMetadata dco_decode_box_autoadd_lp_image_metadata(dynamic raw);
 
   @protected
-  NSArrayIconArray dco_decode_box_autoadd_ns_array_icon_array(dynamic raw);
+  Message dco_decode_box_autoadd_message(dynamic raw);
 
   @protected
-  NSArrayImageArray dco_decode_box_autoadd_ns_array_image_array(dynamic raw);
+  MessageInst dco_decode_box_autoadd_message_inst(dynamic raw);
+
+  @protected
+  MessageParts dco_decode_box_autoadd_message_parts(dynamic raw);
+
+  @protected
+  MMCSFile dco_decode_box_autoadd_mmcs_file(dynamic raw);
+
+  @protected
+  NormalMessage dco_decode_box_autoadd_normal_message(dynamic raw);
 
   @protected
   NSURL dco_decode_box_autoadd_nsurl(dynamic raw);
+
+  @protected
+  PartExtension dco_decode_box_autoadd_part_extension(dynamic raw);
+
+  @protected
+  PushMessage dco_decode_box_autoadd_push_message(dynamic raw);
+
+  @protected
+  ReactMessage dco_decode_box_autoadd_react_message(dynamic raw);
+
+  @protected
+  RenameMessage dco_decode_box_autoadd_rename_message(dynamic raw);
 
   @protected
   RichLinkImageAttachmentSubstitute
       dco_decode_box_autoadd_rich_link_image_attachment_substitute(dynamic raw);
 
   @protected
+  SupportAction dco_decode_box_autoadd_support_action(dynamic raw);
+
+  @protected
+  SupportAlert dco_decode_box_autoadd_support_alert(dynamic raw);
+
+  @protected
   BigInt dco_decode_box_autoadd_u_64(dynamic raw);
 
   @protected
-  DartAttachment dco_decode_dart_attachment(dynamic raw);
+  UnsendMessage dco_decode_box_autoadd_unsend_message(dynamic raw);
 
   @protected
-  DartAttachmentType dco_decode_dart_attachment_type(dynamic raw);
-
-  @protected
-  DartBalloon dco_decode_dart_balloon(dynamic raw);
-
-  @protected
-  DartBalloonLayout dco_decode_dart_balloon_layout(dynamic raw);
-
-  @protected
-  DartChangeParticipantMessage dco_decode_dart_change_participant_message(
+  UpdateExtensionMessage dco_decode_box_autoadd_update_extension_message(
       dynamic raw);
 
   @protected
-  DartConversationData dco_decode_dart_conversation_data(dynamic raw);
+  ChangeParticipantMessage dco_decode_change_participant_message(dynamic raw);
 
   @protected
-  DartDeviceInfo dco_decode_dart_device_info(dynamic raw);
+  ConversationData dco_decode_conversation_data(dynamic raw);
 
   @protected
-  DartEditMessage dco_decode_dart_edit_message(dynamic raw);
+  DeviceInfo dco_decode_device_info(dynamic raw);
 
   @protected
-  DartErrorMessage dco_decode_dart_error_message(dynamic raw);
+  EditMessage dco_decode_edit_message(dynamic raw);
 
   @protected
-  DartExtensionApp dco_decode_dart_extension_app(dynamic raw);
+  ErrorMessage dco_decode_error_message(dynamic raw);
 
   @protected
-  DartHwExtra dco_decode_dart_hw_extra(dynamic raw);
-
-  @protected
-  DartIMessage dco_decode_dart_i_message(dynamic raw);
-
-  @protected
-  DartIconChangeMessage dco_decode_dart_icon_change_message(dynamic raw);
-
-  @protected
-  DartIndexedMessagePart dco_decode_dart_indexed_message_part(dynamic raw);
-
-  @protected
-  DartLinkMeta dco_decode_dart_link_meta(dynamic raw);
-
-  @protected
-  DartLoginState dco_decode_dart_login_state(dynamic raw);
-
-  @protected
-  DartMessage dco_decode_dart_message(dynamic raw);
-
-  @protected
-  DartMessagePart dco_decode_dart_message_part(dynamic raw);
-
-  @protected
-  DartMessageParts dco_decode_dart_message_parts(dynamic raw);
-
-  @protected
-  DartMessageTarget dco_decode_dart_message_target(dynamic raw);
-
-  @protected
-  DartMessageType dco_decode_dart_message_type(dynamic raw);
-
-  @protected
-  DartMMCSFile dco_decode_dart_mmcs_file(dynamic raw);
-
-  @protected
-  DartNormalMessage dco_decode_dart_normal_message(dynamic raw);
-
-  @protected
-  DartPartExtension dco_decode_dart_part_extension(dynamic raw);
-
-  @protected
-  DartPrivateDeviceInfo dco_decode_dart_private_device_info(dynamic raw);
-
-  @protected
-  DartPushMessage dco_decode_dart_push_message(dynamic raw);
-
-  @protected
-  DartReactMessage dco_decode_dart_react_message(dynamic raw);
-
-  @protected
-  DartReactMessageType dco_decode_dart_react_message_type(dynamic raw);
-
-  @protected
-  DartReaction dco_decode_dart_reaction(dynamic raw);
-
-  @protected
-  DartRegisterState dco_decode_dart_register_state(dynamic raw);
-
-  @protected
-  DartRenameMessage dco_decode_dart_rename_message(dynamic raw);
-
-  @protected
-  DartSupportAction dco_decode_dart_support_action(dynamic raw);
-
-  @protected
-  DartSupportAlert dco_decode_dart_support_alert(dynamic raw);
-
-  @protected
-  DartTrustedPhoneNumber dco_decode_dart_trusted_phone_number(dynamic raw);
-
-  @protected
-  DartUnsendMessage dco_decode_dart_unsend_message(dynamic raw);
-
-  @protected
-  DartUpdateExtensionMessage dco_decode_dart_update_extension_message(
-      dynamic raw);
+  ExtensionApp dco_decode_extension_app(dynamic raw);
 
   @protected
   double dco_decode_f_64(dynamic raw);
+
+  @protected
+  HwExtra dco_decode_hw_extra(dynamic raw);
 
   @protected
   int dco_decode_i_32(dynamic raw);
 
   @protected
   PlatformInt64 dco_decode_i_64(dynamic raw);
+
+  @protected
+  IconChangeMessage dco_decode_icon_change_message(dynamic raw);
+
+  @protected
+  IndexedMessagePart dco_decode_indexed_message_part(dynamic raw);
+
+  @protected
+  LinkMeta dco_decode_link_meta(dynamic raw);
 
   @protected
   List<IdsUser>
@@ -355,34 +317,28 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   List<String> dco_decode_list_String(dynamic raw);
 
   @protected
-  List<DartIndexedMessagePart> dco_decode_list_dart_indexed_message_part(
-      dynamic raw);
-
-  @protected
-  List<DartMessageTarget> dco_decode_list_dart_message_target(dynamic raw);
-
-  @protected
-  List<DartPrivateDeviceInfo> dco_decode_list_dart_private_device_info(
-      dynamic raw);
-
-  @protected
-  List<DartTrustedPhoneNumber> dco_decode_list_dart_trusted_phone_number(
-      dynamic raw);
+  List<IndexedMessagePart> dco_decode_list_indexed_message_part(dynamic raw);
 
   @protected
   List<Uint8List> dco_decode_list_list_prim_u_8_strict(dynamic raw);
 
   @protected
-  List<LPIconMetadata> dco_decode_list_lp_icon_metadata(dynamic raw);
-
-  @protected
-  List<LPImageMetadata> dco_decode_list_lp_image_metadata(dynamic raw);
+  List<MessageTarget> dco_decode_list_message_target(dynamic raw);
 
   @protected
   List<int> dco_decode_list_prim_u_8_loose(dynamic raw);
 
   @protected
   Uint8List dco_decode_list_prim_u_8_strict(dynamic raw);
+
+  @protected
+  List<PrivateDeviceInfo> dco_decode_list_private_device_info(dynamic raw);
+
+  @protected
+  List<TrustedPhoneNumber> dco_decode_list_trusted_phone_number(dynamic raw);
+
+  @protected
+  LoginState dco_decode_login_state(dynamic raw);
 
   @protected
   LPIconMetadata dco_decode_lp_icon_metadata(dynamic raw);
@@ -394,19 +350,34 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   LPLinkMetadata dco_decode_lp_link_metadata(dynamic raw);
 
   @protected
+  Message dco_decode_message(dynamic raw);
+
+  @protected
+  MessageInst dco_decode_message_inst(dynamic raw);
+
+  @protected
+  MessagePart dco_decode_message_part(dynamic raw);
+
+  @protected
+  MessageParts dco_decode_message_parts(dynamic raw);
+
+  @protected
+  MessageTarget dco_decode_message_target(dynamic raw);
+
+  @protected
+  MessageType dco_decode_message_type(dynamic raw);
+
+  @protected
+  MMCSFile dco_decode_mmcs_file(dynamic raw);
+
+  @protected
   MMCSTransferProgress dco_decode_mmcs_transfer_progress(dynamic raw);
 
   @protected
   MyAsyncRuntime dco_decode_my_async_runtime(dynamic raw);
 
   @protected
-  NSArrayClass dco_decode_ns_array_class(dynamic raw);
-
-  @protected
-  NSArrayIconArray dco_decode_ns_array_icon_array(dynamic raw);
-
-  @protected
-  NSArrayImageArray dco_decode_ns_array_image_array(dynamic raw);
+  NormalMessage dco_decode_normal_message(dynamic raw);
 
   @protected
   NSDictionaryClass dco_decode_ns_dictionary_class(dynamic raw);
@@ -434,43 +405,35 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           dynamic raw);
 
   @protected
+  NsArrayLpIconMetadata?
+      dco_decode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNSArrayLPIconMetadata(
+          dynamic raw);
+
+  @protected
+  NsArrayLpImageMetadata?
+      dco_decode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNSArrayLPImageMetadata(
+          dynamic raw);
+
+  @protected
+  Attachment? dco_decode_opt_box_autoadd_attachment(dynamic raw);
+
+  @protected
+  Balloon? dco_decode_opt_box_autoadd_balloon(dynamic raw);
+
+  @protected
   bool? dco_decode_opt_box_autoadd_bool(dynamic raw);
 
   @protected
-  DartAttachment? dco_decode_opt_box_autoadd_dart_attachment(dynamic raw);
+  ConversationData? dco_decode_opt_box_autoadd_conversation_data(dynamic raw);
 
   @protected
-  DartBalloon? dco_decode_opt_box_autoadd_dart_balloon(dynamic raw);
+  ExtensionApp? dco_decode_opt_box_autoadd_extension_app(dynamic raw);
 
   @protected
-  DartConversationData? dco_decode_opt_box_autoadd_dart_conversation_data(
-      dynamic raw);
+  LinkMeta? dco_decode_opt_box_autoadd_link_meta(dynamic raw);
 
   @protected
-  DartExtensionApp? dco_decode_opt_box_autoadd_dart_extension_app(dynamic raw);
-
-  @protected
-  DartLinkMeta? dco_decode_opt_box_autoadd_dart_link_meta(dynamic raw);
-
-  @protected
-  DartLoginState? dco_decode_opt_box_autoadd_dart_login_state(dynamic raw);
-
-  @protected
-  DartMMCSFile? dco_decode_opt_box_autoadd_dart_mmcs_file(dynamic raw);
-
-  @protected
-  DartPartExtension? dco_decode_opt_box_autoadd_dart_part_extension(
-      dynamic raw);
-
-  @protected
-  DartPushMessage? dco_decode_opt_box_autoadd_dart_push_message(dynamic raw);
-
-  @protected
-  DartSupportAction? dco_decode_opt_box_autoadd_dart_support_action(
-      dynamic raw);
-
-  @protected
-  DartSupportAlert? dco_decode_opt_box_autoadd_dart_support_alert(dynamic raw);
+  LoginState? dco_decode_opt_box_autoadd_login_state(dynamic raw);
 
   @protected
   LPIconMetadata? dco_decode_opt_box_autoadd_lp_icon_metadata(dynamic raw);
@@ -479,14 +442,16 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   LPImageMetadata? dco_decode_opt_box_autoadd_lp_image_metadata(dynamic raw);
 
   @protected
-  NSArrayIconArray? dco_decode_opt_box_autoadd_ns_array_icon_array(dynamic raw);
-
-  @protected
-  NSArrayImageArray? dco_decode_opt_box_autoadd_ns_array_image_array(
-      dynamic raw);
+  MMCSFile? dco_decode_opt_box_autoadd_mmcs_file(dynamic raw);
 
   @protected
   NSURL? dco_decode_opt_box_autoadd_nsurl(dynamic raw);
+
+  @protected
+  PartExtension? dco_decode_opt_box_autoadd_part_extension(dynamic raw);
+
+  @protected
+  PushMessage? dco_decode_opt_box_autoadd_push_message(dynamic raw);
 
   @protected
   RichLinkImageAttachmentSubstitute?
@@ -494,40 +459,77 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           dynamic raw);
 
   @protected
+  SupportAction? dco_decode_opt_box_autoadd_support_action(dynamic raw);
+
+  @protected
+  SupportAlert? dco_decode_opt_box_autoadd_support_alert(dynamic raw);
+
+  @protected
   BigInt? dco_decode_opt_box_autoadd_u_64(dynamic raw);
 
   @protected
-  List<DartMessageTarget>? dco_decode_opt_list_dart_message_target(dynamic raw);
+  List<MessageTarget>? dco_decode_opt_list_message_target(dynamic raw);
 
   @protected
   Uint8List? dco_decode_opt_list_prim_u_8_strict(dynamic raw);
 
   @protected
+  PartExtension dco_decode_part_extension(dynamic raw);
+
+  @protected
   PollResult dco_decode_poll_result(dynamic raw);
 
   @protected
-  (
-    DartLoginState,
-    IdsUser?
-  ) dco_decode_record_dart_login_state_opt_box_autoadd_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_ids_user(
-      dynamic raw);
+  PrivateDeviceInfo dco_decode_private_device_info(dynamic raw);
+
+  @protected
+  PushMessage dco_decode_push_message(dynamic raw);
+
+  @protected
+  ReactMessage dco_decode_react_message(dynamic raw);
+
+  @protected
+  ReactMessageType dco_decode_react_message_type(dynamic raw);
+
+  @protected
+  Reaction dco_decode_reaction(dynamic raw);
+
+  @protected
+  (List<TrustedPhoneNumber>, LoginState?)
+      dco_decode_record_list_trusted_phone_number_opt_box_autoadd_login_state(
+          dynamic raw);
 
   @protected
   (
-    List<DartTrustedPhoneNumber>,
-    DartLoginState?
-  ) dco_decode_record_list_dart_trusted_phone_number_opt_box_autoadd_dart_login_state(
+    LoginState,
+    IdsUser?
+  ) dco_decode_record_login_state_opt_box_autoadd_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_ids_user(
       dynamic raw);
+
+  @protected
+  RegisterState dco_decode_register_state(dynamic raw);
 
   @protected
   RegistrationPhase dco_decode_registration_phase(dynamic raw);
+
+  @protected
+  RenameMessage dco_decode_rename_message(dynamic raw);
 
   @protected
   RichLinkImageAttachmentSubstitute
       dco_decode_rich_link_image_attachment_substitute(dynamic raw);
 
   @protected
+  SupportAction dco_decode_support_action(dynamic raw);
+
+  @protected
+  SupportAlert dco_decode_support_alert(dynamic raw);
+
+  @protected
   TransferProgress dco_decode_transfer_progress(dynamic raw);
+
+  @protected
+  TrustedPhoneNumber dco_decode_trusted_phone_number(dynamic raw);
 
   @protected
   int dco_decode_u_32(dynamic raw);
@@ -540,6 +542,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void dco_decode_unit(dynamic raw);
+
+  @protected
+  UnsendMessage dco_decode_unsend_message(dynamic raw);
+
+  @protected
+  UpdateExtensionMessage dco_decode_update_extension_message(dynamic raw);
 
   @protected
   BigInt dco_decode_usize(dynamic raw);
@@ -560,6 +568,16 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   JoinedOsConfig
       sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerJoinedOSConfig(
+          SseDeserializer deserializer);
+
+  @protected
+  NsArrayLpIconMetadata
+      sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNSArrayLPIconMetadata(
+          SseDeserializer deserializer);
+
+  @protected
+  NsArrayLpImageMetadata
+      sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNSArrayLPImageMetadata(
           SseDeserializer deserializer);
 
   @protected
@@ -609,6 +627,16 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           SseDeserializer deserializer);
 
   @protected
+  NsArrayLpIconMetadata
+      sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNSArrayLPIconMetadata(
+          SseDeserializer deserializer);
+
+  @protected
+  NsArrayLpImageMetadata
+      sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNSArrayLPImageMetadata(
+          SseDeserializer deserializer);
+
+  @protected
   VerifyBody
       sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyBody(
           SseDeserializer deserializer);
@@ -626,6 +654,18 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   String sse_decode_String(SseDeserializer deserializer);
 
   @protected
+  Attachment sse_decode_attachment(SseDeserializer deserializer);
+
+  @protected
+  AttachmentType sse_decode_attachment_type(SseDeserializer deserializer);
+
+  @protected
+  Balloon sse_decode_balloon(SseDeserializer deserializer);
+
+  @protected
+  BalloonLayout sse_decode_balloon_layout(SseDeserializer deserializer);
+
+  @protected
   bool sse_decode_bool(SseDeserializer deserializer);
 
   @protected
@@ -639,103 +679,55 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           SseDeserializer deserializer);
 
   @protected
+  NsArrayLpIconMetadata
+      sse_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNSArrayLPIconMetadata(
+          SseDeserializer deserializer);
+
+  @protected
+  NsArrayLpImageMetadata
+      sse_decode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNSArrayLPImageMetadata(
+          SseDeserializer deserializer);
+
+  @protected
+  Attachment sse_decode_box_autoadd_attachment(SseDeserializer deserializer);
+
+  @protected
+  Balloon sse_decode_box_autoadd_balloon(SseDeserializer deserializer);
+
+  @protected
   bool sse_decode_box_autoadd_bool(SseDeserializer deserializer);
 
   @protected
-  DartAttachment sse_decode_box_autoadd_dart_attachment(
+  ChangeParticipantMessage sse_decode_box_autoadd_change_participant_message(
       SseDeserializer deserializer);
 
   @protected
-  DartBalloon sse_decode_box_autoadd_dart_balloon(SseDeserializer deserializer);
-
-  @protected
-  DartChangeParticipantMessage
-      sse_decode_box_autoadd_dart_change_participant_message(
-          SseDeserializer deserializer);
-
-  @protected
-  DartConversationData sse_decode_box_autoadd_dart_conversation_data(
+  ConversationData sse_decode_box_autoadd_conversation_data(
       SseDeserializer deserializer);
 
   @protected
-  DartEditMessage sse_decode_box_autoadd_dart_edit_message(
+  EditMessage sse_decode_box_autoadd_edit_message(SseDeserializer deserializer);
+
+  @protected
+  ErrorMessage sse_decode_box_autoadd_error_message(
       SseDeserializer deserializer);
 
   @protected
-  DartErrorMessage sse_decode_box_autoadd_dart_error_message(
+  ExtensionApp sse_decode_box_autoadd_extension_app(
       SseDeserializer deserializer);
 
   @protected
-  DartExtensionApp sse_decode_box_autoadd_dart_extension_app(
+  HwExtra sse_decode_box_autoadd_hw_extra(SseDeserializer deserializer);
+
+  @protected
+  IconChangeMessage sse_decode_box_autoadd_icon_change_message(
       SseDeserializer deserializer);
 
   @protected
-  DartHwExtra sse_decode_box_autoadd_dart_hw_extra(
-      SseDeserializer deserializer);
+  LinkMeta sse_decode_box_autoadd_link_meta(SseDeserializer deserializer);
 
   @protected
-  DartIMessage sse_decode_box_autoadd_dart_i_message(
-      SseDeserializer deserializer);
-
-  @protected
-  DartIconChangeMessage sse_decode_box_autoadd_dart_icon_change_message(
-      SseDeserializer deserializer);
-
-  @protected
-  DartLinkMeta sse_decode_box_autoadd_dart_link_meta(
-      SseDeserializer deserializer);
-
-  @protected
-  DartLoginState sse_decode_box_autoadd_dart_login_state(
-      SseDeserializer deserializer);
-
-  @protected
-  DartMessage sse_decode_box_autoadd_dart_message(SseDeserializer deserializer);
-
-  @protected
-  DartMessageParts sse_decode_box_autoadd_dart_message_parts(
-      SseDeserializer deserializer);
-
-  @protected
-  DartMMCSFile sse_decode_box_autoadd_dart_mmcs_file(
-      SseDeserializer deserializer);
-
-  @protected
-  DartNormalMessage sse_decode_box_autoadd_dart_normal_message(
-      SseDeserializer deserializer);
-
-  @protected
-  DartPartExtension sse_decode_box_autoadd_dart_part_extension(
-      SseDeserializer deserializer);
-
-  @protected
-  DartPushMessage sse_decode_box_autoadd_dart_push_message(
-      SseDeserializer deserializer);
-
-  @protected
-  DartReactMessage sse_decode_box_autoadd_dart_react_message(
-      SseDeserializer deserializer);
-
-  @protected
-  DartRenameMessage sse_decode_box_autoadd_dart_rename_message(
-      SseDeserializer deserializer);
-
-  @protected
-  DartSupportAction sse_decode_box_autoadd_dart_support_action(
-      SseDeserializer deserializer);
-
-  @protected
-  DartSupportAlert sse_decode_box_autoadd_dart_support_alert(
-      SseDeserializer deserializer);
-
-  @protected
-  DartUnsendMessage sse_decode_box_autoadd_dart_unsend_message(
-      SseDeserializer deserializer);
-
-  @protected
-  DartUpdateExtensionMessage
-      sse_decode_box_autoadd_dart_update_extension_message(
-          SseDeserializer deserializer);
+  LoginState sse_decode_box_autoadd_login_state(SseDeserializer deserializer);
 
   @protected
   LPIconMetadata sse_decode_box_autoadd_lp_icon_metadata(
@@ -746,15 +738,39 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       SseDeserializer deserializer);
 
   @protected
-  NSArrayIconArray sse_decode_box_autoadd_ns_array_icon_array(
+  Message sse_decode_box_autoadd_message(SseDeserializer deserializer);
+
+  @protected
+  MessageInst sse_decode_box_autoadd_message_inst(SseDeserializer deserializer);
+
+  @protected
+  MessageParts sse_decode_box_autoadd_message_parts(
       SseDeserializer deserializer);
 
   @protected
-  NSArrayImageArray sse_decode_box_autoadd_ns_array_image_array(
+  MMCSFile sse_decode_box_autoadd_mmcs_file(SseDeserializer deserializer);
+
+  @protected
+  NormalMessage sse_decode_box_autoadd_normal_message(
       SseDeserializer deserializer);
 
   @protected
   NSURL sse_decode_box_autoadd_nsurl(SseDeserializer deserializer);
+
+  @protected
+  PartExtension sse_decode_box_autoadd_part_extension(
+      SseDeserializer deserializer);
+
+  @protected
+  PushMessage sse_decode_box_autoadd_push_message(SseDeserializer deserializer);
+
+  @protected
+  ReactMessage sse_decode_box_autoadd_react_message(
+      SseDeserializer deserializer);
+
+  @protected
+  RenameMessage sse_decode_box_autoadd_rename_message(
+      SseDeserializer deserializer);
 
   @protected
   RichLinkImageAttachmentSubstitute
@@ -762,141 +778,65 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           SseDeserializer deserializer);
 
   @protected
+  SupportAction sse_decode_box_autoadd_support_action(
+      SseDeserializer deserializer);
+
+  @protected
+  SupportAlert sse_decode_box_autoadd_support_alert(
+      SseDeserializer deserializer);
+
+  @protected
   BigInt sse_decode_box_autoadd_u_64(SseDeserializer deserializer);
 
   @protected
-  DartAttachment sse_decode_dart_attachment(SseDeserializer deserializer);
-
-  @protected
-  DartAttachmentType sse_decode_dart_attachment_type(
+  UnsendMessage sse_decode_box_autoadd_unsend_message(
       SseDeserializer deserializer);
 
   @protected
-  DartBalloon sse_decode_dart_balloon(SseDeserializer deserializer);
-
-  @protected
-  DartBalloonLayout sse_decode_dart_balloon_layout(
+  UpdateExtensionMessage sse_decode_box_autoadd_update_extension_message(
       SseDeserializer deserializer);
 
   @protected
-  DartChangeParticipantMessage sse_decode_dart_change_participant_message(
+  ChangeParticipantMessage sse_decode_change_participant_message(
       SseDeserializer deserializer);
 
   @protected
-  DartConversationData sse_decode_dart_conversation_data(
-      SseDeserializer deserializer);
+  ConversationData sse_decode_conversation_data(SseDeserializer deserializer);
 
   @protected
-  DartDeviceInfo sse_decode_dart_device_info(SseDeserializer deserializer);
+  DeviceInfo sse_decode_device_info(SseDeserializer deserializer);
 
   @protected
-  DartEditMessage sse_decode_dart_edit_message(SseDeserializer deserializer);
+  EditMessage sse_decode_edit_message(SseDeserializer deserializer);
 
   @protected
-  DartErrorMessage sse_decode_dart_error_message(SseDeserializer deserializer);
+  ErrorMessage sse_decode_error_message(SseDeserializer deserializer);
 
   @protected
-  DartExtensionApp sse_decode_dart_extension_app(SseDeserializer deserializer);
-
-  @protected
-  DartHwExtra sse_decode_dart_hw_extra(SseDeserializer deserializer);
-
-  @protected
-  DartIMessage sse_decode_dart_i_message(SseDeserializer deserializer);
-
-  @protected
-  DartIconChangeMessage sse_decode_dart_icon_change_message(
-      SseDeserializer deserializer);
-
-  @protected
-  DartIndexedMessagePart sse_decode_dart_indexed_message_part(
-      SseDeserializer deserializer);
-
-  @protected
-  DartLinkMeta sse_decode_dart_link_meta(SseDeserializer deserializer);
-
-  @protected
-  DartLoginState sse_decode_dart_login_state(SseDeserializer deserializer);
-
-  @protected
-  DartMessage sse_decode_dart_message(SseDeserializer deserializer);
-
-  @protected
-  DartMessagePart sse_decode_dart_message_part(SseDeserializer deserializer);
-
-  @protected
-  DartMessageParts sse_decode_dart_message_parts(SseDeserializer deserializer);
-
-  @protected
-  DartMessageTarget sse_decode_dart_message_target(
-      SseDeserializer deserializer);
-
-  @protected
-  DartMessageType sse_decode_dart_message_type(SseDeserializer deserializer);
-
-  @protected
-  DartMMCSFile sse_decode_dart_mmcs_file(SseDeserializer deserializer);
-
-  @protected
-  DartNormalMessage sse_decode_dart_normal_message(
-      SseDeserializer deserializer);
-
-  @protected
-  DartPartExtension sse_decode_dart_part_extension(
-      SseDeserializer deserializer);
-
-  @protected
-  DartPrivateDeviceInfo sse_decode_dart_private_device_info(
-      SseDeserializer deserializer);
-
-  @protected
-  DartPushMessage sse_decode_dart_push_message(SseDeserializer deserializer);
-
-  @protected
-  DartReactMessage sse_decode_dart_react_message(SseDeserializer deserializer);
-
-  @protected
-  DartReactMessageType sse_decode_dart_react_message_type(
-      SseDeserializer deserializer);
-
-  @protected
-  DartReaction sse_decode_dart_reaction(SseDeserializer deserializer);
-
-  @protected
-  DartRegisterState sse_decode_dart_register_state(
-      SseDeserializer deserializer);
-
-  @protected
-  DartRenameMessage sse_decode_dart_rename_message(
-      SseDeserializer deserializer);
-
-  @protected
-  DartSupportAction sse_decode_dart_support_action(
-      SseDeserializer deserializer);
-
-  @protected
-  DartSupportAlert sse_decode_dart_support_alert(SseDeserializer deserializer);
-
-  @protected
-  DartTrustedPhoneNumber sse_decode_dart_trusted_phone_number(
-      SseDeserializer deserializer);
-
-  @protected
-  DartUnsendMessage sse_decode_dart_unsend_message(
-      SseDeserializer deserializer);
-
-  @protected
-  DartUpdateExtensionMessage sse_decode_dart_update_extension_message(
-      SseDeserializer deserializer);
+  ExtensionApp sse_decode_extension_app(SseDeserializer deserializer);
 
   @protected
   double sse_decode_f_64(SseDeserializer deserializer);
+
+  @protected
+  HwExtra sse_decode_hw_extra(SseDeserializer deserializer);
 
   @protected
   int sse_decode_i_32(SseDeserializer deserializer);
 
   @protected
   PlatformInt64 sse_decode_i_64(SseDeserializer deserializer);
+
+  @protected
+  IconChangeMessage sse_decode_icon_change_message(
+      SseDeserializer deserializer);
+
+  @protected
+  IndexedMessagePart sse_decode_indexed_message_part(
+      SseDeserializer deserializer);
+
+  @protected
+  LinkMeta sse_decode_link_meta(SseDeserializer deserializer);
 
   @protected
   List<IdsUser>
@@ -907,19 +847,7 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   List<String> sse_decode_list_String(SseDeserializer deserializer);
 
   @protected
-  List<DartIndexedMessagePart> sse_decode_list_dart_indexed_message_part(
-      SseDeserializer deserializer);
-
-  @protected
-  List<DartMessageTarget> sse_decode_list_dart_message_target(
-      SseDeserializer deserializer);
-
-  @protected
-  List<DartPrivateDeviceInfo> sse_decode_list_dart_private_device_info(
-      SseDeserializer deserializer);
-
-  @protected
-  List<DartTrustedPhoneNumber> sse_decode_list_dart_trusted_phone_number(
+  List<IndexedMessagePart> sse_decode_list_indexed_message_part(
       SseDeserializer deserializer);
 
   @protected
@@ -927,11 +855,7 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       SseDeserializer deserializer);
 
   @protected
-  List<LPIconMetadata> sse_decode_list_lp_icon_metadata(
-      SseDeserializer deserializer);
-
-  @protected
-  List<LPImageMetadata> sse_decode_list_lp_image_metadata(
+  List<MessageTarget> sse_decode_list_message_target(
       SseDeserializer deserializer);
 
   @protected
@@ -939,6 +863,17 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   Uint8List sse_decode_list_prim_u_8_strict(SseDeserializer deserializer);
+
+  @protected
+  List<PrivateDeviceInfo> sse_decode_list_private_device_info(
+      SseDeserializer deserializer);
+
+  @protected
+  List<TrustedPhoneNumber> sse_decode_list_trusted_phone_number(
+      SseDeserializer deserializer);
+
+  @protected
+  LoginState sse_decode_login_state(SseDeserializer deserializer);
 
   @protected
   LPIconMetadata sse_decode_lp_icon_metadata(SseDeserializer deserializer);
@@ -950,6 +885,27 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   LPLinkMetadata sse_decode_lp_link_metadata(SseDeserializer deserializer);
 
   @protected
+  Message sse_decode_message(SseDeserializer deserializer);
+
+  @protected
+  MessageInst sse_decode_message_inst(SseDeserializer deserializer);
+
+  @protected
+  MessagePart sse_decode_message_part(SseDeserializer deserializer);
+
+  @protected
+  MessageParts sse_decode_message_parts(SseDeserializer deserializer);
+
+  @protected
+  MessageTarget sse_decode_message_target(SseDeserializer deserializer);
+
+  @protected
+  MessageType sse_decode_message_type(SseDeserializer deserializer);
+
+  @protected
+  MMCSFile sse_decode_mmcs_file(SseDeserializer deserializer);
+
+  @protected
   MMCSTransferProgress sse_decode_mmcs_transfer_progress(
       SseDeserializer deserializer);
 
@@ -957,14 +913,7 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   MyAsyncRuntime sse_decode_my_async_runtime(SseDeserializer deserializer);
 
   @protected
-  NSArrayClass sse_decode_ns_array_class(SseDeserializer deserializer);
-
-  @protected
-  NSArrayIconArray sse_decode_ns_array_icon_array(SseDeserializer deserializer);
-
-  @protected
-  NSArrayImageArray sse_decode_ns_array_image_array(
-      SseDeserializer deserializer);
+  NormalMessage sse_decode_normal_message(SseDeserializer deserializer);
 
   @protected
   NSDictionaryClass sse_decode_ns_dictionary_class(
@@ -993,50 +942,38 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           SseDeserializer deserializer);
 
   @protected
+  NsArrayLpIconMetadata?
+      sse_decode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNSArrayLPIconMetadata(
+          SseDeserializer deserializer);
+
+  @protected
+  NsArrayLpImageMetadata?
+      sse_decode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNSArrayLPImageMetadata(
+          SseDeserializer deserializer);
+
+  @protected
+  Attachment? sse_decode_opt_box_autoadd_attachment(
+      SseDeserializer deserializer);
+
+  @protected
+  Balloon? sse_decode_opt_box_autoadd_balloon(SseDeserializer deserializer);
+
+  @protected
   bool? sse_decode_opt_box_autoadd_bool(SseDeserializer deserializer);
 
   @protected
-  DartAttachment? sse_decode_opt_box_autoadd_dart_attachment(
+  ConversationData? sse_decode_opt_box_autoadd_conversation_data(
       SseDeserializer deserializer);
 
   @protected
-  DartBalloon? sse_decode_opt_box_autoadd_dart_balloon(
+  ExtensionApp? sse_decode_opt_box_autoadd_extension_app(
       SseDeserializer deserializer);
 
   @protected
-  DartConversationData? sse_decode_opt_box_autoadd_dart_conversation_data(
-      SseDeserializer deserializer);
+  LinkMeta? sse_decode_opt_box_autoadd_link_meta(SseDeserializer deserializer);
 
   @protected
-  DartExtensionApp? sse_decode_opt_box_autoadd_dart_extension_app(
-      SseDeserializer deserializer);
-
-  @protected
-  DartLinkMeta? sse_decode_opt_box_autoadd_dart_link_meta(
-      SseDeserializer deserializer);
-
-  @protected
-  DartLoginState? sse_decode_opt_box_autoadd_dart_login_state(
-      SseDeserializer deserializer);
-
-  @protected
-  DartMMCSFile? sse_decode_opt_box_autoadd_dart_mmcs_file(
-      SseDeserializer deserializer);
-
-  @protected
-  DartPartExtension? sse_decode_opt_box_autoadd_dart_part_extension(
-      SseDeserializer deserializer);
-
-  @protected
-  DartPushMessage? sse_decode_opt_box_autoadd_dart_push_message(
-      SseDeserializer deserializer);
-
-  @protected
-  DartSupportAction? sse_decode_opt_box_autoadd_dart_support_action(
-      SseDeserializer deserializer);
-
-  @protected
-  DartSupportAlert? sse_decode_opt_box_autoadd_dart_support_alert(
+  LoginState? sse_decode_opt_box_autoadd_login_state(
       SseDeserializer deserializer);
 
   @protected
@@ -1048,15 +985,18 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       SseDeserializer deserializer);
 
   @protected
-  NSArrayIconArray? sse_decode_opt_box_autoadd_ns_array_icon_array(
-      SseDeserializer deserializer);
-
-  @protected
-  NSArrayImageArray? sse_decode_opt_box_autoadd_ns_array_image_array(
-      SseDeserializer deserializer);
+  MMCSFile? sse_decode_opt_box_autoadd_mmcs_file(SseDeserializer deserializer);
 
   @protected
   NSURL? sse_decode_opt_box_autoadd_nsurl(SseDeserializer deserializer);
+
+  @protected
+  PartExtension? sse_decode_opt_box_autoadd_part_extension(
+      SseDeserializer deserializer);
+
+  @protected
+  PushMessage? sse_decode_opt_box_autoadd_push_message(
+      SseDeserializer deserializer);
 
   @protected
   RichLinkImageAttachmentSubstitute?
@@ -1064,34 +1004,65 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           SseDeserializer deserializer);
 
   @protected
+  SupportAction? sse_decode_opt_box_autoadd_support_action(
+      SseDeserializer deserializer);
+
+  @protected
+  SupportAlert? sse_decode_opt_box_autoadd_support_alert(
+      SseDeserializer deserializer);
+
+  @protected
   BigInt? sse_decode_opt_box_autoadd_u_64(SseDeserializer deserializer);
 
   @protected
-  List<DartMessageTarget>? sse_decode_opt_list_dart_message_target(
+  List<MessageTarget>? sse_decode_opt_list_message_target(
       SseDeserializer deserializer);
 
   @protected
   Uint8List? sse_decode_opt_list_prim_u_8_strict(SseDeserializer deserializer);
 
   @protected
+  PartExtension sse_decode_part_extension(SseDeserializer deserializer);
+
+  @protected
   PollResult sse_decode_poll_result(SseDeserializer deserializer);
 
   @protected
-  (
-    DartLoginState,
-    IdsUser?
-  ) sse_decode_record_dart_login_state_opt_box_autoadd_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_ids_user(
+  PrivateDeviceInfo sse_decode_private_device_info(
       SseDeserializer deserializer);
 
   @protected
+  PushMessage sse_decode_push_message(SseDeserializer deserializer);
+
+  @protected
+  ReactMessage sse_decode_react_message(SseDeserializer deserializer);
+
+  @protected
+  ReactMessageType sse_decode_react_message_type(SseDeserializer deserializer);
+
+  @protected
+  Reaction sse_decode_reaction(SseDeserializer deserializer);
+
+  @protected
+  (List<TrustedPhoneNumber>, LoginState?)
+      sse_decode_record_list_trusted_phone_number_opt_box_autoadd_login_state(
+          SseDeserializer deserializer);
+
+  @protected
   (
-    List<DartTrustedPhoneNumber>,
-    DartLoginState?
-  ) sse_decode_record_list_dart_trusted_phone_number_opt_box_autoadd_dart_login_state(
+    LoginState,
+    IdsUser?
+  ) sse_decode_record_login_state_opt_box_autoadd_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_ids_user(
       SseDeserializer deserializer);
+
+  @protected
+  RegisterState sse_decode_register_state(SseDeserializer deserializer);
 
   @protected
   RegistrationPhase sse_decode_registration_phase(SseDeserializer deserializer);
+
+  @protected
+  RenameMessage sse_decode_rename_message(SseDeserializer deserializer);
 
   @protected
   RichLinkImageAttachmentSubstitute
@@ -1099,7 +1070,17 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           SseDeserializer deserializer);
 
   @protected
+  SupportAction sse_decode_support_action(SseDeserializer deserializer);
+
+  @protected
+  SupportAlert sse_decode_support_alert(SseDeserializer deserializer);
+
+  @protected
   TransferProgress sse_decode_transfer_progress(SseDeserializer deserializer);
+
+  @protected
+  TrustedPhoneNumber sse_decode_trusted_phone_number(
+      SseDeserializer deserializer);
 
   @protected
   int sse_decode_u_32(SseDeserializer deserializer);
@@ -1112,6 +1093,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_decode_unit(SseDeserializer deserializer);
+
+  @protected
+  UnsendMessage sse_decode_unsend_message(SseDeserializer deserializer);
+
+  @protected
+  UpdateExtensionMessage sse_decode_update_extension_message(
+      SseDeserializer deserializer);
 
   @protected
   BigInt sse_decode_usize(SseDeserializer deserializer);
@@ -1134,6 +1122,16 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void
       sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerJoinedOSConfig(
           JoinedOsConfig self, SseSerializer serializer);
+
+  @protected
+  void
+      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNSArrayLPIconMetadata(
+          NsArrayLpIconMetadata self, SseSerializer serializer);
+
+  @protected
+  void
+      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNSArrayLPImageMetadata(
+          NsArrayLpImageMetadata self, SseSerializer serializer);
 
   @protected
   void
@@ -1183,6 +1181,16 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void
+      sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNSArrayLPIconMetadata(
+          NsArrayLpIconMetadata self, SseSerializer serializer);
+
+  @protected
+  void
+      sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNSArrayLPImageMetadata(
+          NsArrayLpImageMetadata self, SseSerializer serializer);
+
+  @protected
+  void
       sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyBody(
           VerifyBody self, SseSerializer serializer);
 
@@ -1198,6 +1206,19 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_String(String self, SseSerializer serializer);
 
   @protected
+  void sse_encode_attachment(Attachment self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_attachment_type(
+      AttachmentType self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_balloon(Balloon self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_balloon_layout(BalloonLayout self, SseSerializer serializer);
+
+  @protected
   void sse_encode_bool(bool self, SseSerializer serializer);
 
   @protected
@@ -1211,103 +1232,59 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           JoinedOsConfig self, SseSerializer serializer);
 
   @protected
+  void
+      sse_encode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNSArrayLPIconMetadata(
+          NsArrayLpIconMetadata self, SseSerializer serializer);
+
+  @protected
+  void
+      sse_encode_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNSArrayLPImageMetadata(
+          NsArrayLpImageMetadata self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_attachment(
+      Attachment self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_balloon(Balloon self, SseSerializer serializer);
+
+  @protected
   void sse_encode_box_autoadd_bool(bool self, SseSerializer serializer);
 
   @protected
-  void sse_encode_box_autoadd_dart_attachment(
-      DartAttachment self, SseSerializer serializer);
+  void sse_encode_box_autoadd_change_participant_message(
+      ChangeParticipantMessage self, SseSerializer serializer);
 
   @protected
-  void sse_encode_box_autoadd_dart_balloon(
-      DartBalloon self, SseSerializer serializer);
+  void sse_encode_box_autoadd_conversation_data(
+      ConversationData self, SseSerializer serializer);
 
   @protected
-  void sse_encode_box_autoadd_dart_change_participant_message(
-      DartChangeParticipantMessage self, SseSerializer serializer);
+  void sse_encode_box_autoadd_edit_message(
+      EditMessage self, SseSerializer serializer);
 
   @protected
-  void sse_encode_box_autoadd_dart_conversation_data(
-      DartConversationData self, SseSerializer serializer);
+  void sse_encode_box_autoadd_error_message(
+      ErrorMessage self, SseSerializer serializer);
 
   @protected
-  void sse_encode_box_autoadd_dart_edit_message(
-      DartEditMessage self, SseSerializer serializer);
+  void sse_encode_box_autoadd_extension_app(
+      ExtensionApp self, SseSerializer serializer);
 
   @protected
-  void sse_encode_box_autoadd_dart_error_message(
-      DartErrorMessage self, SseSerializer serializer);
+  void sse_encode_box_autoadd_hw_extra(HwExtra self, SseSerializer serializer);
 
   @protected
-  void sse_encode_box_autoadd_dart_extension_app(
-      DartExtensionApp self, SseSerializer serializer);
+  void sse_encode_box_autoadd_icon_change_message(
+      IconChangeMessage self, SseSerializer serializer);
 
   @protected
-  void sse_encode_box_autoadd_dart_hw_extra(
-      DartHwExtra self, SseSerializer serializer);
+  void sse_encode_box_autoadd_link_meta(
+      LinkMeta self, SseSerializer serializer);
 
   @protected
-  void sse_encode_box_autoadd_dart_i_message(
-      DartIMessage self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_box_autoadd_dart_icon_change_message(
-      DartIconChangeMessage self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_box_autoadd_dart_link_meta(
-      DartLinkMeta self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_box_autoadd_dart_login_state(
-      DartLoginState self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_box_autoadd_dart_message(
-      DartMessage self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_box_autoadd_dart_message_parts(
-      DartMessageParts self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_box_autoadd_dart_mmcs_file(
-      DartMMCSFile self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_box_autoadd_dart_normal_message(
-      DartNormalMessage self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_box_autoadd_dart_part_extension(
-      DartPartExtension self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_box_autoadd_dart_push_message(
-      DartPushMessage self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_box_autoadd_dart_react_message(
-      DartReactMessage self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_box_autoadd_dart_rename_message(
-      DartRenameMessage self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_box_autoadd_dart_support_action(
-      DartSupportAction self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_box_autoadd_dart_support_alert(
-      DartSupportAlert self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_box_autoadd_dart_unsend_message(
-      DartUnsendMessage self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_box_autoadd_dart_update_extension_message(
-      DartUpdateExtensionMessage self, SseSerializer serializer);
+  void sse_encode_box_autoadd_login_state(
+      LoginState self, SseSerializer serializer);
 
   @protected
   void sse_encode_box_autoadd_lp_icon_metadata(
@@ -1318,168 +1295,108 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       LPImageMetadata self, SseSerializer serializer);
 
   @protected
-  void sse_encode_box_autoadd_ns_array_icon_array(
-      NSArrayIconArray self, SseSerializer serializer);
+  void sse_encode_box_autoadd_message(Message self, SseSerializer serializer);
 
   @protected
-  void sse_encode_box_autoadd_ns_array_image_array(
-      NSArrayImageArray self, SseSerializer serializer);
+  void sse_encode_box_autoadd_message_inst(
+      MessageInst self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_message_parts(
+      MessageParts self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_mmcs_file(
+      MMCSFile self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_normal_message(
+      NormalMessage self, SseSerializer serializer);
 
   @protected
   void sse_encode_box_autoadd_nsurl(NSURL self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_part_extension(
+      PartExtension self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_push_message(
+      PushMessage self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_react_message(
+      ReactMessage self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_rename_message(
+      RenameMessage self, SseSerializer serializer);
 
   @protected
   void sse_encode_box_autoadd_rich_link_image_attachment_substitute(
       RichLinkImageAttachmentSubstitute self, SseSerializer serializer);
 
   @protected
+  void sse_encode_box_autoadd_support_action(
+      SupportAction self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_support_alert(
+      SupportAlert self, SseSerializer serializer);
+
+  @protected
   void sse_encode_box_autoadd_u_64(BigInt self, SseSerializer serializer);
 
   @protected
-  void sse_encode_dart_attachment(
-      DartAttachment self, SseSerializer serializer);
+  void sse_encode_box_autoadd_unsend_message(
+      UnsendMessage self, SseSerializer serializer);
 
   @protected
-  void sse_encode_dart_attachment_type(
-      DartAttachmentType self, SseSerializer serializer);
+  void sse_encode_box_autoadd_update_extension_message(
+      UpdateExtensionMessage self, SseSerializer serializer);
 
   @protected
-  void sse_encode_dart_balloon(DartBalloon self, SseSerializer serializer);
+  void sse_encode_change_participant_message(
+      ChangeParticipantMessage self, SseSerializer serializer);
 
   @protected
-  void sse_encode_dart_balloon_layout(
-      DartBalloonLayout self, SseSerializer serializer);
+  void sse_encode_conversation_data(
+      ConversationData self, SseSerializer serializer);
 
   @protected
-  void sse_encode_dart_change_participant_message(
-      DartChangeParticipantMessage self, SseSerializer serializer);
+  void sse_encode_device_info(DeviceInfo self, SseSerializer serializer);
 
   @protected
-  void sse_encode_dart_conversation_data(
-      DartConversationData self, SseSerializer serializer);
+  void sse_encode_edit_message(EditMessage self, SseSerializer serializer);
 
   @protected
-  void sse_encode_dart_device_info(
-      DartDeviceInfo self, SseSerializer serializer);
+  void sse_encode_error_message(ErrorMessage self, SseSerializer serializer);
 
   @protected
-  void sse_encode_dart_edit_message(
-      DartEditMessage self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_dart_error_message(
-      DartErrorMessage self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_dart_extension_app(
-      DartExtensionApp self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_dart_hw_extra(DartHwExtra self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_dart_i_message(DartIMessage self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_dart_icon_change_message(
-      DartIconChangeMessage self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_dart_indexed_message_part(
-      DartIndexedMessagePart self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_dart_link_meta(DartLinkMeta self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_dart_login_state(
-      DartLoginState self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_dart_message(DartMessage self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_dart_message_part(
-      DartMessagePart self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_dart_message_parts(
-      DartMessageParts self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_dart_message_target(
-      DartMessageTarget self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_dart_message_type(
-      DartMessageType self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_dart_mmcs_file(DartMMCSFile self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_dart_normal_message(
-      DartNormalMessage self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_dart_part_extension(
-      DartPartExtension self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_dart_private_device_info(
-      DartPrivateDeviceInfo self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_dart_push_message(
-      DartPushMessage self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_dart_react_message(
-      DartReactMessage self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_dart_react_message_type(
-      DartReactMessageType self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_dart_reaction(DartReaction self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_dart_register_state(
-      DartRegisterState self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_dart_rename_message(
-      DartRenameMessage self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_dart_support_action(
-      DartSupportAction self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_dart_support_alert(
-      DartSupportAlert self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_dart_trusted_phone_number(
-      DartTrustedPhoneNumber self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_dart_unsend_message(
-      DartUnsendMessage self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_dart_update_extension_message(
-      DartUpdateExtensionMessage self, SseSerializer serializer);
+  void sse_encode_extension_app(ExtensionApp self, SseSerializer serializer);
 
   @protected
   void sse_encode_f_64(double self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_hw_extra(HwExtra self, SseSerializer serializer);
 
   @protected
   void sse_encode_i_32(int self, SseSerializer serializer);
 
   @protected
   void sse_encode_i_64(PlatformInt64 self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_icon_change_message(
+      IconChangeMessage self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_indexed_message_part(
+      IndexedMessagePart self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_link_meta(LinkMeta self, SseSerializer serializer);
 
   @protected
   void
@@ -1490,32 +1407,16 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_list_String(List<String> self, SseSerializer serializer);
 
   @protected
-  void sse_encode_list_dart_indexed_message_part(
-      List<DartIndexedMessagePart> self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_list_dart_message_target(
-      List<DartMessageTarget> self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_list_dart_private_device_info(
-      List<DartPrivateDeviceInfo> self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_list_dart_trusted_phone_number(
-      List<DartTrustedPhoneNumber> self, SseSerializer serializer);
+  void sse_encode_list_indexed_message_part(
+      List<IndexedMessagePart> self, SseSerializer serializer);
 
   @protected
   void sse_encode_list_list_prim_u_8_strict(
       List<Uint8List> self, SseSerializer serializer);
 
   @protected
-  void sse_encode_list_lp_icon_metadata(
-      List<LPIconMetadata> self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_list_lp_image_metadata(
-      List<LPImageMetadata> self, SseSerializer serializer);
+  void sse_encode_list_message_target(
+      List<MessageTarget> self, SseSerializer serializer);
 
   @protected
   void sse_encode_list_prim_u_8_loose(List<int> self, SseSerializer serializer);
@@ -1523,6 +1424,17 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_list_prim_u_8_strict(
       Uint8List self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_private_device_info(
+      List<PrivateDeviceInfo> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_trusted_phone_number(
+      List<TrustedPhoneNumber> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_login_state(LoginState self, SseSerializer serializer);
 
   @protected
   void sse_encode_lp_icon_metadata(
@@ -1537,6 +1449,27 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       LPLinkMetadata self, SseSerializer serializer);
 
   @protected
+  void sse_encode_message(Message self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_message_inst(MessageInst self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_message_part(MessagePart self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_message_parts(MessageParts self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_message_target(MessageTarget self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_message_type(MessageType self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_mmcs_file(MMCSFile self, SseSerializer serializer);
+
+  @protected
   void sse_encode_mmcs_transfer_progress(
       MMCSTransferProgress self, SseSerializer serializer);
 
@@ -1545,15 +1478,7 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       MyAsyncRuntime self, SseSerializer serializer);
 
   @protected
-  void sse_encode_ns_array_class(NSArrayClass self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_ns_array_icon_array(
-      NSArrayIconArray self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_ns_array_image_array(
-      NSArrayImageArray self, SseSerializer serializer);
+  void sse_encode_normal_message(NormalMessage self, SseSerializer serializer);
 
   @protected
   void sse_encode_ns_dictionary_class(
@@ -1583,51 +1508,41 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           JoinedOsConfig? self, SseSerializer serializer);
 
   @protected
+  void
+      sse_encode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNSArrayLPIconMetadata(
+          NsArrayLpIconMetadata? self, SseSerializer serializer);
+
+  @protected
+  void
+      sse_encode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNSArrayLPImageMetadata(
+          NsArrayLpImageMetadata? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_attachment(
+      Attachment? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_balloon(
+      Balloon? self, SseSerializer serializer);
+
+  @protected
   void sse_encode_opt_box_autoadd_bool(bool? self, SseSerializer serializer);
 
   @protected
-  void sse_encode_opt_box_autoadd_dart_attachment(
-      DartAttachment? self, SseSerializer serializer);
+  void sse_encode_opt_box_autoadd_conversation_data(
+      ConversationData? self, SseSerializer serializer);
 
   @protected
-  void sse_encode_opt_box_autoadd_dart_balloon(
-      DartBalloon? self, SseSerializer serializer);
+  void sse_encode_opt_box_autoadd_extension_app(
+      ExtensionApp? self, SseSerializer serializer);
 
   @protected
-  void sse_encode_opt_box_autoadd_dart_conversation_data(
-      DartConversationData? self, SseSerializer serializer);
+  void sse_encode_opt_box_autoadd_link_meta(
+      LinkMeta? self, SseSerializer serializer);
 
   @protected
-  void sse_encode_opt_box_autoadd_dart_extension_app(
-      DartExtensionApp? self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_opt_box_autoadd_dart_link_meta(
-      DartLinkMeta? self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_opt_box_autoadd_dart_login_state(
-      DartLoginState? self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_opt_box_autoadd_dart_mmcs_file(
-      DartMMCSFile? self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_opt_box_autoadd_dart_part_extension(
-      DartPartExtension? self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_opt_box_autoadd_dart_push_message(
-      DartPushMessage? self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_opt_box_autoadd_dart_support_action(
-      DartSupportAction? self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_opt_box_autoadd_dart_support_alert(
-      DartSupportAlert? self, SseSerializer serializer);
+  void sse_encode_opt_box_autoadd_login_state(
+      LoginState? self, SseSerializer serializer);
 
   @protected
   void sse_encode_opt_box_autoadd_lp_icon_metadata(
@@ -1638,56 +1553,102 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       LPImageMetadata? self, SseSerializer serializer);
 
   @protected
-  void sse_encode_opt_box_autoadd_ns_array_icon_array(
-      NSArrayIconArray? self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_opt_box_autoadd_ns_array_image_array(
-      NSArrayImageArray? self, SseSerializer serializer);
+  void sse_encode_opt_box_autoadd_mmcs_file(
+      MMCSFile? self, SseSerializer serializer);
 
   @protected
   void sse_encode_opt_box_autoadd_nsurl(NSURL? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_part_extension(
+      PartExtension? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_push_message(
+      PushMessage? self, SseSerializer serializer);
 
   @protected
   void sse_encode_opt_box_autoadd_rich_link_image_attachment_substitute(
       RichLinkImageAttachmentSubstitute? self, SseSerializer serializer);
 
   @protected
+  void sse_encode_opt_box_autoadd_support_action(
+      SupportAction? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_support_alert(
+      SupportAlert? self, SseSerializer serializer);
+
+  @protected
   void sse_encode_opt_box_autoadd_u_64(BigInt? self, SseSerializer serializer);
 
   @protected
-  void sse_encode_opt_list_dart_message_target(
-      List<DartMessageTarget>? self, SseSerializer serializer);
+  void sse_encode_opt_list_message_target(
+      List<MessageTarget>? self, SseSerializer serializer);
 
   @protected
   void sse_encode_opt_list_prim_u_8_strict(
       Uint8List? self, SseSerializer serializer);
 
   @protected
+  void sse_encode_part_extension(PartExtension self, SseSerializer serializer);
+
+  @protected
   void sse_encode_poll_result(PollResult self, SseSerializer serializer);
 
   @protected
-  void
-      sse_encode_record_dart_login_state_opt_box_autoadd_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_ids_user(
-          (DartLoginState, IdsUser?) self, SseSerializer serializer);
+  void sse_encode_private_device_info(
+      PrivateDeviceInfo self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_push_message(PushMessage self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_react_message(ReactMessage self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_react_message_type(
+      ReactMessageType self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_reaction(Reaction self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_record_list_trusted_phone_number_opt_box_autoadd_login_state(
+      (List<TrustedPhoneNumber>, LoginState?) self, SseSerializer serializer);
 
   @protected
   void
-      sse_encode_record_list_dart_trusted_phone_number_opt_box_autoadd_dart_login_state(
-          (List<DartTrustedPhoneNumber>, DartLoginState?) self,
-          SseSerializer serializer);
+      sse_encode_record_login_state_opt_box_autoadd_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_ids_user(
+          (LoginState, IdsUser?) self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_register_state(RegisterState self, SseSerializer serializer);
 
   @protected
   void sse_encode_registration_phase(
       RegistrationPhase self, SseSerializer serializer);
 
   @protected
+  void sse_encode_rename_message(RenameMessage self, SseSerializer serializer);
+
+  @protected
   void sse_encode_rich_link_image_attachment_substitute(
       RichLinkImageAttachmentSubstitute self, SseSerializer serializer);
 
   @protected
+  void sse_encode_support_action(SupportAction self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_support_alert(SupportAlert self, SseSerializer serializer);
+
+  @protected
   void sse_encode_transfer_progress(
       TransferProgress self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_trusted_phone_number(
+      TrustedPhoneNumber self, SseSerializer serializer);
 
   @protected
   void sse_encode_u_32(int self, SseSerializer serializer);
@@ -1700,6 +1661,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_unit(void self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_unsend_message(UnsendMessage self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_update_extension_message(
+      UpdateExtensionMessage self, SseSerializer serializer);
 
   @protected
   void sse_encode_usize(BigInt self, SseSerializer serializer);
@@ -1813,6 +1781,70 @@ class RustLibWire implements BaseWire {
           'frbgen_bluebubbles_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerJoinedOSConfig');
   late final _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerJoinedOSConfig =
       _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerJoinedOSConfigPtr
+          .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
+
+  void
+      rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNSArrayLPIconMetadata(
+    ffi.Pointer<ffi.Void> ptr,
+  ) {
+    return _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNSArrayLPIconMetadata(
+      ptr,
+    );
+  }
+
+  late final _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNSArrayLPIconMetadataPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
+          'frbgen_bluebubbles_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNSArrayLPIconMetadata');
+  late final _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNSArrayLPIconMetadata =
+      _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNSArrayLPIconMetadataPtr
+          .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
+
+  void
+      rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNSArrayLPIconMetadata(
+    ffi.Pointer<ffi.Void> ptr,
+  ) {
+    return _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNSArrayLPIconMetadata(
+      ptr,
+    );
+  }
+
+  late final _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNSArrayLPIconMetadataPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
+          'frbgen_bluebubbles_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNSArrayLPIconMetadata');
+  late final _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNSArrayLPIconMetadata =
+      _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNSArrayLPIconMetadataPtr
+          .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
+
+  void
+      rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNSArrayLPImageMetadata(
+    ffi.Pointer<ffi.Void> ptr,
+  ) {
+    return _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNSArrayLPImageMetadata(
+      ptr,
+    );
+  }
+
+  late final _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNSArrayLPImageMetadataPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
+          'frbgen_bluebubbles_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNSArrayLPImageMetadata');
+  late final _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNSArrayLPImageMetadata =
+      _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNSArrayLPImageMetadataPtr
+          .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
+
+  void
+      rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNSArrayLPImageMetadata(
+    ffi.Pointer<ffi.Void> ptr,
+  ) {
+    return _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNSArrayLPImageMetadata(
+      ptr,
+    );
+  }
+
+  late final _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNSArrayLPImageMetadataPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
+          'frbgen_bluebubbles_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNSArrayLPImageMetadata');
+  late final _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNSArrayLPImageMetadata =
+      _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerNSArrayLPImageMetadataPtr
           .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
 
   void

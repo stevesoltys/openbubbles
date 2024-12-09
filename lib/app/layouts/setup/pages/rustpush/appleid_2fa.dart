@@ -241,7 +241,7 @@ class _AppleId2FAState extends OptimizedState<AppleId2FA> {
     setState(() {
       appleHelping = true;
     });
-    await controller.updateLoginState(const api.DartLoginState.needsSms2Fa());
+    await controller.updateLoginState(const api.LoginState.needsSms2Fa());
     setState(() {
       appleHelping = false;
     });
@@ -262,7 +262,7 @@ class _AppleId2FAState extends OptimizedState<AppleId2FA> {
       loading = true;
     });
     try {
-      if (await controller.submitCode(code) is api.DartLoginState_LoggedIn) {
+      if (await controller.submitCode(code) is api.LoginState_LoggedIn) {
         if (controller.success) {
           controller.pageController.nextPage(
             duration: const Duration(milliseconds: 300),
