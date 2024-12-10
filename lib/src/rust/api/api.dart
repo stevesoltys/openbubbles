@@ -11,7 +11,7 @@ part 'api.freezed.dart';
 
 // These functions are ignored because they are not marked as `pub`: `config`, `get_phase`, `plist_to_bin`, `plist_to_buf`, `plist_to_string`, `restore`, `setup_push`, `wrap_sink`
 // These types are ignored because they are not used by any `pub` functions: `FLUTTER_RUST_BRIDGE_HANDLER`, `InnerPushState`, `NSArrayClass`, `NSArrayIconArray`, `NSArrayImageArray`, `SavedHardwareState`
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `deref`, `deref`, `eq`, `fmt`, `initialize`, `spawn`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `clone`, `deref`, `deref`, `eq`, `fmt`, `initialize`, `spawn`
 
 Future<ArcPushState> newPushState({required String dir}) =>
     RustLib.instance.api.crateApiApiNewPushState(dir: dir);
@@ -56,8 +56,11 @@ Future<DeviceInfo> getDeviceInfo({required JoinedOsConfig config}) =>
 Future<JoinedOsConfig> configFromEncoded({required List<int> encoded}) =>
     RustLib.instance.api.crateApiApiConfigFromEncoded(encoded: encoded);
 
-Future<PushMessage> ptrToDart({required String ptr}) =>
+Future<PushMessage?> ptrToDart({required String ptr}) =>
     RustLib.instance.api.crateApiApiPtrToDart(ptr: ptr);
+
+Future<void> completeMsg({required String ptr}) =>
+    RustLib.instance.api.crateApiApiCompleteMsg(ptr: ptr);
 
 Future<Attachment> restoreAttachment({required String data}) =>
     RustLib.instance.api.crateApiApiRestoreAttachment(data: data);
@@ -212,12 +215,6 @@ abstract class IdsUser implements RustOpaqueInterface {}
 
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<JoinedOSConfig>>
 abstract class JoinedOsConfig implements RustOpaqueInterface {}
-
-// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<NSArray < LPIconMetadata >>>
-abstract class NsArrayLpIconMetadata implements RustOpaqueInterface {}
-
-// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<NSArray < LPImageMetadata >>>
-abstract class NsArrayLpImageMetadata implements RustOpaqueInterface {}
 
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<VerifyBody>>
 abstract class VerifyBody implements RustOpaqueInterface {}

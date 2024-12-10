@@ -17,7 +17,7 @@ use uuid::Uuid;
 use std::io::Seek;
 use async_recursion::async_recursion;
 
-use crate::{frb_generated::{SseEncode, StreamSink}, init_logger, RUNTIME};
+use crate::{frb_generated::{SseEncode, StreamSink}, init_logger, native::QUEUED_MESSAGES, RUNTIME};
 
 use flutter_rust_bridge::for_generated::{SimpleHandler, SimpleExecutor, NoOpErrorListener, SimpleThreadPool, BaseAsyncRuntime, lazy_static};
 
@@ -460,13 +460,16 @@ pub fn config_from_encoded(encoded: Vec<u8>) -> anyhow::Result<JoinedOSConfig> {
 }
 
 
-pub fn ptr_to_dart(ptr: String) -> PushMessage {
+pub async fn ptr_to_dart(ptr: String) -> Option<PushMessage> {
     let pointer: u64 = ptr.parse().unwrap();
     info!("using pointer {pointer}");
-    let recieved = unsafe {
-        Box::from_raw(pointer as *mut PushMessage)
-    };
-    *recieved
+    QUEUED_MESSAGES.lock().await.1.get(&pointer).cloned()
+}
+
+pub async fn complete_msg(ptr: String) {
+    let pointer: u64 = ptr.parse().unwrap();
+    info!("finishing pointer {pointer}");
+    QUEUED_MESSAGES.lock().await.1.remove(&pointer);
 }
 
 
@@ -497,6 +500,7 @@ pub fn create_icon_array(img: LPIconMetadata) -> NSArray<LPIconMetadata> {
 
 
 #[repr(C)]
+#[derive(Clone)]
 pub enum PushMessage {
     IMessage(MessageInst),
     SendConfirm {

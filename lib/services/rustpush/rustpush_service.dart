@@ -1934,6 +1934,10 @@ class RustPushService extends GetxService {
 
   Future recievedMsgPointer(String pointer) async {
     var message = await api.ptrToDart(ptr: pointer);
+    if (message == null) {
+      Logger.info("bad pointer $pointer");
+      return;
+    }
     Logger.info("waitingForInit $pointer");
     await initFuture;
     try {
@@ -1942,6 +1946,9 @@ class RustPushService extends GetxService {
     } catch (e, s) {
       Logger.error("Handle failed", error: e, trace: s);
       rethrow;
+    } finally {
+      Logger.info("Marking as handled $pointer");
+      await api.completeMsg(ptr: pointer);
     }
   }
 

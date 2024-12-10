@@ -49,16 +49,6 @@ class DartWorker(context: Context, workerParams: WorkerParameters): ListenableWo
         val gson = GsonBuilder()
                 .setObjectToNumberStrategy(ToNumberPolicy.LONG_OR_DOUBLE)
                 .create()
-        if (method == "APNMsg") {
-            val json: HashMap<String, String> = gson.fromJson(data, TypeToken.getParameterized(HashMap::class.java, String::class.java, Any::class.java).type)
-            val pointer = json["pointer"]
-            if (APNService.validPtrs.contains(pointer)) {
-                APNService.validPtrs.remove(pointer)
-            } else {
-                // bail
-                return Futures.immediateFuture(Result.success())
-            }
-        }
         if (method == "SMSMsg") {
             val json: HashMap<String, Any> = gson.fromJson(data, TypeToken.getParameterized(HashMap::class.java, String::class.java, Any::class.java).type)
             val pointer: Int = (json["id"] as Long).toInt()

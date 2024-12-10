@@ -1,4 +1,4 @@
-use std::{collections::{BTreeMap, HashMap}, fmt::Debug, sync::{Arc, LazyLock, OnceLock, RwLock}};
+use std::{collections::{BTreeMap, HashMap}, fmt::Debug, sync::{Arc, LazyLock, OnceLock, RwLock}, time::Duration};
 
 use flexi_logger::{FileSpec, Logger, WriteMode};
 use log::error;
@@ -7,7 +7,7 @@ use tokio::{runtime::{Handle, Runtime}, sync::Mutex};
 use uniffi::deps::log::info;
 
 use futures::FutureExt;
-use crate::{api::api::{get_phase, new_push_state, recv_wait, PollResult, PushState, RegistrationPhase}, frb_generated::FLUTTER_RUST_BRIDGE_HANDLER, init_logger, RUNTIME};
+use crate::{api::api::{get_phase, new_push_state, recv_wait, PollResult, PushMessage, PushState, RegistrationPhase}, frb_generated::FLUTTER_RUST_BRIDGE_HANDLER, init_logger, RUNTIME};
 
 #[uniffi::export(with_foreign)]
 pub trait MsgReceiver: Send + Sync + Debug {
@@ -50,6 +50,8 @@ pub fn get_carrier(handler: Arc<dyn CarrierHandler>, mccmnc: String) {
     });
 }
 
+pub static QUEUED_MESSAGES: LazyLock<Mutex<(u64, HashMap<u64, PushMessage>)>> = LazyLock::new(|| Mutex::new((0, HashMap::new())));
+
 #[uniffi::export]
 impl NativePushState {
 
@@ -60,9 +62,25 @@ impl NativePushState {
                     Ok(yes) => {
                         match yes {
                             PollResult::Cont(Some(msg)) => {
-                                let result = Box::into_raw(Box::new(msg)) as u64;
-                                info!("emitting pointer {result}");
-                                handler.receieved_msg(result);
+                                let mut locked_messages = QUEUED_MESSAGES.lock().await;
+                                let key = locked_messages.0;
+                                locked_messages.1.insert(key, msg);
+                                locked_messages.0 = locked_messages.0.wrapping_add(1);
+                                drop(locked_messages);
+
+                                let handler_ref = handler.clone();
+                                tokio::spawn(async move {
+                                    tokio::time::sleep(Duration::from_secs(10)).await;
+                                    while QUEUED_MESSAGES.lock().await.1.contains_key(&key) {
+                                        info!("re-emitting pointer {key}");
+                                        // we still haven't been handled, attempt to handle again
+                                        handler_ref.receieved_msg(key);
+                                        tokio::time::sleep(Duration::from_secs(10)).await;
+                                    }
+                                });
+
+                                info!("emitting pointer {key}");
+                                handler.receieved_msg(key);
                             },
                             PollResult::Cont(None) => continue,
                             PollResult::Stop => break

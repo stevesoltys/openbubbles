@@ -39,9 +39,6 @@ class APNService : Service(), MsgReceiver {
     private val job = SupervisorJob()
     private val scope = CoroutineScope(Dispatchers.IO + job)
 
-    companion object {
-        var validPtrs: ArrayList<String> = arrayListOf()
-    }
 
     fun ready() {
         Log.i("launching agent", "ready")
@@ -55,14 +52,13 @@ class APNService : Service(), MsgReceiver {
 
     override fun receievedMsg(ptr: ULong) {
         Handler(Looper.getMainLooper()).post {
-            if (MainActivity.engine != null && MainActivity.engine_ready) {
+            if (MainActivity.engine != null) {
                 Log.i("ugh running", "here $ptr")
                 // app is alive, deliver directly there
                 MethodCallHandler.invokeMethod("APNMsg", mapOf("pointer" to ptr.toString()))
                 return@post
             }
             Log.i("ugh running", "backend $ptr")
-            validPtrs.add(ptr.toString())
             DartWorkManager.createWorker(this@APNService, "APNMsg", hashMapOf("pointer" to ptr.toString())) {}
         }
     }
