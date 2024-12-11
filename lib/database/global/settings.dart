@@ -530,7 +530,7 @@ class Settings {
     ss.settings.hideNamesForReactions.value = map['hideNamesForReactions'] ?? false;
     ss.settings.replaceEmoticonsWithEmoji.value = map['replaceEmoticonsWithEmoji'] ?? false;
     ss.settings.defaultHandle.value = map['defaultHandle'] ?? "";
-    ss.settings.macIsMine.value = map['macIsMine'] ?? true;
+    // ss.settings.macIsMine.value = map['macIsMine'] ?? true;
     ss.settings.isSmsRouter.value = map['isSmsRouter'] ?? false;
     ss.settings.developerEnabled.value = map['developerEnabled'] ?? false;
     ss.settings.vpnWarned.value = map['vpnWarned'] ?? false;
