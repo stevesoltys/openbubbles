@@ -1,9 +1,10 @@
 
 
-use std::{borrow::{Borrow, BorrowMut}, fs, future::Future, io::{Cursor, Write}, ops::Deref, path::PathBuf, str::FromStr, sync::{Arc, OnceLock}, time::Duration};
+use std::{borrow::{Borrow, BorrowMut}, fs, future::Future, io::{Cursor, Write}, ops::Deref, path::{Path, PathBuf}, str::FromStr, sync::{Arc, OnceLock}, time::Duration};
 
 use anyhow::anyhow;
 use flutter_rust_bridge::{frb, IntoDart, JoinHandle};
+use icloud_auth::{default_provider, ArcAnisetteClient, LoginClientInfo};
 use plist::{Data, Dictionary};
 pub use plist::Value;
 
@@ -11,7 +12,10 @@ pub use plist::Value;
 use prost::Message as prostMessage;
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use tokio::{runtime::Runtime, select, sync::{broadcast, mpsc, oneshot::{self, Sender}, Mutex, RwLock}};
-use rustpush::{authenticate_apple, authenticate_phone, get_gsa_config};
+use rustpush::{authenticate_apple, authenticate_phone, findmy::FindMyState, login_apple_delegates, LoginDelegate};
+
+pub use rustpush::findmy::{FindMyFriendsClient, FindMyPhoneClient};
+pub use icloud_auth::DefaultAnisetteProvider;
 use uniffi::{deps::log::{info, error}, HandleAlloc};
 use uuid::Uuid;
 use std::io::Seek;
@@ -90,11 +94,12 @@ pub enum RegistrationPhase {
 
 #[frb(ignore)]
 pub struct InnerPushState {
+    pub anisette: Option<ArcAnisetteClient<DefaultAnisetteProvider>>,
     pub conn: Option<APSConnection>,
     pub client: Option<IMClient>,
     pub conf_dir: PathBuf,
     pub os_config: Option<JoinedOSConfig>,
-    pub account: Option<AppleAccount>,
+    pub account: Option<AppleAccount<DefaultAnisetteProvider>>,
     pub cancel_poll: Mutex<Option<Sender<()>>>,
     pub identity: Option<IDSUserIdentity>,
     pub local_messages: Mutex<mpsc::Receiver<PushMessage>>,
@@ -110,6 +115,7 @@ pub async fn new_push_state(dir: String) -> Arc<PushState> {
     let (sender, recv) = mpsc::channel(999);
     // flutter_rust_bridge::setup_default_user_utils();
     let state = PushState(RwLock::new(InnerPushState {
+        anisette: None,
         conn: None,
         client: None,
         conf_dir: dir,
@@ -225,6 +231,8 @@ async fn restore(curr_state: &PushState) {
     inner.identity = Some(state.identity.clone());
     let (connection, _err) = setup_push(inner.os_config.as_ref().unwrap(), &state.identity, Some(&state.push), hw_config_path).await;
     inner.conn = Some(connection);
+    let provider = Some(default_provider(inner.os_config.as_ref().unwrap().get_gsa_config(&*inner.conn.as_ref().unwrap().state.read().await), inner.conf_dir.join("anisette_test")));
+    inner.anisette = provider;
 
     // id may not exist yet; that's fine
     let Ok(users) = plist::from_file::<_, Vec<IDSUser>>(&id_path) else { return };
@@ -299,6 +307,10 @@ async fn setup_push(config: &JoinedOSConfig, identity: &IDSUserIdentity, state: 
     (conn, error)
 }
 
+async fn get_login_config(inner: &InnerPushState) -> LoginClientInfo {
+    inner.os_config.as_ref().unwrap().get_gsa_config(&*inner.conn.as_ref().unwrap().state.read().await)
+}
+
 pub async fn configure_app_review(state: &Arc<PushState>) -> anyhow::Result<()> {
     let inner = state.0.write().await;
     std::fs::write(inner.conf_dir.join("id.plist"), include_str!("id_testing.plist"))?;
@@ -324,6 +336,8 @@ pub async fn configure_macos(state: &Arc<PushState>, config: &JoinedOSConfig) ->
         return Err(err.into())
     }
     inner.conn = Some(connection);
+    let provider = Some(default_provider(get_login_config(&*inner).await, inner.conf_dir.join("anisette_test")));
+    inner.anisette = provider;
     Ok(())
 }
 
@@ -717,17 +731,66 @@ pub fn restore_user(user: String) -> anyhow::Result<IDSUser> {
     Ok(plist::from_reader(Cursor::new(user))?)
 }
 
+pub async fn make_find_my_phone(state: &Arc<PushState>) -> anyhow::Result<FindMyPhoneClient<DefaultAnisetteProvider>> {
+    let inner = state.0.read().await;
+
+    let id_path = inner.conf_dir.join("findmy.plist");
+    let state: FindMyState = plist::from_file(id_path)?;
+    
+    Ok(FindMyPhoneClient::new(inner.os_config.as_deref().unwrap(), state, inner.conn.clone().unwrap(), inner.anisette.clone().unwrap()).await?)
+}
+
+pub async fn get_devices(client: &mut FindMyPhoneClient<DefaultAnisetteProvider>) -> Vec<FoundDevice> {
+    client.devices.clone()
+}
+
+pub async fn refresh_devices(state: &Arc<PushState>, client: &mut FindMyPhoneClient<DefaultAnisetteProvider>) -> anyhow::Result<Vec<FoundDevice>> {
+    let inner = state.0.read().await;
+    client.refresh(inner.os_config.as_deref().unwrap()).await?;
+    Ok(client.devices.clone())
+}
+
+pub async fn make_find_my_friends(state: &Arc<PushState>) -> anyhow::Result<FindMyFriendsClient<DefaultAnisetteProvider>> {
+    let inner = state.0.read().await;
+
+    let id_path = inner.conf_dir.join("findmy.plist");
+    let state: FindMyState = plist::from_file(id_path)?;
+    
+    Ok(FindMyFriendsClient::new(inner.os_config.as_deref().unwrap(), state, inner.conn.clone().unwrap(), inner.anisette.clone().unwrap()).await?)
+}
+
+pub async fn get_following(client: &mut FindMyFriendsClient<DefaultAnisetteProvider>) -> Vec<Follow> {
+    client.following.clone()
+}
+
+pub async fn refresh_following(state: &Arc<PushState>, client: &mut FindMyFriendsClient<DefaultAnisetteProvider>) -> anyhow::Result<Vec<Follow>> {
+    let inner = state.0.read().await;
+    client.refresh(inner.os_config.as_deref().unwrap()).await?;
+    Ok(client.following.clone())
+}
+
+async fn do_login(conf_dir: &Path, username: &str, pet: &str, spd: &Dictionary, anisette: &ArcAnisetteClient<DefaultAnisetteProvider>, os_config: &dyn OSConfig) -> anyhow::Result<IDSUser> {
+    let delegates = login_apple_delegates(username, pet, spd["adsid"].as_string().unwrap(), &mut *anisette.lock().await, os_config, &[LoginDelegate::IDS, LoginDelegate::MobileMe]).await.unwrap();
+
+    let mobileme = delegates.mobileme.unwrap();
+    let findmy = FindMyState::new(spd["DsPrsId"].as_unsigned_integer().unwrap().to_string(), &mobileme);
+
+    let id_path = conf_dir.join("findmy.plist");
+    std::fs::write(id_path, plist_to_string(&findmy).unwrap()).unwrap();
+
+    let user = authenticate_apple(delegates.ids.unwrap(), os_config).await.unwrap();
+    Ok(user)
+}
+
 pub async fn try_auth(state: &Arc<PushState>, username: String, password: String) -> anyhow::Result<(LoginState, Option<IDSUser>)> {
     let mut inner = state.0.write().await;
-    let anisette_config = AnisetteConfiguration::new()
-        .set_client_info(get_gsa_config(&*inner.conn.as_ref().unwrap().state.read().await, inner.os_config.as_deref().unwrap()))
-        .set_configuration_path(inner.conf_dir.join("anisette_test"));
-    let mut apple_account = AppleAccount::new(anisette_config).await?;
+    let mut apple_account = 
+        AppleAccount::new_with_anisette(get_login_config(&*inner).await, inner.anisette.clone().unwrap())?;
     let mut login_state = apple_account.login_email_pass(&username, &password).await?;
 
     let mut user = None;
     if let Some(pet) = apple_account.get_pet() {
-        let identity = authenticate_apple(username.trim(), &pet, inner.os_config.as_deref().unwrap()).await?;
+        let identity = do_login(&inner.conf_dir, username.trim(), &pet, apple_account.spd.as_ref().unwrap(), inner.anisette.as_ref().unwrap(), inner.os_config.as_deref().unwrap()).await?;
         user = Some(identity);
         
         // who needs extra steps when you have a PET, amirite?
@@ -768,7 +831,7 @@ pub async fn verify_2fa(state: &Arc<PushState>, code: String) -> anyhow::Result<
     
     let mut user = None;
     if let Some(pet) = account.get_pet() {
-        let identity = authenticate_apple(account.username.as_ref().unwrap().trim(), &pet, inner.os_config.as_deref().unwrap()).await?;
+        let identity = do_login(&inner.conf_dir, account.username.as_ref().unwrap().trim(), &pet, account.spd.as_ref().unwrap(), inner.anisette.as_ref().unwrap(), inner.os_config.as_deref().unwrap()).await?;
         user = Some(identity);
         
         // who needs extra steps when you have a PET, amirite?
@@ -807,7 +870,7 @@ pub async fn verify_2fa_sms(state: &Arc<PushState>, body: &VerifyBody, code: Str
     
     let mut user = None;
     if let Some(pet) = account.get_pet() {
-        let identity = authenticate_apple(account.username.as_ref().unwrap().trim(), &pet, inner.os_config.as_deref().unwrap()).await?;
+        let identity = do_login(&inner.conf_dir, account.username.as_ref().unwrap().trim(), &pet, account.spd.as_ref().unwrap(), inner.anisette.as_ref().unwrap(), inner.os_config.as_deref().unwrap()).await?;
         user = Some(identity);
         
         // who needs extra steps when you have a PET, amirite?
@@ -843,6 +906,7 @@ pub async fn reset_state(state: &Arc<PushState>, reset_hw: bool) -> anyhow::Resu
     info!("c");
     inner.account = None;
     let _ = std::fs::remove_file(inner.conf_dir.join("id.plist"));
+    let _ = std::fs::remove_file(inner.conf_dir.join("findmy.plist"));
     let _ = std::fs::remove_file(inner.conf_dir.join("id_cache.plist"));
 
     if reset_hw {

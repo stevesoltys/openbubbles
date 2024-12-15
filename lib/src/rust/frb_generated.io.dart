@@ -23,6 +23,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       get rust_arc_decrement_strong_count_ArcPushStatePtr => wire
           ._rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcPushStatePtr;
 
+  CrossPlatformFinalizerArg
+      get rust_arc_decrement_strong_count_FindMyFriendsClientDefaultAnisetteProviderPtr =>
+          wire._rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyFriendsClientDefaultAnisetteProviderPtr;
+
+  CrossPlatformFinalizerArg
+      get rust_arc_decrement_strong_count_FindMyPhoneClientDefaultAnisetteProviderPtr =>
+          wire._rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyPhoneClientDefaultAnisetteProviderPtr;
+
   CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_IdsUserPtr => wire
       ._rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIDSUserPtr;
 
@@ -50,6 +58,16 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           dynamic raw);
 
   @protected
+  FindMyFriendsClientDefaultAnisetteProvider
+      dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyFriendsClientDefaultAnisetteProvider(
+          dynamic raw);
+
+  @protected
+  FindMyPhoneClientDefaultAnisetteProvider
+      dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyPhoneClientDefaultAnisetteProvider(
+          dynamic raw);
+
+  @protected
   IdsUser
       dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIDSUser(
           dynamic raw);
@@ -72,6 +90,16 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   VerifyBody
       dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyBody(
+          dynamic raw);
+
+  @protected
+  FindMyFriendsClientDefaultAnisetteProvider
+      dco_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyFriendsClientDefaultAnisetteProvider(
+          dynamic raw);
+
+  @protected
+  FindMyPhoneClientDefaultAnisetteProvider
+      dco_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyPhoneClientDefaultAnisetteProvider(
           dynamic raw);
 
   @protected
@@ -101,8 +129,21 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   int dco_decode_CastedPrimitive_usize(dynamic raw);
 
   @protected
+  Map<String, bool> dco_decode_Map_String_bool(dynamic raw);
+
+  @protected
   ArcPushState
       dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcPushState(
+          dynamic raw);
+
+  @protected
+  FindMyFriendsClientDefaultAnisetteProvider
+      dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyFriendsClientDefaultAnisetteProvider(
+          dynamic raw);
+
+  @protected
+  FindMyPhoneClientDefaultAnisetteProvider
+      dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyPhoneClientDefaultAnisetteProvider(
           dynamic raw);
 
   @protected
@@ -142,6 +183,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   String dco_decode_String(dynamic raw);
 
   @protected
+  Address dco_decode_address(dynamic raw);
+
+  @protected
   Attachment dco_decode_attachment(dynamic raw);
 
   @protected
@@ -177,6 +221,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           dynamic raw);
 
   @protected
+  Address dco_decode_box_autoadd_address(dynamic raw);
+
+  @protected
   Attachment dco_decode_box_autoadd_attachment(dynamic raw);
 
   @protected
@@ -202,13 +249,22 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   ExtensionApp dco_decode_box_autoadd_extension_app(dynamic raw);
 
   @protected
+  double dco_decode_box_autoadd_f_64(dynamic raw);
+
+  @protected
   HwExtra dco_decode_box_autoadd_hw_extra(dynamic raw);
+
+  @protected
+  PlatformInt64 dco_decode_box_autoadd_i_64(dynamic raw);
 
   @protected
   IconChangeMessage dco_decode_box_autoadd_icon_change_message(dynamic raw);
 
   @protected
   LinkMeta dco_decode_box_autoadd_link_meta(dynamic raw);
+
+  @protected
+  Location dco_decode_box_autoadd_location(dynamic raw);
 
   @protected
   LoginState dco_decode_box_autoadd_login_state(dynamic raw);
@@ -291,6 +347,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   double dco_decode_f_64(dynamic raw);
 
   @protected
+  Follow dco_decode_follow(dynamic raw);
+
+  @protected
+  FoundDevice dco_decode_found_device(dynamic raw);
+
+  @protected
   HwExtra dco_decode_hw_extra(dynamic raw);
 
   @protected
@@ -317,6 +379,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   List<String> dco_decode_list_String(dynamic raw);
 
   @protected
+  List<Follow> dco_decode_list_follow(dynamic raw);
+
+  @protected
+  List<FoundDevice> dco_decode_list_found_device(dynamic raw);
+
+  @protected
   List<IndexedMessagePart> dco_decode_list_indexed_message_part(dynamic raw);
 
   @protected
@@ -335,7 +403,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   List<PrivateDeviceInfo> dco_decode_list_private_device_info(dynamic raw);
 
   @protected
+  List<(String, bool)> dco_decode_list_record_string_bool(dynamic raw);
+
+  @protected
   List<TrustedPhoneNumber> dco_decode_list_trusted_phone_number(dynamic raw);
+
+  @protected
+  Location dco_decode_location(dynamic raw);
 
   @protected
   LoginState dco_decode_login_state(dynamic raw);
@@ -415,6 +489,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           dynamic raw);
 
   @protected
+  Address? dco_decode_opt_box_autoadd_address(dynamic raw);
+
+  @protected
   Attachment? dco_decode_opt_box_autoadd_attachment(dynamic raw);
 
   @protected
@@ -430,7 +507,16 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   ExtensionApp? dco_decode_opt_box_autoadd_extension_app(dynamic raw);
 
   @protected
+  double? dco_decode_opt_box_autoadd_f_64(dynamic raw);
+
+  @protected
+  PlatformInt64? dco_decode_opt_box_autoadd_i_64(dynamic raw);
+
+  @protected
   LinkMeta? dco_decode_opt_box_autoadd_link_meta(dynamic raw);
+
+  @protected
+  Location? dco_decode_opt_box_autoadd_location(dynamic raw);
 
   @protected
   LoginState? dco_decode_opt_box_autoadd_login_state(dynamic raw);
@@ -466,6 +552,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   BigInt? dco_decode_opt_box_autoadd_u_64(dynamic raw);
+
+  @protected
+  List<String>? dco_decode_opt_list_String(dynamic raw);
 
   @protected
   List<MessageTarget>? dco_decode_opt_list_message_target(dynamic raw);
@@ -505,6 +594,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
     IdsUser?
   ) dco_decode_record_login_state_opt_box_autoadd_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_ids_user(
       dynamic raw);
+
+  @protected
+  (String, bool) dco_decode_record_string_bool(dynamic raw);
 
   @protected
   RegisterState dco_decode_register_state(dynamic raw);
@@ -561,6 +653,16 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           SseDeserializer deserializer);
 
   @protected
+  FindMyFriendsClientDefaultAnisetteProvider
+      sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyFriendsClientDefaultAnisetteProvider(
+          SseDeserializer deserializer);
+
+  @protected
+  FindMyPhoneClientDefaultAnisetteProvider
+      sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyPhoneClientDefaultAnisetteProvider(
+          SseDeserializer deserializer);
+
+  @protected
   IdsUser
       sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIDSUser(
           SseDeserializer deserializer);
@@ -583,6 +685,16 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   VerifyBody
       sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyBody(
+          SseDeserializer deserializer);
+
+  @protected
+  FindMyFriendsClientDefaultAnisetteProvider
+      sse_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyFriendsClientDefaultAnisetteProvider(
+          SseDeserializer deserializer);
+
+  @protected
+  FindMyPhoneClientDefaultAnisetteProvider
+      sse_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyPhoneClientDefaultAnisetteProvider(
           SseDeserializer deserializer);
 
   @protected
@@ -612,8 +724,21 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   int sse_decode_CastedPrimitive_usize(SseDeserializer deserializer);
 
   @protected
+  Map<String, bool> sse_decode_Map_String_bool(SseDeserializer deserializer);
+
+  @protected
   ArcPushState
       sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcPushState(
+          SseDeserializer deserializer);
+
+  @protected
+  FindMyFriendsClientDefaultAnisetteProvider
+      sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyFriendsClientDefaultAnisetteProvider(
+          SseDeserializer deserializer);
+
+  @protected
+  FindMyPhoneClientDefaultAnisetteProvider
+      sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyPhoneClientDefaultAnisetteProvider(
           SseDeserializer deserializer);
 
   @protected
@@ -654,6 +779,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   String sse_decode_String(SseDeserializer deserializer);
 
   @protected
+  Address sse_decode_address(SseDeserializer deserializer);
+
+  @protected
   Attachment sse_decode_attachment(SseDeserializer deserializer);
 
   @protected
@@ -689,6 +817,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           SseDeserializer deserializer);
 
   @protected
+  Address sse_decode_box_autoadd_address(SseDeserializer deserializer);
+
+  @protected
   Attachment sse_decode_box_autoadd_attachment(SseDeserializer deserializer);
 
   @protected
@@ -717,7 +848,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       SseDeserializer deserializer);
 
   @protected
+  double sse_decode_box_autoadd_f_64(SseDeserializer deserializer);
+
+  @protected
   HwExtra sse_decode_box_autoadd_hw_extra(SseDeserializer deserializer);
+
+  @protected
+  PlatformInt64 sse_decode_box_autoadd_i_64(SseDeserializer deserializer);
 
   @protected
   IconChangeMessage sse_decode_box_autoadd_icon_change_message(
@@ -725,6 +862,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   LinkMeta sse_decode_box_autoadd_link_meta(SseDeserializer deserializer);
+
+  @protected
+  Location sse_decode_box_autoadd_location(SseDeserializer deserializer);
 
   @protected
   LoginState sse_decode_box_autoadd_login_state(SseDeserializer deserializer);
@@ -819,6 +959,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   double sse_decode_f_64(SseDeserializer deserializer);
 
   @protected
+  Follow sse_decode_follow(SseDeserializer deserializer);
+
+  @protected
+  FoundDevice sse_decode_found_device(SseDeserializer deserializer);
+
+  @protected
   HwExtra sse_decode_hw_extra(SseDeserializer deserializer);
 
   @protected
@@ -847,6 +993,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   List<String> sse_decode_list_String(SseDeserializer deserializer);
 
   @protected
+  List<Follow> sse_decode_list_follow(SseDeserializer deserializer);
+
+  @protected
+  List<FoundDevice> sse_decode_list_found_device(SseDeserializer deserializer);
+
+  @protected
   List<IndexedMessagePart> sse_decode_list_indexed_message_part(
       SseDeserializer deserializer);
 
@@ -869,8 +1021,15 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       SseDeserializer deserializer);
 
   @protected
+  List<(String, bool)> sse_decode_list_record_string_bool(
+      SseDeserializer deserializer);
+
+  @protected
   List<TrustedPhoneNumber> sse_decode_list_trusted_phone_number(
       SseDeserializer deserializer);
+
+  @protected
+  Location sse_decode_location(SseDeserializer deserializer);
 
   @protected
   LoginState sse_decode_login_state(SseDeserializer deserializer);
@@ -952,6 +1111,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           SseDeserializer deserializer);
 
   @protected
+  Address? sse_decode_opt_box_autoadd_address(SseDeserializer deserializer);
+
+  @protected
   Attachment? sse_decode_opt_box_autoadd_attachment(
       SseDeserializer deserializer);
 
@@ -970,7 +1132,16 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       SseDeserializer deserializer);
 
   @protected
+  double? sse_decode_opt_box_autoadd_f_64(SseDeserializer deserializer);
+
+  @protected
+  PlatformInt64? sse_decode_opt_box_autoadd_i_64(SseDeserializer deserializer);
+
+  @protected
   LinkMeta? sse_decode_opt_box_autoadd_link_meta(SseDeserializer deserializer);
+
+  @protected
+  Location? sse_decode_opt_box_autoadd_location(SseDeserializer deserializer);
 
   @protected
   LoginState? sse_decode_opt_box_autoadd_login_state(
@@ -1015,6 +1186,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   BigInt? sse_decode_opt_box_autoadd_u_64(SseDeserializer deserializer);
 
   @protected
+  List<String>? sse_decode_opt_list_String(SseDeserializer deserializer);
+
+  @protected
   List<MessageTarget>? sse_decode_opt_list_message_target(
       SseDeserializer deserializer);
 
@@ -1054,6 +1228,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
     IdsUser?
   ) sse_decode_record_login_state_opt_box_autoadd_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_ids_user(
       SseDeserializer deserializer);
+
+  @protected
+  (String, bool) sse_decode_record_string_bool(SseDeserializer deserializer);
 
   @protected
   RegisterState sse_decode_register_state(SseDeserializer deserializer);
@@ -1115,6 +1292,18 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void
+      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyFriendsClientDefaultAnisetteProvider(
+          FindMyFriendsClientDefaultAnisetteProvider self,
+          SseSerializer serializer);
+
+  @protected
+  void
+      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyPhoneClientDefaultAnisetteProvider(
+          FindMyPhoneClientDefaultAnisetteProvider self,
+          SseSerializer serializer);
+
+  @protected
+  void
       sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIDSUser(
           IdsUser self, SseSerializer serializer);
 
@@ -1137,6 +1326,18 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void
       sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerVerifyBody(
           VerifyBody self, SseSerializer serializer);
+
+  @protected
+  void
+      sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyFriendsClientDefaultAnisetteProvider(
+          FindMyFriendsClientDefaultAnisetteProvider self,
+          SseSerializer serializer);
+
+  @protected
+  void
+      sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyPhoneClientDefaultAnisetteProvider(
+          FindMyPhoneClientDefaultAnisetteProvider self,
+          SseSerializer serializer);
 
   @protected
   void
@@ -1165,9 +1366,25 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_CastedPrimitive_usize(int self, SseSerializer serializer);
 
   @protected
+  void sse_encode_Map_String_bool(
+      Map<String, bool> self, SseSerializer serializer);
+
+  @protected
   void
       sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcPushState(
           ArcPushState self, SseSerializer serializer);
+
+  @protected
+  void
+      sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyFriendsClientDefaultAnisetteProvider(
+          FindMyFriendsClientDefaultAnisetteProvider self,
+          SseSerializer serializer);
+
+  @protected
+  void
+      sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyPhoneClientDefaultAnisetteProvider(
+          FindMyPhoneClientDefaultAnisetteProvider self,
+          SseSerializer serializer);
 
   @protected
   void
@@ -1206,6 +1423,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_String(String self, SseSerializer serializer);
 
   @protected
+  void sse_encode_address(Address self, SseSerializer serializer);
+
+  @protected
   void sse_encode_attachment(Attachment self, SseSerializer serializer);
 
   @protected
@@ -1242,6 +1462,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           NsArrayLpImageMetadata self, SseSerializer serializer);
 
   @protected
+  void sse_encode_box_autoadd_address(Address self, SseSerializer serializer);
+
+  @protected
   void sse_encode_box_autoadd_attachment(
       Attachment self, SseSerializer serializer);
 
@@ -1272,7 +1495,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       ExtensionApp self, SseSerializer serializer);
 
   @protected
+  void sse_encode_box_autoadd_f_64(double self, SseSerializer serializer);
+
+  @protected
   void sse_encode_box_autoadd_hw_extra(HwExtra self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_i_64(
+      PlatformInt64 self, SseSerializer serializer);
 
   @protected
   void sse_encode_box_autoadd_icon_change_message(
@@ -1281,6 +1511,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_box_autoadd_link_meta(
       LinkMeta self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_location(Location self, SseSerializer serializer);
 
   @protected
   void sse_encode_box_autoadd_login_state(
@@ -1379,6 +1612,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_f_64(double self, SseSerializer serializer);
 
   @protected
+  void sse_encode_follow(Follow self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_found_device(FoundDevice self, SseSerializer serializer);
+
+  @protected
   void sse_encode_hw_extra(HwExtra self, SseSerializer serializer);
 
   @protected
@@ -1407,6 +1646,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_list_String(List<String> self, SseSerializer serializer);
 
   @protected
+  void sse_encode_list_follow(List<Follow> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_found_device(
+      List<FoundDevice> self, SseSerializer serializer);
+
+  @protected
   void sse_encode_list_indexed_message_part(
       List<IndexedMessagePart> self, SseSerializer serializer);
 
@@ -1430,8 +1676,15 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       List<PrivateDeviceInfo> self, SseSerializer serializer);
 
   @protected
+  void sse_encode_list_record_string_bool(
+      List<(String, bool)> self, SseSerializer serializer);
+
+  @protected
   void sse_encode_list_trusted_phone_number(
       List<TrustedPhoneNumber> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_location(Location self, SseSerializer serializer);
 
   @protected
   void sse_encode_login_state(LoginState self, SseSerializer serializer);
@@ -1518,6 +1771,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           NsArrayLpImageMetadata? self, SseSerializer serializer);
 
   @protected
+  void sse_encode_opt_box_autoadd_address(
+      Address? self, SseSerializer serializer);
+
+  @protected
   void sse_encode_opt_box_autoadd_attachment(
       Attachment? self, SseSerializer serializer);
 
@@ -1537,8 +1794,19 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       ExtensionApp? self, SseSerializer serializer);
 
   @protected
+  void sse_encode_opt_box_autoadd_f_64(double? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_i_64(
+      PlatformInt64? self, SseSerializer serializer);
+
+  @protected
   void sse_encode_opt_box_autoadd_link_meta(
       LinkMeta? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_location(
+      Location? self, SseSerializer serializer);
 
   @protected
   void sse_encode_opt_box_autoadd_login_state(
@@ -1583,6 +1851,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_opt_box_autoadd_u_64(BigInt? self, SseSerializer serializer);
 
   @protected
+  void sse_encode_opt_list_String(List<String>? self, SseSerializer serializer);
+
+  @protected
   void sse_encode_opt_list_message_target(
       List<MessageTarget>? self, SseSerializer serializer);
 
@@ -1621,6 +1892,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void
       sse_encode_record_login_state_opt_box_autoadd_auto_owned_rust_opaque_flutter_rust_bridgefor_generated_rust_auto_opaque_inner_ids_user(
           (LoginState, IdsUser?) self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_record_string_bool(
+      (String, bool) self, SseSerializer serializer);
 
   @protected
   void sse_encode_register_state(RegisterState self, SseSerializer serializer);
@@ -1717,6 +1992,70 @@ class RustLibWire implements BaseWire {
           'frbgen_bluebubbles_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcPushState');
   late final _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcPushState =
       _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcPushStatePtr
+          .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
+
+  void
+      rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyFriendsClientDefaultAnisetteProvider(
+    ffi.Pointer<ffi.Void> ptr,
+  ) {
+    return _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyFriendsClientDefaultAnisetteProvider(
+      ptr,
+    );
+  }
+
+  late final _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyFriendsClientDefaultAnisetteProviderPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
+          'frbgen_bluebubbles_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyFriendsClientDefaultAnisetteProvider');
+  late final _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyFriendsClientDefaultAnisetteProvider =
+      _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyFriendsClientDefaultAnisetteProviderPtr
+          .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
+
+  void
+      rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyFriendsClientDefaultAnisetteProvider(
+    ffi.Pointer<ffi.Void> ptr,
+  ) {
+    return _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyFriendsClientDefaultAnisetteProvider(
+      ptr,
+    );
+  }
+
+  late final _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyFriendsClientDefaultAnisetteProviderPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
+          'frbgen_bluebubbles_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyFriendsClientDefaultAnisetteProvider');
+  late final _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyFriendsClientDefaultAnisetteProvider =
+      _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyFriendsClientDefaultAnisetteProviderPtr
+          .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
+
+  void
+      rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyPhoneClientDefaultAnisetteProvider(
+    ffi.Pointer<ffi.Void> ptr,
+  ) {
+    return _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyPhoneClientDefaultAnisetteProvider(
+      ptr,
+    );
+  }
+
+  late final _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyPhoneClientDefaultAnisetteProviderPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
+          'frbgen_bluebubbles_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyPhoneClientDefaultAnisetteProvider');
+  late final _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyPhoneClientDefaultAnisetteProvider =
+      _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyPhoneClientDefaultAnisetteProviderPtr
+          .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
+
+  void
+      rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyPhoneClientDefaultAnisetteProvider(
+    ffi.Pointer<ffi.Void> ptr,
+  ) {
+    return _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyPhoneClientDefaultAnisetteProvider(
+      ptr,
+    );
+  }
+
+  late final _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyPhoneClientDefaultAnisetteProviderPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
+          'frbgen_bluebubbles_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyPhoneClientDefaultAnisetteProvider');
+  late final _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyPhoneClientDefaultAnisetteProvider =
+      _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyPhoneClientDefaultAnisetteProviderPtr
           .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
 
   void

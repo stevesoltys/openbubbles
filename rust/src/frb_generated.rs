@@ -39,7 +39,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
     default_rust_auto_opaque = RustAutoOpaqueMoi,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.3.0";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 1359899892;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 920224295;
 
 // Section: executor
 
@@ -964,6 +964,128 @@ fn wire__crate__api__api__get_device_info_state_impl(
         },
     )
 }
+fn wire__crate__api__api__get_devices_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "get_devices",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_client = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<
+                    FindMyPhoneClient<DefaultAnisetteProvider>,
+                >,
+            >>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, ()>(
+                    (move || async move {
+                        let mut api_client_guard = None;
+                        let decode_indices_ =
+                            flutter_rust_bridge::for_generated::lockable_compute_decode_order(
+                                vec![flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                    &api_client,
+                                    0,
+                                    true,
+                                )],
+                            );
+                        for i in decode_indices_ {
+                            match i {
+                                0 => {
+                                    api_client_guard =
+                                        Some(api_client.lockable_decode_async_ref_mut().await)
+                                }
+                                _ => unreachable!(),
+                            }
+                        }
+                        let mut api_client_guard = api_client_guard.unwrap();
+                        let output_ok = Result::<_, ()>::Ok(
+                            crate::api::api::get_devices(&mut *api_client_guard).await,
+                        )?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
+fn wire__crate__api__api__get_following_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "get_following",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_client = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<
+                    FindMyFriendsClient<DefaultAnisetteProvider>,
+                >,
+            >>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, ()>(
+                    (move || async move {
+                        let mut api_client_guard = None;
+                        let decode_indices_ =
+                            flutter_rust_bridge::for_generated::lockable_compute_decode_order(
+                                vec![flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                    &api_client,
+                                    0,
+                                    true,
+                                )],
+                            );
+                        for i in decode_indices_ {
+                            match i {
+                                0 => {
+                                    api_client_guard =
+                                        Some(api_client.lockable_decode_async_ref_mut().await)
+                                }
+                                _ => unreachable!(),
+                            }
+                        }
+                        let mut api_client_guard = api_client_guard.unwrap();
+                        let output_ok = Result::<_, ()>::Ok(
+                            crate::api::api::get_following(&mut *api_client_guard).await,
+                        )?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
 fn wire__crate__api__api__get_handles_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
@@ -1361,6 +1483,118 @@ fn wire__crate__api__api__invalidate_id_cache_impl(
         },
     )
 }
+fn wire__crate__api__api__make_find_my_friends_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "make_find_my_friends",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_state = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Arc<PushState>>,
+            >>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, flutter_rust_bridge::for_generated::anyhow::Error>(
+                    (move || async move {
+                        let mut api_state_guard = None;
+                        let decode_indices_ =
+                            flutter_rust_bridge::for_generated::lockable_compute_decode_order(
+                                vec![flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                    &api_state, 0, false,
+                                )],
+                            );
+                        for i in decode_indices_ {
+                            match i {
+                                0 => {
+                                    api_state_guard =
+                                        Some(api_state.lockable_decode_async_ref().await)
+                                }
+                                _ => unreachable!(),
+                            }
+                        }
+                        let api_state_guard = api_state_guard.unwrap();
+                        let output_ok =
+                            crate::api::api::make_find_my_friends(&*api_state_guard).await?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
+fn wire__crate__api__api__make_find_my_phone_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "make_find_my_phone",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_state = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Arc<PushState>>,
+            >>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, flutter_rust_bridge::for_generated::anyhow::Error>(
+                    (move || async move {
+                        let mut api_state_guard = None;
+                        let decode_indices_ =
+                            flutter_rust_bridge::for_generated::lockable_compute_decode_order(
+                                vec![flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                    &api_state, 0, false,
+                                )],
+                            );
+                        for i in decode_indices_ {
+                            match i {
+                                0 => {
+                                    api_state_guard =
+                                        Some(api_state.lockable_decode_async_ref().await)
+                                }
+                                _ => unreachable!(),
+                            }
+                        }
+                        let api_state_guard = api_state_guard.unwrap();
+                        let output_ok =
+                            crate::api::api::make_find_my_phone(&*api_state_guard).await?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
 fn wire__crate__api__api__message_parts_raw_text_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
@@ -1618,6 +1852,160 @@ fn wire__crate__api__api__recv_wait_impl(
                         let output_ok = Result::<_, ()>::Ok(
                             crate::api::api::recv_wait(&*api_state_guard).await,
                         )?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
+fn wire__crate__api__api__refresh_devices_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "refresh_devices",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_state = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Arc<PushState>>,
+            >>::sse_decode(&mut deserializer);
+            let api_client = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<
+                    FindMyPhoneClient<DefaultAnisetteProvider>,
+                >,
+            >>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, flutter_rust_bridge::for_generated::anyhow::Error>(
+                    (move || async move {
+                        let mut api_state_guard = None;
+                        let mut api_client_guard = None;
+                        let decode_indices_ =
+                            flutter_rust_bridge::for_generated::lockable_compute_decode_order(
+                                vec![
+                                    flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                        &api_state, 0, false,
+                                    ),
+                                    flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                        &api_client,
+                                        1,
+                                        true,
+                                    ),
+                                ],
+                            );
+                        for i in decode_indices_ {
+                            match i {
+                                0 => {
+                                    api_state_guard =
+                                        Some(api_state.lockable_decode_async_ref().await)
+                                }
+                                1 => {
+                                    api_client_guard =
+                                        Some(api_client.lockable_decode_async_ref_mut().await)
+                                }
+                                _ => unreachable!(),
+                            }
+                        }
+                        let api_state_guard = api_state_guard.unwrap();
+                        let mut api_client_guard = api_client_guard.unwrap();
+                        let output_ok = crate::api::api::refresh_devices(
+                            &*api_state_guard,
+                            &mut *api_client_guard,
+                        )
+                        .await?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
+fn wire__crate__api__api__refresh_following_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "refresh_following",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_state = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Arc<PushState>>,
+            >>::sse_decode(&mut deserializer);
+            let api_client = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<
+                    FindMyFriendsClient<DefaultAnisetteProvider>,
+                >,
+            >>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, flutter_rust_bridge::for_generated::anyhow::Error>(
+                    (move || async move {
+                        let mut api_state_guard = None;
+                        let mut api_client_guard = None;
+                        let decode_indices_ =
+                            flutter_rust_bridge::for_generated::lockable_compute_decode_order(
+                                vec![
+                                    flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                        &api_state, 0, false,
+                                    ),
+                                    flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                        &api_client,
+                                        1,
+                                        true,
+                                    ),
+                                ],
+                            );
+                        for i in decode_indices_ {
+                            match i {
+                                0 => {
+                                    api_state_guard =
+                                        Some(api_state.lockable_decode_async_ref().await)
+                                }
+                                1 => {
+                                    api_client_guard =
+                                        Some(api_client.lockable_decode_async_ref_mut().await)
+                                }
+                                _ => unreachable!(),
+                            }
+                        }
+                        let api_state_guard = api_state_guard.unwrap();
+                        let mut api_client_guard = api_client_guard.unwrap();
+                        let output_ok = crate::api::api::refresh_following(
+                            &*api_state_guard,
+                            &mut *api_client_guard,
+                        )
+                        .await?;
                         Ok(output_ok)
                     })()
                     .await,
@@ -2621,6 +3009,17 @@ fn wire__crate__api__api__verify_2fa_sms_impl(
 #[allow(clippy::unnecessary_literal_unwrap)]
 const _: fn() = || {
     {
+        let Address = None::<crate::api::api::Address>.unwrap();
+        let _: Option<String> = Address.administrative_area;
+        let _: String = Address.country;
+        let _: String = Address.country_code;
+        let _: Option<Vec<String>> = Address.formatted_address_lines;
+        let _: Option<String> = Address.locality;
+        let _: Option<String> = Address.state_code;
+        let _: Option<String> = Address.street_address;
+        let _: Option<String> = Address.street_name;
+    }
+    {
         let Attachment = None::<crate::api::api::Attachment>.unwrap();
         let _: crate::api::api::AttachmentType = Attachment.a_type;
         let _: u64 = Attachment.part;
@@ -2697,6 +3096,65 @@ const _: fn() = || {
         let _: Option<crate::api::api::Balloon> = ExtensionApp.balloon;
     }
     {
+        let Follow = None::<crate::api::api::Follow>.unwrap();
+        let _: i64 = Follow.create_timestamp;
+        let _: i64 = Follow.expires;
+        let _: String = Follow.id;
+        let _: Vec<String> = Follow.invitation_accepted_handles;
+        let _: Vec<String> = Follow.invitation_from_handles;
+        let _: bool = Follow.is_from_messages;
+        let _: Option<String> = Follow.offer_id;
+        let _: bool = Follow.only_in_event;
+        let _: String = Follow.person_id_hash;
+        let _: bool = Follow.secure_locations_capable;
+        let _: bool = Follow.shallow_or_live_secure_locations_capable;
+        let _: String = Follow.source;
+        let _: bool = Follow.tk_permission;
+        let _: i64 = Follow.update_timestamp;
+        let _: Option<bool> = Follow.fallback_to_legacy_allowed;
+        let _: Option<bool> = Follow.opted_not_to_share;
+        let _: Option<crate::api::api::Location> = Follow.last_location;
+        let _: bool = Follow.locate_in_progress;
+    }
+    {
+        let FoundDevice = None::<crate::api::api::FoundDevice>.unwrap();
+        let _: Option<String> = FoundDevice.device_model;
+        let _: Option<bool> = FoundDevice.low_power_mode;
+        let _: Option<i64> = FoundDevice.passcode_length;
+        let _: Option<String> = FoundDevice.id;
+        let _: Option<String> = FoundDevice.battery_status;
+        let _: Option<bool> = FoundDevice.lost_mode_capable;
+        let _: Option<f64> = FoundDevice.battery_level;
+        let _: Option<bool> = FoundDevice.location_enabled;
+        let _: Option<bool> = FoundDevice.is_considered_accessory;
+        let _: Option<crate::api::api::Location> = FoundDevice.location;
+        let _: Option<String> = FoundDevice.model_display_name;
+        let _: Option<String> = FoundDevice.device_color;
+        let _: Option<bool> = FoundDevice.activation_locked;
+        let _: Option<i64> = FoundDevice.rm2_state;
+        let _: Option<bool> = FoundDevice.loc_found_enabled;
+        let _: Option<bool> = FoundDevice.nwd;
+        let _: Option<String> = FoundDevice.device_status;
+        let _: Option<bool> = FoundDevice.fmly_share;
+        let _: std::collections::HashMap<String, bool> = FoundDevice.features;
+        let _: Option<bool> = FoundDevice.this_device;
+        let _: Option<bool> = FoundDevice.lost_mode_enabled;
+        let _: Option<String> = FoundDevice.device_display_name;
+        let _: Option<String> = FoundDevice.name;
+        let _: Option<bool> = FoundDevice.can_wipe_after_lock;
+        let _: Option<bool> = FoundDevice.is_mac;
+        let _: Option<String> = FoundDevice.raw_device_model;
+        let _: Option<String> = FoundDevice.ba_uuid;
+        let _: Option<String> = FoundDevice.device_discovery_id;
+        let _: Option<bool> = FoundDevice.scd;
+        let _: Option<bool> = FoundDevice.location_capable;
+        let _: Option<bool> = FoundDevice.wipe_in_progress;
+        let _: Option<bool> = FoundDevice.dark_wake;
+        let _: Option<bool> = FoundDevice.device_with_you;
+        let _: Option<i64> = FoundDevice.max_msg_char;
+        let _: Option<String> = FoundDevice.device_class;
+    }
+    {
         let IconChangeMessage = None::<crate::api::api::IconChangeMessage>.unwrap();
         let _: Option<crate::api::api::MMCSFile> = IconChangeMessage.file;
         let _: u64 = IconChangeMessage.group_version;
@@ -2711,6 +3169,24 @@ const _: fn() = || {
         let LinkMeta = None::<crate::api::api::LinkMeta>.unwrap();
         let _: crate::api::api::LPLinkMetadata = LinkMeta.data;
         let _: Vec<Vec<u8>> = LinkMeta.attachments;
+    }
+    {
+        let Location = None::<crate::api::api::Location>.unwrap();
+        let _: Option<crate::api::api::Address> = Location.address;
+        let _: f64 = Location.altitude;
+        let _: i64 = Location.floor_level;
+        let _: f64 = Location.horizontal_accuracy;
+        let _: bool = Location.is_inaccurate;
+        let _: f64 = Location.latitude;
+        let _: Option<String> = Location.location_id;
+        let _: Option<i64> = Location.location_timestamp;
+        let _: f64 = Location.longitude;
+        let _: i64 = Location.secure_location_ts;
+        let _: i64 = Location.timestamp;
+        let _: f64 = Location.vertical_accuracy;
+        let _: Option<String> = Location.position_type;
+        let _: Option<bool> = Location.is_old;
+        let _: Option<bool> = Location.location_finished;
     }
     match None::<crate::api::api::LoginState>.unwrap() {
         crate::api::api::LoginState::LoggedIn => {}
@@ -2970,6 +3446,16 @@ flutter_rust_bridge::frb_generated_moi_arc_impl_value!(
     flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Arc<PushState>>
 );
 flutter_rust_bridge::frb_generated_moi_arc_impl_value!(
+    flutter_rust_bridge::for_generated::RustAutoOpaqueInner<
+        FindMyFriendsClient<DefaultAnisetteProvider>,
+    >
+);
+flutter_rust_bridge::frb_generated_moi_arc_impl_value!(
+    flutter_rust_bridge::for_generated::RustAutoOpaqueInner<
+        FindMyPhoneClient<DefaultAnisetteProvider>,
+    >
+);
+flutter_rust_bridge::frb_generated_moi_arc_impl_value!(
     flutter_rust_bridge::for_generated::RustAutoOpaqueInner<IDSUser>
 );
 flutter_rust_bridge::frb_generated_moi_arc_impl_value!(
@@ -3000,6 +3486,30 @@ impl SseDecode for Arc<PushState> {
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut inner = <RustOpaqueMoi<
             flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Arc<PushState>>,
+        >>::sse_decode(deserializer);
+        return flutter_rust_bridge::for_generated::rust_auto_opaque_decode_owned(inner);
+    }
+}
+
+impl SseDecode for FindMyFriendsClient<DefaultAnisetteProvider> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <RustOpaqueMoi<
+            flutter_rust_bridge::for_generated::RustAutoOpaqueInner<
+                FindMyFriendsClient<DefaultAnisetteProvider>,
+            >,
+        >>::sse_decode(deserializer);
+        return flutter_rust_bridge::for_generated::rust_auto_opaque_decode_owned(inner);
+    }
+}
+
+impl SseDecode for FindMyPhoneClient<DefaultAnisetteProvider> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <RustOpaqueMoi<
+            flutter_rust_bridge::for_generated::RustAutoOpaqueInner<
+                FindMyPhoneClient<DefaultAnisetteProvider>,
+            >,
         >>::sse_decode(deserializer);
         return flutter_rust_bridge::for_generated::rust_auto_opaque_decode_owned(inner);
     }
@@ -3055,8 +3565,44 @@ impl SseDecode for VerifyBody {
     }
 }
 
+impl SseDecode for std::collections::HashMap<String, bool> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <Vec<(String, bool)>>::sse_decode(deserializer);
+        return inner.into_iter().collect();
+    }
+}
+
 impl SseDecode
     for RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Arc<PushState>>>
+{
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <usize>::sse_decode(deserializer);
+        return decode_rust_opaque_moi(inner);
+    }
+}
+
+impl SseDecode
+    for RustOpaqueMoi<
+        flutter_rust_bridge::for_generated::RustAutoOpaqueInner<
+            FindMyFriendsClient<DefaultAnisetteProvider>,
+        >,
+    >
+{
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <usize>::sse_decode(deserializer);
+        return decode_rust_opaque_moi(inner);
+    }
+}
+
+impl SseDecode
+    for RustOpaqueMoi<
+        flutter_rust_bridge::for_generated::RustAutoOpaqueInner<
+            FindMyPhoneClient<DefaultAnisetteProvider>,
+        >,
+    >
 {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -3145,6 +3691,30 @@ impl SseDecode for String {
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut inner = <Vec<u8>>::sse_decode(deserializer);
         return String::from_utf8(inner).unwrap();
+    }
+}
+
+impl SseDecode for crate::api::api::Address {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_administrativeArea = <Option<String>>::sse_decode(deserializer);
+        let mut var_country = <String>::sse_decode(deserializer);
+        let mut var_countryCode = <String>::sse_decode(deserializer);
+        let mut var_formattedAddressLines = <Option<Vec<String>>>::sse_decode(deserializer);
+        let mut var_locality = <Option<String>>::sse_decode(deserializer);
+        let mut var_stateCode = <Option<String>>::sse_decode(deserializer);
+        let mut var_streetAddress = <Option<String>>::sse_decode(deserializer);
+        let mut var_streetName = <Option<String>>::sse_decode(deserializer);
+        return crate::api::api::Address {
+            administrative_area: var_administrativeArea,
+            country: var_country,
+            country_code: var_countryCode,
+            formatted_address_lines: var_formattedAddressLines,
+            locality: var_locality,
+            state_code: var_stateCode,
+            street_address: var_streetAddress,
+            street_name: var_streetName,
+        };
     }
 }
 
@@ -3340,6 +3910,128 @@ impl SseDecode for f64 {
     }
 }
 
+impl SseDecode for crate::api::api::Follow {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_createTimestamp = <i64>::sse_decode(deserializer);
+        let mut var_expires = <i64>::sse_decode(deserializer);
+        let mut var_id = <String>::sse_decode(deserializer);
+        let mut var_invitationAcceptedHandles = <Vec<String>>::sse_decode(deserializer);
+        let mut var_invitationFromHandles = <Vec<String>>::sse_decode(deserializer);
+        let mut var_isFromMessages = <bool>::sse_decode(deserializer);
+        let mut var_offerId = <Option<String>>::sse_decode(deserializer);
+        let mut var_onlyInEvent = <bool>::sse_decode(deserializer);
+        let mut var_personIdHash = <String>::sse_decode(deserializer);
+        let mut var_secureLocationsCapable = <bool>::sse_decode(deserializer);
+        let mut var_shallowOrLiveSecureLocationsCapable = <bool>::sse_decode(deserializer);
+        let mut var_source = <String>::sse_decode(deserializer);
+        let mut var_tkPermission = <bool>::sse_decode(deserializer);
+        let mut var_updateTimestamp = <i64>::sse_decode(deserializer);
+        let mut var_fallbackToLegacyAllowed = <Option<bool>>::sse_decode(deserializer);
+        let mut var_optedNotToShare = <Option<bool>>::sse_decode(deserializer);
+        let mut var_lastLocation = <Option<crate::api::api::Location>>::sse_decode(deserializer);
+        let mut var_locateInProgress = <bool>::sse_decode(deserializer);
+        return crate::api::api::Follow {
+            create_timestamp: var_createTimestamp,
+            expires: var_expires,
+            id: var_id,
+            invitation_accepted_handles: var_invitationAcceptedHandles,
+            invitation_from_handles: var_invitationFromHandles,
+            is_from_messages: var_isFromMessages,
+            offer_id: var_offerId,
+            only_in_event: var_onlyInEvent,
+            person_id_hash: var_personIdHash,
+            secure_locations_capable: var_secureLocationsCapable,
+            shallow_or_live_secure_locations_capable: var_shallowOrLiveSecureLocationsCapable,
+            source: var_source,
+            tk_permission: var_tkPermission,
+            update_timestamp: var_updateTimestamp,
+            fallback_to_legacy_allowed: var_fallbackToLegacyAllowed,
+            opted_not_to_share: var_optedNotToShare,
+            last_location: var_lastLocation,
+            locate_in_progress: var_locateInProgress,
+        };
+    }
+}
+
+impl SseDecode for crate::api::api::FoundDevice {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_deviceModel = <Option<String>>::sse_decode(deserializer);
+        let mut var_lowPowerMode = <Option<bool>>::sse_decode(deserializer);
+        let mut var_passcodeLength = <Option<i64>>::sse_decode(deserializer);
+        let mut var_id = <Option<String>>::sse_decode(deserializer);
+        let mut var_batteryStatus = <Option<String>>::sse_decode(deserializer);
+        let mut var_lostModeCapable = <Option<bool>>::sse_decode(deserializer);
+        let mut var_batteryLevel = <Option<f64>>::sse_decode(deserializer);
+        let mut var_locationEnabled = <Option<bool>>::sse_decode(deserializer);
+        let mut var_isConsideredAccessory = <Option<bool>>::sse_decode(deserializer);
+        let mut var_location = <Option<crate::api::api::Location>>::sse_decode(deserializer);
+        let mut var_modelDisplayName = <Option<String>>::sse_decode(deserializer);
+        let mut var_deviceColor = <Option<String>>::sse_decode(deserializer);
+        let mut var_activationLocked = <Option<bool>>::sse_decode(deserializer);
+        let mut var_rm2State = <Option<i64>>::sse_decode(deserializer);
+        let mut var_locFoundEnabled = <Option<bool>>::sse_decode(deserializer);
+        let mut var_nwd = <Option<bool>>::sse_decode(deserializer);
+        let mut var_deviceStatus = <Option<String>>::sse_decode(deserializer);
+        let mut var_fmlyShare = <Option<bool>>::sse_decode(deserializer);
+        let mut var_features = <std::collections::HashMap<String, bool>>::sse_decode(deserializer);
+        let mut var_thisDevice = <Option<bool>>::sse_decode(deserializer);
+        let mut var_lostModeEnabled = <Option<bool>>::sse_decode(deserializer);
+        let mut var_deviceDisplayName = <Option<String>>::sse_decode(deserializer);
+        let mut var_name = <Option<String>>::sse_decode(deserializer);
+        let mut var_canWipeAfterLock = <Option<bool>>::sse_decode(deserializer);
+        let mut var_isMac = <Option<bool>>::sse_decode(deserializer);
+        let mut var_rawDeviceModel = <Option<String>>::sse_decode(deserializer);
+        let mut var_baUuid = <Option<String>>::sse_decode(deserializer);
+        let mut var_deviceDiscoveryId = <Option<String>>::sse_decode(deserializer);
+        let mut var_scd = <Option<bool>>::sse_decode(deserializer);
+        let mut var_locationCapable = <Option<bool>>::sse_decode(deserializer);
+        let mut var_wipeInProgress = <Option<bool>>::sse_decode(deserializer);
+        let mut var_darkWake = <Option<bool>>::sse_decode(deserializer);
+        let mut var_deviceWithYou = <Option<bool>>::sse_decode(deserializer);
+        let mut var_maxMsgChar = <Option<i64>>::sse_decode(deserializer);
+        let mut var_deviceClass = <Option<String>>::sse_decode(deserializer);
+        return crate::api::api::FoundDevice {
+            device_model: var_deviceModel,
+            low_power_mode: var_lowPowerMode,
+            passcode_length: var_passcodeLength,
+            id: var_id,
+            battery_status: var_batteryStatus,
+            lost_mode_capable: var_lostModeCapable,
+            battery_level: var_batteryLevel,
+            location_enabled: var_locationEnabled,
+            is_considered_accessory: var_isConsideredAccessory,
+            location: var_location,
+            model_display_name: var_modelDisplayName,
+            device_color: var_deviceColor,
+            activation_locked: var_activationLocked,
+            rm2_state: var_rm2State,
+            loc_found_enabled: var_locFoundEnabled,
+            nwd: var_nwd,
+            device_status: var_deviceStatus,
+            fmly_share: var_fmlyShare,
+            features: var_features,
+            this_device: var_thisDevice,
+            lost_mode_enabled: var_lostModeEnabled,
+            device_display_name: var_deviceDisplayName,
+            name: var_name,
+            can_wipe_after_lock: var_canWipeAfterLock,
+            is_mac: var_isMac,
+            raw_device_model: var_rawDeviceModel,
+            ba_uuid: var_baUuid,
+            device_discovery_id: var_deviceDiscoveryId,
+            scd: var_scd,
+            location_capable: var_locationCapable,
+            wipe_in_progress: var_wipeInProgress,
+            dark_wake: var_darkWake,
+            device_with_you: var_deviceWithYou,
+            max_msg_char: var_maxMsgChar,
+            device_class: var_deviceClass,
+        };
+    }
+}
+
 impl SseDecode for crate::api::api::HwExtra {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -3434,6 +4126,30 @@ impl SseDecode for Vec<String> {
     }
 }
 
+impl SseDecode for Vec<crate::api::api::Follow> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = vec![];
+        for idx_ in 0..len_ {
+            ans_.push(<crate::api::api::Follow>::sse_decode(deserializer));
+        }
+        return ans_;
+    }
+}
+
+impl SseDecode for Vec<crate::api::api::FoundDevice> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = vec![];
+        for idx_ in 0..len_ {
+            ans_.push(<crate::api::api::FoundDevice>::sse_decode(deserializer));
+        }
+        return ans_;
+    }
+}
+
 impl SseDecode for Vec<crate::api::api::IndexedMessagePart> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -3498,6 +4214,18 @@ impl SseDecode for Vec<crate::api::api::PrivateDeviceInfo> {
     }
 }
 
+impl SseDecode for Vec<(String, bool)> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = vec![];
+        for idx_ in 0..len_ {
+            ans_.push(<(String, bool)>::sse_decode(deserializer));
+        }
+        return ans_;
+    }
+}
+
 impl SseDecode for Vec<crate::api::api::TrustedPhoneNumber> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -3509,6 +4237,44 @@ impl SseDecode for Vec<crate::api::api::TrustedPhoneNumber> {
             ));
         }
         return ans_;
+    }
+}
+
+impl SseDecode for crate::api::api::Location {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_address = <Option<crate::api::api::Address>>::sse_decode(deserializer);
+        let mut var_altitude = <f64>::sse_decode(deserializer);
+        let mut var_floorLevel = <i64>::sse_decode(deserializer);
+        let mut var_horizontalAccuracy = <f64>::sse_decode(deserializer);
+        let mut var_isInaccurate = <bool>::sse_decode(deserializer);
+        let mut var_latitude = <f64>::sse_decode(deserializer);
+        let mut var_locationId = <Option<String>>::sse_decode(deserializer);
+        let mut var_locationTimestamp = <Option<i64>>::sse_decode(deserializer);
+        let mut var_longitude = <f64>::sse_decode(deserializer);
+        let mut var_secureLocationTs = <i64>::sse_decode(deserializer);
+        let mut var_timestamp = <i64>::sse_decode(deserializer);
+        let mut var_verticalAccuracy = <f64>::sse_decode(deserializer);
+        let mut var_positionType = <Option<String>>::sse_decode(deserializer);
+        let mut var_isOld = <Option<bool>>::sse_decode(deserializer);
+        let mut var_locationFinished = <Option<bool>>::sse_decode(deserializer);
+        return crate::api::api::Location {
+            address: var_address,
+            altitude: var_altitude,
+            floor_level: var_floorLevel,
+            horizontal_accuracy: var_horizontalAccuracy,
+            is_inaccurate: var_isInaccurate,
+            latitude: var_latitude,
+            location_id: var_locationId,
+            location_timestamp: var_locationTimestamp,
+            longitude: var_longitude,
+            secure_location_ts: var_secureLocationTs,
+            timestamp: var_timestamp,
+            vertical_accuracy: var_verticalAccuracy,
+            position_type: var_positionType,
+            is_old: var_isOld,
+            location_finished: var_locationFinished,
+        };
     }
 }
 
@@ -3960,6 +4726,17 @@ impl SseDecode for Option<NSArray<LPImageMetadata>> {
     }
 }
 
+impl SseDecode for Option<crate::api::api::Address> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<crate::api::api::Address>::sse_decode(deserializer));
+        } else {
+            return None;
+        }
+    }
+}
+
 impl SseDecode for Option<crate::api::api::Attachment> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -4017,11 +4794,44 @@ impl SseDecode for Option<crate::api::api::ExtensionApp> {
     }
 }
 
+impl SseDecode for Option<f64> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<f64>::sse_decode(deserializer));
+        } else {
+            return None;
+        }
+    }
+}
+
+impl SseDecode for Option<i64> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<i64>::sse_decode(deserializer));
+        } else {
+            return None;
+        }
+    }
+}
+
 impl SseDecode for Option<crate::api::api::LinkMeta> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         if (<bool>::sse_decode(deserializer)) {
             return Some(<crate::api::api::LinkMeta>::sse_decode(deserializer));
+        } else {
+            return None;
+        }
+    }
+}
+
+impl SseDecode for Option<crate::api::api::Location> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<crate::api::api::Location>::sse_decode(deserializer));
         } else {
             return None;
         }
@@ -4134,6 +4944,17 @@ impl SseDecode for Option<crate::api::api::SupportAlert> {
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         if (<bool>::sse_decode(deserializer)) {
             return Some(<crate::api::api::SupportAlert>::sse_decode(deserializer));
+        } else {
+            return None;
+        }
+    }
+}
+
+impl SseDecode for Option<Vec<String>> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<Vec<String>>::sse_decode(deserializer));
         } else {
             return None;
         }
@@ -4353,6 +5174,15 @@ impl SseDecode for (crate::api::api::LoginState, Option<IDSUser>) {
     }
 }
 
+impl SseDecode for (String, bool) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_field0 = <String>::sse_decode(deserializer);
+        let mut var_field1 = <bool>::sse_decode(deserializer);
+        return (var_field0, var_field1);
+    }
+}
+
 impl SseDecode for crate::api::api::RegisterState {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -4560,39 +5390,45 @@ fn pde_ffi_dispatcher_primary_impl(
         16 => wire__crate__api__api__get_config_state_impl(port, ptr, rust_vec_len, data_len),
         17 => wire__crate__api__api__get_device_info_impl(port, ptr, rust_vec_len, data_len),
         18 => wire__crate__api__api__get_device_info_state_impl(port, ptr, rust_vec_len, data_len),
-        19 => wire__crate__api__api__get_handles_impl(port, ptr, rust_vec_len, data_len),
-        20 => wire__crate__api__api__get_phase_impl(port, ptr, rust_vec_len, data_len),
-        21 => wire__crate__api__api__get_regstate_impl(port, ptr, rust_vec_len, data_len),
-        22 => wire__crate__api__api__get_sms_targets_impl(port, ptr, rust_vec_len, data_len),
-        23 => wire__crate__api__api__get_token_impl(port, ptr, rust_vec_len, data_len),
-        24 => wire__crate__api__api__get_user_name_impl(port, ptr, rust_vec_len, data_len),
-        25 => wire__crate__api__api__invalidate_id_cache_impl(port, ptr, rust_vec_len, data_len),
-        26 => wire__crate__api__api__message_parts_raw_text_impl(port, ptr, rust_vec_len, data_len),
-        27 => {
+        19 => wire__crate__api__api__get_devices_impl(port, ptr, rust_vec_len, data_len),
+        20 => wire__crate__api__api__get_following_impl(port, ptr, rust_vec_len, data_len),
+        21 => wire__crate__api__api__get_handles_impl(port, ptr, rust_vec_len, data_len),
+        22 => wire__crate__api__api__get_phase_impl(port, ptr, rust_vec_len, data_len),
+        23 => wire__crate__api__api__get_regstate_impl(port, ptr, rust_vec_len, data_len),
+        24 => wire__crate__api__api__get_sms_targets_impl(port, ptr, rust_vec_len, data_len),
+        25 => wire__crate__api__api__get_token_impl(port, ptr, rust_vec_len, data_len),
+        26 => wire__crate__api__api__get_user_name_impl(port, ptr, rust_vec_len, data_len),
+        27 => wire__crate__api__api__invalidate_id_cache_impl(port, ptr, rust_vec_len, data_len),
+        28 => wire__crate__api__api__make_find_my_friends_impl(port, ptr, rust_vec_len, data_len),
+        29 => wire__crate__api__api__make_find_my_phone_impl(port, ptr, rust_vec_len, data_len),
+        30 => wire__crate__api__api__message_parts_raw_text_impl(port, ptr, rust_vec_len, data_len),
+        31 => {
             wire__crate__api__api__my_async_runtime_default_impl(port, ptr, rust_vec_len, data_len)
         }
-        28 => wire__crate__api__api__new_msg_impl(port, ptr, rust_vec_len, data_len),
-        29 => wire__crate__api__api__new_push_state_impl(port, ptr, rust_vec_len, data_len),
-        30 => wire__crate__api__api__ptr_to_dart_impl(port, ptr, rust_vec_len, data_len),
-        31 => wire__crate__api__api__recv_wait_impl(port, ptr, rust_vec_len, data_len),
-        32 => wire__crate__api__api__refresh_token_impl(port, ptr, rust_vec_len, data_len),
-        33 => wire__crate__api__api__register_ids_impl(port, ptr, rust_vec_len, data_len),
-        34 => wire__crate__api__api__reset_state_impl(port, ptr, rust_vec_len, data_len),
-        35 => wire__crate__api__api__restore_attachment_impl(port, ptr, rust_vec_len, data_len),
-        36 => wire__crate__api__api__restore_user_impl(port, ptr, rust_vec_len, data_len),
-        37 => wire__crate__api__api__save_attachment_impl(port, ptr, rust_vec_len, data_len),
-        38 => wire__crate__api__api__save_user_impl(port, ptr, rust_vec_len, data_len),
-        39 => wire__crate__api__api__send_impl(port, ptr, rust_vec_len, data_len),
-        40 => wire__crate__api__api__send_2fa_sms_impl(port, ptr, rust_vec_len, data_len),
-        41 => wire__crate__api__api__send_2fa_to_devices_impl(port, ptr, rust_vec_len, data_len),
-        42 => wire__crate__api__api__service_from_ptr_impl(port, ptr, rust_vec_len, data_len),
-        43 => wire__crate__api__api__try_auth_impl(port, ptr, rust_vec_len, data_len),
-        44 => wire__crate__api__api__upload_attachment_impl(port, ptr, rust_vec_len, data_len),
-        45 => wire__crate__api__api__upload_mmcs_impl(port, ptr, rust_vec_len, data_len),
-        46 => wire__crate__api__api__validate_cert_impl(port, ptr, rust_vec_len, data_len),
-        47 => wire__crate__api__api__validate_targets_impl(port, ptr, rust_vec_len, data_len),
-        48 => wire__crate__api__api__verify_2fa_impl(port, ptr, rust_vec_len, data_len),
-        49 => wire__crate__api__api__verify_2fa_sms_impl(port, ptr, rust_vec_len, data_len),
+        32 => wire__crate__api__api__new_msg_impl(port, ptr, rust_vec_len, data_len),
+        33 => wire__crate__api__api__new_push_state_impl(port, ptr, rust_vec_len, data_len),
+        34 => wire__crate__api__api__ptr_to_dart_impl(port, ptr, rust_vec_len, data_len),
+        35 => wire__crate__api__api__recv_wait_impl(port, ptr, rust_vec_len, data_len),
+        36 => wire__crate__api__api__refresh_devices_impl(port, ptr, rust_vec_len, data_len),
+        37 => wire__crate__api__api__refresh_following_impl(port, ptr, rust_vec_len, data_len),
+        38 => wire__crate__api__api__refresh_token_impl(port, ptr, rust_vec_len, data_len),
+        39 => wire__crate__api__api__register_ids_impl(port, ptr, rust_vec_len, data_len),
+        40 => wire__crate__api__api__reset_state_impl(port, ptr, rust_vec_len, data_len),
+        41 => wire__crate__api__api__restore_attachment_impl(port, ptr, rust_vec_len, data_len),
+        42 => wire__crate__api__api__restore_user_impl(port, ptr, rust_vec_len, data_len),
+        43 => wire__crate__api__api__save_attachment_impl(port, ptr, rust_vec_len, data_len),
+        44 => wire__crate__api__api__save_user_impl(port, ptr, rust_vec_len, data_len),
+        45 => wire__crate__api__api__send_impl(port, ptr, rust_vec_len, data_len),
+        46 => wire__crate__api__api__send_2fa_sms_impl(port, ptr, rust_vec_len, data_len),
+        47 => wire__crate__api__api__send_2fa_to_devices_impl(port, ptr, rust_vec_len, data_len),
+        48 => wire__crate__api__api__service_from_ptr_impl(port, ptr, rust_vec_len, data_len),
+        49 => wire__crate__api__api__try_auth_impl(port, ptr, rust_vec_len, data_len),
+        50 => wire__crate__api__api__upload_attachment_impl(port, ptr, rust_vec_len, data_len),
+        51 => wire__crate__api__api__upload_mmcs_impl(port, ptr, rust_vec_len, data_len),
+        52 => wire__crate__api__api__validate_cert_impl(port, ptr, rust_vec_len, data_len),
+        53 => wire__crate__api__api__validate_targets_impl(port, ptr, rust_vec_len, data_len),
+        54 => wire__crate__api__api__verify_2fa_impl(port, ptr, rust_vec_len, data_len),
+        55 => wire__crate__api__api__verify_2fa_sms_impl(port, ptr, rust_vec_len, data_len),
         _ => unreachable!(),
     }
 }
@@ -4622,6 +5458,46 @@ impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive for FrbWrapper<
 
 impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<Arc<PushState>>> for Arc<PushState> {
     fn into_into_dart(self) -> FrbWrapper<Arc<PushState>> {
+        self.into()
+    }
+}
+
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<FindMyFriendsClient<DefaultAnisetteProvider>> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        flutter_rust_bridge::for_generated::rust_auto_opaque_encode::<_, MoiArc<_>>(self.0)
+            .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<FindMyFriendsClient<DefaultAnisetteProvider>>
+{
+}
+
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<FindMyFriendsClient<DefaultAnisetteProvider>>>
+    for FindMyFriendsClient<DefaultAnisetteProvider>
+{
+    fn into_into_dart(self) -> FrbWrapper<FindMyFriendsClient<DefaultAnisetteProvider>> {
+        self.into()
+    }
+}
+
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<FindMyPhoneClient<DefaultAnisetteProvider>> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        flutter_rust_bridge::for_generated::rust_auto_opaque_encode::<_, MoiArc<_>>(self.0)
+            .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<FindMyPhoneClient<DefaultAnisetteProvider>>
+{
+}
+
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<FindMyPhoneClient<DefaultAnisetteProvider>>>
+    for FindMyPhoneClient<DefaultAnisetteProvider>
+{
+    fn into_into_dart(self) -> FrbWrapper<FindMyPhoneClient<DefaultAnisetteProvider>> {
         self.into()
     }
 }
@@ -4711,6 +5587,33 @@ impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<VerifyBody>> for VerifyBody {
     }
 }
 
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<crate::api::api::Address> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.0.administrative_area.into_into_dart().into_dart(),
+            self.0.country.into_into_dart().into_dart(),
+            self.0.country_code.into_into_dart().into_dart(),
+            self.0.formatted_address_lines.into_into_dart().into_dart(),
+            self.0.locality.into_into_dart().into_dart(),
+            self.0.state_code.into_into_dart().into_dart(),
+            self.0.street_address.into_into_dart().into_dart(),
+            self.0.street_name.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<crate::api::api::Address>
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<crate::api::api::Address>>
+    for crate::api::api::Address
+{
+    fn into_into_dart(self) -> FrbWrapper<crate::api::api::Address> {
+        self.into()
+    }
+}
 // Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart for FrbWrapper<crate::api::api::Attachment> {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
@@ -4960,6 +5863,106 @@ impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<crate::api::api::ExtensionApp>
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<crate::api::api::Follow> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.0.create_timestamp.into_into_dart().into_dart(),
+            self.0.expires.into_into_dart().into_dart(),
+            self.0.id.into_into_dart().into_dart(),
+            self.0
+                .invitation_accepted_handles
+                .into_into_dart()
+                .into_dart(),
+            self.0.invitation_from_handles.into_into_dart().into_dart(),
+            self.0.is_from_messages.into_into_dart().into_dart(),
+            self.0.offer_id.into_into_dart().into_dart(),
+            self.0.only_in_event.into_into_dart().into_dart(),
+            self.0.person_id_hash.into_into_dart().into_dart(),
+            self.0.secure_locations_capable.into_into_dart().into_dart(),
+            self.0
+                .shallow_or_live_secure_locations_capable
+                .into_into_dart()
+                .into_dart(),
+            self.0.source.into_into_dart().into_dart(),
+            self.0.tk_permission.into_into_dart().into_dart(),
+            self.0.update_timestamp.into_into_dart().into_dart(),
+            self.0
+                .fallback_to_legacy_allowed
+                .into_into_dart()
+                .into_dart(),
+            self.0.opted_not_to_share.into_into_dart().into_dart(),
+            self.0.last_location.into_into_dart().into_dart(),
+            self.0.locate_in_progress.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<crate::api::api::Follow>
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<crate::api::api::Follow>>
+    for crate::api::api::Follow
+{
+    fn into_into_dart(self) -> FrbWrapper<crate::api::api::Follow> {
+        self.into()
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<crate::api::api::FoundDevice> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.0.device_model.into_into_dart().into_dart(),
+            self.0.low_power_mode.into_into_dart().into_dart(),
+            self.0.passcode_length.into_into_dart().into_dart(),
+            self.0.id.into_into_dart().into_dart(),
+            self.0.battery_status.into_into_dart().into_dart(),
+            self.0.lost_mode_capable.into_into_dart().into_dart(),
+            self.0.battery_level.into_into_dart().into_dart(),
+            self.0.location_enabled.into_into_dart().into_dart(),
+            self.0.is_considered_accessory.into_into_dart().into_dart(),
+            self.0.location.into_into_dart().into_dart(),
+            self.0.model_display_name.into_into_dart().into_dart(),
+            self.0.device_color.into_into_dart().into_dart(),
+            self.0.activation_locked.into_into_dart().into_dart(),
+            self.0.rm2_state.into_into_dart().into_dart(),
+            self.0.loc_found_enabled.into_into_dart().into_dart(),
+            self.0.nwd.into_into_dart().into_dart(),
+            self.0.device_status.into_into_dart().into_dart(),
+            self.0.fmly_share.into_into_dart().into_dart(),
+            self.0.features.into_into_dart().into_dart(),
+            self.0.this_device.into_into_dart().into_dart(),
+            self.0.lost_mode_enabled.into_into_dart().into_dart(),
+            self.0.device_display_name.into_into_dart().into_dart(),
+            self.0.name.into_into_dart().into_dart(),
+            self.0.can_wipe_after_lock.into_into_dart().into_dart(),
+            self.0.is_mac.into_into_dart().into_dart(),
+            self.0.raw_device_model.into_into_dart().into_dart(),
+            self.0.ba_uuid.into_into_dart().into_dart(),
+            self.0.device_discovery_id.into_into_dart().into_dart(),
+            self.0.scd.into_into_dart().into_dart(),
+            self.0.location_capable.into_into_dart().into_dart(),
+            self.0.wipe_in_progress.into_into_dart().into_dart(),
+            self.0.dark_wake.into_into_dart().into_dart(),
+            self.0.device_with_you.into_into_dart().into_dart(),
+            self.0.max_msg_char.into_into_dart().into_dart(),
+            self.0.device_class.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<crate::api::api::FoundDevice>
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<crate::api::api::FoundDevice>>
+    for crate::api::api::FoundDevice
+{
+    fn into_into_dart(self) -> FrbWrapper<crate::api::api::FoundDevice> {
+        self.into()
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart for crate::api::api::HwExtra {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
@@ -5039,6 +6042,40 @@ impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<crate::api::api::LinkMeta>>
     for crate::api::api::LinkMeta
 {
     fn into_into_dart(self) -> FrbWrapper<crate::api::api::LinkMeta> {
+        self.into()
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<crate::api::api::Location> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.0.address.into_into_dart().into_dart(),
+            self.0.altitude.into_into_dart().into_dart(),
+            self.0.floor_level.into_into_dart().into_dart(),
+            self.0.horizontal_accuracy.into_into_dart().into_dart(),
+            self.0.is_inaccurate.into_into_dart().into_dart(),
+            self.0.latitude.into_into_dart().into_dart(),
+            self.0.location_id.into_into_dart().into_dart(),
+            self.0.location_timestamp.into_into_dart().into_dart(),
+            self.0.longitude.into_into_dart().into_dart(),
+            self.0.secure_location_ts.into_into_dart().into_dart(),
+            self.0.timestamp.into_into_dart().into_dart(),
+            self.0.vertical_accuracy.into_into_dart().into_dart(),
+            self.0.position_type.into_into_dart().into_dart(),
+            self.0.is_old.into_into_dart().into_dart(),
+            self.0.location_finished.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<crate::api::api::Location>
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<crate::api::api::Location>>
+    for crate::api::api::Location
+{
+    fn into_into_dart(self) -> FrbWrapper<crate::api::api::Location> {
         self.into()
     }
 }
@@ -5931,6 +6968,34 @@ impl SseEncode for Arc<PushState> {
     }
 }
 
+impl SseEncode for FindMyFriendsClient<DefaultAnisetteProvider> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <RustOpaqueMoi<
+            flutter_rust_bridge::for_generated::RustAutoOpaqueInner<
+                FindMyFriendsClient<DefaultAnisetteProvider>,
+            >,
+        >>::sse_encode(
+            flutter_rust_bridge::for_generated::rust_auto_opaque_encode::<_, MoiArc<_>>(self),
+            serializer,
+        );
+    }
+}
+
+impl SseEncode for FindMyPhoneClient<DefaultAnisetteProvider> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <RustOpaqueMoi<
+            flutter_rust_bridge::for_generated::RustAutoOpaqueInner<
+                FindMyPhoneClient<DefaultAnisetteProvider>,
+            >,
+        >>::sse_encode(
+            flutter_rust_bridge::for_generated::rust_auto_opaque_encode::<_, MoiArc<_>>(self),
+            serializer,
+        );
+    }
+}
+
 impl SseEncode for IDSUser {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -5976,8 +7041,45 @@ impl SseEncode for VerifyBody {
     }
 }
 
+impl SseEncode for std::collections::HashMap<String, bool> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <Vec<(String, bool)>>::sse_encode(self.into_iter().collect(), serializer);
+    }
+}
+
 impl SseEncode
     for RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Arc<PushState>>>
+{
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        let (ptr, size) = self.sse_encode_raw();
+        <usize>::sse_encode(ptr, serializer);
+        <i32>::sse_encode(size, serializer);
+    }
+}
+
+impl SseEncode
+    for RustOpaqueMoi<
+        flutter_rust_bridge::for_generated::RustAutoOpaqueInner<
+            FindMyFriendsClient<DefaultAnisetteProvider>,
+        >,
+    >
+{
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        let (ptr, size) = self.sse_encode_raw();
+        <usize>::sse_encode(ptr, serializer);
+        <i32>::sse_encode(size, serializer);
+    }
+}
+
+impl SseEncode
+    for RustOpaqueMoi<
+        flutter_rust_bridge::for_generated::RustAutoOpaqueInner<
+            FindMyPhoneClient<DefaultAnisetteProvider>,
+        >,
+    >
 {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -6069,6 +7171,20 @@ impl SseEncode for String {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <Vec<u8>>::sse_encode(self.into_bytes(), serializer);
+    }
+}
+
+impl SseEncode for crate::api::api::Address {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <Option<String>>::sse_encode(self.administrative_area, serializer);
+        <String>::sse_encode(self.country, serializer);
+        <String>::sse_encode(self.country_code, serializer);
+        <Option<Vec<String>>>::sse_encode(self.formatted_address_lines, serializer);
+        <Option<String>>::sse_encode(self.locality, serializer);
+        <Option<String>>::sse_encode(self.state_code, serializer);
+        <Option<String>>::sse_encode(self.street_address, serializer);
+        <Option<String>>::sse_encode(self.street_name, serializer);
     }
 }
 
@@ -6214,6 +7330,71 @@ impl SseEncode for f64 {
     }
 }
 
+impl SseEncode for crate::api::api::Follow {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i64>::sse_encode(self.create_timestamp, serializer);
+        <i64>::sse_encode(self.expires, serializer);
+        <String>::sse_encode(self.id, serializer);
+        <Vec<String>>::sse_encode(self.invitation_accepted_handles, serializer);
+        <Vec<String>>::sse_encode(self.invitation_from_handles, serializer);
+        <bool>::sse_encode(self.is_from_messages, serializer);
+        <Option<String>>::sse_encode(self.offer_id, serializer);
+        <bool>::sse_encode(self.only_in_event, serializer);
+        <String>::sse_encode(self.person_id_hash, serializer);
+        <bool>::sse_encode(self.secure_locations_capable, serializer);
+        <bool>::sse_encode(self.shallow_or_live_secure_locations_capable, serializer);
+        <String>::sse_encode(self.source, serializer);
+        <bool>::sse_encode(self.tk_permission, serializer);
+        <i64>::sse_encode(self.update_timestamp, serializer);
+        <Option<bool>>::sse_encode(self.fallback_to_legacy_allowed, serializer);
+        <Option<bool>>::sse_encode(self.opted_not_to_share, serializer);
+        <Option<crate::api::api::Location>>::sse_encode(self.last_location, serializer);
+        <bool>::sse_encode(self.locate_in_progress, serializer);
+    }
+}
+
+impl SseEncode for crate::api::api::FoundDevice {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <Option<String>>::sse_encode(self.device_model, serializer);
+        <Option<bool>>::sse_encode(self.low_power_mode, serializer);
+        <Option<i64>>::sse_encode(self.passcode_length, serializer);
+        <Option<String>>::sse_encode(self.id, serializer);
+        <Option<String>>::sse_encode(self.battery_status, serializer);
+        <Option<bool>>::sse_encode(self.lost_mode_capable, serializer);
+        <Option<f64>>::sse_encode(self.battery_level, serializer);
+        <Option<bool>>::sse_encode(self.location_enabled, serializer);
+        <Option<bool>>::sse_encode(self.is_considered_accessory, serializer);
+        <Option<crate::api::api::Location>>::sse_encode(self.location, serializer);
+        <Option<String>>::sse_encode(self.model_display_name, serializer);
+        <Option<String>>::sse_encode(self.device_color, serializer);
+        <Option<bool>>::sse_encode(self.activation_locked, serializer);
+        <Option<i64>>::sse_encode(self.rm2_state, serializer);
+        <Option<bool>>::sse_encode(self.loc_found_enabled, serializer);
+        <Option<bool>>::sse_encode(self.nwd, serializer);
+        <Option<String>>::sse_encode(self.device_status, serializer);
+        <Option<bool>>::sse_encode(self.fmly_share, serializer);
+        <std::collections::HashMap<String, bool>>::sse_encode(self.features, serializer);
+        <Option<bool>>::sse_encode(self.this_device, serializer);
+        <Option<bool>>::sse_encode(self.lost_mode_enabled, serializer);
+        <Option<String>>::sse_encode(self.device_display_name, serializer);
+        <Option<String>>::sse_encode(self.name, serializer);
+        <Option<bool>>::sse_encode(self.can_wipe_after_lock, serializer);
+        <Option<bool>>::sse_encode(self.is_mac, serializer);
+        <Option<String>>::sse_encode(self.raw_device_model, serializer);
+        <Option<String>>::sse_encode(self.ba_uuid, serializer);
+        <Option<String>>::sse_encode(self.device_discovery_id, serializer);
+        <Option<bool>>::sse_encode(self.scd, serializer);
+        <Option<bool>>::sse_encode(self.location_capable, serializer);
+        <Option<bool>>::sse_encode(self.wipe_in_progress, serializer);
+        <Option<bool>>::sse_encode(self.dark_wake, serializer);
+        <Option<bool>>::sse_encode(self.device_with_you, serializer);
+        <Option<i64>>::sse_encode(self.max_msg_char, serializer);
+        <Option<String>>::sse_encode(self.device_class, serializer);
+    }
+}
+
 impl SseEncode for crate::api::api::HwExtra {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -6284,6 +7465,26 @@ impl SseEncode for Vec<String> {
     }
 }
 
+impl SseEncode for Vec<crate::api::api::Follow> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <crate::api::api::Follow>::sse_encode(item, serializer);
+        }
+    }
+}
+
+impl SseEncode for Vec<crate::api::api::FoundDevice> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <crate::api::api::FoundDevice>::sse_encode(item, serializer);
+        }
+    }
+}
+
 impl SseEncode for Vec<crate::api::api::IndexedMessagePart> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -6334,6 +7535,16 @@ impl SseEncode for Vec<crate::api::api::PrivateDeviceInfo> {
     }
 }
 
+impl SseEncode for Vec<(String, bool)> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <(String, bool)>::sse_encode(item, serializer);
+        }
+    }
+}
+
 impl SseEncode for Vec<crate::api::api::TrustedPhoneNumber> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -6341,6 +7552,27 @@ impl SseEncode for Vec<crate::api::api::TrustedPhoneNumber> {
         for item in self {
             <crate::api::api::TrustedPhoneNumber>::sse_encode(item, serializer);
         }
+    }
+}
+
+impl SseEncode for crate::api::api::Location {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <Option<crate::api::api::Address>>::sse_encode(self.address, serializer);
+        <f64>::sse_encode(self.altitude, serializer);
+        <i64>::sse_encode(self.floor_level, serializer);
+        <f64>::sse_encode(self.horizontal_accuracy, serializer);
+        <bool>::sse_encode(self.is_inaccurate, serializer);
+        <f64>::sse_encode(self.latitude, serializer);
+        <Option<String>>::sse_encode(self.location_id, serializer);
+        <Option<i64>>::sse_encode(self.location_timestamp, serializer);
+        <f64>::sse_encode(self.longitude, serializer);
+        <i64>::sse_encode(self.secure_location_ts, serializer);
+        <i64>::sse_encode(self.timestamp, serializer);
+        <f64>::sse_encode(self.vertical_accuracy, serializer);
+        <Option<String>>::sse_encode(self.position_type, serializer);
+        <Option<bool>>::sse_encode(self.is_old, serializer);
+        <Option<bool>>::sse_encode(self.location_finished, serializer);
     }
 }
 
@@ -6718,6 +7950,16 @@ impl SseEncode for Option<NSArray<LPImageMetadata>> {
     }
 }
 
+impl SseEncode for Option<crate::api::api::Address> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <crate::api::api::Address>::sse_encode(value, serializer);
+        }
+    }
+}
+
 impl SseEncode for Option<crate::api::api::Attachment> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -6768,12 +8010,42 @@ impl SseEncode for Option<crate::api::api::ExtensionApp> {
     }
 }
 
+impl SseEncode for Option<f64> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <f64>::sse_encode(value, serializer);
+        }
+    }
+}
+
+impl SseEncode for Option<i64> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <i64>::sse_encode(value, serializer);
+        }
+    }
+}
+
 impl SseEncode for Option<crate::api::api::LinkMeta> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <bool>::sse_encode(self.is_some(), serializer);
         if let Some(value) = self {
             <crate::api::api::LinkMeta>::sse_encode(value, serializer);
+        }
+    }
+}
+
+impl SseEncode for Option<crate::api::api::Location> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <crate::api::api::Location>::sse_encode(value, serializer);
         }
     }
 }
@@ -6874,6 +8146,16 @@ impl SseEncode for Option<crate::api::api::SupportAlert> {
         <bool>::sse_encode(self.is_some(), serializer);
         if let Some(value) = self {
             <crate::api::api::SupportAlert>::sse_encode(value, serializer);
+        }
+    }
+}
+
+impl SseEncode for Option<Vec<String>> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <Vec<String>>::sse_encode(value, serializer);
         }
     }
 }
@@ -7061,6 +8343,14 @@ impl SseEncode for (crate::api::api::LoginState, Option<IDSUser>) {
     }
 }
 
+impl SseEncode for (String, bool) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <String>::sse_encode(self.0, serializer);
+        <bool>::sse_encode(self.1, serializer);
+    }
+}
+
 impl SseEncode for crate::api::api::RegisterState {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -7236,6 +8526,50 @@ mod io {
         ptr: *const std::ffi::c_void,
     ) {
         MoiArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Arc < PushState >>>::decrement_strong_count(ptr as _);
+    }
+
+    #[no_mangle]
+    pub extern "C" fn frbgen_bluebubbles_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyFriendsClientDefaultAnisetteProvider(
+        ptr: *const std::ffi::c_void,
+    ) {
+        MoiArc::<
+            flutter_rust_bridge::for_generated::RustAutoOpaqueInner<
+                FindMyFriendsClient<DefaultAnisetteProvider>,
+            >,
+        >::increment_strong_count(ptr as _);
+    }
+
+    #[no_mangle]
+    pub extern "C" fn frbgen_bluebubbles_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyFriendsClientDefaultAnisetteProvider(
+        ptr: *const std::ffi::c_void,
+    ) {
+        MoiArc::<
+            flutter_rust_bridge::for_generated::RustAutoOpaqueInner<
+                FindMyFriendsClient<DefaultAnisetteProvider>,
+            >,
+        >::decrement_strong_count(ptr as _);
+    }
+
+    #[no_mangle]
+    pub extern "C" fn frbgen_bluebubbles_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyPhoneClientDefaultAnisetteProvider(
+        ptr: *const std::ffi::c_void,
+    ) {
+        MoiArc::<
+            flutter_rust_bridge::for_generated::RustAutoOpaqueInner<
+                FindMyPhoneClient<DefaultAnisetteProvider>,
+            >,
+        >::increment_strong_count(ptr as _);
+    }
+
+    #[no_mangle]
+    pub extern "C" fn frbgen_bluebubbles_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyPhoneClientDefaultAnisetteProvider(
+        ptr: *const std::ffi::c_void,
+    ) {
+        MoiArc::<
+            flutter_rust_bridge::for_generated::RustAutoOpaqueInner<
+                FindMyPhoneClient<DefaultAnisetteProvider>,
+            >,
+        >::decrement_strong_count(ptr as _);
     }
 
     #[no_mangle]

@@ -13,6 +13,7 @@ import 'package:bluebubbles/helpers/helpers.dart';
 import 'package:bluebubbles/app/layouts/settings/widgets/settings_widgets.dart';
 import 'package:bluebubbles/database/models.dart';
 import 'package:bluebubbles/app/wrappers/stateful_boilerplate.dart';
+import 'package:bluebubbles/services/rustpush/rustpush_service.dart';
 import 'package:bluebubbles/services/services.dart';
 import 'package:bluebubbles/utils/logger/logger.dart';
 import 'package:dio/dio.dart';
@@ -28,6 +29,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:maps_launcher/maps_launcher.dart';
 import 'package:sliding_up_panel2/sliding_up_panel2.dart';
 import 'package:universal_io/io.dart';
+import 'package:bluebubbles/src/rust/api/api.dart' as api;
 
 class FindMyPage extends StatefulWidget {
   const FindMyPage({super.key});
@@ -58,6 +60,9 @@ class _FindMyPageState extends OptimizedState<FindMyPage> with SingleTickerProvi
   bool? fetching2 = true;
   bool refreshing2 = false;
   bool canRefresh = false;
+
+  api.FindMyFriendsClientDefaultAnisetteProvider? fmfClient;
+  api.FindMyPhoneClientDefaultAnisetteProvider? fmipClient;
 
   @override
   void initState() {
@@ -100,7 +105,7 @@ class _FindMyPageState extends OptimizedState<FindMyPage> with SingleTickerProvi
   /// however, the refresh friends endpoint does. The way this was coded assumes that the server
   /// will return the data for both endpoints. A server update will fix this, but for now,
   /// we will "patch" it by only "refreshing" devices when the user manually refreshes the data.
-  void getLocations({bool refreshFriends = true, bool refreshDevices = false}) async {
+  void getLocations({bool refreshFriends = true, bool refreshDevices = true}) async {
     if (!(Platform.isLinux && !kIsWeb)) {
       LocationPermission granted = await Geolocator.checkPermission();
       if (granted == LocationPermission.denied) {
@@ -124,70 +129,131 @@ class _FindMyPageState extends OptimizedState<FindMyPage> with SingleTickerProvi
       }
     }
 
-    final response2 = refreshFriends
-        ? await http.refreshFindMyFriends().catchError((_) async {
-      setState(() {
-        refreshing2 = false;
-      });
-      showSnackbar("Error", "Something went wrong refreshing FindMy Friends data!");
-      return Response(requestOptions: RequestOptions(path: ''));
-    })
-        : await http.findMyFriends().catchError((_) async {
-      setState(() {
-        fetching2 = null;
-      });
-      return Response(requestOptions: RequestOptions(path: ''));
-    });
-    if (response2.statusCode == 200 && response2.data['data'] != null) {
-      try {
-        friends = (response2.data['data'] as List)
-            .map((e) => FindMyFriend.fromJson(e))
-            .toList()
-            .cast<FindMyFriend>();
+    var isNew = fmfClient == null;
+    fmfClient ??= await api.makeFindMyFriends(state: pushService.state);
 
-        friendsWithLocation = friends.where((item) => (item.latitude ?? 0) != 0 && (item.longitude ?? 0) != 0).toList();
-        friendsWithoutLocation = friends.where((item) => (item.latitude ?? 0) == 0 && (item.longitude ?? 0) == 0).toList();
-
-        for (FindMyFriend e in friendsWithLocation) {
-          buildFriendMarker(e);
-        }
-        setState(() {
-          fetching2 = false;
-          refreshing2 = false;
-        });
-      } catch (e, s) {
-        Logger.error("Failed to parse FindMy Friends location data!", error: e, trace: s);
-        setState(() {
-          fetching2 = null;
-          refreshing2 = false;
-        });
-        return;
+    try {
+      if (refreshFriends && !isNew) {
+        await api.refreshFollowing(state: pushService.state, client: fmfClient!);
       }
-    } else {
+
+      var following = await api.getFollowing(client: fmfClient!);
+    
+      friends = following
+          .map((e) => 
+            FindMyFriend(
+              latitude: e.lastLocation?.latitude,
+              longitude: e.lastLocation?.longitude,
+              longAddress: e.lastLocation?.address?.formattedAddressLines?.join("\n"), 
+              shortAddress: e.lastLocation?.address != null ? "${e.lastLocation?.address?.locality}, ${e.lastLocation?.address?.stateCode ?? e.lastLocation?.address?.countryCode}" : null,
+              title: null, 
+              subtitle: null, 
+              handle: Handle(address: e.invitationAcceptedHandles.first), 
+              lastUpdated: e.lastLocation?.timestamp != null ? DateTime.fromMillisecondsSinceEpoch(e.lastLocation!.timestamp) : null,
+              status: LocationStatus.legacy, 
+              locatingInProgress: false,
+            )
+          )
+          .toList()
+          .cast<FindMyFriend>();
+
+      friendsWithLocation = friends.where((item) => (item.latitude ?? 0) != 0 && (item.longitude ?? 0) != 0).toList();
+      friendsWithoutLocation = friends.where((item) => (item.latitude ?? 0) == 0 && (item.longitude ?? 0) == 0).toList();
+
+      for (FindMyFriend e in friendsWithLocation) {
+        buildFriendMarker(e);
+      }
       setState(() {
         fetching2 = false;
         refreshing2 = false;
       });
+    } catch (e, s) {
+      Logger.error("Failed to parse FindMy Friends location data!", error: e, trace: s);
+      setState(() {
+        fetching2 = null;
+        refreshing2 = false;
+      });
+      return;
     }
 
-    final response = refreshDevices
-        ? await http.refreshFindMyDevices().catchError((_) async {
-            setState(() {
-              refreshing = false;
-            });
-            showSnackbar("Error", "Something went wrong refreshing FindMy Devices data!");
-            return Response(requestOptions: RequestOptions(path: ''));
-          })
-        : await http.findMyDevices().catchError((_) async {
-            setState(() {
-              fetching = null;
-            });
-            return Response(requestOptions: RequestOptions(path: ''));
-          });
-    if (response.statusCode == 200 && response.data['data'] != null) {
-      try {
-        devices = (response.data['data'] as List).map((e) => FindMyDevice.fromJson(e)).toList().cast<FindMyDevice>();
-        for (FindMyDevice e in devices.where((e) => e.location?.latitude != null && e.location?.longitude != null)) {
+    var isNewi = fmipClient == null;
+    fmipClient ??= await api.makeFindMyPhone(state: pushService.state);
+
+
+    try {
+      if (refreshDevices && !isNewi) {
+        await api.refreshDevices(state: pushService.state, client: fmipClient!);
+      }
+
+      var following = await api.getDevices(client: fmipClient!);
+    
+      devices = following
+          .map((e) => 
+            FindMyDevice(
+              deviceModel: e.deviceModel, 
+              lowPowerMode: e.lowPowerMode, 
+              passcodeLength: e.passcodeLength, 
+              itemGroup: null, 
+              id: e.id, 
+              batteryStatus: e.batteryStatus, 
+              audioChannels: [], 
+              lostModeCapable: e.lostModeCapable, 
+              snd: null, 
+              batteryLevel: e.batteryLevel, 
+              locationEnabled: e.locationEnabled, 
+              isConsideredAccessory: e.isConsideredAccessory ?? false, 
+              address: null, 
+              location: e.location != null ? Location(
+                positionType: e.location!.positionType, 
+                verticalAccuracy: e.location!.verticalAccuracy.round(), 
+                longitude: e.location!.longitude, 
+                floorLevel: e.location!.floorLevel, 
+                isInaccurate: e.location!.isInaccurate, 
+                isOld: e.location!.isOld, 
+                horizontalAccuracy: e.location!.horizontalAccuracy, 
+                latitude: e.location!.latitude, 
+                timeStamp: e.location!.timestamp, 
+                altitude: e.location!.altitude.round(), 
+                locationFinished: e.location!.locationFinished
+                ) : null, 
+              modelDisplayName: e.modelDisplayName, 
+              deviceColor: e.deviceColor, 
+              activationLocked: e.activationLocked, 
+              rm2State: e.rm2State, 
+              locFoundEnabled: e.locFoundEnabled, 
+              nwd: e.nwd, 
+              deviceStatus: e.deviceStatus, 
+              remoteWipe: null, 
+              fmlyShare: e.fmlyShare, 
+              thisDevice: e.thisDevice, 
+              lostDevice: null, 
+              lostModeEnabled: e.lostModeEnabled, 
+              deviceDisplayName: e.deviceDisplayName, 
+              safeLocations: null, 
+              name: e.name, 
+              canWipeAfterLock: e.canWipeAfterLock, 
+              isMac: e.isMac, 
+              rawDeviceModel: e.rawDeviceModel, 
+              baUuid: e.baUuid, 
+              trackingInfo: null,
+              features: e.features, 
+              deviceDiscoveryId: e.deviceDiscoveryId, 
+              prsId: null, 
+              scd: e.scd, 
+              locationCapable: e.locationCapable, 
+              remoteLock: null, 
+              wipeInProgress: e.wipeInProgress, 
+              darkWake: e.darkWake, 
+              deviceWithYou: e.deviceWithYou, 
+              maxMsgChar: e.maxMsgChar, 
+              deviceClass: e.deviceClass, 
+              crowdSourcedLocation: null, 
+              role: null,
+              lostModeMetadata: null
+            )
+          )
+          .toList().cast<FindMyDevice>();
+      for (FindMyDevice e in devices.where((e) => e.location?.latitude != null && e.location?.longitude != null)) {
           markers[e.id ?? randomString(6)] = Marker(
             key: ValueKey('device-${e.id ?? randomString(6)}'),
             point: LatLng(e.location!.latitude!, e.location!.longitude!),
@@ -223,24 +289,19 @@ class _FindMyPageState extends OptimizedState<FindMyPage> with SingleTickerProvi
             alignment: Alignment.topCenter,
           );
         }
-        setState(() {
-          fetching = false;
-          refreshing = false;
-        });
-      } catch (e, s) {
-        Logger.error("Failed to parse FindMy Devices location data!", error: e, trace: s);
-        setState(() {
-          fetching = null;
-          refreshing = false;
-        });
-        return;
-      }
-    } else {
       setState(() {
         fetching = false;
         refreshing = false;
       });
+    } catch (e, s) {
+      Logger.error("Failed to parse FindMy Devices location data!", error: e, trace: s);
+      setState(() {
+        fetching = null;
+        refreshing = false;
+      });
+      return;
     }
+    
 
     // Call the FindMy Friends refresh anyways so that new data comes through the socket
     if (!refreshFriends) {
@@ -343,14 +404,14 @@ class _FindMyPageState extends OptimizedState<FindMyPage> with SingleTickerProvi
   Widget build(BuildContext context) {
     final devicesWithLocation = devices
         .where(
-            (item) => (item.address?.label ?? item.address?.mapItemFullAddress) != null && !item.isConsideredAccessory)
+            (item) => item.location?.latitude != null && !item.isConsideredAccessory)
         .toList();
     final itemsWithLocation = devices
         .where(
-            (item) => (item.address?.label ?? item.address?.mapItemFullAddress) != null && item.isConsideredAccessory)
+            (item) => item.location?.latitude != null && item.isConsideredAccessory)
         .toList();
     final withoutLocation =
-        devices.where((item) => (item.address?.label ?? item.address?.mapItemFullAddress) == null).toList();
+        devices.where((item) => item.location?.latitude == null).toList();
     final devicesBodySlivers = [
       SliverList(
         delegate: SliverChildListDelegate([
@@ -395,10 +456,11 @@ class _FindMyPageState extends OptimizedState<FindMyPage> with SingleTickerProvi
                         key: ValueKey(item.address?.uniqueValue),
                         mouseCursor: MouseCursor.defer,
                         title: Text(ss.settings.redactedMode.value ? "Device" : (item.name ?? "Unknown Device")),
-                        subtitle: Text(ss.settings.redactedMode.value ? "Location" : (item.address?.label ?? item.address?.mapItemFullAddress ?? "No location found")),
                         onTap: item.location?.latitude != null && item.location?.longitude != null
                             ? () async {
-                                await panelController.close();
+                                if (context.isPhone) {
+                                  await panelController.close();
+                                }
                                 await completer.future;
                                 final marker = markers.values.firstWhere((e) =>
                                     e.point.latitude == item.location?.latitude &&
@@ -505,12 +567,14 @@ class _FindMyPageState extends OptimizedState<FindMyPage> with SingleTickerProvi
                         ) : null,
                         onTap: item.location?.latitude != null && item.location?.longitude != null
                             ? () async {
-                                await panelController.close();
+                                if (context.isPhone) {
+                                  await panelController.close();
+                                }
                                 await completer.future;
                                 final marker = markers.values.firstWhere((e) =>
-                                    e.point.latitude == item.location?.latitude &&
-                                    e.point.longitude == item.location?.longitude);
-                                popupController.showPopupsOnlyFor([marker]);
+                                      e.point.latitude == item.location?.latitude &&
+                                      e.point.longitude == item.location?.longitude);
+                                  popupController.showPopupsOnlyFor([marker]);
                                 mapController.move(LatLng(item.location!.latitude!, item.location!.longitude!), 10);
                               }
                             : null,
@@ -576,7 +640,9 @@ class _FindMyPageState extends OptimizedState<FindMyPage> with SingleTickerProvi
                                 subtitle: Text(ss.settings.redactedMode.value ? "Location" : (item.address?.label ?? item.address?.mapItemFullAddress ?? "No location found")),
                                 onTap: item.location?.latitude != null && item.location?.longitude != null
                                     ? () async {
-                                        await panelController.close();
+                                        if (context.isPhone) {
+                                          await panelController.close();
+                                        }
                                         await completer.future;
                                         final marker = markers.values.firstWhere((e) =>
                                             e.point.latitude == item.location?.latitude &&
@@ -1411,7 +1477,7 @@ class _FindMyPageState extends OptimizedState<FindMyPage> with SingleTickerProvi
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(ss.settings.redactedMode.value ? "Device" : (item.name ?? "Unknown Device"), style: context.theme.textTheme.labelLarge),
-                          Text(ss.settings.redactedMode.value ? "Location" : (item.address?.label ?? item.address?.mapItemFullAddress ?? "No location found"),
+                          Text(ss.settings.redactedMode.value ? "Location" : (item.location?.latitude != null ? "${item.location?.latitude}, ${item.location?.longitude}" : ""),
                               style: context.theme.textTheme.bodySmall),
                         ],
                       ),

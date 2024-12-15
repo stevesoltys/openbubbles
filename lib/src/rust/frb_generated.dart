@@ -67,7 +67,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.3.0';
 
   @override
-  int get rustContentHash => 1359899892;
+  int get rustContentHash => 920224295;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -135,6 +135,12 @@ abstract class RustLibApi extends BaseApi {
   Future<DeviceInfo> crateApiApiGetDeviceInfoState(
       {required ArcPushState state});
 
+  Future<List<FoundDevice>> crateApiApiGetDevices(
+      {required FindMyPhoneClientDefaultAnisetteProvider client});
+
+  Future<List<Follow>> crateApiApiGetFollowing(
+      {required FindMyFriendsClientDefaultAnisetteProvider client});
+
   Future<List<String>> crateApiApiGetHandles({required ArcPushState state});
 
   Future<RegistrationPhase> crateApiApiGetPhase({required ArcPushState state});
@@ -152,6 +158,12 @@ abstract class RustLibApi extends BaseApi {
 
   Future<void> crateApiApiInvalidateIdCache({required ArcPushState state});
 
+  Future<FindMyFriendsClientDefaultAnisetteProvider>
+      crateApiApiMakeFindMyFriends({required ArcPushState state});
+
+  Future<FindMyPhoneClientDefaultAnisetteProvider> crateApiApiMakeFindMyPhone(
+      {required ArcPushState state});
+
   Future<String> crateApiApiMessagePartsRawText({required MessageParts that});
 
   Future<MyAsyncRuntime> crateApiApiMyAsyncRuntimeDefault();
@@ -167,6 +179,14 @@ abstract class RustLibApi extends BaseApi {
   Future<PushMessage?> crateApiApiPtrToDart({required String ptr});
 
   Future<PollResult> crateApiApiRecvWait({required ArcPushState state});
+
+  Future<List<FoundDevice>> crateApiApiRefreshDevices(
+      {required ArcPushState state,
+      required FindMyPhoneClientDefaultAnisetteProvider client});
+
+  Future<List<Follow>> crateApiApiRefreshFollowing(
+      {required ArcPushState state,
+      required FindMyFriendsClientDefaultAnisetteProvider client});
 
   Future<void> crateApiApiRefreshToken({required ArcPushState state});
 
@@ -232,6 +252,24 @@ abstract class RustLibApi extends BaseApi {
       get rust_arc_decrement_strong_count_ArcPushState;
 
   CrossPlatformFinalizerArg get rust_arc_decrement_strong_count_ArcPushStatePtr;
+
+  RustArcIncrementStrongCountFnType
+      get rust_arc_increment_strong_count_FindMyFriendsClientDefaultAnisetteProvider;
+
+  RustArcDecrementStrongCountFnType
+      get rust_arc_decrement_strong_count_FindMyFriendsClientDefaultAnisetteProvider;
+
+  CrossPlatformFinalizerArg
+      get rust_arc_decrement_strong_count_FindMyFriendsClientDefaultAnisetteProviderPtr;
+
+  RustArcIncrementStrongCountFnType
+      get rust_arc_increment_strong_count_FindMyPhoneClientDefaultAnisetteProvider;
+
+  RustArcDecrementStrongCountFnType
+      get rust_arc_decrement_strong_count_FindMyPhoneClientDefaultAnisetteProvider;
+
+  CrossPlatformFinalizerArg
+      get rust_arc_decrement_strong_count_FindMyPhoneClientDefaultAnisetteProviderPtr;
 
   RustArcIncrementStrongCountFnType get rust_arc_increment_strong_count_IdsUser;
 
@@ -784,6 +822,58 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
+  Future<List<FoundDevice>> crateApiApiGetDevices(
+      {required FindMyPhoneClientDefaultAnisetteProvider client}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyPhoneClientDefaultAnisetteProvider(
+            client, serializer);
+        pdeCallFfi(generalizedFrbRustBinding, serializer,
+            funcId: 19, port: port_);
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_list_found_device,
+        decodeErrorData: null,
+      ),
+      constMeta: kCrateApiApiGetDevicesConstMeta,
+      argValues: [client],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiApiGetDevicesConstMeta => const TaskConstMeta(
+        debugName: "get_devices",
+        argNames: ["client"],
+      );
+
+  @override
+  Future<List<Follow>> crateApiApiGetFollowing(
+      {required FindMyFriendsClientDefaultAnisetteProvider client}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyFriendsClientDefaultAnisetteProvider(
+            client, serializer);
+        pdeCallFfi(generalizedFrbRustBinding, serializer,
+            funcId: 20, port: port_);
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_list_follow,
+        decodeErrorData: null,
+      ),
+      constMeta: kCrateApiApiGetFollowingConstMeta,
+      argValues: [client],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiApiGetFollowingConstMeta => const TaskConstMeta(
+        debugName: "get_following",
+        argNames: ["client"],
+      );
+
+  @override
   Future<List<String>> crateApiApiGetHandles({required ArcPushState state}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
@@ -791,7 +881,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcPushState(
             state, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 19, port: port_);
+            funcId: 21, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_list_String,
@@ -816,7 +906,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcPushState(
             state, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 20, port: port_);
+            funcId: 22, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_registration_phase,
@@ -841,7 +931,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcPushState(
             state, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 21, port: port_);
+            funcId: 23, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_register_state,
@@ -871,7 +961,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_String(handle, serializer);
         sse_encode_bool(refresh, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 22, port: port_);
+            funcId: 24, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_list_private_device_info,
@@ -896,7 +986,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcPushState(
             state, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 23, port: port_);
+            funcId: 25, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_list_prim_u_8_strict,
@@ -921,7 +1011,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcPushState(
             state, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 24, port: port_);
+            funcId: 26, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_String,
@@ -946,7 +1036,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcPushState(
             state, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 25, port: port_);
+            funcId: 27, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -965,13 +1055,68 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
+  Future<FindMyFriendsClientDefaultAnisetteProvider>
+      crateApiApiMakeFindMyFriends({required ArcPushState state}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcPushState(
+            state, serializer);
+        pdeCallFfi(generalizedFrbRustBinding, serializer,
+            funcId: 28, port: port_);
+      },
+      codec: SseCodec(
+        decodeSuccessData:
+            sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyFriendsClientDefaultAnisetteProvider,
+        decodeErrorData: sse_decode_AnyhowException,
+      ),
+      constMeta: kCrateApiApiMakeFindMyFriendsConstMeta,
+      argValues: [state],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiApiMakeFindMyFriendsConstMeta =>
+      const TaskConstMeta(
+        debugName: "make_find_my_friends",
+        argNames: ["state"],
+      );
+
+  @override
+  Future<FindMyPhoneClientDefaultAnisetteProvider> crateApiApiMakeFindMyPhone(
+      {required ArcPushState state}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcPushState(
+            state, serializer);
+        pdeCallFfi(generalizedFrbRustBinding, serializer,
+            funcId: 29, port: port_);
+      },
+      codec: SseCodec(
+        decodeSuccessData:
+            sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyPhoneClientDefaultAnisetteProvider,
+        decodeErrorData: sse_decode_AnyhowException,
+      ),
+      constMeta: kCrateApiApiMakeFindMyPhoneConstMeta,
+      argValues: [state],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiApiMakeFindMyPhoneConstMeta => const TaskConstMeta(
+        debugName: "make_find_my_phone",
+        argNames: ["state"],
+      );
+
+  @override
   Future<String> crateApiApiMessagePartsRawText({required MessageParts that}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_box_autoadd_message_parts(that, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 26, port: port_);
+            funcId: 30, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_String,
@@ -995,7 +1140,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       callFfi: (port_) {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 27, port: port_);
+            funcId: 31, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_my_async_runtime,
@@ -1028,7 +1173,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_String(sender, serializer);
         sse_encode_box_autoadd_message(message, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 28, port: port_);
+            funcId: 32, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_message_inst,
@@ -1052,7 +1197,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_String(dir, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 29, port: port_);
+            funcId: 33, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData:
@@ -1077,7 +1222,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_String(ptr, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 30, port: port_);
+            funcId: 34, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_opt_box_autoadd_push_message,
@@ -1102,7 +1247,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcPushState(
             state, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 31, port: port_);
+            funcId: 35, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_poll_result,
@@ -1120,6 +1265,65 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
+  Future<List<FoundDevice>> crateApiApiRefreshDevices(
+      {required ArcPushState state,
+      required FindMyPhoneClientDefaultAnisetteProvider client}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcPushState(
+            state, serializer);
+        sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyPhoneClientDefaultAnisetteProvider(
+            client, serializer);
+        pdeCallFfi(generalizedFrbRustBinding, serializer,
+            funcId: 36, port: port_);
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_list_found_device,
+        decodeErrorData: sse_decode_AnyhowException,
+      ),
+      constMeta: kCrateApiApiRefreshDevicesConstMeta,
+      argValues: [state, client],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiApiRefreshDevicesConstMeta => const TaskConstMeta(
+        debugName: "refresh_devices",
+        argNames: ["state", "client"],
+      );
+
+  @override
+  Future<List<Follow>> crateApiApiRefreshFollowing(
+      {required ArcPushState state,
+      required FindMyFriendsClientDefaultAnisetteProvider client}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcPushState(
+            state, serializer);
+        sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyFriendsClientDefaultAnisetteProvider(
+            client, serializer);
+        pdeCallFfi(generalizedFrbRustBinding, serializer,
+            funcId: 37, port: port_);
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_list_follow,
+        decodeErrorData: sse_decode_AnyhowException,
+      ),
+      constMeta: kCrateApiApiRefreshFollowingConstMeta,
+      argValues: [state, client],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiApiRefreshFollowingConstMeta =>
+      const TaskConstMeta(
+        debugName: "refresh_following",
+        argNames: ["state", "client"],
+      );
+
+  @override
   Future<void> crateApiApiRefreshToken({required ArcPushState state}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
@@ -1127,7 +1331,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcPushState(
             state, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 32, port: port_);
+            funcId: 38, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -1155,7 +1359,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIDSUser(
             users, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 33, port: port_);
+            funcId: 39, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_opt_box_autoadd_support_alert,
@@ -1182,7 +1386,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             state, serializer);
         sse_encode_bool(resetHw, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 34, port: port_);
+            funcId: 40, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -1206,7 +1410,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_String(data, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 35, port: port_);
+            funcId: 41, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_attachment,
@@ -1231,7 +1435,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_String(user, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 36, port: port_);
+            funcId: 42, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData:
@@ -1256,7 +1460,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_box_autoadd_attachment(att, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 37, port: port_);
+            funcId: 43, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_String,
@@ -1281,7 +1485,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIDSUser(
             user, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 38, port: port_);
+            funcId: 44, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_String,
@@ -1308,7 +1512,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             state, serializer);
         sse_encode_box_autoadd_message_inst(msg, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 39, port: port_);
+            funcId: 45, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_bool,
@@ -1335,7 +1539,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             state, serializer);
         sse_encode_u_32(phoneId, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 40, port: port_);
+            funcId: 46, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_login_state,
@@ -1361,7 +1565,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcPushState(
             state, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 41, port: port_);
+            funcId: 47, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_login_state,
@@ -1386,7 +1590,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_String(ptr, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 42, port: port_);
+            funcId: 48, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData:
@@ -1417,7 +1621,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_String(username, serializer);
         sse_encode_String(password, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 43, port: port_);
+            funcId: 49, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData:
@@ -1454,7 +1658,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_String(uti, serializer);
         sse_encode_String(name, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 44, port: port_);
+            funcId: 50, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -1485,7 +1689,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             state, serializer);
         sse_encode_String(path, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 45, port: port_);
+            funcId: 51, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -1514,7 +1718,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIDSUser(
             user, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 46, port: port_);
+            funcId: 52, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_list_String,
@@ -1544,7 +1748,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_list_String(targets, serializer);
         sse_encode_String(sender, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 47, port: port_);
+            funcId: 53, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_list_String,
@@ -1571,7 +1775,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             state, serializer);
         sse_encode_String(code, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 48, port: port_);
+            funcId: 54, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData:
@@ -1603,7 +1807,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             body, serializer);
         sse_encode_String(code, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 49, port: port_);
+            funcId: 55, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData:
@@ -1628,6 +1832,22 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   RustArcDecrementStrongCountFnType
       get rust_arc_decrement_strong_count_ArcPushState => wire
           .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcPushState;
+
+  RustArcIncrementStrongCountFnType
+      get rust_arc_increment_strong_count_FindMyFriendsClientDefaultAnisetteProvider =>
+          wire.rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyFriendsClientDefaultAnisetteProvider;
+
+  RustArcDecrementStrongCountFnType
+      get rust_arc_decrement_strong_count_FindMyFriendsClientDefaultAnisetteProvider =>
+          wire.rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyFriendsClientDefaultAnisetteProvider;
+
+  RustArcIncrementStrongCountFnType
+      get rust_arc_increment_strong_count_FindMyPhoneClientDefaultAnisetteProvider =>
+          wire.rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyPhoneClientDefaultAnisetteProvider;
+
+  RustArcDecrementStrongCountFnType
+      get rust_arc_decrement_strong_count_FindMyPhoneClientDefaultAnisetteProvider =>
+          wire.rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyPhoneClientDefaultAnisetteProvider;
 
   RustArcIncrementStrongCountFnType
       get rust_arc_increment_strong_count_IdsUser => wire
@@ -1684,6 +1904,24 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  FindMyFriendsClientDefaultAnisetteProvider
+      dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyFriendsClientDefaultAnisetteProvider(
+          dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return FindMyFriendsClientDefaultAnisetteProviderImpl.frbInternalDcoDecode(
+        raw as List<dynamic>);
+  }
+
+  @protected
+  FindMyPhoneClientDefaultAnisetteProvider
+      dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyPhoneClientDefaultAnisetteProvider(
+          dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return FindMyPhoneClientDefaultAnisetteProviderImpl.frbInternalDcoDecode(
+        raw as List<dynamic>);
+  }
+
+  @protected
   IdsUser
       dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIDSUser(
           dynamic raw) {
@@ -1722,6 +1960,24 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return VerifyBodyImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  FindMyFriendsClientDefaultAnisetteProvider
+      dco_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyFriendsClientDefaultAnisetteProvider(
+          dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return FindMyFriendsClientDefaultAnisetteProviderImpl.frbInternalDcoDecode(
+        raw as List<dynamic>);
+  }
+
+  @protected
+  FindMyPhoneClientDefaultAnisetteProvider
+      dco_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyPhoneClientDefaultAnisetteProvider(
+          dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return FindMyPhoneClientDefaultAnisetteProviderImpl.frbInternalDcoDecode(
+        raw as List<dynamic>);
   }
 
   @protected
@@ -1771,11 +2027,36 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  Map<String, bool> dco_decode_Map_String_bool(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return Map.fromEntries(dco_decode_list_record_string_bool(raw)
+        .map((e) => MapEntry(e.$1, e.$2)));
+  }
+
+  @protected
   ArcPushState
       dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcPushState(
           dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return ArcPushStateImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  FindMyFriendsClientDefaultAnisetteProvider
+      dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyFriendsClientDefaultAnisetteProvider(
+          dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return FindMyFriendsClientDefaultAnisetteProviderImpl.frbInternalDcoDecode(
+        raw as List<dynamic>);
+  }
+
+  @protected
+  FindMyPhoneClientDefaultAnisetteProvider
+      dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyPhoneClientDefaultAnisetteProvider(
+          dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return FindMyPhoneClientDefaultAnisetteProviderImpl.frbInternalDcoDecode(
+        raw as List<dynamic>);
   }
 
   @protected
@@ -1837,6 +2118,24 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   String dco_decode_String(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as String;
+  }
+
+  @protected
+  Address dco_decode_address(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 8)
+      throw Exception('unexpected arr length: expect 8 but see ${arr.length}');
+    return Address(
+      administrativeArea: dco_decode_opt_String(arr[0]),
+      country: dco_decode_String(arr[1]),
+      countryCode: dco_decode_String(arr[2]),
+      formattedAddressLines: dco_decode_opt_list_String(arr[3]),
+      locality: dco_decode_opt_String(arr[4]),
+      stateCode: dco_decode_opt_String(arr[5]),
+      streetAddress: dco_decode_opt_String(arr[6]),
+      streetName: dco_decode_opt_String(arr[7]),
+    );
   }
 
   @protected
@@ -1950,6 +2249,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  Address dco_decode_box_autoadd_address(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_address(raw);
+  }
+
+  @protected
   Attachment dco_decode_box_autoadd_attachment(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return dco_decode_attachment(raw);
@@ -1999,9 +2304,21 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  double dco_decode_box_autoadd_f_64(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw as double;
+  }
+
+  @protected
   HwExtra dco_decode_box_autoadd_hw_extra(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return dco_decode_hw_extra(raw);
+  }
+
+  @protected
+  PlatformInt64 dco_decode_box_autoadd_i_64(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_i_64(raw);
   }
 
   @protected
@@ -2014,6 +2331,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   LinkMeta dco_decode_box_autoadd_link_meta(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return dco_decode_link_meta(raw);
+  }
+
+  @protected
+  Location dco_decode_box_autoadd_location(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_location(raw);
   }
 
   @protected
@@ -2220,6 +2543,79 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  Follow dco_decode_follow(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 18)
+      throw Exception('unexpected arr length: expect 18 but see ${arr.length}');
+    return Follow(
+      createTimestamp: dco_decode_i_64(arr[0]),
+      expires: dco_decode_i_64(arr[1]),
+      id: dco_decode_String(arr[2]),
+      invitationAcceptedHandles: dco_decode_list_String(arr[3]),
+      invitationFromHandles: dco_decode_list_String(arr[4]),
+      isFromMessages: dco_decode_bool(arr[5]),
+      offerId: dco_decode_opt_String(arr[6]),
+      onlyInEvent: dco_decode_bool(arr[7]),
+      personIdHash: dco_decode_String(arr[8]),
+      secureLocationsCapable: dco_decode_bool(arr[9]),
+      shallowOrLiveSecureLocationsCapable: dco_decode_bool(arr[10]),
+      source: dco_decode_String(arr[11]),
+      tkPermission: dco_decode_bool(arr[12]),
+      updateTimestamp: dco_decode_i_64(arr[13]),
+      fallbackToLegacyAllowed: dco_decode_opt_box_autoadd_bool(arr[14]),
+      optedNotToShare: dco_decode_opt_box_autoadd_bool(arr[15]),
+      lastLocation: dco_decode_opt_box_autoadd_location(arr[16]),
+      locateInProgress: dco_decode_bool(arr[17]),
+    );
+  }
+
+  @protected
+  FoundDevice dco_decode_found_device(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 35)
+      throw Exception('unexpected arr length: expect 35 but see ${arr.length}');
+    return FoundDevice(
+      deviceModel: dco_decode_opt_String(arr[0]),
+      lowPowerMode: dco_decode_opt_box_autoadd_bool(arr[1]),
+      passcodeLength: dco_decode_opt_box_autoadd_i_64(arr[2]),
+      id: dco_decode_opt_String(arr[3]),
+      batteryStatus: dco_decode_opt_String(arr[4]),
+      lostModeCapable: dco_decode_opt_box_autoadd_bool(arr[5]),
+      batteryLevel: dco_decode_opt_box_autoadd_f_64(arr[6]),
+      locationEnabled: dco_decode_opt_box_autoadd_bool(arr[7]),
+      isConsideredAccessory: dco_decode_opt_box_autoadd_bool(arr[8]),
+      location: dco_decode_opt_box_autoadd_location(arr[9]),
+      modelDisplayName: dco_decode_opt_String(arr[10]),
+      deviceColor: dco_decode_opt_String(arr[11]),
+      activationLocked: dco_decode_opt_box_autoadd_bool(arr[12]),
+      rm2State: dco_decode_opt_box_autoadd_i_64(arr[13]),
+      locFoundEnabled: dco_decode_opt_box_autoadd_bool(arr[14]),
+      nwd: dco_decode_opt_box_autoadd_bool(arr[15]),
+      deviceStatus: dco_decode_opt_String(arr[16]),
+      fmlyShare: dco_decode_opt_box_autoadd_bool(arr[17]),
+      features: dco_decode_Map_String_bool(arr[18]),
+      thisDevice: dco_decode_opt_box_autoadd_bool(arr[19]),
+      lostModeEnabled: dco_decode_opt_box_autoadd_bool(arr[20]),
+      deviceDisplayName: dco_decode_opt_String(arr[21]),
+      name: dco_decode_opt_String(arr[22]),
+      canWipeAfterLock: dco_decode_opt_box_autoadd_bool(arr[23]),
+      isMac: dco_decode_opt_box_autoadd_bool(arr[24]),
+      rawDeviceModel: dco_decode_opt_String(arr[25]),
+      baUuid: dco_decode_opt_String(arr[26]),
+      deviceDiscoveryId: dco_decode_opt_String(arr[27]),
+      scd: dco_decode_opt_box_autoadd_bool(arr[28]),
+      locationCapable: dco_decode_opt_box_autoadd_bool(arr[29]),
+      wipeInProgress: dco_decode_opt_box_autoadd_bool(arr[30]),
+      darkWake: dco_decode_opt_box_autoadd_bool(arr[31]),
+      deviceWithYou: dco_decode_opt_box_autoadd_bool(arr[32]),
+      maxMsgChar: dco_decode_opt_box_autoadd_i_64(arr[33]),
+      deviceClass: dco_decode_opt_String(arr[34]),
+    );
+  }
+
+  @protected
   HwExtra dco_decode_hw_extra(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
@@ -2301,6 +2697,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  List<Follow> dco_decode_list_follow(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>).map(dco_decode_follow).toList();
+  }
+
+  @protected
+  List<FoundDevice> dco_decode_list_found_device(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>).map(dco_decode_found_device).toList();
+  }
+
+  @protected
   List<IndexedMessagePart> dco_decode_list_indexed_message_part(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return (raw as List<dynamic>).map(dco_decode_indexed_message_part).toList();
@@ -2337,9 +2745,40 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  List<(String, bool)> dco_decode_list_record_string_bool(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>).map(dco_decode_record_string_bool).toList();
+  }
+
+  @protected
   List<TrustedPhoneNumber> dco_decode_list_trusted_phone_number(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return (raw as List<dynamic>).map(dco_decode_trusted_phone_number).toList();
+  }
+
+  @protected
+  Location dco_decode_location(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 15)
+      throw Exception('unexpected arr length: expect 15 but see ${arr.length}');
+    return Location(
+      address: dco_decode_opt_box_autoadd_address(arr[0]),
+      altitude: dco_decode_f_64(arr[1]),
+      floorLevel: dco_decode_i_64(arr[2]),
+      horizontalAccuracy: dco_decode_f_64(arr[3]),
+      isInaccurate: dco_decode_bool(arr[4]),
+      latitude: dco_decode_f_64(arr[5]),
+      locationId: dco_decode_opt_String(arr[6]),
+      locationTimestamp: dco_decode_opt_box_autoadd_i_64(arr[7]),
+      longitude: dco_decode_f_64(arr[8]),
+      secureLocationTs: dco_decode_i_64(arr[9]),
+      timestamp: dco_decode_i_64(arr[10]),
+      verticalAccuracy: dco_decode_f_64(arr[11]),
+      positionType: dco_decode_opt_String(arr[12]),
+      isOld: dco_decode_opt_box_autoadd_bool(arr[13]),
+      locationFinished: dco_decode_opt_box_autoadd_bool(arr[14]),
+    );
   }
 
   @protected
@@ -2715,6 +3154,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  Address? dco_decode_opt_box_autoadd_address(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_box_autoadd_address(raw);
+  }
+
+  @protected
   Attachment? dco_decode_opt_box_autoadd_attachment(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw == null ? null : dco_decode_box_autoadd_attachment(raw);
@@ -2745,9 +3190,27 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  double? dco_decode_opt_box_autoadd_f_64(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_box_autoadd_f_64(raw);
+  }
+
+  @protected
+  PlatformInt64? dco_decode_opt_box_autoadd_i_64(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_box_autoadd_i_64(raw);
+  }
+
+  @protected
   LinkMeta? dco_decode_opt_box_autoadd_link_meta(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw == null ? null : dco_decode_box_autoadd_link_meta(raw);
+  }
+
+  @protected
+  Location? dco_decode_opt_box_autoadd_location(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_box_autoadd_location(raw);
   }
 
   @protected
@@ -2818,6 +3281,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   BigInt? dco_decode_opt_box_autoadd_u_64(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw == null ? null : dco_decode_box_autoadd_u_64(raw);
+  }
+
+  @protected
+  List<String>? dco_decode_opt_list_String(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_list_String(raw);
   }
 
   @protected
@@ -2975,6 +3444,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       dco_decode_login_state(arr[0]),
       dco_decode_opt_box_autoadd_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIDSUser(
           arr[1]),
+    );
+  }
+
+  @protected
+  (String, bool) dco_decode_record_string_bool(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2) {
+      throw Exception('Expected 2 elements, got ${arr.length}');
+    }
+    return (
+      dco_decode_String(arr[0]),
+      dco_decode_bool(arr[1]),
     );
   }
 
@@ -3151,6 +3633,24 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  FindMyFriendsClientDefaultAnisetteProvider
+      sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyFriendsClientDefaultAnisetteProvider(
+          SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return FindMyFriendsClientDefaultAnisetteProviderImpl.frbInternalSseDecode(
+        sse_decode_usize(deserializer), sse_decode_i_32(deserializer));
+  }
+
+  @protected
+  FindMyPhoneClientDefaultAnisetteProvider
+      sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyPhoneClientDefaultAnisetteProvider(
+          SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return FindMyPhoneClientDefaultAnisetteProviderImpl.frbInternalSseDecode(
+        sse_decode_usize(deserializer), sse_decode_i_32(deserializer));
+  }
+
+  @protected
   IdsUser
       sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIDSUser(
           SseDeserializer deserializer) {
@@ -3192,6 +3692,24 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return VerifyBodyImpl.frbInternalSseDecode(
+        sse_decode_usize(deserializer), sse_decode_i_32(deserializer));
+  }
+
+  @protected
+  FindMyFriendsClientDefaultAnisetteProvider
+      sse_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyFriendsClientDefaultAnisetteProvider(
+          SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return FindMyFriendsClientDefaultAnisetteProviderImpl.frbInternalSseDecode(
+        sse_decode_usize(deserializer), sse_decode_i_32(deserializer));
+  }
+
+  @protected
+  FindMyPhoneClientDefaultAnisetteProvider
+      sse_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyPhoneClientDefaultAnisetteProvider(
+          SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return FindMyPhoneClientDefaultAnisetteProviderImpl.frbInternalSseDecode(
         sse_decode_usize(deserializer), sse_decode_i_32(deserializer));
   }
 
@@ -3246,11 +3764,36 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  Map<String, bool> sse_decode_Map_String_bool(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner = sse_decode_list_record_string_bool(deserializer);
+    return Map.fromEntries(inner.map((e) => MapEntry(e.$1, e.$2)));
+  }
+
+  @protected
   ArcPushState
       sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcPushState(
           SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return ArcPushStateImpl.frbInternalSseDecode(
+        sse_decode_usize(deserializer), sse_decode_i_32(deserializer));
+  }
+
+  @protected
+  FindMyFriendsClientDefaultAnisetteProvider
+      sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyFriendsClientDefaultAnisetteProvider(
+          SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return FindMyFriendsClientDefaultAnisetteProviderImpl.frbInternalSseDecode(
+        sse_decode_usize(deserializer), sse_decode_i_32(deserializer));
+  }
+
+  @protected
+  FindMyPhoneClientDefaultAnisetteProvider
+      sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyPhoneClientDefaultAnisetteProvider(
+          SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return FindMyPhoneClientDefaultAnisetteProviderImpl.frbInternalSseDecode(
         sse_decode_usize(deserializer), sse_decode_i_32(deserializer));
   }
 
@@ -3319,6 +3862,28 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var inner = sse_decode_list_prim_u_8_strict(deserializer);
     return utf8.decoder.convert(inner);
+  }
+
+  @protected
+  Address sse_decode_address(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_administrativeArea = sse_decode_opt_String(deserializer);
+    var var_country = sse_decode_String(deserializer);
+    var var_countryCode = sse_decode_String(deserializer);
+    var var_formattedAddressLines = sse_decode_opt_list_String(deserializer);
+    var var_locality = sse_decode_opt_String(deserializer);
+    var var_stateCode = sse_decode_opt_String(deserializer);
+    var var_streetAddress = sse_decode_opt_String(deserializer);
+    var var_streetName = sse_decode_opt_String(deserializer);
+    return Address(
+        administrativeArea: var_administrativeArea,
+        country: var_country,
+        countryCode: var_countryCode,
+        formattedAddressLines: var_formattedAddressLines,
+        locality: var_locality,
+        stateCode: var_stateCode,
+        streetAddress: var_streetAddress,
+        streetName: var_streetName);
   }
 
   @protected
@@ -3444,6 +4009,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  Address sse_decode_box_autoadd_address(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_address(deserializer));
+  }
+
+  @protected
   Attachment sse_decode_box_autoadd_attachment(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return (sse_decode_attachment(deserializer));
@@ -3497,9 +4068,21 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  double sse_decode_box_autoadd_f_64(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_f_64(deserializer));
+  }
+
+  @protected
   HwExtra sse_decode_box_autoadd_hw_extra(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return (sse_decode_hw_extra(deserializer));
+  }
+
+  @protected
+  PlatformInt64 sse_decode_box_autoadd_i_64(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_i_64(deserializer));
   }
 
   @protected
@@ -3513,6 +4096,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   LinkMeta sse_decode_box_autoadd_link_meta(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return (sse_decode_link_meta(deserializer));
+  }
+
+  @protected
+  Location sse_decode_box_autoadd_location(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_location(deserializer));
   }
 
   @protected
@@ -3723,6 +4312,127 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  Follow sse_decode_follow(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_createTimestamp = sse_decode_i_64(deserializer);
+    var var_expires = sse_decode_i_64(deserializer);
+    var var_id = sse_decode_String(deserializer);
+    var var_invitationAcceptedHandles = sse_decode_list_String(deserializer);
+    var var_invitationFromHandles = sse_decode_list_String(deserializer);
+    var var_isFromMessages = sse_decode_bool(deserializer);
+    var var_offerId = sse_decode_opt_String(deserializer);
+    var var_onlyInEvent = sse_decode_bool(deserializer);
+    var var_personIdHash = sse_decode_String(deserializer);
+    var var_secureLocationsCapable = sse_decode_bool(deserializer);
+    var var_shallowOrLiveSecureLocationsCapable = sse_decode_bool(deserializer);
+    var var_source = sse_decode_String(deserializer);
+    var var_tkPermission = sse_decode_bool(deserializer);
+    var var_updateTimestamp = sse_decode_i_64(deserializer);
+    var var_fallbackToLegacyAllowed =
+        sse_decode_opt_box_autoadd_bool(deserializer);
+    var var_optedNotToShare = sse_decode_opt_box_autoadd_bool(deserializer);
+    var var_lastLocation = sse_decode_opt_box_autoadd_location(deserializer);
+    var var_locateInProgress = sse_decode_bool(deserializer);
+    return Follow(
+        createTimestamp: var_createTimestamp,
+        expires: var_expires,
+        id: var_id,
+        invitationAcceptedHandles: var_invitationAcceptedHandles,
+        invitationFromHandles: var_invitationFromHandles,
+        isFromMessages: var_isFromMessages,
+        offerId: var_offerId,
+        onlyInEvent: var_onlyInEvent,
+        personIdHash: var_personIdHash,
+        secureLocationsCapable: var_secureLocationsCapable,
+        shallowOrLiveSecureLocationsCapable:
+            var_shallowOrLiveSecureLocationsCapable,
+        source: var_source,
+        tkPermission: var_tkPermission,
+        updateTimestamp: var_updateTimestamp,
+        fallbackToLegacyAllowed: var_fallbackToLegacyAllowed,
+        optedNotToShare: var_optedNotToShare,
+        lastLocation: var_lastLocation,
+        locateInProgress: var_locateInProgress);
+  }
+
+  @protected
+  FoundDevice sse_decode_found_device(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_deviceModel = sse_decode_opt_String(deserializer);
+    var var_lowPowerMode = sse_decode_opt_box_autoadd_bool(deserializer);
+    var var_passcodeLength = sse_decode_opt_box_autoadd_i_64(deserializer);
+    var var_id = sse_decode_opt_String(deserializer);
+    var var_batteryStatus = sse_decode_opt_String(deserializer);
+    var var_lostModeCapable = sse_decode_opt_box_autoadd_bool(deserializer);
+    var var_batteryLevel = sse_decode_opt_box_autoadd_f_64(deserializer);
+    var var_locationEnabled = sse_decode_opt_box_autoadd_bool(deserializer);
+    var var_isConsideredAccessory =
+        sse_decode_opt_box_autoadd_bool(deserializer);
+    var var_location = sse_decode_opt_box_autoadd_location(deserializer);
+    var var_modelDisplayName = sse_decode_opt_String(deserializer);
+    var var_deviceColor = sse_decode_opt_String(deserializer);
+    var var_activationLocked = sse_decode_opt_box_autoadd_bool(deserializer);
+    var var_rm2State = sse_decode_opt_box_autoadd_i_64(deserializer);
+    var var_locFoundEnabled = sse_decode_opt_box_autoadd_bool(deserializer);
+    var var_nwd = sse_decode_opt_box_autoadd_bool(deserializer);
+    var var_deviceStatus = sse_decode_opt_String(deserializer);
+    var var_fmlyShare = sse_decode_opt_box_autoadd_bool(deserializer);
+    var var_features = sse_decode_Map_String_bool(deserializer);
+    var var_thisDevice = sse_decode_opt_box_autoadd_bool(deserializer);
+    var var_lostModeEnabled = sse_decode_opt_box_autoadd_bool(deserializer);
+    var var_deviceDisplayName = sse_decode_opt_String(deserializer);
+    var var_name = sse_decode_opt_String(deserializer);
+    var var_canWipeAfterLock = sse_decode_opt_box_autoadd_bool(deserializer);
+    var var_isMac = sse_decode_opt_box_autoadd_bool(deserializer);
+    var var_rawDeviceModel = sse_decode_opt_String(deserializer);
+    var var_baUuid = sse_decode_opt_String(deserializer);
+    var var_deviceDiscoveryId = sse_decode_opt_String(deserializer);
+    var var_scd = sse_decode_opt_box_autoadd_bool(deserializer);
+    var var_locationCapable = sse_decode_opt_box_autoadd_bool(deserializer);
+    var var_wipeInProgress = sse_decode_opt_box_autoadd_bool(deserializer);
+    var var_darkWake = sse_decode_opt_box_autoadd_bool(deserializer);
+    var var_deviceWithYou = sse_decode_opt_box_autoadd_bool(deserializer);
+    var var_maxMsgChar = sse_decode_opt_box_autoadd_i_64(deserializer);
+    var var_deviceClass = sse_decode_opt_String(deserializer);
+    return FoundDevice(
+        deviceModel: var_deviceModel,
+        lowPowerMode: var_lowPowerMode,
+        passcodeLength: var_passcodeLength,
+        id: var_id,
+        batteryStatus: var_batteryStatus,
+        lostModeCapable: var_lostModeCapable,
+        batteryLevel: var_batteryLevel,
+        locationEnabled: var_locationEnabled,
+        isConsideredAccessory: var_isConsideredAccessory,
+        location: var_location,
+        modelDisplayName: var_modelDisplayName,
+        deviceColor: var_deviceColor,
+        activationLocked: var_activationLocked,
+        rm2State: var_rm2State,
+        locFoundEnabled: var_locFoundEnabled,
+        nwd: var_nwd,
+        deviceStatus: var_deviceStatus,
+        fmlyShare: var_fmlyShare,
+        features: var_features,
+        thisDevice: var_thisDevice,
+        lostModeEnabled: var_lostModeEnabled,
+        deviceDisplayName: var_deviceDisplayName,
+        name: var_name,
+        canWipeAfterLock: var_canWipeAfterLock,
+        isMac: var_isMac,
+        rawDeviceModel: var_rawDeviceModel,
+        baUuid: var_baUuid,
+        deviceDiscoveryId: var_deviceDiscoveryId,
+        scd: var_scd,
+        locationCapable: var_locationCapable,
+        wipeInProgress: var_wipeInProgress,
+        darkWake: var_darkWake,
+        deviceWithYou: var_deviceWithYou,
+        maxMsgChar: var_maxMsgChar,
+        deviceClass: var_deviceClass);
+  }
+
+  @protected
   HwExtra sse_decode_hw_extra(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var var_version = sse_decode_String(deserializer);
@@ -3806,6 +4516,30 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  List<Follow> sse_decode_list_follow(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <Follow>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_follow(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
+  List<FoundDevice> sse_decode_list_found_device(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <FoundDevice>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_found_device(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
   List<IndexedMessagePart> sse_decode_list_indexed_message_part(
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -3872,6 +4606,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  List<(String, bool)> sse_decode_list_record_string_bool(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <(String, bool)>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_record_string_bool(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
   List<TrustedPhoneNumber> sse_decode_list_trusted_phone_number(
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -3882,6 +4629,42 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       ans_.add(sse_decode_trusted_phone_number(deserializer));
     }
     return ans_;
+  }
+
+  @protected
+  Location sse_decode_location(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_address = sse_decode_opt_box_autoadd_address(deserializer);
+    var var_altitude = sse_decode_f_64(deserializer);
+    var var_floorLevel = sse_decode_i_64(deserializer);
+    var var_horizontalAccuracy = sse_decode_f_64(deserializer);
+    var var_isInaccurate = sse_decode_bool(deserializer);
+    var var_latitude = sse_decode_f_64(deserializer);
+    var var_locationId = sse_decode_opt_String(deserializer);
+    var var_locationTimestamp = sse_decode_opt_box_autoadd_i_64(deserializer);
+    var var_longitude = sse_decode_f_64(deserializer);
+    var var_secureLocationTs = sse_decode_i_64(deserializer);
+    var var_timestamp = sse_decode_i_64(deserializer);
+    var var_verticalAccuracy = sse_decode_f_64(deserializer);
+    var var_positionType = sse_decode_opt_String(deserializer);
+    var var_isOld = sse_decode_opt_box_autoadd_bool(deserializer);
+    var var_locationFinished = sse_decode_opt_box_autoadd_bool(deserializer);
+    return Location(
+        address: var_address,
+        altitude: var_altitude,
+        floorLevel: var_floorLevel,
+        horizontalAccuracy: var_horizontalAccuracy,
+        isInaccurate: var_isInaccurate,
+        latitude: var_latitude,
+        locationId: var_locationId,
+        locationTimestamp: var_locationTimestamp,
+        longitude: var_longitude,
+        secureLocationTs: var_secureLocationTs,
+        timestamp: var_timestamp,
+        verticalAccuracy: var_verticalAccuracy,
+        positionType: var_positionType,
+        isOld: var_isOld,
+        locationFinished: var_locationFinished);
   }
 
   @protected
@@ -4284,6 +5067,17 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  Address? sse_decode_opt_box_autoadd_address(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_box_autoadd_address(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
   Attachment? sse_decode_opt_box_autoadd_attachment(
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -4342,11 +5136,44 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  double? sse_decode_opt_box_autoadd_f_64(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_box_autoadd_f_64(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
+  PlatformInt64? sse_decode_opt_box_autoadd_i_64(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_box_autoadd_i_64(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
   LinkMeta? sse_decode_opt_box_autoadd_link_meta(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
 
     if (sse_decode_bool(deserializer)) {
       return (sse_decode_box_autoadd_link_meta(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
+  Location? sse_decode_opt_box_autoadd_location(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_box_autoadd_location(deserializer));
     } else {
       return null;
     }
@@ -4478,6 +5305,17 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
     if (sse_decode_bool(deserializer)) {
       return (sse_decode_box_autoadd_u_64(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
+  List<String>? sse_decode_opt_list_String(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_list_String(deserializer));
     } else {
       return null;
     }
@@ -4664,6 +5502,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  (String, bool) sse_decode_record_string_bool(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_field0 = sse_decode_String(deserializer);
+    var var_field1 = sse_decode_bool(deserializer);
+    return (var_field0, var_field1);
+  }
+
+  @protected
   RegisterState sse_decode_register_state(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
 
@@ -4819,6 +5665,30 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   void
+      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyFriendsClientDefaultAnisetteProvider(
+          FindMyFriendsClientDefaultAnisetteProvider self,
+          SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+        (self as FindMyFriendsClientDefaultAnisetteProviderImpl)
+            .frbInternalSseEncode(move: true),
+        serializer);
+  }
+
+  @protected
+  void
+      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyPhoneClientDefaultAnisetteProvider(
+          FindMyPhoneClientDefaultAnisetteProvider self,
+          SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+        (self as FindMyPhoneClientDefaultAnisetteProviderImpl)
+            .frbInternalSseEncode(move: true),
+        serializer);
+  }
+
+  @protected
+  void
       sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIDSUser(
           IdsUser self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -4863,6 +5733,30 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_usize(
         (self as VerifyBodyImpl).frbInternalSseEncode(move: true), serializer);
+  }
+
+  @protected
+  void
+      sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyFriendsClientDefaultAnisetteProvider(
+          FindMyFriendsClientDefaultAnisetteProvider self,
+          SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+        (self as FindMyFriendsClientDefaultAnisetteProviderImpl)
+            .frbInternalSseEncode(move: false),
+        serializer);
+  }
+
+  @protected
+  void
+      sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyPhoneClientDefaultAnisetteProvider(
+          FindMyPhoneClientDefaultAnisetteProvider self,
+          SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+        (self as FindMyPhoneClientDefaultAnisetteProviderImpl)
+            .frbInternalSseEncode(move: false),
+        serializer);
   }
 
   @protected
@@ -4916,12 +5810,44 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_Map_String_bool(
+      Map<String, bool> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_list_record_string_bool(
+        self.entries.map((e) => (e.key, e.value)).toList(), serializer);
+  }
+
+  @protected
   void
       sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcPushState(
           ArcPushState self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_usize(
         (self as ArcPushStateImpl).frbInternalSseEncode(move: null),
+        serializer);
+  }
+
+  @protected
+  void
+      sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyFriendsClientDefaultAnisetteProvider(
+          FindMyFriendsClientDefaultAnisetteProvider self,
+          SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+        (self as FindMyFriendsClientDefaultAnisetteProviderImpl)
+            .frbInternalSseEncode(move: null),
+        serializer);
+  }
+
+  @protected
+  void
+      sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyPhoneClientDefaultAnisetteProvider(
+          FindMyPhoneClientDefaultAnisetteProvider self,
+          SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+        (self as FindMyPhoneClientDefaultAnisetteProviderImpl)
+            .frbInternalSseEncode(move: null),
         serializer);
   }
 
@@ -5003,6 +5929,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   void sse_encode_String(String self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_list_prim_u_8_strict(utf8.encoder.convert(self), serializer);
+  }
+
+  @protected
+  void sse_encode_address(Address self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_opt_String(self.administrativeArea, serializer);
+    sse_encode_String(self.country, serializer);
+    sse_encode_String(self.countryCode, serializer);
+    sse_encode_opt_list_String(self.formattedAddressLines, serializer);
+    sse_encode_opt_String(self.locality, serializer);
+    sse_encode_opt_String(self.stateCode, serializer);
+    sse_encode_opt_String(self.streetAddress, serializer);
+    sse_encode_opt_String(self.streetName, serializer);
   }
 
   @protected
@@ -5112,6 +6051,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_box_autoadd_address(Address self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_address(self, serializer);
+  }
+
+  @protected
   void sse_encode_box_autoadd_attachment(
       Attachment self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -5166,9 +6111,22 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_box_autoadd_f_64(double self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_f_64(self, serializer);
+  }
+
+  @protected
   void sse_encode_box_autoadd_hw_extra(HwExtra self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_hw_extra(self, serializer);
+  }
+
+  @protected
+  void sse_encode_box_autoadd_i_64(
+      PlatformInt64 self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_64(self, serializer);
   }
 
   @protected
@@ -5183,6 +6141,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       LinkMeta self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_link_meta(self, serializer);
+  }
+
+  @protected
+  void sse_encode_box_autoadd_location(
+      Location self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_location(self, serializer);
   }
 
   @protected
@@ -5374,6 +6339,69 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_follow(Follow self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_64(self.createTimestamp, serializer);
+    sse_encode_i_64(self.expires, serializer);
+    sse_encode_String(self.id, serializer);
+    sse_encode_list_String(self.invitationAcceptedHandles, serializer);
+    sse_encode_list_String(self.invitationFromHandles, serializer);
+    sse_encode_bool(self.isFromMessages, serializer);
+    sse_encode_opt_String(self.offerId, serializer);
+    sse_encode_bool(self.onlyInEvent, serializer);
+    sse_encode_String(self.personIdHash, serializer);
+    sse_encode_bool(self.secureLocationsCapable, serializer);
+    sse_encode_bool(self.shallowOrLiveSecureLocationsCapable, serializer);
+    sse_encode_String(self.source, serializer);
+    sse_encode_bool(self.tkPermission, serializer);
+    sse_encode_i_64(self.updateTimestamp, serializer);
+    sse_encode_opt_box_autoadd_bool(self.fallbackToLegacyAllowed, serializer);
+    sse_encode_opt_box_autoadd_bool(self.optedNotToShare, serializer);
+    sse_encode_opt_box_autoadd_location(self.lastLocation, serializer);
+    sse_encode_bool(self.locateInProgress, serializer);
+  }
+
+  @protected
+  void sse_encode_found_device(FoundDevice self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_opt_String(self.deviceModel, serializer);
+    sse_encode_opt_box_autoadd_bool(self.lowPowerMode, serializer);
+    sse_encode_opt_box_autoadd_i_64(self.passcodeLength, serializer);
+    sse_encode_opt_String(self.id, serializer);
+    sse_encode_opt_String(self.batteryStatus, serializer);
+    sse_encode_opt_box_autoadd_bool(self.lostModeCapable, serializer);
+    sse_encode_opt_box_autoadd_f_64(self.batteryLevel, serializer);
+    sse_encode_opt_box_autoadd_bool(self.locationEnabled, serializer);
+    sse_encode_opt_box_autoadd_bool(self.isConsideredAccessory, serializer);
+    sse_encode_opt_box_autoadd_location(self.location, serializer);
+    sse_encode_opt_String(self.modelDisplayName, serializer);
+    sse_encode_opt_String(self.deviceColor, serializer);
+    sse_encode_opt_box_autoadd_bool(self.activationLocked, serializer);
+    sse_encode_opt_box_autoadd_i_64(self.rm2State, serializer);
+    sse_encode_opt_box_autoadd_bool(self.locFoundEnabled, serializer);
+    sse_encode_opt_box_autoadd_bool(self.nwd, serializer);
+    sse_encode_opt_String(self.deviceStatus, serializer);
+    sse_encode_opt_box_autoadd_bool(self.fmlyShare, serializer);
+    sse_encode_Map_String_bool(self.features, serializer);
+    sse_encode_opt_box_autoadd_bool(self.thisDevice, serializer);
+    sse_encode_opt_box_autoadd_bool(self.lostModeEnabled, serializer);
+    sse_encode_opt_String(self.deviceDisplayName, serializer);
+    sse_encode_opt_String(self.name, serializer);
+    sse_encode_opt_box_autoadd_bool(self.canWipeAfterLock, serializer);
+    sse_encode_opt_box_autoadd_bool(self.isMac, serializer);
+    sse_encode_opt_String(self.rawDeviceModel, serializer);
+    sse_encode_opt_String(self.baUuid, serializer);
+    sse_encode_opt_String(self.deviceDiscoveryId, serializer);
+    sse_encode_opt_box_autoadd_bool(self.scd, serializer);
+    sse_encode_opt_box_autoadd_bool(self.locationCapable, serializer);
+    sse_encode_opt_box_autoadd_bool(self.wipeInProgress, serializer);
+    sse_encode_opt_box_autoadd_bool(self.darkWake, serializer);
+    sse_encode_opt_box_autoadd_bool(self.deviceWithYou, serializer);
+    sse_encode_opt_box_autoadd_i_64(self.maxMsgChar, serializer);
+    sse_encode_opt_String(self.deviceClass, serializer);
+  }
+
+  @protected
   void sse_encode_hw_extra(HwExtra self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_String(self.version, serializer);
@@ -5441,6 +6469,25 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_list_follow(List<Follow> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_follow(item, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_list_found_device(
+      List<FoundDevice> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_found_device(item, serializer);
+    }
+  }
+
+  @protected
   void sse_encode_list_indexed_message_part(
       List<IndexedMessagePart> self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -5498,6 +6545,16 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_list_record_string_bool(
+      List<(String, bool)> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_record_string_bool(item, serializer);
+    }
+  }
+
+  @protected
   void sse_encode_list_trusted_phone_number(
       List<TrustedPhoneNumber> self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -5505,6 +6562,26 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     for (final item in self) {
       sse_encode_trusted_phone_number(item, serializer);
     }
+  }
+
+  @protected
+  void sse_encode_location(Location self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_opt_box_autoadd_address(self.address, serializer);
+    sse_encode_f_64(self.altitude, serializer);
+    sse_encode_i_64(self.floorLevel, serializer);
+    sse_encode_f_64(self.horizontalAccuracy, serializer);
+    sse_encode_bool(self.isInaccurate, serializer);
+    sse_encode_f_64(self.latitude, serializer);
+    sse_encode_opt_String(self.locationId, serializer);
+    sse_encode_opt_box_autoadd_i_64(self.locationTimestamp, serializer);
+    sse_encode_f_64(self.longitude, serializer);
+    sse_encode_i_64(self.secureLocationTs, serializer);
+    sse_encode_i_64(self.timestamp, serializer);
+    sse_encode_f_64(self.verticalAccuracy, serializer);
+    sse_encode_opt_String(self.positionType, serializer);
+    sse_encode_opt_box_autoadd_bool(self.isOld, serializer);
+    sse_encode_opt_box_autoadd_bool(self.locationFinished, serializer);
   }
 
   @protected
@@ -5842,6 +6919,17 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_opt_box_autoadd_address(
+      Address? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_box_autoadd_address(self, serializer);
+    }
+  }
+
+  @protected
   void sse_encode_opt_box_autoadd_attachment(
       Attachment? self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -5896,6 +6984,27 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_opt_box_autoadd_f_64(double? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_box_autoadd_f_64(self, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_opt_box_autoadd_i_64(
+      PlatformInt64? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_box_autoadd_i_64(self, serializer);
+    }
+  }
+
+  @protected
   void sse_encode_opt_box_autoadd_link_meta(
       LinkMeta? self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -5903,6 +7012,17 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_bool(self != null, serializer);
     if (self != null) {
       sse_encode_box_autoadd_link_meta(self, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_opt_box_autoadd_location(
+      Location? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_box_autoadd_location(self, serializer);
     }
   }
 
@@ -6023,6 +7143,17 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_bool(self != null, serializer);
     if (self != null) {
       sse_encode_box_autoadd_u_64(self, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_opt_list_String(
+      List<String>? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_list_String(self, serializer);
     }
   }
 
@@ -6183,6 +7314,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_record_string_bool(
+      (String, bool) self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.$1, serializer);
+    sse_encode_bool(self.$2, serializer);
+  }
+
+  @protected
   void sse_encode_register_state(RegisterState self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     switch (self) {
@@ -6317,6 +7456,52 @@ class ArcPushStateImpl extends RustOpaque implements ArcPushState {
         RustLib.instance.api.rust_arc_decrement_strong_count_ArcPushState,
     rustArcDecrementStrongCountPtr:
         RustLib.instance.api.rust_arc_decrement_strong_count_ArcPushStatePtr,
+  );
+}
+
+@sealed
+class FindMyFriendsClientDefaultAnisetteProviderImpl extends RustOpaque
+    implements FindMyFriendsClientDefaultAnisetteProvider {
+  // Not to be used by end users
+  FindMyFriendsClientDefaultAnisetteProviderImpl.frbInternalDcoDecode(
+      List<dynamic> wire)
+      : super.frbInternalDcoDecode(wire, _kStaticData);
+
+  // Not to be used by end users
+  FindMyFriendsClientDefaultAnisetteProviderImpl.frbInternalSseDecode(
+      BigInt ptr, int externalSizeOnNative)
+      : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount: RustLib.instance.api
+        .rust_arc_increment_strong_count_FindMyFriendsClientDefaultAnisetteProvider,
+    rustArcDecrementStrongCount: RustLib.instance.api
+        .rust_arc_decrement_strong_count_FindMyFriendsClientDefaultAnisetteProvider,
+    rustArcDecrementStrongCountPtr: RustLib.instance.api
+        .rust_arc_decrement_strong_count_FindMyFriendsClientDefaultAnisetteProviderPtr,
+  );
+}
+
+@sealed
+class FindMyPhoneClientDefaultAnisetteProviderImpl extends RustOpaque
+    implements FindMyPhoneClientDefaultAnisetteProvider {
+  // Not to be used by end users
+  FindMyPhoneClientDefaultAnisetteProviderImpl.frbInternalDcoDecode(
+      List<dynamic> wire)
+      : super.frbInternalDcoDecode(wire, _kStaticData);
+
+  // Not to be used by end users
+  FindMyPhoneClientDefaultAnisetteProviderImpl.frbInternalSseDecode(
+      BigInt ptr, int externalSizeOnNative)
+      : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount: RustLib.instance.api
+        .rust_arc_increment_strong_count_FindMyPhoneClientDefaultAnisetteProvider,
+    rustArcDecrementStrongCount: RustLib.instance.api
+        .rust_arc_decrement_strong_count_FindMyPhoneClientDefaultAnisetteProvider,
+    rustArcDecrementStrongCountPtr: RustLib.instance.api
+        .rust_arc_decrement_strong_count_FindMyPhoneClientDefaultAnisetteProviderPtr,
   );
 }
 

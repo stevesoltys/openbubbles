@@ -9,7 +9,7 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'package:freezed_annotation/freezed_annotation.dart' hide protected;
 part 'api.freezed.dart';
 
-// These functions are ignored because they are not marked as `pub`: `config`, `get_phase`, `plist_to_bin`, `plist_to_buf`, `plist_to_string`, `restore`, `setup_push`, `wrap_sink`
+// These functions are ignored because they are not marked as `pub`: `config`, `do_login`, `get_login_config`, `get_phase`, `plist_to_bin`, `plist_to_buf`, `plist_to_string`, `restore`, `setup_push`, `wrap_sink`
 // These types are ignored because they are not used by any `pub` functions: `FLUTTER_RUST_BRIDGE_HANDLER`, `InnerPushState`, `NSArrayClass`, `NSArrayIconArray`, `NSArrayImageArray`, `SavedHardwareState`
 // These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `clone`, `deref`, `deref`, `eq`, `fmt`, `initialize`, `spawn`
 
@@ -144,6 +144,34 @@ Future<String> saveUser({required IdsUser user}) =>
 Future<IdsUser> restoreUser({required String user}) =>
     RustLib.instance.api.crateApiApiRestoreUser(user: user);
 
+Future<FindMyPhoneClientDefaultAnisetteProvider> makeFindMyPhone(
+        {required ArcPushState state}) =>
+    RustLib.instance.api.crateApiApiMakeFindMyPhone(state: state);
+
+Future<List<FoundDevice>> getDevices(
+        {required FindMyPhoneClientDefaultAnisetteProvider client}) =>
+    RustLib.instance.api.crateApiApiGetDevices(client: client);
+
+Future<List<FoundDevice>> refreshDevices(
+        {required ArcPushState state,
+        required FindMyPhoneClientDefaultAnisetteProvider client}) =>
+    RustLib.instance.api
+        .crateApiApiRefreshDevices(state: state, client: client);
+
+Future<FindMyFriendsClientDefaultAnisetteProvider> makeFindMyFriends(
+        {required ArcPushState state}) =>
+    RustLib.instance.api.crateApiApiMakeFindMyFriends(state: state);
+
+Future<List<Follow>> getFollowing(
+        {required FindMyFriendsClientDefaultAnisetteProvider client}) =>
+    RustLib.instance.api.crateApiApiGetFollowing(client: client);
+
+Future<List<Follow>> refreshFollowing(
+        {required ArcPushState state,
+        required FindMyFriendsClientDefaultAnisetteProvider client}) =>
+    RustLib.instance.api
+        .crateApiApiRefreshFollowing(state: state, client: client);
+
 Future<(LoginState, IdsUser?)> tryAuth(
         {required ArcPushState state,
         required String username,
@@ -210,6 +238,14 @@ Future<List<PrivateDeviceInfo>> getSmsTargets(
     RustLib.instance.api.crateApiApiGetSmsTargets(
         state: state, handle: handle, refresh: refresh);
 
+// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<FindMyFriendsClient < DefaultAnisetteProvider >>>
+abstract class FindMyFriendsClientDefaultAnisetteProvider
+    implements RustOpaqueInterface {}
+
+// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<FindMyPhoneClient < DefaultAnisetteProvider >>>
+abstract class FindMyPhoneClientDefaultAnisetteProvider
+    implements RustOpaqueInterface {}
+
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<IDSUser>>
 abstract class IdsUser implements RustOpaqueInterface {}
 
@@ -218,6 +254,53 @@ abstract class JoinedOsConfig implements RustOpaqueInterface {}
 
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<VerifyBody>>
 abstract class VerifyBody implements RustOpaqueInterface {}
+
+class Address {
+  final String? administrativeArea;
+  final String country;
+  final String countryCode;
+  final List<String>? formattedAddressLines;
+  final String? locality;
+  final String? stateCode;
+  final String? streetAddress;
+  final String? streetName;
+
+  const Address({
+    this.administrativeArea,
+    required this.country,
+    required this.countryCode,
+    this.formattedAddressLines,
+    this.locality,
+    this.stateCode,
+    this.streetAddress,
+    this.streetName,
+  });
+
+  @override
+  int get hashCode =>
+      administrativeArea.hashCode ^
+      country.hashCode ^
+      countryCode.hashCode ^
+      formattedAddressLines.hashCode ^
+      locality.hashCode ^
+      stateCode.hashCode ^
+      streetAddress.hashCode ^
+      streetName.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Address &&
+          runtimeType == other.runtimeType &&
+          administrativeArea == other.administrativeArea &&
+          country == other.country &&
+          countryCode == other.countryCode &&
+          formattedAddressLines == other.formattedAddressLines &&
+          locality == other.locality &&
+          stateCode == other.stateCode &&
+          streetAddress == other.streetAddress &&
+          streetName == other.streetName;
+}
 
 class Attachment {
   final AttachmentType aType;
@@ -487,6 +570,249 @@ class ExtensionApp {
           balloon == other.balloon;
 }
 
+class Follow {
+  final PlatformInt64 createTimestamp;
+  final PlatformInt64 expires;
+  final String id;
+  final List<String> invitationAcceptedHandles;
+  final List<String> invitationFromHandles;
+  final bool isFromMessages;
+  final String? offerId;
+  final bool onlyInEvent;
+  final String personIdHash;
+  final bool secureLocationsCapable;
+  final bool shallowOrLiveSecureLocationsCapable;
+  final String source;
+  final bool tkPermission;
+  final PlatformInt64 updateTimestamp;
+  final bool? fallbackToLegacyAllowed;
+  final bool? optedNotToShare;
+  final Location? lastLocation;
+  final bool locateInProgress;
+
+  const Follow({
+    required this.createTimestamp,
+    required this.expires,
+    required this.id,
+    required this.invitationAcceptedHandles,
+    required this.invitationFromHandles,
+    required this.isFromMessages,
+    this.offerId,
+    required this.onlyInEvent,
+    required this.personIdHash,
+    required this.secureLocationsCapable,
+    required this.shallowOrLiveSecureLocationsCapable,
+    required this.source,
+    required this.tkPermission,
+    required this.updateTimestamp,
+    this.fallbackToLegacyAllowed,
+    this.optedNotToShare,
+    this.lastLocation,
+    required this.locateInProgress,
+  });
+
+  @override
+  int get hashCode =>
+      createTimestamp.hashCode ^
+      expires.hashCode ^
+      id.hashCode ^
+      invitationAcceptedHandles.hashCode ^
+      invitationFromHandles.hashCode ^
+      isFromMessages.hashCode ^
+      offerId.hashCode ^
+      onlyInEvent.hashCode ^
+      personIdHash.hashCode ^
+      secureLocationsCapable.hashCode ^
+      shallowOrLiveSecureLocationsCapable.hashCode ^
+      source.hashCode ^
+      tkPermission.hashCode ^
+      updateTimestamp.hashCode ^
+      fallbackToLegacyAllowed.hashCode ^
+      optedNotToShare.hashCode ^
+      lastLocation.hashCode ^
+      locateInProgress.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Follow &&
+          runtimeType == other.runtimeType &&
+          createTimestamp == other.createTimestamp &&
+          expires == other.expires &&
+          id == other.id &&
+          invitationAcceptedHandles == other.invitationAcceptedHandles &&
+          invitationFromHandles == other.invitationFromHandles &&
+          isFromMessages == other.isFromMessages &&
+          offerId == other.offerId &&
+          onlyInEvent == other.onlyInEvent &&
+          personIdHash == other.personIdHash &&
+          secureLocationsCapable == other.secureLocationsCapable &&
+          shallowOrLiveSecureLocationsCapable ==
+              other.shallowOrLiveSecureLocationsCapable &&
+          source == other.source &&
+          tkPermission == other.tkPermission &&
+          updateTimestamp == other.updateTimestamp &&
+          fallbackToLegacyAllowed == other.fallbackToLegacyAllowed &&
+          optedNotToShare == other.optedNotToShare &&
+          lastLocation == other.lastLocation &&
+          locateInProgress == other.locateInProgress;
+}
+
+class FoundDevice {
+  final String? deviceModel;
+  final bool? lowPowerMode;
+  final PlatformInt64? passcodeLength;
+  final String? id;
+  final String? batteryStatus;
+  final bool? lostModeCapable;
+  final double? batteryLevel;
+  final bool? locationEnabled;
+  final bool? isConsideredAccessory;
+  final Location? location;
+  final String? modelDisplayName;
+  final String? deviceColor;
+  final bool? activationLocked;
+  final PlatformInt64? rm2State;
+  final bool? locFoundEnabled;
+  final bool? nwd;
+  final String? deviceStatus;
+  final bool? fmlyShare;
+  final Map<String, bool> features;
+  final bool? thisDevice;
+  final bool? lostModeEnabled;
+  final String? deviceDisplayName;
+  final String? name;
+  final bool? canWipeAfterLock;
+  final bool? isMac;
+  final String? rawDeviceModel;
+  final String? baUuid;
+  final String? deviceDiscoveryId;
+  final bool? scd;
+  final bool? locationCapable;
+  final bool? wipeInProgress;
+  final bool? darkWake;
+  final bool? deviceWithYou;
+  final PlatformInt64? maxMsgChar;
+  final String? deviceClass;
+
+  const FoundDevice({
+    this.deviceModel,
+    this.lowPowerMode,
+    this.passcodeLength,
+    this.id,
+    this.batteryStatus,
+    this.lostModeCapable,
+    this.batteryLevel,
+    this.locationEnabled,
+    this.isConsideredAccessory,
+    this.location,
+    this.modelDisplayName,
+    this.deviceColor,
+    this.activationLocked,
+    this.rm2State,
+    this.locFoundEnabled,
+    this.nwd,
+    this.deviceStatus,
+    this.fmlyShare,
+    required this.features,
+    this.thisDevice,
+    this.lostModeEnabled,
+    this.deviceDisplayName,
+    this.name,
+    this.canWipeAfterLock,
+    this.isMac,
+    this.rawDeviceModel,
+    this.baUuid,
+    this.deviceDiscoveryId,
+    this.scd,
+    this.locationCapable,
+    this.wipeInProgress,
+    this.darkWake,
+    this.deviceWithYou,
+    this.maxMsgChar,
+    this.deviceClass,
+  });
+
+  @override
+  int get hashCode =>
+      deviceModel.hashCode ^
+      lowPowerMode.hashCode ^
+      passcodeLength.hashCode ^
+      id.hashCode ^
+      batteryStatus.hashCode ^
+      lostModeCapable.hashCode ^
+      batteryLevel.hashCode ^
+      locationEnabled.hashCode ^
+      isConsideredAccessory.hashCode ^
+      location.hashCode ^
+      modelDisplayName.hashCode ^
+      deviceColor.hashCode ^
+      activationLocked.hashCode ^
+      rm2State.hashCode ^
+      locFoundEnabled.hashCode ^
+      nwd.hashCode ^
+      deviceStatus.hashCode ^
+      fmlyShare.hashCode ^
+      features.hashCode ^
+      thisDevice.hashCode ^
+      lostModeEnabled.hashCode ^
+      deviceDisplayName.hashCode ^
+      name.hashCode ^
+      canWipeAfterLock.hashCode ^
+      isMac.hashCode ^
+      rawDeviceModel.hashCode ^
+      baUuid.hashCode ^
+      deviceDiscoveryId.hashCode ^
+      scd.hashCode ^
+      locationCapable.hashCode ^
+      wipeInProgress.hashCode ^
+      darkWake.hashCode ^
+      deviceWithYou.hashCode ^
+      maxMsgChar.hashCode ^
+      deviceClass.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is FoundDevice &&
+          runtimeType == other.runtimeType &&
+          deviceModel == other.deviceModel &&
+          lowPowerMode == other.lowPowerMode &&
+          passcodeLength == other.passcodeLength &&
+          id == other.id &&
+          batteryStatus == other.batteryStatus &&
+          lostModeCapable == other.lostModeCapable &&
+          batteryLevel == other.batteryLevel &&
+          locationEnabled == other.locationEnabled &&
+          isConsideredAccessory == other.isConsideredAccessory &&
+          location == other.location &&
+          modelDisplayName == other.modelDisplayName &&
+          deviceColor == other.deviceColor &&
+          activationLocked == other.activationLocked &&
+          rm2State == other.rm2State &&
+          locFoundEnabled == other.locFoundEnabled &&
+          nwd == other.nwd &&
+          deviceStatus == other.deviceStatus &&
+          fmlyShare == other.fmlyShare &&
+          features == other.features &&
+          thisDevice == other.thisDevice &&
+          lostModeEnabled == other.lostModeEnabled &&
+          deviceDisplayName == other.deviceDisplayName &&
+          name == other.name &&
+          canWipeAfterLock == other.canWipeAfterLock &&
+          isMac == other.isMac &&
+          rawDeviceModel == other.rawDeviceModel &&
+          baUuid == other.baUuid &&
+          deviceDiscoveryId == other.deviceDiscoveryId &&
+          scd == other.scd &&
+          locationCapable == other.locationCapable &&
+          wipeInProgress == other.wipeInProgress &&
+          darkWake == other.darkWake &&
+          deviceWithYou == other.deviceWithYou &&
+          maxMsgChar == other.maxMsgChar &&
+          deviceClass == other.deviceClass;
+}
+
 class HwExtra {
   final String version;
   final int protocolVersion;
@@ -586,6 +912,81 @@ class LinkMeta {
           runtimeType == other.runtimeType &&
           data == other.data &&
           attachments == other.attachments;
+}
+
+class Location {
+  final Address? address;
+  final double altitude;
+  final PlatformInt64 floorLevel;
+  final double horizontalAccuracy;
+  final bool isInaccurate;
+  final double latitude;
+  final String? locationId;
+  final PlatformInt64? locationTimestamp;
+  final double longitude;
+  final PlatformInt64 secureLocationTs;
+  final PlatformInt64 timestamp;
+  final double verticalAccuracy;
+  final String? positionType;
+  final bool? isOld;
+  final bool? locationFinished;
+
+  const Location({
+    this.address,
+    required this.altitude,
+    required this.floorLevel,
+    required this.horizontalAccuracy,
+    required this.isInaccurate,
+    required this.latitude,
+    this.locationId,
+    this.locationTimestamp,
+    required this.longitude,
+    required this.secureLocationTs,
+    required this.timestamp,
+    required this.verticalAccuracy,
+    this.positionType,
+    this.isOld,
+    this.locationFinished,
+  });
+
+  @override
+  int get hashCode =>
+      address.hashCode ^
+      altitude.hashCode ^
+      floorLevel.hashCode ^
+      horizontalAccuracy.hashCode ^
+      isInaccurate.hashCode ^
+      latitude.hashCode ^
+      locationId.hashCode ^
+      locationTimestamp.hashCode ^
+      longitude.hashCode ^
+      secureLocationTs.hashCode ^
+      timestamp.hashCode ^
+      verticalAccuracy.hashCode ^
+      positionType.hashCode ^
+      isOld.hashCode ^
+      locationFinished.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Location &&
+          runtimeType == other.runtimeType &&
+          address == other.address &&
+          altitude == other.altitude &&
+          floorLevel == other.floorLevel &&
+          horizontalAccuracy == other.horizontalAccuracy &&
+          isInaccurate == other.isInaccurate &&
+          latitude == other.latitude &&
+          locationId == other.locationId &&
+          locationTimestamp == other.locationTimestamp &&
+          longitude == other.longitude &&
+          secureLocationTs == other.secureLocationTs &&
+          timestamp == other.timestamp &&
+          verticalAccuracy == other.verticalAccuracy &&
+          positionType == other.positionType &&
+          isOld == other.isOld &&
+          locationFinished == other.locationFinished;
 }
 
 @freezed

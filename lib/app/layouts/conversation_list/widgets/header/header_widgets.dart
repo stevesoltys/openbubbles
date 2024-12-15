@@ -38,7 +38,7 @@ class HeaderText extends StatelessWidget {
             : "Messages",
         style: context.textTheme.headlineLarge!.copyWith(
           color: context.theme.colorScheme.onBackground,
-          fontWeight: FontWeight.w400,
+          fontWeight: FontWeight.w600,
           fontSize: fontSize,
         ),
         maxLines: 1,
@@ -273,12 +273,11 @@ class CupertinoOverflowMenu extends StatelessWidget {
             icon: CupertinoIcons.person_crop_circle_badge_xmark,
             onTap: () => goToUnknownSenders(context),
           ),
-        // if (ss.isMinCatalinaSync)
-        //   PullDownMenuItem(
-        //     title: 'Find My',
-        //     icon: CupertinoIcons.location,
-        //     onTap: () => goToFindMy(context),
-        //   ),
+          PullDownMenuItem(
+            title: 'Find My',
+            icon: CupertinoIcons.location,
+            onTap: () => goToFindMy(context),
+          ),
         if (extraItems)
           PullDownMenuItem(
             title: 'Search',

@@ -1,7 +1,10 @@
+use std::collections::HashMap;
+
 pub use rustpush::{NSArrayClass, SupportAction, NSArray, SupportAlert, PrivateDeviceInfo, NormalMessage, MessageType, UpdateExtensionMessage, ErrorMessage, UnsendMessage, EditMessage, PartExtension, IconChangeMessage, RichLinkImageAttachmentSubstitute, ChangeParticipantMessage, ReactMessage, Reaction, ReactMessageType, RenameMessage, LPLinkMetadata, NSURL, LPIconMetadata, LPImageMetadata, LinkMeta, ExtensionApp, NSDictionaryClass, BalloonLayout, Balloon, IndexedMessagePart, AttachmentType, MacOSConfig, Message, MessageTarget, HardwareConfig, APSConnection, APSConnectionResource, APSState, Attachment, AuthPhone, IDSUserIdentity, MMCSFile, MessageInst, MessagePart, MessageParts, OSConfig, RelayConfig, ResourceState};
 pub use rustpush::{PushError, IDSUser, IMClient, ConversationData, register};
 pub use icloud_auth::{VerifyBody, TrustedPhoneNumber};
-pub use icloud_auth::{LoginState, AnisetteConfiguration, AppleAccount};
+pub use icloud_auth::{LoginState, AppleAccount};
+pub use rustpush::findmy::{Follow, Address, Location, FoundDevice};
 
 #[repr(C)]
 #[frb(mirror(SupportAction))]
@@ -436,4 +439,96 @@ pub struct DartPrivateDeviceInfo {
     pub sub_services: Vec<String>,
 }
 
+
+#[frb(mirror(Follow))]
+pub struct DartFollow {
+    pub create_timestamp: i64,
+    pub expires: i64,
+    pub id: String,
+    pub invitation_accepted_handles: Vec<String>,
+    pub invitation_from_handles: Vec<String>,
+    pub is_from_messages: bool,
+    pub offer_id: Option<String>,
+    pub only_in_event: bool,
+    pub person_id_hash: String,
+    pub secure_locations_capable: bool,
+    pub shallow_or_live_secure_locations_capable: bool,
+    pub source: String,
+    pub tk_permission: bool,
+    pub update_timestamp: i64,
+    pub fallback_to_legacy_allowed: Option<bool>,
+    pub opted_not_to_share: Option<bool>,
+    pub last_location: Option<Location>,
+    pub locate_in_progress: bool,
+}
+
+#[frb(mirror(Location))]
+pub struct DartLocation {
+    pub address: Option<Address>,
+    pub altitude: f64,
+    pub floor_level: i64,
+    pub horizontal_accuracy: f64,
+    pub is_inaccurate: bool,
+    pub latitude: f64,
+    pub location_id: Option<String>,
+    pub location_timestamp: Option<i64>,
+    pub longitude: f64,
+    pub secure_location_ts: i64,
+    pub timestamp: i64,
+    pub vertical_accuracy: f64,
+    pub position_type: Option<String>,
+    pub is_old: Option<bool>,
+    pub location_finished: Option<bool>,
+}
+
+#[frb(mirror(FoundDevice))]
+pub struct DartFoundDevice {
+    pub device_model: Option<String>,
+    pub low_power_mode: Option<bool>,
+    pub passcode_length: Option<i64>,
+    pub id: Option<String>,
+    pub battery_status: Option<String>,
+    pub lost_mode_capable: Option<bool>,
+    pub battery_level: Option<f64>,
+    pub location_enabled: Option<bool>,
+    pub is_considered_accessory: Option<bool>,
+    pub location: Option<Location>,
+    pub model_display_name: Option<String>,
+    pub device_color: Option<String>,
+    pub activation_locked: Option<bool>,
+    pub rm2_state: Option<i64>,
+    pub loc_found_enabled: Option<bool>,
+    pub nwd: Option<bool>,
+    pub device_status: Option<String>,
+    pub fmly_share: Option<bool>,
+    pub features: HashMap<String, bool>,
+    pub this_device: Option<bool>,
+    pub lost_mode_enabled: Option<bool>,
+    pub device_display_name: Option<String>,
+    pub name: Option<String>,
+    pub can_wipe_after_lock: Option<bool>,
+    pub is_mac: Option<bool>,
+    pub raw_device_model: Option<String>,
+    pub ba_uuid: Option<String>,
+    pub device_discovery_id: Option<String>,
+    pub scd: Option<bool>,
+    pub location_capable: Option<bool>,
+    pub wipe_in_progress: Option<bool>,
+    pub dark_wake: Option<bool>,
+    pub device_with_you: Option<bool>,
+    pub max_msg_char: Option<i64>,
+    pub device_class: Option<String>,
+}
+
+#[frb(mirror(Address))]
+pub struct DartAddress {
+    pub administrative_area: Option<String>,
+    pub country: String,
+    pub country_code: String,
+    pub formatted_address_lines: Option<Vec<String>>,
+    pub locality: Option<String>,
+    pub state_code: Option<String>,
+    pub street_address: Option<String>,
+    pub street_name: Option<String>,
+}
 
