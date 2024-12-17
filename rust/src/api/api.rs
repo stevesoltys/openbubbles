@@ -12,7 +12,7 @@ pub use plist::Value;
 use prost::Message as prostMessage;
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use tokio::{runtime::Runtime, select, sync::{broadcast, mpsc, oneshot::{self, Sender}, Mutex, RwLock}};
-use rustpush::{authenticate_apple, authenticate_phone, findmy::FindMyState, login_apple_delegates, LoginDelegate};
+use rustpush::{authenticate_apple, authenticate_phone, findmy::{FindMyClient, FindMyState, MULTIPLEX_SERVICE}, login_apple_delegates, APSMessage, LoginDelegate, MADRID_SERVICE};
 
 pub use rustpush::findmy::{FindMyFriendsClient, FindMyPhoneClient};
 pub use icloud_auth::DefaultAnisetteProvider;
@@ -96,7 +96,9 @@ pub enum RegistrationPhase {
 pub struct InnerPushState {
     pub anisette: Option<ArcAnisetteClient<DefaultAnisetteProvider>>,
     pub conn: Option<APSConnection>,
+    pub inq_queue: Option<Mutex<broadcast::Receiver<APSMessage>>>,
     pub client: Option<IMClient>,
+    pub fmfd: Option<FindMyClient<DefaultAnisetteProvider>>,
     pub conf_dir: PathBuf,
     pub os_config: Option<JoinedOSConfig>,
     pub account: Option<AppleAccount<DefaultAnisetteProvider>>,
@@ -118,6 +120,8 @@ pub async fn new_push_state(dir: String) -> Arc<PushState> {
         anisette: None,
         conn: None,
         client: None,
+        inq_queue: None,
+        fmfd: None,
         conf_dir: dir,
         os_config: None,
         account: None,
@@ -224,12 +228,26 @@ async fn restore(curr_state: &PushState) {
         }
     }
 
+    if let Ok(mut users) = plist::from_file::<_, Vec<Dictionary>>(&id_path) {
+        for user in &mut users {
+            let registration = user.get_mut("registration").unwrap().as_dictionary_mut().unwrap();
+            if !registration.contains_key("com.apple.madrid") {
+                // migrate!
+                *registration = Dictionary::from_iter([
+                    ("com.apple.madrid", Value::Dictionary(registration.clone()))
+                ]);
+            }
+        }
+        std::fs::write(&id_path, plist_to_string(&users).unwrap()).unwrap();
+    }
+
     let Ok(state) = plist::from_file::<_, SavedHardwareState>(&hw_config_path) else { return };
 
     // even if we failed on the initial connection, we don't care cuz we're restoring.
     inner.os_config = Some(state.os_config);
     inner.identity = Some(state.identity.clone());
     let (connection, _err) = setup_push(inner.os_config.as_ref().unwrap(), &state.identity, Some(&state.push), hw_config_path).await;
+    inner.inq_queue = Some(Mutex::new(connection.messages_cont.subscribe()));
     inner.conn = Some(connection);
     let provider = Some(default_provider(inner.os_config.as_ref().unwrap().get_gsa_config(&*inner.conn.as_ref().unwrap().state.read().await), inner.conf_dir.join("anisette_test")));
     inner.anisette = provider;
@@ -238,10 +256,22 @@ async fn restore(curr_state: &PushState) {
     let Ok(users) = plist::from_file::<_, Vec<IDSUser>>(&id_path) else { return };
 
     inner.client = Some(IMClient::new(inner.conn.as_ref().unwrap().clone(), users, state.identity, 
-        inner.conf_dir.join("id_cache.plist"), inner.os_config.as_ref().unwrap().config(), Box::new(move |updated_keys| {
+        &[&MADRID_SERVICE, &MULTIPLEX_SERVICE], inner.conf_dir.join("id_cache.plist"), inner.os_config.as_ref().unwrap().config(), Box::new(move |updated_keys| {
             println!("updated keys!!!");
             std::fs::write(&id_path, plist_to_string(&updated_keys).unwrap()).unwrap();
         })).await);
+    
+    let id_path = inner.conf_dir.join("findmy.plist");
+
+    if let Ok(state) = plist::from_file(id_path) {
+        inner.fmfd = Some(FindMyClient::new(inner.conn.as_ref().unwrap().clone(), inner.os_config.as_ref().unwrap().config(), state, inner.anisette.clone().unwrap(), inner.client.as_ref().unwrap().identity.clone()).await.unwrap());
+    }
+}
+
+pub async fn can_find_my(state: &Arc<PushState>) -> anyhow::Result<bool> {
+    let inner = state.0.read().await;
+    let id_path = inner.conf_dir.join("findmy.plist");
+    Ok(plist::from_file::<_, FindMyState>(id_path).is_ok())
 }
 
 pub async fn register_ids(state: &Arc<PushState>, users: &Vec<IDSUser>) -> anyhow::Result<Option<SupportAlert>> {
@@ -252,7 +282,7 @@ pub async fn register_ids(state: &Arc<PushState>, users: &Vec<IDSUser>) -> anyho
     let mut inner = state.0.write().await;
     let conn_state = inner.conn.as_ref().unwrap().clone();
 
-    if let Err(err) = register(inner.os_config.as_deref().unwrap(), &*conn_state.state.read().await, &mut users, inner.identity.as_ref().unwrap()).await {
+    if let Err(err) = register(inner.os_config.as_deref().unwrap(), &*conn_state.state.read().await, &[&MADRID_SERVICE, &MULTIPLEX_SERVICE], &mut users, inner.identity.as_ref().unwrap()).await {
         return if let PushError::CustomerMessage(support) = err {
             Ok(Some(support))
         } else {
@@ -262,9 +292,14 @@ pub async fn register_ids(state: &Arc<PushState>, users: &Vec<IDSUser>) -> anyho
     let id_path = inner.conf_dir.join("id.plist");
     std::fs::write(&id_path, plist_to_string(&users).unwrap()).unwrap();
 
-    inner.client = Some(IMClient::new(conn_state, users, inner.identity.clone().unwrap(), inner.conf_dir.join("id_cache.plist"), inner.os_config.as_ref().unwrap().config(), Box::new(move |updated_keys| {
+    inner.client = Some(IMClient::new(conn_state, users, inner.identity.clone().unwrap(), &[&MADRID_SERVICE, &MULTIPLEX_SERVICE], inner.conf_dir.join("id_cache.plist"), inner.os_config.as_ref().unwrap().config(), Box::new(move |updated_keys| {
         std::fs::write(&id_path, plist_to_string(&updated_keys).unwrap()).unwrap();
     })).await);
+
+    let id_path = inner.conf_dir.join("findmy.plist");
+    if let Ok(state) = plist::from_file(id_path) {
+        inner.fmfd = Some(FindMyClient::new(inner.conn.as_ref().unwrap().clone(), inner.os_config.as_ref().unwrap().config(), state, inner.anisette.clone().unwrap(), inner.client.as_ref().unwrap().identity.clone()).await.unwrap());
+    }
 
     Ok(None)
 }
@@ -335,6 +370,7 @@ pub async fn configure_macos(state: &Arc<PushState>, config: &JoinedOSConfig) ->
     if let Some(err) = err {
         return Err(err.into())
     }
+    inner.inq_queue = Some(Mutex::new(connection.messages_cont.subscribe()));
     inner.conn = Some(connection);
     let provider = Some(default_provider(get_login_config(&*inner).await, inner.conf_dir.join("anisette_test")));
     inner.anisette = provider;
@@ -352,6 +388,7 @@ pub async fn refresh_token(state: &Arc<PushState>) -> anyhow::Result<()> {
     if let Some(err) = err {
         return Err(err.into())
     }
+    inner.inq_queue = Some(Mutex::new(connection.messages_cont.subscribe()));
     inner.conn = Some(connection);
     
     Ok(())
@@ -536,8 +573,14 @@ pub async fn recv_wait(state: &Arc<PushState>) -> PollResult {
     let recv_path = state.0.read().await;
     let mut local_lock = recv_path.local_messages.lock().await;
     *recv_path.cancel_poll.lock().await = Some(send);
+    let mut inq_lock = recv_path.inq_queue.as_ref().unwrap().lock().await;
     select! {
-        msg = recv_path.client.as_ref().expect("no client??/").receive_wait() => {
+        msg = inq_lock.recv() => {
+            let msg = msg.unwrap();
+            if let Some(fmfd) = &recv_path.fmfd {
+                let _ = fmfd.handle(msg.clone()).await;
+            }
+            let msg = recv_path.client.as_ref().expect("no client??/").handle(msg).await;
             *recv_path.cancel_poll.lock().await = None;
             let msg = match msg {
                 Ok(Some(msg)) => Some(PushMessage::IMessage(msg)),
@@ -610,7 +653,7 @@ pub async fn validate_targets(state: &Arc<PushState>, targets: Vec<String>, send
     if !matches!(state.get_phase().await, RegistrationPhase::Registered) {
         panic!("Wrong phase! (validate_targets)")
     }
-    Ok(state.0.read().await.client.as_ref().unwrap().identity.validate_targets(&targets, &sender).await?)
+    Ok(state.0.read().await.client.as_ref().unwrap().identity.validate_targets(&targets, "com.apple.madrid", &sender).await?)
 }
 
 pub async fn get_phase(state: &Arc<PushState>) -> RegistrationPhase {
@@ -756,7 +799,7 @@ pub async fn make_find_my_friends(state: &Arc<PushState>) -> anyhow::Result<Find
     let id_path = inner.conf_dir.join("findmy.plist");
     let state: FindMyState = plist::from_file(id_path)?;
     
-    Ok(FindMyFriendsClient::new(inner.os_config.as_deref().unwrap(), state, inner.conn.clone().unwrap(), inner.anisette.clone().unwrap()).await?)
+    Ok(FindMyFriendsClient::new(inner.os_config.as_deref().unwrap(), state, inner.conn.clone().unwrap(), inner.anisette.clone().unwrap(), false).await?)
 }
 
 pub async fn get_following(client: &mut FindMyFriendsClient<DefaultAnisetteProvider>) -> Vec<Follow> {
@@ -769,11 +812,24 @@ pub async fn refresh_following(state: &Arc<PushState>, client: &mut FindMyFriend
     Ok(client.following.clone())
 }
 
+pub async fn get_background_following(state: &Arc<PushState>) -> Vec<Follow> {
+    let inner = state.0.read().await;
+    let x = inner.fmfd.as_ref().unwrap().daemon.lock().await.following.clone();
+    x
+}
+
+pub async fn refresh_background_following(state: &Arc<PushState>) -> anyhow::Result<Vec<Follow>> {
+    let inner = state.0.read().await;
+    let mut x = inner.fmfd.as_ref().unwrap().daemon.lock().await;
+    x.refresh(inner.os_config.as_deref().unwrap()).await?;
+    Ok(x.following.clone())
+}
+
 async fn do_login(conf_dir: &Path, username: &str, pet: &str, spd: &Dictionary, anisette: &ArcAnisetteClient<DefaultAnisetteProvider>, os_config: &dyn OSConfig) -> anyhow::Result<IDSUser> {
     let delegates = login_apple_delegates(username, pet, spd["adsid"].as_string().unwrap(), &mut *anisette.lock().await, os_config, &[LoginDelegate::IDS, LoginDelegate::MobileMe]).await.unwrap();
 
     let mobileme = delegates.mobileme.unwrap();
-    let findmy = FindMyState::new(spd["DsPrsId"].as_unsigned_integer().unwrap().to_string(), &mobileme);
+    let findmy = FindMyState::new(spd["DsPrsId"].as_unsigned_integer().unwrap().to_string(), spd["acname"].as_string().unwrap().to_string(), &mobileme);
 
     let id_path = conf_dir.join("findmy.plist");
     std::fs::write(id_path, plist_to_string(&findmy).unwrap()).unwrap();
@@ -901,8 +957,9 @@ pub async fn reset_state(state: &Arc<PushState>, reset_hw: bool) -> anyhow::Resu
     let conn_state = inner.conn.as_ref().unwrap().clone();
     info!("b {:?}", inner.os_config.is_some());
     inner.client = None;
+    inner.fmfd = None;
     // try deregistering from iMessage, but if it fails we don't really care
-    let _ = register(inner.os_config.as_deref().unwrap(), &*conn_state.state.read().await, &mut [], inner.identity.as_ref().unwrap()).await;
+    let _ = register(inner.os_config.as_deref().unwrap(), &*conn_state.state.read().await, &[], &mut [], inner.identity.as_ref().unwrap()).await;
     info!("c");
     inner.account = None;
     let _ = std::fs::remove_file(inner.conf_dir.join("id.plist"));
@@ -910,6 +967,7 @@ pub async fn reset_state(state: &Arc<PushState>, reset_hw: bool) -> anyhow::Resu
     let _ = std::fs::remove_file(inner.conf_dir.join("id_cache.plist"));
 
     if reset_hw {
+        inner.inq_queue = None;
         inner.conn = None;
         inner.os_config = None;
         let _ = std::fs::remove_file(inner.conf_dir.join("hw_info.plist"));

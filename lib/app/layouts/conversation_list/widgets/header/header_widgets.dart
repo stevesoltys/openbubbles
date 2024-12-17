@@ -273,6 +273,7 @@ class CupertinoOverflowMenu extends StatelessWidget {
             icon: CupertinoIcons.person_crop_circle_badge_xmark,
             onTap: () => goToUnknownSenders(context),
           ),
+        if (backend.supportsFindMy())
           PullDownMenuItem(
             title: 'Find My',
             icon: CupertinoIcons.location,

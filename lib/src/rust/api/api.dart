@@ -19,6 +19,9 @@ Future<ArcPushState> newPushState({required String dir}) =>
 Future<ArcPushState> serviceFromPtr({required String ptr}) =>
     RustLib.instance.api.crateApiApiServiceFromPtr(ptr: ptr);
 
+Future<bool> canFindMy({required ArcPushState state}) =>
+    RustLib.instance.api.crateApiApiCanFindMy(state: state);
+
 Future<SupportAlert?> registerIds(
         {required ArcPushState state, required List<IdsUser> users}) =>
     RustLib.instance.api.crateApiApiRegisterIds(state: state, users: users);
@@ -171,6 +174,13 @@ Future<List<Follow>> refreshFollowing(
         required FindMyFriendsClientDefaultAnisetteProvider client}) =>
     RustLib.instance.api
         .crateApiApiRefreshFollowing(state: state, client: client);
+
+Future<List<Follow>> getBackgroundFollowing({required ArcPushState state}) =>
+    RustLib.instance.api.crateApiApiGetBackgroundFollowing(state: state);
+
+Future<List<Follow>> refreshBackgroundFollowing(
+        {required ArcPushState state}) =>
+    RustLib.instance.api.crateApiApiRefreshBackgroundFollowing(state: state);
 
 Future<(LoginState, IdsUser?)> tryAuth(
         {required ArcPushState state,

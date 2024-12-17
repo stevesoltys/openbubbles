@@ -150,7 +150,7 @@ class _FindMyPageState extends OptimizedState<FindMyPage> with SingleTickerProvi
               subtitle: null, 
               handle: Handle(address: e.invitationAcceptedHandles.first), 
               lastUpdated: e.lastLocation?.timestamp != null ? DateTime.fromMillisecondsSinceEpoch(e.lastLocation!.timestamp) : null,
-              status: LocationStatus.legacy, 
+              status: null, 
               locatingInProgress: false,
             )
           )

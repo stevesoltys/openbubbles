@@ -50,7 +50,8 @@ abstract class Queue extends GetxService {
     QueueItem queued = items.removeAt(0);
 
     try {
-      await handleQueueItem(queued).catchError((err) async {
+      await handleQueueItem(queued).catchError((err, trace) async {
+        Logger.error("Failed to handle queued item!", error: err, trace: trace);
         if (queued is OutgoingItem && ss.settings.cancelQueuedMessages.value) {
           final toCancel = List<OutgoingItem>.from(items.whereType<OutgoingItem>().where((e) => e.chat.guid == queued.chat.guid));
           for (OutgoingItem i in toCancel) {

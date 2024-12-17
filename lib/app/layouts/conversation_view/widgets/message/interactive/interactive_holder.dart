@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:bluebubbles/app/layouts/conversation_view/widgets/message/interactive/apple_pay.dart';
+import 'package:bluebubbles/app/layouts/conversation_view/widgets/message/interactive/find_my.dart';
 import 'package:bluebubbles/app/layouts/conversation_view/widgets/message/interactive/embedded_media.dart';
 import 'package:bluebubbles/app/layouts/conversation_view/widgets/message/interactive/supported_interactive.dart';
 import 'package:bluebubbles/app/layouts/conversation_view/widgets/message/interactive/unsupported_interactive.dart';
@@ -204,6 +205,11 @@ class _InteractiveHolderState extends CustomState<InteractiveHolder, void, Messa
                                       data: data,
                                       message: message,
                                     );
+                                  case "com.apple.findmy.FindMyMessagesApp":
+                                    return FindMy(
+                                      data: data,
+                                      message: message,
+                                    );
                                   default:
                                     if (data.isSupported) {
                                       return SupportedInteractive(
@@ -222,7 +228,7 @@ class _InteractiveHolderState extends CustomState<InteractiveHolder, void, Messa
                               }
                             }
                           ),
-                          if (appIcon != null && (hasImage || (payloadData?.appData?.first.isLive ?? false)))
+                          if (appIcon != null && (hasImage || ((payloadData?.appData?.first.isLive ?? false) && (payloadData?.appData?.first.isSupported ?? false))))
                           Positioned(
                             child: ClipRRect(
                               child: Image.memory(

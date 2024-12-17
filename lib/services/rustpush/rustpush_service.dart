@@ -1033,7 +1033,7 @@ class RustPushBackend implements BackendService {
 
   @override
   bool supportsFindMy() {
-    return false;
+    return pushService.findMy;
   }
 
   @override
@@ -1081,6 +1081,8 @@ class RustPushBackend implements BackendService {
 
 class RustPushService extends GetxService {
   late lib.ArcPushState state;
+
+  var findMy = false;
 
   Map<String, api.Attachment> attachments = {};
 
@@ -1242,7 +1244,7 @@ class RustPushService extends GetxService {
           transferName: part.field0.name,
           totalBytes: await part.field0.getSize(),
           hasLivePhoto: myIris != null,
-          metadata: {"rustpush": await api.saveAttachment(att: part.field0), "myIris": myIris != null ? api.saveAttachment(att: myIris) : null},
+          metadata: {"rustpush": await api.saveAttachment(att: part.field0), "myIris": myIris != null ? await api.saveAttachment(att: myIris) : null},
         ));
         body.add(Run(
           range: [bodyString.length, 1],
@@ -1389,6 +1391,7 @@ class RustPushService extends GetxService {
         payloadData: innerMsg.field0.app?.balloon != null ? appToData(innerMsg.field0.app!) : innerMsg.field0.linkMeta != null ? linkToData(innerMsg.field0.linkMeta!) : null,
         amkSessionId: innerMsg.field0.app?.balloon != null ? myMsg.id : null,
         verificationFailed: myMsg.verificationFailed,
+        hasApplePayloadData: innerMsg.field0.app?.balloon != null,
       );
     } else if (myMsg.message is api.Message_RenameMessage) {
       var msg = myMsg.message as api.Message_RenameMessage;
@@ -1859,6 +1862,30 @@ class RustPushService extends GetxService {
       ));
     }
   }
+  
+  Timer? myTimer;
+
+  List<Function> subscriptions = [];
+  Function subscribeToLocationUpdates(Function subscribe) {
+    var timer = ((timer) async {
+      var subs = await api.refreshBackgroundFollowing(state: pushService.state);
+      for (var sub in subscriptions) {
+        sub(subs);
+      }
+    });
+    if (subscriptions.isEmpty) {
+      myTimer = Timer.periodic(const Duration(seconds: 5), timer);
+    }
+    timer(null);
+    subscriptions.add(subscribe);
+    return () {
+      subscriptions.remove(subscribe);
+      if (subscriptions.isEmpty) {
+        myTimer!.cancel();
+        myTimer = null;
+      }
+    };
+  }
 
   Uint8List getQrInfo(bool allowSharing, Uint8List data) {
     var b = BytesBuilder();
@@ -2051,6 +2078,7 @@ class RustPushService extends GetxService {
         Logger.info("statecheck");
         if ((await api.getPhase(state: state)) == api.RegistrationPhase.registered) {
           ss.settings.finishedSetup.value = true;
+          ss.saveSettings();
         }
         Logger.info("service");
       } else {
@@ -2058,9 +2086,11 @@ class RustPushService extends GetxService {
         serviceId = randomString(8);
         if ((await api.getPhase(state: state)) == api.RegistrationPhase.registered) {
           ss.settings.finishedSetup.value = true;
+          ss.saveSettings();
           doPoll();
         }
       }
+      pushService.findMy = await api.canFindMy(state: state);
     })();
     await initFuture;
     Logger.info("initDone");
