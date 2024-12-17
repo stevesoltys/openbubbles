@@ -17,6 +17,7 @@ class FindMyFriend {
     required this.lastUpdated,
     required this.status,
     required this.locatingInProgress,
+    this.id,
   });
 
   final double? latitude;
@@ -29,6 +30,7 @@ class FindMyFriend {
   final DateTime? lastUpdated;
   final LocationStatus? status;
   final bool locatingInProgress;
+  final String? id;
 
   factory FindMyFriend.fromJson(Map<String, dynamic> json) => FindMyFriend(
     latitude: json["coordinates"]?[0].toDouble(),

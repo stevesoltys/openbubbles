@@ -61,6 +61,8 @@ class _FindMyPageState extends OptimizedState<FindMyPage> with SingleTickerProvi
   bool refreshing2 = false;
   bool canRefresh = false;
 
+  Timer? myTimer;
+
   api.FindMyFriendsClientDefaultAnisetteProvider? fmfClient;
   api.FindMyPhoneClientDefaultAnisetteProvider? fmipClient;
 
@@ -68,6 +70,8 @@ class _FindMyPageState extends OptimizedState<FindMyPage> with SingleTickerProvi
   void initState() {
     super.initState();
     getLocations();
+
+    myTimer = Timer.periodic(const Duration(seconds: 5), (timer) => getLocations());
 
     socket.socket.on("new-findmy-location", (data) {
       try {
@@ -89,14 +93,14 @@ class _FindMyPageState extends OptimizedState<FindMyPage> with SingleTickerProvi
       } catch (_) {}
     });
 
-    // Allow users to refresh after 30sec
-    Future.delayed(const Duration(seconds: 30), () {
-      if (mounted) {
-        setState(() {
-          canRefresh = true;
-        });
-      }
-    });
+    // // Allow users to refresh after 30sec
+    // Future.delayed(const Duration(seconds: 30), () {
+    //   if (mounted) {
+    //     setState(() {
+    //       canRefresh = true;
+    //     });
+    //   }
+    // });
   }
 
   /// Fetches the FindMy data from the server.
@@ -152,6 +156,7 @@ class _FindMyPageState extends OptimizedState<FindMyPage> with SingleTickerProvi
               lastUpdated: e.lastLocation?.timestamp != null ? DateTime.fromMillisecondsSinceEpoch(e.lastLocation!.timestamp) : null,
               status: null, 
               locatingInProgress: false,
+              id: e.id,
             )
           )
           .toList()
@@ -303,22 +308,22 @@ class _FindMyPageState extends OptimizedState<FindMyPage> with SingleTickerProvi
     }
     
 
-    // Call the FindMy Friends refresh anyways so that new data comes through the socket
-    if (!refreshFriends) {
-      http.refreshFindMyFriends();
-    } else {
-      setState(() {
-        canRefresh = false;
-      });
-      // Allow users to refresh after 30sec
-      Future.delayed(const Duration(seconds: 30), () {
-        if (mounted) {
-          setState(() {
-            canRefresh = true;
-          });
-        }
-      });
-    }
+    // // Call the FindMy Friends refresh anyways so that new data comes through the socket
+    // if (!refreshFriends) {
+    //   http.refreshFindMyFriends();
+    // } else {
+    //   setState(() {
+    //     canRefresh = false;
+    //   });
+    //   // Allow users to refresh after 30sec
+    //   Future.delayed(const Duration(seconds: 30), () {
+    //     if (mounted) {
+    //       setState(() {
+    //         canRefresh = true;
+    //       });
+    //     }
+    //   });
+    // }
   }
 
   void buildFriendMarker(FindMyFriend friend) {
@@ -395,6 +400,7 @@ class _FindMyPageState extends OptimizedState<FindMyPage> with SingleTickerProvi
     mapController.dispose();
     popupController.dispose();
     tabController.dispose();
+    myTimer?.cancel();
     // TODO
     socket.socket.off("new-findmy-location");
     super.dispose();
@@ -841,6 +847,9 @@ class _FindMyPageState extends OptimizedState<FindMyPage> with SingleTickerProvi
                                 leading: ContactAvatarWidget(handle: item.handle),
                                 title: Text(item.handle?.displayName ?? item.title ?? "Unknown Friend"),
                                 subtitle: Text(ss.settings.redactedMode.value ? "Location" : (item.longAddress ?? "No location found")),
+                                onTap: () async {
+                                  await api.selectFriend(state: pushService.state, client: fmfClient!, friend: item.id);
+                                },
                                 onLongPress: () async {
                                   const encoder = JsonEncoder.withIndent("     ");
                                   final str = encoder.convert(item.toJson());
@@ -1455,6 +1464,11 @@ class _FindMyPageState extends OptimizedState<FindMyPage> with SingleTickerProvi
         ),
         PopupMarkerLayer(
           options: PopupMarkerLayerOptions(
+            onPopupEvent: (ev, m) async {
+              final item = m.isEmpty ? null : friends
+                      .firstWhere((e) => e.latitude == m[0].point.latitude && e.longitude == m[0].point.longitude).id;
+              await api.selectFriend(state: pushService.state, client: fmfClient!, friend: item);
+            },
             popupController: popupController,
             markers: markers.values.toList(),
             popupDisplayOptions: PopupDisplayOptions(

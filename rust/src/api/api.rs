@@ -812,6 +812,20 @@ pub async fn refresh_following(state: &Arc<PushState>, client: &mut FindMyFriend
     Ok(client.following.clone())
 }
 
+pub async fn select_friend(state: &Arc<PushState>, client: &mut FindMyFriendsClient<DefaultAnisetteProvider>, friend: Option<String>) -> anyhow::Result<Vec<Follow>> {
+    let inner = state.0.read().await;
+    client.selected_friend = friend;
+    client.refresh(inner.os_config.as_deref().unwrap()).await?;
+    Ok(client.following.clone())
+}
+
+pub async fn select_background_friend(state: &Arc<PushState>, friend: Option<String>) -> anyhow::Result<Vec<Follow>> {
+    let inner = state.0.read().await;
+    let mut x = inner.fmfd.as_ref().unwrap().daemon.lock().await;
+    x.selected_friend = friend;
+    Ok(x.following.clone())
+}
+
 pub async fn get_background_following(state: &Arc<PushState>) -> Vec<Follow> {
     let inner = state.0.read().await;
     let x = inner.fmfd.as_ref().unwrap().daemon.lock().await.following.clone();

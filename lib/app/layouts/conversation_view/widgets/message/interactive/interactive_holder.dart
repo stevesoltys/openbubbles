@@ -9,6 +9,7 @@ import 'package:bluebubbles/app/layouts/conversation_view/widgets/message/intera
 import 'package:bluebubbles/app/layouts/conversation_view/widgets/message/interactive/url_preview.dart';
 import 'package:bluebubbles/app/layouts/conversation_view/widgets/message/interactive/url_preview.legacy.dart';
 import 'package:bluebubbles/app/layouts/conversation_view/widgets/message/misc/tail_clipper.dart';
+import 'package:bluebubbles/app/layouts/conversation_view/widgets/message/popup/message_popup_holder.dart';
 import 'package:bluebubbles/app/wrappers/stateful_boilerplate.dart';
 import 'package:bluebubbles/helpers/helpers.dart';
 import 'package:bluebubbles/database/models.dart' hide PayloadType;
@@ -209,6 +210,7 @@ class _InteractiveHolderState extends CustomState<InteractiveHolder, void, Messa
                                     return FindMy(
                                       data: data,
                                       message: message,
+                                      isPopup: PopupScope.maybeOf(context) != null,
                                     );
                                   default:
                                     if (data.isSupported) {

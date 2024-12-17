@@ -175,6 +175,18 @@ Future<List<Follow>> refreshFollowing(
     RustLib.instance.api
         .crateApiApiRefreshFollowing(state: state, client: client);
 
+Future<List<Follow>> selectFriend(
+        {required ArcPushState state,
+        required FindMyFriendsClientDefaultAnisetteProvider client,
+        String? friend}) =>
+    RustLib.instance.api
+        .crateApiApiSelectFriend(state: state, client: client, friend: friend);
+
+Future<List<Follow>> selectBackgroundFriend(
+        {required ArcPushState state, String? friend}) =>
+    RustLib.instance.api
+        .crateApiApiSelectBackgroundFriend(state: state, friend: friend);
+
 Future<List<Follow>> getBackgroundFollowing({required ArcPushState state}) =>
     RustLib.instance.api.crateApiApiGetBackgroundFollowing(state: state);
 

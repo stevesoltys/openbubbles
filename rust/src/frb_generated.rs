@@ -39,7 +39,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
     default_rust_auto_opaque = RustAutoOpaqueMoi,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.3.0";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = -563095110;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 1751463586;
 
 // Section: executor
 
@@ -2501,6 +2501,145 @@ fn wire__crate__api__api__save_user_impl(
                         let output_ok = crate::api::api::save_user(&*api_user_guard)?;
                         Ok(output_ok)
                     })(),
+                )
+            }
+        },
+    )
+}
+fn wire__crate__api__api__select_background_friend_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "select_background_friend",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_state = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Arc<PushState>>,
+            >>::sse_decode(&mut deserializer);
+            let api_friend = <Option<String>>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, flutter_rust_bridge::for_generated::anyhow::Error>(
+                    (move || async move {
+                        let mut api_state_guard = None;
+                        let decode_indices_ =
+                            flutter_rust_bridge::for_generated::lockable_compute_decode_order(
+                                vec![flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                    &api_state, 0, false,
+                                )],
+                            );
+                        for i in decode_indices_ {
+                            match i {
+                                0 => {
+                                    api_state_guard =
+                                        Some(api_state.lockable_decode_async_ref().await)
+                                }
+                                _ => unreachable!(),
+                            }
+                        }
+                        let api_state_guard = api_state_guard.unwrap();
+                        let output_ok = crate::api::api::select_background_friend(
+                            &*api_state_guard,
+                            api_friend,
+                        )
+                        .await?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
+fn wire__crate__api__api__select_friend_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "select_friend",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_state = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Arc<PushState>>,
+            >>::sse_decode(&mut deserializer);
+            let api_client = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<
+                    FindMyFriendsClient<DefaultAnisetteProvider>,
+                >,
+            >>::sse_decode(&mut deserializer);
+            let api_friend = <Option<String>>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, flutter_rust_bridge::for_generated::anyhow::Error>(
+                    (move || async move {
+                        let mut api_state_guard = None;
+                        let mut api_client_guard = None;
+                        let decode_indices_ =
+                            flutter_rust_bridge::for_generated::lockable_compute_decode_order(
+                                vec![
+                                    flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                        &api_state, 0, false,
+                                    ),
+                                    flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                        &api_client,
+                                        1,
+                                        true,
+                                    ),
+                                ],
+                            );
+                        for i in decode_indices_ {
+                            match i {
+                                0 => {
+                                    api_state_guard =
+                                        Some(api_state.lockable_decode_async_ref().await)
+                                }
+                                1 => {
+                                    api_client_guard =
+                                        Some(api_client.lockable_decode_async_ref_mut().await)
+                                }
+                                _ => unreachable!(),
+                            }
+                        }
+                        let api_state_guard = api_state_guard.unwrap();
+                        let mut api_client_guard = api_client_guard.unwrap();
+                        let output_ok = crate::api::api::select_friend(
+                            &*api_state_guard,
+                            &mut *api_client_guard,
+                            api_friend,
+                        )
+                        .await?;
+                        Ok(output_ok)
+                    })()
+                    .await,
                 )
             }
         },
@@ -5597,17 +5736,21 @@ fn pde_ffi_dispatcher_primary_impl(
         45 => wire__crate__api__api__restore_user_impl(port, ptr, rust_vec_len, data_len),
         46 => wire__crate__api__api__save_attachment_impl(port, ptr, rust_vec_len, data_len),
         47 => wire__crate__api__api__save_user_impl(port, ptr, rust_vec_len, data_len),
-        48 => wire__crate__api__api__send_impl(port, ptr, rust_vec_len, data_len),
-        49 => wire__crate__api__api__send_2fa_sms_impl(port, ptr, rust_vec_len, data_len),
-        50 => wire__crate__api__api__send_2fa_to_devices_impl(port, ptr, rust_vec_len, data_len),
-        51 => wire__crate__api__api__service_from_ptr_impl(port, ptr, rust_vec_len, data_len),
-        52 => wire__crate__api__api__try_auth_impl(port, ptr, rust_vec_len, data_len),
-        53 => wire__crate__api__api__upload_attachment_impl(port, ptr, rust_vec_len, data_len),
-        54 => wire__crate__api__api__upload_mmcs_impl(port, ptr, rust_vec_len, data_len),
-        55 => wire__crate__api__api__validate_cert_impl(port, ptr, rust_vec_len, data_len),
-        56 => wire__crate__api__api__validate_targets_impl(port, ptr, rust_vec_len, data_len),
-        57 => wire__crate__api__api__verify_2fa_impl(port, ptr, rust_vec_len, data_len),
-        58 => wire__crate__api__api__verify_2fa_sms_impl(port, ptr, rust_vec_len, data_len),
+        48 => {
+            wire__crate__api__api__select_background_friend_impl(port, ptr, rust_vec_len, data_len)
+        }
+        49 => wire__crate__api__api__select_friend_impl(port, ptr, rust_vec_len, data_len),
+        50 => wire__crate__api__api__send_impl(port, ptr, rust_vec_len, data_len),
+        51 => wire__crate__api__api__send_2fa_sms_impl(port, ptr, rust_vec_len, data_len),
+        52 => wire__crate__api__api__send_2fa_to_devices_impl(port, ptr, rust_vec_len, data_len),
+        53 => wire__crate__api__api__service_from_ptr_impl(port, ptr, rust_vec_len, data_len),
+        54 => wire__crate__api__api__try_auth_impl(port, ptr, rust_vec_len, data_len),
+        55 => wire__crate__api__api__upload_attachment_impl(port, ptr, rust_vec_len, data_len),
+        56 => wire__crate__api__api__upload_mmcs_impl(port, ptr, rust_vec_len, data_len),
+        57 => wire__crate__api__api__validate_cert_impl(port, ptr, rust_vec_len, data_len),
+        58 => wire__crate__api__api__validate_targets_impl(port, ptr, rust_vec_len, data_len),
+        59 => wire__crate__api__api__verify_2fa_impl(port, ptr, rust_vec_len, data_len),
+        60 => wire__crate__api__api__verify_2fa_sms_impl(port, ptr, rust_vec_len, data_len),
         _ => unreachable!(),
     }
 }

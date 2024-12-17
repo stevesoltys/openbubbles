@@ -19,12 +19,14 @@ import 'dart:async';
 class FindMy extends StatefulWidget {
   final iMessageAppData data;
   final Message message;
+  final bool isPopup;
 
 
   FindMy({
     super.key,
     required this.data,
     required this.message,
+    this.isPopup = false,
   });
 
   @override
@@ -33,6 +35,8 @@ class FindMy extends StatefulWidget {
 
 class _FindMyState extends OptimizedState<FindMy> with AutomaticKeepAliveClientMixin {
   iMessageAppData get data => widget.data;
+
+  final MapController mapController = MapController();
 
   @override
   bool get wantKeepAlive => true;
@@ -47,6 +51,7 @@ class _FindMyState extends OptimizedState<FindMy> with AutomaticKeepAliveClientM
     var uri = Uri.parse(data.url!.replaceAll("+", "%2B"));
     var dataKey = base64.decode(uri.queryParameters["FindMyMessagePayloadZippedDataKey"]!);
     var decoded = json.decode(utf8.decode(ZLibCodec(raw: true).decode(dataKey)));
+    print(decoded);
     mainLocation = RustPushBBUtils.bbHandleToRust(widget.message.getHandle()!);
     userPosition[mainLocation] = FindMyFriend(
       latitude: decoded["initialLocation"]["latitude"],
@@ -71,6 +76,9 @@ class _FindMyState extends OptimizedState<FindMy> with AutomaticKeepAliveClientM
 
   @override
   void dispose() {
+    if (widget.isPopup) {
+      api.selectBackgroundFriend(state: pushService.state, friend: null);
+    }
     cancel();
     super.dispose();
   }
@@ -94,12 +102,17 @@ class _FindMyState extends OptimizedState<FindMy> with AutomaticKeepAliveClientM
       var raw = handle.split(":")[1];
 
       var e = follows.firstWhereOrNull((f) => f.invitationAcceptedHandles[0] == raw);
-      if (e?.expires != null && e?.expires != 0) {
+      if (e?.expires != null && e?.expires != 0 && handle == mainLocation) {
         expires = DateTime.fromMillisecondsSinceEpoch(e!.expires);
+      }
+      if (e != null && handle == mainLocation && widget.isPopup) {
+        api.selectBackgroundFriend(state: pushService.state, friend: e.id);
       }
       if (e?.lastLocation == null) continue;
 
-      isLive = true;
+      if (handle == mainLocation) {
+        isLive = true;
+      }
       
       userPosition[handle] = FindMyFriend(
         latitude: e!.lastLocation?.latitude,
@@ -146,6 +159,11 @@ class _FindMyState extends OptimizedState<FindMy> with AutomaticKeepAliveClientM
     for (FindMyFriend e in friendsWithLocation) {
       buildFriendMarker(e);
     }
+
+    if (!widget.isPopup && userPosition[mainLocation] != null) {
+      mapController.move(LatLng(userPosition[mainLocation]!.latitude!, userPosition[mainLocation]!.longitude!), 15);
+    }
+
     print(userPosition);
     setState(() {});
   }
@@ -168,65 +186,68 @@ class _FindMyState extends OptimizedState<FindMy> with AutomaticKeepAliveClientM
     final str = data.userInfo?.subcaption;
     return Stack(
       children: [
-        FlutterMap(
-          // mapController: mapController,
-          options: MapOptions(
-            initialZoom: 15.0,
-            minZoom: 1.0,
-            maxZoom: 18.0,
-            initialCenter: userPosition[mainLocation] == null ? const LatLng(0, 0) : LatLng(userPosition[mainLocation]!.latitude!, userPosition[mainLocation]!.longitude!),
-            // Hide popup when the map is tapped.
-            keepAlive: true,
-            interactionOptions: const InteractionOptions(
-              flags: InteractiveFlag.all & ~InteractiveFlag.rotate,
-            ),
-            onMapReady: () {
+        IgnorePointer(
+          ignoring: !widget.isPopup,
+          child: FlutterMap(
+            mapController: mapController,
+            options: MapOptions(
+              initialZoom: 15.0,
+              minZoom: 1.0,
+              maxZoom: 18.0,
+              initialCenter: userPosition[mainLocation] == null ? const LatLng(0, 0) : LatLng(userPosition[mainLocation]!.latitude!, userPosition[mainLocation]!.longitude!),
+              // Hide popup when the map is tapped.
+              keepAlive: true,
+              interactionOptions: const InteractionOptions(
+                flags: InteractiveFlag.all & ~InteractiveFlag.rotate,
+              ),
+              onMapReady: () {
 
-            },
-          ),
-          children: [
-            TileLayer(
-              urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-              userAgentPackageName: 'com.bluebubbles.app',
+              },
             ),
-            PopupMarkerLayer(
-              options: PopupMarkerLayerOptions(
-                // popupController: popupController,
-                markers: markers.values.toList(),
-                popupDisplayOptions: PopupDisplayOptions(
-                  builder: (context, marker) {
-                    final ValueKey? key = marker.key as ValueKey?;
-                    if (key?.value == "current") return const SizedBox();
-                    final item = userPosition.values
-                          .firstWhere((e) => e.latitude == marker.point.latitude && e.longitude == marker.point.longitude);
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: 5.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: context.theme.colorScheme.properSurface.withOpacity(0.8),
+            children: [
+              TileLayer(
+                urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                userAgentPackageName: 'com.bluebubbles.app',
+              ),
+              PopupMarkerLayer(
+                options: PopupMarkerLayerOptions(
+                  // popupController: popupController,
+                  markers: markers.values.toList(),
+                  popupDisplayOptions: PopupDisplayOptions(
+                    builder: (context, marker) {
+                      final ValueKey? key = marker.key as ValueKey?;
+                      if (key?.value == "current") return const SizedBox();
+                      final item = userPosition.values
+                            .firstWhere((e) => e.latitude == marker.point.latitude && e.longitude == marker.point.longitude);
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 5.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: context.theme.colorScheme.properSurface.withOpacity(0.8),
+                          ),
+                          padding: const EdgeInsets.all(10),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(item.handle?.displayName ?? item.title ?? "Unknown Friend",
+                                  style: context.theme.textTheme.labelLarge),
+                              Text(ss.settings.redactedMode.value ? "Location" : (item.longAddress ?? "Initial location"), style: context.theme.textTheme.bodySmall),
+                              if (item.lastUpdated != null && item.status != LocationStatus.live)
+                                Text("Last updated ${buildDate(item.lastUpdated)}", style: context.theme.textTheme.bodySmall),
+                              if (item.status != null)
+                                Text("${item.status!.name.capitalize!} Location", style: context.theme.textTheme.bodySmall),
+                            ],
+                          ),
                         ),
-                        padding: const EdgeInsets.all(10),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(item.handle?.displayName ?? item.title ?? "Unknown Friend",
-                                style: context.theme.textTheme.labelLarge),
-                            Text(ss.settings.redactedMode.value ? "Location" : (item.longAddress ?? "Initial location"), style: context.theme.textTheme.bodySmall),
-                            if (item.lastUpdated != null && item.status != LocationStatus.live)
-                              Text("Last updated ${buildDate(item.lastUpdated)}", style: context.theme.textTheme.bodySmall),
-                            if (item.status != null)
-                              Text("${item.status!.name.capitalize!} Location", style: context.theme.textTheme.bodySmall),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
         if (!isLive || expires != null)
         Positioned(
