@@ -94,7 +94,7 @@ class _FindMyState extends OptimizedState<FindMy> with AutomaticKeepAliveClientM
       var raw = handle.split(":")[1];
 
       var e = follows.firstWhereOrNull((f) => f.invitationAcceptedHandles[0] == raw);
-      if (e?.expires != 0) {
+      if (e?.expires != null && e?.expires != 0) {
         expires = DateTime.fromMillisecondsSinceEpoch(e!.expires);
       }
       if (e?.lastLocation == null) continue;
