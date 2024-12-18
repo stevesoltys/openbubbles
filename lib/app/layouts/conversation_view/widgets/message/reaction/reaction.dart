@@ -89,6 +89,8 @@ class ReactionWidgetState extends OptimizedState<ReactionWidget> {
 
   @override
   Widget build(BuildContext context) {
+    var emoji = ReactionTypes.reactionToEmoji[reactionType] ?? reaction.associatedMessageEmoji ?? "X";
+
     if (ss.settings.skin.value != Skins.iOS) {
       return Container(
         width: 30,
@@ -156,7 +158,7 @@ class ReactionWidgetState extends OptimizedState<ReactionWidget> {
             child: Builder(
                 builder: (context) {
                   final text = Text(
-                    ReactionTypes.reactionToEmoji[reactionType] ?? "X",
+                    emoji,
                     style: const TextStyle(fontSize: 15, fontFamily: 'Apple Color Emoji'),
                     textAlign: TextAlign.center,
                   );
@@ -206,15 +208,24 @@ class ReactionWidgetState extends OptimizedState<ReactionWidget> {
               width: iosSize*0.8,
               height: iosSize*0.8,
               child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(6.5).add(EdgeInsets.only(right: reactionType == "emphasize" ? 1 : 0)),
-                  child: SvgPicture.asset(
-                    'assets/reactions/$reactionType-black.svg',
-                    colorFilter: ColorFilter.mode(reactionType == "love"
-                        ? Colors.pink
-                        : (reactionIsFromMe ? context.theme.colorScheme.onPrimary : context.theme.colorScheme.properOnSurface), BlendMode.srcIn),
-                  ),
-                )
+                child: Builder(
+                  builder: (context) {
+                    final text = Text(
+                      emoji,
+                      style: const TextStyle(fontSize: 14, fontFamily: 'Apple Color Emoji'),
+                      textAlign: TextAlign.center,
+                    );
+                    // rotate thumbs down to match iOS
+                    if (reactionType == "dislike") {
+                      return Transform(
+                        transform: Matrix4.identity()..rotateY(pi),
+                        alignment: FractionalOffset.center,
+                        child: text,
+                      );
+                    }
+                    return text;
+                  }
+                ),
               ),
             )
           )

@@ -920,8 +920,8 @@ class RustPushBackend implements BackendService {
     ReactionTypes.LIKE: api.Reaction.like,
     ReactionTypes.DISLIKE: api.Reaction.dislike,
     ReactionTypes.LAUGH: api.Reaction.laugh,
-    ReactionTypes.EMPHASIZE: api.Reaction.emphsize,
-    ReactionTypes.QUESTION: api.Reaction.question
+    ReactionTypes.EMPHASIZE: api.Reaction.emphasize,
+    ReactionTypes.QUESTION: api.Reaction.question,
   };
 
   @override
@@ -937,7 +937,7 @@ class RustPushBackend implements BackendService {
             toUuid: selected.guid!,
             toPart: repPart ?? 0,
             toText: selected.text ?? "",
-            reaction: api.ReactMessageType.react(reaction: reactionMap[reaction]!, enable: enabled))));
+            reaction: api.ReactMessageType.react(reaction: reactionMap[reaction]?.call() ?? api.Reaction.emoji(reaction), enable: enabled))));
     await sendMsg(msg);
     msg.sentTimestamp = DateTime.now().millisecondsSinceEpoch;
     return (await pushService.reflectMessageDyn(msg))!;
@@ -1085,15 +1085,6 @@ class RustPushService extends GetxService {
   var findMy = false;
 
   Map<String, api.Attachment> attachments = {};
-
-  var invReactionMap = {
-    api.Reaction.heart: ReactionTypes.LOVE,
-    api.Reaction.like: ReactionTypes.LIKE,
-    api.Reaction.dislike: ReactionTypes.DISLIKE,
-    api.Reaction.laugh: ReactionTypes.LAUGH,
-    api.Reaction.emphsize: ReactionTypes.EMPHASIZE,
-    api.Reaction.question: ReactionTypes.QUESTION,
-  };
 
   Future<List<String>> doValidateTargets(List<String> targets, String handle) async {
     List<String> available;
@@ -1441,11 +1432,27 @@ class RustPushService extends GetxService {
     } else if (myMsg.message is api.Message_React) {
       var msg = myMsg.message as api.Message_React;
       String? reaction;
+      String? emoji;
       api.ExtensionApp? app;
       (AttributedBody, String, List<Attachment?>)? attributedBodyData;
       if (msg.field0.reaction is api.ReactMessageType_React) {
         var msgType = msg.field0.reaction as api.ReactMessageType_React;
-        reaction = invReactionMap[msgType.reaction]!;
+        if (msgType.reaction is api.Reaction_Heart) {
+          reaction = ReactionTypes.LOVE;
+        } else if (msgType.reaction is api.Reaction_Like) {
+          reaction = ReactionTypes.LIKE;
+        } else if (msgType.reaction is api.Reaction_Dislike) {
+          reaction = ReactionTypes.DISLIKE;
+        } else if (msgType.reaction is api.Reaction_Laugh) {
+          reaction = ReactionTypes.LAUGH;
+        } else if (msgType.reaction is api.Reaction_Emphasize) {
+          reaction = ReactionTypes.EMPHASIZE;
+        } else if (msgType.reaction is api.Reaction_Question) {
+          reaction = ReactionTypes.QUESTION;
+        } else if (msgType.reaction is api.Reaction_Emoji) {
+          reaction = ReactionTypes.EMOJI;
+          emoji = (msgType.reaction as api.Reaction_Emoji).field0;
+        }
         if (!msgType.enable) {
           reaction = "-$reaction";
         }
@@ -1488,6 +1495,7 @@ class RustPushService extends GetxService {
         associatedMessagePart: msg.field0.toPart,
         associatedMessageGuid: reaction == null ? null : msg.field0.toUuid,
         associatedMessageType: reaction,
+        associatedMessageEmoji: emoji,
         text: attributedBodyData?.$2,
         attributedBody: attributedBodyData != null ? [attributedBodyData.$1] : [],
         attachments: attributedBodyData?.$3 ?? [],

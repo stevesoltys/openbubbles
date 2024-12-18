@@ -263,6 +263,7 @@ class Message {
   int? associatedMessagePart;
   String? associatedMessageType;
   String? expressiveSendStyleId;
+  String? associatedMessageEmoji;
   Handle? handle;
   bool hasAttachments;
   bool hasReactions;
@@ -427,6 +428,7 @@ class Message {
     this.amkSessionId,
     this.verificationFailed = false,
     this.sendingServiceId,
+    this.associatedMessageEmoji,
   }) {
       if (handle != null && handleId == null) handleId = handle!.originalROWID;
       if (error != null) _error.value = error;
@@ -526,6 +528,7 @@ class Message {
       amkSessionId: json['amkSessionId'],
       verificationFailed: json['verificationFailed'],
       sendingServiceId: json['sendingServiceId'],
+      associatedMessageEmoji: json['associatedMessageEmoji'],
     );
   }
 
@@ -1299,6 +1302,7 @@ class Message {
       "verificationFailed": verificationFailed,
       "amkSessionId": amkSessionId,
       "sendingServiceId": sendingServiceId,
+      "associatedMessageEmoji": associatedMessageEmoji,
     };
     if (includeObjects) {
       map['attachments'] = (attachments).map((e) => e!.toMap()).toList();

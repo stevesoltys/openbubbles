@@ -15,6 +15,8 @@ class ReactionTypes {
   static const String EMPHASIZE = "emphasize";
   // ignore: non_constant_identifier_names
   static const String QUESTION = "question";
+  // ignore: non_constant_identifier_names
+  static const String EMOJI = "emoji";
 
   static List<String> toList() {
     return [
@@ -24,6 +26,7 @@ class ReactionTypes {
       LAUGH,
       EMPHASIZE,
       QUESTION,
+      EMOJI,
     ];
   }
 
@@ -34,12 +37,14 @@ class ReactionTypes {
     LAUGH: "laughed at",
     EMPHASIZE: "emphasized",
     QUESTION: "questioned",
+    EMOJI: "emoji_placeholder",
     "-$LOVE": "removed a heart from",
     "-$LIKE": "removed a like from",
     "-$DISLIKE": "removed a dislike from",
     "-$LAUGH": "removed a laugh from",
     "-$EMPHASIZE": "removed an exclamation from",
     "-$QUESTION": "removed a question mark from",
+    "-$EMOJI": "remove an emoji_placeholder from",
   };
 
   static final Map<String, String> reactionToEmoji = {
@@ -47,7 +52,7 @@ class ReactionTypes {
     LIKE: Emojis.thumbsUp,
     DISLIKE: Emojis.thumbsDown,
     LAUGH: Emojis.faceWithTearsOfJoy,
-    EMPHASIZE: Emojis.redExclamationMark,
+    EMPHASIZE: Emojis.doubleExclamationMark,
     QUESTION: Emojis.redQuestionMark,
   };
 

@@ -1569,14 +1569,19 @@ sealed class ReactMessageType with _$ReactMessageType {
   }) = ReactMessageType_Extension;
 }
 
-enum Reaction {
-  heart,
-  like,
-  dislike,
-  laugh,
-  emphsize,
-  question,
-  ;
+@freezed
+sealed class Reaction with _$Reaction {
+  const Reaction._();
+
+  const factory Reaction.heart() = Reaction_Heart;
+  const factory Reaction.like() = Reaction_Like;
+  const factory Reaction.dislike() = Reaction_Dislike;
+  const factory Reaction.laugh() = Reaction_Laugh;
+  const factory Reaction.emphasize() = Reaction_Emphasize;
+  const factory Reaction.question() = Reaction_Question;
+  const factory Reaction.emoji(
+    String field0,
+  ) = Reaction_Emoji;
 }
 
 @freezed

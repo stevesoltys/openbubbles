@@ -304,8 +304,9 @@ pub enum DartReaction {
     Like,
     Dislike,
     Laugh,
-    Emphsize,
-    Question
+    Emphasize,
+    Question,
+    Emoji(String),
 }
 
 #[repr(C)]

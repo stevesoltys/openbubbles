@@ -2566,6 +2566,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  Reaction dco_decode_box_autoadd_reaction(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_reaction(raw);
+  }
+
+  @protected
   RenameMessage dco_decode_box_autoadd_rename_message(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return dco_decode_rename_message(raw);
@@ -3549,7 +3555,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     switch (raw[0]) {
       case 0:
         return ReactMessageType_React(
-          reaction: dco_decode_reaction(raw[1]),
+          reaction: dco_decode_box_autoadd_reaction(raw[1]),
           enable: dco_decode_bool(raw[2]),
         );
       case 1:
@@ -3565,7 +3571,26 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   @protected
   Reaction dco_decode_reaction(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
-    return Reaction.values[raw as int];
+    switch (raw[0]) {
+      case 0:
+        return Reaction_Heart();
+      case 1:
+        return Reaction_Like();
+      case 2:
+        return Reaction_Dislike();
+      case 3:
+        return Reaction_Laugh();
+      case 4:
+        return Reaction_Emphasize();
+      case 5:
+        return Reaction_Question();
+      case 6:
+        return Reaction_Emoji(
+          dco_decode_String(raw[1]),
+        );
+      default:
+        throw Exception("unreachable");
+    }
   }
 
   @protected
@@ -4336,6 +4361,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return (sse_decode_react_message(deserializer));
+  }
+
+  @protected
+  Reaction sse_decode_box_autoadd_reaction(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_reaction(deserializer));
   }
 
   @protected
@@ -5611,7 +5642,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var tag_ = sse_decode_i_32(deserializer);
     switch (tag_) {
       case 0:
-        var var_reaction = sse_decode_reaction(deserializer);
+        var var_reaction = sse_decode_box_autoadd_reaction(deserializer);
         var var_enable = sse_decode_bool(deserializer);
         return ReactMessageType_React(
             reaction: var_reaction, enable: var_enable);
@@ -5627,8 +5658,27 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   @protected
   Reaction sse_decode_reaction(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    var inner = sse_decode_i_32(deserializer);
-    return Reaction.values[inner];
+
+    var tag_ = sse_decode_i_32(deserializer);
+    switch (tag_) {
+      case 0:
+        return Reaction_Heart();
+      case 1:
+        return Reaction_Like();
+      case 2:
+        return Reaction_Dislike();
+      case 3:
+        return Reaction_Laugh();
+      case 4:
+        return Reaction_Emphasize();
+      case 5:
+        return Reaction_Question();
+      case 6:
+        var var_field0 = sse_decode_String(deserializer);
+        return Reaction_Emoji(var_field0);
+      default:
+        throw UnimplementedError('');
+    }
   }
 
   @protected
@@ -6384,6 +6434,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       ReactMessage self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_react_message(self, serializer);
+  }
+
+  @protected
+  void sse_encode_box_autoadd_reaction(
+      Reaction self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_reaction(self, serializer);
   }
 
   @protected
@@ -7432,7 +7489,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           enable: final enable
         ):
         sse_encode_i_32(0, serializer);
-        sse_encode_reaction(reaction, serializer);
+        sse_encode_box_autoadd_reaction(reaction, serializer);
         sse_encode_bool(enable, serializer);
       case ReactMessageType_Extension(spec: final spec, body: final body):
         sse_encode_i_32(1, serializer);
@@ -7446,7 +7503,25 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   @protected
   void sse_encode_reaction(Reaction self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_i_32(self.index, serializer);
+    switch (self) {
+      case Reaction_Heart():
+        sse_encode_i_32(0, serializer);
+      case Reaction_Like():
+        sse_encode_i_32(1, serializer);
+      case Reaction_Dislike():
+        sse_encode_i_32(2, serializer);
+      case Reaction_Laugh():
+        sse_encode_i_32(3, serializer);
+      case Reaction_Emphasize():
+        sse_encode_i_32(4, serializer);
+      case Reaction_Question():
+        sse_encode_i_32(5, serializer);
+      case Reaction_Emoji(field0: final field0):
+        sse_encode_i_32(6, serializer);
+        sse_encode_String(field0, serializer);
+      default:
+        throw UnimplementedError('');
+    }
   }
 
   @protected

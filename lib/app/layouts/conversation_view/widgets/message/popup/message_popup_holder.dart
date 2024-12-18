@@ -109,7 +109,7 @@ class _MessagePopupHolderState extends OptimizedState<MessagePopupHolder> {
     }
   }
 
-  void sendTapback([String? type, int? part]) {
+  void sendTapback([String? type, String? emoji, int? part]) {
     HapticFeedback.lightImpact();
     final reaction = type ?? ss.settings.quickTapbackType.value;
     Logger.info("Sending reaction type: $reaction");
@@ -120,13 +120,14 @@ class _MessagePopupHolderState extends OptimizedState<MessagePopupHolder> {
         associatedMessageGuid: message.guid,
         associatedMessageType: reaction,
         associatedMessagePart: part,
+        associatedMessageEmoji: emoji,
         dateCreated: DateTime.now(),
         hasAttachments: false,
         isFromMe: true,
         handleId: 0,
       ),
       selected: message,
-      reaction: reaction,
+      reaction: emoji != null ? reaction.startsWith("-") ? "-$emoji" : emoji : reaction,
     ));
   }
 
@@ -138,14 +139,14 @@ class _MessagePopupHolderState extends OptimizedState<MessagePopupHolder> {
         : ss.settings.doubleTapForDetails.value || message.guid!.startsWith('temp')
         ? () => openPopup()
         : ss.settings.enableQuickTapback.value && widget.cvController.chat.isIMessage
-        ? () => sendTapback(null, widget.part.part)
+        ? () => sendTapback(null, null, widget.part.part)
         : null,
       onLongPress: widget.isEditing ? null
         : ss.settings.doubleTapForDetails.value &&
         ss.settings.enableQuickTapback.value &&
         widget.cvController.chat.isIMessage &&
         !message.guid!.startsWith('temp')
-        ? () => sendTapback(null, widget.part.part)
+        ? () => sendTapback(null, null, widget.part.part)
         : () => openPopup(),
       onSecondaryTapUp: widget.isEditing ? null : (details) async {
         if (!kIsWeb && !kIsDesktop) return;

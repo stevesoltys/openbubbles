@@ -11,6 +11,7 @@ import 'package:bluebubbles/app/layouts/conversation_view/widgets/message/popup/
 import 'package:bluebubbles/app/layouts/conversation_view/widgets/message/popup/reaction_picker_clipper.dart';
 import 'package:bluebubbles/app/components/avatars/contact_avatar_widget.dart';
 import 'package:bluebubbles/app/components/custom/custom_cupertino_alert_dialog.dart';
+import 'package:bluebubbles/app/layouts/conversation_view/widgets/message/reaction/reaction_clipper.dart';
 import 'package:bluebubbles/app/layouts/findmy/findmy_pin_clipper.dart';
 import 'package:bluebubbles/app/wrappers/theme_switcher.dart';
 import 'package:bluebubbles/helpers/helpers.dart';
@@ -20,6 +21,7 @@ import 'package:bluebubbles/app/wrappers/titlebar_wrapper.dart';
 import 'package:bluebubbles/app/wrappers/stateful_boilerplate.dart';
 import 'package:bluebubbles/services/network/backend_service.dart';
 import 'package:bluebubbles/services/rustpush/rustpush_service.dart';
+import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:file_picker/file_picker.dart' as picker;
 import 'package:bluebubbles/src/rust/api/api.dart' as api;
 import 'package:bluebubbles/services/services.dart';
@@ -52,7 +54,7 @@ class MessagePopup extends StatefulWidget {
   final MessageWidgetController controller;
   final ConversationViewController cvController;
   final Tuple3<bool, bool, bool> serverDetails;
-  final Function([String? type, int? part]) sendTapback;
+  final Function([String? type, String? emoji, int? part]) sendTapback;
   final BuildContext? Function() widthContext;
 
   const MessagePopup({
@@ -121,6 +123,8 @@ class _MessagePopupState extends OptimizedState<MessagePopup> with SingleTickerP
 
   BuildContext get widthContext => widget.widthContext.call() ?? context;
 
+  List<String> reactOptions = ReactionTypes.toList();
+
   @override
   void initState() {
     super.initState();
@@ -138,11 +142,30 @@ class _MessagePopupState extends OptimizedState<MessagePopup> with SingleTickerP
       reactions = getUniqueReactionMessages(message.associatedMessages
           .where((e) => ReactionTypes.toList().contains(e.associatedMessageType?.replaceAll("-", "")) && (e.associatedMessagePart ?? 0) == part.part)
           .toList());
-      final self = reactions.firstWhereOrNull((e) => e.isFromMe!)?.associatedMessageType;
-      if (!(self?.contains("-") ?? true)) {
-        selfReaction = self;
+      final reaction = reactions.firstWhereOrNull((e) => e.isFromMe!);
+      final myReact = reaction?.associatedMessageType;
+      if (!(myReact?.contains("-") ?? true)) {
+        selfReaction = myReact == "emoji" ? reaction!.associatedMessageEmoji : myReact;
         currentlySelectedReaction = selfReaction;
       }
+
+      (() async {
+      var reactions = await getReactionList();
+        setState(() {
+          reactOptions = reactions;
+          if (reactions.length == 6) {
+            emojiMode = 0;
+            emojiPickerSize = iOS ? 280 : 286;
+          } else if (reactions.length == 7) {
+            emojiMode = 1;
+            emojiPickerSize = iOS ? 325 : 331;
+          } else {
+            emojiMode = 2;
+            emojiPickerSize = iOS ? 350 : 356;
+          }
+        });
+      })();
+
       for (Message m in reactions) {
         if (m.isFromMe!) {
           m.handle = null;
@@ -155,6 +178,38 @@ class _MessagePopupState extends OptimizedState<MessagePopup> with SingleTickerP
       });
     });
   }
+
+  Map<String, Emoji> emojiMap = {};
+
+  Future<List<String>> getReactionList() async {
+    final recentEmojis = await EmojiPickerUtils().getRecentEmojis();
+
+    var reactions = ReactionTypes.toList();
+    reactions.removeLast();
+
+    if (currentlySelectedReaction != "init" && currentlySelectedReaction != null && !reactions.contains(currentlySelectedReaction)) {
+      reactions.add(currentlySelectedReaction!); // add current reaction
+    }
+
+    for (var emoji in recentEmojis.take(15)) {
+      if (reactions.contains(emoji.emoji.emoji)) continue;
+      reactions.add(emoji.emoji.emoji);
+      emojiMap[emoji.emoji.emoji] = emoji.emoji;
+    }
+    
+    return reactions;
+  }
+
+  void reactEmoji(String emoji) {
+    HapticFeedback.lightImpact();
+    widget.sendTapback(selfReaction == emoji ? "-${ReactionTypes.EMOJI}" : ReactionTypes.EMOJI, emoji, part.part);
+    popDetails();
+  }
+
+  static const double iosSize = 50;
+
+  int emojiMode = 1;
+  int emojiPickerSize = 325;
 
   void popDetails({bool returnVal = true}) {
     bool dialogOpen = Get.isDialogOpen ?? false;
@@ -275,8 +330,8 @@ class _MessagePopupState extends OptimizedState<MessagePopup> with SingleTickerP
                       Positioned(
                         bottom: (iOS ? itemHeight * numberToShow + 35 + widget.size.height : context.height - materialOffset)
                             .clamp(0, context.height - (narrowScreen ? 200 : 125)),
-                        right: message.isFromMe! ? 15 : null,
-                        left: !message.isFromMe! ? widget.childPosition.dx + 10 : null,
+                        right: message.isFromMe! ? max(15, widget.size.width - emojiPickerSize + 65) : null,
+                        left: !message.isFromMe! ? max(widget.childPosition.dx + 10, widget.childPosition.dx + widget.size.width - emojiPickerSize + 65) : null,
                         child: AnimatedSize(
                           curve: Curves.easeInOut,
                           alignment: message.isFromMe! ? Alignment.centerRight : Alignment.centerLeft,
@@ -299,85 +354,224 @@ class _MessagePopupState extends OptimizedState<MessagePopup> with SingleTickerP
                                     filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
                                     child: Container(
                                       padding: const EdgeInsets.all(5).add(const EdgeInsets.only(bottom: 15)),
-                                      color: context.theme.colorScheme.background.lightenOrDarken(iOS ? 0 : 10),
-                                      child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: List.generate(narrowScreen ? 2 : 1, (index) {
-                                            return Row(
-                                              mainAxisSize: MainAxisSize.min,
-                                              mainAxisAlignment: MainAxisAlignment.start,
-                                              children: ReactionTypes.toList()
-                                                  .slice(narrowScreen && index == 1 ? 3 : 0, narrowScreen && index == 0 ? 3 : null)
-                                                  .map((e) {
-                                                return Padding(
-                                                  padding: iOS ? const EdgeInsets.all(5.0) : const EdgeInsets.symmetric(horizontal: 5),
-                                                  child: Material(
-                                                    color: currentlySelectedReaction == e ? context.theme.colorScheme.primary : Colors.transparent,
-                                                    borderRadius: BorderRadius.circular(20),
-                                                    child: SizedBox(
-                                                      width: iOS ? 35 : null,
-                                                      height: iOS ? 35 : null,
-                                                      child: InkWell(
-                                                        borderRadius: BorderRadius.circular(20),
-                                                        onTap: () {
-                                                          if (currentlySelectedReaction == e) {
-                                                            currentlySelectedReaction = null;
-                                                          } else {
-                                                            currentlySelectedReaction = e;
-                                                          }
-                                                          setState(() {});
+                                      color: context.theme.colorScheme.properSurface.lightenOrDarken(iOS ? 0 : 10),
+                                      width: emojiPickerSize.toDouble(),
+                                      child: ShaderMask(
+                                        shaderCallback: (Rect rect) {
+                                          return LinearGradient(
+                                              begin: Alignment.centerLeft,
+                                              end: Alignment.centerRight,
+                                              colors: [Colors.transparent, emojiMode == 2 ? Colors.purple : Colors.transparent],
+                                              stops: [0.9, 1.0], // 10% purple, 80% transparent, 10% purple
+                                            ).createShader(rect);
+                                        },
+                                        blendMode: BlendMode.dstOut,
+                                        child: 
+                                          SingleChildScrollView(
+                                            scrollDirection: Axis.horizontal,
+                                            padding: emojiMode == 2 ? const EdgeInsets.only(right: 25) : EdgeInsets.zero,
+                                            child: Row(
+                                            children: reactOptions
+                                                .map((e) {
+                                              return Padding(
+                                                padding: iOS ? const EdgeInsets.all(5.0) : const EdgeInsets.symmetric(horizontal: 5),
+                                                child: Material(
+                                                  color: currentlySelectedReaction == e ? context.theme.colorScheme.primary : Colors.transparent,
+                                                  borderRadius: BorderRadius.circular(20),
+                                                  child: SizedBox(
+                                                    width: iOS ? 35 : null,
+                                                    height: iOS ? 35 : null,
+                                                    child: InkWell(
+                                                      borderRadius: BorderRadius.circular(20),
+                                                      onTap: () {
+                                                        if (currentlySelectedReaction == e) {
+                                                          currentlySelectedReaction = null;
+                                                        } else {
+                                                          currentlySelectedReaction = e;
+                                                        }
+                                                        setState(() {});
+                                                        if (ReactionTypes.toList().contains(e)) {
                                                           HapticFeedback.lightImpact();
-                                                          widget.sendTapback(selfReaction == e ? "-$e" : e, part.part);
+                                                          widget.sendTapback(selfReaction == e ? "-$e" : e, null, part.part);
                                                           popDetails();
-                                                        },
-                                                        child: Padding(
-                                                          padding: const EdgeInsets.all(6.5).add(EdgeInsets.only(right: e == "emphasize" ? 2.5 : 0)),
-                                                          child: iOS
-                                                              ? SvgPicture.asset(
-                                                                  'assets/reactions/$e-black.svg',
-                                                                  colorFilter: ColorFilter.mode(
-                                                                      e == "love" && currentlySelectedReaction == e
-                                                                          ? Colors.pink
-                                                                          : (currentlySelectedReaction == e
-                                                                              ? context.theme.colorScheme.onPrimary
-                                                                              : context.theme.colorScheme.outline),
-                                                                      BlendMode.srcIn),
-                                                                )
-                                                              : Center(
-                                                                  child: Builder(builder: (context) {
-                                                                    final text = Text(
-                                                                      ReactionTypes.reactionToEmoji[e] ?? "X",
-                                                                      style: const TextStyle(fontSize: 18, fontFamily: 'Apple Color Emoji'),
-                                                                      textAlign: TextAlign.center,
-                                                                    );
-                                                                    // rotate thumbs down to match iOS
-                                                                    if (e == "dislike") {
-                                                                      return Transform(
-                                                                        transform: Matrix4.identity()..rotateY(pi),
-                                                                        alignment: FractionalOffset.center,
-                                                                        child: text,
-                                                                      );
-                                                                    }
-                                                                    return text;
-                                                                  }),
-                                                                ),
+                                                        } else {
+                                                          if (selfReaction != e) {
+                                                            (() async {
+                                                              // Add an emoji to recently used list or increase its counter
+                                                              await EmojiPickerUtils().addEmojiToRecentlyUsed(key: GlobalKey(), emoji: emojiMap[e]!);
+                                                            })();
+                                                          }
+                                                          reactEmoji(e);
+                                                        }
+                                                      },
+                                                      child: Padding(
+                                                        padding: EdgeInsets.symmetric(horizontal: 6.5, vertical: iOS ? 4.5 : 6.5).add(EdgeInsets.only(right: e == "emphasize" ? 2.5 : 0)),
+                                                        child: Center(
+                                                          child: Builder(builder: (context) {
+                                                            final text = Text(
+                                                              ReactionTypes.reactionToEmoji[e] ?? e ?? "X",
+                                                              style: const TextStyle(fontSize: 18, fontFamily: 'Apple Color Emoji'),
+                                                              textAlign: TextAlign.center,
+                                                            );
+                                                            // rotate thumbs down to match iOS
+                                                            if (e == "dislike") {
+                                                              return Transform(
+                                                                transform: Matrix4.identity()..rotateY(pi),
+                                                                alignment: FractionalOffset.center,
+                                                                child: text,
+                                                              );
+                                                            }
+                                                            return text;
+                                                          }),
                                                         ),
                                                       ),
                                                     ),
                                                   ),
-                                                );
-                                              }).toList(),
-                                            );
-                                          })),
+                                                ),
+                                              );
+                                            }).toList(),
+                                          ),
+                                      ),
+                                      ),
                                     ),
                                   ),
                                 ),
                         ),
                       ),
+                    if (ss.settings.enablePrivateAPI.value && isSent && minSierra && chat.isIMessage)
+                      Positioned(
+                        bottom: (iOS ? itemHeight * numberToShow + 5 + widget.size.height : context.height - materialOffset)
+                            .clamp(0, context.height - (narrowScreen ? 200 : 125)),
+                        right: message.isFromMe! ? widget.size.width + 10 + (iOS ? 0 : 60) : null,
+                        left: !message.isFromMe! ? widget.childPosition.dx + widget.size.width + 10 + (iOS ? 0 : 60) : null,
+                        child: AnimatedSize(
+                          curve: Curves.easeInOut,
+                          alignment: message.isFromMe! ? Alignment.centerRight : Alignment.centerLeft,
+                          duration: const Duration(milliseconds: 100),
+                          
+                          child: currentlySelectedReaction == "init"
+                              ? const SizedBox(height: 80)
+                              : ClipPath(
+                          clipper: ReactionClipper(isFromMe: message.isFromMe!),
+                          child: Material(
+                            color: context.theme.colorScheme.properSurface,
+                            child: Container(
+                              width: iosSize,
+                              height: iosSize,
+                              alignment: message.isFromMe! ? Alignment.topRight : Alignment.topLeft,
+                              child: InkWell(
+                                borderRadius: BorderRadius.circular(20),
+                                onTap: () {
+
+
+                                  Widget content = Container(
+                                    width: 512,
+                                    child: Theme(
+                                    data: context.theme.copyWith(canvasColor: Colors.transparent),
+                                    child: EmojiPicker(
+                                      scrollController: ScrollController(),
+                                      config: Config(
+                                        height: 512,
+                                        checkPlatformCompatibility: true,
+                                        emojiViewConfig: EmojiViewConfig(
+                                          emojiSizeMax: 28,
+                                          backgroundColor: Colors.transparent,
+                                          columns: min(ns.width(context), 512) ~/ 56,
+                                          noRecents: Text("No Recents", style: context.textTheme.headlineMedium!.copyWith(color: context.theme.colorScheme.outline))
+                                        ),
+                                        swapCategoryAndBottomBar: true,
+                                        skinToneConfig: const SkinToneConfig(enabled: false),
+                                        categoryViewConfig: const CategoryViewConfig(
+                                          backgroundColor: Colors.transparent,
+                                          dividerColor: Colors.transparent,
+                                        ),
+                                        bottomActionBarConfig: BottomActionBarConfig(
+                                          customBottomActionBar: (Config config, EmojiViewState state, VoidCallback showSearchView) {
+                                            return Container(
+                                              margin: const EdgeInsets.only(top: 10),
+                                              child: Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  const SizedBox(width: 8),
+                                                  Expanded(
+                                                    child: Material(
+                                                      child: InkWell(
+                                                        onTap: showSearchView,
+                                                        child: Padding(
+                                                          padding: const EdgeInsets.all(12),
+                                                          child: Row(children: [
+                                                            Icon(
+                                                              iOS ? cupertino.CupertinoIcons.search : Icons.search,
+                                                              color: context.theme.colorScheme.outline,
+                                                            ),
+                                                            const SizedBox(width: 8),
+                                                            Expanded(
+                                                              child: Text(
+                                                                "Search...",
+                                                                style: context.theme.textTheme.bodyLarge!.copyWith(
+                                                                  color: context.theme.colorScheme.outline,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ]),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding: const EdgeInsets.all(12),
+                                                    child: IconButton(
+                                                      icon: Icon(
+                                                        iOS ? cupertino.CupertinoIcons.xmark : Icons.close,
+                                                        color: context.theme.colorScheme.outline,
+                                                      ),
+                                                      onPressed: () {
+                                                        Get.back();
+                                                      },
+                                                    ),
+                                                  ),
+                                                  const SizedBox(width: 8),
+                                                ],
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                        searchViewConfig: SearchViewConfig(
+                                          backgroundColor: Colors.transparent,
+                                          buttonIconColor: context.theme.colorScheme.outline,
+                                        ),
+                                      ),
+                                      onEmojiSelected: (cat, emoji) {
+                                        Get.back();
+                                        reactEmoji(emoji.emoji);
+                                      },
+                                    ),
+                                    )
+                                  );
+                                  Get.dialog(
+                                      AlertDialog(
+                                              backgroundColor: context.theme.colorScheme.properSurface,
+                                              content: content,
+                                            ),
+                                      name: 'Popup Menu');
+                                },
+                                child: const SizedBox(
+                                  width: iosSize*0.8,
+                                  height: iosSize*0.8,
+                                  child: Center(
+                                    child: Icon(cupertino.CupertinoIcons.smiley, size: 20),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                        ),
+                        ),
+                      ),
                     if (iOS)
                       Positioned(
-                        right: message.isFromMe! ? 15 : null,
-                        left: !message.isFromMe! ? widget.childPosition.dx + 10 : null,
+                        right: message.isFromMe! ? max(15, widget.size.width - maxMenuWidth) : null,
+                        left: !message.isFromMe! ? max(widget.childPosition.dx + 10, widget.childPosition.dx + widget.size.width - maxMenuWidth) : null,
                         bottom: 30,
                         child: TweenAnimationBuilder<double>(
                           tween: Tween<double>(begin: 0.8, end: 1),
@@ -1100,8 +1294,9 @@ class _MessagePopupState extends OptimizedState<MessagePopup> with SingleTickerP
       ].sorted((a, b) => ss.settings.detailsMenuActions.indexOf(a.action).compareTo(ss.settings.detailsMenuActions.indexOf(b.action)));
   }
 
+  double maxMenuWidth = 300;
+
   Widget buildDetailsMenu(BuildContext context) {
-    double maxMenuWidth = min(max(ns.width(widthContext) * 3 / 5, 200), ns.width(widthContext) * 4 / 5);
 
     List<DetailsMenuActionWidget> allActions = _allActions;
 
@@ -1262,40 +1457,23 @@ class ReactionDetails extends StatelessWidget {
                           )
                         ],
                       ),
-                      child: Padding(
-                        padding: ss.settings.skin.value == Skins.iOS
-                            ? const EdgeInsets.only(top: 8.0, left: 7.0, right: 7.0, bottom: 7.0)
-                                .add(EdgeInsets.only(right: message.associatedMessageType == "emphasize" ? 1 : 0))
-                            : EdgeInsets.zero,
-                        child: ss.settings.skin.value == Skins.iOS
-                            ? SvgPicture.asset(
-                                'assets/reactions/${message.associatedMessageType}-black.svg',
-                                colorFilter: ColorFilter.mode(
-                                    message.associatedMessageType == "love"
-                                        ? Colors.pink
-                                        : message.isFromMe!
-                                            ? context.theme.colorScheme.onPrimary
-                                            : context.theme.colorScheme.properOnSurface,
-                                    BlendMode.srcIn),
-                              )
-                            : Center(
-                                child: Builder(builder: (context) {
-                                  final text = Text(
-                                    ReactionTypes.reactionToEmoji[message.associatedMessageType] ?? "X",
-                                    style: const TextStyle(fontSize: 18, fontFamily: 'Apple Color Emoji'),
-                                    textAlign: TextAlign.center,
-                                  );
-                                  // rotate thumbs down to match iOS
-                                  if (message.associatedMessageType == "dislike") {
-                                    return Transform(
-                                      transform: Matrix4.identity()..rotateY(pi),
-                                      alignment: FractionalOffset.center,
-                                      child: text,
-                                    );
-                                  }
-                                  return text;
-                                }),
-                              ),
+                      child: Center(
+                        child: Builder(builder: (context) {
+                          final text = Text(
+                            ReactionTypes.reactionToEmoji[message.associatedMessageType] ?? message.associatedMessageEmoji ?? "X",
+                            style: const TextStyle(fontSize: 18, fontFamily: 'Apple Color Emoji'),
+                            textAlign: TextAlign.center,
+                          );
+                          // rotate thumbs down to match iOS
+                          if (message.associatedMessageType == "dislike") {
+                            return Transform(
+                              transform: Matrix4.identity()..rotateY(pi),
+                              alignment: FractionalOffset.center,
+                              child: text,
+                            );
+                          }
+                          return text;
+                        }),
                       ),
                     )
                   ],

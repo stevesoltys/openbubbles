@@ -9016,6 +9016,8 @@ abstract class _$$ReactMessageType_ReactImplCopyWith<$Res> {
       __$$ReactMessageType_ReactImplCopyWithImpl<$Res>;
   @useResult
   $Res call({Reaction reaction, bool enable});
+
+  $ReactionCopyWith<$Res> get reaction;
 }
 
 /// @nodoc
@@ -9045,6 +9047,16 @@ class __$$ReactMessageType_ReactImplCopyWithImpl<$Res>
           : enable // ignore: cast_nullable_to_non_nullable
               as bool,
     ));
+  }
+
+  /// Create a copy of ReactMessageType
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $ReactionCopyWith<$Res> get reaction {
+    return $ReactionCopyWith<$Res>(_value.reaction, (value) {
+      return _then(_value.copyWith(reaction: value));
+    });
   }
 }
 
@@ -9322,6 +9334,1086 @@ abstract class ReactMessageType_Extension extends ReactMessageType {
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ReactMessageType_ExtensionImplCopyWith<_$ReactMessageType_ExtensionImpl>
       get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+mixin _$Reaction {
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() heart,
+    required TResult Function() like,
+    required TResult Function() dislike,
+    required TResult Function() laugh,
+    required TResult Function() emphasize,
+    required TResult Function() question,
+    required TResult Function(String field0) emoji,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? heart,
+    TResult? Function()? like,
+    TResult? Function()? dislike,
+    TResult? Function()? laugh,
+    TResult? Function()? emphasize,
+    TResult? Function()? question,
+    TResult? Function(String field0)? emoji,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? heart,
+    TResult Function()? like,
+    TResult Function()? dislike,
+    TResult Function()? laugh,
+    TResult Function()? emphasize,
+    TResult Function()? question,
+    TResult Function(String field0)? emoji,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(Reaction_Heart value) heart,
+    required TResult Function(Reaction_Like value) like,
+    required TResult Function(Reaction_Dislike value) dislike,
+    required TResult Function(Reaction_Laugh value) laugh,
+    required TResult Function(Reaction_Emphasize value) emphasize,
+    required TResult Function(Reaction_Question value) question,
+    required TResult Function(Reaction_Emoji value) emoji,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(Reaction_Heart value)? heart,
+    TResult? Function(Reaction_Like value)? like,
+    TResult? Function(Reaction_Dislike value)? dislike,
+    TResult? Function(Reaction_Laugh value)? laugh,
+    TResult? Function(Reaction_Emphasize value)? emphasize,
+    TResult? Function(Reaction_Question value)? question,
+    TResult? Function(Reaction_Emoji value)? emoji,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(Reaction_Heart value)? heart,
+    TResult Function(Reaction_Like value)? like,
+    TResult Function(Reaction_Dislike value)? dislike,
+    TResult Function(Reaction_Laugh value)? laugh,
+    TResult Function(Reaction_Emphasize value)? emphasize,
+    TResult Function(Reaction_Question value)? question,
+    TResult Function(Reaction_Emoji value)? emoji,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $ReactionCopyWith<$Res> {
+  factory $ReactionCopyWith(Reaction value, $Res Function(Reaction) then) =
+      _$ReactionCopyWithImpl<$Res, Reaction>;
+}
+
+/// @nodoc
+class _$ReactionCopyWithImpl<$Res, $Val extends Reaction>
+    implements $ReactionCopyWith<$Res> {
+  _$ReactionCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of Reaction
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+abstract class _$$Reaction_HeartImplCopyWith<$Res> {
+  factory _$$Reaction_HeartImplCopyWith(_$Reaction_HeartImpl value,
+          $Res Function(_$Reaction_HeartImpl) then) =
+      __$$Reaction_HeartImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$Reaction_HeartImplCopyWithImpl<$Res>
+    extends _$ReactionCopyWithImpl<$Res, _$Reaction_HeartImpl>
+    implements _$$Reaction_HeartImplCopyWith<$Res> {
+  __$$Reaction_HeartImplCopyWithImpl(
+      _$Reaction_HeartImpl _value, $Res Function(_$Reaction_HeartImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of Reaction
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$Reaction_HeartImpl extends Reaction_Heart {
+  const _$Reaction_HeartImpl() : super._();
+
+  @override
+  String toString() {
+    return 'Reaction.heart()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$Reaction_HeartImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() heart,
+    required TResult Function() like,
+    required TResult Function() dislike,
+    required TResult Function() laugh,
+    required TResult Function() emphasize,
+    required TResult Function() question,
+    required TResult Function(String field0) emoji,
+  }) {
+    return heart();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? heart,
+    TResult? Function()? like,
+    TResult? Function()? dislike,
+    TResult? Function()? laugh,
+    TResult? Function()? emphasize,
+    TResult? Function()? question,
+    TResult? Function(String field0)? emoji,
+  }) {
+    return heart?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? heart,
+    TResult Function()? like,
+    TResult Function()? dislike,
+    TResult Function()? laugh,
+    TResult Function()? emphasize,
+    TResult Function()? question,
+    TResult Function(String field0)? emoji,
+    required TResult orElse(),
+  }) {
+    if (heart != null) {
+      return heart();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(Reaction_Heart value) heart,
+    required TResult Function(Reaction_Like value) like,
+    required TResult Function(Reaction_Dislike value) dislike,
+    required TResult Function(Reaction_Laugh value) laugh,
+    required TResult Function(Reaction_Emphasize value) emphasize,
+    required TResult Function(Reaction_Question value) question,
+    required TResult Function(Reaction_Emoji value) emoji,
+  }) {
+    return heart(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(Reaction_Heart value)? heart,
+    TResult? Function(Reaction_Like value)? like,
+    TResult? Function(Reaction_Dislike value)? dislike,
+    TResult? Function(Reaction_Laugh value)? laugh,
+    TResult? Function(Reaction_Emphasize value)? emphasize,
+    TResult? Function(Reaction_Question value)? question,
+    TResult? Function(Reaction_Emoji value)? emoji,
+  }) {
+    return heart?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(Reaction_Heart value)? heart,
+    TResult Function(Reaction_Like value)? like,
+    TResult Function(Reaction_Dislike value)? dislike,
+    TResult Function(Reaction_Laugh value)? laugh,
+    TResult Function(Reaction_Emphasize value)? emphasize,
+    TResult Function(Reaction_Question value)? question,
+    TResult Function(Reaction_Emoji value)? emoji,
+    required TResult orElse(),
+  }) {
+    if (heart != null) {
+      return heart(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class Reaction_Heart extends Reaction {
+  const factory Reaction_Heart() = _$Reaction_HeartImpl;
+  const Reaction_Heart._() : super._();
+}
+
+/// @nodoc
+abstract class _$$Reaction_LikeImplCopyWith<$Res> {
+  factory _$$Reaction_LikeImplCopyWith(
+          _$Reaction_LikeImpl value, $Res Function(_$Reaction_LikeImpl) then) =
+      __$$Reaction_LikeImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$Reaction_LikeImplCopyWithImpl<$Res>
+    extends _$ReactionCopyWithImpl<$Res, _$Reaction_LikeImpl>
+    implements _$$Reaction_LikeImplCopyWith<$Res> {
+  __$$Reaction_LikeImplCopyWithImpl(
+      _$Reaction_LikeImpl _value, $Res Function(_$Reaction_LikeImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of Reaction
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$Reaction_LikeImpl extends Reaction_Like {
+  const _$Reaction_LikeImpl() : super._();
+
+  @override
+  String toString() {
+    return 'Reaction.like()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$Reaction_LikeImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() heart,
+    required TResult Function() like,
+    required TResult Function() dislike,
+    required TResult Function() laugh,
+    required TResult Function() emphasize,
+    required TResult Function() question,
+    required TResult Function(String field0) emoji,
+  }) {
+    return like();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? heart,
+    TResult? Function()? like,
+    TResult? Function()? dislike,
+    TResult? Function()? laugh,
+    TResult? Function()? emphasize,
+    TResult? Function()? question,
+    TResult? Function(String field0)? emoji,
+  }) {
+    return like?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? heart,
+    TResult Function()? like,
+    TResult Function()? dislike,
+    TResult Function()? laugh,
+    TResult Function()? emphasize,
+    TResult Function()? question,
+    TResult Function(String field0)? emoji,
+    required TResult orElse(),
+  }) {
+    if (like != null) {
+      return like();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(Reaction_Heart value) heart,
+    required TResult Function(Reaction_Like value) like,
+    required TResult Function(Reaction_Dislike value) dislike,
+    required TResult Function(Reaction_Laugh value) laugh,
+    required TResult Function(Reaction_Emphasize value) emphasize,
+    required TResult Function(Reaction_Question value) question,
+    required TResult Function(Reaction_Emoji value) emoji,
+  }) {
+    return like(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(Reaction_Heart value)? heart,
+    TResult? Function(Reaction_Like value)? like,
+    TResult? Function(Reaction_Dislike value)? dislike,
+    TResult? Function(Reaction_Laugh value)? laugh,
+    TResult? Function(Reaction_Emphasize value)? emphasize,
+    TResult? Function(Reaction_Question value)? question,
+    TResult? Function(Reaction_Emoji value)? emoji,
+  }) {
+    return like?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(Reaction_Heart value)? heart,
+    TResult Function(Reaction_Like value)? like,
+    TResult Function(Reaction_Dislike value)? dislike,
+    TResult Function(Reaction_Laugh value)? laugh,
+    TResult Function(Reaction_Emphasize value)? emphasize,
+    TResult Function(Reaction_Question value)? question,
+    TResult Function(Reaction_Emoji value)? emoji,
+    required TResult orElse(),
+  }) {
+    if (like != null) {
+      return like(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class Reaction_Like extends Reaction {
+  const factory Reaction_Like() = _$Reaction_LikeImpl;
+  const Reaction_Like._() : super._();
+}
+
+/// @nodoc
+abstract class _$$Reaction_DislikeImplCopyWith<$Res> {
+  factory _$$Reaction_DislikeImplCopyWith(_$Reaction_DislikeImpl value,
+          $Res Function(_$Reaction_DislikeImpl) then) =
+      __$$Reaction_DislikeImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$Reaction_DislikeImplCopyWithImpl<$Res>
+    extends _$ReactionCopyWithImpl<$Res, _$Reaction_DislikeImpl>
+    implements _$$Reaction_DislikeImplCopyWith<$Res> {
+  __$$Reaction_DislikeImplCopyWithImpl(_$Reaction_DislikeImpl _value,
+      $Res Function(_$Reaction_DislikeImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of Reaction
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$Reaction_DislikeImpl extends Reaction_Dislike {
+  const _$Reaction_DislikeImpl() : super._();
+
+  @override
+  String toString() {
+    return 'Reaction.dislike()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$Reaction_DislikeImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() heart,
+    required TResult Function() like,
+    required TResult Function() dislike,
+    required TResult Function() laugh,
+    required TResult Function() emphasize,
+    required TResult Function() question,
+    required TResult Function(String field0) emoji,
+  }) {
+    return dislike();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? heart,
+    TResult? Function()? like,
+    TResult? Function()? dislike,
+    TResult? Function()? laugh,
+    TResult? Function()? emphasize,
+    TResult? Function()? question,
+    TResult? Function(String field0)? emoji,
+  }) {
+    return dislike?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? heart,
+    TResult Function()? like,
+    TResult Function()? dislike,
+    TResult Function()? laugh,
+    TResult Function()? emphasize,
+    TResult Function()? question,
+    TResult Function(String field0)? emoji,
+    required TResult orElse(),
+  }) {
+    if (dislike != null) {
+      return dislike();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(Reaction_Heart value) heart,
+    required TResult Function(Reaction_Like value) like,
+    required TResult Function(Reaction_Dislike value) dislike,
+    required TResult Function(Reaction_Laugh value) laugh,
+    required TResult Function(Reaction_Emphasize value) emphasize,
+    required TResult Function(Reaction_Question value) question,
+    required TResult Function(Reaction_Emoji value) emoji,
+  }) {
+    return dislike(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(Reaction_Heart value)? heart,
+    TResult? Function(Reaction_Like value)? like,
+    TResult? Function(Reaction_Dislike value)? dislike,
+    TResult? Function(Reaction_Laugh value)? laugh,
+    TResult? Function(Reaction_Emphasize value)? emphasize,
+    TResult? Function(Reaction_Question value)? question,
+    TResult? Function(Reaction_Emoji value)? emoji,
+  }) {
+    return dislike?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(Reaction_Heart value)? heart,
+    TResult Function(Reaction_Like value)? like,
+    TResult Function(Reaction_Dislike value)? dislike,
+    TResult Function(Reaction_Laugh value)? laugh,
+    TResult Function(Reaction_Emphasize value)? emphasize,
+    TResult Function(Reaction_Question value)? question,
+    TResult Function(Reaction_Emoji value)? emoji,
+    required TResult orElse(),
+  }) {
+    if (dislike != null) {
+      return dislike(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class Reaction_Dislike extends Reaction {
+  const factory Reaction_Dislike() = _$Reaction_DislikeImpl;
+  const Reaction_Dislike._() : super._();
+}
+
+/// @nodoc
+abstract class _$$Reaction_LaughImplCopyWith<$Res> {
+  factory _$$Reaction_LaughImplCopyWith(_$Reaction_LaughImpl value,
+          $Res Function(_$Reaction_LaughImpl) then) =
+      __$$Reaction_LaughImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$Reaction_LaughImplCopyWithImpl<$Res>
+    extends _$ReactionCopyWithImpl<$Res, _$Reaction_LaughImpl>
+    implements _$$Reaction_LaughImplCopyWith<$Res> {
+  __$$Reaction_LaughImplCopyWithImpl(
+      _$Reaction_LaughImpl _value, $Res Function(_$Reaction_LaughImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of Reaction
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$Reaction_LaughImpl extends Reaction_Laugh {
+  const _$Reaction_LaughImpl() : super._();
+
+  @override
+  String toString() {
+    return 'Reaction.laugh()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$Reaction_LaughImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() heart,
+    required TResult Function() like,
+    required TResult Function() dislike,
+    required TResult Function() laugh,
+    required TResult Function() emphasize,
+    required TResult Function() question,
+    required TResult Function(String field0) emoji,
+  }) {
+    return laugh();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? heart,
+    TResult? Function()? like,
+    TResult? Function()? dislike,
+    TResult? Function()? laugh,
+    TResult? Function()? emphasize,
+    TResult? Function()? question,
+    TResult? Function(String field0)? emoji,
+  }) {
+    return laugh?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? heart,
+    TResult Function()? like,
+    TResult Function()? dislike,
+    TResult Function()? laugh,
+    TResult Function()? emphasize,
+    TResult Function()? question,
+    TResult Function(String field0)? emoji,
+    required TResult orElse(),
+  }) {
+    if (laugh != null) {
+      return laugh();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(Reaction_Heart value) heart,
+    required TResult Function(Reaction_Like value) like,
+    required TResult Function(Reaction_Dislike value) dislike,
+    required TResult Function(Reaction_Laugh value) laugh,
+    required TResult Function(Reaction_Emphasize value) emphasize,
+    required TResult Function(Reaction_Question value) question,
+    required TResult Function(Reaction_Emoji value) emoji,
+  }) {
+    return laugh(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(Reaction_Heart value)? heart,
+    TResult? Function(Reaction_Like value)? like,
+    TResult? Function(Reaction_Dislike value)? dislike,
+    TResult? Function(Reaction_Laugh value)? laugh,
+    TResult? Function(Reaction_Emphasize value)? emphasize,
+    TResult? Function(Reaction_Question value)? question,
+    TResult? Function(Reaction_Emoji value)? emoji,
+  }) {
+    return laugh?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(Reaction_Heart value)? heart,
+    TResult Function(Reaction_Like value)? like,
+    TResult Function(Reaction_Dislike value)? dislike,
+    TResult Function(Reaction_Laugh value)? laugh,
+    TResult Function(Reaction_Emphasize value)? emphasize,
+    TResult Function(Reaction_Question value)? question,
+    TResult Function(Reaction_Emoji value)? emoji,
+    required TResult orElse(),
+  }) {
+    if (laugh != null) {
+      return laugh(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class Reaction_Laugh extends Reaction {
+  const factory Reaction_Laugh() = _$Reaction_LaughImpl;
+  const Reaction_Laugh._() : super._();
+}
+
+/// @nodoc
+abstract class _$$Reaction_EmphasizeImplCopyWith<$Res> {
+  factory _$$Reaction_EmphasizeImplCopyWith(_$Reaction_EmphasizeImpl value,
+          $Res Function(_$Reaction_EmphasizeImpl) then) =
+      __$$Reaction_EmphasizeImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$Reaction_EmphasizeImplCopyWithImpl<$Res>
+    extends _$ReactionCopyWithImpl<$Res, _$Reaction_EmphasizeImpl>
+    implements _$$Reaction_EmphasizeImplCopyWith<$Res> {
+  __$$Reaction_EmphasizeImplCopyWithImpl(_$Reaction_EmphasizeImpl _value,
+      $Res Function(_$Reaction_EmphasizeImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of Reaction
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$Reaction_EmphasizeImpl extends Reaction_Emphasize {
+  const _$Reaction_EmphasizeImpl() : super._();
+
+  @override
+  String toString() {
+    return 'Reaction.emphasize()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$Reaction_EmphasizeImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() heart,
+    required TResult Function() like,
+    required TResult Function() dislike,
+    required TResult Function() laugh,
+    required TResult Function() emphasize,
+    required TResult Function() question,
+    required TResult Function(String field0) emoji,
+  }) {
+    return emphasize();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? heart,
+    TResult? Function()? like,
+    TResult? Function()? dislike,
+    TResult? Function()? laugh,
+    TResult? Function()? emphasize,
+    TResult? Function()? question,
+    TResult? Function(String field0)? emoji,
+  }) {
+    return emphasize?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? heart,
+    TResult Function()? like,
+    TResult Function()? dislike,
+    TResult Function()? laugh,
+    TResult Function()? emphasize,
+    TResult Function()? question,
+    TResult Function(String field0)? emoji,
+    required TResult orElse(),
+  }) {
+    if (emphasize != null) {
+      return emphasize();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(Reaction_Heart value) heart,
+    required TResult Function(Reaction_Like value) like,
+    required TResult Function(Reaction_Dislike value) dislike,
+    required TResult Function(Reaction_Laugh value) laugh,
+    required TResult Function(Reaction_Emphasize value) emphasize,
+    required TResult Function(Reaction_Question value) question,
+    required TResult Function(Reaction_Emoji value) emoji,
+  }) {
+    return emphasize(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(Reaction_Heart value)? heart,
+    TResult? Function(Reaction_Like value)? like,
+    TResult? Function(Reaction_Dislike value)? dislike,
+    TResult? Function(Reaction_Laugh value)? laugh,
+    TResult? Function(Reaction_Emphasize value)? emphasize,
+    TResult? Function(Reaction_Question value)? question,
+    TResult? Function(Reaction_Emoji value)? emoji,
+  }) {
+    return emphasize?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(Reaction_Heart value)? heart,
+    TResult Function(Reaction_Like value)? like,
+    TResult Function(Reaction_Dislike value)? dislike,
+    TResult Function(Reaction_Laugh value)? laugh,
+    TResult Function(Reaction_Emphasize value)? emphasize,
+    TResult Function(Reaction_Question value)? question,
+    TResult Function(Reaction_Emoji value)? emoji,
+    required TResult orElse(),
+  }) {
+    if (emphasize != null) {
+      return emphasize(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class Reaction_Emphasize extends Reaction {
+  const factory Reaction_Emphasize() = _$Reaction_EmphasizeImpl;
+  const Reaction_Emphasize._() : super._();
+}
+
+/// @nodoc
+abstract class _$$Reaction_QuestionImplCopyWith<$Res> {
+  factory _$$Reaction_QuestionImplCopyWith(_$Reaction_QuestionImpl value,
+          $Res Function(_$Reaction_QuestionImpl) then) =
+      __$$Reaction_QuestionImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$Reaction_QuestionImplCopyWithImpl<$Res>
+    extends _$ReactionCopyWithImpl<$Res, _$Reaction_QuestionImpl>
+    implements _$$Reaction_QuestionImplCopyWith<$Res> {
+  __$$Reaction_QuestionImplCopyWithImpl(_$Reaction_QuestionImpl _value,
+      $Res Function(_$Reaction_QuestionImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of Reaction
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$Reaction_QuestionImpl extends Reaction_Question {
+  const _$Reaction_QuestionImpl() : super._();
+
+  @override
+  String toString() {
+    return 'Reaction.question()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$Reaction_QuestionImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() heart,
+    required TResult Function() like,
+    required TResult Function() dislike,
+    required TResult Function() laugh,
+    required TResult Function() emphasize,
+    required TResult Function() question,
+    required TResult Function(String field0) emoji,
+  }) {
+    return question();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? heart,
+    TResult? Function()? like,
+    TResult? Function()? dislike,
+    TResult? Function()? laugh,
+    TResult? Function()? emphasize,
+    TResult? Function()? question,
+    TResult? Function(String field0)? emoji,
+  }) {
+    return question?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? heart,
+    TResult Function()? like,
+    TResult Function()? dislike,
+    TResult Function()? laugh,
+    TResult Function()? emphasize,
+    TResult Function()? question,
+    TResult Function(String field0)? emoji,
+    required TResult orElse(),
+  }) {
+    if (question != null) {
+      return question();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(Reaction_Heart value) heart,
+    required TResult Function(Reaction_Like value) like,
+    required TResult Function(Reaction_Dislike value) dislike,
+    required TResult Function(Reaction_Laugh value) laugh,
+    required TResult Function(Reaction_Emphasize value) emphasize,
+    required TResult Function(Reaction_Question value) question,
+    required TResult Function(Reaction_Emoji value) emoji,
+  }) {
+    return question(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(Reaction_Heart value)? heart,
+    TResult? Function(Reaction_Like value)? like,
+    TResult? Function(Reaction_Dislike value)? dislike,
+    TResult? Function(Reaction_Laugh value)? laugh,
+    TResult? Function(Reaction_Emphasize value)? emphasize,
+    TResult? Function(Reaction_Question value)? question,
+    TResult? Function(Reaction_Emoji value)? emoji,
+  }) {
+    return question?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(Reaction_Heart value)? heart,
+    TResult Function(Reaction_Like value)? like,
+    TResult Function(Reaction_Dislike value)? dislike,
+    TResult Function(Reaction_Laugh value)? laugh,
+    TResult Function(Reaction_Emphasize value)? emphasize,
+    TResult Function(Reaction_Question value)? question,
+    TResult Function(Reaction_Emoji value)? emoji,
+    required TResult orElse(),
+  }) {
+    if (question != null) {
+      return question(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class Reaction_Question extends Reaction {
+  const factory Reaction_Question() = _$Reaction_QuestionImpl;
+  const Reaction_Question._() : super._();
+}
+
+/// @nodoc
+abstract class _$$Reaction_EmojiImplCopyWith<$Res> {
+  factory _$$Reaction_EmojiImplCopyWith(_$Reaction_EmojiImpl value,
+          $Res Function(_$Reaction_EmojiImpl) then) =
+      __$$Reaction_EmojiImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String field0});
+}
+
+/// @nodoc
+class __$$Reaction_EmojiImplCopyWithImpl<$Res>
+    extends _$ReactionCopyWithImpl<$Res, _$Reaction_EmojiImpl>
+    implements _$$Reaction_EmojiImplCopyWith<$Res> {
+  __$$Reaction_EmojiImplCopyWithImpl(
+      _$Reaction_EmojiImpl _value, $Res Function(_$Reaction_EmojiImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of Reaction
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? field0 = null,
+  }) {
+    return _then(_$Reaction_EmojiImpl(
+      null == field0
+          ? _value.field0
+          : field0 // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$Reaction_EmojiImpl extends Reaction_Emoji {
+  const _$Reaction_EmojiImpl(this.field0) : super._();
+
+  @override
+  final String field0;
+
+  @override
+  String toString() {
+    return 'Reaction.emoji(field0: $field0)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$Reaction_EmojiImpl &&
+            (identical(other.field0, field0) || other.field0 == field0));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, field0);
+
+  /// Create a copy of Reaction
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$Reaction_EmojiImplCopyWith<_$Reaction_EmojiImpl> get copyWith =>
+      __$$Reaction_EmojiImplCopyWithImpl<_$Reaction_EmojiImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() heart,
+    required TResult Function() like,
+    required TResult Function() dislike,
+    required TResult Function() laugh,
+    required TResult Function() emphasize,
+    required TResult Function() question,
+    required TResult Function(String field0) emoji,
+  }) {
+    return emoji(field0);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? heart,
+    TResult? Function()? like,
+    TResult? Function()? dislike,
+    TResult? Function()? laugh,
+    TResult? Function()? emphasize,
+    TResult? Function()? question,
+    TResult? Function(String field0)? emoji,
+  }) {
+    return emoji?.call(field0);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? heart,
+    TResult Function()? like,
+    TResult Function()? dislike,
+    TResult Function()? laugh,
+    TResult Function()? emphasize,
+    TResult Function()? question,
+    TResult Function(String field0)? emoji,
+    required TResult orElse(),
+  }) {
+    if (emoji != null) {
+      return emoji(field0);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(Reaction_Heart value) heart,
+    required TResult Function(Reaction_Like value) like,
+    required TResult Function(Reaction_Dislike value) dislike,
+    required TResult Function(Reaction_Laugh value) laugh,
+    required TResult Function(Reaction_Emphasize value) emphasize,
+    required TResult Function(Reaction_Question value) question,
+    required TResult Function(Reaction_Emoji value) emoji,
+  }) {
+    return emoji(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(Reaction_Heart value)? heart,
+    TResult? Function(Reaction_Like value)? like,
+    TResult? Function(Reaction_Dislike value)? dislike,
+    TResult? Function(Reaction_Laugh value)? laugh,
+    TResult? Function(Reaction_Emphasize value)? emphasize,
+    TResult? Function(Reaction_Question value)? question,
+    TResult? Function(Reaction_Emoji value)? emoji,
+  }) {
+    return emoji?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(Reaction_Heart value)? heart,
+    TResult Function(Reaction_Like value)? like,
+    TResult Function(Reaction_Dislike value)? dislike,
+    TResult Function(Reaction_Laugh value)? laugh,
+    TResult Function(Reaction_Emphasize value)? emphasize,
+    TResult Function(Reaction_Question value)? question,
+    TResult Function(Reaction_Emoji value)? emoji,
+    required TResult orElse(),
+  }) {
+    if (emoji != null) {
+      return emoji(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class Reaction_Emoji extends Reaction {
+  const factory Reaction_Emoji(final String field0) = _$Reaction_EmojiImpl;
+  const Reaction_Emoji._() : super._();
+
+  String get field0;
+
+  /// Create a copy of Reaction
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$Reaction_EmojiImplCopyWith<_$Reaction_EmojiImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc

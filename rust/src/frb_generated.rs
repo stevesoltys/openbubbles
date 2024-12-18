@@ -3708,6 +3708,17 @@ const _: fn() = || {
             let _: crate::api::api::MessageParts = body;
         }
     }
+    match None::<crate::api::api::Reaction>.unwrap() {
+        crate::api::api::Reaction::Heart => {}
+        crate::api::api::Reaction::Like => {}
+        crate::api::api::Reaction::Dislike => {}
+        crate::api::api::Reaction::Laugh => {}
+        crate::api::api::Reaction::Emphasize => {}
+        crate::api::api::Reaction::Question => {}
+        crate::api::api::Reaction::Emoji(field0) => {
+            let _: String = field0;
+        }
+    }
     {
         let RenameMessage = None::<crate::api::api::RenameMessage>.unwrap();
         let _: String = RenameMessage.new_name;
@@ -5446,16 +5457,34 @@ impl SseDecode for crate::api::api::ReactMessageType {
 impl SseDecode for crate::api::api::Reaction {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut inner = <i32>::sse_decode(deserializer);
-        return match inner {
-            0 => crate::api::api::Reaction::Heart,
-            1 => crate::api::api::Reaction::Like,
-            2 => crate::api::api::Reaction::Dislike,
-            3 => crate::api::api::Reaction::Laugh,
-            4 => crate::api::api::Reaction::Emphsize,
-            5 => crate::api::api::Reaction::Question,
-            _ => unreachable!("Invalid variant for Reaction: {}", inner),
-        };
+        let mut tag_ = <i32>::sse_decode(deserializer);
+        match tag_ {
+            0 => {
+                return crate::api::api::Reaction::Heart;
+            }
+            1 => {
+                return crate::api::api::Reaction::Like;
+            }
+            2 => {
+                return crate::api::api::Reaction::Dislike;
+            }
+            3 => {
+                return crate::api::api::Reaction::Laugh;
+            }
+            4 => {
+                return crate::api::api::Reaction::Emphasize;
+            }
+            5 => {
+                return crate::api::api::Reaction::Question;
+            }
+            6 => {
+                let mut var_field0 = <String>::sse_decode(deserializer);
+                return crate::api::api::Reaction::Emoji(var_field0);
+            }
+            _ => {
+                unimplemented!("");
+            }
+        }
     }
 }
 
@@ -7026,13 +7055,18 @@ impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<crate::api::api::ReactMessageT
 impl flutter_rust_bridge::IntoDart for FrbWrapper<crate::api::api::Reaction> {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         match self.0 {
-            crate::api::api::Reaction::Heart => 0.into_dart(),
-            crate::api::api::Reaction::Like => 1.into_dart(),
-            crate::api::api::Reaction::Dislike => 2.into_dart(),
-            crate::api::api::Reaction::Laugh => 3.into_dart(),
-            crate::api::api::Reaction::Emphsize => 4.into_dart(),
-            crate::api::api::Reaction::Question => 5.into_dart(),
-            _ => unreachable!(),
+            crate::api::api::Reaction::Heart => [0.into_dart()].into_dart(),
+            crate::api::api::Reaction::Like => [1.into_dart()].into_dart(),
+            crate::api::api::Reaction::Dislike => [2.into_dart()].into_dart(),
+            crate::api::api::Reaction::Laugh => [3.into_dart()].into_dart(),
+            crate::api::api::Reaction::Emphasize => [4.into_dart()].into_dart(),
+            crate::api::api::Reaction::Question => [5.into_dart()].into_dart(),
+            crate::api::api::Reaction::Emoji(field0) => {
+                [6.into_dart(), field0.into_into_dart().into_dart()].into_dart()
+            }
+            _ => {
+                unimplemented!("");
+            }
         }
     }
 }
@@ -8627,20 +8661,33 @@ impl SseEncode for crate::api::api::ReactMessageType {
 impl SseEncode for crate::api::api::Reaction {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <i32>::sse_encode(
-            match self {
-                crate::api::api::Reaction::Heart => 0,
-                crate::api::api::Reaction::Like => 1,
-                crate::api::api::Reaction::Dislike => 2,
-                crate::api::api::Reaction::Laugh => 3,
-                crate::api::api::Reaction::Emphsize => 4,
-                crate::api::api::Reaction::Question => 5,
-                _ => {
-                    unimplemented!("");
-                }
-            },
-            serializer,
-        );
+        match self {
+            crate::api::api::Reaction::Heart => {
+                <i32>::sse_encode(0, serializer);
+            }
+            crate::api::api::Reaction::Like => {
+                <i32>::sse_encode(1, serializer);
+            }
+            crate::api::api::Reaction::Dislike => {
+                <i32>::sse_encode(2, serializer);
+            }
+            crate::api::api::Reaction::Laugh => {
+                <i32>::sse_encode(3, serializer);
+            }
+            crate::api::api::Reaction::Emphasize => {
+                <i32>::sse_encode(4, serializer);
+            }
+            crate::api::api::Reaction::Question => {
+                <i32>::sse_encode(5, serializer);
+            }
+            crate::api::api::Reaction::Emoji(field0) => {
+                <i32>::sse_encode(6, serializer);
+                <String>::sse_encode(field0, serializer);
+            }
+            _ => {
+                unimplemented!("");
+            }
+        }
     }
 }
 
