@@ -1452,6 +1452,11 @@ class RustPushService extends GetxService {
         } else if (msgType.reaction is api.Reaction_Emoji) {
           reaction = ReactionTypes.EMOJI;
           emoji = (msgType.reaction as api.Reaction_Emoji).field0;
+        } else if (msgType.reaction is api.Reaction_Sticker) {
+          var sticker = msgType.reaction as api.Reaction_Sticker;
+          app = sticker.spec;
+          attributedBodyData = await indexedPartsToAttributedBodyDyn(sticker.body.field0, myMsg.id, null);
+          reaction = ReactionTypes.STICKERBACK;
         }
         if (!msgType.enable) {
           reaction = "-$reaction";

@@ -3718,6 +3718,10 @@ const _: fn() = || {
         crate::api::api::Reaction::Emoji(field0) => {
             let _: String = field0;
         }
+        crate::api::api::Reaction::Sticker { spec, body } => {
+            let _: Option<crate::api::api::ExtensionApp> = spec;
+            let _: crate::api::api::MessageParts = body;
+        }
     }
     {
         let RenameMessage = None::<crate::api::api::RenameMessage>.unwrap();
@@ -5481,6 +5485,15 @@ impl SseDecode for crate::api::api::Reaction {
                 let mut var_field0 = <String>::sse_decode(deserializer);
                 return crate::api::api::Reaction::Emoji(var_field0);
             }
+            7 => {
+                let mut var_spec =
+                    <Option<crate::api::api::ExtensionApp>>::sse_decode(deserializer);
+                let mut var_body = <crate::api::api::MessageParts>::sse_decode(deserializer);
+                return crate::api::api::Reaction::Sticker {
+                    spec: var_spec,
+                    body: var_body,
+                };
+            }
             _ => {
                 unimplemented!("");
             }
@@ -7064,6 +7077,12 @@ impl flutter_rust_bridge::IntoDart for FrbWrapper<crate::api::api::Reaction> {
             crate::api::api::Reaction::Emoji(field0) => {
                 [6.into_dart(), field0.into_into_dart().into_dart()].into_dart()
             }
+            crate::api::api::Reaction::Sticker { spec, body } => [
+                7.into_dart(),
+                spec.into_into_dart().into_dart(),
+                body.into_into_dart().into_dart(),
+            ]
+            .into_dart(),
             _ => {
                 unimplemented!("");
             }
@@ -8683,6 +8702,11 @@ impl SseEncode for crate::api::api::Reaction {
             crate::api::api::Reaction::Emoji(field0) => {
                 <i32>::sse_encode(6, serializer);
                 <String>::sse_encode(field0, serializer);
+            }
+            crate::api::api::Reaction::Sticker { spec, body } => {
+                <i32>::sse_encode(7, serializer);
+                <Option<crate::api::api::ExtensionApp>>::sse_encode(spec, serializer);
+                <crate::api::api::MessageParts>::sse_encode(body, serializer);
             }
             _ => {
                 unimplemented!("");

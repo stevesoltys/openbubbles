@@ -307,6 +307,10 @@ pub enum DartReaction {
     Emphasize,
     Question,
     Emoji(String),
+    Sticker {
+        spec: Option<ExtensionApp>,
+        body: MessageParts
+    },
 }
 
 #[repr(C)]

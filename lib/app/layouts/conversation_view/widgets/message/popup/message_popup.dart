@@ -124,7 +124,6 @@ class _MessagePopupState extends OptimizedState<MessagePopup> with SingleTickerP
   BuildContext get widthContext => widget.widthContext.call() ?? context;
 
   List<String> reactOptions = ReactionTypes.toList();
-
   @override
   void initState() {
     super.initState();
@@ -184,8 +183,7 @@ class _MessagePopupState extends OptimizedState<MessagePopup> with SingleTickerP
   Future<List<String>> getReactionList() async {
     final recentEmojis = await EmojiPickerUtils().getRecentEmojis();
 
-    var reactions = ReactionTypes.toList();
-    reactions.removeLast();
+    var reactions = ReactionTypes.toList().where((i) => ReactionTypes.reactionToEmoji.containsKey(i)).toList();
 
     if (currentlySelectedReaction != "init" && currentlySelectedReaction != null && !reactions.contains(currentlySelectedReaction)) {
       reactions.add(currentlySelectedReaction!); // add current reaction
@@ -1459,6 +1457,18 @@ class ReactionDetails extends StatelessWidget {
                       ),
                       child: Center(
                         child: Builder(builder: (context) {
+                          if (message.associatedMessageType == ReactionTypes.STICKERBACK) {
+                            var image = cvc(message.chat.target!).stickerData[message.guid]?[message.attachments[0]?.guid]?.$1;
+                            return image != null ? Padding(
+                              padding: const EdgeInsets.all(5),
+                              child: Image.memory(
+                                image,
+                                gaplessPlayback: true,
+                                cacheHeight: 200,
+                                filterQuality: FilterQuality.none,
+                              ),
+                            ) : const SizedBox.shrink();
+                          }
                           final text = Text(
                             ReactionTypes.reactionToEmoji[message.associatedMessageType] ?? message.associatedMessageEmoji ?? "X",
                             style: const TextStyle(fontSize: 18, fontFamily: 'Apple Color Emoji'),

@@ -9347,6 +9347,7 @@ mixin _$Reaction {
     required TResult Function() emphasize,
     required TResult Function() question,
     required TResult Function(String field0) emoji,
+    required TResult Function(ExtensionApp? spec, MessageParts body) sticker,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -9358,6 +9359,7 @@ mixin _$Reaction {
     TResult? Function()? emphasize,
     TResult? Function()? question,
     TResult? Function(String field0)? emoji,
+    TResult? Function(ExtensionApp? spec, MessageParts body)? sticker,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -9369,6 +9371,7 @@ mixin _$Reaction {
     TResult Function()? emphasize,
     TResult Function()? question,
     TResult Function(String field0)? emoji,
+    TResult Function(ExtensionApp? spec, MessageParts body)? sticker,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -9381,6 +9384,7 @@ mixin _$Reaction {
     required TResult Function(Reaction_Emphasize value) emphasize,
     required TResult Function(Reaction_Question value) question,
     required TResult Function(Reaction_Emoji value) emoji,
+    required TResult Function(Reaction_Sticker value) sticker,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -9392,6 +9396,7 @@ mixin _$Reaction {
     TResult? Function(Reaction_Emphasize value)? emphasize,
     TResult? Function(Reaction_Question value)? question,
     TResult? Function(Reaction_Emoji value)? emoji,
+    TResult? Function(Reaction_Sticker value)? sticker,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -9403,6 +9408,7 @@ mixin _$Reaction {
     TResult Function(Reaction_Emphasize value)? emphasize,
     TResult Function(Reaction_Question value)? question,
     TResult Function(Reaction_Emoji value)? emoji,
+    TResult Function(Reaction_Sticker value)? sticker,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -9476,6 +9482,7 @@ class _$Reaction_HeartImpl extends Reaction_Heart {
     required TResult Function() emphasize,
     required TResult Function() question,
     required TResult Function(String field0) emoji,
+    required TResult Function(ExtensionApp? spec, MessageParts body) sticker,
   }) {
     return heart();
   }
@@ -9490,6 +9497,7 @@ class _$Reaction_HeartImpl extends Reaction_Heart {
     TResult? Function()? emphasize,
     TResult? Function()? question,
     TResult? Function(String field0)? emoji,
+    TResult? Function(ExtensionApp? spec, MessageParts body)? sticker,
   }) {
     return heart?.call();
   }
@@ -9504,6 +9512,7 @@ class _$Reaction_HeartImpl extends Reaction_Heart {
     TResult Function()? emphasize,
     TResult Function()? question,
     TResult Function(String field0)? emoji,
+    TResult Function(ExtensionApp? spec, MessageParts body)? sticker,
     required TResult orElse(),
   }) {
     if (heart != null) {
@@ -9522,6 +9531,7 @@ class _$Reaction_HeartImpl extends Reaction_Heart {
     required TResult Function(Reaction_Emphasize value) emphasize,
     required TResult Function(Reaction_Question value) question,
     required TResult Function(Reaction_Emoji value) emoji,
+    required TResult Function(Reaction_Sticker value) sticker,
   }) {
     return heart(this);
   }
@@ -9536,6 +9546,7 @@ class _$Reaction_HeartImpl extends Reaction_Heart {
     TResult? Function(Reaction_Emphasize value)? emphasize,
     TResult? Function(Reaction_Question value)? question,
     TResult? Function(Reaction_Emoji value)? emoji,
+    TResult? Function(Reaction_Sticker value)? sticker,
   }) {
     return heart?.call(this);
   }
@@ -9550,6 +9561,7 @@ class _$Reaction_HeartImpl extends Reaction_Heart {
     TResult Function(Reaction_Emphasize value)? emphasize,
     TResult Function(Reaction_Question value)? question,
     TResult Function(Reaction_Emoji value)? emoji,
+    TResult Function(Reaction_Sticker value)? sticker,
     required TResult orElse(),
   }) {
     if (heart != null) {
@@ -9612,6 +9624,7 @@ class _$Reaction_LikeImpl extends Reaction_Like {
     required TResult Function() emphasize,
     required TResult Function() question,
     required TResult Function(String field0) emoji,
+    required TResult Function(ExtensionApp? spec, MessageParts body) sticker,
   }) {
     return like();
   }
@@ -9626,6 +9639,7 @@ class _$Reaction_LikeImpl extends Reaction_Like {
     TResult? Function()? emphasize,
     TResult? Function()? question,
     TResult? Function(String field0)? emoji,
+    TResult? Function(ExtensionApp? spec, MessageParts body)? sticker,
   }) {
     return like?.call();
   }
@@ -9640,6 +9654,7 @@ class _$Reaction_LikeImpl extends Reaction_Like {
     TResult Function()? emphasize,
     TResult Function()? question,
     TResult Function(String field0)? emoji,
+    TResult Function(ExtensionApp? spec, MessageParts body)? sticker,
     required TResult orElse(),
   }) {
     if (like != null) {
@@ -9658,6 +9673,7 @@ class _$Reaction_LikeImpl extends Reaction_Like {
     required TResult Function(Reaction_Emphasize value) emphasize,
     required TResult Function(Reaction_Question value) question,
     required TResult Function(Reaction_Emoji value) emoji,
+    required TResult Function(Reaction_Sticker value) sticker,
   }) {
     return like(this);
   }
@@ -9672,6 +9688,7 @@ class _$Reaction_LikeImpl extends Reaction_Like {
     TResult? Function(Reaction_Emphasize value)? emphasize,
     TResult? Function(Reaction_Question value)? question,
     TResult? Function(Reaction_Emoji value)? emoji,
+    TResult? Function(Reaction_Sticker value)? sticker,
   }) {
     return like?.call(this);
   }
@@ -9686,6 +9703,7 @@ class _$Reaction_LikeImpl extends Reaction_Like {
     TResult Function(Reaction_Emphasize value)? emphasize,
     TResult Function(Reaction_Question value)? question,
     TResult Function(Reaction_Emoji value)? emoji,
+    TResult Function(Reaction_Sticker value)? sticker,
     required TResult orElse(),
   }) {
     if (like != null) {
@@ -9748,6 +9766,7 @@ class _$Reaction_DislikeImpl extends Reaction_Dislike {
     required TResult Function() emphasize,
     required TResult Function() question,
     required TResult Function(String field0) emoji,
+    required TResult Function(ExtensionApp? spec, MessageParts body) sticker,
   }) {
     return dislike();
   }
@@ -9762,6 +9781,7 @@ class _$Reaction_DislikeImpl extends Reaction_Dislike {
     TResult? Function()? emphasize,
     TResult? Function()? question,
     TResult? Function(String field0)? emoji,
+    TResult? Function(ExtensionApp? spec, MessageParts body)? sticker,
   }) {
     return dislike?.call();
   }
@@ -9776,6 +9796,7 @@ class _$Reaction_DislikeImpl extends Reaction_Dislike {
     TResult Function()? emphasize,
     TResult Function()? question,
     TResult Function(String field0)? emoji,
+    TResult Function(ExtensionApp? spec, MessageParts body)? sticker,
     required TResult orElse(),
   }) {
     if (dislike != null) {
@@ -9794,6 +9815,7 @@ class _$Reaction_DislikeImpl extends Reaction_Dislike {
     required TResult Function(Reaction_Emphasize value) emphasize,
     required TResult Function(Reaction_Question value) question,
     required TResult Function(Reaction_Emoji value) emoji,
+    required TResult Function(Reaction_Sticker value) sticker,
   }) {
     return dislike(this);
   }
@@ -9808,6 +9830,7 @@ class _$Reaction_DislikeImpl extends Reaction_Dislike {
     TResult? Function(Reaction_Emphasize value)? emphasize,
     TResult? Function(Reaction_Question value)? question,
     TResult? Function(Reaction_Emoji value)? emoji,
+    TResult? Function(Reaction_Sticker value)? sticker,
   }) {
     return dislike?.call(this);
   }
@@ -9822,6 +9845,7 @@ class _$Reaction_DislikeImpl extends Reaction_Dislike {
     TResult Function(Reaction_Emphasize value)? emphasize,
     TResult Function(Reaction_Question value)? question,
     TResult Function(Reaction_Emoji value)? emoji,
+    TResult Function(Reaction_Sticker value)? sticker,
     required TResult orElse(),
   }) {
     if (dislike != null) {
@@ -9884,6 +9908,7 @@ class _$Reaction_LaughImpl extends Reaction_Laugh {
     required TResult Function() emphasize,
     required TResult Function() question,
     required TResult Function(String field0) emoji,
+    required TResult Function(ExtensionApp? spec, MessageParts body) sticker,
   }) {
     return laugh();
   }
@@ -9898,6 +9923,7 @@ class _$Reaction_LaughImpl extends Reaction_Laugh {
     TResult? Function()? emphasize,
     TResult? Function()? question,
     TResult? Function(String field0)? emoji,
+    TResult? Function(ExtensionApp? spec, MessageParts body)? sticker,
   }) {
     return laugh?.call();
   }
@@ -9912,6 +9938,7 @@ class _$Reaction_LaughImpl extends Reaction_Laugh {
     TResult Function()? emphasize,
     TResult Function()? question,
     TResult Function(String field0)? emoji,
+    TResult Function(ExtensionApp? spec, MessageParts body)? sticker,
     required TResult orElse(),
   }) {
     if (laugh != null) {
@@ -9930,6 +9957,7 @@ class _$Reaction_LaughImpl extends Reaction_Laugh {
     required TResult Function(Reaction_Emphasize value) emphasize,
     required TResult Function(Reaction_Question value) question,
     required TResult Function(Reaction_Emoji value) emoji,
+    required TResult Function(Reaction_Sticker value) sticker,
   }) {
     return laugh(this);
   }
@@ -9944,6 +9972,7 @@ class _$Reaction_LaughImpl extends Reaction_Laugh {
     TResult? Function(Reaction_Emphasize value)? emphasize,
     TResult? Function(Reaction_Question value)? question,
     TResult? Function(Reaction_Emoji value)? emoji,
+    TResult? Function(Reaction_Sticker value)? sticker,
   }) {
     return laugh?.call(this);
   }
@@ -9958,6 +9987,7 @@ class _$Reaction_LaughImpl extends Reaction_Laugh {
     TResult Function(Reaction_Emphasize value)? emphasize,
     TResult Function(Reaction_Question value)? question,
     TResult Function(Reaction_Emoji value)? emoji,
+    TResult Function(Reaction_Sticker value)? sticker,
     required TResult orElse(),
   }) {
     if (laugh != null) {
@@ -10020,6 +10050,7 @@ class _$Reaction_EmphasizeImpl extends Reaction_Emphasize {
     required TResult Function() emphasize,
     required TResult Function() question,
     required TResult Function(String field0) emoji,
+    required TResult Function(ExtensionApp? spec, MessageParts body) sticker,
   }) {
     return emphasize();
   }
@@ -10034,6 +10065,7 @@ class _$Reaction_EmphasizeImpl extends Reaction_Emphasize {
     TResult? Function()? emphasize,
     TResult? Function()? question,
     TResult? Function(String field0)? emoji,
+    TResult? Function(ExtensionApp? spec, MessageParts body)? sticker,
   }) {
     return emphasize?.call();
   }
@@ -10048,6 +10080,7 @@ class _$Reaction_EmphasizeImpl extends Reaction_Emphasize {
     TResult Function()? emphasize,
     TResult Function()? question,
     TResult Function(String field0)? emoji,
+    TResult Function(ExtensionApp? spec, MessageParts body)? sticker,
     required TResult orElse(),
   }) {
     if (emphasize != null) {
@@ -10066,6 +10099,7 @@ class _$Reaction_EmphasizeImpl extends Reaction_Emphasize {
     required TResult Function(Reaction_Emphasize value) emphasize,
     required TResult Function(Reaction_Question value) question,
     required TResult Function(Reaction_Emoji value) emoji,
+    required TResult Function(Reaction_Sticker value) sticker,
   }) {
     return emphasize(this);
   }
@@ -10080,6 +10114,7 @@ class _$Reaction_EmphasizeImpl extends Reaction_Emphasize {
     TResult? Function(Reaction_Emphasize value)? emphasize,
     TResult? Function(Reaction_Question value)? question,
     TResult? Function(Reaction_Emoji value)? emoji,
+    TResult? Function(Reaction_Sticker value)? sticker,
   }) {
     return emphasize?.call(this);
   }
@@ -10094,6 +10129,7 @@ class _$Reaction_EmphasizeImpl extends Reaction_Emphasize {
     TResult Function(Reaction_Emphasize value)? emphasize,
     TResult Function(Reaction_Question value)? question,
     TResult Function(Reaction_Emoji value)? emoji,
+    TResult Function(Reaction_Sticker value)? sticker,
     required TResult orElse(),
   }) {
     if (emphasize != null) {
@@ -10156,6 +10192,7 @@ class _$Reaction_QuestionImpl extends Reaction_Question {
     required TResult Function() emphasize,
     required TResult Function() question,
     required TResult Function(String field0) emoji,
+    required TResult Function(ExtensionApp? spec, MessageParts body) sticker,
   }) {
     return question();
   }
@@ -10170,6 +10207,7 @@ class _$Reaction_QuestionImpl extends Reaction_Question {
     TResult? Function()? emphasize,
     TResult? Function()? question,
     TResult? Function(String field0)? emoji,
+    TResult? Function(ExtensionApp? spec, MessageParts body)? sticker,
   }) {
     return question?.call();
   }
@@ -10184,6 +10222,7 @@ class _$Reaction_QuestionImpl extends Reaction_Question {
     TResult Function()? emphasize,
     TResult Function()? question,
     TResult Function(String field0)? emoji,
+    TResult Function(ExtensionApp? spec, MessageParts body)? sticker,
     required TResult orElse(),
   }) {
     if (question != null) {
@@ -10202,6 +10241,7 @@ class _$Reaction_QuestionImpl extends Reaction_Question {
     required TResult Function(Reaction_Emphasize value) emphasize,
     required TResult Function(Reaction_Question value) question,
     required TResult Function(Reaction_Emoji value) emoji,
+    required TResult Function(Reaction_Sticker value) sticker,
   }) {
     return question(this);
   }
@@ -10216,6 +10256,7 @@ class _$Reaction_QuestionImpl extends Reaction_Question {
     TResult? Function(Reaction_Emphasize value)? emphasize,
     TResult? Function(Reaction_Question value)? question,
     TResult? Function(Reaction_Emoji value)? emoji,
+    TResult? Function(Reaction_Sticker value)? sticker,
   }) {
     return question?.call(this);
   }
@@ -10230,6 +10271,7 @@ class _$Reaction_QuestionImpl extends Reaction_Question {
     TResult Function(Reaction_Emphasize value)? emphasize,
     TResult Function(Reaction_Question value)? question,
     TResult Function(Reaction_Emoji value)? emoji,
+    TResult Function(Reaction_Sticker value)? sticker,
     required TResult orElse(),
   }) {
     if (question != null) {
@@ -10320,6 +10362,7 @@ class _$Reaction_EmojiImpl extends Reaction_Emoji {
     required TResult Function() emphasize,
     required TResult Function() question,
     required TResult Function(String field0) emoji,
+    required TResult Function(ExtensionApp? spec, MessageParts body) sticker,
   }) {
     return emoji(field0);
   }
@@ -10334,6 +10377,7 @@ class _$Reaction_EmojiImpl extends Reaction_Emoji {
     TResult? Function()? emphasize,
     TResult? Function()? question,
     TResult? Function(String field0)? emoji,
+    TResult? Function(ExtensionApp? spec, MessageParts body)? sticker,
   }) {
     return emoji?.call(field0);
   }
@@ -10348,6 +10392,7 @@ class _$Reaction_EmojiImpl extends Reaction_Emoji {
     TResult Function()? emphasize,
     TResult Function()? question,
     TResult Function(String field0)? emoji,
+    TResult Function(ExtensionApp? spec, MessageParts body)? sticker,
     required TResult orElse(),
   }) {
     if (emoji != null) {
@@ -10366,6 +10411,7 @@ class _$Reaction_EmojiImpl extends Reaction_Emoji {
     required TResult Function(Reaction_Emphasize value) emphasize,
     required TResult Function(Reaction_Question value) question,
     required TResult Function(Reaction_Emoji value) emoji,
+    required TResult Function(Reaction_Sticker value) sticker,
   }) {
     return emoji(this);
   }
@@ -10380,6 +10426,7 @@ class _$Reaction_EmojiImpl extends Reaction_Emoji {
     TResult? Function(Reaction_Emphasize value)? emphasize,
     TResult? Function(Reaction_Question value)? question,
     TResult? Function(Reaction_Emoji value)? emoji,
+    TResult? Function(Reaction_Sticker value)? sticker,
   }) {
     return emoji?.call(this);
   }
@@ -10394,6 +10441,7 @@ class _$Reaction_EmojiImpl extends Reaction_Emoji {
     TResult Function(Reaction_Emphasize value)? emphasize,
     TResult Function(Reaction_Question value)? question,
     TResult Function(Reaction_Emoji value)? emoji,
+    TResult Function(Reaction_Sticker value)? sticker,
     required TResult orElse(),
   }) {
     if (emoji != null) {
@@ -10413,6 +10461,195 @@ abstract class Reaction_Emoji extends Reaction {
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$Reaction_EmojiImplCopyWith<_$Reaction_EmojiImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$Reaction_StickerImplCopyWith<$Res> {
+  factory _$$Reaction_StickerImplCopyWith(_$Reaction_StickerImpl value,
+          $Res Function(_$Reaction_StickerImpl) then) =
+      __$$Reaction_StickerImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({ExtensionApp? spec, MessageParts body});
+}
+
+/// @nodoc
+class __$$Reaction_StickerImplCopyWithImpl<$Res>
+    extends _$ReactionCopyWithImpl<$Res, _$Reaction_StickerImpl>
+    implements _$$Reaction_StickerImplCopyWith<$Res> {
+  __$$Reaction_StickerImplCopyWithImpl(_$Reaction_StickerImpl _value,
+      $Res Function(_$Reaction_StickerImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of Reaction
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? spec = freezed,
+    Object? body = null,
+  }) {
+    return _then(_$Reaction_StickerImpl(
+      spec: freezed == spec
+          ? _value.spec
+          : spec // ignore: cast_nullable_to_non_nullable
+              as ExtensionApp?,
+      body: null == body
+          ? _value.body
+          : body // ignore: cast_nullable_to_non_nullable
+              as MessageParts,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$Reaction_StickerImpl extends Reaction_Sticker {
+  const _$Reaction_StickerImpl({this.spec, required this.body}) : super._();
+
+  @override
+  final ExtensionApp? spec;
+  @override
+  final MessageParts body;
+
+  @override
+  String toString() {
+    return 'Reaction.sticker(spec: $spec, body: $body)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$Reaction_StickerImpl &&
+            (identical(other.spec, spec) || other.spec == spec) &&
+            (identical(other.body, body) || other.body == body));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, spec, body);
+
+  /// Create a copy of Reaction
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$Reaction_StickerImplCopyWith<_$Reaction_StickerImpl> get copyWith =>
+      __$$Reaction_StickerImplCopyWithImpl<_$Reaction_StickerImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() heart,
+    required TResult Function() like,
+    required TResult Function() dislike,
+    required TResult Function() laugh,
+    required TResult Function() emphasize,
+    required TResult Function() question,
+    required TResult Function(String field0) emoji,
+    required TResult Function(ExtensionApp? spec, MessageParts body) sticker,
+  }) {
+    return sticker(spec, body);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? heart,
+    TResult? Function()? like,
+    TResult? Function()? dislike,
+    TResult? Function()? laugh,
+    TResult? Function()? emphasize,
+    TResult? Function()? question,
+    TResult? Function(String field0)? emoji,
+    TResult? Function(ExtensionApp? spec, MessageParts body)? sticker,
+  }) {
+    return sticker?.call(spec, body);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? heart,
+    TResult Function()? like,
+    TResult Function()? dislike,
+    TResult Function()? laugh,
+    TResult Function()? emphasize,
+    TResult Function()? question,
+    TResult Function(String field0)? emoji,
+    TResult Function(ExtensionApp? spec, MessageParts body)? sticker,
+    required TResult orElse(),
+  }) {
+    if (sticker != null) {
+      return sticker(spec, body);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(Reaction_Heart value) heart,
+    required TResult Function(Reaction_Like value) like,
+    required TResult Function(Reaction_Dislike value) dislike,
+    required TResult Function(Reaction_Laugh value) laugh,
+    required TResult Function(Reaction_Emphasize value) emphasize,
+    required TResult Function(Reaction_Question value) question,
+    required TResult Function(Reaction_Emoji value) emoji,
+    required TResult Function(Reaction_Sticker value) sticker,
+  }) {
+    return sticker(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(Reaction_Heart value)? heart,
+    TResult? Function(Reaction_Like value)? like,
+    TResult? Function(Reaction_Dislike value)? dislike,
+    TResult? Function(Reaction_Laugh value)? laugh,
+    TResult? Function(Reaction_Emphasize value)? emphasize,
+    TResult? Function(Reaction_Question value)? question,
+    TResult? Function(Reaction_Emoji value)? emoji,
+    TResult? Function(Reaction_Sticker value)? sticker,
+  }) {
+    return sticker?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(Reaction_Heart value)? heart,
+    TResult Function(Reaction_Like value)? like,
+    TResult Function(Reaction_Dislike value)? dislike,
+    TResult Function(Reaction_Laugh value)? laugh,
+    TResult Function(Reaction_Emphasize value)? emphasize,
+    TResult Function(Reaction_Question value)? question,
+    TResult Function(Reaction_Emoji value)? emoji,
+    TResult Function(Reaction_Sticker value)? sticker,
+    required TResult orElse(),
+  }) {
+    if (sticker != null) {
+      return sticker(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class Reaction_Sticker extends Reaction {
+  const factory Reaction_Sticker(
+      {final ExtensionApp? spec,
+      required final MessageParts body}) = _$Reaction_StickerImpl;
+  const Reaction_Sticker._() : super._();
+
+  ExtensionApp? get spec;
+  MessageParts get body;
+
+  /// Create a copy of Reaction
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$Reaction_StickerImplCopyWith<_$Reaction_StickerImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 

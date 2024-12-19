@@ -14,6 +14,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:universal_io/io.dart';
 
 class ReactionWidget extends StatefulWidget {
   const ReactionWidget({
@@ -41,11 +42,14 @@ class ReactionWidgetState extends OptimizedState<ReactionWidget> {
   bool get messageIsFromMe => widget.message?.isFromMe ?? true;
   String get reactionType => reaction.associatedMessageType!;
 
+  ConversationViewController? get controller => cvc(reaction.chat.target!);
+
   static const double iosSize = 35;
 
   @override
   void initState() {
     super.initState();
+    updateReaction();
     updateObx(() {
       if (!kIsWeb && widget.message != null) {
         final messageQuery = Database.messages.query(Message_.id.equals(reaction.id!)).watch();
@@ -57,9 +61,11 @@ class ReactionWidgetState extends OptimizedState<ReactionWidget> {
             if (_message.guid != reaction.guid || _message.dateDelivered != reaction.dateDelivered) {
               setState(() {
                 reaction = _message;
+                updateReaction();
               });
             } else {
               reaction = _message;
+              updateReaction();
             }
             getActiveMwc(widget.message!.guid!)?.updateAssociatedMessage(reaction, updateHolder: false);
           }
@@ -73,12 +79,48 @@ class ReactionWidgetState extends OptimizedState<ReactionWidget> {
           if (tempGuid == reaction.guid || _message.guid == reaction.guid) {
             setState(() {
               reaction = _message;
+              updateReaction();
             });
             getActiveMwc(widget.message!.guid!)?.updateAssociatedMessage(reaction, updateHolder: false);
           }
         });
       }
     });
+  }
+
+  Future<void> checkImage(Attachment attachment) async {
+    final pathName = attachment.path;
+    // Check via the image package to make sure this is a valid, render-able image
+    // final image = await compute(decodeIsolate, PlatformFile(
+    //     path: pathName,
+    //     name: attachment.transferName!,
+    //     bytes: attachment.bytes,
+    //     size: attachment.totalBytes ?? 0,
+    //   ),
+    // );
+    final bytes = await File(pathName).readAsBytes();
+    controller!.stickerData[reaction.guid!] = {
+      attachment.guid!: (bytes, null)
+    };
+    setState(() {});
+  }
+
+  void updateReaction() async {
+    if (reactionType != ReactionTypes.STICKERBACK) return;
+    reaction.fetchAttachments();
+    for (Attachment? attachment in reaction.attachments) {
+      // If we've already loaded it, don't try again
+      if (controller!.stickerData.keys.contains(attachment!.guid)) continue;
+
+      final pathName = attachment.path;
+      if (await FileSystemEntity.type(pathName) == FileSystemEntityType.notFound) {
+        attachmentDownloader.startDownload(attachment, onComplete: (_) async {
+          await checkImage(attachment);
+        });
+      } else {
+        await checkImage(attachment);
+      }
+    }
   }
 
   @override
@@ -157,6 +199,18 @@ class ReactionWidgetState extends OptimizedState<ReactionWidget> {
           child: Center(
             child: Builder(
                 builder: (context) {
+                  if (reactionType == ReactionTypes.STICKERBACK) {
+                    var image = controller!.stickerData[reaction.guid]?[reaction.attachments[0]?.guid]?.$1;
+                    return image != null ? Padding(
+                      padding: const EdgeInsets.all(5),
+                      child: Image.memory(
+                        image,
+                        gaplessPlayback: true,
+                        cacheHeight: 200,
+                        filterQuality: FilterQuality.none,
+                      ),
+                    ) : const SizedBox.shrink();
+                  }
                   final text = Text(
                     emoji,
                     style: const TextStyle(fontSize: 15, fontFamily: 'Apple Color Emoji'),
@@ -210,6 +264,18 @@ class ReactionWidgetState extends OptimizedState<ReactionWidget> {
               child: Center(
                 child: Builder(
                   builder: (context) {
+                    if (reactionType == ReactionTypes.STICKERBACK) {
+                      var image = controller!.stickerData[reaction.guid]?[reaction.attachments[0]?.guid]?.$1;
+                      return image != null ? Padding(
+                        padding: const EdgeInsets.all(5),
+                        child: Image.memory(
+                          image,
+                          gaplessPlayback: true,
+                          cacheHeight: 200,
+                          filterQuality: FilterQuality.none,
+                        ),
+                      ) : const SizedBox.shrink();
+                    }
                     final text = Text(
                       emoji,
                       style: const TextStyle(fontSize: 14, fontFamily: 'Apple Color Emoji'),

@@ -3588,6 +3588,11 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         return Reaction_Emoji(
           dco_decode_String(raw[1]),
         );
+      case 7:
+        return Reaction_Sticker(
+          spec: dco_decode_opt_box_autoadd_extension_app(raw[1]),
+          body: dco_decode_box_autoadd_message_parts(raw[2]),
+        );
       default:
         throw Exception("unreachable");
     }
@@ -5676,6 +5681,10 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       case 6:
         var var_field0 = sse_decode_String(deserializer);
         return Reaction_Emoji(var_field0);
+      case 7:
+        var var_spec = sse_decode_opt_box_autoadd_extension_app(deserializer);
+        var var_body = sse_decode_box_autoadd_message_parts(deserializer);
+        return Reaction_Sticker(spec: var_spec, body: var_body);
       default:
         throw UnimplementedError('');
     }
@@ -7519,6 +7528,10 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       case Reaction_Emoji(field0: final field0):
         sse_encode_i_32(6, serializer);
         sse_encode_String(field0, serializer);
+      case Reaction_Sticker(spec: final spec, body: final body):
+        sse_encode_i_32(7, serializer);
+        sse_encode_opt_box_autoadd_extension_app(spec, serializer);
+        sse_encode_box_autoadd_message_parts(body, serializer);
       default:
         throw UnimplementedError('');
     }

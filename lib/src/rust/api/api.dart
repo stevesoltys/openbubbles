@@ -1582,6 +1582,10 @@ sealed class Reaction with _$Reaction {
   const factory Reaction.emoji(
     String field0,
   ) = Reaction_Emoji;
+  const factory Reaction.sticker({
+    ExtensionApp? spec,
+    required MessageParts body,
+  }) = Reaction_Sticker;
 }
 
 @freezed
