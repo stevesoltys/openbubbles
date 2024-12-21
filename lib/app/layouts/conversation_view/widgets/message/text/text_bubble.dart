@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:simple_animations/simple_animations.dart';
 import 'package:supercharged/supercharged.dart';
+import 'package:bluebubbles/utils/logger/logger.dart';
 
 class TextBubble extends CustomStateful<MessageWidgetController> {
   TextBubble({
@@ -131,6 +132,9 @@ class _TextBubbleState extends CustomState<TextBubble, void, MessageWidgetContro
           hideBodyText: widget.subjectOnly,
         ),
         builder: (context, snapshot) {
+          if (snapshot.error != null) {
+            Logger.error("Render error", error: snapshot.error, trace: snapshot.stackTrace);
+          }
           if (snapshot.data != null) {
             if (effect == MessageEffect.gentle) {
               return CustomAnimationBuilder<Movie>(

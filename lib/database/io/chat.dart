@@ -316,6 +316,7 @@ class Chat {
   bool? autoSendReadReceipts;
   bool? autoSendTypingIndicators;
   String? textFieldText;
+  String? textFieldAnnotations;
   List<String> textFieldAttachments = [];
   Message? _latestMessage;
   Message get latestMessage {
@@ -395,6 +396,7 @@ class Chat {
     this.autoSendReadReceipts,
     this.autoSendTypingIndicators,
     this.textFieldText,
+    this.textFieldAnnotations,
     this.textFieldAttachments = const [],
     this.dateDeleted,
     this.style,
@@ -471,6 +473,7 @@ class Chat {
     bool updateAutoSendTypingIndicators = false,
     bool updateCustomAvatarPath = false,
     bool updateTextFieldText = false,
+    bool updateTextFieldAnnotations = false,
     bool updateTextFieldAttachments = false,
     bool updateDisplayName = false,
     bool updateDateDeleted = false,
@@ -518,6 +521,9 @@ class Chat {
       }
       if (!updateTextFieldText) {
         textFieldText = existing?.textFieldText ?? textFieldText;
+      }
+      if (!updateTextFieldAnnotations) {
+        textFieldAnnotations = existing?.textFieldAnnotations ?? textFieldAnnotations;
       }
       if (!updateAPNTitle) {
         apnTitle = existing?.apnTitle ?? apnTitle;
@@ -1287,6 +1293,7 @@ class Chat {
     autoSendReadReceipts ??= other.autoSendReadReceipts;
     autoSendTypingIndicators ??= other.autoSendTypingIndicators;
     textFieldText ??= other.textFieldText;
+    textFieldAnnotations ??= other.textFieldAnnotations;
     if (textFieldAttachments.isEmpty) {
       textFieldAttachments.addAll(other.textFieldAttachments);
     }

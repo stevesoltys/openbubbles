@@ -40,7 +40,7 @@ class _PickedAttachmentsHolderState extends OptimizedState<PickedAttachmentsHold
     if (widget.textController is! MentionTextEditingController) return;
     final mention = widget.controller!.mentionMatches[index];
     if (custom) {
-      final changed = await showCustomMentionDialog(context, mention);
+      final changed = await showCustomMentionDialog(context, mention.displayName);
       if (isNullOrEmpty(changed)) return;
       mention.customDisplayName = changed!;
     }
@@ -200,7 +200,7 @@ class _PickedAttachmentsHolderState extends OptimizedState<PickedAttachmentsHold
                               if (matches.isNotEmpty && matches.any((m) => m.start < _controller.selection.start)) {
                                 final match = matches.lastWhere((m) => m.start < _controller.selection.start);
                                 final char = widget.controller!.emojiMatches[index].char;
-                                _controller.text = "${text.substring(0, match.start)}$char ${text.substring(match.end)}";
+                                _controller.insert(TextSelection(baseOffset: match.start, extentOffset: match.end), "$char ");
                                 _controller.selection = TextSelection.fromPosition(TextPosition(offset: match.start + char.length + 1));
                               }
                               widget.controller!.emojiSelectedIndex.value = 0;

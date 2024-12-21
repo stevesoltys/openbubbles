@@ -13,11 +13,6 @@ import 'package:maps_launcher/maps_launcher.dart';
 import 'package:tuple/tuple.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class MentionEntity extends Entity {
-  /// Constructor to create an instance of [AddressEntity].
-  MentionEntity(String rawValue) : super(rawValue: rawValue, type: EntityType.unknown);
-}
-
 List<InlineSpan> buildMessageSpans(BuildContext context, MessagePart part, Message message, {Color? colorOverride, bool hideBodyText = false}) {
   final textSpans = <InlineSpan>[];
   final textStyle = (context.theme.extensions[BubbleText] as BubbleText).bubbleText.apply(
@@ -31,34 +26,40 @@ List<InlineSpan> buildMessageSpans(BuildContext context, MessagePart part, Messa
       textStyle.apply(fontWeightDelta: 2),
     ));
   }
-  if (part.mentions.isNotEmpty) {
-    part.mentions.forEachIndexed((i, e) {
-      final range = part.mentions[i].range;
-      textSpans.addAll(MessageHelper.buildEmojiText(
-        part.displayText!.substring(i == 0 ? 0 : part.mentions[i - 1].range.last, range.first),
-        textStyle,
-      ));
-      textSpans.addAll(MessageHelper.buildEmojiText(
-        part.displayText!.substring(range.first, range.last),
-        textStyle.apply(fontWeightDelta: 2),
-        recognizer: TapGestureRecognizer()..onTap = () async {
-          if (kIsDesktop || kIsWeb) return;
-          final handle = cm.activeChat!.chat.participants.firstWhereOrNull((e) => e.address == part.mentions[i].mentionedAddress);
-          if (handle?.contact == null && handle != null) {
-            await mcs.invokeMethod("open-contact-form", {'address': handle.address, 'address_type': handle.address.isEmail ? 'email' : 'phone'});
-          } else if (handle?.contact != null) {
-            try {
-              await mcs.invokeMethod("view-contact-form", {'id': handle!.contact!.id});
-            } catch (_) {
-              showSnackbar("Error", "Failed to find contact on device!");
+  if (part.annotations.isNotEmpty) {
+    part.annotations.forEachIndexed((i, e) {
+      final range = part.annotations[i].range;
+      var style = textStyle;
+      if (e.bold ?? false) style = style.apply(fontWeightDelta: 2);
+      if (e.italic ?? false) style = style.apply(fontStyle: FontStyle.italic);
+      style = style.apply(decoration: TextDecoration.combine([
+        if (e.strikethrough ?? false) TextDecoration.lineThrough,
+        if (e.underline ?? false) TextDecoration.underline,
+      ]));
+      if (e.textEffect == Attributes.BIG) style = style.apply(fontSizeDelta: 4);
+      if (e.textEffect == Attributes.SMALL) style = style.apply(fontSizeDelta: -2);
+      if (e.mentionedAddress != null) {
+        textSpans.addAll(MessageHelper.buildEmojiText(
+          part.displayText!.substring(range.first, range.last),
+          style.apply(fontWeightDelta: 2),
+          recognizer: TapGestureRecognizer()..onTap = () async {
+            if (kIsDesktop || kIsWeb) return;
+            final handle = cm.activeChat!.chat.participants.firstWhereOrNull((e) => e.address == part.annotations[i].mentionedAddress);
+            if (handle?.contact == null && handle != null) {
+              await mcs.invokeMethod("open-contact-form", {'address': handle.address, 'address_type': handle.address.isEmail ? 'email' : 'phone'});
+            } else if (handle?.contact != null) {
+              try {
+                await mcs.invokeMethod("view-contact-form", {'id': handle!.contact!.id});
+              } catch (_) {
+                showSnackbar("Error", "Failed to find contact on device!");
+              }
             }
           }
-        }
-      ));
-      if (i == part.mentions.length - 1) {
+        ));
+      } else {  
         textSpans.addAll(MessageHelper.buildEmojiText(
-          part.displayText!.substring(range.last),
-          textStyle,
+          part.displayText!.substring(range.first, range.last),
+          style,
         ));
       }
     });
@@ -80,7 +81,40 @@ Future<List<InlineSpan>> buildEnrichedMessageSpans(BuildContext context, Message
   );
   // extract rich content
   final urlRegex = RegExp(r'((https?://)|(www\.))[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}([-a-zA-Z0-9/()@:%_.~#?&=*\[\]]*)\b');
-  final linkIndexMatches = <Tuple3<String, List<int>, List?>>[];
+
+  List<Annotation> annotations = part.annotations.map((a) => a.copy()).toList();
+  void markRange(Tuple3<String, List<int>, List?> annotation) {
+    var range = annotation.item2;
+    List<Annotation> extras = [];
+    // split em up correctly
+    for (var a in annotations) {
+      if (a.range[0] < range[0] && a.range[1] > range[0]) {
+        var dup = a.copy();
+        dup.range[1] = range[0];
+        extras.add(dup);
+
+        // end this range at the start of my new range
+        a.range[0] = range[0];
+      }
+
+      if (a.range[0] < range[1] && a.range[1] > range[1]) {
+        var dup = a.copy();
+        dup.range[0] = range[1];
+        extras.add(dup);
+
+        // end this range at the start of my new range
+        a.range[1] = range[1];
+      }
+    }
+    annotations.addAll(extras);
+
+    for (var a in annotations) {
+      if (a.range[0] >= range[0] && a.range[1] <= range[1]) {
+        a.renderExtras.add(annotation);
+      }
+    }
+  }
+
   final controller = cvc(message.chat.target ?? cm.activeChat!.chat);
   if (!isNullOrEmpty(part.text)) {
     if (!kIsWeb && !kIsDesktop && ss.settings.smartReply.value) {
@@ -93,57 +127,39 @@ Future<List<InlineSpan>> buildEnrichedMessageSpans(BuildContext context, Message
         }
       }
       final entities = controller.mlKitParsedText["${message.guid!}-${part.part}"] ?? [];
-      entities.insertAll(0, part.mentions.map((e) => EntityAnnotation(
-          start: e.range.first,
-          end: e.range.last,
-          text: message.text!.substring(e.range.first, e.range.last),
-          entities: [
-            MentionEntity(e.mentionedAddress ?? ""),
-          ]
-      )));
-      List<EntityAnnotation> normalizedEntities = [];
-      if (entities.isNotEmpty) {
-        // detect the longest amount of the message text as possible
-        entities.sort((a, b) => (b.end - b.start).compareTo(a.end - a.start));
-        for (int i = 0; i < entities.length; i++) {
-          if (i == 0 || entities[i].start > normalizedEntities.last.end) {
-            normalizedEntities.add(entities[i]);
-          }
-        }
-      }
-      for (EntityAnnotation element in normalizedEntities) {
+      for (EntityAnnotation element in entities) {
         if (element.entities.first is AddressEntity) {
-          linkIndexMatches.add(Tuple3("map", [element.start, element.end], null));
+          markRange(Tuple3("map", [element.start, element.end], null));
         } else if (element.entities.first is PhoneEntity) {
-          linkIndexMatches.add(Tuple3("phone", [element.start, element.end], null));
+          markRange(Tuple3("phone", [element.start, element.end], null));
         } else if (element.entities.first is EmailEntity) {
-          linkIndexMatches.add(Tuple3("email", [element.start, element.end], null));
+          markRange(Tuple3("email", [element.start, element.end], null));
         } else if (element.entities.first is UrlEntity) {
-          linkIndexMatches.add(Tuple3("link", [element.start, element.end], null));
+          markRange(Tuple3("link", [element.start, element.end], null));
         } else if (element.entities.first is DateTimeEntity) {
           final ent = (element.entities.first as DateTimeEntity);
           if (part.text?.substring(element.start, element.end).toLowerCase() == "now") {
             continue;
           }
-          linkIndexMatches.add(Tuple3("date", [element.start, element.end], [ent.timestamp]));
+          markRange(Tuple3("date", [element.start, element.end], [ent.timestamp]));
         } else if (element.entities.first is TrackingNumberEntity) {
           final ent = (element.entities.first as TrackingNumberEntity);
-          linkIndexMatches.add(Tuple3("tracking", [element.start, element.end], [ent.carrier, ent.number]));
+          markRange(Tuple3("tracking", [element.start, element.end], [ent.carrier, ent.number]));
         } else if (element.entities.first is FlightNumberEntity) {
           final ent = (element.entities.first as FlightNumberEntity);
-          linkIndexMatches.add(Tuple3("flight", [element.start, element.end], [ent.airlineCode, ent.flightNumber]));
-        } else if (element.entities.first is MentionEntity) {
-          linkIndexMatches.add(Tuple3("mention", [element.start, element.end], [element.entities.first.rawValue]));
+          markRange(Tuple3("flight", [element.start, element.end], [ent.airlineCode, ent.flightNumber]));
         }
       }
     } else {
       List<RegExpMatch> matches = urlRegex.allMatches(part.text!).toList();
       for (RegExpMatch match in matches) {
-        linkIndexMatches.add(Tuple3("link", [match.start, match.end], null));
+        markRange(Tuple3("link", [match.start, match.end], null));
       }
-      linkIndexMatches.addAll(part.mentions.map((e) => Tuple3("mention", [e.range.first, e.range.last], [e.mentionedAddress ?? ""])));
     }
   }
+
+  annotations.sort((a, b) => a.range[0].compareTo(b.range[0]));
+  
   // render subject
   if (!isNullOrEmpty(part.subject)) {
     textSpans.addAll(MessageHelper.buildEmojiText(
@@ -151,22 +167,31 @@ Future<List<InlineSpan>> buildEnrichedMessageSpans(BuildContext context, Message
       textStyle.apply(fontWeightDelta: 2),
     ));
   }
-  linkIndexMatches.sort((a, b) => a.item2.first.compareTo(b.item2.first));
   // render rich content if needed
-  if (linkIndexMatches.isNotEmpty) {
-    linkIndexMatches.forEachIndexed((i, e) {
-      final type = e.item1;
-      final range = e.item2;
-      final data = e.item3;
+  if (annotations.isNotEmpty) {
+    annotations.forEachIndexed((i, e) {
+      
+      var item = e.renderExtras.firstOrNull;
+
+      final type = item?.item1;
+      final range = e.range;
+      final data = item?.item3;
       final text = part.displayText!.substring(range.first, range.last);
-      textSpans.addAll(MessageHelper.buildEmojiText(
-        part.displayText!.substring(i == 0 ? 0 : linkIndexMatches[i - 1].item2.last, range.first),
-        textStyle,
-      ));
-      if (type == "mention") {
+
+      var style = textStyle;
+      if (e.bold ?? false) style = style.apply(fontWeightDelta: 2);
+      if (e.italic ?? false) style = style.apply(fontStyle: FontStyle.italic);
+      style = style.apply(decoration: TextDecoration.combine([
+        if (e.strikethrough ?? false) TextDecoration.lineThrough,
+        if (e.underline ?? false) TextDecoration.underline,
+      ]));
+      if (e.textEffect == Attributes.BIG) style = style.apply(fontSizeDelta: 4);
+      if (e.textEffect == Attributes.SMALL) style = style.apply(fontSizeDelta: -2);
+
+      if (e.mentionedAddress != null) {
         textSpans.addAll(MessageHelper.buildEmojiText(
           text,
-          textStyle.apply(fontWeightDelta: 2),
+          style.apply(fontWeightDelta: 2),
           recognizer: TapGestureRecognizer()..onTap = () async {
             if (kIsDesktop || kIsWeb) return;
             final handle = cm.activeChat!.chat.participants.firstWhereOrNull((e) => e.address == data!.first);
@@ -212,19 +237,13 @@ Future<List<InlineSpan>> buildEnrichedMessageSpans(BuildContext context, Message
                   await launchUrl(Uri.parse("https://www.google.com/search?q=flight $c$number"), mode: LaunchMode.externalApplication);
                 }
               },
-            style: textStyle.apply(decoration: TextDecoration.underline),
+            style: style.apply(decoration: TextDecoration.underline),
           ),
         );
       } else {
         textSpans.addAll(MessageHelper.buildEmojiText(
           text,
-          textStyle,
-        ));
-      }
-      if (i == linkIndexMatches.length - 1) {
-        textSpans.addAll(MessageHelper.buildEmojiText(
-          part.displayText!.substring(range.last),
-          textStyle,
+          style,
         ));
       }
     });

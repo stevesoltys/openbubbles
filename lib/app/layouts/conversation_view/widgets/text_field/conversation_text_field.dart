@@ -87,8 +87,6 @@ class ConversationTextFieldState extends CustomState<ConversationTextField, void
     // Load the initial chat drafts
     getDrafts();
 
-    controller.textController.processMentions();
-
     // Save state
     oldTextFieldSelection = controller.textController.selection;
 
@@ -115,7 +113,11 @@ class ConversationTextFieldState extends CustomState<ConversationTextField, void
         String text = realController.text;
         TextSelection selection = realController.selection;
 
-        realController.text = text.substring(0, selection.start) + emoji + text.substring(selection.end);
+        if (realController is SpellCheckTextEditingController) {
+          realController.insert(selection, emoji);
+        } else {
+          realController.text = text.substring(0, selection.start) + emoji + text.substring(selection.end);
+        }
         realController.selection = TextSelection.collapsed(offset: selection.start + emoji.length);
 
         (controller.editing.lastOrNull?.item3.focusNode ?? controller.lastFocusedNode).requestFocus();
@@ -132,7 +134,7 @@ class ConversationTextFieldState extends CustomState<ConversationTextField, void
     // Only change the text if the incoming text is different.
     final incomingText = text ?? chat.textFieldText;
     if (incomingText != null && incomingText.isNotEmpty && incomingText != controller.textController.text) {
-      controller.textController.text = incomingText;
+      controller.textController.restoreAnnotations(incomingText, chat.textFieldAnnotations!);
     }
   }
 
@@ -168,78 +170,13 @@ class ConversationTextFieldState extends CustomState<ConversationTextField, void
   }
 
   void textListener(bool subject) {
-    if (!subject && controller.textController.text.trim().isNotEmpty) {
+    
+
+    if (!subject) {
       chat.textFieldText = controller.textController.text;
     }
 
     if (!subject) {
-      // Handle people arrow-keying or clicking into mentions
-      String text = controller.textController.text;
-      TextSelection selection = controller.textController.selection;
-      if (selection.isCollapsed && selection.start != -1) {
-        final behind = text.substring(0, selection.baseOffset);
-        final behindMatches = MentionTextEditingController.escapingChar.allMatches(behind);
-        if (behindMatches.length % 2 != 0) {
-          // Assuming the rest of the code works, we're guaranteed to be inside a mention now
-          final ahead = text.substring(selection.baseOffset);
-          final aheadMatches = MentionTextEditingController.escapingChar.allMatches(ahead);
-
-          // Now we determine which side of the mention to put the cursor on.
-          // We can use the old selection to figure out if the user is moving left/right
-          if (oldTextFieldSelection.isCollapsed) {
-            if (oldTextFieldSelection.baseOffset > selection.baseOffset) {
-              // moving left
-              oldTextFieldSelection = TextSelection.collapsed(offset: behindMatches.last.start);
-              controller.textController.selection = oldTextFieldSelection;
-              return;
-            } else if (oldTextFieldSelection.baseOffset < selection.baseOffset) {
-              // moving right
-              oldTextFieldSelection = TextSelection.collapsed(offset: behind.length + aheadMatches.first.end);
-              controller.textController.selection = oldTextFieldSelection;
-              return;
-            }
-          }
-
-          // If we get here then we need to pick the closest side
-          if (selection.baseOffset - behindMatches.last.end < aheadMatches.first.start - selection.baseOffset) {
-            // moving left
-            oldTextFieldSelection = TextSelection.collapsed(offset: behindMatches.last.start);
-            controller.textController.selection = oldTextFieldSelection;
-            return;
-          } else {
-            // Closer to right
-            oldTextFieldSelection = TextSelection.collapsed(offset: behind.length + aheadMatches.first.end);
-            controller.textController.selection = oldTextFieldSelection;
-            return;
-          }
-        }
-      }
-
-      if (!selection.isCollapsed && oldTextFieldSelection.baseOffset == selection.baseOffset) {
-        if (oldTextFieldSelection.extentOffset < selection.extentOffset) {
-          // Means we're shift+selecting rightwards
-          final behind = text.substring(0, selection.extentOffset);
-          final ahead = text.substring(selection.extentOffset);
-          final aheadMatches = MentionTextEditingController.escapingChar.allMatches(ahead);
-          if (aheadMatches.length % 2 != 0) {
-            // Assuming the rest of the code works, we're guaranteed to be inside a mention now
-            oldTextFieldSelection = TextSelection(baseOffset: selection.baseOffset, extentOffset: behind.length + aheadMatches.first.end);
-            controller.textController.selection = oldTextFieldSelection;
-            return;
-          }
-        } else if (oldTextFieldSelection.extentOffset > selection.extentOffset) {
-          // Means we're shift+selecting leftwards
-          final behind = text.substring(0, selection.extentOffset);
-          final behindMatches = MentionTextEditingController.escapingChar.allMatches(behind);
-          if (behindMatches.length % 2 != 0) {
-            // Assuming the rest of the code works, we're guaranteed to be inside a mention now
-            oldTextFieldSelection = TextSelection(baseOffset: selection.baseOffset, extentOffset: behindMatches.last.start);
-            controller.textController.selection = oldTextFieldSelection;
-            return;
-          }
-        }
-      }
-
       oldTextFieldSelection = controller.textController.selection;
     }
 
@@ -359,11 +296,13 @@ class ConversationTextFieldState extends CustomState<ConversationTextField, void
   void dispose() {
     if (controller.textController.text.trim().isNotEmpty) {
       chat.textFieldText = controller.textController.text;
+      chat.textFieldAnnotations = controller.textController.saveAnnotations();
     } else {
       chat.textFieldText = "";
+      chat.textFieldAnnotations = null;
     }
     chat.textFieldAttachments = controller.pickedAttachments.where((e) => e.path != null).map((e) => e.path!).toList();
-    chat.save(updateTextFieldText: true, updateTextFieldAttachments: true);
+    chat.save(updateTextFieldText: true, updateTextFieldAnnotations: true, updateTextFieldAttachments: true);
 
     controller.focusNode.dispose();
     controller.subjectFocusNode.dispose();
@@ -382,9 +321,6 @@ class ConversationTextFieldState extends CustomState<ConversationTextField, void
     if (controller.scheduledDate.value != null) {
       final date = controller.scheduledDate.value!;
       if (date.isBefore(DateTime.now())) return showSnackbar("Error", "Pick a date in the future!");
-      if (text.contains(MentionTextEditingController.escapingChar)) {
-        return showSnackbar("Error", "Mentions are not allowed in scheduled messages!");
-      }
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -447,7 +383,7 @@ class ConversationTextFieldState extends CustomState<ConversationTextField, void
       }
       await controller.send(
         controller.pickedApp.value?.$1 != null ? [controller.pickedApp.value!.$1!] : controller.pickedAttachments,
-        text,
+        controller.textController.getFinalAnnotations(),
         controller.subjectTextController.text,
         controller.replyToMessage?.item1.threadOriginatorGuid ?? controller.replyToMessage?.item1.guid,
         controller.replyToMessage?.item2,
@@ -466,7 +402,8 @@ class ConversationTextFieldState extends CustomState<ConversationTextField, void
     // Remove the saved text field draft
     if ((chat.textFieldText ?? "").isNotEmpty) {
       chat.textFieldText = "";
-      chat.save(updateTextFieldText: true);
+      chat.textFieldAnnotations = null;
+      chat.save(updateTextFieldText: true, updateTextFieldAnnotations: true);
     }
   }
 
@@ -1030,75 +967,7 @@ class TextFieldComponentState extends State<TextFieldComponent> {
                             ),
                           ),
                   ),
-                  contextMenuBuilder: (BuildContext context, EditableTextState editableTextState) {
-                    final start = editableTextState.textEditingValue.selection.start;
-                    final end = editableTextState.textEditingValue.selection.end;
-                    final text = editableTextState.textEditingValue.text;
-                    final selected = editableTextState.textEditingValue.text
-                        .substring((start - 1).clamp(0, text.length), (end + 1).clamp(min(1, text.length), text.length));
-
-                    return AdaptiveTextSelectionToolbar.editableText(
-                      editableTextState: editableTextState,
-                    )..buttonItems?.addAllIf(
-                        MentionTextEditingController.escapingRegex.allMatches(selected).length == 1,
-                        [
-                          ContextMenuButtonItem(
-                            onPressed: () {
-                              final TextSelection selection = editableTextState.textEditingValue.selection;
-                              if (selection.isCollapsed) {
-                                return;
-                              }
-                              String text = editableTextState.textEditingValue.text;
-                              final textPart = text.substring(0, (end + 1).clamp(1, text.length));
-                              final mentionMatch = MentionTextEditingController.escapingRegex.allMatches(textPart).lastOrNull;
-                              if (mentionMatch == null) return; // Shouldn't happen
-                              final mentionText = textPart.substring(mentionMatch.start, mentionMatch.end);
-                              int? mentionIndex = int.tryParse(mentionText.substring(1, mentionText.length - 1));
-                              if (mentionIndex == null) return; // Shouldn't happen
-                              final mention = controller?.mentionables[mentionIndex];
-                              final replacement = mention != null ? "@${mention.displayName}" : "";
-                              text = editableTextState.textEditingValue.text
-                                  .replaceRange((start - 1).clamp(0, text.length), (end + 1).clamp(min(1, text.length), text.length), replacement);
-                              final checkSpace = end + replacement.length - 1;
-                              final spaceAfter =
-                                  checkSpace < text.length && text.substring(end + replacement.length - 1, end + replacement.length) == " ";
-                              (controller?.textController ?? textController).value = TextEditingValue(
-                                  text: text,
-                                  selection: TextSelection.fromPosition(
-                                      TextPosition(offset: selection.baseOffset + replacement.length + (spaceAfter ? 1 : 0))));
-                              editableTextState.hideToolbar();
-                            },
-                            label: "Remove Mention",
-                          ),
-                          ContextMenuButtonItem(
-                            onPressed: () async {
-                              final text = editableTextState.textEditingValue.text;
-                              final textPart = text.substring(0, (end + 1).clamp(1, text.length));
-                              final mentionMatch = MentionTextEditingController.escapingRegex.allMatches(textPart).lastOrNull;
-                              if (mentionMatch == null) return; // Shouldn't happen
-                              final mentionText = textPart.substring(mentionMatch.start, mentionMatch.end);
-                              int? mentionIndex = int.tryParse(mentionText.substring(1, mentionText.length - 1));
-                              if (mentionIndex == null) return; // Shouldn't happen
-                              final mention = controller?.mentionables[mentionIndex];
-                              if (kIsDesktop || kIsWeb) {
-                                controller?.showingOverlays = true;
-                              }
-                              final changed = await showCustomMentionDialog(context, mention);
-                              if (kIsDesktop || kIsWeb) {
-                                controller?.showingOverlays = false;
-                              }
-                              if (!isNullOrEmpty(changed) && mention != null) {
-                                mention.customDisplayName = changed!;
-                              }
-                              final spaceAfter = end < text.length && text.substring(end, end + 1) == " ";
-                              txtController.selection = TextSelection.fromPosition(TextPosition(offset: end + (spaceAfter ? 1 : 0)));
-                              editableTextState.hideToolbar();
-                            },
-                            label: "Custom Mention",
-                          ),
-                        ],
-                      );
-                  },
+                  contextMenuBuilder: txtController.getContextMenuBuilder(),
                   onTap: () {
                     HapticFeedback.selectionClick();
                   },
@@ -1209,7 +1078,11 @@ class TextFieldComponentState extends State<TextFieldComponent> {
           final part = parts.filter((p) => p.text?.isNotEmpty ?? false).lastOrNull;
           if (part != null) {
             final FocusNode? node = kIsDesktop || kIsWeb ? FocusNode() : null;
-            controller!.editing.add(Tuple3(message, part, SpellCheckTextEditingController(text: part.text!, focusNode: node)));
+
+            var e = MentionTextEditingController(text: "", focusNode: node);
+            e.importMessagePart(part);
+
+            controller!.editing.add(Tuple3(message, part, e));
             node?.requestFocus();
             return KeyEventResult.handled;
           }

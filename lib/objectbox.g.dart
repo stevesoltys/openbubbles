@@ -112,7 +112,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
       id: const obx_int.IdUid(3, 9017250848141753702),
       name: 'Chat',
-      lastPropertyId: const obx_int.IdUid(34, 6743935942891315857),
+      lastPropertyId: const obx_int.IdUid(35, 7774397079877699895),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
@@ -255,6 +255,11 @@ final _entities = <obx_int.ModelEntity>[
             id: const obx_int.IdUid(34, 6743935942891315857),
             name: 'telephonyId',
             type: 6,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(35, 7774397079877699895),
+            name: 'textFieldAnnotations',
+            type: 9,
             flags: 0)
       ],
       relations: <obx_int.ModelRelation>[
@@ -1096,7 +1101,10 @@ obx_int.ModelDefinition getObjectBoxModel() {
               : fbb.writeString(object.apnTitle!);
           final guidRefsOffset = fbb.writeList(
               object.guidRefs.map(fbb.writeString).toList(growable: false));
-          fbb.startTable(35);
+          final textFieldAnnotationsOffset = object.textFieldAnnotations == null
+              ? null
+              : fbb.writeString(object.textFieldAnnotations!);
+          fbb.startTable(36);
           fbb.addInt64(0, object.id ?? 0);
           fbb.addOffset(2, guidOffset);
           fbb.addOffset(4, chatIdentifierOffset);
@@ -1126,6 +1134,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
           fbb.addBool(31, object.isRpSms);
           fbb.addOffset(32, guidRefsOffset);
           fbb.addInt64(33, object.telephonyId);
+          fbb.addOffset(34, textFieldAnnotationsOffset);
           fbb.finish(fbb.endTable());
           return object.id ?? 0;
         },
@@ -1163,6 +1172,9 @@ obx_int.ModelDefinition getObjectBoxModel() {
           final textFieldTextParam =
               const fb.StringReader(asciiOptimization: true)
                   .vTableGetNullable(buffer, rootOffset, 46);
+          final textFieldAnnotationsParam =
+              const fb.StringReader(asciiOptimization: true)
+                  .vTableGetNullable(buffer, rootOffset, 72);
           final textFieldAttachmentsParam = const fb.ListReader<String>(
                   fb.StringReader(asciiOptimization: true),
                   lazy: false)
@@ -1203,6 +1215,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
               autoSendReadReceipts: autoSendReadReceiptsParam,
               autoSendTypingIndicators: autoSendTypingIndicatorsParam,
               textFieldText: textFieldTextParam,
+              textFieldAnnotations: textFieldAnnotationsParam,
               textFieldAttachments: textFieldAttachmentsParam,
               dateDeleted: dateDeletedParam,
               style: styleParam,
@@ -2071,6 +2084,10 @@ class Chat_ {
   /// See [Chat.telephonyId].
   static final telephonyId =
       obx.QueryIntegerProperty<Chat>(_entities[1].properties[27]);
+
+  /// See [Chat.textFieldAnnotations].
+  static final textFieldAnnotations =
+      obx.QueryStringProperty<Chat>(_entities[1].properties[28]);
 
   /// see [Chat.handles]
   static final handles =

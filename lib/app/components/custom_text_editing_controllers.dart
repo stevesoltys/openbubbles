@@ -1,5 +1,7 @@
+import "dart:convert";
 import "dart:math";
 
+import "package:bluebubbles/app/layouts/conversation_view/dialogs/custom_mention_dialog.dart";
 import "package:bluebubbles/helpers/helpers.dart";
 import "package:bluebubbles/database/models.dart";
 import "package:bluebubbles/services/services.dart";
@@ -14,6 +16,8 @@ import "package:languagetool_textfield/core/enums/mistake_type.dart";
 import 'package:languagetool_textfield/languagetool_textfield.dart';
 import "package:languagetool_textfield/utils/closed_range.dart";
 import "package:languagetool_textfield/utils/keep_latest_response_service.dart";
+import 'package:tuple/tuple.dart';
+import 'package:bluebubbles/utils/logger/logger.dart';
 
 class Mentionable {
   Mentionable({required this.handle});
@@ -133,6 +137,10 @@ class SpellCheckTextEditingController extends TextEditingController {
     _mistakeTooltip?.remove();
     _mistakeTooltip = null;
     super.dispose();
+  }
+
+  void insert(TextSelection selection, String value, { Annotation? newAnnotation }) {
+    text = text.substring(0, selection.baseOffset) + value + text.substring(selection.extentOffset);
   }
 
   /// Replaces mistake with given replacement
@@ -423,24 +431,212 @@ class MentionTextEditingController extends SpellCheckTextEditingController {
     super.text,
     super.focusNode,
     this.mentionables = const <Mentionable>[],
-  });
+  }) {
+    TextSelection oldTextFieldSelection = const TextSelection.collapsed(offset: 0);
+    String lastText = "";
 
-  static const escapingChar = "￼";
-  static const zeroWidthSpace = "​";
-  static final escapingRegex = RegExp('$escapingChar\\d+$escapingChar');
-
-  List<Mentionable> mentionables;
-
-  void processMentions() => _processMentions(text);
-
-  void _processMentions(String text) {
-    final matches = escapingRegex.allMatches(text);
-    Iterable<int> mentionedIndices = matches.map((m) => int.tryParse(text.substring(m.start + 1, m.end - 1))).whereNotNull();
-    mentionables.forEachIndexed((i, m) {
-      if (!mentionedIndices.contains(i)) {
-        m.customDisplayName = null;
+    addListener(() {
+      if (lastText != text) {
+        // something changed, compute deltas
+        mutateRange(oldTextFieldSelection, min(selection.baseOffset, selection.extentOffset) - min(oldTextFieldSelection.baseOffset, oldTextFieldSelection.extentOffset));
       }
+      oldTextFieldSelection = selection;
+      lastText = text;
     });
+  }
+
+  Map<String, String> mentionCache = {};
+  List<Mentionable> mentionables;
+  List<Annotation> annotations = [];
+
+  String saveAnnotations() {
+    var values = {
+      "annotations": annotations.map((i) => i.toMap()).toList(),
+      "cache": mentionCache
+    };
+    return jsonEncode(values);
+  }
+
+  void restoreAnnotations(String myText, String values) {
+    try {
+      changeLock = true;
+      text = myText; // this triggers a rebuild
+    } finally {
+      changeLock = false;
+    }
+    var data = jsonDecode(values);
+    annotations = data["annotations"].map((i) => Annotation.fromMap(i)).toList().cast<Annotation>();
+    mentionCache = data["cache"].cast<String, String>();
+    try {
+      validateRange();
+    } catch (e, s) {
+      Logger.error("Invalid restored annotations!", error: e, trace: s);
+      if (text.isNotEmpty) {
+        annotations = [Annotation(range: [0, text.length])];
+      } else {
+        annotations = [];
+      }
+      mentionCache = {};
+    }
+  }
+
+  bool changeLock = false;
+
+  void validateRange() {
+    annotations.sort((a, b) => a.range[0].compareTo(b.range[0]));
+    if (text.isEmpty) {
+      assert(annotations.isEmpty);
+    }
+    Annotation? lastAnnotation;
+    var pointer = 0;
+    while (pointer < text.length) {
+      var annotation = annotations.firstWhere((a) => a.range[0] == pointer);
+      // do we overlap with any other annotation?
+      assert(!annotations.any((a) => ((a.range[0] >= annotation.range[0] && a.range[0] < annotation.range[1]) ||
+          (a.range[1] > annotation.range[0] && a.range[1] <= annotation.range[1])) && annotation != a));
+      // we cannot have zero length
+      assert(annotation.range[0] != annotation.range[1]);
+      pointer = annotation.range[1];
+
+      if (lastAnnotation?.eqUnranged(annotation) ?? false) {
+        lastAnnotation!.range[1] = annotation.range[1]; // merge equal annotations
+        annotations.remove(annotation);
+      } else {
+        lastAnnotation = annotation;
+      }
+    }
+    assert(pointer == text.length);
+    assert(lastAnnotation == annotations.lastOrNull);
+  }
+
+  List<Annotation> annotationsForRange(TextSelection range) {
+    return annotations.where((a) =>
+        ((a.range[0] >= range.baseOffset && a.range[0] < range.extentOffset) ||
+          (a.range[1] > range.baseOffset && a.range[1] <= range.extentOffset) ||
+          (range.baseOffset >= a.range[0] && range.baseOffset < a.range[1] &&
+          range.extentOffset >= a.range[0] && range.extentOffset < a.range[1]))
+    ).toList();
+  }
+
+  void mutateRange(TextSelection collapse, int length, { Annotation? newAnnotation }) {
+    // base < offset
+    if (collapse.baseOffset > collapse.extentOffset) {
+      collapse = TextSelection(baseOffset: collapse.extentOffset, extentOffset: collapse.baseOffset);
+    }
+    if (changeLock) return;
+    if (!collapse.isCollapsed) {
+      annotations.retainWhere((a) {
+        var deleteLen = collapse.extentOffset - collapse.baseOffset;
+        if (a.range[0] >= collapse.extentOffset) {
+          a.range[0] -= deleteLen;
+        } else if (a.range[0] >= collapse.baseOffset) {
+          a.range[0] = collapse.baseOffset;
+        }
+        if (a.range[1] >= collapse.extentOffset) {
+          a.range[1] -= deleteLen;
+        } else if (a.range[1] >= collapse.baseOffset) {
+          a.range[1] = collapse.baseOffset;
+        }
+        return a.range[0] != a.range[1];
+      });
+    }
+
+    var annotation = annotations.firstWhereOrNull((a) => collapse.baseOffset > a.range[0] && collapse.baseOffset <= a.range[1]);
+  
+    annotations.retainWhere((a) {
+      if (a.range[0] >= collapse.baseOffset) {
+        a.range[0] += length;
+      }
+      if (a.range[1] >= collapse.baseOffset) {
+        a.range[1] += length;
+      }
+      return a.range[0] != a.range[1];
+    });
+
+    // initial case where there is an empty text field and no annotations
+    if (annotation == null || (annotation.mentionedAddress != null /* can't add to this*/ && length > 0)) {
+      if (annotations.isNotEmpty && annotation?.mentionedAddress == null && collapse.baseOffset > 0) {
+        throw Exception("Not empty no annotation??");
+      }
+      if (length > 0) {
+        annotation?.range[1] -= length; // this was grown in the retainWhere above; make space for my new one
+        var annotation2 = newAnnotation ?? Annotation();
+        annotation2.range = [annotation?.range[1] ?? 0, (annotation?.range[1] ?? 0) + length];
+        annotations.add(annotation2);
+      }
+
+      validateRange();
+      return;
+    }
+
+    if (newAnnotation != null) {
+      // mark the range as annotated
+      markRange(TextSelection(baseOffset: collapse.baseOffset, extentOffset: collapse.baseOffset + length), newAnnotation);
+    }
+
+    validateRange();
+  }
+
+  void markRange(TextSelection range, Annotation annotation) {
+    // base < offset
+    if (range.baseOffset > range.extentOffset) {
+      range = TextSelection(baseOffset: range.extentOffset, extentOffset: range.baseOffset);
+    }
+    if (changeLock) return;
+    List<Annotation> extras = [];
+    // split em up correctly
+    for (var a in annotations) {
+      if (a.range[0] < range.baseOffset && a.range[1] > range.baseOffset) {
+        var dup = a.copy();
+        dup.range[1] = range.baseOffset;
+        extras.add(dup);
+
+        // end this range at the start of my new range
+        a.range[0] = range.baseOffset;
+      }
+
+      if (a.range[0] < range.extentOffset && a.range[1] > range.extentOffset) {
+        var dup = a.copy();
+        dup.range[0] = range.extentOffset;
+        extras.add(dup);
+
+        // end this range at the start of my new range
+        a.range[1] = range.extentOffset;
+      }
+    }
+    annotations.addAll(extras);
+
+    for (var a in annotations) {
+      if (a.range[0] >= range.baseOffset && a.range[1] <= range.extentOffset) {
+        annotation.applyTo(a);
+      }
+    }
+    validateRange();
+  }
+
+  @override
+  void clear() {
+    try {
+      changeLock = true;
+      annotations = [];
+      super.clear();
+    } finally {
+      changeLock = false;
+    }
+  }
+
+  @override
+  void insert(TextSelection selection, String value, { Annotation? newAnnotation, int? moveCursor }) {
+    try {
+      changeLock = true;
+      text = text.substring(0, selection.baseOffset) + value + text.substring(selection.extentOffset); // this triggers a rebuild
+    } finally {
+      changeLock = false;
+    }
+    mutateRange(selection, value.length, newAnnotation: newAnnotation);
+    if (moveCursor != null) {
+      this.selection = TextSelection.collapsed(offset: selection.baseOffset + value.length + moveCursor);
+    }
   }
 
   void addMention(String candidate, Mentionable mentionable) {
@@ -448,129 +644,189 @@ class MentionTextEditingController extends SpellCheckTextEditingController {
     final atIndex = text.substring(0, indexSelection).lastIndexOf("@");
     final index = mentionables.indexOf(mentionable);
     if (index == -1 || atIndex == -1) return;
-    List<String> textParts = [
-      text.substring(0, atIndex),
-      text.substring(atIndex, indexSelection),
-      text.substring(indexSelection)
-    ];
-    final addSpace = !textParts[2].startsWith(" ");
-    final replacement = "$escapingChar$index$escapingChar${addSpace ? " " : ""}";
-    text = textParts[0] + textParts[1].replaceFirst(candidate, replacement) + textParts[2];
-    selection = TextSelection.collapsed(offset: indexSelection - candidate.length + replacement.length);
-    processMentions();
+
+    mentionCache[mentionable.address] = mentionable.displayName;
+
+    // always store mentions as one character since WidgetSpan takes one character.
+    
+    var next = text.substring(indexSelection);
+    var needsSpace = !next.startsWith(" ");
+    var removeSelection = TextSelection(baseOffset: atIndex, extentOffset: indexSelection);
+    insert(removeSelection, " ", newAnnotation: Annotation(mentionedAddress: mentionable.address), moveCursor: !needsSpace ? 1 : null);
+    if (needsSpace) {
+      insert(TextSelection.collapsed(offset: atIndex + 1), " ", moveCursor: 0);
+    }
+
+    // processMentions();
   }
 
-  String get cleansedText {
-    final res = escapingRegex.allMatches(text);
-    List<String> textSplit = <String>[];
-    int start = 0;
-    int end = 0;
-    int index = 0;
-    while (index < res.length) {
-      RegExpMatch elem = res.elementAt(index++);
-      end = elem.start;
-      if (start != end) {
-        textSplit.add(text.substring(start, end));
-      }
-      textSplit.add(text.substring(elem.start, elem.start + 1));
-      textSplit.add(text.substring(elem.start + 1, elem.end - 1));
-      textSplit.add(text.substring(elem.end - 1, elem.end));
-      start = elem.end;
+  void importMessagePart(MessagePart part) {
+    List<Annotation> copiedAnnotations = part.annotations.map((a) => a.copy()).toList();
+    var savedText = part.text!;
+
+    var waterfall = 0;
+    for (var annotation in copiedAnnotations) {
+      annotation.range[0] += waterfall;
+      annotation.range[1] += waterfall;
+      if (annotation.mentionedAddress == null) continue;
+
+      var address = savedText.substring(annotation.range[0], annotation.range[1]);
+      mentionCache[annotation.mentionedAddress!] = address;
+
+      // ignore: prefer_interpolation_to_compose_strings
+      savedText = savedText.substring(0, annotation.range[0]) + " " + savedText.substring(annotation.range[1]);
+      annotation.range[1] = annotation.range[0] + 1;
+      waterfall += 1 - address.length; // it already had 1 accouted for the space
     }
-    if (start < text.length) {
-      textSplit.add(text.substring(start));
+
+    annotations = copiedAnnotations;
+    try {
+      changeLock = true;
+      text = savedText; // this triggers a rebuild
+    } finally {
+      changeLock = false;
     }
-    bool flag = false;
-    return textSplit.map((word) {
-      if (word == escapingChar) {
-        flag = !flag;
-        return "";
-      }
-      int? index = flag ? int.tryParse(word) : null;
-      if (index != null) {
-        final mention = mentionables[index];
-        return mention.displayName;
-      }
-      return word;
-    }).join();
   }
 
-  static List<String> splitText(String text) {
-    final res = escapingRegex.allMatches(text);
-    List<String> textSplit = <String>[];
-    int start = 0;
-    int end = 0;
-    int index = 0;
-    while (index < res.length) {
-      RegExpMatch elem = res.elementAt(index++);
-      end = elem.start;
-      if (start != end) {
-        textSplit.add(text.substring(start, end));
-      }
-      textSplit.add(text.substring(elem.start, elem.start + 1));
-      textSplit.add(text.substring(elem.start + 1, elem.end - 1));
-      textSplit.add(text.substring(elem.end - 1, elem.end));
-      start = elem.end;
-    }
-    if (start < text.length) {
-      textSplit.add(text.substring(start));
-    }
-    return textSplit;
+  void refresh() {
+    var position = selection;
+    text = text;
+
+    selection = position;
   }
 
-  @override
-  set value(TextEditingValue newValue) {
-    String newText = newValue.text;
-    int newOffset = newValue.selection.start;
+  AttributedBody getFinalAnnotations() {
+    var saved = annotations;
+    var savedText = text;
+    restoreAnnotations(savedText, saveAnnotations()); // duplicate annotations
+    // replace mentions with proper text
+    var waterfall = 0;
+    for (var annotation in saved) {
+      annotation.range[0] += waterfall;
+      annotation.range[1] += waterfall;
+      if (annotation.mentionedAddress == null) continue;
+      var address = mentionCache[annotation.mentionedAddress]!;
 
-    // Need fewer chars for anything bad to happen
-    if (newText.length < text.length) {
-      // Search for the new state in the old state starting from the old selection's end
-      String textSearchPart = text.substring(selection.end);
-      int indexInNew = textSearchPart == "" || newValue.selection.end == -1
-          ? newText.length
-          : newText.indexOf(textSearchPart, newValue.selection.end);
-      if (indexInNew == -1) {
-        // This means that the cursor was behind the deleted portion (user used delete key probably)
-        textSearchPart = text.substring(0, selection.start);
-        indexInNew = textSearchPart == "" ? 0 : newText.indexOf(textSearchPart);
-        indexInNew += textSearchPart.length;
-      }
-
-      indexInNew = min(indexInNew, newText.length);
-
-      if (indexInNew != -1) {
-        // Just in case
-        bool deletingBadMention = false;
-
-        String textPart1 = newText.substring(0, indexInNew);
-        String textPart2 = newText.substring(indexInNew);
-
-        if (MentionTextEditingController.escapingChar.allMatches(textPart1).length % 2 != 0) {
-          final badMentionIndex = textPart1.lastIndexOf(MentionTextEditingController.escapingChar);
-          textPart1 = textPart1.substring(0, badMentionIndex);
-          deletingBadMention = true;
-        }
-        if (MentionTextEditingController.escapingChar.allMatches(textPart2).length % 2 != 0) {
-          final badMentionIndex = textPart2.indexOf(MentionTextEditingController.escapingChar);
-          textPart2 = textPart2.substring(badMentionIndex + 1);
-          deletingBadMention = true;
-        }
-
-        if (deletingBadMention) {
-          newText = textPart1 + textPart2;
-          newOffset = textPart1.length;
-          _processMentions(newText);
-
-          newValue = newValue.copyWith(
-            text: newText,
-            selection: TextSelection.collapsed(offset: newOffset),
-          );
-        }
-      }
+      savedText = savedText.substring(0, annotation.range[0]) + address + savedText.substring(annotation.range[1]);
+      annotation.range[1] = annotation.range[0] + address.length;
+      waterfall += address.length - 1; // it already had 1 accouted for the space
     }
+    return AttributedBody(
+      string: savedText,
+      runs: saved.map((a) => Run(
+        range: [a.range[0], a.range[1] - a.range[0]],
+        attributes: Attributes(
+          mention: a.mentionedAddress,
+          textEffect: a.textEffect,
+          bold: a.bold,
+          italic: a.italic,
+          strikethrough: a.strikethrough,
+          underline: a.underline,
+          messagePart: 0,
+        ),
+      )).toList().cast<Run>(),
+    );
+  }
 
-    super.value = newValue;
+  Widget Function(BuildContext, EditableTextState)? getContextMenuBuilder() {
+    return (BuildContext context, EditableTextState editableTextState) {
+      var range = editableTextState.textEditingValue.selection;
+      if (range.baseOffset > range.extentOffset) {
+        range = TextSelection(baseOffset: range.extentOffset, extentOffset: range.baseOffset);
+      }
+      var annotations = annotationsForRange(range);
+      var mention = annotations?.firstWhereOrNull((r) => r.mentionedAddress != null);
+
+      return AdaptiveTextSelectionToolbar.editableText(
+        editableTextState: editableTextState
+      )..buttonItems?.addAllIf(
+          mention != null,
+          [
+            ContextMenuButtonItem(
+              onPressed: () {
+                insert(TextSelection(baseOffset: mention!.range[0], extentOffset: mention.range[1]), 
+                  "@${mentionCache[mention.mentionedAddress!]}", moveCursor: 1);
+
+                editableTextState.hideToolbar();
+              },
+              label: "Remove Mention",
+            ),
+            ContextMenuButtonItem(
+              onPressed: () async {
+                // if (kIsDesktop || kIsWeb) {
+                //   controller?.showingOverlays = true;
+                // }
+                final changed = await showCustomMentionDialog(context, mentionCache[mention!.mentionedAddress!]);
+                // if (kIsDesktop || kIsWeb) {
+                //   controller?.showingOverlays = false;
+                // }
+                if (!isNullOrEmpty(changed)) {
+                  mentionCache[mention.mentionedAddress!] = changed!;
+                }
+
+                editableTextState.hideToolbar();
+                
+              },
+              label: "Custom Mention",
+            ),
+          ],
+        )..buttonItems?.addAll([
+          ContextMenuButtonItem(
+            onPressed: () {
+              var already = annotations!.every((a) => a.bold == true);
+              markRange(range, Annotation(bold: !already));
+              editableTextState.hideToolbar();
+              refresh();
+            },
+            label: "Bold",
+          ),
+          ContextMenuButtonItem(
+            onPressed: () {
+              var already = annotations!.every((a) => a.italic == true);
+              markRange(range, Annotation(italic: !already));
+              editableTextState.hideToolbar();
+              refresh();
+            },
+            label: "Italic",
+          ),
+          ContextMenuButtonItem(
+            onPressed: () {
+              var already = annotations!.every((a) => a.strikethrough == true);
+              markRange(range, Annotation(strikethrough: !already));
+              editableTextState.hideToolbar();
+              refresh();
+            },
+            label: "Strikethrough",
+          ),
+          ContextMenuButtonItem(
+            onPressed: () {
+              var already = annotations!.every((a) => a.underline == true);
+              markRange(range, Annotation(underline: !already));
+              editableTextState.hideToolbar();
+              refresh();
+            },
+            label: "Underline",
+          ),
+          ContextMenuButtonItem(
+            onPressed: () {
+              var already = annotations!.every((a) => a.textEffect == Attributes.BIG);
+              markRange(range, Annotation(textEffect: already ? null : Attributes.BIG));
+              editableTextState.hideToolbar();
+              refresh();
+            },
+            label: "Big",
+          ),
+          ContextMenuButtonItem(
+            onPressed: () {
+              var already = annotations!.every((a) => a.textEffect == Attributes.SMALL);
+              markRange(range, Annotation(textEffect: already ? null : Attributes.SMALL));
+              editableTextState.hideToolbar();
+              refresh();
+            },
+            label: "Small",
+          ),
+        ]);
+    };
   }
 
   @override
@@ -579,28 +835,29 @@ class MentionTextEditingController extends SpellCheckTextEditingController {
     TextStyle? style,
     required bool withComposing,
   }) {
-    final textSplit = splitText(text);
-    bool flag = false;
-    int mentionIndexLength = 0;
     return TextSpan(
-      children: textSplit.mapIndexed((idx, word) {
-        int offset = textSplit
-            .slice(0, idx)
-            .join("")
-            .length;
+      children: annotations.mapIndexed((idx, annotation) {
+        // uncomment top variant for annotation debugging (give each annotation a unique color)
+        // var s = style!.copyWith(color: Color((0xff << 0x18) | (annotation.hashCode & 0xffffff)));
+        var s = style!;
 
-        if (word == escapingChar) flag = !flag;
-        int? index = flag ? int.tryParse(word) : null;
-        if (index != null) {
-          final mention = mentionables[index];
-          mentionIndexLength = "$index".length;
+        if (annotation.bold ?? false) s = s.apply(fontWeightDelta: 2);
+        if (annotation.italic ?? false) s = s.apply(fontStyle: FontStyle.italic);
+        s = s.apply(decoration: TextDecoration.combine([
+          if (annotation.strikethrough ?? false) TextDecoration.lineThrough,
+          if (annotation.underline ?? false) TextDecoration.underline,
+        ]));
+        if (annotation.textEffect == Attributes.BIG) s = s.apply(fontSizeDelta: 4);
+        if (annotation.textEffect == Attributes.SMALL) s = s.apply(fontSizeDelta: -2);
+
+        if (annotation.mentionedAddress != null) {
           // Mandatory WidgetSpan so that it takes the appropriate char number.
           return WidgetSpan(
             child: Listener(
               onPointerDown: (PointerDownEvent e) {
                 if (selection.isCollapsed && e.buttons == 2) {
                   // Right click
-                  selection = TextSelection(baseOffset: offset - 1, extentOffset: offset + word.length + 1);
+                  selection = TextSelection(baseOffset: annotation.range[0], extentOffset: annotation.range[1]);
                 }
               },
               child: ShaderMask(
@@ -615,28 +872,20 @@ class MentionTextEditingController extends SpellCheckTextEditingController {
                       Rect.fromLTWH(0, 0, bounds.width, bounds.height),
                     ),
                 child: Text(
-                  mention.displayName,
-                  style: style!.copyWith(fontWeight: FontWeight.bold).apply(heightFactor: 1.1),
+                  mentionCache[annotation.mentionedAddress!]!,
+                  style: s.copyWith(fontWeight: FontWeight.bold).apply(heightFactor: 1.1),
                 ),
               ),
             ),
           );
         }
-        if (word == escapingChar) {
-          String text = zeroWidthSpace;
-          if (mentionIndexLength > 1) {
-            text = List.filled(mentionIndexLength, zeroWidthSpace).join();
-            mentionIndexLength = 0;
-          }
-          return TextSpan(text: text, style: style);
-        }
 
         // Anything beyond this point is not a mention. So fallback to original style.
         return buildMistakeTextSpans(
           context: context,
-          chunk: word.replaceAll(escapingChar, zeroWidthSpace),
-          offset: offset,
-          style: style,
+          chunk: text.substring(annotation.range[0], annotation.range[1]),
+          offset: annotation.range[0],
+          style: s,
         );
       }).toList(),
     );

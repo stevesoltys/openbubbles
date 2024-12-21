@@ -31,13 +31,12 @@ import 'package:supercharged/supercharged.dart';
 void sendEffectAction(
   BuildContext context,
   TickerProvider provider,
-  String text,
+  AttributedBody annotations,
   String subjectText,
   String? threadOriginatorGuid,
   int? part,
   String? chatGuid,
   Future<void> Function({String? effect}) sendMessage,
-  List<Mentionable> mentionables,
 ) {
   if (!ss.settings.enablePrivateAPI.value) return;
   String typeSelected = "bubble";
@@ -45,28 +44,10 @@ void sendEffectAction(
   final screenEffects = ["echo", "spotlight", "balloons", "confetti", "love", "lasers", "fireworks", "celebration"];
   String bubbleSelected = "slam";
   String screenSelected = "echo";
-  final textSplit = MentionTextEditingController.splitText(text);
-  bool flag = false;
-  final newText = [];
-  if (textSplit.length > 1) {
-    for (String word in textSplit) {
-      if (word == MentionTextEditingController.escapingChar) flag = !flag;
-      int? index = flag ? int.tryParse(word) : null;
-      if (index != null) {
-        final mention = mentionables[index];
-        newText.add(mention);
-        continue;
-      }
-      if (word == MentionTextEditingController.escapingChar) {
-        continue;
-      }
-      newText.add(word.replaceAll(MentionTextEditingController.escapingChar, ""));
-    }
-    text = newText.join("");
-  }
   
   String? replyRun = part != null ? Message.findOne(guid: threadOriginatorGuid)?.replyPart(part) : null;
-  int currentPos = 0;
+
+  var text = annotations.string;
   final message = Message(
     text: text,
     subject: subjectText,
@@ -79,32 +60,8 @@ void sendEffectAction(
     handleId: 0,
     hasDdResults: true,
     attributedBody: [
-      if (textSplit.length > 1)
-        AttributedBody(
-          string: text,
-          runs: newText.whereType<Mentionable>().isEmpty ? [] : newText.map((e) {
-            if (e is Mentionable) {
-              final run = Run(
-                  range: [currentPos, e.toString().length],
-                  attributes: Attributes(
-                    mention: e.address,
-                    messagePart: 0,
-                  )
-              );
-              currentPos += e.toString().length;
-              return run;
-            } else {
-              final run = Run(
-                range: [currentPos, e.length],
-                attributes: Attributes(
-                  messagePart: 0,
-                ),
-              );
-              currentPos += e.toString().length;
-              return run;
-            }
-          }).toList(),
-        ),
+      if (annotations.string.isNotEmpty)
+        annotations
     ],
   );
   message.generateTempGuid();
@@ -418,9 +375,9 @@ void sendEffectAction(
                                                               MessagePart(
                                                                 part: 0,
                                                                 text: message.text,
-                                                                mentions: message.attributedBody.isEmpty ? [] : message.attributedBody.first.runs
+                                                                annotations: message.attributedBody.isEmpty ? [] : message.attributedBody.first.runs
                                                                     .where((element) => element.hasMention)
-                                                                    .map((e) => Mention(mentionedAddress: "", range: [e.range.first, e.range.first + e.range.last])).toList()
+                                                                    .map((e) => Annotation(mentionedAddress: "", range: [e.range.first, e.range.first + e.range.last])).toList()
                                                               ),
                                                               message,
                                                             ),

@@ -171,7 +171,7 @@ class _TextFieldSuffixState extends OptimizedState<TextFieldSuffix> {
                               onPressed: () async {
                                 await widget.controller!.send(
                                   [file],
-                                  "", "", null, null, null, null, true,
+                                  AttributedBody.empty(), "", null, null, null, null, true,
                                 );
                                 deleteAudioRecording(file.path!);
                                 Get.back();
@@ -191,13 +191,12 @@ class _TextFieldSuffixState extends OptimizedState<TextFieldSuffix> {
                   sendEffectAction(
                     context,
                     widget.controller!,
-                    widget.textController.text.trim(),
+                    widget.textController is MentionTextEditingController ? (widget.textController as MentionTextEditingController).getFinalAnnotations() : AttributedBody.raw(widget.textController.text),
                     widget.subjectTextController?.text.trim() ?? "",
                     widget.controller!.replyToMessage?.item1.guid,
                     widget.controller!.replyToMessage?.item2,
                     widget.controller!.chat.guid,
                     widget.sendMessage,
-                    widget.textController is MentionTextEditingController ? (widget.textController as MentionTextEditingController).mentionables : [],
                   );
                 },
               ),

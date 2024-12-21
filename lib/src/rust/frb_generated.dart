@@ -2598,6 +2598,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  TextFlags dco_decode_box_autoadd_text_flags(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_text_flags(raw);
+  }
+
+  @protected
+  TextFormat dco_decode_box_autoadd_text_format(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_text_format(raw);
+  }
+
+  @protected
   BigInt dco_decode_box_autoadd_u_64(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return dco_decode_u_64(raw);
@@ -3113,6 +3125,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       case 0:
         return MessagePart_Text(
           dco_decode_String(raw[1]),
+          dco_decode_box_autoadd_text_format(raw[2]),
         );
       case 1:
         return MessagePart_Attachment(
@@ -3717,6 +3730,43 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       body: dco_decode_String(arr[1]),
       action: dco_decode_opt_box_autoadd_support_action(arr[2]),
     );
+  }
+
+  @protected
+  TextEffect dco_decode_text_effect(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return TextEffect.values[raw as int];
+  }
+
+  @protected
+  TextFlags dco_decode_text_flags(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 4)
+      throw Exception('unexpected arr length: expect 4 but see ${arr.length}');
+    return TextFlags(
+      bold: dco_decode_bool(arr[0]),
+      italic: dco_decode_bool(arr[1]),
+      underline: dco_decode_bool(arr[2]),
+      strikethrough: dco_decode_bool(arr[3]),
+    );
+  }
+
+  @protected
+  TextFormat dco_decode_text_format(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    switch (raw[0]) {
+      case 0:
+        return TextFormat_Flags(
+          dco_decode_box_autoadd_text_flags(raw[1]),
+        );
+      case 1:
+        return TextFormat_Effect(
+          dco_decode_text_effect(raw[1]),
+        );
+      default:
+        throw Exception("unreachable");
+    }
   }
 
   @protected
@@ -4404,6 +4454,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  TextFlags sse_decode_box_autoadd_text_flags(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_text_flags(deserializer));
+  }
+
+  @protected
+  TextFormat sse_decode_box_autoadd_text_format(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_text_format(deserializer));
+  }
+
+  @protected
   BigInt sse_decode_box_autoadd_u_64(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return (sse_decode_u_64(deserializer));
@@ -5033,7 +5095,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     switch (tag_) {
       case 0:
         var var_field0 = sse_decode_String(deserializer);
-        return MessagePart_Text(var_field0);
+        var var_field1 = sse_decode_box_autoadd_text_format(deserializer);
+        return MessagePart_Text(var_field0, var_field1);
       case 1:
         var var_field0 = sse_decode_box_autoadd_attachment(deserializer);
         return MessagePart_Attachment(var_field0);
@@ -5789,6 +5852,44 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  TextEffect sse_decode_text_effect(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner = sse_decode_i_32(deserializer);
+    return TextEffect.values[inner];
+  }
+
+  @protected
+  TextFlags sse_decode_text_flags(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_bold = sse_decode_bool(deserializer);
+    var var_italic = sse_decode_bool(deserializer);
+    var var_underline = sse_decode_bool(deserializer);
+    var var_strikethrough = sse_decode_bool(deserializer);
+    return TextFlags(
+        bold: var_bold,
+        italic: var_italic,
+        underline: var_underline,
+        strikethrough: var_strikethrough);
+  }
+
+  @protected
+  TextFormat sse_decode_text_format(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var tag_ = sse_decode_i_32(deserializer);
+    switch (tag_) {
+      case 0:
+        var var_field0 = sse_decode_box_autoadd_text_flags(deserializer);
+        return TextFormat_Flags(var_field0);
+      case 1:
+        var var_field0 = sse_decode_text_effect(deserializer);
+        return TextFormat_Effect(var_field0);
+      default:
+        throw UnimplementedError('');
+    }
+  }
+
+  @protected
   TransferProgress sse_decode_transfer_progress(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var var_prog = sse_decode_CastedPrimitive_usize(deserializer);
@@ -6481,6 +6582,20 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_box_autoadd_text_flags(
+      TextFlags self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_text_flags(self, serializer);
+  }
+
+  @protected
+  void sse_encode_box_autoadd_text_format(
+      TextFormat self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_text_format(self, serializer);
+  }
+
+  @protected
   void sse_encode_box_autoadd_u_64(BigInt self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_u_64(self, serializer);
@@ -6942,9 +7057,10 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   void sse_encode_message_part(MessagePart self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     switch (self) {
-      case MessagePart_Text(field0: final field0):
+      case MessagePart_Text(field0: final field0, field1: final field1):
         sse_encode_i_32(0, serializer);
         sse_encode_String(field0, serializer);
+        sse_encode_box_autoadd_text_format(field1, serializer);
       case MessagePart_Attachment(field0: final field0):
         sse_encode_i_32(1, serializer);
         sse_encode_box_autoadd_attachment(field0, serializer);
@@ -7615,6 +7731,36 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_String(self.title, serializer);
     sse_encode_String(self.body, serializer);
     sse_encode_opt_box_autoadd_support_action(self.action, serializer);
+  }
+
+  @protected
+  void sse_encode_text_effect(TextEffect self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.index, serializer);
+  }
+
+  @protected
+  void sse_encode_text_flags(TextFlags self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_bool(self.bold, serializer);
+    sse_encode_bool(self.italic, serializer);
+    sse_encode_bool(self.underline, serializer);
+    sse_encode_bool(self.strikethrough, serializer);
+  }
+
+  @protected
+  void sse_encode_text_format(TextFormat self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    switch (self) {
+      case TextFormat_Flags(field0: final field0):
+        sse_encode_i_32(0, serializer);
+        sse_encode_box_autoadd_text_flags(field0, serializer);
+      case TextFormat_Effect(field0: final field0):
+        sse_encode_i_32(1, serializer);
+        sse_encode_text_effect(field0, serializer);
+      default:
+        throw UnimplementedError('');
+    }
   }
 
   @protected

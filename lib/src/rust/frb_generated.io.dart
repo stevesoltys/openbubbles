@@ -319,6 +319,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   SupportAlert dco_decode_box_autoadd_support_alert(dynamic raw);
 
   @protected
+  TextFlags dco_decode_box_autoadd_text_flags(dynamic raw);
+
+  @protected
+  TextFormat dco_decode_box_autoadd_text_format(dynamic raw);
+
+  @protected
   BigInt dco_decode_box_autoadd_u_64(dynamic raw);
 
   @protected
@@ -619,6 +625,15 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   SupportAlert dco_decode_support_alert(dynamic raw);
+
+  @protected
+  TextEffect dco_decode_text_effect(dynamic raw);
+
+  @protected
+  TextFlags dco_decode_text_flags(dynamic raw);
+
+  @protected
+  TextFormat dco_decode_text_format(dynamic raw);
 
   @protected
   TransferProgress dco_decode_transfer_progress(dynamic raw);
@@ -930,6 +945,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   SupportAlert sse_decode_box_autoadd_support_alert(
       SseDeserializer deserializer);
+
+  @protected
+  TextFlags sse_decode_box_autoadd_text_flags(SseDeserializer deserializer);
+
+  @protected
+  TextFormat sse_decode_box_autoadd_text_format(SseDeserializer deserializer);
 
   @protected
   BigInt sse_decode_box_autoadd_u_64(SseDeserializer deserializer);
@@ -1259,6 +1280,15 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   SupportAlert sse_decode_support_alert(SseDeserializer deserializer);
 
   @protected
+  TextEffect sse_decode_text_effect(SseDeserializer deserializer);
+
+  @protected
+  TextFlags sse_decode_text_flags(SseDeserializer deserializer);
+
+  @protected
+  TextFormat sse_decode_text_format(SseDeserializer deserializer);
+
+  @protected
   TransferProgress sse_decode_transfer_progress(SseDeserializer deserializer);
 
   @protected
@@ -1585,6 +1615,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_box_autoadd_support_alert(
       SupportAlert self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_text_flags(
+      TextFlags self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_text_format(
+      TextFormat self, SseSerializer serializer);
 
   @protected
   void sse_encode_box_autoadd_u_64(BigInt self, SseSerializer serializer);
@@ -1925,6 +1963,15 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_support_alert(SupportAlert self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_text_effect(TextEffect self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_text_flags(TextFlags self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_text_format(TextFormat self, SseSerializer serializer);
 
   @protected
   void sse_encode_transfer_progress(

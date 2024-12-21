@@ -532,6 +532,121 @@ class Message {
     );
   }
 
+  List<MessagePart> attributedBodyToMessagePart(AttributedBody body) {
+    final mainString = body.string;
+    final list = <MessagePart>[];
+    body.runs.sort((a, b) => a.range.first.compareTo(b.range.first));
+    body.runs.forEachIndexed((i, e) {
+      if (e.attributes?.messagePart == null) return;
+      final existingPart = list.firstWhereOrNull((element) => element.part == e.attributes!.messagePart!);
+      if (existingPart != null) {
+        final newText = mainString.substring(e.range.first, e.range.first + e.range.last);
+        final currentLength = existingPart.text?.length ?? 0;
+        existingPart.text = (existingPart.text ?? "") + newText;
+        existingPart.annotations.add(Annotation(
+          mentionedAddress: e.attributes?.mention,
+          range: [currentLength, currentLength + e.range.last],
+          bold: e.attributes?.bold,
+          italic: e.attributes?.italic,
+          underline: e.attributes?.underline,
+          strikethrough: e.attributes?.strikethrough,
+          textEffect: e.attributes?.textEffect,
+        ));
+        existingPart.annotations.sort((a, b) => a.range.first.compareTo(b.range.first));
+      } else {
+        list.add(MessagePart(
+          subject: i == 0 ? subject : null,
+          text: e.isAttachment ? null : mainString.substring(e.range.first, e.range.first + e.range.last),
+          attachments: e.isAttachment && (chat.target != null || cm.activeChat != null)
+              ? [
+                  ms(chat.target?.guid ?? cm.activeChat!.chat.guid)
+                          .struct
+                          .getAttachment(e.attributes!.attachmentGuid!) ??
+                      Attachment.findOne(e.attributes!.attachmentGuid!)
+                ].where((e) => e != null).map((e) => e!).toList()
+              : [],
+          annotations: [
+                  Annotation(
+                    mentionedAddress: e.attributes?.mention,
+                    bold: e.attributes?.bold,
+                    italic: e.attributes?.italic,
+                    underline: e.attributes?.underline,
+                    strikethrough: e.attributes?.strikethrough,
+                    textEffect: e.attributes?.textEffect,
+                    range: [0, e.range.last],
+                  )
+                ],
+          part: e.attributes!.messagePart!,
+        ));
+      }
+    });
+    return list;
+  }
+
+  List<MessagePart> buildMessageParts() {
+    List<MessagePart> parts = [];
+    if (guid?.startsWith("error") ?? false) {
+      Logger.debug("hi");
+    }
+    // go through the attributed body
+    if (attributedBody.firstOrNull?.runs.isNotEmpty ?? false) {
+      parts = attributedBodyToMessagePart(attributedBody.first);
+    }
+    // add edits
+    if (messageSummaryInfo.firstOrNull?.editedParts.isNotEmpty ?? false) {
+      for (int part in messageSummaryInfo.first.editedParts) {
+        final edits = messageSummaryInfo.first.editedContent[part.toString()] ?? [];
+        final existingPart = parts.firstWhereOrNull((element) => element.part == part);
+        if (existingPart != null) {
+          existingPart.edits.addAll(edits
+              .where((e) => e.text?.values.isNotEmpty ?? false)
+              .map((e) => attributedBodyToMessagePart(e.text!.values.first).firstOrNull)
+              .where((e) => e != null)
+              .map((e) => e!)
+              .toList());
+          if (existingPart.edits.isNotEmpty) {
+            existingPart.edits.removeLast();
+          }
+        }
+      }
+    }
+    // add unsends
+    if (messageSummaryInfo.firstOrNull?.retractedParts.isNotEmpty ?? false) {
+      for (int part in messageSummaryInfo.first.retractedParts) {
+        final existing = parts.indexWhere((e) => e.part == part);
+        if (existing >= 0) {
+          parts.removeAt(existing);
+        }
+        parts.add(MessagePart(
+          part: part,
+          isUnsent: true,
+        ));
+      }
+    }
+    if (parts.isEmpty) {
+      if (!hasApplePayloadData && !isLegacyUrlPreview && !isGroupEvent) {
+        parts.addAll(attachments.mapIndexed((index, e) => MessagePart(
+              attachments: [e!],
+              part: index,
+            )));
+      } else if (isInteractive) {
+        parts.add(MessagePart(
+          part: 0,
+        ));
+      }
+
+      if (fullText.isNotEmpty || isGroupEvent) {
+        parts.add(MessagePart(
+          subject: subject,
+          text: text,
+          part: parts.length,
+        ));
+      }
+    }
+    parts.sort((a, b) => a.part.compareTo(b.part));
+    return parts;
+  }
+
   /// Save a single message - prefer [bulkSave] for multiple messages rather
   /// than iterating through them
   Message save({Chat? chat, bool updateIsBookmarked = false, bool updateSendingServiceId = false}) {

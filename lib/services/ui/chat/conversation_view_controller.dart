@@ -47,7 +47,7 @@ class ConversationViewController extends StatefulController with GetSingleTicker
   final RxDouble timestampOffset = 0.0.obs;
   final RxBool inSelectMode = false.obs;
   final RxList<Message> selected = <Message>[].obs;
-  final RxList<Tuple3<Message, MessagePart, SpellCheckTextEditingController>> editing = <Tuple3<Message, MessagePart, SpellCheckTextEditingController>>[].obs;
+  final RxList<Tuple3<Message, MessagePart, MentionTextEditingController>> editing = <Tuple3<Message, MessagePart, MentionTextEditingController>>[].obs;
   final GlobalKey focusInfoKey = GlobalKey();
   final RxBool recipientNotifsSilenced = false.obs;
   bool showingOverlays = false;
@@ -89,7 +89,7 @@ class ConversationViewController extends StatefulController with GetSingleTicker
   bool keyboardOpen = false;
   double _keyboardOffset = 0;
   Timer? _scrollDownDebounce;
-  Future<void> Function(Tuple7<List<PlatformFile>, String, String, String?, int?, String?, PayloadData?>, bool)? sendFunc;
+  Future<void> Function(Tuple7<List<PlatformFile>, AttributedBody, String, String?, int?, String?, PayloadData?>, bool)? sendFunc;
   bool isProcessingImage = false;
 
   @override
@@ -171,7 +171,7 @@ class ConversationViewController extends StatefulController with GetSingleTicker
     }
   }
 
-  Future<void> send(List<PlatformFile> attachments, String text, String subject, String? replyGuid, int? replyPart, String? effectId, PayloadData? payload, bool isAudioMessage) async {
+  Future<void> send(List<PlatformFile> attachments, AttributedBody text, String subject, String? replyGuid, int? replyPart, String? effectId, PayloadData? payload, bool isAudioMessage) async {
     sendFunc?.call(Tuple7(attachments, text, subject, replyGuid, replyPart, effectId, payload), isAudioMessage);
   }
 

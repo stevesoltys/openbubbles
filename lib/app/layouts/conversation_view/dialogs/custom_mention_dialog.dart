@@ -5,8 +5,8 @@ import 'package:bluebubbles/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-Future<String?> showCustomMentionDialog(BuildContext context, Mentionable? mention) async {
-  final TextEditingController mentionController = TextEditingController(text: mention?.displayName);
+Future<String?> showCustomMentionDialog(BuildContext context, String? mention) async {
+  final TextEditingController mentionController = TextEditingController(text: mention);
   String? changed;
   await showDialog(
       context: context,
@@ -21,7 +21,7 @@ Future<String?> showCustomMentionDialog(BuildContext context, Mentionable? menti
               child: Text("OK", style: context.theme.textTheme.bodyLarge!.copyWith(color: context.theme.colorScheme.primary)),
               onPressed: () {
                 if (isNullOrEmptyString(mentionController.text)) {
-                  changed = mention?.handle.displayName ?? "";
+                  changed = mention ?? "";
                 } else {
                   changed = mentionController.text;
                 }
@@ -38,12 +38,12 @@ Future<String?> showCustomMentionDialog(BuildContext context, Mentionable? menti
             enableIMEPersonalizedLearning: !ss.settings.incognitoKeyboard.value,
             decoration: InputDecoration(
               labelText: "Custom Mention",
-              hintText: mention?.handle.displayName ?? "",
+              hintText: mention ?? "",
               border: const OutlineInputBorder(),
             ),
             onSubmitted: (val) {
               if (isNullOrEmptyString(val)) {
-                val = mention?.handle.displayName ?? "";
+                val = mention ?? "";
               }
               changed = val;
               Get.back();

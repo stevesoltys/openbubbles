@@ -355,7 +355,7 @@ class RustPushBackend implements BackendService {
   }
 
   @override
-  Future<Chat> createChat(List<String> addresses, String? message, String service,
+  Future<Chat> createChat(List<String> addresses, AttributedBody? message, String service,
       {CancelToken? cancelToken, String? existingGuid}) async {
     var handle = await getDefaultHandle();
     var formattedHandles = (await Future.wait(
@@ -373,8 +373,7 @@ class RustPushBackend implements BackendService {
           state: pushService.state,
           conversation: await chat.getConversationData(),
           message: api.Message.message(api.NormalMessage(
-              parts: api.MessageParts(
-                  field0: [api.IndexedMessagePart(part_: api.MessagePart.text(message))]),
+              parts: partsFromBody(message),
                   service: await getService(chat.isRpSms),
                   voice: false,
                   )),
@@ -668,6 +667,15 @@ class RustPushBackend implements BackendService {
     return ss.settings.isSmsRouter.value || ss.settings.smsForwardingTargets.isNotEmpty;
   }
 
+  api.MessageParts partsFromBody(AttributedBody body) {
+    return api.MessageParts(field0: body.runs.map((e) {
+        var text = body.string.substring(e.range.first, e.range.first + e.range.last);
+        return api.IndexedMessagePart(part_: e.hasMention ? 
+          api.MessagePart.mention(e.attributes!.mention!, text) : 
+          api.MessagePart.text(text, pushService.fromAttributes(e.attributes!)));
+      }).toList());
+  }
+
   @override
   Future<Message> sendMessage(Chat chat, Message m, {CancelToken? cancelToken}) async {
     if (chat.isRpSms && !smsForwardingEnabled()) {
@@ -732,14 +740,9 @@ class RustPushBackend implements BackendService {
     // await Future.delayed(const Duration(seconds: 15));
     api.MessageParts parts;
     if (m.attributedBody.isNotEmpty) {
-      parts = api.MessageParts(field0: m.attributedBody.first.runs.map((e) {
-        var text = m.attributedBody.first.string.substring(e.range.first, e.range.first + e.range.last);
-        return api.IndexedMessagePart(part_: e.hasMention ? 
-          api.MessagePart.mention(e.attributes!.mention!, text) : 
-          api.MessagePart.text(text));
-      }).toList());
+      parts = partsFromBody(m.attributedBody.first);
     } else {
-      parts = api.MessageParts(field0: [api.IndexedMessagePart(part_: api.MessagePart.text(m.text!))]);
+      parts = api.MessageParts(field0: [api.IndexedMessagePart(part_: api.MessagePart.text(m.text!, pushService.defaultFormat()))]);
     }
     var msg = await api.newMsg(
       state: pushService.state,
@@ -976,7 +979,7 @@ class RustPushBackend implements BackendService {
   }
 
   @override
-  Future<Message?> edit(Message msgObj, String text, int part) async {
+  Future<Message?> edit(Message msgObj, AttributedBody text, int part) async {
     var msg = await api.newMsg(
         state: pushService.state,
         conversation: await msgObj.chat.target!.getConversationData(),
@@ -984,8 +987,7 @@ class RustPushBackend implements BackendService {
         message: api.Message.edit(api.EditMessage(
             tuuid: msgObj.guid!,
             editPart: part,
-            newParts: api.MessageParts(
-                field0: [api.IndexedMessagePart(part_: api.MessagePart.text(text), idx: part)]))));
+            newParts: partsFromBody(text))));
     await sendMsg(msg);
     msg.sentTimestamp = DateTime.now().millisecondsSinceEpoch;
     return await pushService.reflectMessageDyn(msg);
@@ -1191,10 +1193,33 @@ class RustPushService extends GetxService {
         addedIndicies.add(fieldIdx);
       }
       if (part is api.MessagePart_Text) {
+        api.TextFlags? flags;
+        int? textEffect;
+        if (part.field1 is api.TextFormat_Flags) {
+          flags = (part.field1 as api.TextFormat_Flags).field0;
+        } else if (part.field1 is api.TextFormat_Effect) {
+          var effect = part.field1 as api.TextFormat_Effect;
+          Map<api.TextEffect, int> invertedEffectMap = {
+            api.TextEffect.big: Attributes.BIG,
+            api.TextEffect.small: Attributes.SMALL,
+            api.TextEffect.shake: Attributes.SHAKE,
+            api.TextEffect.nod: Attributes.NOD,
+            api.TextEffect.explode: Attributes.EXPLODE,
+            api.TextEffect.ripple: Attributes.RIPPLE,
+            api.TextEffect.bloom: Attributes.BLOOM,
+            api.TextEffect.jitter: Attributes.JITTER,
+          };
+          textEffect = invertedEffectMap[effect.field0];
+        }
         body.add(Run(
           range: [bodyString.length, part.field0.length],
           attributes: Attributes(
             messagePart: fieldIdx,
+            textEffect: textEffect,
+            bold: flags?.bold,
+            italic: flags?.italic,
+            strikethrough: flags?.strikethrough,
+            underline: flags?.underline,
           )
         ));
         bodyString += part.field0;
@@ -1898,6 +1923,32 @@ class RustPushService extends GetxService {
         myTimer = null;
       }
     };
+  }
+
+  api.TextFormat defaultFormat() {
+    return const api.TextFormat.flags(api.TextFlags(bold: false, italic: false, underline: false, strikethrough: false));
+  }
+
+  api.TextFormat fromAttributes(Attributes attributes) {
+    if (attributes.textEffect != null) {
+      Map<int, api.TextEffect> effectMap = {
+        Attributes.BIG: api.TextEffect.big,
+        Attributes.SMALL: api.TextEffect.small,
+        Attributes.SHAKE: api.TextEffect.shake,
+        Attributes.NOD: api.TextEffect.nod,
+        Attributes.EXPLODE: api.TextEffect.explode,
+        Attributes.RIPPLE: api.TextEffect.ripple,
+        Attributes.BLOOM: api.TextEffect.bloom,
+        Attributes.JITTER: api.TextEffect.jitter,
+      };
+      return api.TextFormat.effect(effectMap[attributes.textEffect!]!);
+    }
+    return api.TextFormat.flags(api.TextFlags(
+      bold: attributes.bold ?? false,
+      italic: attributes.italic ?? false,
+      underline: attributes.underline ?? false,
+      strikethrough: attributes.strikethrough ?? false,
+    ));
   }
 
   Uint8List getQrInfo(bool allowSharing, Uint8List data) {

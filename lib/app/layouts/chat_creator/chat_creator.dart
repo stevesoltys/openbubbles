@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:bluebubbles/app/components/custom_text_editing_controllers.dart';
 import 'package:bluebubbles/app/layouts/chat_creator/widgets/chat_creator_tile.dart';
@@ -776,7 +777,7 @@ class ChatCreatorState extends OptimizedState<ChatCreator> {
 
                               await fakeController.value!.send(
                                 widget.initialAttachments,
-                                fakeController.value!.textController.text,
+                                fakeController.value!.textController.getFinalAnnotations(),
                                 "",
                                 fakeController.value!.replyToMessage?.item1.threadOriginatorGuid ??
                                     fakeController.value!.replyToMessage?.item1.guid,
@@ -847,7 +848,7 @@ class ChatCreatorState extends OptimizedState<ChatCreator> {
                                     ),
                                   );
                                 });
-                            backend.createChat(participants, textController.text, method).then((newChat) async {
+                            backend.createChat(participants, textController.getFinalAnnotations(), method).then((newChat) async {
                               // Load the chat data and save it to the DB
                               newChat = newChat.save();
 

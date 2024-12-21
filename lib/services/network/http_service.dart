@@ -14,8 +14,8 @@ HttpService http = Get.isRegistered<HttpService>() ? Get.find<HttpService>() : G
 
 class HttpBackend implements BackendService {
   @override
-  Future<Chat> createChat(List<String> addresses, String? message, String service, {CancelToken? cancelToken, String? existingGuid}) async {
-    var response = await http.createChat(addresses, message, service, cancelToken: cancelToken);
+  Future<Chat> createChat(List<String> addresses, AttributedBody? message, String service, {CancelToken? cancelToken, String? existingGuid}) async {
+    var response = await http.createChat(addresses, message?.string, service, cancelToken: cancelToken);
     return Chat.fromMap(response.data["data"]);
   }
 
@@ -171,8 +171,8 @@ class HttpBackend implements BackendService {
   }
 
   @override
-  Future<Message?> edit(Message msg, String text, int part) async {
-    var response = await http.edit(msg.guid!, text, "Edited to: “$text", partIndex: part);
+  Future<Message?> edit(Message msg, AttributedBody text, int part) async {
+    var response = await http.edit(msg.guid!, text.string, "Edited to: “$text", partIndex: part);
     if (response.statusCode != 200) {
       return null;
     }

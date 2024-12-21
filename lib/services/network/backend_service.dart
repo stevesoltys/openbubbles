@@ -9,7 +9,7 @@ BackendService backend = Get.isRegistered<BackendService>() ? Get.find<BackendSe
 enum ParticipantOp { Add, Remove }
 
 abstract class BackendService {
-  Future<Chat> createChat(List<String> addresses, String? message, String service,
+  Future<Chat> createChat(List<String> addresses, AttributedBody? message, String service,
       {CancelToken? cancelToken, String? existingGuid});
   Future<Message> sendMessage(Chat c, Message m, {CancelToken? cancelToken});
   Future<bool> renameChat(Chat chat, String newName);
@@ -26,7 +26,7 @@ abstract class BackendService {
   bool canEditUnsend();
   bool canSendSubject();
   Future<Message?> unsend(Message msg, MessagePart part);
-  Future<Message?> edit(Message msgGuid, String text, int part);
+  Future<Message?> edit(Message msgGuid, AttributedBody text, int part);
   Future<PlatformFile> downloadAttachment(Attachment attachment,
       {void Function(int, int)? onReceiveProgress, bool original = false, CancelToken? cancelToken});
   // returns the new message that was sent

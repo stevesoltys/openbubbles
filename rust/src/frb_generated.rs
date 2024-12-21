@@ -3588,8 +3588,9 @@ const _: fn() = || {
         let _: bool = MessageInst.verification_failed;
     }
     match None::<crate::api::api::MessagePart>.unwrap() {
-        crate::api::api::MessagePart::Text(field0) => {
+        crate::api::api::MessagePart::Text(field0, field1) => {
             let _: String = field0;
+            let _: crate::api::api::TextFormat = field1;
         }
         crate::api::api::MessagePart::Attachment(field0) => {
             let _: crate::api::api::Attachment = field0;
@@ -3743,6 +3744,21 @@ const _: fn() = || {
         let _: String = SupportAlert.title;
         let _: String = SupportAlert.body;
         let _: Option<crate::api::api::SupportAction> = SupportAlert.action;
+    }
+    {
+        let TextFlags = None::<crate::api::api::TextFlags>.unwrap();
+        let _: bool = TextFlags.bold;
+        let _: bool = TextFlags.italic;
+        let _: bool = TextFlags.underline;
+        let _: bool = TextFlags.strikethrough;
+    }
+    match None::<crate::api::api::TextFormat>.unwrap() {
+        crate::api::api::TextFormat::Flags(field0) => {
+            let _: crate::api::api::TextFlags = field0;
+        }
+        crate::api::api::TextFormat::Effect(field0) => {
+            let _: crate::api::api::TextEffect = field0;
+        }
     }
     {
         let TrustedPhoneNumber = None::<crate::api::api::TrustedPhoneNumber>.unwrap();
@@ -4808,7 +4824,8 @@ impl SseDecode for crate::api::api::MessagePart {
         match tag_ {
             0 => {
                 let mut var_field0 = <String>::sse_decode(deserializer);
-                return crate::api::api::MessagePart::Text(var_field0);
+                let mut var_field1 = <crate::api::api::TextFormat>::sse_decode(deserializer);
+                return crate::api::api::MessagePart::Text(var_field0, var_field1);
             }
             1 => {
                 let mut var_field0 = <crate::api::api::Attachment>::sse_decode(deserializer);
@@ -5618,6 +5635,60 @@ impl SseDecode for crate::api::api::SupportAlert {
             body: var_body,
             action: var_action,
         };
+    }
+}
+
+impl SseDecode for crate::api::api::TextEffect {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <i32>::sse_decode(deserializer);
+        return match inner {
+            0 => crate::api::api::TextEffect::Big,
+            1 => crate::api::api::TextEffect::Small,
+            2 => crate::api::api::TextEffect::Shake,
+            3 => crate::api::api::TextEffect::Nod,
+            4 => crate::api::api::TextEffect::Explode,
+            5 => crate::api::api::TextEffect::Ripple,
+            6 => crate::api::api::TextEffect::Bloom,
+            7 => crate::api::api::TextEffect::Jitter,
+            _ => unreachable!("Invalid variant for TextEffect: {}", inner),
+        };
+    }
+}
+
+impl SseDecode for crate::api::api::TextFlags {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_bold = <bool>::sse_decode(deserializer);
+        let mut var_italic = <bool>::sse_decode(deserializer);
+        let mut var_underline = <bool>::sse_decode(deserializer);
+        let mut var_strikethrough = <bool>::sse_decode(deserializer);
+        return crate::api::api::TextFlags {
+            bold: var_bold,
+            italic: var_italic,
+            underline: var_underline,
+            strikethrough: var_strikethrough,
+        };
+    }
+}
+
+impl SseDecode for crate::api::api::TextFormat {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut tag_ = <i32>::sse_decode(deserializer);
+        match tag_ {
+            0 => {
+                let mut var_field0 = <crate::api::api::TextFlags>::sse_decode(deserializer);
+                return crate::api::api::TextFormat::Flags(var_field0);
+            }
+            1 => {
+                let mut var_field0 = <crate::api::api::TextEffect>::sse_decode(deserializer);
+                return crate::api::api::TextFormat::Effect(var_field0);
+            }
+            _ => {
+                unimplemented!("");
+            }
+        }
     }
 }
 
@@ -6640,9 +6711,12 @@ impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<crate::api::api::MessageInst>>
 impl flutter_rust_bridge::IntoDart for FrbWrapper<crate::api::api::MessagePart> {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         match self.0 {
-            crate::api::api::MessagePart::Text(field0) => {
-                [0.into_dart(), field0.into_into_dart().into_dart()].into_dart()
-            }
+            crate::api::api::MessagePart::Text(field0, field1) => [
+                0.into_dart(),
+                field0.into_into_dart().into_dart(),
+                field1.into_into_dart().into_dart(),
+            ]
+            .into_dart(),
             crate::api::api::MessagePart::Attachment(field0) => {
                 [1.into_dart(), field0.into_into_dart().into_dart()].into_dart()
             }
@@ -7238,6 +7312,83 @@ impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<crate::api::api::SupportAlert>
     for crate::api::api::SupportAlert
 {
     fn into_into_dart(self) -> FrbWrapper<crate::api::api::SupportAlert> {
+        self.into()
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<crate::api::api::TextEffect> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        match self.0 {
+            crate::api::api::TextEffect::Big => 0.into_dart(),
+            crate::api::api::TextEffect::Small => 1.into_dart(),
+            crate::api::api::TextEffect::Shake => 2.into_dart(),
+            crate::api::api::TextEffect::Nod => 3.into_dart(),
+            crate::api::api::TextEffect::Explode => 4.into_dart(),
+            crate::api::api::TextEffect::Ripple => 5.into_dart(),
+            crate::api::api::TextEffect::Bloom => 6.into_dart(),
+            crate::api::api::TextEffect::Jitter => 7.into_dart(),
+            _ => unreachable!(),
+        }
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<crate::api::api::TextEffect>
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<crate::api::api::TextEffect>>
+    for crate::api::api::TextEffect
+{
+    fn into_into_dart(self) -> FrbWrapper<crate::api::api::TextEffect> {
+        self.into()
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<crate::api::api::TextFlags> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.0.bold.into_into_dart().into_dart(),
+            self.0.italic.into_into_dart().into_dart(),
+            self.0.underline.into_into_dart().into_dart(),
+            self.0.strikethrough.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<crate::api::api::TextFlags>
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<crate::api::api::TextFlags>>
+    for crate::api::api::TextFlags
+{
+    fn into_into_dart(self) -> FrbWrapper<crate::api::api::TextFlags> {
+        self.into()
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<crate::api::api::TextFormat> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        match self.0 {
+            crate::api::api::TextFormat::Flags(field0) => {
+                [0.into_dart(), field0.into_into_dart().into_dart()].into_dart()
+            }
+            crate::api::api::TextFormat::Effect(field0) => {
+                [1.into_dart(), field0.into_into_dart().into_dart()].into_dart()
+            }
+            _ => {
+                unimplemented!("");
+            }
+        }
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<crate::api::api::TextFormat>
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<crate::api::api::TextFormat>>
+    for crate::api::api::TextFormat
+{
+    fn into_into_dart(self) -> FrbWrapper<crate::api::api::TextFormat> {
         self.into()
     }
 }
@@ -8117,9 +8268,10 @@ impl SseEncode for crate::api::api::MessagePart {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         match self {
-            crate::api::api::MessagePart::Text(field0) => {
+            crate::api::api::MessagePart::Text(field0, field1) => {
                 <i32>::sse_encode(0, serializer);
                 <String>::sse_encode(field0, serializer);
+                <crate::api::api::TextFormat>::sse_encode(field1, serializer);
             }
             crate::api::api::MessagePart::Attachment(field0) => {
                 <i32>::sse_encode(1, serializer);
@@ -8813,6 +8965,57 @@ impl SseEncode for crate::api::api::SupportAlert {
         <String>::sse_encode(self.title, serializer);
         <String>::sse_encode(self.body, serializer);
         <Option<crate::api::api::SupportAction>>::sse_encode(self.action, serializer);
+    }
+}
+
+impl SseEncode for crate::api::api::TextEffect {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(
+            match self {
+                crate::api::api::TextEffect::Big => 0,
+                crate::api::api::TextEffect::Small => 1,
+                crate::api::api::TextEffect::Shake => 2,
+                crate::api::api::TextEffect::Nod => 3,
+                crate::api::api::TextEffect::Explode => 4,
+                crate::api::api::TextEffect::Ripple => 5,
+                crate::api::api::TextEffect::Bloom => 6,
+                crate::api::api::TextEffect::Jitter => 7,
+                _ => {
+                    unimplemented!("");
+                }
+            },
+            serializer,
+        );
+    }
+}
+
+impl SseEncode for crate::api::api::TextFlags {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.bold, serializer);
+        <bool>::sse_encode(self.italic, serializer);
+        <bool>::sse_encode(self.underline, serializer);
+        <bool>::sse_encode(self.strikethrough, serializer);
+    }
+}
+
+impl SseEncode for crate::api::api::TextFormat {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        match self {
+            crate::api::api::TextFormat::Flags(field0) => {
+                <i32>::sse_encode(0, serializer);
+                <crate::api::api::TextFlags>::sse_encode(field0, serializer);
+            }
+            crate::api::api::TextFormat::Effect(field0) => {
+                <i32>::sse_encode(1, serializer);
+                <crate::api::api::TextEffect>::sse_encode(field0, serializer);
+            }
+            _ => {
+                unimplemented!("");
+            }
+        }
     }
 }
 

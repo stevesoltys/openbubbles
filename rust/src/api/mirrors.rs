@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-pub use rustpush::{NSArrayClass, SupportAction, NSArray, SupportAlert, PrivateDeviceInfo, NormalMessage, MessageType, UpdateExtensionMessage, ErrorMessage, UnsendMessage, EditMessage, PartExtension, IconChangeMessage, RichLinkImageAttachmentSubstitute, ChangeParticipantMessage, ReactMessage, Reaction, ReactMessageType, RenameMessage, LPLinkMetadata, NSURL, LPIconMetadata, LPImageMetadata, LinkMeta, ExtensionApp, NSDictionaryClass, BalloonLayout, Balloon, IndexedMessagePart, AttachmentType, MacOSConfig, Message, MessageTarget, HardwareConfig, APSConnection, APSConnectionResource, APSState, Attachment, AuthPhone, IDSUserIdentity, MMCSFile, MessageInst, MessagePart, MessageParts, OSConfig, RelayConfig, ResourceState};
+pub use rustpush::{NSArrayClass, TextFlags, TextEffect, TextFormat, SupportAction, NSArray, SupportAlert, PrivateDeviceInfo, NormalMessage, MessageType, UpdateExtensionMessage, ErrorMessage, UnsendMessage, EditMessage, PartExtension, IconChangeMessage, RichLinkImageAttachmentSubstitute, ChangeParticipantMessage, ReactMessage, Reaction, ReactMessageType, RenameMessage, LPLinkMetadata, NSURL, LPIconMetadata, LPImageMetadata, LinkMeta, ExtensionApp, NSDictionaryClass, BalloonLayout, Balloon, IndexedMessagePart, AttachmentType, MacOSConfig, Message, MessageTarget, HardwareConfig, APSConnection, APSConnectionResource, APSState, Attachment, AuthPhone, IDSUserIdentity, MMCSFile, MessageInst, MessagePart, MessageParts, OSConfig, RelayConfig, ResourceState};
 pub use rustpush::{PushError, IDSUser, IMClient, ConversationData, register};
 pub use icloud_auth::{VerifyBody, TrustedPhoneNumber};
 pub use icloud_auth::{LoginState, AppleAccount};
@@ -83,10 +83,36 @@ impl Attachment {
     pub fn get_size(&self) -> usize { }
 }
 
+#[frb(mirror(TextFlags))]
+pub struct DartTextFlags {
+    bold: bool,
+    italic: bool,
+    underline: bool,
+    strikethrough: bool,
+}
+
+#[frb(mirror(TextEffect))]
+pub enum DartTextEffect {
+    Big = 5,
+    Small = 11,
+    Shake = 9,
+    Nod = 8,
+    Explode = 12,
+    Ripple = 4,
+    Bloom = 6,
+    Jitter = 10,
+}
+
+#[frb(mirror(TextFormat))]
+pub enum DartTextFormat {
+    Flags(TextFlags),
+    Effect(TextEffect),
+}
+
 #[repr(C)]
 #[frb(mirror(MessagePart))]
 pub enum DartMessagePart {
-    Text(String),
+    Text(String, TextFormat),
     Attachment(Attachment),
     Mention(String, String),
     Object(String),

@@ -1232,6 +1232,7 @@ sealed class MessagePart with _$MessagePart {
 
   const factory MessagePart.text(
     String field0,
+    TextFormat field1,
   ) = MessagePart_Text;
   const factory MessagePart.attachment(
     Attachment field0,
@@ -1693,6 +1694,61 @@ class SupportAlert {
           title == other.title &&
           body == other.body &&
           action == other.action;
+}
+
+enum TextEffect {
+  big,
+  small,
+  shake,
+  nod,
+  explode,
+  ripple,
+  bloom,
+  jitter,
+  ;
+}
+
+class TextFlags {
+  final bool bold;
+  final bool italic;
+  final bool underline;
+  final bool strikethrough;
+
+  const TextFlags({
+    required this.bold,
+    required this.italic,
+    required this.underline,
+    required this.strikethrough,
+  });
+
+  @override
+  int get hashCode =>
+      bold.hashCode ^
+      italic.hashCode ^
+      underline.hashCode ^
+      strikethrough.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is TextFlags &&
+          runtimeType == other.runtimeType &&
+          bold == other.bold &&
+          italic == other.italic &&
+          underline == other.underline &&
+          strikethrough == other.strikethrough;
+}
+
+@freezed
+sealed class TextFormat with _$TextFormat {
+  const TextFormat._();
+
+  const factory TextFormat.flags(
+    TextFlags field0,
+  ) = TextFormat_Flags;
+  const factory TextFormat.effect(
+    TextEffect field0,
+  ) = TextFormat_Effect;
 }
 
 class TransferProgress {

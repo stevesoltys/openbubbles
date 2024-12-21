@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:bluebubbles/app/components/custom/custom_bouncing_scroll_physics.dart';
 import 'package:bluebubbles/app/layouts/conversation_view/widgets/message/attachment/attachment_holder.dart';
 import 'package:bluebubbles/app/layouts/conversation_view/widgets/message/attachment/sticker_holder.dart';
@@ -131,9 +133,9 @@ class _MessageHolderState extends CustomState<MessageHolder, void, MessageWidget
     return bubbleColors;
   }
 
-  void completeEdit(String newEdit, int part) async {
+  void completeEdit(AttributedBody newEdit, int part) async {
     widget.cvController.editing.removeWhere((e2) => e2.item1.guid == message.guid! && e2.item2.part == part);
-    if (newEdit.isNotEmpty && newEdit != messageParts.firstWhere((element) => element.part == part).text) {
+    if (newEdit.string.isNotEmpty && jsonEncode(newEdit.toMap()) != jsonEncode(message.attributedBody.first.toMap())) {
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -513,7 +515,7 @@ class _MessageHolderState extends CustomState<MessageHolder, void, MessageWidget
                                                                                   return KeyEventResult.ignored;
                                                                                 }
                                                                                 if (ev.logicalKey == LogicalKeyboardKey.enter && !HardwareKeyboard.instance.isShiftPressed) {
-                                                                                  completeEdit(editStuff.item3.text, e.part);
+                                                                                  completeEdit(editStuff.item3.getFinalAnnotations(), e.part);
                                                                                   return KeyEventResult.handled;
                                                                                 }
                                                                                 if (ev.logicalKey == LogicalKeyboardKey.escape) {
@@ -538,10 +540,12 @@ class _MessageHolderState extends CustomState<MessageHolder, void, MessageWidget
                                                                                 scrollPhysics: const CustomBouncingScrollPhysics(),
                                                                                 style: context.theme.extension<BubbleText>()!.bubbleText.apply(
                                                                                   fontSizeFactor: message.isBigEmoji ? 3 : 1,
+                                                                                  color: context.theme.colorScheme.onPrimary,
                                                                                 ),
                                                                                 keyboardType: TextInputType.multiline,
                                                                                 maxLines: 14,
                                                                                 minLines: 1,
+                                                                                contextMenuBuilder: editStuff.item3.getContextMenuBuilder(),
                                                                                 autofocus: !(kIsDesktop || kIsWeb),
                                                                                 enableIMEPersonalizedLearning: !ss.settings.incognitoKeyboard.value,
                                                                                 textInputAction: ss.settings.sendWithReturn.value && !kIsWeb && !kIsDesktop
@@ -556,21 +560,21 @@ class _MessageHolderState extends CustomState<MessageHolder, void, MessageWidget
                                                                                   hintText: "Edited Message",
                                                                                   enabledBorder: OutlineInputBorder(
                                                                                     borderSide: BorderSide(
-                                                                                        color: context.theme.colorScheme.outline,
+                                                                                        color: context.theme.colorScheme.onPrimary,
                                                                                         width: 1.5
                                                                                     ),
                                                                                     borderRadius: BorderRadius.circular(20),
                                                                                   ),
                                                                                   border: OutlineInputBorder(
                                                                                     borderSide: BorderSide(
-                                                                                      color: context.theme.colorScheme.outline,
+                                                                                      color: context.theme.colorScheme.onPrimary,
                                                                                       width: 1.5
                                                                                     ),
                                                                                     borderRadius: BorderRadius.circular(20),
                                                                                   ),
                                                                                   focusedBorder: OutlineInputBorder(
                                                                                     borderSide: BorderSide(
-                                                                                        color: context.theme.colorScheme.outline,
+                                                                                        color: context.theme.colorScheme.onPrimary,
                                                                                         width: 1.5
                                                                                     ),
                                                                                     borderRadius: BorderRadius.circular(20),
@@ -584,7 +588,7 @@ class _MessageHolderState extends CustomState<MessageHolder, void, MessageWidget
                                                                                     visualDensity: VisualDensity.compact,
                                                                                     icon: Icon(
                                                                                       CupertinoIcons.xmark_circle_fill,
-                                                                                      color: context.theme.colorScheme.outline,
+                                                                                      color: context.theme.colorScheme.onPrimary,
                                                                                       size: 22,
                                                                                     ),
                                                                                     onPressed: () {
@@ -627,7 +631,7 @@ class _MessageHolderState extends CustomState<MessageHolder, void, MessageWidget
                                                                                             ),
                                                                                           ),
                                                                                           onPressed: () {
-                                                                                            completeEdit(editStuff.item3.text, e.part);
+                                                                                            completeEdit(editStuff.item3.getFinalAnnotations(), e.part);
                                                                                           },
                                                                                         ),
                                                                                       );
@@ -638,7 +642,7 @@ class _MessageHolderState extends CustomState<MessageHolder, void, MessageWidget
                                                                                   HapticFeedback.selectionClick();
                                                                                 },
                                                                                 onSubmitted: (String value) {
-                                                                                  completeEdit(value, e.part);
+                                                                                  completeEdit(editStuff.item3.getFinalAnnotations(), e.part);
                                                                                 },
                                                                               ),
                                                                             ),

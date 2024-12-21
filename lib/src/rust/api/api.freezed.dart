@@ -6278,7 +6278,7 @@ mixin _$MessagePart {
   Object get field0 => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String field0) text,
+    required TResult Function(String field0, TextFormat field1) text,
     required TResult Function(Attachment field0) attachment,
     required TResult Function(String field0, String field1) mention,
     required TResult Function(String field0) object,
@@ -6286,7 +6286,7 @@ mixin _$MessagePart {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String field0)? text,
+    TResult? Function(String field0, TextFormat field1)? text,
     TResult? Function(Attachment field0)? attachment,
     TResult? Function(String field0, String field1)? mention,
     TResult? Function(String field0)? object,
@@ -6294,7 +6294,7 @@ mixin _$MessagePart {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String field0)? text,
+    TResult Function(String field0, TextFormat field1)? text,
     TResult Function(Attachment field0)? attachment,
     TResult Function(String field0, String field1)? mention,
     TResult Function(String field0)? object,
@@ -6355,7 +6355,9 @@ abstract class _$$MessagePart_TextImplCopyWith<$Res> {
           $Res Function(_$MessagePart_TextImpl) then) =
       __$$MessagePart_TextImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({String field0});
+  $Res call({String field0, TextFormat field1});
+
+  $TextFormatCopyWith<$Res> get field1;
 }
 
 /// @nodoc
@@ -6372,27 +6374,44 @@ class __$$MessagePart_TextImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? field0 = null,
+    Object? field1 = null,
   }) {
     return _then(_$MessagePart_TextImpl(
       null == field0
           ? _value.field0
           : field0 // ignore: cast_nullable_to_non_nullable
               as String,
+      null == field1
+          ? _value.field1
+          : field1 // ignore: cast_nullable_to_non_nullable
+              as TextFormat,
     ));
+  }
+
+  /// Create a copy of MessagePart
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $TextFormatCopyWith<$Res> get field1 {
+    return $TextFormatCopyWith<$Res>(_value.field1, (value) {
+      return _then(_value.copyWith(field1: value));
+    });
   }
 }
 
 /// @nodoc
 
 class _$MessagePart_TextImpl extends MessagePart_Text {
-  const _$MessagePart_TextImpl(this.field0) : super._();
+  const _$MessagePart_TextImpl(this.field0, this.field1) : super._();
 
   @override
   final String field0;
+  @override
+  final TextFormat field1;
 
   @override
   String toString() {
-    return 'MessagePart.text(field0: $field0)';
+    return 'MessagePart.text(field0: $field0, field1: $field1)';
   }
 
   @override
@@ -6400,11 +6419,12 @@ class _$MessagePart_TextImpl extends MessagePart_Text {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$MessagePart_TextImpl &&
-            (identical(other.field0, field0) || other.field0 == field0));
+            (identical(other.field0, field0) || other.field0 == field0) &&
+            (identical(other.field1, field1) || other.field1 == field1));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, field0);
+  int get hashCode => Object.hash(runtimeType, field0, field1);
 
   /// Create a copy of MessagePart
   /// with the given fields replaced by the non-null parameter values.
@@ -6418,36 +6438,36 @@ class _$MessagePart_TextImpl extends MessagePart_Text {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String field0) text,
+    required TResult Function(String field0, TextFormat field1) text,
     required TResult Function(Attachment field0) attachment,
     required TResult Function(String field0, String field1) mention,
     required TResult Function(String field0) object,
   }) {
-    return text(field0);
+    return text(field0, field1);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String field0)? text,
+    TResult? Function(String field0, TextFormat field1)? text,
     TResult? Function(Attachment field0)? attachment,
     TResult? Function(String field0, String field1)? mention,
     TResult? Function(String field0)? object,
   }) {
-    return text?.call(field0);
+    return text?.call(field0, field1);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String field0)? text,
+    TResult Function(String field0, TextFormat field1)? text,
     TResult Function(Attachment field0)? attachment,
     TResult Function(String field0, String field1)? mention,
     TResult Function(String field0)? object,
     required TResult orElse(),
   }) {
     if (text != null) {
-      return text(field0);
+      return text(field0, field1);
     }
     return orElse();
   }
@@ -6491,11 +6511,13 @@ class _$MessagePart_TextImpl extends MessagePart_Text {
 }
 
 abstract class MessagePart_Text extends MessagePart {
-  const factory MessagePart_Text(final String field0) = _$MessagePart_TextImpl;
+  const factory MessagePart_Text(final String field0, final TextFormat field1) =
+      _$MessagePart_TextImpl;
   const MessagePart_Text._() : super._();
 
   @override
   String get field0;
+  TextFormat get field1;
 
   /// Create a copy of MessagePart
   /// with the given fields replaced by the non-null parameter values.
@@ -6575,7 +6597,7 @@ class _$MessagePart_AttachmentImpl extends MessagePart_Attachment {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String field0) text,
+    required TResult Function(String field0, TextFormat field1) text,
     required TResult Function(Attachment field0) attachment,
     required TResult Function(String field0, String field1) mention,
     required TResult Function(String field0) object,
@@ -6586,7 +6608,7 @@ class _$MessagePart_AttachmentImpl extends MessagePart_Attachment {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String field0)? text,
+    TResult? Function(String field0, TextFormat field1)? text,
     TResult? Function(Attachment field0)? attachment,
     TResult? Function(String field0, String field1)? mention,
     TResult? Function(String field0)? object,
@@ -6597,7 +6619,7 @@ class _$MessagePart_AttachmentImpl extends MessagePart_Attachment {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String field0)? text,
+    TResult Function(String field0, TextFormat field1)? text,
     TResult Function(Attachment field0)? attachment,
     TResult Function(String field0, String field1)? mention,
     TResult Function(String field0)? object,
@@ -6739,7 +6761,7 @@ class _$MessagePart_MentionImpl extends MessagePart_Mention {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String field0) text,
+    required TResult Function(String field0, TextFormat field1) text,
     required TResult Function(Attachment field0) attachment,
     required TResult Function(String field0, String field1) mention,
     required TResult Function(String field0) object,
@@ -6750,7 +6772,7 @@ class _$MessagePart_MentionImpl extends MessagePart_Mention {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String field0)? text,
+    TResult? Function(String field0, TextFormat field1)? text,
     TResult? Function(Attachment field0)? attachment,
     TResult? Function(String field0, String field1)? mention,
     TResult? Function(String field0)? object,
@@ -6761,7 +6783,7 @@ class _$MessagePart_MentionImpl extends MessagePart_Mention {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String field0)? text,
+    TResult Function(String field0, TextFormat field1)? text,
     TResult Function(Attachment field0)? attachment,
     TResult Function(String field0, String field1)? mention,
     TResult Function(String field0)? object,
@@ -6896,7 +6918,7 @@ class _$MessagePart_ObjectImpl extends MessagePart_Object {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String field0) text,
+    required TResult Function(String field0, TextFormat field1) text,
     required TResult Function(Attachment field0) attachment,
     required TResult Function(String field0, String field1) mention,
     required TResult Function(String field0) object,
@@ -6907,7 +6929,7 @@ class _$MessagePart_ObjectImpl extends MessagePart_Object {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String field0)? text,
+    TResult? Function(String field0, TextFormat field1)? text,
     TResult? Function(Attachment field0)? attachment,
     TResult? Function(String field0, String field1)? mention,
     TResult? Function(String field0)? object,
@@ -6918,7 +6940,7 @@ class _$MessagePart_ObjectImpl extends MessagePart_Object {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String field0)? text,
+    TResult Function(String field0, TextFormat field1)? text,
     TResult Function(Attachment field0)? attachment,
     TResult Function(String field0, String field1)? mention,
     TResult Function(String field0)? object,
@@ -11148,4 +11170,356 @@ abstract class RegisterState_Failed extends RegisterState {
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$RegisterState_FailedImplCopyWith<_$RegisterState_FailedImpl>
       get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+mixin _$TextFormat {
+  Object get field0 => throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(TextFlags field0) flags,
+    required TResult Function(TextEffect field0) effect,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(TextFlags field0)? flags,
+    TResult? Function(TextEffect field0)? effect,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(TextFlags field0)? flags,
+    TResult Function(TextEffect field0)? effect,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(TextFormat_Flags value) flags,
+    required TResult Function(TextFormat_Effect value) effect,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(TextFormat_Flags value)? flags,
+    TResult? Function(TextFormat_Effect value)? effect,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(TextFormat_Flags value)? flags,
+    TResult Function(TextFormat_Effect value)? effect,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $TextFormatCopyWith<$Res> {
+  factory $TextFormatCopyWith(
+          TextFormat value, $Res Function(TextFormat) then) =
+      _$TextFormatCopyWithImpl<$Res, TextFormat>;
+}
+
+/// @nodoc
+class _$TextFormatCopyWithImpl<$Res, $Val extends TextFormat>
+    implements $TextFormatCopyWith<$Res> {
+  _$TextFormatCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of TextFormat
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+abstract class _$$TextFormat_FlagsImplCopyWith<$Res> {
+  factory _$$TextFormat_FlagsImplCopyWith(_$TextFormat_FlagsImpl value,
+          $Res Function(_$TextFormat_FlagsImpl) then) =
+      __$$TextFormat_FlagsImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({TextFlags field0});
+}
+
+/// @nodoc
+class __$$TextFormat_FlagsImplCopyWithImpl<$Res>
+    extends _$TextFormatCopyWithImpl<$Res, _$TextFormat_FlagsImpl>
+    implements _$$TextFormat_FlagsImplCopyWith<$Res> {
+  __$$TextFormat_FlagsImplCopyWithImpl(_$TextFormat_FlagsImpl _value,
+      $Res Function(_$TextFormat_FlagsImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of TextFormat
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? field0 = null,
+  }) {
+    return _then(_$TextFormat_FlagsImpl(
+      null == field0
+          ? _value.field0
+          : field0 // ignore: cast_nullable_to_non_nullable
+              as TextFlags,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$TextFormat_FlagsImpl extends TextFormat_Flags {
+  const _$TextFormat_FlagsImpl(this.field0) : super._();
+
+  @override
+  final TextFlags field0;
+
+  @override
+  String toString() {
+    return 'TextFormat.flags(field0: $field0)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$TextFormat_FlagsImpl &&
+            (identical(other.field0, field0) || other.field0 == field0));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, field0);
+
+  /// Create a copy of TextFormat
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$TextFormat_FlagsImplCopyWith<_$TextFormat_FlagsImpl> get copyWith =>
+      __$$TextFormat_FlagsImplCopyWithImpl<_$TextFormat_FlagsImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(TextFlags field0) flags,
+    required TResult Function(TextEffect field0) effect,
+  }) {
+    return flags(field0);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(TextFlags field0)? flags,
+    TResult? Function(TextEffect field0)? effect,
+  }) {
+    return flags?.call(field0);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(TextFlags field0)? flags,
+    TResult Function(TextEffect field0)? effect,
+    required TResult orElse(),
+  }) {
+    if (flags != null) {
+      return flags(field0);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(TextFormat_Flags value) flags,
+    required TResult Function(TextFormat_Effect value) effect,
+  }) {
+    return flags(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(TextFormat_Flags value)? flags,
+    TResult? Function(TextFormat_Effect value)? effect,
+  }) {
+    return flags?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(TextFormat_Flags value)? flags,
+    TResult Function(TextFormat_Effect value)? effect,
+    required TResult orElse(),
+  }) {
+    if (flags != null) {
+      return flags(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class TextFormat_Flags extends TextFormat {
+  const factory TextFormat_Flags(final TextFlags field0) =
+      _$TextFormat_FlagsImpl;
+  const TextFormat_Flags._() : super._();
+
+  @override
+  TextFlags get field0;
+
+  /// Create a copy of TextFormat
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$TextFormat_FlagsImplCopyWith<_$TextFormat_FlagsImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$TextFormat_EffectImplCopyWith<$Res> {
+  factory _$$TextFormat_EffectImplCopyWith(_$TextFormat_EffectImpl value,
+          $Res Function(_$TextFormat_EffectImpl) then) =
+      __$$TextFormat_EffectImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({TextEffect field0});
+}
+
+/// @nodoc
+class __$$TextFormat_EffectImplCopyWithImpl<$Res>
+    extends _$TextFormatCopyWithImpl<$Res, _$TextFormat_EffectImpl>
+    implements _$$TextFormat_EffectImplCopyWith<$Res> {
+  __$$TextFormat_EffectImplCopyWithImpl(_$TextFormat_EffectImpl _value,
+      $Res Function(_$TextFormat_EffectImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of TextFormat
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? field0 = null,
+  }) {
+    return _then(_$TextFormat_EffectImpl(
+      null == field0
+          ? _value.field0
+          : field0 // ignore: cast_nullable_to_non_nullable
+              as TextEffect,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$TextFormat_EffectImpl extends TextFormat_Effect {
+  const _$TextFormat_EffectImpl(this.field0) : super._();
+
+  @override
+  final TextEffect field0;
+
+  @override
+  String toString() {
+    return 'TextFormat.effect(field0: $field0)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$TextFormat_EffectImpl &&
+            (identical(other.field0, field0) || other.field0 == field0));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, field0);
+
+  /// Create a copy of TextFormat
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$TextFormat_EffectImplCopyWith<_$TextFormat_EffectImpl> get copyWith =>
+      __$$TextFormat_EffectImplCopyWithImpl<_$TextFormat_EffectImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(TextFlags field0) flags,
+    required TResult Function(TextEffect field0) effect,
+  }) {
+    return effect(field0);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(TextFlags field0)? flags,
+    TResult? Function(TextEffect field0)? effect,
+  }) {
+    return effect?.call(field0);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(TextFlags field0)? flags,
+    TResult Function(TextEffect field0)? effect,
+    required TResult orElse(),
+  }) {
+    if (effect != null) {
+      return effect(field0);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(TextFormat_Flags value) flags,
+    required TResult Function(TextFormat_Effect value) effect,
+  }) {
+    return effect(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(TextFormat_Flags value)? flags,
+    TResult? Function(TextFormat_Effect value)? effect,
+  }) {
+    return effect?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(TextFormat_Flags value)? flags,
+    TResult Function(TextFormat_Effect value)? effect,
+    required TResult orElse(),
+  }) {
+    if (effect != null) {
+      return effect(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class TextFormat_Effect extends TextFormat {
+  const factory TextFormat_Effect(final TextEffect field0) =
+      _$TextFormat_EffectImpl;
+  const TextFormat_Effect._() : super._();
+
+  @override
+  TextEffect get field0;
+
+  /// Create a copy of TextFormat
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$TextFormat_EffectImplCopyWith<_$TextFormat_EffectImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }

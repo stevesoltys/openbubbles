@@ -25,7 +25,7 @@ class SendAnimation extends CustomStateful<ConversationViewController> {
 }
 
 class _SendAnimationState
-    extends CustomState<SendAnimation, Tuple7<List<PlatformFile>, String, String, String?, int?, String?, PayloadData?>, ConversationViewController> {
+    extends CustomState<SendAnimation, Tuple7<List<PlatformFile>, AttributedBody, String, String?, int?, String?, PayloadData?>, ConversationViewController> {
   Message? message;
   Tween<double> tween = Tween<double>(begin: 1, end: 0);
   Control control = Control.stop;
@@ -43,10 +43,10 @@ class _SendAnimationState
     });
   }
 
-  Future<void> send(Tuple7<List<PlatformFile>, String, String, String?, int?, String?, PayloadData?> tuple, bool isAudioMessage) async {
+  Future<void> send(Tuple7<List<PlatformFile>, AttributedBody, String, String?, int?, String?, PayloadData?> tuple, bool isAudioMessage) async {
     // do not add anything above this line, the attachments must be extracted first
     final attachments = List<PlatformFile>.from(tuple.item1);
-    String text = tuple.item2;
+    AttributedBody annotations = tuple.item2;
     final subject = tuple.item3;
     final replyGuid = tuple.item4;
     final part = tuple.item5;
@@ -55,7 +55,7 @@ class _SendAnimationState
     if (ss.settings.scrollToBottomOnSend.value) {
       await controller.scrollToBottom();
     }
-    if (ss.settings.sendSoundPath.value != null && !(isNullOrEmptyString(text) && isNullOrEmptyString(subject) && controller.pickedAttachments.isEmpty && controller.pickedApp.value == null)) {
+    if (ss.settings.sendSoundPath.value != null && !(isNullOrEmptyString(annotations.string) && isNullOrEmptyString(subject) && controller.pickedAttachments.isEmpty && controller.pickedApp.value == null)) {
       if (kIsDesktop) {
         Player player = Player();
         await player.setVolume(ss.settings.soundVolume.value.toDouble());
@@ -102,27 +102,8 @@ class _SendAnimationState
       await outq.queue(OutgoingItem(type: QueueType.sendAttachment, chat: controller.chat, message: message, customArgs: {"audio": isAudioMessage}));
     }
 
-    if (text.isNotEmpty || subject.isNotEmpty) {
-      final textSplit = MentionTextEditingController.splitText(text);
-      bool flag = false;
-      final newText = [];
-      if (textSplit.length > 1) {
-        for (String word in textSplit) {
-          if (word == MentionTextEditingController.escapingChar) flag = !flag;
-          int? index = flag ? int.tryParse(word) : null;
-          if (index != null) {
-            final mention = controller.textController.mentionables[index];
-            newText.add(mention);
-            continue;
-          }
-          if (word == MentionTextEditingController.escapingChar) {
-            continue;
-          }
-          newText.add(word.replaceAll(MentionTextEditingController.escapingChar, ""));
-        }
-        text = newText.join("");
-      }
-      int currentPos = 0;
+    if (annotations.string.isNotEmpty || subject.isNotEmpty) {
+      var text = annotations.string;
       final _message = Message(
         text: text.isEmpty && subject.isNotEmpty ? subject : text,
         subject: text.isEmpty && subject.isNotEmpty ? null : subject,
@@ -135,33 +116,8 @@ class _SendAnimationState
         handleId: 0,
         hasDdResults: true,
         attributedBody: [
-          if (textSplit.length > 1)
-            AttributedBody(
-              string: text,
-              runs: newText.whereType<Mentionable>().isEmpty
-                  ? []
-                  : newText.map((e) {
-                      if (e is Mentionable) {
-                        final run = Run(
-                            range: [currentPos, e.toString().length],
-                            attributes: Attributes(
-                              mention: e.address,
-                              messagePart: 0,
-                            ));
-                        currentPos += e.toString().length;
-                        return run;
-                      } else {
-                        final run = Run(
-                          range: [currentPos, e.length],
-                          attributes: Attributes(
-                            messagePart: 0,
-                          ),
-                        );
-                        currentPos += e.toString().length;
-                        return run;
-                      }
-                    }).toList(),
-            ),
+          if (annotations.string.isNotEmpty)
+            annotations
         ],
       );
       _message.generateTempGuid();
@@ -242,7 +198,7 @@ class _SendAnimationState
                             text: TextSpan(
                               children: buildMessageSpans(
                                 context,
-                                MessagePart(part: 0, text: message!.text, subject: message!.subject),
+                                message!.buildMessageParts().firstOrNull ?? MessagePart(part: 0, text: message!.text, subject: message!.subject),
                                 message!,
                                 colorOverride: Color.lerp(context.theme.colorScheme.properOnSurface, context.theme.colorScheme.onPrimary, 1 - value)
                               ),
