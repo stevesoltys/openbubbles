@@ -57,7 +57,7 @@ class ReactionTypes {
     LIKE: Emojis.thumbsUp,
     DISLIKE: Emojis.thumbsDown,
     LAUGH: Emojis.faceWithTearsOfJoy,
-    EMPHASIZE: Emojis.doubleExclamationMark,
+    EMPHASIZE: Emojis.redExclamationMark,
     QUESTION: Emojis.redQuestionMark,
   };
 
