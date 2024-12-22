@@ -2572,6 +2572,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  RegisterState dco_decode_box_autoadd_register_state(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_register_state(raw);
+  }
+
+  @protected
   RenameMessage dco_decode_box_autoadd_rename_message(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return dco_decode_rename_message(raw);
@@ -3543,6 +3549,10 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           uuid: dco_decode_String(raw[1]),
           error: dco_decode_opt_String(raw[2]),
         );
+      case 2:
+        return PushMessage_RegistrationState(
+          dco_decode_box_autoadd_register_state(raw[1]),
+        );
       default:
         throw Exception("unreachable");
     }
@@ -4422,6 +4432,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   Reaction sse_decode_box_autoadd_reaction(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return (sse_decode_reaction(deserializer));
+  }
+
+  @protected
+  RegisterState sse_decode_box_autoadd_register_state(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_register_state(deserializer));
   }
 
   @protected
@@ -5684,6 +5701,9 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         var var_uuid = sse_decode_String(deserializer);
         var var_error = sse_decode_opt_String(deserializer);
         return PushMessage_SendConfirm(uuid: var_uuid, error: var_error);
+      case 2:
+        var var_field0 = sse_decode_box_autoadd_register_state(deserializer);
+        return PushMessage_RegistrationState(var_field0);
       default:
         throw UnimplementedError('');
     }
@@ -6551,6 +6571,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       Reaction self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_reaction(self, serializer);
+  }
+
+  @protected
+  void sse_encode_box_autoadd_register_state(
+      RegisterState self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_register_state(self, serializer);
   }
 
   @protected
@@ -7590,6 +7617,9 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_i_32(1, serializer);
         sse_encode_String(uuid, serializer);
         sse_encode_opt_String(error, serializer);
+      case PushMessage_RegistrationState(field0: final field0):
+        sse_encode_i_32(2, serializer);
+        sse_encode_box_autoadd_register_state(field0, serializer);
       default:
         throw UnimplementedError('');
     }

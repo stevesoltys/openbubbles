@@ -8610,18 +8610,21 @@ mixin _$PushMessage {
   TResult when<TResult extends Object?>({
     required TResult Function(MessageInst field0) iMessage,
     required TResult Function(String uuid, String? error) sendConfirm,
+    required TResult Function(RegisterState field0) registrationState,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(MessageInst field0)? iMessage,
     TResult? Function(String uuid, String? error)? sendConfirm,
+    TResult? Function(RegisterState field0)? registrationState,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(MessageInst field0)? iMessage,
     TResult Function(String uuid, String? error)? sendConfirm,
+    TResult Function(RegisterState field0)? registrationState,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -8629,18 +8632,22 @@ mixin _$PushMessage {
   TResult map<TResult extends Object?>({
     required TResult Function(PushMessage_IMessage value) iMessage,
     required TResult Function(PushMessage_SendConfirm value) sendConfirm,
+    required TResult Function(PushMessage_RegistrationState value)
+        registrationState,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(PushMessage_IMessage value)? iMessage,
     TResult? Function(PushMessage_SendConfirm value)? sendConfirm,
+    TResult? Function(PushMessage_RegistrationState value)? registrationState,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(PushMessage_IMessage value)? iMessage,
     TResult Function(PushMessage_SendConfirm value)? sendConfirm,
+    TResult Function(PushMessage_RegistrationState value)? registrationState,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -8739,6 +8746,7 @@ class _$PushMessage_IMessageImpl extends PushMessage_IMessage {
   TResult when<TResult extends Object?>({
     required TResult Function(MessageInst field0) iMessage,
     required TResult Function(String uuid, String? error) sendConfirm,
+    required TResult Function(RegisterState field0) registrationState,
   }) {
     return iMessage(field0);
   }
@@ -8748,6 +8756,7 @@ class _$PushMessage_IMessageImpl extends PushMessage_IMessage {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(MessageInst field0)? iMessage,
     TResult? Function(String uuid, String? error)? sendConfirm,
+    TResult? Function(RegisterState field0)? registrationState,
   }) {
     return iMessage?.call(field0);
   }
@@ -8757,6 +8766,7 @@ class _$PushMessage_IMessageImpl extends PushMessage_IMessage {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(MessageInst field0)? iMessage,
     TResult Function(String uuid, String? error)? sendConfirm,
+    TResult Function(RegisterState field0)? registrationState,
     required TResult orElse(),
   }) {
     if (iMessage != null) {
@@ -8770,6 +8780,8 @@ class _$PushMessage_IMessageImpl extends PushMessage_IMessage {
   TResult map<TResult extends Object?>({
     required TResult Function(PushMessage_IMessage value) iMessage,
     required TResult Function(PushMessage_SendConfirm value) sendConfirm,
+    required TResult Function(PushMessage_RegistrationState value)
+        registrationState,
   }) {
     return iMessage(this);
   }
@@ -8779,6 +8791,7 @@ class _$PushMessage_IMessageImpl extends PushMessage_IMessage {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(PushMessage_IMessage value)? iMessage,
     TResult? Function(PushMessage_SendConfirm value)? sendConfirm,
+    TResult? Function(PushMessage_RegistrationState value)? registrationState,
   }) {
     return iMessage?.call(this);
   }
@@ -8788,6 +8801,7 @@ class _$PushMessage_IMessageImpl extends PushMessage_IMessage {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(PushMessage_IMessage value)? iMessage,
     TResult Function(PushMessage_SendConfirm value)? sendConfirm,
+    TResult Function(PushMessage_RegistrationState value)? registrationState,
     required TResult orElse(),
   }) {
     if (iMessage != null) {
@@ -8893,6 +8907,7 @@ class _$PushMessage_SendConfirmImpl extends PushMessage_SendConfirm {
   TResult when<TResult extends Object?>({
     required TResult Function(MessageInst field0) iMessage,
     required TResult Function(String uuid, String? error) sendConfirm,
+    required TResult Function(RegisterState field0) registrationState,
   }) {
     return sendConfirm(uuid, error);
   }
@@ -8902,6 +8917,7 @@ class _$PushMessage_SendConfirmImpl extends PushMessage_SendConfirm {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(MessageInst field0)? iMessage,
     TResult? Function(String uuid, String? error)? sendConfirm,
+    TResult? Function(RegisterState field0)? registrationState,
   }) {
     return sendConfirm?.call(uuid, error);
   }
@@ -8911,6 +8927,7 @@ class _$PushMessage_SendConfirmImpl extends PushMessage_SendConfirm {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(MessageInst field0)? iMessage,
     TResult Function(String uuid, String? error)? sendConfirm,
+    TResult Function(RegisterState field0)? registrationState,
     required TResult orElse(),
   }) {
     if (sendConfirm != null) {
@@ -8924,6 +8941,8 @@ class _$PushMessage_SendConfirmImpl extends PushMessage_SendConfirm {
   TResult map<TResult extends Object?>({
     required TResult Function(PushMessage_IMessage value) iMessage,
     required TResult Function(PushMessage_SendConfirm value) sendConfirm,
+    required TResult Function(PushMessage_RegistrationState value)
+        registrationState,
   }) {
     return sendConfirm(this);
   }
@@ -8933,6 +8952,7 @@ class _$PushMessage_SendConfirmImpl extends PushMessage_SendConfirm {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(PushMessage_IMessage value)? iMessage,
     TResult? Function(PushMessage_SendConfirm value)? sendConfirm,
+    TResult? Function(PushMessage_RegistrationState value)? registrationState,
   }) {
     return sendConfirm?.call(this);
   }
@@ -8942,6 +8962,7 @@ class _$PushMessage_SendConfirmImpl extends PushMessage_SendConfirm {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(PushMessage_IMessage value)? iMessage,
     TResult Function(PushMessage_SendConfirm value)? sendConfirm,
+    TResult Function(PushMessage_RegistrationState value)? registrationState,
     required TResult orElse(),
   }) {
     if (sendConfirm != null) {
@@ -8964,6 +8985,173 @@ abstract class PushMessage_SendConfirm extends PushMessage {
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$PushMessage_SendConfirmImplCopyWith<_$PushMessage_SendConfirmImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$PushMessage_RegistrationStateImplCopyWith<$Res> {
+  factory _$$PushMessage_RegistrationStateImplCopyWith(
+          _$PushMessage_RegistrationStateImpl value,
+          $Res Function(_$PushMessage_RegistrationStateImpl) then) =
+      __$$PushMessage_RegistrationStateImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({RegisterState field0});
+
+  $RegisterStateCopyWith<$Res> get field0;
+}
+
+/// @nodoc
+class __$$PushMessage_RegistrationStateImplCopyWithImpl<$Res>
+    extends _$PushMessageCopyWithImpl<$Res, _$PushMessage_RegistrationStateImpl>
+    implements _$$PushMessage_RegistrationStateImplCopyWith<$Res> {
+  __$$PushMessage_RegistrationStateImplCopyWithImpl(
+      _$PushMessage_RegistrationStateImpl _value,
+      $Res Function(_$PushMessage_RegistrationStateImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of PushMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? field0 = null,
+  }) {
+    return _then(_$PushMessage_RegistrationStateImpl(
+      null == field0
+          ? _value.field0
+          : field0 // ignore: cast_nullable_to_non_nullable
+              as RegisterState,
+    ));
+  }
+
+  /// Create a copy of PushMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $RegisterStateCopyWith<$Res> get field0 {
+    return $RegisterStateCopyWith<$Res>(_value.field0, (value) {
+      return _then(_value.copyWith(field0: value));
+    });
+  }
+}
+
+/// @nodoc
+
+class _$PushMessage_RegistrationStateImpl
+    extends PushMessage_RegistrationState {
+  const _$PushMessage_RegistrationStateImpl(this.field0) : super._();
+
+  @override
+  final RegisterState field0;
+
+  @override
+  String toString() {
+    return 'PushMessage.registrationState(field0: $field0)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$PushMessage_RegistrationStateImpl &&
+            (identical(other.field0, field0) || other.field0 == field0));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, field0);
+
+  /// Create a copy of PushMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$PushMessage_RegistrationStateImplCopyWith<
+          _$PushMessage_RegistrationStateImpl>
+      get copyWith => __$$PushMessage_RegistrationStateImplCopyWithImpl<
+          _$PushMessage_RegistrationStateImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(MessageInst field0) iMessage,
+    required TResult Function(String uuid, String? error) sendConfirm,
+    required TResult Function(RegisterState field0) registrationState,
+  }) {
+    return registrationState(field0);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(MessageInst field0)? iMessage,
+    TResult? Function(String uuid, String? error)? sendConfirm,
+    TResult? Function(RegisterState field0)? registrationState,
+  }) {
+    return registrationState?.call(field0);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(MessageInst field0)? iMessage,
+    TResult Function(String uuid, String? error)? sendConfirm,
+    TResult Function(RegisterState field0)? registrationState,
+    required TResult orElse(),
+  }) {
+    if (registrationState != null) {
+      return registrationState(field0);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(PushMessage_IMessage value) iMessage,
+    required TResult Function(PushMessage_SendConfirm value) sendConfirm,
+    required TResult Function(PushMessage_RegistrationState value)
+        registrationState,
+  }) {
+    return registrationState(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(PushMessage_IMessage value)? iMessage,
+    TResult? Function(PushMessage_SendConfirm value)? sendConfirm,
+    TResult? Function(PushMessage_RegistrationState value)? registrationState,
+  }) {
+    return registrationState?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(PushMessage_IMessage value)? iMessage,
+    TResult Function(PushMessage_SendConfirm value)? sendConfirm,
+    TResult Function(PushMessage_RegistrationState value)? registrationState,
+    required TResult orElse(),
+  }) {
+    if (registrationState != null) {
+      return registrationState(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class PushMessage_RegistrationState extends PushMessage {
+  const factory PushMessage_RegistrationState(final RegisterState field0) =
+      _$PushMessage_RegistrationStateImpl;
+  const PushMessage_RegistrationState._() : super._();
+
+  RegisterState get field0;
+
+  /// Create a copy of PushMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$PushMessage_RegistrationStateImplCopyWith<
+          _$PushMessage_RegistrationStateImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 

@@ -5424,6 +5424,10 @@ impl SseDecode for crate::api::api::PushMessage {
                     error: var_error,
                 };
             }
+            2 => {
+                let mut var_field0 = <crate::api::api::RegisterState>::sse_decode(deserializer);
+                return crate::api::api::PushMessage::RegistrationState(var_field0);
+            }
             _ => {
                 unimplemented!("");
             }
@@ -7068,6 +7072,9 @@ impl flutter_rust_bridge::IntoDart for crate::api::api::PushMessage {
                 error.into_into_dart().into_dart(),
             ]
             .into_dart(),
+            crate::api::api::PushMessage::RegistrationState(field0) => {
+                [2.into_dart(), field0.into_into_dart().into_dart()].into_dart()
+            }
             _ => {
                 unimplemented!("");
             }
@@ -8790,6 +8797,10 @@ impl SseEncode for crate::api::api::PushMessage {
                 <i32>::sse_encode(1, serializer);
                 <String>::sse_encode(uuid, serializer);
                 <Option<String>>::sse_encode(error, serializer);
+            }
+            crate::api::api::PushMessage::RegistrationState(field0) => {
+                <i32>::sse_encode(2, serializer);
+                <crate::api::api::RegisterState>::sse_encode(field0, serializer);
             }
             _ => {
                 unimplemented!("");

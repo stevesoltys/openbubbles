@@ -11,7 +11,7 @@ pub use plist::Value;
 
 use prost::Message as prostMessage;
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
-use tokio::{runtime::Runtime, select, sync::{broadcast, mpsc, oneshot::{self, Sender}, Mutex, RwLock}};
+use tokio::{runtime::Runtime, select, sync::{broadcast, mpsc, oneshot::{self, Sender}, watch, Mutex, RwLock}};
 use rustpush::{authenticate_apple, authenticate_phone, findmy::{FindMyClient, FindMyState, MULTIPLEX_SERVICE}, login_apple_delegates, APSMessage, LoginDelegate, MADRID_SERVICE};
 
 pub use rustpush::findmy::{FindMyFriendsClient, FindMyPhoneClient};
@@ -106,6 +106,7 @@ pub struct InnerPushState {
     pub identity: Option<IDSUserIdentity>,
     pub local_messages: Mutex<mpsc::Receiver<PushMessage>>,
     pub local_broadcast: mpsc::Sender<PushMessage>,
+    pub reg_state: Option<Mutex<watch::Receiver<ResourceState>>>,
 }
 
 #[frb(opaque)]
@@ -121,6 +122,7 @@ pub async fn new_push_state(dir: String) -> Arc<PushState> {
         conn: None,
         client: None,
         inq_queue: None,
+        reg_state: None,
         fmfd: None,
         conf_dir: dir,
         os_config: None,
@@ -261,6 +263,8 @@ async fn restore(curr_state: &PushState) {
             std::fs::write(&id_path, plist_to_string(&updated_keys).unwrap()).unwrap();
         })).await);
     
+    inner.reg_state = Some(Mutex::new(inner.client.as_ref().unwrap().identity.resource_state.subscribe()));
+    
     let id_path = inner.conf_dir.join("findmy.plist");
 
     if let Ok(state) = plist::from_file(id_path) {
@@ -295,6 +299,8 @@ pub async fn register_ids(state: &Arc<PushState>, users: &Vec<IDSUser>) -> anyho
     inner.client = Some(IMClient::new(conn_state, users, inner.identity.clone().unwrap(), &[&MADRID_SERVICE, &MULTIPLEX_SERVICE], inner.conf_dir.join("id_cache.plist"), inner.os_config.as_ref().unwrap().config(), Box::new(move |updated_keys| {
         std::fs::write(&id_path, plist_to_string(&updated_keys).unwrap()).unwrap();
     })).await);
+
+    inner.reg_state = Some(Mutex::new(inner.client.as_ref().unwrap().identity.resource_state.subscribe()));
 
     let id_path = inner.conf_dir.join("findmy.plist");
     if let Ok(state) = plist::from_file(id_path) {
@@ -557,7 +563,8 @@ pub enum PushMessage {
     SendConfirm {
         uuid: String,
         error: Option<String>,
-    }
+    },
+    RegistrationState(RegisterState),
 }
 
 pub enum PollResult {
@@ -574,6 +581,7 @@ pub async fn recv_wait(state: &Arc<PushState>) -> PollResult {
     let mut local_lock = recv_path.local_messages.lock().await;
     *recv_path.cancel_poll.lock().await = Some(send);
     let mut inq_lock = recv_path.inq_queue.as_ref().unwrap().lock().await;
+    let mut reg_state = recv_path.reg_state.as_ref().unwrap().lock().await;
     select! {
         msg = inq_lock.recv() => {
             let msg = msg.unwrap();
@@ -593,9 +601,16 @@ pub async fn recv_wait(state: &Arc<PushState>) -> PollResult {
             };
             PollResult::Cont(msg)
         },
+        _reg_state = reg_state.changed() => {
+            drop(inq_lock);
+            drop(reg_state);
+            drop(local_lock);
+            drop(recv_path);
+            PollResult::Cont(Some(PushMessage::RegistrationState(get_regstate(state).await.unwrap())))
+        }
         reader = local_lock.recv() => {
             PollResult::Cont(Some(reader.unwrap()))
-        }
+        },
         _cancel = recv => {
             PollResult::Stop
         }
@@ -972,6 +987,7 @@ pub async fn reset_state(state: &Arc<PushState>, reset_hw: bool) -> anyhow::Resu
     info!("b {:?}", inner.os_config.is_some());
     inner.client = None;
     inner.fmfd = None;
+    inner.reg_state = None;
     // try deregistering from iMessage, but if it fails we don't really care
     let _ = register(inner.os_config.as_deref().unwrap(), &*conn_state.state.read().await, &[], &mut [], inner.identity.as_ref().unwrap()).await;
     info!("c");
@@ -1018,6 +1034,7 @@ pub async fn get_user_name(state: &Arc<PushState>) -> anyhow::Result<String> {
 }
 
 
+#[derive(Clone)]
 #[frb(type_64bit_int)]
 pub enum RegisterState {
     Registered {
@@ -1032,8 +1049,8 @@ pub enum RegisterState {
 
 pub async fn get_regstate(state: &Arc<PushState>) -> anyhow::Result<RegisterState> {
     let inner = state.0.read().await;
-    let mutex_ref = inner.client.as_ref().unwrap().identity.resource_state.lock().await;
-    Ok(match &*mutex_ref {
+    let mutex_ref = inner.client.as_ref().unwrap().identity.resource_state.borrow().clone();
+    Ok(match &mutex_ref {
         ResourceState::Generating => RegisterState::Registering,
         ResourceState::Generated => RegisterState::Registered {
             next_s: inner.client.as_ref().unwrap().identity.calculate_rereg_time_s().await

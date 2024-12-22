@@ -1702,7 +1702,21 @@ class RustPushService extends GetxService {
       await Message.replaceMessage(mistakeFor.stagingGuid, mistakeFor);
   }
 
+  var notifiedFailed = false;
+
   Future handleMsg(api.PushMessage push) async {
+
+    if (push is api.PushMessage_RegistrationState) {
+      var state = push.field0;
+      if (state is api.RegisterState_Registered) {
+        notifiedFailed = false;
+      }
+      if (state is api.RegisterState_Failed && !notifiedFailed) {
+        notif.createRegisterFailed(state.retryWait == null);
+        notifiedFailed = true;
+      }
+      return;
+    }
 
     if (push is api.PushMessage_SendConfirm) {
       var message = Message.findOne(guid: push.uuid)!;

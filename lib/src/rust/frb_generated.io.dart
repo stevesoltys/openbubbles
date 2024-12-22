@@ -306,6 +306,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   Reaction dco_decode_box_autoadd_reaction(dynamic raw);
 
   @protected
+  RegisterState dco_decode_box_autoadd_register_state(dynamic raw);
+
+  @protected
   RenameMessage dco_decode_box_autoadd_rename_message(dynamic raw);
 
   @protected
@@ -928,6 +931,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   Reaction sse_decode_box_autoadd_reaction(SseDeserializer deserializer);
+
+  @protected
+  RegisterState sse_decode_box_autoadd_register_state(
+      SseDeserializer deserializer);
 
   @protected
   RenameMessage sse_decode_box_autoadd_rename_message(
@@ -1599,6 +1606,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_box_autoadd_reaction(Reaction self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_register_state(
+      RegisterState self, SseSerializer serializer);
 
   @protected
   void sse_encode_box_autoadd_rename_message(

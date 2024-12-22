@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:bluebubbles/app/layouts/conversation_view/pages/conversation_view.dart';
+import 'package:bluebubbles/app/layouts/settings/pages/profile/profile_panel.dart';
 import 'package:bluebubbles/app/layouts/settings/pages/scheduling/scheduled_messages_panel.dart';
 import 'package:bluebubbles/app/layouts/settings/pages/server/server_management_panel.dart';
 import 'package:bluebubbles/app/wrappers/theme_switcher.dart';
@@ -767,6 +768,47 @@ class NotificationsService extends GetxService {
         ),
       ),
       payload: chat.guid + (scheduled ? "-scheduled" : ""),
+    );
+  }
+
+  Future<void> createRegisterFailed(bool loggedOut) async {
+    final title = loggedOut ? 'Logged out by Apple!' : 'Failed to renew registration!';
+    const subtitle =
+        'You can no longer send or receive iMessages. Tap for more info.';
+    if (kIsDesktop) {
+      failedToast = LocalNotification(
+        title: title,
+        body: subtitle,
+        actions: [],
+      );
+
+      failedToast!.onClick = () async {
+        failedToast = null;
+        await windowManager.show();
+        if (ss.settings.finishedSetup.value) {
+          ns.pushLeft(Get.context!, ProfilePanel());
+        }
+      };
+
+      await failedToast!.show();
+      return;
+    }
+    await flnp.show(
+      -1 - 50 /* OB */,
+      title,
+      subtitle,
+      NotificationDetails(
+        android: AndroidNotificationDetails(
+          ERROR_CHANNEL,
+          'Errors',
+          channelDescription:
+              'Displays message send failures, connection failures, and more',
+          priority: Priority.max,
+          importance: Importance.max,
+          color: HexColor("4990de"),
+        ),
+      ),
+      payload: loggedOut ? "" : "-51"
     );
   }
 
