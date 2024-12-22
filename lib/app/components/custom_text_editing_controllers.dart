@@ -438,7 +438,13 @@ class MentionTextEditingController extends SpellCheckTextEditingController {
     addListener(() {
       if (lastText != text) {
         // something changed, compute deltas
-        mutateRange(oldTextFieldSelection, min(selection.baseOffset, selection.extentOffset) - min(oldTextFieldSelection.baseOffset, oldTextFieldSelection.extentOffset));
+        // use text diff because some keyboards can bump the cursor forward into an existing space when typing a period during an autocorrect.
+        int caret = min(selection.baseOffset, selection.extentOffset) - min(oldTextFieldSelection.baseOffset, oldTextFieldSelection.extentOffset);
+        var textdiff = text.length - lastText.length;
+        if (caret != textdiff) {
+          Logger.info("Caret diff $caret $textdiff");
+        }
+        mutateRange(oldTextFieldSelection, oldTextFieldSelection.isCollapsed ? textdiff : caret);
       }
       oldTextFieldSelection = selection;
       lastText = text;
