@@ -551,7 +551,7 @@ class _MessageHolderState extends CustomState<MessageHolder, void, MessageWidget
                                                                                 textInputAction: ss.settings.sendWithReturn.value && !kIsWeb && !kIsDesktop
                                                                                     ? TextInputAction.send
                                                                                     : TextInputAction.newline,
-                                                                                cursorColor: context.theme.extension<BubbleText>()!.bubbleText.color,
+                                                                                cursorColor: context.theme.colorScheme.onPrimary,
                                                                                 cursorHeight: context.theme.extension<BubbleText>()!.bubbleText.fontSize! * 1.25 * (message.isBigEmoji ? 3 : 1),
                                                                                 decoration: InputDecoration(
                                                                                   contentPadding: EdgeInsets.all(iOS ? 10 : 12.5),
