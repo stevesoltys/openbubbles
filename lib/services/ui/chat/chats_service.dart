@@ -64,7 +64,7 @@ class ChatsService extends GetxService {
 
   Future<void> init({bool force = false}) async {
     if (!force && !ss.settings.finishedSetup.value) return;
-    Logger.info("Fetching chats...", tag: "ChatBloc");
+    Logger.info("Fetching chats... ${StackTrace.current}", tag: "ChatBloc");
     currentCount = Chat.count() ?? (await backend.getRemoteService()?.chatCount().catchError((err) {
       Logger.info("Error when fetching chat count!", tag: "ChatBloc");
       return Response(requestOptions: RequestOptions(path: ''));

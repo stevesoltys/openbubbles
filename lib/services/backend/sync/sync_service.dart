@@ -47,7 +47,7 @@ class SyncService extends GetxService {
   }
 
   Future<void> startIncrementalSync() async {
-    if (backend.getRemoteService() == null) {
+    if (backend.getRemoteService() == null && kIsDesktop) {
       await chats.init();
     }
     isIncrementalSyncing.value = true;
