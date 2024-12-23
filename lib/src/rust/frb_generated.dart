@@ -2536,6 +2536,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  MoveToRecycleBinMessage dco_decode_box_autoadd_move_to_recycle_bin_message(
+      dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_move_to_recycle_bin_message(raw);
+  }
+
+  @protected
   NormalMessage dco_decode_box_autoadd_normal_message(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return dco_decode_normal_message(raw);
@@ -2545,6 +2552,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   NSURL dco_decode_box_autoadd_nsurl(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return dco_decode_nsurl(raw);
+  }
+
+  @protected
+  OperatedChat dco_decode_box_autoadd_operated_chat(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_operated_chat(raw);
   }
 
   @protected
@@ -2658,6 +2671,23 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       senderGuid: dco_decode_opt_String(arr[2]),
       afterGuid: dco_decode_opt_String(arr[3]),
     );
+  }
+
+  @protected
+  DeleteTarget dco_decode_delete_target(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    switch (raw[0]) {
+      case 0:
+        return DeleteTarget_Chat(
+          dco_decode_box_autoadd_operated_chat(raw[1]),
+        );
+      case 1:
+        return DeleteTarget_Messages(
+          dco_decode_list_String(raw[1]),
+        );
+      default:
+        throw Exception("unreachable");
+    }
   }
 
   @protected
@@ -3101,6 +3131,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         return Message_Error(
           dco_decode_box_autoadd_error_message(raw[1]),
         );
+      case 18:
+        return Message_MoveToRecycleBin(
+          dco_decode_box_autoadd_move_to_recycle_bin_message(raw[1]),
+        );
+      case 19:
+        return Message_RecoverChat(
+          dco_decode_box_autoadd_operated_chat(raw[1]),
+        );
+      case 20:
+        return Message_PermanentDeleteChat(
+          dco_decode_box_autoadd_operated_chat(raw[1]),
+        );
       default:
         throw Exception("unreachable");
     }
@@ -3225,6 +3267,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  MoveToRecycleBinMessage dco_decode_move_to_recycle_bin_message(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2)
+      throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
+    return MoveToRecycleBinMessage(
+      target: dco_decode_delete_target(arr[0]),
+      recoverableDeleteDate: dco_decode_CastedPrimitive_u_64(arr[1]),
+    );
+  }
+
+  @protected
   MyAsyncRuntime dco_decode_my_async_runtime(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
@@ -3267,6 +3321,21 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     return NSURL(
       base: dco_decode_String(arr[0]),
       relative: dco_decode_String(arr[1]),
+    );
+  }
+
+  @protected
+  OperatedChat dco_decode_operated_chat(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 5)
+      throw Exception('unexpected arr length: expect 5 but see ${arr.length}');
+    return OperatedChat(
+      participants: dco_decode_list_String(arr[0]),
+      groupId: dco_decode_String(arr[1]),
+      guid: dco_decode_String(arr[2]),
+      deleteIncomingMessages: dco_decode_opt_box_autoadd_bool(arr[3]),
+      wasReportedAsJunk: dco_decode_opt_box_autoadd_bool(arr[4]),
     );
   }
 
@@ -4395,6 +4464,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  MoveToRecycleBinMessage sse_decode_box_autoadd_move_to_recycle_bin_message(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_move_to_recycle_bin_message(deserializer));
+  }
+
+  @protected
   NormalMessage sse_decode_box_autoadd_normal_message(
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -4405,6 +4481,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   NSURL sse_decode_box_autoadd_nsurl(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return (sse_decode_nsurl(deserializer));
+  }
+
+  @protected
+  OperatedChat sse_decode_box_autoadd_operated_chat(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_operated_chat(deserializer));
   }
 
   @protected
@@ -4524,6 +4607,23 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         cvName: var_cvName,
         senderGuid: var_senderGuid,
         afterGuid: var_afterGuid);
+  }
+
+  @protected
+  DeleteTarget sse_decode_delete_target(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var tag_ = sse_decode_i_32(deserializer);
+    switch (tag_) {
+      case 0:
+        var var_field0 = sse_decode_box_autoadd_operated_chat(deserializer);
+        return DeleteTarget_Chat(var_field0);
+      case 1:
+        var var_field0 = sse_decode_list_String(deserializer);
+        return DeleteTarget_Messages(var_field0);
+      default:
+        throw UnimplementedError('');
+    }
   }
 
   @protected
@@ -5076,6 +5176,16 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       case 17:
         var var_field0 = sse_decode_box_autoadd_error_message(deserializer);
         return Message_Error(var_field0);
+      case 18:
+        var var_field0 =
+            sse_decode_box_autoadd_move_to_recycle_bin_message(deserializer);
+        return Message_MoveToRecycleBin(var_field0);
+      case 19:
+        var var_field0 = sse_decode_box_autoadd_operated_chat(deserializer);
+        return Message_RecoverChat(var_field0);
+      case 20:
+        var var_field0 = sse_decode_box_autoadd_operated_chat(deserializer);
+        return Message_PermanentDeleteChat(var_field0);
       default:
         throw UnimplementedError('');
     }
@@ -5202,6 +5312,17 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  MoveToRecycleBinMessage sse_decode_move_to_recycle_bin_message(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_target = sse_decode_delete_target(deserializer);
+    var var_recoverableDeleteDate =
+        sse_decode_CastedPrimitive_u_64(deserializer);
+    return MoveToRecycleBinMessage(
+        target: var_target, recoverableDeleteDate: var_recoverableDeleteDate);
+  }
+
+  @protected
   MyAsyncRuntime sse_decode_my_async_runtime(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return MyAsyncRuntime();
@@ -5245,6 +5366,23 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_base = sse_decode_String(deserializer);
     var var_relative = sse_decode_String(deserializer);
     return NSURL(base: var_base, relative: var_relative);
+  }
+
+  @protected
+  OperatedChat sse_decode_operated_chat(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_participants = sse_decode_list_String(deserializer);
+    var var_groupId = sse_decode_String(deserializer);
+    var var_guid = sse_decode_String(deserializer);
+    var var_deleteIncomingMessages =
+        sse_decode_opt_box_autoadd_bool(deserializer);
+    var var_wasReportedAsJunk = sse_decode_opt_box_autoadd_bool(deserializer);
+    return OperatedChat(
+        participants: var_participants,
+        groupId: var_groupId,
+        guid: var_guid,
+        deleteIncomingMessages: var_deleteIncomingMessages,
+        wasReportedAsJunk: var_wasReportedAsJunk);
   }
 
   @protected
@@ -6533,6 +6671,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_box_autoadd_move_to_recycle_bin_message(
+      MoveToRecycleBinMessage self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_move_to_recycle_bin_message(self, serializer);
+  }
+
+  @protected
   void sse_encode_box_autoadd_normal_message(
       NormalMessage self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -6543,6 +6688,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   void sse_encode_box_autoadd_nsurl(NSURL self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_nsurl(self, serializer);
+  }
+
+  @protected
+  void sse_encode_box_autoadd_operated_chat(
+      OperatedChat self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_operated_chat(self, serializer);
   }
 
   @protected
@@ -6658,6 +6810,21 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_opt_String(self.cvName, serializer);
     sse_encode_opt_String(self.senderGuid, serializer);
     sse_encode_opt_String(self.afterGuid, serializer);
+  }
+
+  @protected
+  void sse_encode_delete_target(DeleteTarget self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    switch (self) {
+      case DeleteTarget_Chat(field0: final field0):
+        sse_encode_i_32(0, serializer);
+        sse_encode_box_autoadd_operated_chat(field0, serializer);
+      case DeleteTarget_Messages(field0: final field0):
+        sse_encode_i_32(1, serializer);
+        sse_encode_list_String(field0, serializer);
+      default:
+        throw UnimplementedError('');
+    }
   }
 
   @protected
@@ -7062,6 +7229,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       case Message_Error(field0: final field0):
         sse_encode_i_32(17, serializer);
         sse_encode_box_autoadd_error_message(field0, serializer);
+      case Message_MoveToRecycleBin(field0: final field0):
+        sse_encode_i_32(18, serializer);
+        sse_encode_box_autoadd_move_to_recycle_bin_message(field0, serializer);
+      case Message_RecoverChat(field0: final field0):
+        sse_encode_i_32(19, serializer);
+        sse_encode_box_autoadd_operated_chat(field0, serializer);
+      case Message_PermanentDeleteChat(field0: final field0):
+        sse_encode_i_32(20, serializer);
+        sse_encode_box_autoadd_operated_chat(field0, serializer);
       default:
         throw UnimplementedError('');
     }
@@ -7164,6 +7340,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_move_to_recycle_bin_message(
+      MoveToRecycleBinMessage self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_delete_target(self.target, serializer);
+    sse_encode_CastedPrimitive_u_64(self.recoverableDeleteDate, serializer);
+  }
+
+  @protected
   void sse_encode_my_async_runtime(
       MyAsyncRuntime self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -7195,6 +7379,16 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_String(self.base, serializer);
     sse_encode_String(self.relative, serializer);
+  }
+
+  @protected
+  void sse_encode_operated_chat(OperatedChat self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_list_String(self.participants, serializer);
+    sse_encode_String(self.groupId, serializer);
+    sse_encode_String(self.guid, serializer);
+    sse_encode_opt_box_autoadd_bool(self.deleteIncomingMessages, serializer);
+    sse_encode_opt_box_autoadd_bool(self.wasReportedAsJunk, serializer);
   }
 
   @protected

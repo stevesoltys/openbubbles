@@ -3384,6 +3384,14 @@ const _: fn() = || {
         let _: Option<String> = ConversationData.sender_guid;
         let _: Option<String> = ConversationData.after_guid;
     }
+    match None::<crate::api::api::DeleteTarget>.unwrap() {
+        crate::api::api::DeleteTarget::Chat(field0) => {
+            let _: crate::api::api::OperatedChat = field0;
+        }
+        crate::api::api::DeleteTarget::Messages(field0) => {
+            let _: Vec<String> = field0;
+        }
+    }
     {
         let EditMessage = None::<crate::api::api::EditMessage>.unwrap();
         let _: String = EditMessage.tuuid;
@@ -3575,6 +3583,15 @@ const _: fn() = || {
         crate::api::api::Message::Error(field0) => {
             let _: crate::api::api::ErrorMessage = field0;
         }
+        crate::api::api::Message::MoveToRecycleBin(field0) => {
+            let _: crate::api::api::MoveToRecycleBinMessage = field0;
+        }
+        crate::api::api::Message::RecoverChat(field0) => {
+            let _: crate::api::api::OperatedChat = field0;
+        }
+        crate::api::api::Message::PermanentDeleteChat(field0) => {
+            let _: crate::api::api::OperatedChat = field0;
+        }
     }
     {
         let MessageInst = None::<crate::api::api::MessageInst>.unwrap();
@@ -3636,6 +3653,11 @@ const _: fn() = || {
         let _: usize = MMCSFile.size;
     }
     {
+        let MoveToRecycleBinMessage = None::<crate::api::api::MoveToRecycleBinMessage>.unwrap();
+        let _: crate::api::api::DeleteTarget = MoveToRecycleBinMessage.target;
+        let _: u64 = MoveToRecycleBinMessage.recoverable_delete_date;
+    }
+    {
         let NormalMessage = None::<crate::api::api::NormalMessage>.unwrap();
         let _: crate::api::api::MessageParts = NormalMessage.parts;
         let _: Option<String> = NormalMessage.effect;
@@ -3651,6 +3673,14 @@ const _: fn() = || {
         let NSURL = None::<crate::api::api::NSURL>.unwrap();
         let _: String = NSURL.base;
         let _: String = NSURL.relative;
+    }
+    {
+        let OperatedChat = None::<crate::api::api::OperatedChat>.unwrap();
+        let _: Vec<String> = OperatedChat.participants;
+        let _: String = OperatedChat.group_id;
+        let _: String = OperatedChat.guid;
+        let _: Option<bool> = OperatedChat.delete_incoming_messages;
+        let _: Option<bool> = OperatedChat.was_reported_as_junk;
     }
     match None::<crate::api::api::PartExtension>.unwrap() {
         crate::api::api::PartExtension::Sticker {
@@ -4179,6 +4209,26 @@ impl SseDecode for crate::api::api::ConversationData {
             sender_guid: var_senderGuid,
             after_guid: var_afterGuid,
         };
+    }
+}
+
+impl SseDecode for crate::api::api::DeleteTarget {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut tag_ = <i32>::sse_decode(deserializer);
+        match tag_ {
+            0 => {
+                let mut var_field0 = <crate::api::api::OperatedChat>::sse_decode(deserializer);
+                return crate::api::api::DeleteTarget::Chat(var_field0);
+            }
+            1 => {
+                let mut var_field0 = <Vec<String>>::sse_decode(deserializer);
+                return crate::api::api::DeleteTarget::Messages(var_field0);
+            }
+            _ => {
+                unimplemented!("");
+            }
+        }
     }
 }
 
@@ -4784,6 +4834,19 @@ impl SseDecode for crate::api::api::Message {
                 let mut var_field0 = <crate::api::api::ErrorMessage>::sse_decode(deserializer);
                 return crate::api::api::Message::Error(var_field0);
             }
+            18 => {
+                let mut var_field0 =
+                    <crate::api::api::MoveToRecycleBinMessage>::sse_decode(deserializer);
+                return crate::api::api::Message::MoveToRecycleBin(var_field0);
+            }
+            19 => {
+                let mut var_field0 = <crate::api::api::OperatedChat>::sse_decode(deserializer);
+                return crate::api::api::Message::RecoverChat(var_field0);
+            }
+            20 => {
+                let mut var_field0 = <crate::api::api::OperatedChat>::sse_decode(deserializer);
+                return crate::api::api::Message::PermanentDeleteChat(var_field0);
+            }
             _ => {
                 unimplemented!("");
             }
@@ -4932,6 +4995,18 @@ impl SseDecode for crate::api::api::MMCSTransferProgress {
     }
 }
 
+impl SseDecode for crate::api::api::MoveToRecycleBinMessage {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_target = <crate::api::api::DeleteTarget>::sse_decode(deserializer);
+        let mut var_recoverableDeleteDate = <u64>::sse_decode(deserializer);
+        return crate::api::api::MoveToRecycleBinMessage {
+            target: var_target,
+            recoverable_delete_date: var_recoverableDeleteDate,
+        };
+    }
+}
+
 impl SseDecode for crate::api::api::MyAsyncRuntime {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -4985,6 +5060,24 @@ impl SseDecode for crate::api::api::NSURL {
         return crate::api::api::NSURL {
             base: var_base,
             relative: var_relative,
+        };
+    }
+}
+
+impl SseDecode for crate::api::api::OperatedChat {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_participants = <Vec<String>>::sse_decode(deserializer);
+        let mut var_groupId = <String>::sse_decode(deserializer);
+        let mut var_guid = <String>::sse_decode(deserializer);
+        let mut var_deleteIncomingMessages = <Option<bool>>::sse_decode(deserializer);
+        let mut var_wasReportedAsJunk = <Option<bool>>::sse_decode(deserializer);
+        return crate::api::api::OperatedChat {
+            participants: var_participants,
+            group_id: var_groupId,
+            guid: var_guid,
+            delete_incoming_messages: var_deleteIncomingMessages,
+            was_reported_as_junk: var_wasReportedAsJunk,
         };
     }
 }
@@ -6215,6 +6308,33 @@ impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<crate::api::api::ConversationD
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<crate::api::api::DeleteTarget> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        match self.0 {
+            crate::api::api::DeleteTarget::Chat(field0) => {
+                [0.into_dart(), field0.into_into_dart().into_dart()].into_dart()
+            }
+            crate::api::api::DeleteTarget::Messages(field0) => {
+                [1.into_dart(), field0.into_into_dart().into_dart()].into_dart()
+            }
+            _ => {
+                unimplemented!("");
+            }
+        }
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<crate::api::api::DeleteTarget>
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<crate::api::api::DeleteTarget>>
+    for crate::api::api::DeleteTarget
+{
+    fn into_into_dart(self) -> FrbWrapper<crate::api::api::DeleteTarget> {
+        self.into()
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart for crate::api::api::DeviceInfo {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
@@ -6667,6 +6787,15 @@ impl flutter_rust_bridge::IntoDart for FrbWrapper<crate::api::api::Message> {
             crate::api::api::Message::Error(field0) => {
                 [17.into_dart(), field0.into_into_dart().into_dart()].into_dart()
             }
+            crate::api::api::Message::MoveToRecycleBin(field0) => {
+                [18.into_dart(), field0.into_into_dart().into_dart()].into_dart()
+            }
+            crate::api::api::Message::RecoverChat(field0) => {
+                [19.into_dart(), field0.into_into_dart().into_dart()].into_dart()
+            }
+            crate::api::api::Message::PermanentDeleteChat(field0) => {
+                [20.into_dart(), field0.into_into_dart().into_dart()].into_dart()
+            }
             _ => {
                 unimplemented!("");
             }
@@ -6874,6 +7003,27 @@ impl flutter_rust_bridge::IntoIntoDart<crate::api::api::MMCSTransferProgress>
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<crate::api::api::MoveToRecycleBinMessage> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.0.target.into_into_dart().into_dart(),
+            self.0.recoverable_delete_date.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<crate::api::api::MoveToRecycleBinMessage>
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<crate::api::api::MoveToRecycleBinMessage>>
+    for crate::api::api::MoveToRecycleBinMessage
+{
+    fn into_into_dart(self) -> FrbWrapper<crate::api::api::MoveToRecycleBinMessage> {
+        self.into()
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart for crate::api::api::MyAsyncRuntime {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         Vec::<u8>::new().into_dart()
@@ -6957,6 +7107,30 @@ impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<crate::api::api::NSURL>>
     for crate::api::api::NSURL
 {
     fn into_into_dart(self) -> FrbWrapper<crate::api::api::NSURL> {
+        self.into()
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<crate::api::api::OperatedChat> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.0.participants.into_into_dart().into_dart(),
+            self.0.group_id.into_into_dart().into_dart(),
+            self.0.guid.into_into_dart().into_dart(),
+            self.0.delete_incoming_messages.into_into_dart().into_dart(),
+            self.0.was_reported_as_junk.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<crate::api::api::OperatedChat>
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<crate::api::api::OperatedChat>>
+    for crate::api::api::OperatedChat
+{
+    fn into_into_dart(self) -> FrbWrapper<crate::api::api::OperatedChat> {
         self.into()
     }
 }
@@ -7818,6 +7992,25 @@ impl SseEncode for crate::api::api::ConversationData {
     }
 }
 
+impl SseEncode for crate::api::api::DeleteTarget {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        match self {
+            crate::api::api::DeleteTarget::Chat(field0) => {
+                <i32>::sse_encode(0, serializer);
+                <crate::api::api::OperatedChat>::sse_encode(field0, serializer);
+            }
+            crate::api::api::DeleteTarget::Messages(field0) => {
+                <i32>::sse_encode(1, serializer);
+                <Vec<String>>::sse_encode(field0, serializer);
+            }
+            _ => {
+                unimplemented!("");
+            }
+        }
+    }
+}
+
 impl SseEncode for crate::api::api::DeviceInfo {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -8250,6 +8443,18 @@ impl SseEncode for crate::api::api::Message {
                 <i32>::sse_encode(17, serializer);
                 <crate::api::api::ErrorMessage>::sse_encode(field0, serializer);
             }
+            crate::api::api::Message::MoveToRecycleBin(field0) => {
+                <i32>::sse_encode(18, serializer);
+                <crate::api::api::MoveToRecycleBinMessage>::sse_encode(field0, serializer);
+            }
+            crate::api::api::Message::RecoverChat(field0) => {
+                <i32>::sse_encode(19, serializer);
+                <crate::api::api::OperatedChat>::sse_encode(field0, serializer);
+            }
+            crate::api::api::Message::PermanentDeleteChat(field0) => {
+                <i32>::sse_encode(20, serializer);
+                <crate::api::api::OperatedChat>::sse_encode(field0, serializer);
+            }
             _ => {
                 unimplemented!("");
             }
@@ -8370,6 +8575,14 @@ impl SseEncode for crate::api::api::MMCSTransferProgress {
     }
 }
 
+impl SseEncode for crate::api::api::MoveToRecycleBinMessage {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <crate::api::api::DeleteTarget>::sse_encode(self.target, serializer);
+        <u64>::sse_encode(self.recoverable_delete_date, serializer);
+    }
+}
+
 impl SseEncode for crate::api::api::MyAsyncRuntime {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {}
@@ -8411,6 +8624,17 @@ impl SseEncode for crate::api::api::NSURL {
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <String>::sse_encode(self.base, serializer);
         <String>::sse_encode(self.relative, serializer);
+    }
+}
+
+impl SseEncode for crate::api::api::OperatedChat {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <Vec<String>>::sse_encode(self.participants, serializer);
+        <String>::sse_encode(self.group_id, serializer);
+        <String>::sse_encode(self.guid, serializer);
+        <Option<bool>>::sse_encode(self.delete_incoming_messages, serializer);
+        <Option<bool>>::sse_encode(self.was_reported_as_junk, serializer);
     }
 }
 

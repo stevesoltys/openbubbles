@@ -288,10 +288,17 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   MMCSFile dco_decode_box_autoadd_mmcs_file(dynamic raw);
 
   @protected
+  MoveToRecycleBinMessage dco_decode_box_autoadd_move_to_recycle_bin_message(
+      dynamic raw);
+
+  @protected
   NormalMessage dco_decode_box_autoadd_normal_message(dynamic raw);
 
   @protected
   NSURL dco_decode_box_autoadd_nsurl(dynamic raw);
+
+  @protected
+  OperatedChat dco_decode_box_autoadd_operated_chat(dynamic raw);
 
   @protected
   PartExtension dco_decode_box_autoadd_part_extension(dynamic raw);
@@ -342,6 +349,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   ConversationData dco_decode_conversation_data(dynamic raw);
+
+  @protected
+  DeleteTarget dco_decode_delete_target(dynamic raw);
 
   @protected
   DeviceInfo dco_decode_device_info(dynamic raw);
@@ -460,6 +470,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   MMCSTransferProgress dco_decode_mmcs_transfer_progress(dynamic raw);
 
   @protected
+  MoveToRecycleBinMessage dco_decode_move_to_recycle_bin_message(dynamic raw);
+
+  @protected
   MyAsyncRuntime dco_decode_my_async_runtime(dynamic raw);
 
   @protected
@@ -470,6 +483,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   NSURL dco_decode_nsurl(dynamic raw);
+
+  @protected
+  OperatedChat dco_decode_operated_chat(dynamic raw);
 
   @protected
   int? dco_decode_opt_CastedPrimitive_u_64(dynamic raw);
@@ -912,11 +928,19 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   MMCSFile sse_decode_box_autoadd_mmcs_file(SseDeserializer deserializer);
 
   @protected
+  MoveToRecycleBinMessage sse_decode_box_autoadd_move_to_recycle_bin_message(
+      SseDeserializer deserializer);
+
+  @protected
   NormalMessage sse_decode_box_autoadd_normal_message(
       SseDeserializer deserializer);
 
   @protected
   NSURL sse_decode_box_autoadd_nsurl(SseDeserializer deserializer);
+
+  @protected
+  OperatedChat sse_decode_box_autoadd_operated_chat(
+      SseDeserializer deserializer);
 
   @protected
   PartExtension sse_decode_box_autoadd_part_extension(
@@ -976,6 +1000,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   ConversationData sse_decode_conversation_data(SseDeserializer deserializer);
+
+  @protected
+  DeleteTarget sse_decode_delete_target(SseDeserializer deserializer);
 
   @protected
   DeviceInfo sse_decode_device_info(SseDeserializer deserializer);
@@ -1103,6 +1130,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       SseDeserializer deserializer);
 
   @protected
+  MoveToRecycleBinMessage sse_decode_move_to_recycle_bin_message(
+      SseDeserializer deserializer);
+
+  @protected
   MyAsyncRuntime sse_decode_my_async_runtime(SseDeserializer deserializer);
 
   @protected
@@ -1114,6 +1145,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   NSURL sse_decode_nsurl(SseDeserializer deserializer);
+
+  @protected
+  OperatedChat sse_decode_operated_chat(SseDeserializer deserializer);
 
   @protected
   int? sse_decode_opt_CastedPrimitive_u_64(SseDeserializer deserializer);
@@ -1586,11 +1620,19 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       MMCSFile self, SseSerializer serializer);
 
   @protected
+  void sse_encode_box_autoadd_move_to_recycle_bin_message(
+      MoveToRecycleBinMessage self, SseSerializer serializer);
+
+  @protected
   void sse_encode_box_autoadd_normal_message(
       NormalMessage self, SseSerializer serializer);
 
   @protected
   void sse_encode_box_autoadd_nsurl(NSURL self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_operated_chat(
+      OperatedChat self, SseSerializer serializer);
 
   @protected
   void sse_encode_box_autoadd_part_extension(
@@ -1653,6 +1695,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_conversation_data(
       ConversationData self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_delete_target(DeleteTarget self, SseSerializer serializer);
 
   @protected
   void sse_encode_device_info(DeviceInfo self, SseSerializer serializer);
@@ -1785,6 +1830,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       MMCSTransferProgress self, SseSerializer serializer);
 
   @protected
+  void sse_encode_move_to_recycle_bin_message(
+      MoveToRecycleBinMessage self, SseSerializer serializer);
+
+  @protected
   void sse_encode_my_async_runtime(
       MyAsyncRuntime self, SseSerializer serializer);
 
@@ -1797,6 +1846,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_nsurl(NSURL self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_operated_chat(OperatedChat self, SseSerializer serializer);
 
   @protected
   void sse_encode_opt_CastedPrimitive_u_64(int? self, SseSerializer serializer);

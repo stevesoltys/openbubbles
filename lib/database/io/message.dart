@@ -903,11 +903,12 @@ class Message {
     });
   }
 
-  static void softDelete(String guid) {
+  static void softDelete(String guid) async {
     if (kIsWeb) return;
     Message? toDelete = Message.findOne(guid: guid);
     toDelete?.dateDeleted = DateTime.now().toUtc();
     toDelete?.save();
+    if (toDelete != null) await backend.moveToRecycleBin(toDelete.chat.target!, toDelete);
   }
 
   /// This is purely because some Macs incorrectly report the dateCreated time

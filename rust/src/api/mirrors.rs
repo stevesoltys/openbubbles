@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 
+pub use rustpush::{DeleteTarget, MoveToRecycleBinMessage, OperatedChat};
 pub use rustpush::{NSArrayClass, TextFlags, TextEffect, TextFormat, SupportAction, NSArray, SupportAlert, PrivateDeviceInfo, NormalMessage, MessageType, UpdateExtensionMessage, ErrorMessage, UnsendMessage, EditMessage, PartExtension, IconChangeMessage, RichLinkImageAttachmentSubstitute, ChangeParticipantMessage, ReactMessage, Reaction, ReactMessageType, RenameMessage, LPLinkMetadata, NSURL, LPIconMetadata, LPImageMetadata, LinkMeta, ExtensionApp, NSDictionaryClass, BalloonLayout, Balloon, IndexedMessagePart, AttachmentType, MacOSConfig, Message, MessageTarget, HardwareConfig, APSConnection, APSConnectionResource, APSState, Attachment, AuthPhone, IDSUserIdentity, MMCSFile, MessageInst, MessagePart, MessageParts, OSConfig, RelayConfig, ResourceState};
 pub use rustpush::{PushError, IDSUser, IMClient, ConversationData, register};
 pub use icloud_auth::{VerifyBody, TrustedPhoneNumber};
@@ -398,6 +399,31 @@ pub struct DartErrorMessage {
     pub status_str: String,
 }
 
+
+#[frb(mirror(OperatedChat))]
+#[derive(Clone)]
+pub struct DartOperatedChat {
+    pub participants: Vec<String>,
+    pub group_id: String,
+    pub guid: String,
+    pub delete_incoming_messages: Option<bool>,
+    pub was_reported_as_junk: Option<bool>
+}
+
+#[frb(mirror(DeleteTarget))]
+#[derive(Clone)]
+pub enum DartDeleteTarget {
+    Chat(OperatedChat),
+    Messages(Vec<String>)
+}
+
+#[frb(type_64bit_int, mirror(MoveToRecycleBinMessage))]
+#[derive(Clone)]
+pub struct DartMoveToRecycleBinMessage {
+    target: DeleteTarget,
+    recoverable_delete_date: u64,
+}
+
 #[repr(C)]
 #[frb(non_opaque, mirror(Message))]
 pub enum DartMessage {
@@ -419,6 +445,9 @@ pub enum DartMessage {
     PeerCacheInvalidate,
     UpdateExtension(UpdateExtensionMessage),
     Error(ErrorMessage),
+    MoveToRecycleBin(MoveToRecycleBinMessage),
+    RecoverChat(OperatedChat),
+    PermanentDeleteChat(OperatedChat),
 }
 
 #[frb(mirror(MessageTarget))]

@@ -650,6 +650,53 @@ class RustPushBackend implements BackendService {
     return true;
   }
 
+  Future<api.OperatedChat> getOperatedChat(Chat c) async {
+    var conversationData = await c.getConversationData();
+    var name = c.participants.length == 1 ? "iMessage;-;${c.participants[0].address}" : "iMessage;+;chat${Random().nextInt(9999999999999999)}";
+    return api.OperatedChat(
+      participants: conversationData.participants.map((p) => p.replaceFirst("mailto:", "").replaceFirst("tel:", "")).toList(), 
+      groupId: conversationData.senderGuid!, 
+      guid: name,
+    );
+  }
+
+  @override
+  Future<void> moveToRecycleBin(Chat c, Message? message) async {
+
+    var handle = await c.ensureHandle();
+    var msg = await api.newMsg(
+      state: pushService.state,
+      conversation: api.ConversationData(participants: [handle]),
+      sender: handle,
+      message: api.Message.moveToRecycleBin(api.MoveToRecycleBinMessage(target: message != null ? api.DeleteTarget.messages([message.guid!]) : api.DeleteTarget.chat(await getOperatedChat(c)), recoverableDeleteDate: DateTime.now().millisecondsSinceEpoch))
+    );
+    await sendMsg(msg);
+  }
+
+  @override
+  Future<void> restoreChat(Chat c) async {
+    var handle = await c.ensureHandle();
+    var msg = await api.newMsg(
+      state: pushService.state,
+      conversation: api.ConversationData(participants: [handle]),
+      sender: handle,
+      message: api.Message.recoverChat(await getOperatedChat(c))
+    );
+    await sendMsg(msg);
+  }
+
+  @override
+  Future<void> permanentlyDeleteChat(Chat c) async {
+    var handle = await c.ensureHandle();
+    var msg = await api.newMsg(
+      state: pushService.state,
+      conversation: api.ConversationData(participants: [handle]),
+      sender: handle,
+      message: api.Message.permanentDeleteChat(await getOperatedChat(c))
+    );
+    await sendMsg(msg);
+  }
+
   Future<void> invalidateSelf() async {
     var handles = await api.getHandles(state: pushService.state);
     for (var handle in handles) {
@@ -1688,6 +1735,10 @@ class RustPushService extends GetxService {
         }
       }
     }
+    if (result.dateDeleted != null) {
+      Chat.unDelete(result);
+      await chats.addChat(result);
+    }
     return result;
   }
 
@@ -1700,6 +1751,11 @@ class RustPushService extends GetxService {
         await notif.createFailedToSend(chat);
       }
       await Message.replaceMessage(mistakeFor.stagingGuid, mistakeFor);
+  }
+
+  Future<Chat?> findOperatedChat(api.OperatedChat chat) async {
+    var conversation = api.ConversationData(participants: chat.participants.map((p) => p.isEmail ? "mailto:$p" : "tel:$p").toList(), senderGuid: chat.groupId);
+    return await Chat.findByRust(conversation, chat.guid.startsWith("iMessage") ? "iMessage" : "SMS");
   }
 
   var notifiedFailed = false;
@@ -1719,7 +1775,8 @@ class RustPushService extends GetxService {
     }
 
     if (push is api.PushMessage_SendConfirm) {
-      var message = Message.findOne(guid: push.uuid)!;
+      var message = Message.findOne(guid: push.uuid);
+      if (message == null) return;
       Logger.info("SendFinished");
       message.sendingServiceId = null;
       message.save(updateSendingServiceId: true);
@@ -1811,6 +1868,61 @@ class RustPushService extends GetxService {
         }
         await Message.replaceMessage(lastGuid, m);
         ah.attachmentProgress.removeWhere((e) => e.item1 == lastGuid || e.item2 >= 1);
+      }
+      return;
+    }
+    if (myMsg.message is api.Message_MoveToRecycleBin) {
+      var msg = (myMsg.message as api.Message_MoveToRecycleBin).field0;
+      var target = msg.target;
+      if (target is api.DeleteTarget_Messages) {
+        for (var message in target.field0) {
+          var msg2 = Message.findOne(guid: message);
+          if (msg2 == null) continue;
+          msg2.dateDeleted = DateTime.fromMillisecondsSinceEpoch(msg.recoverableDeleteDate);
+          msg2.save();
+        }
+      } else if (target is api.DeleteTarget_Chat) {
+        var msg2 = await findOperatedChat(target.field0);
+        if (msg2 != null) {
+          chats.removeChat(msg2);
+          Chat.softDelete(msg2, markDeleted: false);
+        }
+      }
+      return;
+    }
+    if (myMsg.message is api.Message_RecoverChat) {
+      var target = (myMsg.message as api.Message_RecoverChat).field0;
+      var msg2 = await findOperatedChat(target);
+      if (msg2 != null) {
+        Chat.unDelete(msg2);
+        msg2.restoreTranscript();
+        await chats.addChat(msg2);
+      }
+      return;
+    }
+    if (myMsg.message is api.Message_PermanentDeleteChat) {
+      var target = (myMsg.message as api.Message_PermanentDeleteChat).field0;
+      var msg2 = await findOperatedChat(target);
+      if (msg2 == null) return;
+      if (msg2.dateDeleted != null) {
+        chats.removeChat(msg2);
+        Chat.deleteChat(msg2); // perma delete
+      } else {
+        // some messages are deleted
+        final query = (Database.messages.query(Message_.dateDeleted.notNull())
+            ..link(Message_.chat, Chat_.id.equals(msg2.id!)))
+            .build();
+        for (var message in query.find()) {
+          for (var attachment in (message.fetchAttachments() ?? [])) {
+            if (attachment == null) continue;
+            try {
+              File(attachment.getFile().path!).deleteSync();
+            } catch(e) {
+              Logger.debug("Failed to rm attachment $e");
+            }
+          }
+          Message.delete(message.guid!);
+        }
       }
       return;
     }
