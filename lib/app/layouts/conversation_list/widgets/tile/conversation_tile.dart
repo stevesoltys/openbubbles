@@ -78,7 +78,7 @@ class ConversationTileController extends StatefulController {
               style: context.theme.textTheme.titleLarge,
             ),
             content: Text(
-                "They will start being deleted $d from now.",
+                diff.isNegative ? "They are to be deleted imminently." : "They will start being deleted $d from now.",
                 style: context.theme.textTheme.bodyLarge),
             backgroundColor: context.theme.colorScheme.properSurface,
             actions: <Widget>[

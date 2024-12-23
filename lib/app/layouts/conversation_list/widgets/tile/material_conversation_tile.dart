@@ -101,7 +101,9 @@ class _MaterialConversationTileState extends CustomState<MaterialConversationTil
                   var deleteDate = oldestDeletion.add(const Duration(days: 30));
                   var diff = deleteDate.difference(DateTime.now());
                   String d;
-                  if (diff.inDays != 0) {
+                  if (diff.isNegative) {
+                    d = "Pending Deletion";
+                  } else if (diff.inDays != 0) {
                     d = "${diff.inDays}d";
                   } else if (diff.inHours != 0) {
                     d = "${diff.inHours}h";
