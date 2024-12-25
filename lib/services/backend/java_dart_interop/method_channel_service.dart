@@ -77,9 +77,10 @@ class MethodChannelService extends GetxService {
       case "APNMsg":
         try {
           String pointer = call.arguments["pointer"];
-          Logger.info("got message $pointer");
-          await pushService.recievedMsgPointer(pointer);
-          Logger.info("finish message $pointer");
+          String retry = call.arguments["retry"];
+          Logger.info("got message $pointer $retry");
+          await pushService.recievedMsgPointer(pointer, retry);
+          Logger.info("finish message $pointer $retry");
         } catch (e, s) {
           Logger.error("APN MSG error", error: e, trace: s);
           rethrow;

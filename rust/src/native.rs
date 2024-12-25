@@ -11,7 +11,7 @@ use crate::{api::api::{get_phase, new_push_state, recv_wait, PollResult, PushMes
 
 #[uniffi::export(with_foreign)]
 pub trait MsgReceiver: Send + Sync + Debug {
-    fn receieved_msg(&self, msg: u64);
+    fn receieved_msg(&self, msg: u64, retry: u64);
     fn native_ready(&self, is_ready: bool, state: Arc<NativePushState>);
 }
 
@@ -70,17 +70,19 @@ impl NativePushState {
 
                                 let handler_ref = handler.clone();
                                 tokio::spawn(async move {
+                                    let mut retry = 0;
                                     tokio::time::sleep(Duration::from_secs(10)).await;
                                     while QUEUED_MESSAGES.lock().await.1.contains_key(&key) {
-                                        info!("re-emitting pointer {key}");
+                                        retry += 1;
+                                        info!("re-emitting pointer {key}, retry {retry}");
                                         // we still haven't been handled, attempt to handle again
-                                        handler_ref.receieved_msg(key);
+                                        handler_ref.receieved_msg(key, retry);
                                         tokio::time::sleep(Duration::from_secs(10)).await;
                                     }
                                 });
 
                                 info!("emitting pointer {key}");
-                                handler.receieved_msg(key);
+                                handler.receieved_msg(key, 0);
                             },
                             PollResult::Cont(None) => continue,
                             PollResult::Stop => break

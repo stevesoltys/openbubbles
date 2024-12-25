@@ -50,16 +50,16 @@ class APNService : Service(), MsgReceiver {
         }
     }
 
-    override fun receievedMsg(ptr: ULong) {
+    override fun receievedMsg(ptr: ULong, retry: ULong) {
         Handler(Looper.getMainLooper()).post {
             if (MainActivity.engine != null) {
-                Log.i("ugh running", "here $ptr")
+                Log.i("ugh running", "here $ptr $retry")
                 // app is alive, deliver directly there
-                MethodCallHandler.invokeMethod("APNMsg", mapOf("pointer" to ptr.toString()))
+                MethodCallHandler.invokeMethod("APNMsg", mapOf("pointer" to ptr.toString(), "retry" to retry.toString()))
                 return@post
             }
-            Log.i("ugh running", "backend $ptr")
-            DartWorkManager.createWorker(this@APNService, "APNMsg", hashMapOf("pointer" to ptr.toString())) {}
+            Log.i("ugh running", "backend $ptr $retry")
+            DartWorkManager.createWorker(this@APNService, "APNMsg", hashMapOf("pointer" to ptr.toString(), "retry" to retry.toString())) {}
         }
     }
 

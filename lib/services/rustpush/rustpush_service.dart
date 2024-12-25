@@ -2196,23 +2196,26 @@ class RustPushService extends GetxService {
     }
   }
 
-  Future recievedMsgPointer(String pointer) async {
+  Future recievedMsgPointer(String pointer, String retry) async {
     var message = await api.ptrToDart(ptr: pointer);
     if (message == null) {
-      Logger.info("bad pointer $pointer");
+      Logger.info("bad pointer $pointer $retry");
       return;
     }
-    Logger.info("waitingForInit $pointer");
+    Logger.info("waitingForInit $pointer $retry");
     await initFuture;
     try {
-      Logger.info("Handling $pointer");
+      Logger.info("Handling $pointer $retry");
       await handleMsg(message);
-    } catch (e, s) {
-      Logger.error("Handle failed", error: e, trace: s);
-      rethrow;
-    } finally {
       Logger.info("Marking as handled $pointer");
       await api.completeMsg(ptr: pointer);
+    } catch (e, s) {
+      Logger.error("Handle failed", error: e, trace: s);
+      if (retry == "3") {
+        Logger.info("Failed; Marking as handled anyways $pointer");
+        await api.completeMsg(ptr: pointer);
+      }
+      rethrow;
     }
   }
 

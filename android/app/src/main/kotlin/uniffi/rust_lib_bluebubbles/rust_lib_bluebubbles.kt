@@ -3,7 +3,7 @@
 
 @file:Suppress("NAME_SHADOWING")
 
-package uniffi.rust_lib_bluebubbles;
+package uniffi.rust_lib_bluebubbles
 
 // Common helper code.
 //
@@ -242,7 +242,7 @@ internal open class UniffiRustCallStatus : Structure() {
     }
 }
 
-class InternalException(message: String) : Exception(message)
+class InternalException(message: String) : kotlin.Exception(message)
 
 // Each top-level error class has a companion object that can lift the error from the call status's rust buffer
 interface UniffiRustCallStatusErrorHandler<E> {
@@ -254,15 +254,15 @@ interface UniffiRustCallStatusErrorHandler<E> {
 // synchronize itself
 
 // Call a rust function that returns a Result<>.  Pass in the Error class companion that corresponds to the Err
-private inline fun <U, E: Exception> uniffiRustCallWithError(errorHandler: UniffiRustCallStatusErrorHandler<E>, callback: (UniffiRustCallStatus) -> U): U {
-    var status = UniffiRustCallStatus();
+private inline fun <U, E: kotlin.Exception> uniffiRustCallWithError(errorHandler: UniffiRustCallStatusErrorHandler<E>, callback: (UniffiRustCallStatus) -> U): U {
+    var status = UniffiRustCallStatus()
     val return_value = callback(status)
     uniffiCheckCallStatus(errorHandler, status)
     return return_value
 }
 
 // Check UniffiRustCallStatus and throw an error if the call wasn't successful
-private fun<E: Exception> uniffiCheckCallStatus(errorHandler: UniffiRustCallStatusErrorHandler<E>, status: UniffiRustCallStatus) {
+private fun<E: kotlin.Exception> uniffiCheckCallStatus(errorHandler: UniffiRustCallStatusErrorHandler<E>, status: UniffiRustCallStatus) {
     if (status.isSuccess()) {
         return
     } else if (status.isError()) {
@@ -291,7 +291,7 @@ object UniffiNullRustCallStatusErrorHandler: UniffiRustCallStatusErrorHandler<In
 
 // Call a rust function that returns a plain value
 private inline fun <U> uniffiRustCall(callback: (UniffiRustCallStatus) -> U): U {
-    return uniffiRustCallWithError(UniffiNullRustCallStatusErrorHandler, callback);
+    return uniffiRustCallWithError(UniffiNullRustCallStatusErrorHandler, callback)
 }
 
 internal inline fun<T> uniffiTraitInterfaceCall(
@@ -301,7 +301,7 @@ internal inline fun<T> uniffiTraitInterfaceCall(
 ) {
     try {
         writeReturn(makeCall())
-    } catch(e: Exception) {
+    } catch(e: kotlin.Exception) {
         callStatus.code = UNIFFI_CALL_UNEXPECTED_ERROR
         callStatus.error_buf = FfiConverterString.lower(e.toString())
     }
@@ -315,7 +315,7 @@ internal inline fun<T, reified E: Throwable> uniffiTraitInterfaceCallWithError(
 ) {
     try {
         writeReturn(makeCall())
-    } catch(e: Exception) {
+    } catch(e: kotlin.Exception) {
         if (e is E) {
             callStatus.code = UNIFFI_CALL_ERROR
             callStatus.error_buf = lowerError(e)
@@ -644,7 +644,7 @@ internal interface UniffiCallbackInterfaceCarrierHandlerMethod0 : com.sun.jna.Ca
     fun callback(`uniffiHandle`: Long,`gateway`: RustBuffer.ByValue,`error`: RustBuffer.ByValue,`uniffiOutReturn`: Pointer,uniffiCallStatus: UniffiRustCallStatus,)
 }
 internal interface UniffiCallbackInterfaceMsgReceiverMethod0 : com.sun.jna.Callback {
-    fun callback(`uniffiHandle`: Long,`msg`: Long,`uniffiOutReturn`: Pointer,uniffiCallStatus: UniffiRustCallStatus,)
+    fun callback(`uniffiHandle`: Long,`msg`: Long,`retry`: Long,`uniffiOutReturn`: Pointer,uniffiCallStatus: UniffiRustCallStatus,)
 }
 internal interface UniffiCallbackInterfaceMsgReceiverMethod1 : com.sun.jna.Callback {
     fun callback(`uniffiHandle`: Long,`isReady`: Byte,`state`: Pointer,`uniffiOutReturn`: Pointer,uniffiCallStatus: UniffiRustCallStatus,)
@@ -801,7 +801,7 @@ internal interface UniffiLib : Library {
     ): Unit
     fun uniffi_rust_lib_bluebubbles_fn_init_callback_vtable_msgreceiver(`vtable`: UniffiVTableCallbackInterfaceMsgReceiver,
     ): Unit
-    fun uniffi_rust_lib_bluebubbles_fn_method_msgreceiver_receieved_msg(`ptr`: Pointer,`msg`: Long,uniffi_out_err: UniffiRustCallStatus, 
+    fun uniffi_rust_lib_bluebubbles_fn_method_msgreceiver_receieved_msg(`ptr`: Pointer,`msg`: Long,`retry`: Long,uniffi_out_err: UniffiRustCallStatus, 
     ): Unit
     fun uniffi_rust_lib_bluebubbles_fn_method_msgreceiver_native_ready(`ptr`: Pointer,`isReady`: Byte,`state`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
     ): Unit
@@ -973,7 +973,7 @@ private fun uniffiCheckApiChecksums(lib: UniffiLib) {
     if (lib.uniffi_rust_lib_bluebubbles_checksum_method_carrierhandler_got_gateway() != 11467.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
-    if (lib.uniffi_rust_lib_bluebubbles_checksum_method_msgreceiver_receieved_msg() != 12999.toShort()) {
+    if (lib.uniffi_rust_lib_bluebubbles_checksum_method_msgreceiver_receieved_msg() != 23713.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_rust_lib_bluebubbles_checksum_method_msgreceiver_native_ready() != 22814.toShort()) {
@@ -1005,7 +1005,7 @@ internal object uniffiRustFutureContinuationCallbackImpl: UniffiRustFutureContin
     }
 }
 
-internal suspend fun<T, F, E: Exception> uniffiRustCallAsync(
+internal suspend fun<T, F, E: kotlin.Exception> uniffiRustCallAsync(
     rustFuture: Long,
     pollFunc: (Long, UniffiRustFutureContinuationCallback, Long) -> Unit,
     completeFunc: (Long, UniffiRustCallStatus) -> F,
@@ -1408,16 +1408,17 @@ open class CarrierHandlerImpl: Disposable, AutoCloseable, CarrierHandler {
         }
     }
 
-    override fun `gotGateway`(`gateway`: kotlin.String?, `error`: kotlin.String?) =
-        callWithPointer {
+    override fun `gotGateway`(`gateway`: kotlin.String?, `error`: kotlin.String?)
+        = 
+    callWithPointer {
     uniffiRustCall() { _status ->
-    UniffiLib.INSTANCE.uniffi_rust_lib_bluebubbles_fn_method_carrierhandler_got_gateway(it,
-        FfiConverterOptionalString.lower(`gateway`),FfiConverterOptionalString.lower(`error`),
-        _status)
+    UniffiLib.INSTANCE.uniffi_rust_lib_bluebubbles_fn_method_carrierhandler_got_gateway(
+        it, FfiConverterOptionalString.lower(`gateway`),FfiConverterOptionalString.lower(`error`),_status)
 }
-        }
+    }
     
     
+
     
 
     
@@ -1616,7 +1617,7 @@ public object FfiConverterTypeCarrierHandler: FfiConverter<CarrierHandler, Point
 
 public interface MsgReceiver {
     
-    fun `receievedMsg`(`msg`: kotlin.ULong)
+    fun `receievedMsg`(`msg`: kotlin.ULong, `retry`: kotlin.ULong)
     
     fun `nativeReady`(`isReady`: kotlin.Boolean, `state`: NativePushState)
     
@@ -1704,26 +1705,28 @@ open class MsgReceiverImpl: Disposable, AutoCloseable, MsgReceiver {
         }
     }
 
-    override fun `receievedMsg`(`msg`: kotlin.ULong) =
-        callWithPointer {
+    override fun `receievedMsg`(`msg`: kotlin.ULong, `retry`: kotlin.ULong)
+        = 
+    callWithPointer {
     uniffiRustCall() { _status ->
-    UniffiLib.INSTANCE.uniffi_rust_lib_bluebubbles_fn_method_msgreceiver_receieved_msg(it,
-        FfiConverterULong.lower(`msg`),
-        _status)
+    UniffiLib.INSTANCE.uniffi_rust_lib_bluebubbles_fn_method_msgreceiver_receieved_msg(
+        it, FfiConverterULong.lower(`msg`),FfiConverterULong.lower(`retry`),_status)
 }
-        }
+    }
     
     
-    override fun `nativeReady`(`isReady`: kotlin.Boolean, `state`: NativePushState) =
-        callWithPointer {
+
+    override fun `nativeReady`(`isReady`: kotlin.Boolean, `state`: NativePushState)
+        = 
+    callWithPointer {
     uniffiRustCall() { _status ->
-    UniffiLib.INSTANCE.uniffi_rust_lib_bluebubbles_fn_method_msgreceiver_native_ready(it,
-        FfiConverterBoolean.lower(`isReady`),FfiConverterTypeNativePushState.lower(`state`),
-        _status)
+    UniffiLib.INSTANCE.uniffi_rust_lib_bluebubbles_fn_method_msgreceiver_native_ready(
+        it, FfiConverterBoolean.lower(`isReady`),FfiConverterTypeNativePushState.lower(`state`),_status)
 }
-        }
+    }
     
     
+
     
 
     
@@ -1736,11 +1739,12 @@ open class MsgReceiverImpl: Disposable, AutoCloseable, MsgReceiver {
 // Put the implementation in an object so we don't pollute the top-level namespace
 internal object uniffiCallbackInterfaceMsgReceiver {
     internal object `receievedMsg`: UniffiCallbackInterfaceMsgReceiverMethod0 {
-        override fun callback(`uniffiHandle`: Long,`msg`: Long,`uniffiOutReturn`: Pointer,uniffiCallStatus: UniffiRustCallStatus,) {
+        override fun callback(`uniffiHandle`: Long,`msg`: Long,`retry`: Long,`uniffiOutReturn`: Pointer,uniffiCallStatus: UniffiRustCallStatus,) {
             val uniffiObj = FfiConverterTypeMsgReceiver.handleMap.get(uniffiHandle)
             val makeCall = { ->
                 uniffiObj.`receievedMsg`(
                     FfiConverterULong.lift(`msg`),
+                    FfiConverterULong.lift(`retry`),
                 )
             }
             val writeReturn = { _: Unit -> Unit }
@@ -2001,42 +2005,45 @@ open class NativePushState: Disposable, AutoCloseable, NativePushStateInterface 
     @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
     override suspend fun `getReady`() : kotlin.Boolean {
         return uniffiRustCallAsync(
-            callWithPointer { thisPtr ->
-                UniffiLib.INSTANCE.uniffi_rust_lib_bluebubbles_fn_method_nativepushstate_get_ready(
-                    thisPtr,
-                    
-                )
-            },
-            { future, callback, continuation -> UniffiLib.INSTANCE.ffi_rust_lib_bluebubbles_rust_future_poll_i8(future, callback, continuation) },
-            { future, continuation -> UniffiLib.INSTANCE.ffi_rust_lib_bluebubbles_rust_future_complete_i8(future, continuation) },
-            { future -> UniffiLib.INSTANCE.ffi_rust_lib_bluebubbles_rust_future_free_i8(future) },
-            // lift function
-            { FfiConverterBoolean.lift(it) },
-            // Error FFI converter
-            UniffiNullRustCallStatusErrorHandler,
-        )
+        callWithPointer { thisPtr ->
+            UniffiLib.INSTANCE.uniffi_rust_lib_bluebubbles_fn_method_nativepushstate_get_ready(
+                thisPtr,
+                
+            )
+        },
+        { future, callback, continuation -> UniffiLib.INSTANCE.ffi_rust_lib_bluebubbles_rust_future_poll_i8(future, callback, continuation) },
+        { future, continuation -> UniffiLib.INSTANCE.ffi_rust_lib_bluebubbles_rust_future_complete_i8(future, continuation) },
+        { future -> UniffiLib.INSTANCE.ffi_rust_lib_bluebubbles_rust_future_free_i8(future) },
+        // lift function
+        { FfiConverterBoolean.lift(it) },
+        // Error FFI converter
+        UniffiNullRustCallStatusErrorHandler,
+    )
     }
-    override fun `getState`(): kotlin.ULong =
-        callWithPointer {
+
+    override fun `getState`(): kotlin.ULong {
+            return FfiConverterULong.lift(
+    callWithPointer {
     uniffiRustCall() { _status ->
-    UniffiLib.INSTANCE.uniffi_rust_lib_bluebubbles_fn_method_nativepushstate_get_state(it,
-        
-        _status)
+    UniffiLib.INSTANCE.uniffi_rust_lib_bluebubbles_fn_method_nativepushstate_get_state(
+        it, _status)
 }
-        }.let {
-            FfiConverterULong.lift(it)
-        }
+    }
+    )
+    }
     
-    override fun `startLoop`(`handler`: MsgReceiver) =
-        callWithPointer {
+
+    override fun `startLoop`(`handler`: MsgReceiver)
+        = 
+    callWithPointer {
     uniffiRustCall() { _status ->
-    UniffiLib.INSTANCE.uniffi_rust_lib_bluebubbles_fn_method_nativepushstate_start_loop(it,
-        FfiConverterTypeMsgReceiver.lower(`handler`),
-        _status)
+    UniffiLib.INSTANCE.uniffi_rust_lib_bluebubbles_fn_method_nativepushstate_start_loop(
+        it, FfiConverterTypeMsgReceiver.lower(`handler`),_status)
 }
-        }
+    }
     
     
+
     
 
     
@@ -2105,21 +2112,21 @@ public object FfiConverterOptionalString: FfiConverterRustBuffer<kotlin.String?>
 
 
 
-
-
-fun `getCarrier`(`handler`: CarrierHandler, `mccmnc`: kotlin.String) =
-    
+ fun `getCarrier`(`handler`: CarrierHandler, `mccmnc`: kotlin.String)
+        = 
     uniffiRustCall() { _status ->
-    UniffiLib.INSTANCE.uniffi_rust_lib_bluebubbles_fn_func_get_carrier(FfiConverterTypeCarrierHandler.lower(`handler`),FfiConverterString.lower(`mccmnc`),_status)
+    UniffiLib.INSTANCE.uniffi_rust_lib_bluebubbles_fn_func_get_carrier(
+        FfiConverterTypeCarrierHandler.lower(`handler`),FfiConverterString.lower(`mccmnc`),_status)
 }
-
-
-
-fun `initNative`(`dir`: kotlin.String, `handler`: MsgReceiver) =
     
+    
+ fun `initNative`(`dir`: kotlin.String, `handler`: MsgReceiver)
+        = 
     uniffiRustCall() { _status ->
-    UniffiLib.INSTANCE.uniffi_rust_lib_bluebubbles_fn_func_init_native(FfiConverterString.lower(`dir`),FfiConverterTypeMsgReceiver.lower(`handler`),_status)
+    UniffiLib.INSTANCE.uniffi_rust_lib_bluebubbles_fn_func_init_native(
+        FfiConverterString.lower(`dir`),FfiConverterTypeMsgReceiver.lower(`handler`),_status)
 }
-
+    
+    
 
 
