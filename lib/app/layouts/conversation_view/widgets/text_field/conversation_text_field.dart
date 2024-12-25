@@ -896,7 +896,9 @@ class TextFieldComponentState extends State<TextFieldComponent> {
                     indent: 10,
                     color: context.theme.colorScheme.properSurface,
                   ),
-                TextField(
+                CallbackShortcuts(
+                  bindings: txtController.getShortcuts(),
+                  child: TextField(
                   textCapitalization: TextCapitalization.sentences,
                   focusNode: controller?.focusNode ?? focusNode,
                   autocorrect: true,
@@ -954,6 +956,7 @@ class TextFieldComponentState extends State<TextFieldComponent> {
                     sendMessage.call();
                   },
                   contentInsertionConfiguration: ContentInsertionConfiguration(onContentInserted: onContentCommit),
+                )
                 ),
               ],
             ),

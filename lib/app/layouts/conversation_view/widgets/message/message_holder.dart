@@ -534,7 +534,9 @@ class _MessageHolderState extends CustomState<MessageHolder, void, MessageWidget
                                                                                 }
                                                                                 return KeyEventResult.ignored;
                                                                               },
-                                                                              child: TextField(
+                                                                              child: CallbackShortcuts(
+                                                                                bindings: editStuff.item3.getShortcuts(),
+                                                                                child: TextField(
                                                                                 textCapitalization: TextCapitalization.sentences,
                                                                                 autocorrect: true,
                                                                                 controller: editStuff.item3,
@@ -646,6 +648,7 @@ class _MessageHolderState extends CustomState<MessageHolder, void, MessageWidget
                                                                                 onSubmitted: (String value) {
                                                                                   completeEdit(editStuff.item3.getFinalAnnotations(), e.part);
                                                                                 },
+                                                                              ),
                                                                               ),
                                                                             ),
                                                                           ),
