@@ -373,7 +373,7 @@ class RustPushBackend implements BackendService {
           state: pushService.state,
           conversation: await chat.getConversationData(),
           message: api.Message.message(api.NormalMessage(
-              parts: partsFromBody(message),
+              parts: await partsFromBody(message),
                   service: await getService(chat.isRpSms),
                   voice: false,
                   )),
@@ -441,6 +441,8 @@ class RustPushBackend implements BackendService {
       if (event.attachment != null) {
         Logger.info("upload finish");
         attachment = event.attachment;
+        att.metadata = {"rustpush": await api.saveAttachment(att: attachment!)};
+        att.save(m);
       } else if (onSendProgress != null) {
         Logger.info("upload progress ${event.prog} of ${event.total}");
         onSendProgress(event.prog, event.total);
@@ -465,6 +467,7 @@ class RustPushBackend implements BackendService {
           subject: m.subject,
           app: m.payloadData == null ? null : pushService.dataToApp(m.payloadData!),
           voice: isAudioMessage,
+          scheduledMs: m.dateScheduled?.millisecondsSinceEpoch,
         )));
     if (m.stagingGuid != null) {
       msg.id = m.stagingGuid!;
@@ -666,10 +669,15 @@ class RustPushBackend implements BackendService {
     var handle = await c.ensureHandle();
     var msg = await api.newMsg(
       state: pushService.state,
-      conversation: api.ConversationData(participants: [handle]),
+      conversation: message?.dateScheduled != null ? await c.getConversationData() : api.ConversationData(participants: [handle]),
       sender: handle,
-      message: api.Message.moveToRecycleBin(api.MoveToRecycleBinMessage(target: message != null ? api.DeleteTarget.messages([message.guid!]) : api.DeleteTarget.chat(await getOperatedChat(c)), recoverableDeleteDate: DateTime.now().millisecondsSinceEpoch))
+      message: message?.dateScheduled != null ?
+        const api.Message.unschedule()
+       : api.Message.moveToRecycleBin(api.MoveToRecycleBinMessage(target: message != null ? api.DeleteTarget.messages([message.guid!]) : api.DeleteTarget.chat(await getOperatedChat(c)), recoverableDeleteDate: DateTime.now().millisecondsSinceEpoch))
     );
+    if (message?.dateScheduled != null) {
+      msg.id = message!.guid!;
+    }
     await sendMsg(msg);
   }
 
@@ -692,7 +700,7 @@ class RustPushBackend implements BackendService {
       state: pushService.state,
       conversation: api.ConversationData(participants: [handle]),
       sender: handle,
-      message: api.Message.permanentDeleteChat(await getOperatedChat(c))
+      message: api.Message.permanentDelete(api.PermanentDeleteMessage(target: api.DeleteTarget.chat(await getOperatedChat(c)), isScheduled: false))
     );
     await sendMsg(msg);
   }
@@ -714,13 +722,25 @@ class RustPushBackend implements BackendService {
     return ss.settings.isSmsRouter.value || ss.settings.smsForwardingTargets.isNotEmpty;
   }
 
-  api.MessageParts partsFromBody(AttributedBody body) {
-    return api.MessageParts(field0: body.runs.map((e) {
-        var text = body.string.substring(e.range.first, e.range.first + e.range.last);
-        return api.IndexedMessagePart(part_: e.hasMention ? 
-          api.MessagePart.mention(e.attributes!.mention!, text) : 
-          api.MessagePart.text(text, pushService.fromAttributes(e.attributes!)));
-      }).toList());
+  Future<api.MessageParts> partsFromBody(AttributedBody body) async {
+
+    List<api.IndexedMessagePart> parts = [];
+    for (var e in body.runs) {
+      if (e.isAttachment) {
+        var attachment = Attachment.findOne(e.attributes!.attachmentGuid!);
+        if (attachment == null) continue;
+        var rustAttachment = await api.restoreAttachment(data: attachment.metadata!["rustpush"]);
+        parts.add(api.IndexedMessagePart(part_: api.MessagePart.attachment(rustAttachment)));
+        continue;
+      }
+
+      var text = body.string.substring(e.range.first, e.range.first + e.range.last);
+      parts.add(api.IndexedMessagePart(part_: e.hasMention ? 
+        api.MessagePart.mention(e.attributes!.mention!, text) : 
+        api.MessagePart.text(text, pushService.fromAttributes(e.attributes!))));
+    }
+
+    return api.MessageParts(field0: parts);
   }
 
   @override
@@ -787,7 +807,7 @@ class RustPushBackend implements BackendService {
     // await Future.delayed(const Duration(seconds: 15));
     api.MessageParts parts;
     if (m.attributedBody.isNotEmpty) {
-      parts = partsFromBody(m.attributedBody.first);
+      parts = await partsFromBody(m.attributedBody.first);
     } else {
       parts = api.MessageParts(field0: [api.IndexedMessagePart(part_: api.MessagePart.text(m.text!, pushService.defaultFormat()))]);
     }
@@ -804,11 +824,12 @@ class RustPushBackend implements BackendService {
         subject: m.subject == "" ? null : m.subject,
         app: m.payloadData == null ? null : pushService.dataToApp(m.payloadData!),
         linkMeta: linkMeta,
-        voice: false
+        voice: false,
+        scheduledMs: m.dateScheduled?.millisecondsSinceEpoch,
       )),
     );
     Logger.info("sending ${msg.id}");
-    if (m.stagingGuid != null || (chat.isRpSms && m.guid != null && m.guid!.contains("error") && m.guid!.contains("temp"))) {
+    if (m.stagingGuid != null || (m.dateScheduled != null && !m.guid!.contains("temp") && !m.guid!.contains("error")) || (chat.isRpSms && m.guid != null && m.guid!.contains("error") && m.guid!.contains("temp"))) {
       msg.id = m.stagingGuid ?? m.guid!; // make sure we pass forwarded messages's original GUID so it doesn't get overwritten and marked as a different msg
     }
     if (chat.isRpSms) {
@@ -1027,6 +1048,12 @@ class RustPushBackend implements BackendService {
 
   @override
   Future<Message?> edit(Message msgObj, AttributedBody text, int part) async {
+    if (msgObj.dateScheduled != null) {
+      msgObj.attributedBody[0] = text;
+      msgObj.messageSummaryInfo = [];
+      return await sendMessage(msgObj.getChat()!, msgObj);
+    }
+
     var msg = await api.newMsg(
         state: pushService.state,
         conversation: await msgObj.chat.target!.getConversationData(),
@@ -1034,7 +1061,7 @@ class RustPushBackend implements BackendService {
         message: api.Message.edit(api.EditMessage(
             tuuid: msgObj.guid!,
             editPart: part,
-            newParts: partsFromBody(text))));
+            newParts: await partsFromBody(text))));
     await sendMsg(msg);
     msg.sentTimestamp = DateTime.now().millisecondsSinceEpoch;
     return await pushService.reflectMessageDyn(msg);
@@ -1443,6 +1470,7 @@ class RustPushService extends GetxService {
         isFromMe: myHandles.contains(sender),
         handle: RustPushBBUtils.rustHandleToBB(sender!),
         dateCreated: DateTime.fromMillisecondsSinceEpoch(myMsg.sentTimestamp),
+        dateScheduled: innerMsg.field0.scheduledMs != null ? DateTime.fromMillisecondsSinceEpoch(innerMsg.field0.scheduledMs!) : null,
         subject: innerMsg.field0.subject,
         threadOriginatorPart: innerMsg.field0.replyPart?.toString(),
         threadOriginatorGuid: innerMsg.field0.replyGuid,
@@ -1878,6 +1906,7 @@ class RustPushService extends GetxService {
         for (var message in target.field0) {
           var msg2 = Message.findOne(guid: message);
           if (msg2 == null) continue;
+          ms(msg2.getChat()!.guid).removeMessage(msg2);
           msg2.dateDeleted = DateTime.fromMillisecondsSinceEpoch(msg.recoverableDeleteDate);
           msg2.save();
         }
@@ -1900,19 +1929,35 @@ class RustPushService extends GetxService {
       }
       return;
     }
-    if (myMsg.message is api.Message_PermanentDeleteChat) {
-      var target = (myMsg.message as api.Message_PermanentDeleteChat).field0;
-      var msg2 = await findOperatedChat(target);
-      if (msg2 == null) return;
-      if (msg2.dateDeleted != null) {
-        chats.removeChat(msg2);
-        Chat.deleteChat(msg2); // perma delete
-      } else {
-        // some messages are deleted
-        final query = (Database.messages.query(Message_.dateDeleted.notNull())
-            ..link(Message_.chat, Chat_.id.equals(msg2.id!)))
-            .build();
-        for (var message in query.find()) {
+    if (myMsg.message is api.Message_PermanentDelete) {
+      var target = (myMsg.message as api.Message_PermanentDelete).field0.target;
+      if (target is api.DeleteTarget_Chat) {
+        var msg2 = await findOperatedChat(target.field0);
+        if (msg2 == null) return;
+        if (msg2.dateDeleted != null) {
+          chats.removeChat(msg2);
+          Chat.deleteChat(msg2); // perma delete
+        } else {
+          // some messages are deleted
+          final query = (Database.messages.query(Message_.dateDeleted.notNull())
+              ..link(Message_.chat, Chat_.id.equals(msg2.id!)))
+              .build();
+          for (var message in query.find()) {
+            for (var attachment in (message.fetchAttachments() ?? [])) {
+              if (attachment == null) continue;
+              try {
+                File(attachment.getFile().path!).deleteSync();
+              } catch(e) {
+                Logger.debug("Failed to rm attachment $e");
+              }
+            }
+            Message.delete(message.guid!);
+          }
+        }
+      } else if (target is api.DeleteTarget_Messages) {
+        for (var msg in target.field0) {
+          var message = Message.findOne(guid: msg);
+          if (message == null) continue;
           for (var attachment in (message.fetchAttachments() ?? [])) {
             if (attachment == null) continue;
             try {
@@ -1921,6 +1966,8 @@ class RustPushService extends GetxService {
               Logger.debug("Failed to rm attachment $e");
             }
           }
+          // do this to update UI
+          ms(message.getChat()!.guid).removeMessage(message);
           Message.delete(message.guid!);
         }
       }

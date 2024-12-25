@@ -324,7 +324,7 @@ class _MessagePopupState extends OptimizedState<MessagePopup> with SingleTickerP
                           child: reactions.isNotEmpty ? ReactionDetails(reactions: reactions) : const SizedBox.shrink(),
                         ),
                       ),
-                    if (ss.settings.enablePrivateAPI.value && isSent && minSierra && chat.isIMessage)
+                    if (ss.settings.enablePrivateAPI.value && isSent && minSierra && chat.isIMessage && message.dateScheduled == null)
                       Positioned(
                         bottom: (iOS ? itemHeight * numberToShow + 35 + widget.size.height : context.height - materialOffset)
                             .clamp(0, context.height - (narrowScreen ? 200 : 125)),
@@ -436,7 +436,7 @@ class _MessagePopupState extends OptimizedState<MessagePopup> with SingleTickerP
                                 ),
                         ),
                       ),
-                    if (ss.settings.enablePrivateAPI.value && isSent && minSierra && chat.isIMessage)
+                    if (ss.settings.enablePrivateAPI.value && isSent && minSierra && chat.isIMessage && message.dateScheduled == null)
                       Positioned(
                         bottom: (iOS ? itemHeight * numberToShow + 5 + widget.size.height : context.height - materialOffset)
                             .clamp(0, context.height - (narrowScreen ? 200 : 125)),
@@ -1165,7 +1165,8 @@ class _MessagePopupState extends OptimizedState<MessagePopup> with SingleTickerP
   }
 
   get _allActions {
-    final canEdit = (message.dateCreated?.toUtc().isWithin(DateTime.now().toUtc(), minutes: 15) ?? false);
+    final canEdit = (message.dateCreated?.toUtc().isWithin(DateTime.now().toUtc(), minutes: 15) ?? false) 
+        || (message.dateCreated?.toUtc().isAfter(DateTime.now().toUtc()) ?? false);
     return [
         if (ss.settings.enablePrivateAPI.value && minBigSur && chat.isIMessage && isSent)
           DetailsMenuActionWidget(
@@ -1246,7 +1247,7 @@ class _MessagePopupState extends OptimizedState<MessagePopup> with SingleTickerP
             onTap: createContact,
             action: DetailsMenuAction.CreateContact,
           ),
-        if (backend.canEditUnsend() && message.isFromMe! && !message.guid!.startsWith("temp"))
+        if (backend.canEditUnsend() && message.isFromMe! && !message.guid!.startsWith("temp") && message.dateScheduled == null)
           DetailsMenuActionWidget(
             onTap: unsend,
             action: DetailsMenuAction.UndoSend,

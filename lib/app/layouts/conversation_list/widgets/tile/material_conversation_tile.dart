@@ -267,7 +267,7 @@ class _MaterialTrailingState extends CustomState<MaterialTrailing, void, Convers
                 Text(
                   (cachedLatestMessage?.error ?? 0) > 0
                       ? "Error"
-                      : "${indicatorText.isNotEmpty ? "$indicatorText\n" : ""}${buildChatListDateMaterial(dateCreated)}",
+                      : "${indicatorText.isNotEmpty ? "$indicatorText\n" : ""}${buildChatListDateMaterial(cachedLatestMessage?.chatViewDate)}",
                   textAlign: TextAlign.right,
                   style: context.theme.textTheme.bodySmall!
                       .copyWith(

@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 
 pub use rustpush::{DeleteTarget, MoveToRecycleBinMessage, OperatedChat};
-pub use rustpush::{NSArrayClass, TextFlags, TextEffect, TextFormat, SupportAction, NSArray, SupportAlert, PrivateDeviceInfo, NormalMessage, MessageType, UpdateExtensionMessage, ErrorMessage, UnsendMessage, EditMessage, PartExtension, IconChangeMessage, RichLinkImageAttachmentSubstitute, ChangeParticipantMessage, ReactMessage, Reaction, ReactMessageType, RenameMessage, LPLinkMetadata, NSURL, LPIconMetadata, LPImageMetadata, LinkMeta, ExtensionApp, NSDictionaryClass, BalloonLayout, Balloon, IndexedMessagePart, AttachmentType, MacOSConfig, Message, MessageTarget, HardwareConfig, APSConnection, APSConnectionResource, APSState, Attachment, AuthPhone, IDSUserIdentity, MMCSFile, MessageInst, MessagePart, MessageParts, OSConfig, RelayConfig, ResourceState};
+pub use rustpush::{NSArrayClass, TextFlags, TextEffect, TextFormat, SupportAction, NSArray, SupportAlert, PrivateDeviceInfo, PermanentDeleteMessage, NormalMessage, MessageType, UpdateExtensionMessage, ErrorMessage, UnsendMessage, EditMessage, PartExtension, IconChangeMessage, RichLinkImageAttachmentSubstitute, ChangeParticipantMessage, ReactMessage, Reaction, ReactMessageType, RenameMessage, LPLinkMetadata, NSURL, LPIconMetadata, LPImageMetadata, LinkMeta, ExtensionApp, NSDictionaryClass, BalloonLayout, Balloon, IndexedMessagePart, AttachmentType, MacOSConfig, Message, MessageTarget, HardwareConfig, APSConnection, APSConnectionResource, APSState, Attachment, AuthPhone, IDSUserIdentity, MMCSFile, MessageInst, MessagePart, MessageParts, OSConfig, RelayConfig, ResourceState};
 pub use rustpush::{PushError, IDSUser, IMClient, ConversationData, register};
 pub use icloud_auth::{VerifyBody, TrustedPhoneNumber};
 pub use icloud_auth::{LoginState, AppleAccount};
@@ -212,7 +212,13 @@ pub struct DartExtensionApp {
     pub balloon: Option<Balloon>,
 }
 
-#[frb(mirror(NormalMessage))]
+#[frb(mirror(PermanentDeleteMessage))]
+pub struct DartPermanentDeleteMessage {
+    pub target: DeleteTarget,
+    pub is_scheduled: bool,
+}
+
+#[frb(mirror(NormalMessage), type_64bit_int)]
 #[repr(C)]
 pub struct DartNormalMessage {
     #[frb(non_final)]
@@ -232,6 +238,8 @@ pub struct DartNormalMessage {
     pub link_meta: Option<LinkMeta>,
     #[frb(non_final)]
     pub voice: bool,
+    #[frb(non_final)]
+    pub scheduled_ms: Option<u64>,
 }
 
 #[repr(C)]
@@ -447,7 +455,8 @@ pub enum DartMessage {
     Error(ErrorMessage),
     MoveToRecycleBin(MoveToRecycleBinMessage),
     RecoverChat(OperatedChat),
-    PermanentDeleteChat(OperatedChat),
+    PermanentDelete(PermanentDeleteMessage),
+    Unschedule,
 }
 
 #[frb(mirror(MessageTarget))]

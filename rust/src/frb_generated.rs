@@ -3589,9 +3589,10 @@ const _: fn() = || {
         crate::api::api::Message::RecoverChat(field0) => {
             let _: crate::api::api::OperatedChat = field0;
         }
-        crate::api::api::Message::PermanentDeleteChat(field0) => {
-            let _: crate::api::api::OperatedChat = field0;
+        crate::api::api::Message::PermanentDelete(field0) => {
+            let _: crate::api::api::PermanentDeleteMessage = field0;
         }
+        crate::api::api::Message::Unschedule => {}
     }
     {
         let MessageInst = None::<crate::api::api::MessageInst>.unwrap();
@@ -3668,6 +3669,7 @@ const _: fn() = || {
         let _: Option<crate::api::api::ExtensionApp> = NormalMessage.app;
         let _: Option<crate::api::api::LinkMeta> = NormalMessage.link_meta;
         let _: bool = NormalMessage.voice;
+        let _: Option<u64> = NormalMessage.scheduled_ms;
     }
     {
         let NSURL = None::<crate::api::api::NSURL>.unwrap();
@@ -3712,6 +3714,11 @@ const _: fn() = || {
             let _: i64 = effect_type;
             let _: String = sticker_id;
         }
+    }
+    {
+        let PermanentDeleteMessage = None::<crate::api::api::PermanentDeleteMessage>.unwrap();
+        let _: crate::api::api::DeleteTarget = PermanentDeleteMessage.target;
+        let _: bool = PermanentDeleteMessage.is_scheduled;
     }
     {
         let PrivateDeviceInfo = None::<crate::api::api::PrivateDeviceInfo>.unwrap();
@@ -4844,8 +4851,12 @@ impl SseDecode for crate::api::api::Message {
                 return crate::api::api::Message::RecoverChat(var_field0);
             }
             20 => {
-                let mut var_field0 = <crate::api::api::OperatedChat>::sse_decode(deserializer);
-                return crate::api::api::Message::PermanentDeleteChat(var_field0);
+                let mut var_field0 =
+                    <crate::api::api::PermanentDeleteMessage>::sse_decode(deserializer);
+                return crate::api::api::Message::PermanentDelete(var_field0);
+            }
+            21 => {
+                return crate::api::api::Message::Unschedule;
             }
             _ => {
                 unimplemented!("");
@@ -5026,6 +5037,7 @@ impl SseDecode for crate::api::api::NormalMessage {
         let mut var_app = <Option<crate::api::api::ExtensionApp>>::sse_decode(deserializer);
         let mut var_linkMeta = <Option<crate::api::api::LinkMeta>>::sse_decode(deserializer);
         let mut var_voice = <bool>::sse_decode(deserializer);
+        let mut var_scheduledMs = <Option<u64>>::sse_decode(deserializer);
         return crate::api::api::NormalMessage {
             parts: var_parts,
             effect: var_effect,
@@ -5036,6 +5048,7 @@ impl SseDecode for crate::api::api::NormalMessage {
             app: var_app,
             link_meta: var_linkMeta,
             voice: var_voice,
+            scheduled_ms: var_scheduledMs,
         };
     }
 }
@@ -5457,6 +5470,18 @@ impl SseDecode for crate::api::api::PartExtension {
                 unimplemented!("");
             }
         }
+    }
+}
+
+impl SseDecode for crate::api::api::PermanentDeleteMessage {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_target = <crate::api::api::DeleteTarget>::sse_decode(deserializer);
+        let mut var_isScheduled = <bool>::sse_decode(deserializer);
+        return crate::api::api::PermanentDeleteMessage {
+            target: var_target,
+            is_scheduled: var_isScheduled,
+        };
     }
 }
 
@@ -6793,9 +6818,10 @@ impl flutter_rust_bridge::IntoDart for FrbWrapper<crate::api::api::Message> {
             crate::api::api::Message::RecoverChat(field0) => {
                 [19.into_dart(), field0.into_into_dart().into_dart()].into_dart()
             }
-            crate::api::api::Message::PermanentDeleteChat(field0) => {
+            crate::api::api::Message::PermanentDelete(field0) => {
                 [20.into_dart(), field0.into_into_dart().into_dart()].into_dart()
             }
+            crate::api::api::Message::Unschedule => [21.into_dart()].into_dart(),
             _ => {
                 unimplemented!("");
             }
@@ -7053,6 +7079,7 @@ impl flutter_rust_bridge::IntoDart for FrbWrapper<crate::api::api::NormalMessage
             self.0.app.into_into_dart().into_dart(),
             self.0.link_meta.into_into_dart().into_dart(),
             self.0.voice.into_into_dart().into_dart(),
+            self.0.scheduled_ms.into_into_dart().into_dart(),
         ]
         .into_dart()
     }
@@ -7183,6 +7210,27 @@ impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<crate::api::api::PartExtension
     for crate::api::api::PartExtension
 {
     fn into_into_dart(self) -> FrbWrapper<crate::api::api::PartExtension> {
+        self.into()
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<crate::api::api::PermanentDeleteMessage> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.0.target.into_into_dart().into_dart(),
+            self.0.is_scheduled.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<crate::api::api::PermanentDeleteMessage>
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<crate::api::api::PermanentDeleteMessage>>
+    for crate::api::api::PermanentDeleteMessage
+{
+    fn into_into_dart(self) -> FrbWrapper<crate::api::api::PermanentDeleteMessage> {
         self.into()
     }
 }
@@ -8451,9 +8499,12 @@ impl SseEncode for crate::api::api::Message {
                 <i32>::sse_encode(19, serializer);
                 <crate::api::api::OperatedChat>::sse_encode(field0, serializer);
             }
-            crate::api::api::Message::PermanentDeleteChat(field0) => {
+            crate::api::api::Message::PermanentDelete(field0) => {
                 <i32>::sse_encode(20, serializer);
-                <crate::api::api::OperatedChat>::sse_encode(field0, serializer);
+                <crate::api::api::PermanentDeleteMessage>::sse_encode(field0, serializer);
+            }
+            crate::api::api::Message::Unschedule => {
+                <i32>::sse_encode(21, serializer);
             }
             _ => {
                 unimplemented!("");
@@ -8600,6 +8651,7 @@ impl SseEncode for crate::api::api::NormalMessage {
         <Option<crate::api::api::ExtensionApp>>::sse_encode(self.app, serializer);
         <Option<crate::api::api::LinkMeta>>::sse_encode(self.link_meta, serializer);
         <bool>::sse_encode(self.voice, serializer);
+        <Option<u64>>::sse_encode(self.scheduled_ms, serializer);
     }
 }
 
@@ -8976,6 +9028,14 @@ impl SseEncode for crate::api::api::PartExtension {
                 unimplemented!("");
             }
         }
+    }
+}
+
+impl SseEncode for crate::api::api::PermanentDeleteMessage {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <crate::api::api::DeleteTarget>::sse_encode(self.target, serializer);
+        <bool>::sse_encode(self.is_scheduled, serializer);
     }
 }
 

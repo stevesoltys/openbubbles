@@ -304,6 +304,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   PartExtension dco_decode_box_autoadd_part_extension(dynamic raw);
 
   @protected
+  PermanentDeleteMessage dco_decode_box_autoadd_permanent_delete_message(
+      dynamic raw);
+
+  @protected
   PushMessage dco_decode_box_autoadd_push_message(dynamic raw);
 
   @protected
@@ -592,6 +596,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   PartExtension dco_decode_part_extension(dynamic raw);
+
+  @protected
+  PermanentDeleteMessage dco_decode_permanent_delete_message(dynamic raw);
 
   @protected
   PollResult dco_decode_poll_result(dynamic raw);
@@ -947,6 +954,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       SseDeserializer deserializer);
 
   @protected
+  PermanentDeleteMessage sse_decode_box_autoadd_permanent_delete_message(
+      SseDeserializer deserializer);
+
+  @protected
   PushMessage sse_decode_box_autoadd_push_message(SseDeserializer deserializer);
 
   @protected
@@ -1265,6 +1276,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   PartExtension sse_decode_part_extension(SseDeserializer deserializer);
+
+  @protected
+  PermanentDeleteMessage sse_decode_permanent_delete_message(
+      SseDeserializer deserializer);
 
   @protected
   PollResult sse_decode_poll_result(SseDeserializer deserializer);
@@ -1639,6 +1654,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       PartExtension self, SseSerializer serializer);
 
   @protected
+  void sse_encode_box_autoadd_permanent_delete_message(
+      PermanentDeleteMessage self, SseSerializer serializer);
+
+  @protected
   void sse_encode_box_autoadd_push_message(
       PushMessage self, SseSerializer serializer);
 
@@ -1973,6 +1992,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_part_extension(PartExtension self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_permanent_delete_message(
+      PermanentDeleteMessage self, SseSerializer serializer);
 
   @protected
   void sse_encode_poll_result(PollResult self, SseSerializer serializer);

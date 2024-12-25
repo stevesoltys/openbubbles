@@ -266,7 +266,7 @@ class _CupertinoTrailingState extends CustomState<CupertinoTrailing, void, Conve
               (cachedLatestMessage?.error ?? 0) > 0
                   ? "Error"
                   // fix layout
-                  : "${indicatorText.isNotEmpty && indicatorText != "None" ? "$indicatorText " : ""}${buildDate(dateCreated)}",
+                  : "${indicatorText.isNotEmpty && indicatorText != "None" ? "$indicatorText " : ""}${buildDate(cachedLatestMessage?.chatViewDate)}",
               textAlign: TextAlign.right,
               style: context.theme.textTheme.bodySmall!
                   .copyWith(

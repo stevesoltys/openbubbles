@@ -125,7 +125,7 @@ enum Monet {
   full,
 }
 
-enum Indicator { READ, DELIVERED, SENT, NONE }
+enum Indicator { READ, DELIVERED, SENT, NONE, SCHEDULED }
 
 enum LoadMessageResult { RETRIEVED_MESSAGES, FAILED_TO_RETRIEVE, RETRIEVED_LAST_PAGE }
 

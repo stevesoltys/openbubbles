@@ -2567,6 +2567,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  PermanentDeleteMessage dco_decode_box_autoadd_permanent_delete_message(
+      dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_permanent_delete_message(raw);
+  }
+
+  @protected
   PushMessage dco_decode_box_autoadd_push_message(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return dco_decode_push_message(raw);
@@ -3140,9 +3147,11 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           dco_decode_box_autoadd_operated_chat(raw[1]),
         );
       case 20:
-        return Message_PermanentDeleteChat(
-          dco_decode_box_autoadd_operated_chat(raw[1]),
+        return Message_PermanentDelete(
+          dco_decode_box_autoadd_permanent_delete_message(raw[1]),
         );
+      case 21:
+        return Message_Unschedule();
       default:
         throw Exception("unreachable");
     }
@@ -3291,8 +3300,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   NormalMessage dco_decode_normal_message(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 9)
-      throw Exception('unexpected arr length: expect 9 but see ${arr.length}');
+    if (arr.length != 10)
+      throw Exception('unexpected arr length: expect 10 but see ${arr.length}');
     return NormalMessage(
       parts: dco_decode_message_parts(arr[0]),
       effect: dco_decode_opt_String(arr[1]),
@@ -3303,6 +3312,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       app: dco_decode_opt_box_autoadd_extension_app(arr[6]),
       linkMeta: dco_decode_opt_box_autoadd_link_meta(arr[7]),
       voice: dco_decode_bool(arr[8]),
+      scheduledMs: dco_decode_opt_CastedPrimitive_u_64(arr[9]),
     );
   }
 
@@ -3572,6 +3582,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       default:
         throw Exception("unreachable");
     }
+  }
+
+  @protected
+  PermanentDeleteMessage dco_decode_permanent_delete_message(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2)
+      throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
+    return PermanentDeleteMessage(
+      target: dco_decode_delete_target(arr[0]),
+      isScheduled: dco_decode_bool(arr[1]),
+    );
   }
 
   @protected
@@ -4498,6 +4520,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  PermanentDeleteMessage sse_decode_box_autoadd_permanent_delete_message(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_permanent_delete_message(deserializer));
+  }
+
+  @protected
   PushMessage sse_decode_box_autoadd_push_message(
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -5184,8 +5213,11 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         var var_field0 = sse_decode_box_autoadd_operated_chat(deserializer);
         return Message_RecoverChat(var_field0);
       case 20:
-        var var_field0 = sse_decode_box_autoadd_operated_chat(deserializer);
-        return Message_PermanentDeleteChat(var_field0);
+        var var_field0 =
+            sse_decode_box_autoadd_permanent_delete_message(deserializer);
+        return Message_PermanentDelete(var_field0);
+      case 21:
+        return Message_Unschedule();
       default:
         throw UnimplementedError('');
     }
@@ -5340,6 +5372,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_app = sse_decode_opt_box_autoadd_extension_app(deserializer);
     var var_linkMeta = sse_decode_opt_box_autoadd_link_meta(deserializer);
     var var_voice = sse_decode_bool(deserializer);
+    var var_scheduledMs = sse_decode_opt_CastedPrimitive_u_64(deserializer);
     return NormalMessage(
         parts: var_parts,
         effect: var_effect,
@@ -5349,7 +5382,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         subject: var_subject,
         app: var_app,
         linkMeta: var_linkMeta,
-        voice: var_voice);
+        voice: var_voice,
+        scheduledMs: var_scheduledMs);
   }
 
   @protected
@@ -5789,6 +5823,16 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       default:
         throw UnimplementedError('');
     }
+  }
+
+  @protected
+  PermanentDeleteMessage sse_decode_permanent_delete_message(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_target = sse_decode_delete_target(deserializer);
+    var var_isScheduled = sse_decode_bool(deserializer);
+    return PermanentDeleteMessage(
+        target: var_target, isScheduled: var_isScheduled);
   }
 
   @protected
@@ -6705,6 +6749,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_box_autoadd_permanent_delete_message(
+      PermanentDeleteMessage self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_permanent_delete_message(self, serializer);
+  }
+
+  @protected
   void sse_encode_box_autoadd_push_message(
       PushMessage self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -7235,9 +7286,11 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       case Message_RecoverChat(field0: final field0):
         sse_encode_i_32(19, serializer);
         sse_encode_box_autoadd_operated_chat(field0, serializer);
-      case Message_PermanentDeleteChat(field0: final field0):
+      case Message_PermanentDelete(field0: final field0):
         sse_encode_i_32(20, serializer);
-        sse_encode_box_autoadd_operated_chat(field0, serializer);
+        sse_encode_box_autoadd_permanent_delete_message(field0, serializer);
+      case Message_Unschedule():
+        sse_encode_i_32(21, serializer);
       default:
         throw UnimplementedError('');
     }
@@ -7365,6 +7418,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_opt_box_autoadd_extension_app(self.app, serializer);
     sse_encode_opt_box_autoadd_link_meta(self.linkMeta, serializer);
     sse_encode_bool(self.voice, serializer);
+    sse_encode_opt_CastedPrimitive_u_64(self.scheduledMs, serializer);
   }
 
   @protected
@@ -7772,6 +7826,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       default:
         throw UnimplementedError('');
     }
+  }
+
+  @protected
+  void sse_encode_permanent_delete_message(
+      PermanentDeleteMessage self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_delete_target(self.target, serializer);
+    sse_encode_bool(self.isScheduled, serializer);
   }
 
   @protected

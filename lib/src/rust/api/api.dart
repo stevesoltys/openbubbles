@@ -1195,9 +1195,10 @@ sealed class Message with _$Message {
   const factory Message.recoverChat(
     OperatedChat field0,
   ) = Message_RecoverChat;
-  const factory Message.permanentDeleteChat(
-    OperatedChat field0,
-  ) = Message_PermanentDeleteChat;
+  const factory Message.permanentDelete(
+    PermanentDeleteMessage field0,
+  ) = Message_PermanentDelete;
+  const factory Message.unschedule() = Message_Unschedule;
 }
 
 class MessageInst {
@@ -1419,6 +1420,7 @@ class NormalMessage {
   ExtensionApp? app;
   LinkMeta? linkMeta;
   bool voice;
+  int? scheduledMs;
 
   NormalMessage({
     required this.parts,
@@ -1430,6 +1432,7 @@ class NormalMessage {
     this.app,
     this.linkMeta,
     required this.voice,
+    this.scheduledMs,
   });
 
   @override
@@ -1442,7 +1445,8 @@ class NormalMessage {
       subject.hashCode ^
       app.hashCode ^
       linkMeta.hashCode ^
-      voice.hashCode;
+      voice.hashCode ^
+      scheduledMs.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -1457,7 +1461,8 @@ class NormalMessage {
           subject == other.subject &&
           app == other.app &&
           linkMeta == other.linkMeta &&
-          voice == other.voice;
+          voice == other.voice &&
+          scheduledMs == other.scheduledMs;
 }
 
 enum NSDictionaryClass {
@@ -1541,6 +1546,27 @@ sealed class PartExtension with _$PartExtension {
     required PlatformInt64 effectType,
     required String stickerId,
   }) = PartExtension_Sticker;
+}
+
+class PermanentDeleteMessage {
+  final DeleteTarget target;
+  final bool isScheduled;
+
+  const PermanentDeleteMessage({
+    required this.target,
+    required this.isScheduled,
+  });
+
+  @override
+  int get hashCode => target.hashCode ^ isScheduled.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PermanentDeleteMessage &&
+          runtimeType == other.runtimeType &&
+          target == other.target &&
+          isScheduled == other.isScheduled;
 }
 
 @freezed

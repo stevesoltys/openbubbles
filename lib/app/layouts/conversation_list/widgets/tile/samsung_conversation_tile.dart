@@ -233,7 +233,7 @@ class _SamsungTrailingState extends CustomState<SamsungTrailing, void, Conversat
             Padding(
               padding: const EdgeInsets.only(top: 1),
               child: Text(
-                (cachedLatestMessage?.error ?? 0) > 0 ? "Error" : "${indicatorText.isNotEmpty ? "$indicatorText\n" : ""}${buildDate(dateCreated)}",
+                (cachedLatestMessage?.error ?? 0) > 0 ? "Error" : "${indicatorText.isNotEmpty ? "$indicatorText\n" : ""}${buildDate(cachedLatestMessage?.chatViewDate)}",
                 textAlign: TextAlign.right,
                 style: context.theme.textTheme.bodySmall!.copyWith(
                   color: (cachedLatestMessage?.error ?? 0) > 0
