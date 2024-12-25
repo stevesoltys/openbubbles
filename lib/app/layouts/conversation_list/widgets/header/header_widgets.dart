@@ -370,7 +370,7 @@ Future<void> goToFindMy(BuildContext context) async {
   await Navigator.of(Get.context!).push(
     ThemeSwitcher.buildPageRoute(
       builder: (BuildContext context) {
-        return const FindMyPage();
+        return FindMyPage();
       },
     ),
   );

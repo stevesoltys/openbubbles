@@ -111,7 +111,7 @@ class ConversationTileController extends StatefulController {
                 onPressed: () async {
                   var msg2 = chat;
                   if (msg2.dateDeleted != null) {
-                    chats.removeChat(msg2);
+                    // chats.removeChat(msg2); // already deleted
                     Chat.deleteChat(msg2); // perma delete
                   } else {
                     // some messages are deleted
