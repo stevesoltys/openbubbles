@@ -794,7 +794,7 @@ class ChatCreatorState extends OptimizedState<ChatCreator> {
                               fakeController.value!.subjectTextController.clear();
                             }
 
-                            if (backend is RustPushBackend) {
+                            if (backend is RustPushBackend && widget.initialAttachments.isEmpty && widget.initialText == "") {
                               var b = backend as RustPushBackend;
                               var handle = await b.getDefaultHandle();
                               chat.usingHandle = handle;

@@ -102,7 +102,7 @@ class APNService : Service(), MsgReceiver {
             MethodCallHandler.queuedMessages[MethodCallHandler.queueId] = gson.toJson(map).toString()
             DartWorkManager.createWorker(context, "SMSMsg", hashMapOf("id" to MethodCallHandler.queueId)) {}
         }
-        initNative(applicationContext.filesDir.path, this)
+        initNative(applicationContext.filesDir.path, this, AndroidFilePackager())
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

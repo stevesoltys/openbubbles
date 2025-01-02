@@ -9,6 +9,27 @@ use uniffi::deps::log::info;
 use futures::FutureExt;
 use crate::{api::api::{get_phase, new_push_state, recv_wait, PollResult, PushMessage, PushState, RegistrationPhase}, frb_generated::FLUTTER_RUST_BRIDGE_HANDLER, init_logger, RUNTIME};
 
+#[derive(uniffi::Record)] 
+pub struct FileInfo {
+    pub duration: Option<f64>,
+    pub width: u32,
+    pub height: u32,
+    pub thumbnail: Option<Vec<u8>>,
+}
+
+#[derive(uniffi::Enum)]
+pub enum PackagedFile {
+    Info(FileInfo),
+    Failure(String),
+}
+
+#[uniffi::export(with_foreign)]
+pub trait KotlinFilePackager: Send + Sync + Debug {
+    fn get_file(&self, path: String) -> PackagedFile;
+}
+
+pub static PACKAGER_LOCK: OnceLock<Arc<dyn KotlinFilePackager>> = OnceLock::new();
+
 #[uniffi::export(with_foreign)]
 pub trait MsgReceiver: Send + Sync + Debug {
     fn receieved_msg(&self, msg: u64, retry: u64);
@@ -26,10 +47,13 @@ pub struct NativePushState {
 }
 
 #[uniffi::export]
-pub fn init_native(dir: String, handler: Arc<dyn MsgReceiver>) {
+pub fn init_native(dir: String, handler: Arc<dyn MsgReceiver>, packager: Arc<dyn KotlinFilePackager>) {
     info!("rpljslf start");
     RUNTIME.spawn(async move {
         info!("rpljslf initting");
+
+        let _ = PACKAGER_LOCK.set(packager);
+
         // TODO retry if this *unwrap* fails
         let state = Arc::new(NativePushState {
             state: new_push_state(dir).await

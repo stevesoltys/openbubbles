@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:bluebubbles/app/layouts/conversation_view/pages/conversation_view.dart';
+import 'package:bluebubbles/app/layouts/settings/pages/misc/shared_streams_panel.dart';
 import 'package:bluebubbles/app/layouts/settings/pages/profile/profile_panel.dart';
 import 'package:bluebubbles/app/layouts/settings/pages/scheduling/scheduled_messages_panel.dart';
 import 'package:bluebubbles/app/layouts/settings/pages/server/server_management_panel.dart';
@@ -25,12 +26,14 @@ import 'package:timezone/timezone.dart';
 import 'package:universal_html/html.dart' hide File, Platform, Navigator;
 import 'package:universal_io/io.dart';
 import 'package:window_manager/window_manager.dart';
+import 'package:bluebubbles/src/rust/api/api.dart' as api;
 
 NotificationsService notif = Get.isRegistered<NotificationsService>() ? Get.find<NotificationsService>() : Get.put(NotificationsService());
 
 class NotificationsService extends GetxService {
   static const String NEW_MESSAGE_CHANNEL = "com.bluebubbles.new_messages";
   static const String ERROR_CHANNEL = "com.bluebubbles.errors";
+  static const String SHARED_STREAMS_CHANNEL = "com.bluebubbles.sharedstreams";
   static const String REMINDER_CHANNEL = "com.bluebubbles.reminders";
   static const String FACETIME_CHANNEL = "com.bluebubbles.incoming_facetimes";
   static const String FOREGROUND_SERVICE_CHANNEL = "com.bluebubbles.foreground_service";
@@ -81,6 +84,11 @@ class NotificationsService extends GetxService {
         ERROR_CHANNEL,
         "Errors",
         "Displays message send failures, connection failures, and more",
+      );
+      createNotificationChannel(
+        SHARED_STREAMS_CHANNEL, 
+        "Shared Albums", 
+        "Displays invitations and updates for shared albums."
       );
       createNotificationChannel(
         REMINDER_CHANNEL,
@@ -809,6 +817,47 @@ class NotificationsService extends GetxService {
         ),
       ),
       payload: loggedOut ? "" : "-51"
+    );
+  }
+
+  Future<void> createInvitation(api.SharedAlbum album) async {
+    const title = "Shared albums";
+    final subtitle =
+        "${album.fullname} invited you to join \"${album.name}\"";
+    if (kIsDesktop) {
+      failedToast = LocalNotification(
+        title: title,
+        body: subtitle,
+        actions: [],
+      );
+
+      failedToast!.onClick = () async {
+        failedToast = null;
+        await windowManager.show();
+        if (ss.settings.finishedSetup.value) {
+          ns.pushLeft(Get.context!, SharedStreamsPanel());
+        }
+      };
+
+      await failedToast!.show();
+      return;
+    }
+    await flnp.show(
+      -2 - 50 /* OB */,
+      title,
+      subtitle,
+      NotificationDetails(
+        android: AndroidNotificationDetails(
+          SHARED_STREAMS_CHANNEL,
+          'Shared Albums',
+          channelDescription:
+              'Displays invitations and updates for shared albums.',
+          priority: Priority.max,
+          importance: Importance.max,
+          color: HexColor("4990de"),
+        ),
+      ),
+      payload: "-52"
     );
   }
 

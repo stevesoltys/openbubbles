@@ -9,7 +9,7 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'package:freezed_annotation/freezed_annotation.dart' hide protected;
 part 'api.freezed.dart';
 
-// These functions are ignored because they are not marked as `pub`: `config`, `do_login`, `get_login_config`, `get_phase`, `plist_to_bin`, `plist_to_buf`, `plist_to_string`, `restore`, `setup_push`, `wrap_sink`
+// These functions are ignored because they are not marked as `pub`: `config`, `do_login`, `get_login_config`, `get_phase`, `handle_photostream`, `plist_to_bin`, `plist_to_buf`, `plist_to_string`, `restore`, `setup_push`, `wrap_sink`
 // These types are ignored because they are not used by any `pub` functions: `FLUTTER_RUST_BRIDGE_HANDLER`, `InnerPushState`, `NSArrayClass`, `NSArrayIconArray`, `NSArrayImageArray`, `SavedHardwareState`
 // These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `deref`, `deref`, `eq`, `fmt`, `initialize`, `spawn`
 
@@ -77,6 +77,43 @@ Future<NsArrayLpImageMetadata> createImageArray(
 
 Future<NsArrayLpIconMetadata> createIconArray({required LPIconMetadata img}) =>
     RustLib.instance.api.crateApiApiCreateIconArray(img: img);
+
+Future<(List<SharedAlbum>, List<String>)> getAlbums(
+        {required ArcPushState state, required bool refresh}) =>
+    RustLib.instance.api.crateApiApiGetAlbums(state: state, refresh: refresh);
+
+Future<List<SharedAlbum>> subscribe(
+        {required ArcPushState state, required String guid}) =>
+    RustLib.instance.api.crateApiApiSubscribe(state: state, guid: guid);
+
+Future<List<SharedAlbum>> unsubscribe(
+        {required ArcPushState state, required String guid}) =>
+    RustLib.instance.api.crateApiApiUnsubscribe(state: state, guid: guid);
+
+Future<List<SharedAlbum>> subscribeToken(
+        {required ArcPushState state, required String token}) =>
+    RustLib.instance.api.crateApiApiSubscribeToken(state: state, token: token);
+
+Future<List<SharedAlbum>> addAlbum(
+        {required ArcPushState state,
+        required String guid,
+        required String folder}) =>
+    RustLib.instance.api
+        .crateApiApiAddAlbum(state: state, guid: guid, folder: folder);
+
+Future<List<SharedAlbum>> removeAlbum(
+        {required ArcPushState state, required String guid}) =>
+    RustLib.instance.api.crateApiApiRemoveAlbum(state: state, guid: guid);
+
+Future<(Map<String, SyncStatus>, (String, BigInt)?)> getSyncstatus(
+        {required ArcPushState state}) =>
+    RustLib.instance.api.crateApiApiGetSyncstatus(state: state);
+
+Future<void> syncNow({required ArcPushState state}) =>
+    RustLib.instance.api.crateApiApiSyncNow(state: state);
+
+Future<bool> supportsSharedStreams({required ArcPushState state}) =>
+    RustLib.instance.api.crateApiApiSupportsSharedStreams(state: state);
 
 Future<PollResult> recvWait({required ArcPushState state}) =>
     RustLib.instance.api.crateApiApiRecvWait(state: state);
@@ -1632,6 +1669,9 @@ sealed class PushMessage with _$PushMessage {
   const factory PushMessage.registrationState(
     RegisterState field0,
   ) = PushMessage_RegistrationState;
+  const factory PushMessage.newPhotostream(
+    SharedAlbum field0,
+  ) = PushMessage_NewPhotostream;
 }
 
 class ReactMessage {
@@ -1757,6 +1797,57 @@ class RichLinkImageAttachmentSubstitute {
               other.richLinkImageAttachmentSubstituteIndex;
 }
 
+class SharedAlbum {
+  final String? name;
+  final String? fullname;
+  final String? email;
+  final String albumguid;
+  final String sharingtype;
+  final String? subscriptiondate;
+  final String? albumlocation;
+  final List<String> assets;
+  final String? delete;
+
+  const SharedAlbum({
+    this.name,
+    this.fullname,
+    this.email,
+    required this.albumguid,
+    required this.sharingtype,
+    this.subscriptiondate,
+    this.albumlocation,
+    required this.assets,
+    this.delete,
+  });
+
+  @override
+  int get hashCode =>
+      name.hashCode ^
+      fullname.hashCode ^
+      email.hashCode ^
+      albumguid.hashCode ^
+      sharingtype.hashCode ^
+      subscriptiondate.hashCode ^
+      albumlocation.hashCode ^
+      assets.hashCode ^
+      delete.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is SharedAlbum &&
+          runtimeType == other.runtimeType &&
+          name == other.name &&
+          fullname == other.fullname &&
+          email == other.email &&
+          albumguid == other.albumguid &&
+          sharingtype == other.sharingtype &&
+          subscriptiondate == other.subscriptiondate &&
+          albumlocation == other.albumlocation &&
+          assets == other.assets &&
+          delete == other.delete;
+}
+
 class SupportAction {
   final String url;
   final String button;
@@ -1800,6 +1891,22 @@ class SupportAlert {
           title == other.title &&
           body == other.body &&
           action == other.action;
+}
+
+@freezed
+sealed class SyncStatus with _$SyncStatus {
+  const SyncStatus._();
+
+  const factory SyncStatus.synced() = SyncStatus_Synced;
+  const factory SyncStatus.downloading({
+    required BigInt progress,
+    required BigInt total,
+  }) = SyncStatus_Downloading;
+  const factory SyncStatus.uploading({
+    required BigInt progress,
+    required BigInt total,
+  }) = SyncStatus_Uploading;
+  const factory SyncStatus.syncing() = SyncStatus_Syncing;
 }
 
 enum TextEffect {

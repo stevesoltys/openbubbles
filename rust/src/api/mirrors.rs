@@ -59,6 +59,32 @@ pub struct DartMMCSFile {
     pub size: usize
 }
 
+#[frb(mirror(SharedAlbum))]
+pub struct DartSharedAlbum {
+    pub name: Option<String>,
+    pub fullname: Option<String>,
+    pub email: Option<String>,
+    pub albumguid: String,
+    pub sharingtype: String, //TODO
+    pub subscriptiondate: Option<String>,
+    pub albumlocation: Option<String>,
+    pub assets: Vec<String>,
+    pub delete: Option<String>,
+}
+
+#[frb(mirror(SyncStatus))]
+pub enum DartSyncStatus {
+    Synced,
+    Downloading {
+        progress: usize,
+        total: usize,
+    },
+    Uploading {
+        progress: usize,
+        total: usize,
+    },
+    Syncing, // deleting remote/local
+}
 
 #[repr(C)]
 #[frb(mirror(AttachmentType))]

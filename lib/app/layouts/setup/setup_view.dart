@@ -185,6 +185,8 @@ class SetupViewController extends StatefulController {
               ));
         return;
       }
+      pushService.findMy = await api.canFindMy(state: pushService.state);
+      pushService.sharedStreams = await api.supportsSharedStreams(state: pushService.state);
       success = true;
       // persisting SMS auth certs is actually really useful
       // ss.settings.cachedCodes.clear();

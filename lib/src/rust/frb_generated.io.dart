@@ -132,6 +132,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   Map<String, bool> dco_decode_Map_String_bool(dynamic raw);
 
   @protected
+  Map<String, SyncStatus> dco_decode_Map_String_sync_status(dynamic raw);
+
+  @protected
   ArcPushState
       dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcPushState(
           dynamic raw);
@@ -317,6 +320,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   Reaction dco_decode_box_autoadd_reaction(dynamic raw);
 
   @protected
+  (String, BigInt) dco_decode_box_autoadd_record_string_u_64(dynamic raw);
+
+  @protected
   RegisterState dco_decode_box_autoadd_register_state(dynamic raw);
 
   @protected
@@ -325,6 +331,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   RichLinkImageAttachmentSubstitute
       dco_decode_box_autoadd_rich_link_image_attachment_substitute(dynamic raw);
+
+  @protected
+  SharedAlbum dco_decode_box_autoadd_shared_album(dynamic raw);
 
   @protected
   SupportAction dco_decode_box_autoadd_support_action(dynamic raw);
@@ -430,6 +439,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   List<(String, bool)> dco_decode_list_record_string_bool(dynamic raw);
+
+  @protected
+  List<(String, SyncStatus)> dco_decode_list_record_string_sync_status(
+      dynamic raw);
+
+  @protected
+  List<SharedAlbum> dco_decode_list_shared_album(dynamic raw);
 
   @protected
   List<TrustedPhoneNumber> dco_decode_list_trusted_phone_number(dynamic raw);
@@ -572,6 +588,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   PushMessage? dco_decode_opt_box_autoadd_push_message(dynamic raw);
 
   @protected
+  (String, BigInt)? dco_decode_opt_box_autoadd_record_string_u_64(dynamic raw);
+
+  @protected
   RichLinkImageAttachmentSubstitute?
       dco_decode_opt_box_autoadd_rich_link_image_attachment_substitute(
           dynamic raw);
@@ -619,6 +638,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   Reaction dco_decode_reaction(dynamic raw);
 
   @protected
+  (List<SharedAlbum>, List<String>)
+      dco_decode_record_list_shared_album_list_string(dynamic raw);
+
+  @protected
   (List<TrustedPhoneNumber>, LoginState?)
       dco_decode_record_list_trusted_phone_number_opt_box_autoadd_login_state(
           dynamic raw);
@@ -631,7 +654,20 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       dynamic raw);
 
   @protected
+  (
+    Map<String, SyncStatus>,
+    (String, BigInt)?
+  ) dco_decode_record_map_string_sync_status_opt_box_autoadd_record_string_u_64(
+      dynamic raw);
+
+  @protected
   (String, bool) dco_decode_record_string_bool(dynamic raw);
+
+  @protected
+  (String, SyncStatus) dco_decode_record_string_sync_status(dynamic raw);
+
+  @protected
+  (String, BigInt) dco_decode_record_string_u_64(dynamic raw);
 
   @protected
   RegisterState dco_decode_register_state(dynamic raw);
@@ -647,10 +683,16 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       dco_decode_rich_link_image_attachment_substitute(dynamic raw);
 
   @protected
+  SharedAlbum dco_decode_shared_album(dynamic raw);
+
+  @protected
   SupportAction dco_decode_support_action(dynamic raw);
 
   @protected
   SupportAlert dco_decode_support_alert(dynamic raw);
+
+  @protected
+  SyncStatus dco_decode_sync_status(dynamic raw);
 
   @protected
   TextEffect dco_decode_text_effect(dynamic raw);
@@ -769,6 +811,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   Map<String, bool> sse_decode_Map_String_bool(SseDeserializer deserializer);
+
+  @protected
+  Map<String, SyncStatus> sse_decode_Map_String_sync_status(
+      SseDeserializer deserializer);
 
   @protected
   ArcPushState
@@ -968,6 +1014,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   Reaction sse_decode_box_autoadd_reaction(SseDeserializer deserializer);
 
   @protected
+  (String, BigInt) sse_decode_box_autoadd_record_string_u_64(
+      SseDeserializer deserializer);
+
+  @protected
   RegisterState sse_decode_box_autoadd_register_state(
       SseDeserializer deserializer);
 
@@ -979,6 +1029,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   RichLinkImageAttachmentSubstitute
       sse_decode_box_autoadd_rich_link_image_attachment_substitute(
           SseDeserializer deserializer);
+
+  @protected
+  SharedAlbum sse_decode_box_autoadd_shared_album(SseDeserializer deserializer);
 
   @protected
   SupportAction sse_decode_box_autoadd_support_action(
@@ -1095,6 +1148,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   List<(String, bool)> sse_decode_list_record_string_bool(
       SseDeserializer deserializer);
+
+  @protected
+  List<(String, SyncStatus)> sse_decode_list_record_string_sync_status(
+      SseDeserializer deserializer);
+
+  @protected
+  List<SharedAlbum> sse_decode_list_shared_album(SseDeserializer deserializer);
 
   @protected
   List<TrustedPhoneNumber> sse_decode_list_trusted_phone_number(
@@ -1249,6 +1309,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       SseDeserializer deserializer);
 
   @protected
+  (String, BigInt)? sse_decode_opt_box_autoadd_record_string_u_64(
+      SseDeserializer deserializer);
+
+  @protected
   RichLinkImageAttachmentSubstitute?
       sse_decode_opt_box_autoadd_rich_link_image_attachment_substitute(
           SseDeserializer deserializer);
@@ -1301,6 +1365,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   Reaction sse_decode_reaction(SseDeserializer deserializer);
 
   @protected
+  (List<SharedAlbum>, List<String>)
+      sse_decode_record_list_shared_album_list_string(
+          SseDeserializer deserializer);
+
+  @protected
   (List<TrustedPhoneNumber>, LoginState?)
       sse_decode_record_list_trusted_phone_number_opt_box_autoadd_login_state(
           SseDeserializer deserializer);
@@ -1313,7 +1382,21 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       SseDeserializer deserializer);
 
   @protected
+  (
+    Map<String, SyncStatus>,
+    (String, BigInt)?
+  ) sse_decode_record_map_string_sync_status_opt_box_autoadd_record_string_u_64(
+      SseDeserializer deserializer);
+
+  @protected
   (String, bool) sse_decode_record_string_bool(SseDeserializer deserializer);
+
+  @protected
+  (String, SyncStatus) sse_decode_record_string_sync_status(
+      SseDeserializer deserializer);
+
+  @protected
+  (String, BigInt) sse_decode_record_string_u_64(SseDeserializer deserializer);
 
   @protected
   RegisterState sse_decode_register_state(SseDeserializer deserializer);
@@ -1330,10 +1413,16 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           SseDeserializer deserializer);
 
   @protected
+  SharedAlbum sse_decode_shared_album(SseDeserializer deserializer);
+
+  @protected
   SupportAction sse_decode_support_action(SseDeserializer deserializer);
 
   @protected
   SupportAlert sse_decode_support_alert(SseDeserializer deserializer);
+
+  @protected
+  SyncStatus sse_decode_sync_status(SseDeserializer deserializer);
 
   @protected
   TextEffect sse_decode_text_effect(SseDeserializer deserializer);
@@ -1460,6 +1549,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_Map_String_bool(
       Map<String, bool> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_Map_String_sync_status(
+      Map<String, SyncStatus> self, SseSerializer serializer);
 
   @protected
   void
@@ -1669,6 +1762,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_box_autoadd_reaction(Reaction self, SseSerializer serializer);
 
   @protected
+  void sse_encode_box_autoadd_record_string_u_64(
+      (String, BigInt) self, SseSerializer serializer);
+
+  @protected
   void sse_encode_box_autoadd_register_state(
       RegisterState self, SseSerializer serializer);
 
@@ -1679,6 +1776,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_box_autoadd_rich_link_image_attachment_substitute(
       RichLinkImageAttachmentSubstitute self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_shared_album(
+      SharedAlbum self, SseSerializer serializer);
 
   @protected
   void sse_encode_box_autoadd_support_action(
@@ -1800,6 +1901,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_list_record_string_bool(
       List<(String, bool)> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_record_string_sync_status(
+      List<(String, SyncStatus)> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_shared_album(
+      List<SharedAlbum> self, SseSerializer serializer);
 
   @protected
   void sse_encode_list_trusted_phone_number(
@@ -1965,6 +2074,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       PushMessage? self, SseSerializer serializer);
 
   @protected
+  void sse_encode_opt_box_autoadd_record_string_u_64(
+      (String, BigInt)? self, SseSerializer serializer);
+
+  @protected
   void sse_encode_opt_box_autoadd_rich_link_image_attachment_substitute(
       RichLinkImageAttachmentSubstitute? self, SseSerializer serializer);
 
@@ -2018,6 +2131,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_reaction(Reaction self, SseSerializer serializer);
 
   @protected
+  void sse_encode_record_list_shared_album_list_string(
+      (List<SharedAlbum>, List<String>) self, SseSerializer serializer);
+
+  @protected
   void sse_encode_record_list_trusted_phone_number_opt_box_autoadd_login_state(
       (List<TrustedPhoneNumber>, LoginState?) self, SseSerializer serializer);
 
@@ -2027,8 +2144,22 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           (LoginState, IdsUser?) self, SseSerializer serializer);
 
   @protected
+  void
+      sse_encode_record_map_string_sync_status_opt_box_autoadd_record_string_u_64(
+          (Map<String, SyncStatus>, (String, BigInt)?) self,
+          SseSerializer serializer);
+
+  @protected
   void sse_encode_record_string_bool(
       (String, bool) self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_record_string_sync_status(
+      (String, SyncStatus) self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_record_string_u_64(
+      (String, BigInt) self, SseSerializer serializer);
 
   @protected
   void sse_encode_register_state(RegisterState self, SseSerializer serializer);
@@ -2045,10 +2176,16 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       RichLinkImageAttachmentSubstitute self, SseSerializer serializer);
 
   @protected
+  void sse_encode_shared_album(SharedAlbum self, SseSerializer serializer);
+
+  @protected
   void sse_encode_support_action(SupportAction self, SseSerializer serializer);
 
   @protected
   void sse_encode_support_alert(SupportAlert self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_sync_status(SyncStatus self, SseSerializer serializer);
 
   @protected
   void sse_encode_text_effect(TextEffect self, SseSerializer serializer);

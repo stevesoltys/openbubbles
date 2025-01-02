@@ -12,7 +12,7 @@ description: Send iMessages on Android using BlueBubbles!
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 
-version: 1.15.0+106
+version: 1.15.0+109
 publish_to: none
 
 environment:
@@ -204,6 +204,7 @@ dependencies:
   vpn_connection_detector: ^1.0.6
   ffmpeg_kit_flutter: 6.0.3
   dotted_border: ^2.1.0
+  external_path: ^2.0.1
 
 
 dependency_overrides:

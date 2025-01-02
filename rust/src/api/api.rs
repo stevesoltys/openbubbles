@@ -1,10 +1,11 @@
 
 
-use std::{borrow::{Borrow, BorrowMut}, fs, future::Future, io::{Cursor, Write}, ops::Deref, path::{Path, PathBuf}, str::FromStr, sync::{Arc, OnceLock}, time::Duration};
+use std::{borrow::{Borrow, BorrowMut}, fs::{self, File}, future::Future, io::{Cursor, Read, Write}, ops::Deref, path::{Path, PathBuf}, str::FromStr, sync::{Arc, OnceLock}, time::{Duration, SystemTime}, u64};
 
 use anyhow::anyhow;
 use flutter_rust_bridge::{frb, IntoDart, JoinHandle};
 use icloud_auth::{default_provider, ArcAnisetteClient, LoginClientInfo};
+use log::debug;
 use plist::{Data, Dictionary};
 pub use plist::Value;
 
@@ -12,16 +13,17 @@ pub use plist::Value;
 use prost::Message as prostMessage;
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use tokio::{runtime::Runtime, select, sync::{broadcast, mpsc, oneshot::{self, Sender}, watch, Mutex, RwLock}};
-use rustpush::{authenticate_apple, authenticate_phone, findmy::{FindMyClient, FindMyState, MULTIPLEX_SERVICE}, login_apple_delegates, APSMessage, LoginDelegate, MADRID_SERVICE};
+use rustpush::{authenticate_apple, authenticate_phone, findmy::{FindMyClient, FindMyState, MULTIPLEX_SERVICE}, login_apple_delegates, sharedstreams::{AssetMetadata, FFMpegFilePackager, FileMetadata, FilePackager, PreparedAsset, PreparedFile, SharedStreamClient, SharedStreamsState, SyncController, SyncManager, SyncState}, APSMessage, LoginDelegate, MADRID_SERVICE};
 
 pub use rustpush::findmy::{FindMyFriendsClient, FindMyPhoneClient};
+pub use rustpush::sharedstreams::{SharedAlbum, SyncStatus};
 pub use icloud_auth::DefaultAnisetteProvider;
 use uniffi::{deps::log::{info, error}, HandleAlloc};
 use uuid::Uuid;
 use std::io::Seek;
 use async_recursion::async_recursion;
 
-use crate::{frb_generated::{SseEncode, StreamSink}, init_logger, native::QUEUED_MESSAGES, RUNTIME};
+use crate::{frb_generated::{SseEncode, StreamSink}, init_logger, native::{PackagedFile, PACKAGER_LOCK, QUEUED_MESSAGES}, RUNTIME};
 
 use flutter_rust_bridge::for_generated::{SimpleHandler, SimpleExecutor, NoOpErrorListener, SimpleThreadPool, BaseAsyncRuntime, lazy_static};
 
@@ -79,6 +81,9 @@ impl Deref for JoinedOSConfig {
     }
 }
 
+trait SeekRead: Seek + Read {}
+impl<T: Seek + Read> SeekRead for T {}
+
 #[derive(Serialize, Deserialize, Clone)]
 struct SavedHardwareState {
     push: APSState,
@@ -92,6 +97,67 @@ pub enum RegistrationPhase {
     Registered,
 }
 
+#[cfg(not(target_os = "android"))]
+type MyFilePackager = FFMpegFilePackager;
+
+#[cfg(target_os = "android")]
+type MyFilePackager = FFIFilePackager;
+
+#[derive(Default)]
+struct FFIFilePackager {
+
+}
+
+impl FilePackager for FFIFilePackager {
+    type Reader = Box<dyn SeekRead + Send + Sync>;
+    async fn get_files(&mut self, path: PathBuf) -> Result<PreparedAsset<Self::Reader>, PushError> {
+        info!("Preparing to package {}", PACKAGER_LOCK.get().is_some());
+        let processed = PACKAGER_LOCK.get().expect("No FFI packager!").get_file(path.to_str().unwrap().to_string());
+
+        info!("Packaged");
+        let inner = match processed {
+            PackagedFile::Failure(failure) => {
+                return Err(PushError::FilePackageError(failure))
+            },
+            PackagedFile::Info(info) => info
+        };
+
+        let is_video = inner.duration.is_some();
+        let file = PreparedFile::<Box<dyn SeekRead + Send + Sync>>::new(Box::new(File::open(&path)?), FileMetadata {
+            width: inner.width as usize,
+            height: inner.height as usize,
+            uti_type: if is_video { "public.mpeg-4".to_string() } else { "public.jpeg".to_string() },
+            video_type: if is_video { Some("720p".to_string()) } else { None },
+            asset_metadata: if !is_video { Some(AssetMetadata {
+                asset_type: "derivative".to_string(),
+                asset_type_flags: 2,
+            }) } else { None },
+        }).await?;
+
+        let mut prepared_files = vec![file];
+
+        if let Some(thumbnail) = inner.thumbnail {
+            let thumbnail = PreparedFile::<Box<dyn SeekRead + Send + Sync>>::new(Box::new(Cursor::new(thumbnail)), FileMetadata {
+                width: inner.width as usize,
+                height: inner.height as usize,
+                uti_type: "public.jpeg".to_string(),
+                video_type: Some("PosterFrame".to_string()),
+                asset_metadata: None,
+            }).await?;
+            prepared_files.push(thumbnail);
+        }
+
+
+        Ok(PreparedAsset {
+            files: prepared_files,
+            name: path.file_name().unwrap().to_str().unwrap().to_string(),
+            date_created: fs::metadata(path)?.created().unwrap_or(SystemTime::now()),
+            video_duration: inner.duration,
+            guid: Uuid::new_v4().to_string().to_uppercase(),
+        })
+    }
+}
+
 #[frb(ignore)]
 pub struct InnerPushState {
     pub anisette: Option<ArcAnisetteClient<DefaultAnisetteProvider>>,
@@ -99,6 +165,7 @@ pub struct InnerPushState {
     pub inq_queue: Option<Mutex<broadcast::Receiver<APSMessage>>>,
     pub client: Option<IMClient>,
     pub fmfd: Option<FindMyClient<DefaultAnisetteProvider>>,
+    pub sharedstreams: Option<SyncManager<DefaultAnisetteProvider, MyFilePackager>>,
     pub conf_dir: PathBuf,
     pub os_config: Option<JoinedOSConfig>,
     pub account: Option<AppleAccount<DefaultAnisetteProvider>>,
@@ -124,6 +191,7 @@ pub async fn new_push_state(dir: String) -> Arc<PushState> {
         inq_queue: None,
         reg_state: None,
         fmfd: None,
+        sharedstreams: None,
         conf_dir: dir,
         os_config: None,
         account: None,
@@ -220,7 +288,7 @@ async fn restore(curr_state: &PushState) {
                 // get first phone user or first user
                 if let Some(user) = users.iter()
                     .find(|user| user["user_id"].as_string().unwrap().starts_with("P:")).or(users.first()) {
-                    
+
                     value.insert("identity".to_string(), user["identity"].clone());
                     std::fs::write(&hw_config_path, plist_to_string(&value).unwrap()).unwrap();
 
@@ -257,18 +325,26 @@ async fn restore(curr_state: &PushState) {
     // id may not exist yet; that's fine
     let Ok(users) = plist::from_file::<_, Vec<IDSUser>>(&id_path) else { return };
 
-    inner.client = Some(IMClient::new(inner.conn.as_ref().unwrap().clone(), users, state.identity, 
+    inner.client = Some(IMClient::new(inner.conn.as_ref().unwrap().clone(), users, state.identity,
         &[&MADRID_SERVICE, &MULTIPLEX_SERVICE], inner.conf_dir.join("id_cache.plist"), inner.os_config.as_ref().unwrap().config(), Box::new(move |updated_keys| {
             println!("updated keys!!!");
             std::fs::write(&id_path, plist_to_string(&updated_keys).unwrap()).unwrap();
         })).await);
-    
+
     inner.reg_state = Some(Mutex::new(inner.client.as_ref().unwrap().identity.resource_state.subscribe()));
-    
+
     let id_path = inner.conf_dir.join("findmy.plist");
 
     if let Ok(state) = plist::from_file(id_path) {
         inner.fmfd = Some(FindMyClient::new(inner.conn.as_ref().unwrap().clone(), inner.os_config.as_ref().unwrap().config(), state, inner.anisette.clone().unwrap(), inner.client.as_ref().unwrap().identity.clone()).await.unwrap());
+    }
+
+    let stream_path = inner.conf_dir.join("sharedstreams.plist");
+    if let Ok(state) = plist::from_file(&stream_path) {
+        let client = SharedStreamClient::new(state, Box::new(move |update| {
+            plist::to_file_xml(&stream_path, update).unwrap();
+        }), inner.conn.as_ref().unwrap().clone(), inner.anisette.clone().unwrap(), inner.os_config.as_ref().unwrap().config()).await;
+        inner.sharedstreams = Some(SyncController::new(client, inner.conf_dir.join("sync.plist"), MyFilePackager::default(), Duration::from_secs(60 * 30)).await);
     }
 }
 
@@ -305,6 +381,13 @@ pub async fn register_ids(state: &Arc<PushState>, users: &Vec<IDSUser>) -> anyho
     let id_path = inner.conf_dir.join("findmy.plist");
     if let Ok(state) = plist::from_file(id_path) {
         inner.fmfd = Some(FindMyClient::new(inner.conn.as_ref().unwrap().clone(), inner.os_config.as_ref().unwrap().config(), state, inner.anisette.clone().unwrap(), inner.client.as_ref().unwrap().identity.clone()).await.unwrap());
+    }
+    let stream_path = inner.conf_dir.join("sharedstreams.plist");
+    if let Ok(state) = plist::from_file(&stream_path) {
+        let client = SharedStreamClient::new(state, Box::new(move |update| {
+            plist::to_file_xml(&stream_path, update).unwrap();
+        }), inner.conn.as_ref().unwrap().clone(), inner.anisette.clone().unwrap(), inner.os_config.as_ref().unwrap().config()).await;
+        inner.sharedstreams = Some(SyncController::new(client, inner.conf_dir.join("sync.plist"), MyFilePackager::default(), Duration::from_secs(60 * 30)).await);
     }
 
     Ok(None)
@@ -396,7 +479,7 @@ pub async fn refresh_token(state: &Arc<PushState>) -> anyhow::Result<()> {
     }
     inner.inq_queue = Some(Mutex::new(connection.messages_cont.subscribe()));
     inner.conn = Some(connection);
-    
+
     Ok(())
 }
 
@@ -565,6 +648,112 @@ pub enum PushMessage {
         error: Option<String>,
     },
     RegistrationState(RegisterState),
+    NewPhotostream(SharedAlbum),
+}
+
+async fn handle_photostream(client: &SharedStreamClient<DefaultAnisetteProvider>, changes: Vec<String>, local: &mpsc::Sender<PushMessage>) {
+    let lock = &client.state.read().await.albums;
+    for change in changes {
+        let Some(item) = lock.iter().find(|a| &a.albumguid == &change) else { continue };
+        if item.sharingtype == "pending" {
+            local.send(PushMessage::NewPhotostream(item.clone())).await.expect("Dropped?");
+        }
+    }
+}
+
+pub async fn get_albums(state: &Arc<PushState>, refresh: bool) -> anyhow::Result<(Vec<SharedAlbum>, Vec<String>)> {
+    let recv_path = state.0.read().await;
+    let lock = recv_path.sharedstreams.as_ref().expect("Cannot use photostreams!");
+
+    if refresh {
+        let _ = lock.client.get_changes().await?;
+
+        let nameless_albums: Vec<_> = lock.client.state.read().await.albums.iter().filter(|album| album.name.is_none()).map(|album| album.albumguid.clone()).collect();
+        for album in nameless_albums {
+            lock.client.get_album_summary(&album).await?;
+        }
+    }
+
+    let albums_ref = lock.client.state.read().await.albums.clone();
+    let extras = lock.dirty_map.lock().await.iter().map(|a| a.0.clone()).collect();
+    Ok((albums_ref, extras))
+}
+
+pub async fn subscribe(state: &Arc<PushState>, guid: String) -> anyhow::Result<Vec<SharedAlbum>> {
+    let recv_path = state.0.read().await;
+    let lock = recv_path.sharedstreams.as_ref().expect("Cannot use photostreams!");
+    let _ = lock.client.subscribe(&guid).await?;
+
+    let albums_ref = lock.client.state.read().await.albums.clone();
+    Ok(albums_ref)
+}
+
+pub async fn unsubscribe(state: &Arc<PushState>, guid: String) -> anyhow::Result<Vec<SharedAlbum>> {
+    let recv_path = state.0.read().await;
+    let lock = recv_path.sharedstreams.as_ref().expect("Cannot use photostreams!");
+    let _ = lock.client.unsubscribe(&guid).await?;
+
+    let albums_ref = lock.client.state.read().await.albums.clone();
+    Ok(albums_ref)
+}
+
+pub async fn subscribe_token(state: &Arc<PushState>, token: String) -> anyhow::Result<Vec<SharedAlbum>> {
+    let recv_path = state.0.read().await;
+    let lock = recv_path.sharedstreams.as_ref().expect("Cannot use photostreams!");
+    let _ = lock.client.subscribe_token(&token).await?;
+
+    let albums_ref = lock.client.state.read().await.albums.clone();
+    Ok(albums_ref)
+}
+
+pub async fn add_album(state: &Arc<PushState>, guid: String, folder: String) -> anyhow::Result<Vec<SharedAlbum>> {
+    let recv_path = state.0.read().await;
+    let lock = recv_path.sharedstreams.as_ref().expect("Cannot use photostreams!");
+    lock.add_album(guid, PathBuf::from_str(&folder).unwrap()).await;
+
+    let albums_ref = lock.client.state.read().await.albums.clone();
+    Ok(albums_ref)
+}
+
+pub async fn remove_album(state: &Arc<PushState>, guid: String) -> anyhow::Result<Vec<SharedAlbum>> {
+    debug!("a");
+    let recv_path = state.0.read().await;
+    let lock = recv_path.sharedstreams.as_ref().expect("Cannot use photostreams!");
+    debug!("b");
+    lock.remove_album(guid).await;
+    debug!("c");
+    let albums_ref = lock.client.state.read().await.albums.clone();
+    debug!("d");
+    Ok(albums_ref)
+}
+
+pub async fn get_syncstatus(state: &Arc<PushState>) -> anyhow::Result<(HashMap<String, SyncStatus>, Option<(String, u64)>)> {
+    let recv_path = state.0.read().await;
+    let lock = recv_path.sharedstreams.as_ref().expect("Cannot use photostreams!");
+    let statuses = lock.sync_statuses.borrow().clone();
+
+    let mut f: Option<(String, u64)> = None;
+    if let ResourceState::Failed(failure) = &*lock.resource_state.borrow() {
+        f = Some((format!("{}", failure.error), failure.retry_wait.unwrap_or(u64::MAX)))
+    }
+
+    Ok((statuses, f))
+}
+
+pub async fn sync_now(state: &Arc<PushState>) -> anyhow::Result<()> {
+    let recv_path = state.0.read().await;
+    let lock = recv_path.sharedstreams.as_ref().expect("Cannot use photostreams!");
+
+    lock.refresh_now().await?;
+
+    Ok(())
+}
+
+
+pub async fn supports_shared_streams(state: &Arc<PushState>) -> anyhow::Result<bool> {
+    let inner = state.0.read().await;
+    let id_path = inner.conf_dir.join("sharedstreams.plist");
+    Ok(plist::from_file::<_, SharedStreamsState>(id_path).is_ok())
 }
 
 pub enum PollResult {
@@ -587,6 +776,11 @@ pub async fn recv_wait(state: &Arc<PushState>) -> PollResult {
             let msg = msg.unwrap();
             if let Some(fmfd) = &recv_path.fmfd {
                 let _ = fmfd.handle(msg.clone()).await;
+            }
+            if let Some(photostream) = &recv_path.sharedstreams {
+                if let Ok(Some(changes)) = photostream.handle(msg.clone()).await {
+                    handle_photostream(&photostream.client, changes, &recv_path.local_broadcast).await;
+                }
             }
             let msg = recv_path.client.as_ref().expect("no client??/").handle(msg).await;
             *recv_path.cancel_poll.lock().await = None;
@@ -691,7 +885,7 @@ pub async fn download_attachment(sink: StreamSink<TransferProgress>, state: &Arc
         let prefix = path.parent().unwrap();
         std::fs::create_dir_all(prefix)?;
         let mut file = std::fs::File::create(path)?;
-        attachment.get_attachment(inner.conn.as_ref().unwrap(), &mut file, &mut |prog, total| {
+        attachment.get_attachment(inner.conn.as_ref().unwrap(), &mut file, |prog, total| {
             println!("donwloading file {} of {}", prog, total);
             sink.add(TransferProgress {
                 prog,
@@ -712,7 +906,7 @@ pub async fn download_mmcs(sink: StreamSink<TransferProgress>, state: &Arc<PushS
         std::fs::create_dir_all(prefix)?;
 
         let mut file = std::fs::File::create(path)?;
-        attachment.get_attachment(inner.conn.as_ref().unwrap(), &mut file, &mut |prog, total| {
+        attachment.get_attachment(inner.conn.as_ref().unwrap(), &mut file, |prog, total| {
             sink.add(TransferProgress {
                 prog,
                 total,
@@ -745,7 +939,7 @@ pub async fn upload_mmcs(sink: StreamSink<MMCSTransferProgress>, state: &Arc<Pus
         let mut file = std::fs::File::open(path)?;
         let prepared = MMCSFile::prepare_put(&mut file).await?;
         file.rewind()?;
-        let attachment = MMCSFile::new(inner.conn.as_ref().unwrap(), &prepared, &mut file, &mut |prog, total| {
+        let attachment = MMCSFile::new(inner.conn.as_ref().unwrap(), &prepared, file, |prog, total| {
             sink.add(MMCSTransferProgress {
                 prog,
                 total,
@@ -764,7 +958,7 @@ pub async fn upload_attachment(sink: StreamSink<TransferProgress>, state: &Arc<P
         let mut file = std::fs::File::open(path)?;
         let prepared = MMCSFile::prepare_put(&mut file).await?;
         file.rewind()?;
-        let attachment = Attachment::new_mmcs(inner.conn.as_ref().unwrap(), &prepared, &mut file, &mime, &uti, &name, &mut |prog, total| {
+        let attachment = Attachment::new_mmcs(inner.conn.as_ref().unwrap(), &prepared, file, &mime, &uti, &name,|prog, total| {
             sink.add(TransferProgress {
                 prog,
                 total,
@@ -795,7 +989,7 @@ pub async fn make_find_my_phone(state: &Arc<PushState>) -> anyhow::Result<FindMy
 
     let id_path = inner.conf_dir.join("findmy.plist");
     let state: FindMyState = plist::from_file(id_path)?;
-    
+
     Ok(FindMyPhoneClient::new(inner.os_config.as_deref().unwrap(), state, inner.conn.clone().unwrap(), inner.anisette.clone().unwrap()).await?)
 }
 
@@ -814,7 +1008,7 @@ pub async fn make_find_my_friends(state: &Arc<PushState>) -> anyhow::Result<Find
 
     let id_path = inner.conf_dir.join("findmy.plist");
     let state: FindMyState = plist::from_file(id_path)?;
-    
+
     Ok(FindMyFriendsClient::new(inner.os_config.as_deref().unwrap(), state, inner.conn.clone().unwrap(), inner.anisette.clone().unwrap(), false).await?)
 }
 
@@ -856,7 +1050,7 @@ pub async fn refresh_background_following(state: &Arc<PushState>) -> anyhow::Res
 }
 
 async fn do_login(conf_dir: &Path, username: &str, pet: &str, spd: &Dictionary, anisette: &ArcAnisetteClient<DefaultAnisetteProvider>, os_config: &dyn OSConfig) -> anyhow::Result<IDSUser> {
-    let delegates = login_apple_delegates(username, pet, spd["adsid"].as_string().unwrap(), &mut *anisette.lock().await, os_config, &[LoginDelegate::IDS, LoginDelegate::MobileMe]).await.unwrap();
+    let delegates = login_apple_delegates(username, pet, spd["adsid"].as_string().unwrap(), &mut *anisette.lock().await, os_config, &[LoginDelegate::IDS, LoginDelegate::MobileMe]).await?;
 
     let mobileme = delegates.mobileme.unwrap();
     let findmy = FindMyState::new(spd["DsPrsId"].as_unsigned_integer().unwrap().to_string(), spd["acname"].as_string().unwrap().to_string(), &mobileme);
@@ -864,13 +1058,17 @@ async fn do_login(conf_dir: &Path, username: &str, pet: &str, spd: &Dictionary, 
     let id_path = conf_dir.join("findmy.plist");
     std::fs::write(id_path, plist_to_string(&findmy).unwrap()).unwrap();
 
-    let user = authenticate_apple(delegates.ids.unwrap(), os_config).await.unwrap();
+    let shared_streams = SharedStreamsState::new(spd["DsPrsId"].as_unsigned_integer().unwrap().to_string(), &mobileme);
+    let id_path = conf_dir.join("sharedstreams.plist");
+    std::fs::write(id_path, plist_to_string(&shared_streams).unwrap()).unwrap();
+
+    let user = authenticate_apple(delegates.ids.unwrap(), os_config).await?;
     Ok(user)
 }
 
 pub async fn try_auth(state: &Arc<PushState>, username: String, password: String) -> anyhow::Result<(LoginState, Option<IDSUser>)> {
     let mut inner = state.0.write().await;
-    let mut apple_account = 
+    let mut apple_account =
         AppleAccount::new_with_anisette(get_login_config(&*inner).await, inner.anisette.clone().unwrap())?;
     let mut login_state = apple_account.login_email_pass(&username, &password).await?;
 
@@ -878,7 +1076,7 @@ pub async fn try_auth(state: &Arc<PushState>, username: String, password: String
     if let Some(pet) = apple_account.get_pet() {
         let identity = do_login(&inner.conf_dir, username.trim(), &pet, apple_account.spd.as_ref().unwrap(), inner.anisette.as_ref().unwrap(), inner.os_config.as_deref().unwrap()).await?;
         user = Some(identity);
-        
+
         // who needs extra steps when you have a PET, amirite?
         println!("confirmed login {:?}", login_state);
         if matches!(login_state, LoginState::NeedsExtraStep(_)) {
@@ -887,7 +1085,7 @@ pub async fn try_auth(state: &Arc<PushState>, username: String, password: String
     }
 
     inner.account = Some(apple_account);
-    
+
     Ok((login_state, user))
 }
 
@@ -906,7 +1104,7 @@ pub async fn send_2fa_to_devices(state: &Arc<PushState>) -> anyhow::Result<Login
     let inner = state.0.read().await;
     let account = inner.account.as_ref().unwrap();
     Ok(account.send_2fa_to_devices().await?)
-    
+
 }
 
 pub async fn verify_2fa(state: &Arc<PushState>, code: String) -> anyhow::Result<(LoginState, Option<IDSUser>)> {
@@ -914,12 +1112,12 @@ pub async fn verify_2fa(state: &Arc<PushState>, code: String) -> anyhow::Result<
     let account = inner.account.as_mut().unwrap();
     let mut login_state = account.verify_2fa(code).await?;
     let account = inner.account.as_ref().unwrap();
-    
+
     let mut user = None;
     if let Some(pet) = account.get_pet() {
         let identity = do_login(&inner.conf_dir, account.username.as_ref().unwrap().trim(), &pet, account.spd.as_ref().unwrap(), inner.anisette.as_ref().unwrap(), inner.os_config.as_deref().unwrap()).await?;
         user = Some(identity);
-        
+
         // who needs extra steps when you have a PET, amirite?
         println!("confirmed login {:?}", login_state);
         if matches!(login_state, LoginState::NeedsExtraStep(_)) {
@@ -953,12 +1151,12 @@ pub async fn verify_2fa_sms(state: &Arc<PushState>, body: &VerifyBody, code: Str
     let account = inner.account.as_mut().unwrap();
     let mut login_state = account.verify_sms_2fa(code, body.clone()).await?;
     let account = inner.account.as_ref().unwrap();
-    
+
     let mut user = None;
     if let Some(pet) = account.get_pet() {
         let identity = do_login(&inner.conf_dir, account.username.as_ref().unwrap().trim(), &pet, account.spd.as_ref().unwrap(), inner.anisette.as_ref().unwrap(), inner.os_config.as_deref().unwrap()).await?;
         user = Some(identity);
-        
+
         // who needs extra steps when you have a PET, amirite?
         println!("confirmed login {:?}", login_state);
         if matches!(login_state, LoginState::NeedsExtraStep(_)) {
@@ -988,6 +1186,7 @@ pub async fn reset_state(state: &Arc<PushState>, reset_hw: bool) -> anyhow::Resu
     info!("b {:?}", inner.os_config.is_some());
     inner.client = None;
     inner.fmfd = None;
+    inner.sharedstreams = None;
     inner.reg_state = None;
     // try deregistering from iMessage, but if it fails we don't really care
     let _ = register(inner.os_config.as_deref().unwrap(), &*conn_state.state.read().await, &[], &mut [], inner.identity.as_ref().unwrap()).await;
@@ -995,6 +1194,7 @@ pub async fn reset_state(state: &Arc<PushState>, reset_hw: bool) -> anyhow::Resu
     inner.account = None;
     let _ = std::fs::remove_file(inner.conf_dir.join("id.plist"));
     let _ = std::fs::remove_file(inner.conf_dir.join("findmy.plist"));
+    let _ = std::fs::remove_file(inner.conf_dir.join("sharedstreams.plist"));
     let _ = std::fs::remove_file(inner.conf_dir.join("id_cache.plist"));
 
     if reset_hw {
@@ -1056,7 +1256,7 @@ pub async fn get_regstate(state: &Arc<PushState>) -> anyhow::Result<RegisterStat
         ResourceState::Generated => RegisterState::Registered {
             next_s: inner.client.as_ref().unwrap().identity.calculate_rereg_time_s().await
         },
-        ResourceState::Failed(failure) => 
+        ResourceState::Failed(failure) =>
             RegisterState::Failed { retry_wait: failure.retry_wait, error: format!("{}", failure.error) },
     })
 }

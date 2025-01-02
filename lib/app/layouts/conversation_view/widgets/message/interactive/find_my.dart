@@ -8,6 +8,7 @@ import 'package:bluebubbles/app/wrappers/theme_switcher.dart';
 import 'package:bluebubbles/database/models.dart';
 import 'package:bluebubbles/helpers/helpers.dart';
 import 'package:bluebubbles/services/backend/settings/settings_service.dart';
+import 'package:bluebubbles/services/network/backend_service.dart';
 import 'package:bluebubbles/services/rustpush/rustpush_service.dart';
 import 'package:bluebubbles/services/services.dart';
 import 'package:flutter/cupertino.dart';
@@ -53,6 +54,9 @@ class _FindMyState extends OptimizedState<FindMy> with AutomaticKeepAliveClientM
   StreamSubscription? locationSub;
   Position? location;
 
+  bool isRequest = false;
+  bool supportsFindMy = true;
+
   @override
   void initState() {
     super.initState();
@@ -60,6 +64,14 @@ class _FindMyState extends OptimizedState<FindMy> with AutomaticKeepAliveClientM
     var dataKey = base64.decode(uri.queryParameters["FindMyMessagePayloadZippedDataKey"]!);
     var decoded = json.decode(utf8.decode(ZLibCodec(raw: true).decode(dataKey)));
     print(decoded);
+    if (decoded["kind"]?["request"] != null) {
+      isRequest = true;
+      return;
+    }
+    if (!backend.supportsFindMy()) {
+      supportsFindMy = false;
+      return;
+    }
     mainLocation = RustPushBBUtils.bbHandleToRust(widget.message.getHandle()!);
     userPosition[mainLocation] = FindMyFriend(
       latitude: decoded["initialLocation"]["latitude"],
@@ -260,8 +272,69 @@ class _FindMyState extends OptimizedState<FindMy> with AutomaticKeepAliveClientM
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    const icon = Icons.apple;
-    final str = data.userInfo?.subcaption;
+
+    if (isRequest) {
+      return Container(
+        padding: const EdgeInsets.all(25),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 50,
+              height: 50,
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white,
+              ),
+              padding: const EdgeInsets.all(10),
+              child: Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: context.theme.colorScheme.primary,
+                ),
+              ),
+            ),
+            const SizedBox(height: 15),
+            const Text("Requested your location"),
+            const SizedBox(height: 10),
+            const Text("Live sharing not supported")
+          ],
+        ),
+      );
+    }
+
+    if (!supportsFindMy) {
+      return Container(
+        padding: const EdgeInsets.all(25),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 50,
+              height: 50,
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white,
+              ),
+              padding: const EdgeInsets.all(10),
+              child: Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: context.theme.colorScheme.primary,
+                ),
+              ),
+            ),
+            const SizedBox(height: 15),
+            const Text("Shared their location"),
+            const SizedBox(height: 10),
+            const Text("Find My not enabled"),
+            const SizedBox(height: 10),
+            const Text("Reset hardware in settings and re-log to enable support."),
+          ],
+        ),
+      );
+    }
+
     var child = Container(
       height: ns.width(context) / 1.5,
       child:Stack(

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:bluebubbles/app/layouts/settings/pages/misc/shared_streams_panel.dart';
 import 'package:bluebubbles/app/layouts/settings/pages/profile/profile_panel.dart';
 import 'package:bluebubbles/app/layouts/settings/pages/scheduling/scheduled_messages_panel.dart';
 import 'package:bluebubbles/app/layouts/settings/pages/server/server_management_panel.dart';
@@ -189,6 +190,9 @@ class IntentsService extends GetxService {
     } else if (guid == "-51") {
       Logger.debug("Opening profile panel...", tag: "IntentsService");
       ns.pushLeft(Get.context!, ProfilePanel());
+    } else if (guid == "-52") {
+      Logger.debug("Opening shared streams panel...", tag: "IntentsService");
+      ns.pushLeft(Get.context!, SharedStreamsPanel());
     } else if (guid.contains("scheduled")) {
       Logger.debug("Opening scheduled messages panel...", tag: "IntentsService");
       Navigator.of(Get.context!).push(

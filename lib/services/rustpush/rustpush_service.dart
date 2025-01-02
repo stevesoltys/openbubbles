@@ -2,9 +2,11 @@ import 'dart:convert';
 import 'dart:math';
 import 'dart:typed_data';
 
+import 'package:app_links/app_links.dart';
 import 'package:async_task/async_task_extension.dart';
 import 'package:bluebubbles/app/layouts/conversation_list/pages/conversation_list.dart';
 import 'package:bluebubbles/app/layouts/conversation_view/widgets/message/message_holder.dart';
+import 'package:bluebubbles/app/layouts/settings/pages/misc/shared_streams_panel.dart';
 import 'package:bluebubbles/app/layouts/setup/setup_view.dart';
 import 'package:bluebubbles/app/wrappers/titlebar_wrapper.dart';
 import 'package:bluebubbles/database/database.dart';
@@ -1159,6 +1161,7 @@ class RustPushService extends GetxService {
   late lib.ArcPushState state;
 
   var findMy = false;
+  var sharedStreams = false;
 
   Map<String, api.Attachment> attachments = {};
 
@@ -1802,6 +1805,12 @@ class RustPushService extends GetxService {
       return;
     }
 
+    if (push is api.PushMessage_NewPhotostream) {
+      var state = push.field0;
+      notif.createInvitation(state);
+      return;
+    }
+
     if (push is api.PushMessage_SendConfirm) {
       var message = Message.findOne(guid: push.uuid);
       if (message == null) return;
@@ -2300,6 +2309,61 @@ class RustPushService extends GetxService {
     }
   }
 
+  bool subscribing = false;
+
+  void handlePhotoStreamLink(Uri link) async {
+    if (link.host != "www.icloud.com") return;
+    var invitationId = link.queryParameters["invitation_id"];
+    if (invitationId == null) return;
+    if (subscribing) return;
+    subscribing = true;
+    showDialog(
+      context: Get.context!,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: context.theme.colorScheme.properSurface,
+          title: Text(
+            "Subscribing...",
+            style: context.theme.textTheme.titleLarge,
+          ),
+          content: Container(
+            height: 70,
+            child: Center(child: buildProgressIndicator(context)),
+          ),
+        );
+      }
+    );
+    try {
+      try {
+        await api.subscribeToken(state: pushService.state, token: invitationId);
+      } catch (e) {
+        // sometimes first one can give 500, try again
+        await api.subscribeToken(state: pushService.state, token: invitationId);
+      }
+      await api.getAlbums(state: pushService.state, refresh: true);
+    } catch (e, stack) {
+      Logger.error("Failed to subscribe!!", error: e, trace: stack);
+      Get.back();
+      subscribing = false;
+      showSnackbar("Error", "Failed to subscribe! Error: ${e.toString()}");
+      rethrow;
+    }
+    Get.back();
+    ns.pushLeft(Get.context!, SharedStreamsPanel());
+    subscribing = false;
+  }
+
+  void initPhotoStream() async {
+    final _appLinks = AppLinks();
+
+    var link = await _appLinks.getLatestLink();
+    if (link != null) handlePhotoStreamLink(link);
+    final sub = _appLinks.uriLinkStream.listen((uri) {
+        handlePhotoStreamLink(uri);
+    });
+  }
+
   // uniquely identify the backend service that is running
   String serviceId = "";
 
@@ -2331,8 +2395,10 @@ class RustPushService extends GetxService {
         }
       }
       pushService.findMy = await api.canFindMy(state: state);
+      pushService.sharedStreams = await api.supportsSharedStreams(state: state);
     })();
     await initFuture;
+    initPhotoStream();
     Logger.info("initDone");
     await correctState();
     final sendingProgress = Database.messages.query(Message_.sendingServiceId.notNull()).build().find();

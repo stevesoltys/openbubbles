@@ -3,6 +3,7 @@ import 'package:bluebubbles/app/components/avatars/contact_avatar_widget.dart';
 import 'package:bluebubbles/app/layouts/conversation_list/pages/search/search_view.dart';
 import 'package:bluebubbles/app/layouts/conversation_view/pages/conversation_view.dart';
 import 'package:bluebubbles/app/layouts/findmy/findmy_page.dart';
+import 'package:bluebubbles/app/layouts/settings/pages/misc/shared_streams_panel.dart';
 import 'package:bluebubbles/app/layouts/settings/pages/profile/profile_panel.dart';
 import 'package:bluebubbles/helpers/helpers.dart';
 import 'package:bluebubbles/app/layouts/conversation_list/pages/conversation_list.dart';
@@ -11,6 +12,7 @@ import 'package:bluebubbles/app/layouts/setup/setup_view.dart';
 import 'package:bluebubbles/app/wrappers/theme_switcher.dart';
 import 'package:bluebubbles/app/wrappers/titlebar_wrapper.dart';
 import 'package:bluebubbles/database/models.dart';
+import 'package:bluebubbles/services/rustpush/rustpush_service.dart';
 import 'package:bluebubbles/services/services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -122,6 +124,8 @@ class MaterialOverflowMenu extends StatelessWidget {
           controller?.openNewChatCreator(context);
         } else if (value == 8) {
           goToRecentlyDeleted(context);
+        } else if (value == 9) {
+          goToSharedStreams(context);
         }
       },
       itemBuilder: (context) {
@@ -160,6 +164,14 @@ class MaterialOverflowMenu extends StatelessWidget {
               value: 5,
               child: Text(
                 'FindMy',
+                style: context.textTheme.bodyLarge!.apply(color: context.theme.colorScheme.properOnSurface),
+              ),
+            ),
+          if (pushService.sharedStreams)
+            PopupMenuItem(
+              value: 9,
+              child: Text(
+                'Shared Photos',
                 style: context.textTheme.bodyLarge!.apply(color: context.theme.colorScheme.properOnSurface),
               ),
             ),
@@ -295,6 +307,12 @@ class CupertinoOverflowMenu extends StatelessWidget {
             icon: CupertinoIcons.location,
             onTap: () => goToFindMy(context),
           ),
+        if (pushService.sharedStreams)
+          PullDownMenuItem(
+            title: 'Shared Albums',
+            icon: CupertinoIcons.photo,
+            onTap: () => goToSharedStreams(context),
+          ),
         if (extraItems)
           PullDownMenuItem(
             title: 'Search',
@@ -361,6 +379,33 @@ Future<void> goToRecentlyDeleted(BuildContext context) async {
       showDeletedMessages: true,
     )
   );
+}
+
+Future<void> goToSharedStreams(BuildContext context) async {
+final currentChat = cm.activeChat?.chat;
+  ns.closeAllConversationView(context);
+  await cm.setAllInactive();
+  await Navigator.of(Get.context!).push(
+    ThemeSwitcher.buildPageRoute(
+      builder: (BuildContext context) {
+        return SharedStreamsPanel();
+      },
+    ),
+  );
+  if (currentChat != null) {
+    await cm.setActiveChat(currentChat);
+    if (ss.settings.tabletMode.value) {
+      ns.pushAndRemoveUntil(
+        context,
+        ConversationView(
+          chat: currentChat,
+        ),
+            (route) => route.isFirst,
+      );
+    } else {
+      cvc(currentChat).close();
+    }
+  }
 }
 
 Future<void> goToFindMy(BuildContext context) async {

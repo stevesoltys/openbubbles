@@ -10467,6 +10467,7 @@ mixin _$PushMessage {
     required TResult Function(MessageInst field0) iMessage,
     required TResult Function(String uuid, String? error) sendConfirm,
     required TResult Function(RegisterState field0) registrationState,
+    required TResult Function(SharedAlbum field0) newPhotostream,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -10474,6 +10475,7 @@ mixin _$PushMessage {
     TResult? Function(MessageInst field0)? iMessage,
     TResult? Function(String uuid, String? error)? sendConfirm,
     TResult? Function(RegisterState field0)? registrationState,
+    TResult? Function(SharedAlbum field0)? newPhotostream,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -10481,6 +10483,7 @@ mixin _$PushMessage {
     TResult Function(MessageInst field0)? iMessage,
     TResult Function(String uuid, String? error)? sendConfirm,
     TResult Function(RegisterState field0)? registrationState,
+    TResult Function(SharedAlbum field0)? newPhotostream,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -10490,6 +10493,7 @@ mixin _$PushMessage {
     required TResult Function(PushMessage_SendConfirm value) sendConfirm,
     required TResult Function(PushMessage_RegistrationState value)
         registrationState,
+    required TResult Function(PushMessage_NewPhotostream value) newPhotostream,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -10497,6 +10501,7 @@ mixin _$PushMessage {
     TResult? Function(PushMessage_IMessage value)? iMessage,
     TResult? Function(PushMessage_SendConfirm value)? sendConfirm,
     TResult? Function(PushMessage_RegistrationState value)? registrationState,
+    TResult? Function(PushMessage_NewPhotostream value)? newPhotostream,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -10504,6 +10509,7 @@ mixin _$PushMessage {
     TResult Function(PushMessage_IMessage value)? iMessage,
     TResult Function(PushMessage_SendConfirm value)? sendConfirm,
     TResult Function(PushMessage_RegistrationState value)? registrationState,
+    TResult Function(PushMessage_NewPhotostream value)? newPhotostream,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -10603,6 +10609,7 @@ class _$PushMessage_IMessageImpl extends PushMessage_IMessage {
     required TResult Function(MessageInst field0) iMessage,
     required TResult Function(String uuid, String? error) sendConfirm,
     required TResult Function(RegisterState field0) registrationState,
+    required TResult Function(SharedAlbum field0) newPhotostream,
   }) {
     return iMessage(field0);
   }
@@ -10613,6 +10620,7 @@ class _$PushMessage_IMessageImpl extends PushMessage_IMessage {
     TResult? Function(MessageInst field0)? iMessage,
     TResult? Function(String uuid, String? error)? sendConfirm,
     TResult? Function(RegisterState field0)? registrationState,
+    TResult? Function(SharedAlbum field0)? newPhotostream,
   }) {
     return iMessage?.call(field0);
   }
@@ -10623,6 +10631,7 @@ class _$PushMessage_IMessageImpl extends PushMessage_IMessage {
     TResult Function(MessageInst field0)? iMessage,
     TResult Function(String uuid, String? error)? sendConfirm,
     TResult Function(RegisterState field0)? registrationState,
+    TResult Function(SharedAlbum field0)? newPhotostream,
     required TResult orElse(),
   }) {
     if (iMessage != null) {
@@ -10638,6 +10647,7 @@ class _$PushMessage_IMessageImpl extends PushMessage_IMessage {
     required TResult Function(PushMessage_SendConfirm value) sendConfirm,
     required TResult Function(PushMessage_RegistrationState value)
         registrationState,
+    required TResult Function(PushMessage_NewPhotostream value) newPhotostream,
   }) {
     return iMessage(this);
   }
@@ -10648,6 +10658,7 @@ class _$PushMessage_IMessageImpl extends PushMessage_IMessage {
     TResult? Function(PushMessage_IMessage value)? iMessage,
     TResult? Function(PushMessage_SendConfirm value)? sendConfirm,
     TResult? Function(PushMessage_RegistrationState value)? registrationState,
+    TResult? Function(PushMessage_NewPhotostream value)? newPhotostream,
   }) {
     return iMessage?.call(this);
   }
@@ -10658,6 +10669,7 @@ class _$PushMessage_IMessageImpl extends PushMessage_IMessage {
     TResult Function(PushMessage_IMessage value)? iMessage,
     TResult Function(PushMessage_SendConfirm value)? sendConfirm,
     TResult Function(PushMessage_RegistrationState value)? registrationState,
+    TResult Function(PushMessage_NewPhotostream value)? newPhotostream,
     required TResult orElse(),
   }) {
     if (iMessage != null) {
@@ -10764,6 +10776,7 @@ class _$PushMessage_SendConfirmImpl extends PushMessage_SendConfirm {
     required TResult Function(MessageInst field0) iMessage,
     required TResult Function(String uuid, String? error) sendConfirm,
     required TResult Function(RegisterState field0) registrationState,
+    required TResult Function(SharedAlbum field0) newPhotostream,
   }) {
     return sendConfirm(uuid, error);
   }
@@ -10774,6 +10787,7 @@ class _$PushMessage_SendConfirmImpl extends PushMessage_SendConfirm {
     TResult? Function(MessageInst field0)? iMessage,
     TResult? Function(String uuid, String? error)? sendConfirm,
     TResult? Function(RegisterState field0)? registrationState,
+    TResult? Function(SharedAlbum field0)? newPhotostream,
   }) {
     return sendConfirm?.call(uuid, error);
   }
@@ -10784,6 +10798,7 @@ class _$PushMessage_SendConfirmImpl extends PushMessage_SendConfirm {
     TResult Function(MessageInst field0)? iMessage,
     TResult Function(String uuid, String? error)? sendConfirm,
     TResult Function(RegisterState field0)? registrationState,
+    TResult Function(SharedAlbum field0)? newPhotostream,
     required TResult orElse(),
   }) {
     if (sendConfirm != null) {
@@ -10799,6 +10814,7 @@ class _$PushMessage_SendConfirmImpl extends PushMessage_SendConfirm {
     required TResult Function(PushMessage_SendConfirm value) sendConfirm,
     required TResult Function(PushMessage_RegistrationState value)
         registrationState,
+    required TResult Function(PushMessage_NewPhotostream value) newPhotostream,
   }) {
     return sendConfirm(this);
   }
@@ -10809,6 +10825,7 @@ class _$PushMessage_SendConfirmImpl extends PushMessage_SendConfirm {
     TResult? Function(PushMessage_IMessage value)? iMessage,
     TResult? Function(PushMessage_SendConfirm value)? sendConfirm,
     TResult? Function(PushMessage_RegistrationState value)? registrationState,
+    TResult? Function(PushMessage_NewPhotostream value)? newPhotostream,
   }) {
     return sendConfirm?.call(this);
   }
@@ -10819,6 +10836,7 @@ class _$PushMessage_SendConfirmImpl extends PushMessage_SendConfirm {
     TResult Function(PushMessage_IMessage value)? iMessage,
     TResult Function(PushMessage_SendConfirm value)? sendConfirm,
     TResult Function(PushMessage_RegistrationState value)? registrationState,
+    TResult Function(PushMessage_NewPhotostream value)? newPhotostream,
     required TResult orElse(),
   }) {
     if (sendConfirm != null) {
@@ -10932,6 +10950,7 @@ class _$PushMessage_RegistrationStateImpl
     required TResult Function(MessageInst field0) iMessage,
     required TResult Function(String uuid, String? error) sendConfirm,
     required TResult Function(RegisterState field0) registrationState,
+    required TResult Function(SharedAlbum field0) newPhotostream,
   }) {
     return registrationState(field0);
   }
@@ -10942,6 +10961,7 @@ class _$PushMessage_RegistrationStateImpl
     TResult? Function(MessageInst field0)? iMessage,
     TResult? Function(String uuid, String? error)? sendConfirm,
     TResult? Function(RegisterState field0)? registrationState,
+    TResult? Function(SharedAlbum field0)? newPhotostream,
   }) {
     return registrationState?.call(field0);
   }
@@ -10952,6 +10972,7 @@ class _$PushMessage_RegistrationStateImpl
     TResult Function(MessageInst field0)? iMessage,
     TResult Function(String uuid, String? error)? sendConfirm,
     TResult Function(RegisterState field0)? registrationState,
+    TResult Function(SharedAlbum field0)? newPhotostream,
     required TResult orElse(),
   }) {
     if (registrationState != null) {
@@ -10967,6 +10988,7 @@ class _$PushMessage_RegistrationStateImpl
     required TResult Function(PushMessage_SendConfirm value) sendConfirm,
     required TResult Function(PushMessage_RegistrationState value)
         registrationState,
+    required TResult Function(PushMessage_NewPhotostream value) newPhotostream,
   }) {
     return registrationState(this);
   }
@@ -10977,6 +10999,7 @@ class _$PushMessage_RegistrationStateImpl
     TResult? Function(PushMessage_IMessage value)? iMessage,
     TResult? Function(PushMessage_SendConfirm value)? sendConfirm,
     TResult? Function(PushMessage_RegistrationState value)? registrationState,
+    TResult? Function(PushMessage_NewPhotostream value)? newPhotostream,
   }) {
     return registrationState?.call(this);
   }
@@ -10987,6 +11010,7 @@ class _$PushMessage_RegistrationStateImpl
     TResult Function(PushMessage_IMessage value)? iMessage,
     TResult Function(PushMessage_SendConfirm value)? sendConfirm,
     TResult Function(PushMessage_RegistrationState value)? registrationState,
+    TResult Function(PushMessage_NewPhotostream value)? newPhotostream,
     required TResult orElse(),
   }) {
     if (registrationState != null) {
@@ -11008,6 +11032,164 @@ abstract class PushMessage_RegistrationState extends PushMessage {
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$PushMessage_RegistrationStateImplCopyWith<
           _$PushMessage_RegistrationStateImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$PushMessage_NewPhotostreamImplCopyWith<$Res> {
+  factory _$$PushMessage_NewPhotostreamImplCopyWith(
+          _$PushMessage_NewPhotostreamImpl value,
+          $Res Function(_$PushMessage_NewPhotostreamImpl) then) =
+      __$$PushMessage_NewPhotostreamImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({SharedAlbum field0});
+}
+
+/// @nodoc
+class __$$PushMessage_NewPhotostreamImplCopyWithImpl<$Res>
+    extends _$PushMessageCopyWithImpl<$Res, _$PushMessage_NewPhotostreamImpl>
+    implements _$$PushMessage_NewPhotostreamImplCopyWith<$Res> {
+  __$$PushMessage_NewPhotostreamImplCopyWithImpl(
+      _$PushMessage_NewPhotostreamImpl _value,
+      $Res Function(_$PushMessage_NewPhotostreamImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of PushMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? field0 = null,
+  }) {
+    return _then(_$PushMessage_NewPhotostreamImpl(
+      null == field0
+          ? _value.field0
+          : field0 // ignore: cast_nullable_to_non_nullable
+              as SharedAlbum,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$PushMessage_NewPhotostreamImpl extends PushMessage_NewPhotostream {
+  const _$PushMessage_NewPhotostreamImpl(this.field0) : super._();
+
+  @override
+  final SharedAlbum field0;
+
+  @override
+  String toString() {
+    return 'PushMessage.newPhotostream(field0: $field0)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$PushMessage_NewPhotostreamImpl &&
+            (identical(other.field0, field0) || other.field0 == field0));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, field0);
+
+  /// Create a copy of PushMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$PushMessage_NewPhotostreamImplCopyWith<_$PushMessage_NewPhotostreamImpl>
+      get copyWith => __$$PushMessage_NewPhotostreamImplCopyWithImpl<
+          _$PushMessage_NewPhotostreamImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(MessageInst field0) iMessage,
+    required TResult Function(String uuid, String? error) sendConfirm,
+    required TResult Function(RegisterState field0) registrationState,
+    required TResult Function(SharedAlbum field0) newPhotostream,
+  }) {
+    return newPhotostream(field0);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(MessageInst field0)? iMessage,
+    TResult? Function(String uuid, String? error)? sendConfirm,
+    TResult? Function(RegisterState field0)? registrationState,
+    TResult? Function(SharedAlbum field0)? newPhotostream,
+  }) {
+    return newPhotostream?.call(field0);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(MessageInst field0)? iMessage,
+    TResult Function(String uuid, String? error)? sendConfirm,
+    TResult Function(RegisterState field0)? registrationState,
+    TResult Function(SharedAlbum field0)? newPhotostream,
+    required TResult orElse(),
+  }) {
+    if (newPhotostream != null) {
+      return newPhotostream(field0);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(PushMessage_IMessage value) iMessage,
+    required TResult Function(PushMessage_SendConfirm value) sendConfirm,
+    required TResult Function(PushMessage_RegistrationState value)
+        registrationState,
+    required TResult Function(PushMessage_NewPhotostream value) newPhotostream,
+  }) {
+    return newPhotostream(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(PushMessage_IMessage value)? iMessage,
+    TResult? Function(PushMessage_SendConfirm value)? sendConfirm,
+    TResult? Function(PushMessage_RegistrationState value)? registrationState,
+    TResult? Function(PushMessage_NewPhotostream value)? newPhotostream,
+  }) {
+    return newPhotostream?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(PushMessage_IMessage value)? iMessage,
+    TResult Function(PushMessage_SendConfirm value)? sendConfirm,
+    TResult Function(PushMessage_RegistrationState value)? registrationState,
+    TResult Function(PushMessage_NewPhotostream value)? newPhotostream,
+    required TResult orElse(),
+  }) {
+    if (newPhotostream != null) {
+      return newPhotostream(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class PushMessage_NewPhotostream extends PushMessage {
+  const factory PushMessage_NewPhotostream(final SharedAlbum field0) =
+      _$PushMessage_NewPhotostreamImpl;
+  const PushMessage_NewPhotostream._() : super._();
+
+  SharedAlbum get field0;
+
+  /// Create a copy of PushMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$PushMessage_NewPhotostreamImplCopyWith<_$PushMessage_NewPhotostreamImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -13214,6 +13396,656 @@ abstract class RegisterState_Failed extends RegisterState {
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$RegisterState_FailedImplCopyWith<_$RegisterState_FailedImpl>
       get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+mixin _$SyncStatus {
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() synced,
+    required TResult Function(BigInt progress, BigInt total) downloading,
+    required TResult Function(BigInt progress, BigInt total) uploading,
+    required TResult Function() syncing,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? synced,
+    TResult? Function(BigInt progress, BigInt total)? downloading,
+    TResult? Function(BigInt progress, BigInt total)? uploading,
+    TResult? Function()? syncing,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? synced,
+    TResult Function(BigInt progress, BigInt total)? downloading,
+    TResult Function(BigInt progress, BigInt total)? uploading,
+    TResult Function()? syncing,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(SyncStatus_Synced value) synced,
+    required TResult Function(SyncStatus_Downloading value) downloading,
+    required TResult Function(SyncStatus_Uploading value) uploading,
+    required TResult Function(SyncStatus_Syncing value) syncing,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(SyncStatus_Synced value)? synced,
+    TResult? Function(SyncStatus_Downloading value)? downloading,
+    TResult? Function(SyncStatus_Uploading value)? uploading,
+    TResult? Function(SyncStatus_Syncing value)? syncing,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(SyncStatus_Synced value)? synced,
+    TResult Function(SyncStatus_Downloading value)? downloading,
+    TResult Function(SyncStatus_Uploading value)? uploading,
+    TResult Function(SyncStatus_Syncing value)? syncing,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $SyncStatusCopyWith<$Res> {
+  factory $SyncStatusCopyWith(
+          SyncStatus value, $Res Function(SyncStatus) then) =
+      _$SyncStatusCopyWithImpl<$Res, SyncStatus>;
+}
+
+/// @nodoc
+class _$SyncStatusCopyWithImpl<$Res, $Val extends SyncStatus>
+    implements $SyncStatusCopyWith<$Res> {
+  _$SyncStatusCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of SyncStatus
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+abstract class _$$SyncStatus_SyncedImplCopyWith<$Res> {
+  factory _$$SyncStatus_SyncedImplCopyWith(_$SyncStatus_SyncedImpl value,
+          $Res Function(_$SyncStatus_SyncedImpl) then) =
+      __$$SyncStatus_SyncedImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$SyncStatus_SyncedImplCopyWithImpl<$Res>
+    extends _$SyncStatusCopyWithImpl<$Res, _$SyncStatus_SyncedImpl>
+    implements _$$SyncStatus_SyncedImplCopyWith<$Res> {
+  __$$SyncStatus_SyncedImplCopyWithImpl(_$SyncStatus_SyncedImpl _value,
+      $Res Function(_$SyncStatus_SyncedImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of SyncStatus
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$SyncStatus_SyncedImpl extends SyncStatus_Synced {
+  const _$SyncStatus_SyncedImpl() : super._();
+
+  @override
+  String toString() {
+    return 'SyncStatus.synced()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$SyncStatus_SyncedImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() synced,
+    required TResult Function(BigInt progress, BigInt total) downloading,
+    required TResult Function(BigInt progress, BigInt total) uploading,
+    required TResult Function() syncing,
+  }) {
+    return synced();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? synced,
+    TResult? Function(BigInt progress, BigInt total)? downloading,
+    TResult? Function(BigInt progress, BigInt total)? uploading,
+    TResult? Function()? syncing,
+  }) {
+    return synced?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? synced,
+    TResult Function(BigInt progress, BigInt total)? downloading,
+    TResult Function(BigInt progress, BigInt total)? uploading,
+    TResult Function()? syncing,
+    required TResult orElse(),
+  }) {
+    if (synced != null) {
+      return synced();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(SyncStatus_Synced value) synced,
+    required TResult Function(SyncStatus_Downloading value) downloading,
+    required TResult Function(SyncStatus_Uploading value) uploading,
+    required TResult Function(SyncStatus_Syncing value) syncing,
+  }) {
+    return synced(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(SyncStatus_Synced value)? synced,
+    TResult? Function(SyncStatus_Downloading value)? downloading,
+    TResult? Function(SyncStatus_Uploading value)? uploading,
+    TResult? Function(SyncStatus_Syncing value)? syncing,
+  }) {
+    return synced?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(SyncStatus_Synced value)? synced,
+    TResult Function(SyncStatus_Downloading value)? downloading,
+    TResult Function(SyncStatus_Uploading value)? uploading,
+    TResult Function(SyncStatus_Syncing value)? syncing,
+    required TResult orElse(),
+  }) {
+    if (synced != null) {
+      return synced(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class SyncStatus_Synced extends SyncStatus {
+  const factory SyncStatus_Synced() = _$SyncStatus_SyncedImpl;
+  const SyncStatus_Synced._() : super._();
+}
+
+/// @nodoc
+abstract class _$$SyncStatus_DownloadingImplCopyWith<$Res> {
+  factory _$$SyncStatus_DownloadingImplCopyWith(
+          _$SyncStatus_DownloadingImpl value,
+          $Res Function(_$SyncStatus_DownloadingImpl) then) =
+      __$$SyncStatus_DownloadingImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({BigInt progress, BigInt total});
+}
+
+/// @nodoc
+class __$$SyncStatus_DownloadingImplCopyWithImpl<$Res>
+    extends _$SyncStatusCopyWithImpl<$Res, _$SyncStatus_DownloadingImpl>
+    implements _$$SyncStatus_DownloadingImplCopyWith<$Res> {
+  __$$SyncStatus_DownloadingImplCopyWithImpl(
+      _$SyncStatus_DownloadingImpl _value,
+      $Res Function(_$SyncStatus_DownloadingImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of SyncStatus
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? progress = null,
+    Object? total = null,
+  }) {
+    return _then(_$SyncStatus_DownloadingImpl(
+      progress: null == progress
+          ? _value.progress
+          : progress // ignore: cast_nullable_to_non_nullable
+              as BigInt,
+      total: null == total
+          ? _value.total
+          : total // ignore: cast_nullable_to_non_nullable
+              as BigInt,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$SyncStatus_DownloadingImpl extends SyncStatus_Downloading {
+  const _$SyncStatus_DownloadingImpl(
+      {required this.progress, required this.total})
+      : super._();
+
+  @override
+  final BigInt progress;
+  @override
+  final BigInt total;
+
+  @override
+  String toString() {
+    return 'SyncStatus.downloading(progress: $progress, total: $total)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$SyncStatus_DownloadingImpl &&
+            (identical(other.progress, progress) ||
+                other.progress == progress) &&
+            (identical(other.total, total) || other.total == total));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, progress, total);
+
+  /// Create a copy of SyncStatus
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$SyncStatus_DownloadingImplCopyWith<_$SyncStatus_DownloadingImpl>
+      get copyWith => __$$SyncStatus_DownloadingImplCopyWithImpl<
+          _$SyncStatus_DownloadingImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() synced,
+    required TResult Function(BigInt progress, BigInt total) downloading,
+    required TResult Function(BigInt progress, BigInt total) uploading,
+    required TResult Function() syncing,
+  }) {
+    return downloading(progress, total);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? synced,
+    TResult? Function(BigInt progress, BigInt total)? downloading,
+    TResult? Function(BigInt progress, BigInt total)? uploading,
+    TResult? Function()? syncing,
+  }) {
+    return downloading?.call(progress, total);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? synced,
+    TResult Function(BigInt progress, BigInt total)? downloading,
+    TResult Function(BigInt progress, BigInt total)? uploading,
+    TResult Function()? syncing,
+    required TResult orElse(),
+  }) {
+    if (downloading != null) {
+      return downloading(progress, total);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(SyncStatus_Synced value) synced,
+    required TResult Function(SyncStatus_Downloading value) downloading,
+    required TResult Function(SyncStatus_Uploading value) uploading,
+    required TResult Function(SyncStatus_Syncing value) syncing,
+  }) {
+    return downloading(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(SyncStatus_Synced value)? synced,
+    TResult? Function(SyncStatus_Downloading value)? downloading,
+    TResult? Function(SyncStatus_Uploading value)? uploading,
+    TResult? Function(SyncStatus_Syncing value)? syncing,
+  }) {
+    return downloading?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(SyncStatus_Synced value)? synced,
+    TResult Function(SyncStatus_Downloading value)? downloading,
+    TResult Function(SyncStatus_Uploading value)? uploading,
+    TResult Function(SyncStatus_Syncing value)? syncing,
+    required TResult orElse(),
+  }) {
+    if (downloading != null) {
+      return downloading(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class SyncStatus_Downloading extends SyncStatus {
+  const factory SyncStatus_Downloading(
+      {required final BigInt progress,
+      required final BigInt total}) = _$SyncStatus_DownloadingImpl;
+  const SyncStatus_Downloading._() : super._();
+
+  BigInt get progress;
+  BigInt get total;
+
+  /// Create a copy of SyncStatus
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$SyncStatus_DownloadingImplCopyWith<_$SyncStatus_DownloadingImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$SyncStatus_UploadingImplCopyWith<$Res> {
+  factory _$$SyncStatus_UploadingImplCopyWith(_$SyncStatus_UploadingImpl value,
+          $Res Function(_$SyncStatus_UploadingImpl) then) =
+      __$$SyncStatus_UploadingImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({BigInt progress, BigInt total});
+}
+
+/// @nodoc
+class __$$SyncStatus_UploadingImplCopyWithImpl<$Res>
+    extends _$SyncStatusCopyWithImpl<$Res, _$SyncStatus_UploadingImpl>
+    implements _$$SyncStatus_UploadingImplCopyWith<$Res> {
+  __$$SyncStatus_UploadingImplCopyWithImpl(_$SyncStatus_UploadingImpl _value,
+      $Res Function(_$SyncStatus_UploadingImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of SyncStatus
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? progress = null,
+    Object? total = null,
+  }) {
+    return _then(_$SyncStatus_UploadingImpl(
+      progress: null == progress
+          ? _value.progress
+          : progress // ignore: cast_nullable_to_non_nullable
+              as BigInt,
+      total: null == total
+          ? _value.total
+          : total // ignore: cast_nullable_to_non_nullable
+              as BigInt,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$SyncStatus_UploadingImpl extends SyncStatus_Uploading {
+  const _$SyncStatus_UploadingImpl(
+      {required this.progress, required this.total})
+      : super._();
+
+  @override
+  final BigInt progress;
+  @override
+  final BigInt total;
+
+  @override
+  String toString() {
+    return 'SyncStatus.uploading(progress: $progress, total: $total)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$SyncStatus_UploadingImpl &&
+            (identical(other.progress, progress) ||
+                other.progress == progress) &&
+            (identical(other.total, total) || other.total == total));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, progress, total);
+
+  /// Create a copy of SyncStatus
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$SyncStatus_UploadingImplCopyWith<_$SyncStatus_UploadingImpl>
+      get copyWith =>
+          __$$SyncStatus_UploadingImplCopyWithImpl<_$SyncStatus_UploadingImpl>(
+              this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() synced,
+    required TResult Function(BigInt progress, BigInt total) downloading,
+    required TResult Function(BigInt progress, BigInt total) uploading,
+    required TResult Function() syncing,
+  }) {
+    return uploading(progress, total);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? synced,
+    TResult? Function(BigInt progress, BigInt total)? downloading,
+    TResult? Function(BigInt progress, BigInt total)? uploading,
+    TResult? Function()? syncing,
+  }) {
+    return uploading?.call(progress, total);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? synced,
+    TResult Function(BigInt progress, BigInt total)? downloading,
+    TResult Function(BigInt progress, BigInt total)? uploading,
+    TResult Function()? syncing,
+    required TResult orElse(),
+  }) {
+    if (uploading != null) {
+      return uploading(progress, total);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(SyncStatus_Synced value) synced,
+    required TResult Function(SyncStatus_Downloading value) downloading,
+    required TResult Function(SyncStatus_Uploading value) uploading,
+    required TResult Function(SyncStatus_Syncing value) syncing,
+  }) {
+    return uploading(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(SyncStatus_Synced value)? synced,
+    TResult? Function(SyncStatus_Downloading value)? downloading,
+    TResult? Function(SyncStatus_Uploading value)? uploading,
+    TResult? Function(SyncStatus_Syncing value)? syncing,
+  }) {
+    return uploading?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(SyncStatus_Synced value)? synced,
+    TResult Function(SyncStatus_Downloading value)? downloading,
+    TResult Function(SyncStatus_Uploading value)? uploading,
+    TResult Function(SyncStatus_Syncing value)? syncing,
+    required TResult orElse(),
+  }) {
+    if (uploading != null) {
+      return uploading(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class SyncStatus_Uploading extends SyncStatus {
+  const factory SyncStatus_Uploading(
+      {required final BigInt progress,
+      required final BigInt total}) = _$SyncStatus_UploadingImpl;
+  const SyncStatus_Uploading._() : super._();
+
+  BigInt get progress;
+  BigInt get total;
+
+  /// Create a copy of SyncStatus
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$SyncStatus_UploadingImplCopyWith<_$SyncStatus_UploadingImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$SyncStatus_SyncingImplCopyWith<$Res> {
+  factory _$$SyncStatus_SyncingImplCopyWith(_$SyncStatus_SyncingImpl value,
+          $Res Function(_$SyncStatus_SyncingImpl) then) =
+      __$$SyncStatus_SyncingImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$SyncStatus_SyncingImplCopyWithImpl<$Res>
+    extends _$SyncStatusCopyWithImpl<$Res, _$SyncStatus_SyncingImpl>
+    implements _$$SyncStatus_SyncingImplCopyWith<$Res> {
+  __$$SyncStatus_SyncingImplCopyWithImpl(_$SyncStatus_SyncingImpl _value,
+      $Res Function(_$SyncStatus_SyncingImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of SyncStatus
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$SyncStatus_SyncingImpl extends SyncStatus_Syncing {
+  const _$SyncStatus_SyncingImpl() : super._();
+
+  @override
+  String toString() {
+    return 'SyncStatus.syncing()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$SyncStatus_SyncingImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() synced,
+    required TResult Function(BigInt progress, BigInt total) downloading,
+    required TResult Function(BigInt progress, BigInt total) uploading,
+    required TResult Function() syncing,
+  }) {
+    return syncing();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? synced,
+    TResult? Function(BigInt progress, BigInt total)? downloading,
+    TResult? Function(BigInt progress, BigInt total)? uploading,
+    TResult? Function()? syncing,
+  }) {
+    return syncing?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? synced,
+    TResult Function(BigInt progress, BigInt total)? downloading,
+    TResult Function(BigInt progress, BigInt total)? uploading,
+    TResult Function()? syncing,
+    required TResult orElse(),
+  }) {
+    if (syncing != null) {
+      return syncing();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(SyncStatus_Synced value) synced,
+    required TResult Function(SyncStatus_Downloading value) downloading,
+    required TResult Function(SyncStatus_Uploading value) uploading,
+    required TResult Function(SyncStatus_Syncing value) syncing,
+  }) {
+    return syncing(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(SyncStatus_Synced value)? synced,
+    TResult? Function(SyncStatus_Downloading value)? downloading,
+    TResult? Function(SyncStatus_Uploading value)? uploading,
+    TResult? Function(SyncStatus_Syncing value)? syncing,
+  }) {
+    return syncing?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(SyncStatus_Synced value)? synced,
+    TResult Function(SyncStatus_Downloading value)? downloading,
+    TResult Function(SyncStatus_Uploading value)? uploading,
+    TResult Function(SyncStatus_Syncing value)? syncing,
+    required TResult orElse(),
+  }) {
+    if (syncing != null) {
+      return syncing(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class SyncStatus_Syncing extends SyncStatus {
+  const factory SyncStatus_Syncing() = _$SyncStatus_SyncingImpl;
+  const SyncStatus_Syncing._() : super._();
 }
 
 /// @nodoc
