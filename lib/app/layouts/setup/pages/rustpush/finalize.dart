@@ -105,7 +105,7 @@ class _FinalizePageState extends OptimizedState<FinalizePage> {
                   },
                   initialVal: ss.settings.isSmsRouter.value,
                   title: "Use SMS with this phone (BETA)",
-                  subtitle: "Use this phone with OpenBubbles and your other Apple devices",
+                  subtitle: "Use this phone with OpenBubbles and your other Apple devices${(handles.any((i) => i.contains("tel:")) ?? false) ? "" : ". Warning: no phone handles are registered; official Apple clients will only be able to receive forwarded SMS"}",
                   backgroundColor: tileColor,
                   isThreeLine: true,
                 )),

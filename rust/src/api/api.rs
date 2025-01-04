@@ -22,6 +22,7 @@ use uniffi::{deps::log::{info, error}, HandleAlloc};
 use uuid::Uuid;
 use std::io::Seek;
 use async_recursion::async_recursion;
+use base64::prelude::*;
 
 use crate::{frb_generated::{SseEncode, StreamSink}, init_logger, native::{PackagedFile, PACKAGER_LOCK, QUEUED_MESSAGES}, RUNTIME};
 
@@ -81,7 +82,7 @@ impl Deref for JoinedOSConfig {
     }
 }
 
-trait SeekRead: Seek + Read {}
+pub trait SeekRead: Seek + Read {}
 impl<T: Seek + Read> SeekRead for T {}
 
 #[derive(Serialize, Deserialize, Clone)]
@@ -104,7 +105,7 @@ type MyFilePackager = FFMpegFilePackager;
 type MyFilePackager = FFIFilePackager;
 
 #[derive(Default)]
-struct FFIFilePackager {
+pub struct FFIFilePackager {
 
 }
 
@@ -661,6 +662,27 @@ async fn handle_photostream(client: &SharedStreamClient<DefaultAnisetteProvider>
     }
 }
 
+pub async fn update_account_headers(state: &Arc<PushState>) -> anyhow::Result<String> {
+    let mut state = state.0.write().await;
+    let account = state.account.as_mut().expect("no login state!");
+
+    Ok(account.request_update_account().await?)
+}
+
+pub async fn get_anisette_headers(state: &Arc<PushState>) -> anyhow::Result<HashMap<String, String>> {
+    let state = state.0.read().await;
+
+    let mut headers = state.anisette.as_ref().unwrap().lock().await.get_headers().await?.clone();
+    headers.insert("X-Mme-Client-Info".to_string(), state.os_config.as_ref().unwrap().get_adi_mme_info("com.apple.AuthKit/1 (com.apple.findmy/375.20)"));
+    Ok(headers)
+}
+
+pub async fn retry_login(state: &Arc<PushState>) -> anyhow::Result<IDSUser> {
+    let inner = state.0.read().await;
+    let account = inner.account.as_ref().expect("no login state!");
+    do_login(&inner.conf_dir, account.username.as_ref().unwrap().trim(), account.get_pet().as_ref().unwrap(), Some("termsAccepted=true"), account.spd.as_ref().unwrap(), inner.anisette.as_ref().unwrap(), inner.os_config.as_deref().unwrap()).await
+}
+
 pub async fn get_albums(state: &Arc<PushState>, refresh: bool) -> anyhow::Result<(Vec<SharedAlbum>, Vec<String>)> {
     let recv_path = state.0.read().await;
     let lock = recv_path.sharedstreams.as_ref().expect("Cannot use photostreams!");
@@ -826,7 +848,7 @@ pub async fn send(state: &Arc<PushState>, mut msg: MessageInst) -> anyhow::Resul
         let uuid = msg.id.clone();
         tokio::spawn(async move {
             let result = handle.await.unwrap();
-            info!("Finished handle");
+            info!("Finished handle {}", uuid);
             let locked = state_cpy.0.read().await;
             let maybeerr = result.err().map(|err| format!("{}", err));
             let _ = locked.local_broadcast.send(PushMessage::SendConfirm { uuid, error: maybeerr }).await;
@@ -1049,8 +1071,8 @@ pub async fn refresh_background_following(state: &Arc<PushState>) -> anyhow::Res
     Ok(x.following.clone())
 }
 
-async fn do_login(conf_dir: &Path, username: &str, pet: &str, spd: &Dictionary, anisette: &ArcAnisetteClient<DefaultAnisetteProvider>, os_config: &dyn OSConfig) -> anyhow::Result<IDSUser> {
-    let delegates = login_apple_delegates(username, pet, spd["adsid"].as_string().unwrap(), &mut *anisette.lock().await, os_config, &[LoginDelegate::IDS, LoginDelegate::MobileMe]).await?;
+async fn do_login(conf_dir: &Path, username: &str, pet: &str, cookie: Option<&str>, spd: &Dictionary, anisette: &ArcAnisetteClient<DefaultAnisetteProvider>, os_config: &dyn OSConfig) -> anyhow::Result<IDSUser> {
+    let delegates = login_apple_delegates(username, pet, spd["adsid"].as_string().unwrap(), cookie, &mut *anisette.lock().await, os_config, &[LoginDelegate::IDS, LoginDelegate::MobileMe]).await?;
 
     let mobileme = delegates.mobileme.unwrap();
     let findmy = FindMyState::new(spd["DsPrsId"].as_unsigned_integer().unwrap().to_string(), spd["acname"].as_string().unwrap().to_string(), &mobileme);
@@ -1072,9 +1094,12 @@ pub async fn try_auth(state: &Arc<PushState>, username: String, password: String
         AppleAccount::new_with_anisette(get_login_config(&*inner).await, inner.anisette.clone().unwrap())?;
     let mut login_state = apple_account.login_email_pass(&username, &password).await?;
 
+    inner.account = Some(apple_account);
+    let apple_account = inner.account.as_ref().unwrap();
+
     let mut user = None;
     if let Some(pet) = apple_account.get_pet() {
-        let identity = do_login(&inner.conf_dir, username.trim(), &pet, apple_account.spd.as_ref().unwrap(), inner.anisette.as_ref().unwrap(), inner.os_config.as_deref().unwrap()).await?;
+        let identity = do_login(&inner.conf_dir, username.trim(), &pet, None, apple_account.spd.as_ref().unwrap(), inner.anisette.as_ref().unwrap(), inner.os_config.as_deref().unwrap()).await?;
         user = Some(identity);
 
         // who needs extra steps when you have a PET, amirite?
@@ -1084,7 +1109,6 @@ pub async fn try_auth(state: &Arc<PushState>, username: String, password: String
         }
     }
 
-    inner.account = Some(apple_account);
 
     Ok((login_state, user))
 }
@@ -1115,7 +1139,7 @@ pub async fn verify_2fa(state: &Arc<PushState>, code: String) -> anyhow::Result<
 
     let mut user = None;
     if let Some(pet) = account.get_pet() {
-        let identity = do_login(&inner.conf_dir, account.username.as_ref().unwrap().trim(), &pet, account.spd.as_ref().unwrap(), inner.anisette.as_ref().unwrap(), inner.os_config.as_deref().unwrap()).await?;
+        let identity = do_login(&inner.conf_dir, account.username.as_ref().unwrap().trim(), &pet, None, account.spd.as_ref().unwrap(), inner.anisette.as_ref().unwrap(), inner.os_config.as_deref().unwrap()).await?;
         user = Some(identity);
 
         // who needs extra steps when you have a PET, amirite?
@@ -1154,7 +1178,7 @@ pub async fn verify_2fa_sms(state: &Arc<PushState>, body: &VerifyBody, code: Str
 
     let mut user = None;
     if let Some(pet) = account.get_pet() {
-        let identity = do_login(&inner.conf_dir, account.username.as_ref().unwrap().trim(), &pet, account.spd.as_ref().unwrap(), inner.anisette.as_ref().unwrap(), inner.os_config.as_deref().unwrap()).await?;
+        let identity = do_login(&inner.conf_dir, account.username.as_ref().unwrap().trim(), &pet, None, account.spd.as_ref().unwrap(), inner.anisette.as_ref().unwrap(), inner.os_config.as_deref().unwrap()).await?;
         user = Some(identity);
 
         // who needs extra steps when you have a PET, amirite?

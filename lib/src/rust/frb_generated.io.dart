@@ -129,6 +129,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   int dco_decode_CastedPrimitive_usize(dynamic raw);
 
   @protected
+  Map<String, String> dco_decode_Map_String_String(dynamic raw);
+
+  @protected
   Map<String, bool> dco_decode_Map_String_bool(dynamic raw);
 
   @protected
@@ -382,6 +385,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   double dco_decode_f_64(dynamic raw);
 
   @protected
+  FFIFilePackager dco_decode_ffi_file_packager(dynamic raw);
+
+  @protected
   Follow dco_decode_follow(dynamic raw);
 
   @protected
@@ -439,6 +445,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   List<(String, bool)> dco_decode_list_record_string_bool(dynamic raw);
+
+  @protected
+  List<(String, String)> dco_decode_list_record_string_string(dynamic raw);
 
   @protected
   List<(String, SyncStatus)> dco_decode_list_record_string_sync_status(
@@ -664,6 +673,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   (String, bool) dco_decode_record_string_bool(dynamic raw);
 
   @protected
+  (String, String) dco_decode_record_string_string(dynamic raw);
+
+  @protected
   (String, SyncStatus) dco_decode_record_string_sync_status(dynamic raw);
 
   @protected
@@ -808,6 +820,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   int sse_decode_CastedPrimitive_usize(SseDeserializer deserializer);
+
+  @protected
+  Map<String, String> sse_decode_Map_String_String(
+      SseDeserializer deserializer);
 
   @protected
   Map<String, bool> sse_decode_Map_String_bool(SseDeserializer deserializer);
@@ -1084,6 +1100,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   double sse_decode_f_64(SseDeserializer deserializer);
 
   @protected
+  FFIFilePackager sse_decode_ffi_file_packager(SseDeserializer deserializer);
+
+  @protected
   Follow sse_decode_follow(SseDeserializer deserializer);
 
   @protected
@@ -1147,6 +1166,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   List<(String, bool)> sse_decode_list_record_string_bool(
+      SseDeserializer deserializer);
+
+  @protected
+  List<(String, String)> sse_decode_list_record_string_string(
       SseDeserializer deserializer);
 
   @protected
@@ -1392,6 +1415,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   (String, bool) sse_decode_record_string_bool(SseDeserializer deserializer);
 
   @protected
+  (String, String) sse_decode_record_string_string(
+      SseDeserializer deserializer);
+
+  @protected
   (String, SyncStatus) sse_decode_record_string_sync_status(
       SseDeserializer deserializer);
 
@@ -1545,6 +1572,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_CastedPrimitive_usize(int self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_Map_String_String(
+      Map<String, String> self, SseSerializer serializer);
 
   @protected
   void sse_encode_Map_String_bool(
@@ -1835,6 +1866,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_f_64(double self, SseSerializer serializer);
 
   @protected
+  void sse_encode_ffi_file_packager(
+      FFIFilePackager self, SseSerializer serializer);
+
+  @protected
   void sse_encode_follow(Follow self, SseSerializer serializer);
 
   @protected
@@ -1901,6 +1936,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_list_record_string_bool(
       List<(String, bool)> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_record_string_string(
+      List<(String, String)> self, SseSerializer serializer);
 
   @protected
   void sse_encode_list_record_string_sync_status(
@@ -2152,6 +2191,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_record_string_bool(
       (String, bool) self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_record_string_string(
+      (String, String) self, SseSerializer serializer);
 
   @protected
   void sse_encode_record_string_sync_status(

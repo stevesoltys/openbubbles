@@ -765,14 +765,18 @@ class ChatCreatorState extends OptimizedState<ChatCreator> {
                           }
                           if (chat != null && existsOnServer) {
                             sendInitialMessage() async {
-                              if (fakeController.value == null) {
-                                await cm.setActiveChat(chat, clearNotifications: false);
-                                cm.activeChat!.controller = cvc(chat);
-                                cm.activeChat!.controller!.pickedAttachments.value = [];
-                                fakeController.value = cm.activeChat!.controller;
-                              } else {
-                                fakeController.value!.textController.text = textController.text;
-                                fakeController.value!.pickedAttachments.value = widget.initialAttachments;
+                              try {
+                                if (fakeController.value == null) {
+                                  await cm.setActiveChat(chat, clearNotifications: false);
+                                  cm.activeChat!.controller = cvc(chat);
+                                  cm.activeChat!.controller!.pickedAttachments.value = [];
+                                  fakeController.value = cm.activeChat!.controller;
+                                } else {
+                                  fakeController.value!.textController.text = textController.text;
+                                  fakeController.value!.pickedAttachments.value = widget.initialAttachments;
+                                }
+                              } catch (e, stack) {
+                                Logger.error("Fix your code zach!", error: e, trace: stack);
                               }
 
                               await fakeController.value!.send(
@@ -787,11 +791,15 @@ class ChatCreatorState extends OptimizedState<ChatCreator> {
                                 false,
                                 null,
                               );
-
-                              fakeController.value!.replyToMessage = null;
-                              fakeController.value!.pickedAttachments.clear();
-                              fakeController.value!.textController.clear();
-                              fakeController.value!.subjectTextController.clear();
+                              
+                              try {
+                                fakeController.value!.replyToMessage = null;
+                                fakeController.value!.pickedAttachments.clear();
+                                fakeController.value!.textController.clear();
+                                fakeController.value!.subjectTextController.clear();
+                              } catch (e, stack) {
+                                Logger.error("Fix your code zach!", error: e, trace: stack);
+                              }
                             }
 
                             if (backend is RustPushBackend && widget.initialAttachments.isEmpty && widget.initialText == "") {

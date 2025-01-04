@@ -11,7 +11,7 @@ part 'api.freezed.dart';
 
 // These functions are ignored because they are not marked as `pub`: `config`, `do_login`, `get_login_config`, `get_phase`, `handle_photostream`, `plist_to_bin`, `plist_to_buf`, `plist_to_string`, `restore`, `setup_push`, `wrap_sink`
 // These types are ignored because they are not used by any `pub` functions: `FLUTTER_RUST_BRIDGE_HANDLER`, `InnerPushState`, `NSArrayClass`, `NSArrayIconArray`, `NSArrayImageArray`, `SavedHardwareState`
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `deref`, `deref`, `eq`, `fmt`, `initialize`, `spawn`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `deref`, `deref`, `eq`, `fmt`, `get_files`, `initialize`, `spawn`
 
 Future<ArcPushState> newPushState({required String dir}) =>
     RustLib.instance.api.crateApiApiNewPushState(dir: dir);
@@ -77,6 +77,15 @@ Future<NsArrayLpImageMetadata> createImageArray(
 
 Future<NsArrayLpIconMetadata> createIconArray({required LPIconMetadata img}) =>
     RustLib.instance.api.crateApiApiCreateIconArray(img: img);
+
+Future<String> updateAccountHeaders({required ArcPushState state}) =>
+    RustLib.instance.api.crateApiApiUpdateAccountHeaders(state: state);
+
+Future<Map<String, String>> getAnisetteHeaders({required ArcPushState state}) =>
+    RustLib.instance.api.crateApiApiGetAnisetteHeaders(state: state);
+
+Future<IdsUser> retryLogin({required ArcPushState state}) =>
+    RustLib.instance.api.crateApiApiRetryLogin(state: state);
 
 Future<(List<SharedAlbum>, List<String>)> getAlbums(
         {required ArcPushState state, required bool refresh}) =>
@@ -639,6 +648,21 @@ class ExtensionApp {
           appId == other.appId &&
           bundleId == other.bundleId &&
           balloon == other.balloon;
+}
+
+class FFIFilePackager {
+  const FFIFilePackager();
+
+  static Future<FFIFilePackager> default_() =>
+      RustLib.instance.api.crateApiApiFfiFilePackagerDefault();
+
+  @override
+  int get hashCode => 0;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is FFIFilePackager && runtimeType == other.runtimeType;
 }
 
 class Follow {

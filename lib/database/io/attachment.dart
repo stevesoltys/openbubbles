@@ -35,6 +35,9 @@ class Attachment {
   String? webUrl;
   bool hasLivePhoto;
 
+  @Transient()
+  String? sourcePath;
+
   final message = ToOne<Message>();
 
   Map<String, dynamic>? metadata;
@@ -58,6 +61,7 @@ class Attachment {
     this.metadata,
     this.bytes,
     this.webUrl,
+    this.sourcePath,
     this.hasLivePhoto = false,
   });
 

@@ -205,6 +205,7 @@ dependencies:
   ffmpeg_kit_flutter: 6.0.3
   dotted_border: ^2.1.0
   external_path: ^2.0.1
+  flutter_inappwebview: ^6.1.5
 
 
 dependency_overrides:
@@ -305,6 +306,7 @@ flutter:
     - assets/badges/badge-9.ico
     - assets/badges/badge-10.ico
     - assets/rustpush/uti-map.json
+    - assets/scripts/AppleAccountSetup.js
     - .env
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

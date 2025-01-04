@@ -278,6 +278,9 @@ class _AppleId2FAState extends OptimizedState<AppleId2FA> {
       }
     } catch (e) {
       if (e is AnyhowException) {
+        if (e.message.contains("This account needs to accept the ToS")) {
+          await controller.updateAccountUi((finished) => setState(() { loading = finished; }));
+        }
         controller.updateConnectError(e.message);
       }
       if (e is PanicException) {

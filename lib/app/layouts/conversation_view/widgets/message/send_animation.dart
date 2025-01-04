@@ -73,7 +73,7 @@ class _SendAnimationState
     String? replyRun = part != null ? Message.findOne(guid: replyGuid)?.replyPart(part) : null;
     for (int i = 0; i < attachments.length; i++) {
       final file = attachments[i];
-      String data = await DefaultAssetBundle.of(context).loadString("assets/rustpush/uti-map.json");
+      String data = await DefaultAssetBundle.of(Get.context!).loadString("assets/rustpush/uti-map.json");
       final utiMap = jsonDecode(data);
 
       final message = Message(
@@ -89,6 +89,7 @@ class _SendAnimationState
             bytes: file.bytes,
             transferName: file.name,
             totalBytes: file.size,
+            sourcePath: file.path,
           ),
         ],
         isFromMe: true,

@@ -432,34 +432,37 @@ class MentionTextEditingController extends SpellCheckTextEditingController {
     super.text,
     super.focusNode,
     this.mentionables = const <Mentionable>[],
-  }) {
-    TextSelection oldTextFieldSelection = const TextSelection.collapsed(offset: 0);
-    String lastText = "";
+  });
 
-    addListener(() {
-      if (lastText != text) {
-        // something changed, compute deltas
-        // use text diff because some keyboards can bump the cursor forward into an existing space when typing a period during an autocorrect.
-        int caret = min(selection.baseOffset, selection.extentOffset) - min(oldTextFieldSelection.baseOffset, oldTextFieldSelection.extentOffset);
-        var textdiff = text.length - lastText.length;
-        if (caret != textdiff) {
-          Logger.info("Caret diff $caret $textdiff");
-        }
-        try {
-          mutateRange(oldTextFieldSelection, oldTextFieldSelection.isCollapsed ? textdiff : caret);
-        } catch (e, s) {
-          Logger.error("Invalid changed annotations!", error: e, trace: s);
-          if (text.isNotEmpty) {
-            annotations = [Annotation(range: [0, text.length])];
-          } else {
-            annotations = [];
-          }
-          mentionCache = {};
-        }
+  TextSelection oldTextFieldSelection = const TextSelection.collapsed(offset: 0);
+  String lastText = "";
+
+  @override
+  void notifyListeners() {
+    super.notifyListeners();
+    Logger.info("a $lastText $text");
+    if (lastText != text) {
+      // something changed, compute deltas
+      // use text diff because some keyboards can bump the cursor forward into an existing space when typing a period during an autocorrect.
+      int caret = min(selection.baseOffset, selection.extentOffset) - min(oldTextFieldSelection.baseOffset, oldTextFieldSelection.extentOffset);
+      var textdiff = text.length - lastText.length;
+      if (caret != textdiff) {
+        Logger.info("Caret diff $caret $textdiff");
       }
-      oldTextFieldSelection = selection;
-      lastText = text;
-    });
+      try {
+        mutateRange(oldTextFieldSelection, oldTextFieldSelection.isCollapsed ? textdiff : caret);
+      } catch (e, s) {
+        Logger.error("Invalid changed annotations!", error: e, trace: s);
+        if (text.isNotEmpty) {
+          annotations = [Annotation(range: [0, text.length])];
+        } else {
+          annotations = [];
+        }
+        mentionCache = {};
+      }
+    }
+    oldTextFieldSelection = selection;
+    lastText = text;
   }
 
   Map<String, String> mentionCache = {};
@@ -472,6 +475,15 @@ class MentionTextEditingController extends SpellCheckTextEditingController {
       "cache": mentionCache
     };
     return jsonEncode(values);
+  }
+
+  void resetAnnotations() {
+    if (text.isNotEmpty) {
+      annotations = [Annotation(range: [0, text.length])];
+    } else {
+      annotations = [];
+    }
+    mentionCache = {};
   }
 
   void restoreAnnotations(String myText, String values) {
@@ -488,12 +500,7 @@ class MentionTextEditingController extends SpellCheckTextEditingController {
       validateRange();
     } catch (e, s) {
       Logger.error("Invalid restored annotations!", error: e, trace: s);
-      if (text.isNotEmpty) {
-        annotations = [Annotation(range: [0, text.length])];
-      } else {
-        annotations = [];
-      }
-      mentionCache = {};
+      resetAnnotations();
     }
   }
 
@@ -536,6 +543,7 @@ class MentionTextEditingController extends SpellCheckTextEditingController {
   }
 
   void mutateRange(TextSelection collapse, int length, { Annotation? newAnnotation }) {
+    Logger.info("annotations ${annotations.map((a) => a.toMap()).toList()}");
     // base < offset
     if (collapse.baseOffset > collapse.extentOffset) {
       collapse = TextSelection(baseOffset: collapse.extentOffset, extentOffset: collapse.baseOffset);
@@ -949,11 +957,20 @@ class MentionTextEditingController extends SpellCheckTextEditingController {
             ),
           );
         }
+        String range = "";
+
+        try {
+          range = text.substring(annotation.range[0], annotation.range[1]);
+        } catch (e, stack) {
+          Logger.error("Failed to substring, resetting annotations!", error: e, trace: stack);
+          resetAnnotations();
+          refresh();
+        }
 
         // Anything beyond this point is not a mention. So fallback to original style.
         return buildMistakeTextSpans(
           context: context,
-          chunk: text.substring(annotation.range[0], annotation.range[1]),
+          chunk: range,
           offset: annotation.range[0],
           style: s,
         );

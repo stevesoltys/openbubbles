@@ -153,7 +153,7 @@ class _AppleIdLoginState extends OptimizedState<AppleIdLogin> {
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     Text(
-                                      "Visit icloud.com to create an Apple Account. You may need to contact Apple support if it won't let you..",
+                                      "Visit icloud.com to create an Apple Account. You may need to contact Apple support if it states your account cannot be created at this time.",
                                       style: Get.textTheme.bodyLarge,
                                     ),
                                     const SizedBox(height: 20),
@@ -418,6 +418,9 @@ class _AppleIdLoginState extends OptimizedState<AppleIdLogin> {
       }
     } catch (e) {
       if (e is AnyhowException) {
+        if (e.message.contains("This account needs to accept the ToS")) {
+          await controller.updateAccountUi((finished) => setState(() { loading = finished; }));
+        }
         controller.updateConnectError(e.message);
       }
       rethrow;

@@ -2805,6 +2805,7 @@ dependencies = [
  "android_logger 0.14.1",
  "anyhow",
  "async-recursion",
+ "base64 0.22.1",
  "flexi_logger",
  "flutter_rust_bridge",
  "futures",

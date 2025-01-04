@@ -451,7 +451,6 @@ class AttachmentPickerState extends OptimizedState<AttachmentPicker> {
                                   path: file.path,
                                   name: file.path.split('/').last,
                                   size: await file.length(),
-                                  bytes: await file.readAsBytes(),
                                 ));
                               }
                             },

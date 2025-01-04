@@ -258,7 +258,7 @@ class _SharedStreamsPanelState extends OptimizedState<SharedStreamsPanel> {
     for (var (index, album) in myAlbums.indexed) {
       var syncing = albumItems.contains(album.albumguid);
       var item = SettingsSwitch(
-        title: album.name!,
+        title: album.name ?? "",
         subtitle: syncing ? syncStatusForAlbum(album.albumguid) : "Not Syncing",
         initialVal: syncing,
         onChanged: (bool val) async {

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:bluebubbles/helpers/ui/facetime_helpers.dart';
 import 'package:bluebubbles/database/models.dart';
@@ -10,7 +11,14 @@ import 'package:bluebubbles/services/network/backend_service.dart';
 import 'package:bluebubbles/utils/logger/logger.dart';
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
+import 'package:ffmpeg_kit_flutter/ffmpeg_kit.dart';
+import 'package:ffmpeg_kit_flutter/ffprobe_kit.dart';
+import 'package:ffmpeg_kit_flutter/log.dart';
+import 'package:ffmpeg_kit_flutter/return_code.dart';
+import 'package:ffmpeg_kit_flutter/session.dart';
+import 'package:ffmpeg_kit_flutter/statistics.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide Response;
 import 'package:tuple/tuple.dart';
 import 'package:universal_io/io.dart';
@@ -243,25 +251,145 @@ class ActionHandler extends GetxService {
     attachmentProgress.add(progress);
     // Save the attachment to storage and DB
     if (!kIsWeb) {
-      String pathName = "${fs.appDocDir.path}/attachments/${attachment.guid}/${attachment.transferName}";
-      final file = await File(pathName).create(recursive: true);
-      if (attachment.mimeType == "image/gif") {
-        attachment.bytes = await fixSpeedyGifs(attachment.bytes!);
+      var dialog = attachment.totalBytes! > 100 * 1000 * 1000;
+      if (dialog) {
+        showDialog(context: Get.context!,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text("Preparing...", style: context.theme.textTheme.titleLarge),
+              backgroundColor: context.theme.colorScheme.properSurface,
+              actions: [],
+            );
+        });
       }
-      await file.writeAsBytes(attachment.bytes!);
+      
+      String directory = "${fs.appDocDir.path}/attachments/${attachment.guid}";
+      String pathName = "$directory/${attachment.transferName}";
+      final file = await File(pathName).create(recursive: true);
+      if (attachment.bytes != null) {
+        if (attachment.mimeType == "image/gif") {
+          attachment.bytes = await fixSpeedyGifs(attachment.bytes!);
+        }
+        await file.writeAsBytes(attachment.bytes!);
+      } else {
+        await File(attachment.sourcePath!).copy(pathName);
+      }
+
+      // 100 MB
+      if (dialog) {
+
+        String tempPath = "$directory/temp.mp4";
+        file.renameSync(tempPath);
+        // use FFMPEG to shrink
+        var info = await FFprobeKit.getMediaInformation(tempPath);
+        print(await info.getOutput());
+        var output = json.decode((await info.getOutput())!);
+        double duration = double.parse(output["format"]["duration"]);
+        List<dynamic> streams = output["streams"];
+        var videoStream = streams.firstWhereOrNull((stream) => stream["codec_type"] == "video");
+        int width = videoStream?["width"] ?? 1;
+        int height = videoStream?["height"] ?? 1;
+        if (width > height) {
+          var aspect = height / width;
+          width = 1920;
+          height = (aspect * width).floor();
+        } else {
+          var aspect = width / height;
+          height = 1920;
+          width = (aspect * height).floor();
+        }
+
+        double progress = 0;
+        Function? myUpdate;
+
+        Completer c = Completer();
+
+        var audioRate = 128 * 1000;
+        var maxBits = (50 * 1000 * 1000 * 8) - (audioRate * duration).floor();
+        var bitsPerSecond = (maxBits / duration).floor();
+        var executed = await FFmpegKit.executeAsync("-i \"$directory/temp.mp4\" -b:v $bitsPerSecond -vf \"scale=$width:$height\" -c:a aac -b:a $audioRate \"$directory/compressed.mp4\"",
+          (Session session) async {
+            if (myUpdate != null) {
+              Navigator.of(Get.context!).pop(); // dismiss dialog
+            }
+            c.complete();
+            Logger.info("Session finsihed $session");
+          },
+          (Log log) async { },
+          (Statistics statistics) {
+            progress = statistics.getTime() / 1000; // ms to s
+            if (myUpdate != null) {
+              myUpdate!(() {});
+            }
+            Logger.info("Time $progress");
+          });
+
+        Get.back();
+
+        showDialog(context: Get.context!,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text("Compressing...", style: context.theme.textTheme.titleLarge),
+              content: SizedBox(
+                      height: 5,
+                      child: Center(
+                        child: StatefulBuilder(builder: (context, update) {
+                          myUpdate = update;
+                          return LinearProgressIndicator(
+                            value: progress / duration,
+                            backgroundColor: context.theme.colorScheme.outline,
+                            valueColor: AlwaysStoppedAnimation<Color>(context.theme.colorScheme.primary),
+                          );
+                        }),
+                      ),
+                    ),
+              backgroundColor: context.theme.colorScheme.properSurface,
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(
+                    "Cancel", style: context.theme.textTheme.bodyLarge!.copyWith(color: context.theme.colorScheme.primary),
+                  ),
+                )
+              ],
+            );
+          }).then((_) {
+            myUpdate = null;
+            executed.cancel();
+          });
+        
+        await c.future;
+
+        var returnCode = await executed.getReturnCode();
+        if (ReturnCode.isCancel(returnCode)) {
+          throw Exception("User cancelled!");
+        }
+        if (!ReturnCode.isSuccess(returnCode)) {
+          var output = await executed.getOutput();
+          showSnackbar("Error", "Failed to compress video");
+          throw Exception("FFMpeg failed $output code $returnCode");
+        }
+        await File(tempPath).delete();
+        File("$directory/compressed.mp4").renameSync(pathName);
+        attachment.totalBytes = File(pathName).lengthSync();
+      }
     }
     await c.addMessage(m);
   }
 
   Future<void> sendAttachment(Chat c, Message m, bool isAudioMessage) async {
-    if (m.attachments.isEmpty || m.attachments.firstOrNull?.bytes == null) return;
+    if (m.attachments.isEmpty) return;
     final attachment = m.attachments.first!;
     final progress = attachmentProgress.firstWhere((e) => e.item1 == attachment.guid);
     final completer = Completer<void>();
     latestCancelToken = CancelToken();
     var apnsSuccess = false;
     backend.sendAttachment(
-      c, m, isAudioMessage, attachment, onSendProgress: (count, total) => progress.item2.value = count / attachment.bytes!.length,
+      c, m, isAudioMessage, attachment, onSendProgress: (count, total) => progress.item2.value = count / total,
       cancelToken: latestCancelToken,
     ).then((newMessage) async {
       latestCancelToken = null;

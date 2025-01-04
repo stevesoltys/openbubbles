@@ -29,12 +29,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart';
+import 'package:flutter_rust_bridge/flutter_rust_bridge.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:bluebubbles/src/rust/api/api.dart' as api;
 import 'package:url_launcher/url_launcher.dart';
 import 'package:convert/convert.dart';
 import 'package:app_links/app_links.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+
 
 class SetupViewController extends StatefulController {
   final pageController = PageController(initialPage: 0);
@@ -58,6 +61,81 @@ class SetupViewController extends StatefulController {
   Map<int, api.IdsUser> currentPhoneUsers = {};
 
   RxBool phoneValidating = false.obs;
+
+  void updateSucceeded(Function finish) async {
+    finish(true);
+    updateConnectError('');
+    try {
+      currentAppleUser = await api.retryLogin(state: pushService.state);
+      ss.settings.userName.value = await api.getUserName(state: pushService.state);
+      await doRegister();
+    } catch (e) {
+      if (e is AnyhowException) {
+        updateConnectError(e.message);
+      }
+      if (e is PanicException) {
+        updateConnectError(e.message);
+      }
+      rethrow;
+    } finally {
+      finish(false);
+    }
+  }
+
+  Future<void> updateAccountUi(Function finish) async {
+    var data = await api.updateAccountHeaders(state: pushService.state);
+    var request = URLRequest(url: WebUri("https://inappwebview.dev/"));
+    
+    double height = 400;
+    showDialog(
+      context: Get.context!,
+      builder: (context) => StatefulBuilder(
+      builder: (context, setState) {
+        return Center(child: Container(
+        height: height,
+      child: InAppWebView(
+        initialUrlRequest: request,
+        initialData: InAppWebViewInitialData(data: data, baseUrl: WebUri("https://setup.icloud.com/setup/update_account_ui")),
+        initialSettings: InAppWebViewSettings(
+          useShouldInterceptAjaxRequest: true,
+          interceptOnlyAsyncAjaxRequests: false,
+          useShouldInterceptFetchRequest: true,
+        ),
+        shouldInterceptAjaxRequest: (controller, request) async {
+          var anisette = await api.getAnisetteHeaders(state: pushService.state);
+          for (var header in anisette.entries) {
+            request.headers!.setRequestHeader(header.key, header.value);
+          }
+          return request;
+        },
+        shouldInterceptFetchRequest: (controller, request) async {
+          var anisette = await api.getAnisetteHeaders(state: pushService.state);
+          request.headers ??= {};
+          request.headers!.addAll(anisette);
+          return request;
+        },
+        onWebViewCreated: (controller) {
+          controller.addJavaScriptHandler(handlerName: 'log', callback: (args) {
+            Logger.info("AppleAccountSetup ${args[0]}");
+          });
+          controller.addJavaScriptHandler(handlerName: 'cancel', callback: (args) {
+            Get.back();
+          });
+          controller.addJavaScriptHandler(handlerName: 'updateSucceeded', callback: (args) {
+            updateSucceeded(finish);
+            Get.back();
+          });
+          controller.addJavaScriptHandler(handlerName: 'resizeToWindow', callback: (args) {
+            setState(() {
+              height = args[1];
+            });
+          });
+          controller.injectJavascriptFileFromAsset(assetFilePath: "assets/scripts/AppleAccountSetup.js");
+        },
+      )),);
+      })
+    );
+  }
 
   Future<api.LoginState> updateLoginState(api.LoginState ret) async {
     if (ret is api.LoginState_NeedsLogin) {

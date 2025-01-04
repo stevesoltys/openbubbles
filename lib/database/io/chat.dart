@@ -1396,5 +1396,8 @@ class Chat {
     "isRpSms": isRpSms,
     "guidRefs": guidRefs,
     "telephonyId": telephonyId,
+    // intentionally not [from] for debugging,
+    "textFieldText": textFieldText,
+    "textFieldAnnotations": textFieldAnnotations,
   };
 }
