@@ -20,6 +20,7 @@ import 'package:ffmpeg_kit_flutter/statistics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide Response;
+import 'package:mime_type/mime_type.dart';
 import 'package:tuple/tuple.dart';
 import 'package:universal_io/io.dart';
 
@@ -276,8 +277,9 @@ class ActionHandler extends GetxService {
         await File(attachment.sourcePath!).copy(pathName);
       }
 
+      var mm = attachment.mimeType ?? mime(attachment.transferName);
       // 100 MB
-      if (dialog) {
+      if (dialog && mm != null && mm.startsWith("video/")) {
 
         String tempPath = "$directory/temp.mp4";
         file.renameSync(tempPath);
