@@ -1,9 +1,11 @@
 package com.bluebubbles.messaging.services.rustpush
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.media.ExifInterface
 import android.media.MediaMetadataRetriever
+import android.media.MediaScannerConnection
 import android.util.Log
 import android.webkit.MimeTypeMap
 import com.fluttercandies.flutter_image_compress.exif.Exif
@@ -13,7 +15,13 @@ import uniffi.rust_lib_bluebubbles.PackagedFile
 import java.io.ByteArrayOutputStream
 import java.lang.Exception
 
-class AndroidFilePackager: KotlinFilePackager {
+class AndroidFilePackager(val context: Context): KotlinFilePackager {
+
+    override fun scanFiles(paths: List<String>) {
+        MediaScannerConnection.scanFile(context, paths.toTypedArray(), arrayOf()) { path, uri ->
+            Log.i("PACKAGER", "Scan completed $path $uri")
+        }
+    }
 
     override fun getFile(path: String): PackagedFile {
         try {

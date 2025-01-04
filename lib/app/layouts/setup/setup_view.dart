@@ -271,7 +271,7 @@ class SetupViewController extends StatefulController {
       Logger.debug("Success registered!");
       await pushService.configured();
       Logger.debug("Finishing!");
-      await setup.finishSetup();
+      setup.finishSetup();
     } catch(e) {
       // reset currentPhoneUser because frb *insists* on taking ownership.
       var cpy = currentPhoneUsers.keys.toList(); // this is what happens when crappy languages have ambiguous reference semantics

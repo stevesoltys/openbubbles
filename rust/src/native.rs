@@ -1,10 +1,9 @@
 use std::{collections::{BTreeMap, HashMap}, fmt::Debug, sync::{Arc, LazyLock, OnceLock, RwLock}, time::Duration};
 
 use flexi_logger::{FileSpec, Logger, WriteMode};
-use log::error;
+use log::{error, info};
 use rustpush::get_gateways_for_mccmnc;
 use tokio::{runtime::{Handle, Runtime}, sync::Mutex};
-use uniffi::deps::log::info;
 
 use futures::FutureExt;
 use crate::{api::api::{get_phase, new_push_state, recv_wait, PollResult, PushMessage, PushState, RegistrationPhase}, frb_generated::FLUTTER_RUST_BRIDGE_HANDLER, init_logger, RUNTIME};
@@ -26,6 +25,7 @@ pub enum PackagedFile {
 #[uniffi::export(with_foreign)]
 pub trait KotlinFilePackager: Send + Sync + Debug {
     fn get_file(&self, path: String) -> PackagedFile;
+    fn scan_files(&self, paths: Vec<String>);
 }
 
 pub static PACKAGER_LOCK: OnceLock<Arc<dyn KotlinFilePackager>> = OnceLock::new();

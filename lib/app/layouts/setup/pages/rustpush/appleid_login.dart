@@ -142,53 +142,67 @@ class _AppleIdLoginState extends OptimizedState<AppleIdLogin> {
                           ),
                         ),
                         const SizedBox(height: 10),
-                        TextButton(
-                          onPressed: () async {
-                            var devInfo = await api.getDeviceInfoState(state: pushService.state);
-                            await showDialog(
-                              context: Get.context!,
-                              builder: (context) => AlertDialog(
-                                title: const Text('Create Apple Account'),
-                                content: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Text(
-                                      "Visit icloud.com to create an Apple Account. You may need to contact Apple support if it states your account cannot be created at this time.",
-                                      style: Get.textTheme.bodyLarge,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            TextButton(
+                              onPressed: () async {
+                                var devInfo = await api.getDeviceInfoState(state: pushService.state);
+                                await showDialog(
+                                  context: Get.context!,
+                                  builder: (context) => AlertDialog(
+                                    title: const Text('Create Apple Account'),
+                                    content: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text(
+                                          "Visit icloud.com to create an Apple Account. You may need to contact Apple support if it states your account cannot be created at this time.",
+                                          style: Get.textTheme.bodyLarge,
+                                        ),
+                                        const SizedBox(height: 20),
+                                        Align(
+                                          alignment: Alignment.center,
+                                          child: Text(
+                                            "Warning: OpenBubbles is not an officially supported Apple product.\n\n${RustPushBBUtils.modelToUser(devInfo.name)}\nS/N: ${devInfo.serial}\nmacOS ${devInfo.osVersion}",
+                                            textAlign: TextAlign.center,
+                                            style: Get.textTheme.bodySmall,
+                                          )
+                                        ),
+                                      ],
                                     ),
-                                    const SizedBox(height: 20),
-                                    Align(
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        "Warning: OpenBubbles is not an officially supported Apple product.\n\n${RustPushBBUtils.modelToUser(devInfo.name)}\nS/N: ${devInfo.serial}\nmacOS ${devInfo.osVersion}",
-                                        textAlign: TextAlign.center,
-                                        style: Get.textTheme.bodySmall,
-                                      )
-                                    ),
-                                  ],
-                                ),
-                                actions: <Widget>[
-                                  TextButton(
-                                          onPressed: () => Get.back(),
-                                          child: Text("Cancel", style: context.theme.textTheme.bodyLarge!.copyWith(color: context.theme.colorScheme.primary))),
-                                  TextButton(
-                                          onPressed: () async {
-                                             await launchUrl(Uri.parse("https://getsupport.apple.com"), mode: LaunchMode.externalApplication);
-                                          },
-                                          child: Text("Get Support", style: context.theme.textTheme.bodyLarge!.copyWith(color: context.theme.colorScheme.primary))),
-                                  TextButton(
-                                          onPressed: () async {
-                                             await launchUrl(Uri.parse("https://icloud.com"), mode: LaunchMode.externalApplication);
-                                          },
-                                          child: Text("Open", style: context.theme.textTheme.bodyLarge!.copyWith(color: context.theme.colorScheme.primary))),
-                                ],
-                              ),
-                            );
-                          },
-                          child: Text(
-                            "Create new Apple Account",
-                            style: context.theme.textTheme.bodyLarge!.apply(fontSizeFactor: 1.1, color: HexColor('2772C3'))
-                          )
+                                    actions: <Widget>[
+                                      TextButton(
+                                              onPressed: () => Get.back(),
+                                              child: Text("Cancel", style: context.theme.textTheme.bodyLarge!.copyWith(color: context.theme.colorScheme.primary))),
+                                      TextButton(
+                                              onPressed: () async {
+                                                await launchUrl(Uri.parse("https://getsupport.apple.com"), mode: LaunchMode.externalApplication);
+                                              },
+                                              child: Text("Get Support", style: context.theme.textTheme.bodyLarge!.copyWith(color: context.theme.colorScheme.primary))),
+                                      TextButton(
+                                              onPressed: () async {
+                                                await launchUrl(Uri.parse("https://icloud.com"), mode: LaunchMode.externalApplication);
+                                              },
+                                              child: Text("Open", style: context.theme.textTheme.bodyLarge!.copyWith(color: context.theme.colorScheme.primary))),
+                                    ],
+                                  ),
+                                );
+                              },
+                              child: Text(
+                                "Create new Apple Account",
+                                style: context.theme.textTheme.bodyMedium!.apply(color: HexColor('2772C3'))
+                              )
+                            ),
+                            TextButton(
+                              onPressed: () async {
+                                await launchUrl(Uri.parse("https://iforgot.apple.com/password/verify/appleid"), mode: LaunchMode.externalApplication);
+                              },
+                              child: Text(
+                                "Forgot Password",
+                                style: context.theme.textTheme.bodyMedium!.apply(color: HexColor('2772C3'))
+                              )
+                            ),
+                          ],
                         ),
                         const SizedBox(height: 20),
                         Row(

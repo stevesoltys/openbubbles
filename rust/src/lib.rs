@@ -2,7 +2,7 @@ use std::{path::Path, sync::{LazyLock, OnceLock}};
 
 use flexi_logger::{opt_format, Age, Cleanup, Criterion, FileSpec, Logger, Naming, WriteMode};
 use tokio::runtime::Runtime;
-use uniffi::deps::log::info;
+use log::info;
 
 
 uniffi::setup_scaffolding!();

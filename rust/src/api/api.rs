@@ -1,11 +1,11 @@
 
 
-use std::{borrow::{Borrow, BorrowMut}, fs::{self, File}, future::Future, io::{Cursor, Read, Write}, ops::Deref, path::{Path, PathBuf}, str::FromStr, sync::{Arc, OnceLock}, time::{Duration, SystemTime}, u64};
+use std::{borrow::{Borrow, BorrowMut}, collections::HashSet, fs::{self, File}, future::Future, io::{Cursor, Read, Write}, ops::Deref, path::{Path, PathBuf}, str::FromStr, sync::{Arc, OnceLock}, time::{Duration, SystemTime}, u64};
 
 use anyhow::anyhow;
 use flutter_rust_bridge::{frb, IntoDart, JoinHandle};
 use icloud_auth::{default_provider, ArcAnisetteClient, LoginClientInfo};
-use log::debug;
+use log::{debug, error, info, warn};
 use plist::{Data, Dictionary};
 pub use plist::Value;
 
@@ -14,11 +14,11 @@ use prost::Message as prostMessage;
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use tokio::{runtime::Runtime, select, sync::{broadcast, mpsc, oneshot::{self, Sender}, watch, Mutex, RwLock}};
 use rustpush::{authenticate_apple, authenticate_phone, findmy::{FindMyClient, FindMyState, MULTIPLEX_SERVICE}, login_apple_delegates, sharedstreams::{AssetMetadata, FFMpegFilePackager, FileMetadata, FilePackager, PreparedAsset, PreparedFile, SharedStreamClient, SharedStreamsState, SyncController, SyncManager, SyncState}, APSMessage, LoginDelegate, MADRID_SERVICE};
-
+use rustpush::AnisetteProvider;
 pub use rustpush::findmy::{FindMyFriendsClient, FindMyPhoneClient};
 pub use rustpush::sharedstreams::{SharedAlbum, SyncStatus};
 pub use icloud_auth::DefaultAnisetteProvider;
-use uniffi::{deps::log::{info, error}, HandleAlloc};
+use uniffi::HandleAlloc;
 use uuid::Uuid;
 use std::io::Seek;
 use async_recursion::async_recursion;
@@ -346,7 +346,47 @@ async fn restore(curr_state: &PushState) {
             plist::to_file_xml(&stream_path, update).unwrap();
         }), inner.conn.as_ref().unwrap().clone(), inner.anisette.clone().unwrap(), inner.os_config.as_ref().unwrap().config()).await;
         inner.sharedstreams = Some(SyncController::new(client, inner.conf_dir.join("sync.plist"), MyFilePackager::default(), Duration::from_secs(60 * 30)).await);
+        subscribe_streams(inner.sharedstreams.clone().unwrap());
     }
+}
+
+async fn shared_items<P: AnisetteProvider + Send + Sync + 'static, F: FilePackager + Send + Sync + 'static>(manager: &SyncManager<P, F>, seen_paths: &mut HashSet<PathBuf>) -> HashSet<PathBuf> {
+    let paths = manager.sync_states.lock().await.values().map(|v| v.folder.clone()).collect::<Vec<_>>();
+    let mut new = HashSet::new();
+    seen_paths.retain(|a| fs::exists(a).is_ok_and(|a| a));
+    for path in paths {
+        let Ok(read) = fs::read_dir(path) else { continue };
+        for file in read {
+            let Ok(result) = file else { continue };
+            if seen_paths.contains(&result.path()) { continue }
+            seen_paths.insert(result.path());
+            new.insert(result.path());
+        }
+    }
+    new
+}
+
+fn subscribe_streams<P: AnisetteProvider + Send + Sync + 'static, F: FilePackager + Send + Sync + 'static>(manager: SyncManager<P, F>) {
+    tokio::spawn(async move {
+        let mut seen_paths = HashSet::new();
+        shared_items(&manager, &mut seen_paths).await;
+        let mut generated_sub = manager.generated_signal.subscribe();
+        let manager_ref = Arc::downgrade(&manager);
+        drop(manager);
+        while let Ok(_) = generated_sub.recv().await {
+            // drain any accumulations
+            while let Ok(_) = generated_sub.try_recv() { }
+
+            info!("Starting diff");
+            let Some(manager) = manager_ref.upgrade() else { break };
+            let new = shared_items(&manager, &mut seen_paths).await;
+            info!("New files {:?}", new);
+            if let Some(packager) = PACKAGER_LOCK.get() {
+                packager.scan_files(new.into_iter().map(|a| a.to_str().expect("Path not str??").to_string()).collect());
+            }
+            info!("Diffed");
+        }
+    });
 }
 
 pub async fn can_find_my(state: &Arc<PushState>) -> anyhow::Result<bool> {
@@ -389,6 +429,7 @@ pub async fn register_ids(state: &Arc<PushState>, users: &Vec<IDSUser>) -> anyho
             plist::to_file_xml(&stream_path, update).unwrap();
         }), inner.conn.as_ref().unwrap().clone(), inner.anisette.clone().unwrap(), inner.os_config.as_ref().unwrap().config()).await;
         inner.sharedstreams = Some(SyncController::new(client, inner.conf_dir.join("sync.plist"), MyFilePackager::default(), Duration::from_secs(60 * 30)).await);
+        subscribe_streams(inner.sharedstreams.clone().unwrap());
     }
 
     Ok(None)
@@ -713,7 +754,7 @@ pub async fn subscribe(state: &Arc<PushState>, guid: String) -> anyhow::Result<V
 pub async fn unsubscribe(state: &Arc<PushState>, guid: String) -> anyhow::Result<Vec<SharedAlbum>> {
     let recv_path = state.0.read().await;
     let lock = recv_path.sharedstreams.as_ref().expect("Cannot use photostreams!");
-    let _ = lock.client.unsubscribe(&guid).await?;
+    let _ = lock.unsubscribe(&guid).await?;
 
     let albums_ref = lock.client.state.read().await.albums.clone();
     Ok(albums_ref)

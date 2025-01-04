@@ -43,6 +43,9 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 // A rust-owned buffer is represented by its capacity, its current length, and a
 // pointer to the underlying data.
 
+/**
+ * @suppress
+ */
 @Structure.FieldOrder("capacity", "len", "data")
 open class RustBuffer : Structure() {
     // Note: `capacity` and `len` are actually `ULong` values, but JVM only supports signed values.
@@ -95,6 +98,8 @@ open class RustBuffer : Structure() {
  * Required for callbacks taking in an out pointer.
  *
  * Size is the sum of all values in the struct.
+ *
+ * @suppress
  */
 class RustBufferByReference : ByReference(16) {
     /**
@@ -129,16 +134,20 @@ class RustBufferByReference : ByReference(16) {
 // completeness.
 
 @Structure.FieldOrder("len", "data")
-open class ForeignBytes : Structure() {
+internal open class ForeignBytes : Structure() {
     @JvmField var len: Int = 0
     @JvmField var data: Pointer? = null
 
     class ByValue : ForeignBytes(), Structure.ByValue
 }
-// The FfiConverter interface handles converter types to and from the FFI
-//
-// All implementing objects should be public to support external types.  When a
-// type is external we need to import it's FfiConverter.
+/**
+ * The FfiConverter interface handles converter types to and from the FFI
+ *
+ * All implementing objects should be public to support external types.  When a
+ * type is external we need to import it's FfiConverter.
+ *
+ * @suppress
+ */
 public interface FfiConverter<KotlinType, FfiType> {
     // Convert an FFI type to a Kotlin type
     fun lift(value: FfiType): KotlinType
@@ -201,7 +210,11 @@ public interface FfiConverter<KotlinType, FfiType> {
     }
 }
 
-// FfiConverter that uses `RustBuffer` as the FfiType
+/**
+ * FfiConverter that uses `RustBuffer` as the FfiType
+ *
+ * @suppress
+ */
 public interface FfiConverterRustBuffer<KotlinType>: FfiConverter<KotlinType, RustBuffer.ByValue> {
     override fun lift(value: RustBuffer.ByValue) = liftFromRustBuffer(value)
     override fun lower(value: KotlinType) = lowerIntoRustBuffer(value)
@@ -244,7 +257,11 @@ internal open class UniffiRustCallStatus : Structure() {
 
 class InternalException(message: String) : kotlin.Exception(message)
 
-// Each top-level error class has a companion object that can lift the error from the call status's rust buffer
+/**
+ * Each top-level error class has a companion object that can lift the error from the call status's rust buffer
+ *
+ * @suppress
+ */
 interface UniffiRustCallStatusErrorHandler<E> {
     fun lift(error_buf: RustBuffer.ByValue): E;
 }
@@ -281,7 +298,11 @@ private fun<E: kotlin.Exception> uniffiCheckCallStatus(errorHandler: UniffiRustC
     }
 }
 
-// UniffiRustCallStatusErrorHandler implementation for times when we don't expect a CALL_ERROR
+/**
+ * UniffiRustCallStatusErrorHandler implementation for times when we don't expect a CALL_ERROR
+ *
+ * @suppress
+ */
 object UniffiNullRustCallStatusErrorHandler: UniffiRustCallStatusErrorHandler<InternalException> {
     override fun lift(error_buf: RustBuffer.ByValue): InternalException {
         RustBuffer.free(error_buf)
@@ -646,6 +667,9 @@ internal interface UniffiCallbackInterfaceCarrierHandlerMethod0 : com.sun.jna.Ca
 internal interface UniffiCallbackInterfaceKotlinFilePackagerMethod0 : com.sun.jna.Callback {
     fun callback(`uniffiHandle`: Long,`path`: RustBuffer.ByValue,`uniffiOutReturn`: RustBuffer,uniffiCallStatus: UniffiRustCallStatus,)
 }
+internal interface UniffiCallbackInterfaceKotlinFilePackagerMethod1 : com.sun.jna.Callback {
+    fun callback(`uniffiHandle`: Long,`paths`: RustBuffer.ByValue,`uniffiOutReturn`: Pointer,uniffiCallStatus: UniffiRustCallStatus,)
+}
 internal interface UniffiCallbackInterfaceMsgReceiverMethod0 : com.sun.jna.Callback {
     fun callback(`uniffiHandle`: Long,`msg`: Long,`retry`: Long,`uniffiOutReturn`: Pointer,uniffiCallStatus: UniffiRustCallStatus,)
 }
@@ -668,18 +692,21 @@ internal open class UniffiVTableCallbackInterfaceCarrierHandler(
     }
 
 }
-@Structure.FieldOrder("getFile", "uniffiFree")
+@Structure.FieldOrder("getFile", "scanFiles", "uniffiFree")
 internal open class UniffiVTableCallbackInterfaceKotlinFilePackager(
     @JvmField internal var `getFile`: UniffiCallbackInterfaceKotlinFilePackagerMethod0? = null,
+    @JvmField internal var `scanFiles`: UniffiCallbackInterfaceKotlinFilePackagerMethod1? = null,
     @JvmField internal var `uniffiFree`: UniffiCallbackInterfaceFree? = null,
 ) : Structure() {
     class UniffiByValue(
         `getFile`: UniffiCallbackInterfaceKotlinFilePackagerMethod0? = null,
+        `scanFiles`: UniffiCallbackInterfaceKotlinFilePackagerMethod1? = null,
         `uniffiFree`: UniffiCallbackInterfaceFree? = null,
-    ): UniffiVTableCallbackInterfaceKotlinFilePackager(`getFile`,`uniffiFree`,), Structure.ByValue
+    ): UniffiVTableCallbackInterfaceKotlinFilePackager(`getFile`,`scanFiles`,`uniffiFree`,), Structure.ByValue
 
    internal fun uniffiSetValue(other: UniffiVTableCallbackInterfaceKotlinFilePackager) {
         `getFile` = other.`getFile`
+        `scanFiles` = other.`scanFiles`
         `uniffiFree` = other.`uniffiFree`
     }
 
@@ -790,20 +817,86 @@ internal open class UniffiVTableCallbackInterfaceMsgReceiver(
 
 
 
+
+
+// For large crates we prevent `MethodTooLargeException` (see #2340)
+// N.B. the name of the extension is very misleading, since it is 
+// rather `InterfaceTooLargeException`, caused by too many methods 
+// in the interface for large crates.
+//
+// By splitting the otherwise huge interface into two parts
+// * UniffiLib 
+// * IntegrityCheckingUniffiLib (this)
+// we allow for ~2x as many methods in the UniffiLib interface.
+// 
+// The `ffi_uniffi_contract_version` method and all checksum methods are put 
+// into `IntegrityCheckingUniffiLib` and these methods are called only once,
+// when the library is loaded.
+internal interface IntegrityCheckingUniffiLib : Library {
+    // Integrity check functions only
+    fun uniffi_rust_lib_bluebubbles_checksum_func_get_carrier(
+): Short
+fun uniffi_rust_lib_bluebubbles_checksum_func_init_native(
+): Short
+fun uniffi_rust_lib_bluebubbles_checksum_method_carrierhandler_got_gateway(
+): Short
+fun uniffi_rust_lib_bluebubbles_checksum_method_kotlinfilepackager_get_file(
+): Short
+fun uniffi_rust_lib_bluebubbles_checksum_method_kotlinfilepackager_scan_files(
+): Short
+fun uniffi_rust_lib_bluebubbles_checksum_method_msgreceiver_receieved_msg(
+): Short
+fun uniffi_rust_lib_bluebubbles_checksum_method_msgreceiver_native_ready(
+): Short
+fun uniffi_rust_lib_bluebubbles_checksum_method_nativepushstate_get_ready(
+): Short
+fun uniffi_rust_lib_bluebubbles_checksum_method_nativepushstate_get_state(
+): Short
+fun uniffi_rust_lib_bluebubbles_checksum_method_nativepushstate_start_loop(
+): Short
+fun ffi_rust_lib_bluebubbles_uniffi_contract_version(
+): Int
+
+}
+
 // A JNA Library to expose the extern-C FFI definitions.
 // This is an implementation detail which will be called internally by the public API.
-
 internal interface UniffiLib : Library {
     companion object {
         internal val INSTANCE: UniffiLib by lazy {
-            loadIndirect<UniffiLib>(componentName = "rust_lib_bluebubbles")
-            .also { lib: UniffiLib ->
-                uniffiCheckContractApiVersion(lib)
-                uniffiCheckApiChecksums(lib)
-                uniffiCallbackInterfaceCarrierHandler.register(lib)
-                uniffiCallbackInterfaceKotlinFilePackager.register(lib)
-                uniffiCallbackInterfaceMsgReceiver.register(lib)
+            val componentName = "rust_lib_bluebubbles"
+            // For large crates we prevent `MethodTooLargeException` (see #2340)
+            // N.B. the name of the extension is very misleading, since it is 
+            // rather `InterfaceTooLargeException`, caused by too many methods 
+            // in the interface for large crates.
+            //
+            // By splitting the otherwise huge interface into two parts
+            // * UniffiLib (this)
+            // * IntegrityCheckingUniffiLib
+            // And all checksum methods are put into `IntegrityCheckingUniffiLib`
+            // we allow for ~2x as many methods in the UniffiLib interface.
+            // 
+            // Thus we first load the library with `loadIndirect` as `IntegrityCheckingUniffiLib`
+            // so that we can call `uniffiCheckApiChecksums`...
+            loadIndirect<IntegrityCheckingUniffiLib>(componentName)
+                .also { lib: IntegrityCheckingUniffiLib ->
+                    uniffiCheckContractApiVersion(lib)
+                    uniffiCheckApiChecksums(lib)
                 }
+            // ... and then we load the library as `UniffiLib`
+            // N.B. we cannot use `loadIndirect` once and then try to cast it to `UniffiLib`
+            // => results in `java.lang.ClassCastException: com.sun.proxy.$Proxy cannot be cast to ...`
+            // error. So we must call `loadIndirect` twice. For crates large enough
+            // to trigger this issue, the performance impact is negligible, running on
+            // a macOS M1 machine the `loadIndirect` call takes ~50ms.
+            val lib = loadIndirect<UniffiLib>(componentName)
+            // No need to check the contract version and checksums, since 
+            // we already did that with `IntegrityCheckingUniffiLib` above.
+            uniffiCallbackInterfaceCarrierHandler.register(lib)
+            uniffiCallbackInterfaceKotlinFilePackager.register(lib)
+            uniffiCallbackInterfaceMsgReceiver.register(lib)
+            // Loading of library with integrity check done.
+            lib
         }
         
         // The Cleaner for the whole library
@@ -812,184 +905,167 @@ internal interface UniffiLib : Library {
         }
     }
 
+    // FFI functions
     fun uniffi_rust_lib_bluebubbles_fn_clone_carrierhandler(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
-    ): Pointer
-    fun uniffi_rust_lib_bluebubbles_fn_free_carrierhandler(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
-    ): Unit
-    fun uniffi_rust_lib_bluebubbles_fn_init_callback_vtable_carrierhandler(`vtable`: UniffiVTableCallbackInterfaceCarrierHandler,
-    ): Unit
-    fun uniffi_rust_lib_bluebubbles_fn_method_carrierhandler_got_gateway(`ptr`: Pointer,`gateway`: RustBuffer.ByValue,`error`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
-    ): Unit
-    fun uniffi_rust_lib_bluebubbles_fn_clone_kotlinfilepackager(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
-    ): Pointer
-    fun uniffi_rust_lib_bluebubbles_fn_free_kotlinfilepackager(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
-    ): Unit
-    fun uniffi_rust_lib_bluebubbles_fn_init_callback_vtable_kotlinfilepackager(`vtable`: UniffiVTableCallbackInterfaceKotlinFilePackager,
-    ): Unit
-    fun uniffi_rust_lib_bluebubbles_fn_method_kotlinfilepackager_get_file(`ptr`: Pointer,`path`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
-    ): RustBuffer.ByValue
-    fun uniffi_rust_lib_bluebubbles_fn_clone_msgreceiver(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
-    ): Pointer
-    fun uniffi_rust_lib_bluebubbles_fn_free_msgreceiver(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
-    ): Unit
-    fun uniffi_rust_lib_bluebubbles_fn_init_callback_vtable_msgreceiver(`vtable`: UniffiVTableCallbackInterfaceMsgReceiver,
-    ): Unit
-    fun uniffi_rust_lib_bluebubbles_fn_method_msgreceiver_receieved_msg(`ptr`: Pointer,`msg`: Long,`retry`: Long,uniffi_out_err: UniffiRustCallStatus, 
-    ): Unit
-    fun uniffi_rust_lib_bluebubbles_fn_method_msgreceiver_native_ready(`ptr`: Pointer,`isReady`: Byte,`state`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
-    ): Unit
-    fun uniffi_rust_lib_bluebubbles_fn_clone_nativepushstate(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
-    ): Pointer
-    fun uniffi_rust_lib_bluebubbles_fn_free_nativepushstate(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
-    ): Unit
-    fun uniffi_rust_lib_bluebubbles_fn_method_nativepushstate_get_ready(`ptr`: Pointer,
-    ): Long
-    fun uniffi_rust_lib_bluebubbles_fn_method_nativepushstate_get_state(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
-    ): Long
-    fun uniffi_rust_lib_bluebubbles_fn_method_nativepushstate_start_loop(`ptr`: Pointer,`handler`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
-    ): Unit
-    fun uniffi_rust_lib_bluebubbles_fn_func_get_carrier(`handler`: Pointer,`mccmnc`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
-    ): Unit
-    fun uniffi_rust_lib_bluebubbles_fn_func_init_native(`dir`: RustBuffer.ByValue,`handler`: Pointer,`packager`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
-    ): Unit
-    fun ffi_rust_lib_bluebubbles_rustbuffer_alloc(`size`: Long,uniffi_out_err: UniffiRustCallStatus, 
-    ): RustBuffer.ByValue
-    fun ffi_rust_lib_bluebubbles_rustbuffer_from_bytes(`bytes`: ForeignBytes.ByValue,uniffi_out_err: UniffiRustCallStatus, 
-    ): RustBuffer.ByValue
-    fun ffi_rust_lib_bluebubbles_rustbuffer_free(`buf`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
-    ): Unit
-    fun ffi_rust_lib_bluebubbles_rustbuffer_reserve(`buf`: RustBuffer.ByValue,`additional`: Long,uniffi_out_err: UniffiRustCallStatus, 
-    ): RustBuffer.ByValue
-    fun ffi_rust_lib_bluebubbles_rust_future_poll_u8(`handle`: Long,`callback`: UniffiRustFutureContinuationCallback,`callbackData`: Long,
-    ): Unit
-    fun ffi_rust_lib_bluebubbles_rust_future_cancel_u8(`handle`: Long,
-    ): Unit
-    fun ffi_rust_lib_bluebubbles_rust_future_free_u8(`handle`: Long,
-    ): Unit
-    fun ffi_rust_lib_bluebubbles_rust_future_complete_u8(`handle`: Long,uniffi_out_err: UniffiRustCallStatus, 
-    ): Byte
-    fun ffi_rust_lib_bluebubbles_rust_future_poll_i8(`handle`: Long,`callback`: UniffiRustFutureContinuationCallback,`callbackData`: Long,
-    ): Unit
-    fun ffi_rust_lib_bluebubbles_rust_future_cancel_i8(`handle`: Long,
-    ): Unit
-    fun ffi_rust_lib_bluebubbles_rust_future_free_i8(`handle`: Long,
-    ): Unit
-    fun ffi_rust_lib_bluebubbles_rust_future_complete_i8(`handle`: Long,uniffi_out_err: UniffiRustCallStatus, 
-    ): Byte
-    fun ffi_rust_lib_bluebubbles_rust_future_poll_u16(`handle`: Long,`callback`: UniffiRustFutureContinuationCallback,`callbackData`: Long,
-    ): Unit
-    fun ffi_rust_lib_bluebubbles_rust_future_cancel_u16(`handle`: Long,
-    ): Unit
-    fun ffi_rust_lib_bluebubbles_rust_future_free_u16(`handle`: Long,
-    ): Unit
-    fun ffi_rust_lib_bluebubbles_rust_future_complete_u16(`handle`: Long,uniffi_out_err: UniffiRustCallStatus, 
-    ): Short
-    fun ffi_rust_lib_bluebubbles_rust_future_poll_i16(`handle`: Long,`callback`: UniffiRustFutureContinuationCallback,`callbackData`: Long,
-    ): Unit
-    fun ffi_rust_lib_bluebubbles_rust_future_cancel_i16(`handle`: Long,
-    ): Unit
-    fun ffi_rust_lib_bluebubbles_rust_future_free_i16(`handle`: Long,
-    ): Unit
-    fun ffi_rust_lib_bluebubbles_rust_future_complete_i16(`handle`: Long,uniffi_out_err: UniffiRustCallStatus, 
-    ): Short
-    fun ffi_rust_lib_bluebubbles_rust_future_poll_u32(`handle`: Long,`callback`: UniffiRustFutureContinuationCallback,`callbackData`: Long,
-    ): Unit
-    fun ffi_rust_lib_bluebubbles_rust_future_cancel_u32(`handle`: Long,
-    ): Unit
-    fun ffi_rust_lib_bluebubbles_rust_future_free_u32(`handle`: Long,
-    ): Unit
-    fun ffi_rust_lib_bluebubbles_rust_future_complete_u32(`handle`: Long,uniffi_out_err: UniffiRustCallStatus, 
-    ): Int
-    fun ffi_rust_lib_bluebubbles_rust_future_poll_i32(`handle`: Long,`callback`: UniffiRustFutureContinuationCallback,`callbackData`: Long,
-    ): Unit
-    fun ffi_rust_lib_bluebubbles_rust_future_cancel_i32(`handle`: Long,
-    ): Unit
-    fun ffi_rust_lib_bluebubbles_rust_future_free_i32(`handle`: Long,
-    ): Unit
-    fun ffi_rust_lib_bluebubbles_rust_future_complete_i32(`handle`: Long,uniffi_out_err: UniffiRustCallStatus, 
-    ): Int
-    fun ffi_rust_lib_bluebubbles_rust_future_poll_u64(`handle`: Long,`callback`: UniffiRustFutureContinuationCallback,`callbackData`: Long,
-    ): Unit
-    fun ffi_rust_lib_bluebubbles_rust_future_cancel_u64(`handle`: Long,
-    ): Unit
-    fun ffi_rust_lib_bluebubbles_rust_future_free_u64(`handle`: Long,
-    ): Unit
-    fun ffi_rust_lib_bluebubbles_rust_future_complete_u64(`handle`: Long,uniffi_out_err: UniffiRustCallStatus, 
-    ): Long
-    fun ffi_rust_lib_bluebubbles_rust_future_poll_i64(`handle`: Long,`callback`: UniffiRustFutureContinuationCallback,`callbackData`: Long,
-    ): Unit
-    fun ffi_rust_lib_bluebubbles_rust_future_cancel_i64(`handle`: Long,
-    ): Unit
-    fun ffi_rust_lib_bluebubbles_rust_future_free_i64(`handle`: Long,
-    ): Unit
-    fun ffi_rust_lib_bluebubbles_rust_future_complete_i64(`handle`: Long,uniffi_out_err: UniffiRustCallStatus, 
-    ): Long
-    fun ffi_rust_lib_bluebubbles_rust_future_poll_f32(`handle`: Long,`callback`: UniffiRustFutureContinuationCallback,`callbackData`: Long,
-    ): Unit
-    fun ffi_rust_lib_bluebubbles_rust_future_cancel_f32(`handle`: Long,
-    ): Unit
-    fun ffi_rust_lib_bluebubbles_rust_future_free_f32(`handle`: Long,
-    ): Unit
-    fun ffi_rust_lib_bluebubbles_rust_future_complete_f32(`handle`: Long,uniffi_out_err: UniffiRustCallStatus, 
-    ): Float
-    fun ffi_rust_lib_bluebubbles_rust_future_poll_f64(`handle`: Long,`callback`: UniffiRustFutureContinuationCallback,`callbackData`: Long,
-    ): Unit
-    fun ffi_rust_lib_bluebubbles_rust_future_cancel_f64(`handle`: Long,
-    ): Unit
-    fun ffi_rust_lib_bluebubbles_rust_future_free_f64(`handle`: Long,
-    ): Unit
-    fun ffi_rust_lib_bluebubbles_rust_future_complete_f64(`handle`: Long,uniffi_out_err: UniffiRustCallStatus, 
-    ): Double
-    fun ffi_rust_lib_bluebubbles_rust_future_poll_pointer(`handle`: Long,`callback`: UniffiRustFutureContinuationCallback,`callbackData`: Long,
-    ): Unit
-    fun ffi_rust_lib_bluebubbles_rust_future_cancel_pointer(`handle`: Long,
-    ): Unit
-    fun ffi_rust_lib_bluebubbles_rust_future_free_pointer(`handle`: Long,
-    ): Unit
-    fun ffi_rust_lib_bluebubbles_rust_future_complete_pointer(`handle`: Long,uniffi_out_err: UniffiRustCallStatus, 
-    ): Pointer
-    fun ffi_rust_lib_bluebubbles_rust_future_poll_rust_buffer(`handle`: Long,`callback`: UniffiRustFutureContinuationCallback,`callbackData`: Long,
-    ): Unit
-    fun ffi_rust_lib_bluebubbles_rust_future_cancel_rust_buffer(`handle`: Long,
-    ): Unit
-    fun ffi_rust_lib_bluebubbles_rust_future_free_rust_buffer(`handle`: Long,
-    ): Unit
-    fun ffi_rust_lib_bluebubbles_rust_future_complete_rust_buffer(`handle`: Long,uniffi_out_err: UniffiRustCallStatus, 
-    ): RustBuffer.ByValue
-    fun ffi_rust_lib_bluebubbles_rust_future_poll_void(`handle`: Long,`callback`: UniffiRustFutureContinuationCallback,`callbackData`: Long,
-    ): Unit
-    fun ffi_rust_lib_bluebubbles_rust_future_cancel_void(`handle`: Long,
-    ): Unit
-    fun ffi_rust_lib_bluebubbles_rust_future_free_void(`handle`: Long,
-    ): Unit
-    fun ffi_rust_lib_bluebubbles_rust_future_complete_void(`handle`: Long,uniffi_out_err: UniffiRustCallStatus, 
-    ): Unit
-    fun uniffi_rust_lib_bluebubbles_checksum_func_get_carrier(
-    ): Short
-    fun uniffi_rust_lib_bluebubbles_checksum_func_init_native(
-    ): Short
-    fun uniffi_rust_lib_bluebubbles_checksum_method_carrierhandler_got_gateway(
-    ): Short
-    fun uniffi_rust_lib_bluebubbles_checksum_method_kotlinfilepackager_get_file(
-    ): Short
-    fun uniffi_rust_lib_bluebubbles_checksum_method_msgreceiver_receieved_msg(
-    ): Short
-    fun uniffi_rust_lib_bluebubbles_checksum_method_msgreceiver_native_ready(
-    ): Short
-    fun uniffi_rust_lib_bluebubbles_checksum_method_nativepushstate_get_ready(
-    ): Short
-    fun uniffi_rust_lib_bluebubbles_checksum_method_nativepushstate_get_state(
-    ): Short
-    fun uniffi_rust_lib_bluebubbles_checksum_method_nativepushstate_start_loop(
-    ): Short
-    fun ffi_rust_lib_bluebubbles_uniffi_contract_version(
-    ): Int
-    
+): Pointer
+fun uniffi_rust_lib_bluebubbles_fn_free_carrierhandler(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
+): Unit
+fun uniffi_rust_lib_bluebubbles_fn_init_callback_vtable_carrierhandler(`vtable`: UniffiVTableCallbackInterfaceCarrierHandler,
+): Unit
+fun uniffi_rust_lib_bluebubbles_fn_method_carrierhandler_got_gateway(`ptr`: Pointer,`gateway`: RustBuffer.ByValue,`error`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
+): Unit
+fun uniffi_rust_lib_bluebubbles_fn_clone_kotlinfilepackager(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
+): Pointer
+fun uniffi_rust_lib_bluebubbles_fn_free_kotlinfilepackager(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
+): Unit
+fun uniffi_rust_lib_bluebubbles_fn_init_callback_vtable_kotlinfilepackager(`vtable`: UniffiVTableCallbackInterfaceKotlinFilePackager,
+): Unit
+fun uniffi_rust_lib_bluebubbles_fn_method_kotlinfilepackager_get_file(`ptr`: Pointer,`path`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
+): RustBuffer.ByValue
+fun uniffi_rust_lib_bluebubbles_fn_method_kotlinfilepackager_scan_files(`ptr`: Pointer,`paths`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
+): Unit
+fun uniffi_rust_lib_bluebubbles_fn_clone_msgreceiver(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
+): Pointer
+fun uniffi_rust_lib_bluebubbles_fn_free_msgreceiver(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
+): Unit
+fun uniffi_rust_lib_bluebubbles_fn_init_callback_vtable_msgreceiver(`vtable`: UniffiVTableCallbackInterfaceMsgReceiver,
+): Unit
+fun uniffi_rust_lib_bluebubbles_fn_method_msgreceiver_receieved_msg(`ptr`: Pointer,`msg`: Long,`retry`: Long,uniffi_out_err: UniffiRustCallStatus, 
+): Unit
+fun uniffi_rust_lib_bluebubbles_fn_method_msgreceiver_native_ready(`ptr`: Pointer,`isReady`: Byte,`state`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
+): Unit
+fun uniffi_rust_lib_bluebubbles_fn_clone_nativepushstate(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
+): Pointer
+fun uniffi_rust_lib_bluebubbles_fn_free_nativepushstate(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
+): Unit
+fun uniffi_rust_lib_bluebubbles_fn_method_nativepushstate_get_ready(`ptr`: Pointer,
+): Long
+fun uniffi_rust_lib_bluebubbles_fn_method_nativepushstate_get_state(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
+): Long
+fun uniffi_rust_lib_bluebubbles_fn_method_nativepushstate_start_loop(`ptr`: Pointer,`handler`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
+): Unit
+fun uniffi_rust_lib_bluebubbles_fn_func_get_carrier(`handler`: Pointer,`mccmnc`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
+): Unit
+fun uniffi_rust_lib_bluebubbles_fn_func_init_native(`dir`: RustBuffer.ByValue,`handler`: Pointer,`packager`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
+): Unit
+fun ffi_rust_lib_bluebubbles_rustbuffer_alloc(`size`: Long,uniffi_out_err: UniffiRustCallStatus, 
+): RustBuffer.ByValue
+fun ffi_rust_lib_bluebubbles_rustbuffer_from_bytes(`bytes`: ForeignBytes.ByValue,uniffi_out_err: UniffiRustCallStatus, 
+): RustBuffer.ByValue
+fun ffi_rust_lib_bluebubbles_rustbuffer_free(`buf`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
+): Unit
+fun ffi_rust_lib_bluebubbles_rustbuffer_reserve(`buf`: RustBuffer.ByValue,`additional`: Long,uniffi_out_err: UniffiRustCallStatus, 
+): RustBuffer.ByValue
+fun ffi_rust_lib_bluebubbles_rust_future_poll_u8(`handle`: Long,`callback`: UniffiRustFutureContinuationCallback,`callbackData`: Long,
+): Unit
+fun ffi_rust_lib_bluebubbles_rust_future_cancel_u8(`handle`: Long,
+): Unit
+fun ffi_rust_lib_bluebubbles_rust_future_free_u8(`handle`: Long,
+): Unit
+fun ffi_rust_lib_bluebubbles_rust_future_complete_u8(`handle`: Long,uniffi_out_err: UniffiRustCallStatus, 
+): Byte
+fun ffi_rust_lib_bluebubbles_rust_future_poll_i8(`handle`: Long,`callback`: UniffiRustFutureContinuationCallback,`callbackData`: Long,
+): Unit
+fun ffi_rust_lib_bluebubbles_rust_future_cancel_i8(`handle`: Long,
+): Unit
+fun ffi_rust_lib_bluebubbles_rust_future_free_i8(`handle`: Long,
+): Unit
+fun ffi_rust_lib_bluebubbles_rust_future_complete_i8(`handle`: Long,uniffi_out_err: UniffiRustCallStatus, 
+): Byte
+fun ffi_rust_lib_bluebubbles_rust_future_poll_u16(`handle`: Long,`callback`: UniffiRustFutureContinuationCallback,`callbackData`: Long,
+): Unit
+fun ffi_rust_lib_bluebubbles_rust_future_cancel_u16(`handle`: Long,
+): Unit
+fun ffi_rust_lib_bluebubbles_rust_future_free_u16(`handle`: Long,
+): Unit
+fun ffi_rust_lib_bluebubbles_rust_future_complete_u16(`handle`: Long,uniffi_out_err: UniffiRustCallStatus, 
+): Short
+fun ffi_rust_lib_bluebubbles_rust_future_poll_i16(`handle`: Long,`callback`: UniffiRustFutureContinuationCallback,`callbackData`: Long,
+): Unit
+fun ffi_rust_lib_bluebubbles_rust_future_cancel_i16(`handle`: Long,
+): Unit
+fun ffi_rust_lib_bluebubbles_rust_future_free_i16(`handle`: Long,
+): Unit
+fun ffi_rust_lib_bluebubbles_rust_future_complete_i16(`handle`: Long,uniffi_out_err: UniffiRustCallStatus, 
+): Short
+fun ffi_rust_lib_bluebubbles_rust_future_poll_u32(`handle`: Long,`callback`: UniffiRustFutureContinuationCallback,`callbackData`: Long,
+): Unit
+fun ffi_rust_lib_bluebubbles_rust_future_cancel_u32(`handle`: Long,
+): Unit
+fun ffi_rust_lib_bluebubbles_rust_future_free_u32(`handle`: Long,
+): Unit
+fun ffi_rust_lib_bluebubbles_rust_future_complete_u32(`handle`: Long,uniffi_out_err: UniffiRustCallStatus, 
+): Int
+fun ffi_rust_lib_bluebubbles_rust_future_poll_i32(`handle`: Long,`callback`: UniffiRustFutureContinuationCallback,`callbackData`: Long,
+): Unit
+fun ffi_rust_lib_bluebubbles_rust_future_cancel_i32(`handle`: Long,
+): Unit
+fun ffi_rust_lib_bluebubbles_rust_future_free_i32(`handle`: Long,
+): Unit
+fun ffi_rust_lib_bluebubbles_rust_future_complete_i32(`handle`: Long,uniffi_out_err: UniffiRustCallStatus, 
+): Int
+fun ffi_rust_lib_bluebubbles_rust_future_poll_u64(`handle`: Long,`callback`: UniffiRustFutureContinuationCallback,`callbackData`: Long,
+): Unit
+fun ffi_rust_lib_bluebubbles_rust_future_cancel_u64(`handle`: Long,
+): Unit
+fun ffi_rust_lib_bluebubbles_rust_future_free_u64(`handle`: Long,
+): Unit
+fun ffi_rust_lib_bluebubbles_rust_future_complete_u64(`handle`: Long,uniffi_out_err: UniffiRustCallStatus, 
+): Long
+fun ffi_rust_lib_bluebubbles_rust_future_poll_i64(`handle`: Long,`callback`: UniffiRustFutureContinuationCallback,`callbackData`: Long,
+): Unit
+fun ffi_rust_lib_bluebubbles_rust_future_cancel_i64(`handle`: Long,
+): Unit
+fun ffi_rust_lib_bluebubbles_rust_future_free_i64(`handle`: Long,
+): Unit
+fun ffi_rust_lib_bluebubbles_rust_future_complete_i64(`handle`: Long,uniffi_out_err: UniffiRustCallStatus, 
+): Long
+fun ffi_rust_lib_bluebubbles_rust_future_poll_f32(`handle`: Long,`callback`: UniffiRustFutureContinuationCallback,`callbackData`: Long,
+): Unit
+fun ffi_rust_lib_bluebubbles_rust_future_cancel_f32(`handle`: Long,
+): Unit
+fun ffi_rust_lib_bluebubbles_rust_future_free_f32(`handle`: Long,
+): Unit
+fun ffi_rust_lib_bluebubbles_rust_future_complete_f32(`handle`: Long,uniffi_out_err: UniffiRustCallStatus, 
+): Float
+fun ffi_rust_lib_bluebubbles_rust_future_poll_f64(`handle`: Long,`callback`: UniffiRustFutureContinuationCallback,`callbackData`: Long,
+): Unit
+fun ffi_rust_lib_bluebubbles_rust_future_cancel_f64(`handle`: Long,
+): Unit
+fun ffi_rust_lib_bluebubbles_rust_future_free_f64(`handle`: Long,
+): Unit
+fun ffi_rust_lib_bluebubbles_rust_future_complete_f64(`handle`: Long,uniffi_out_err: UniffiRustCallStatus, 
+): Double
+fun ffi_rust_lib_bluebubbles_rust_future_poll_pointer(`handle`: Long,`callback`: UniffiRustFutureContinuationCallback,`callbackData`: Long,
+): Unit
+fun ffi_rust_lib_bluebubbles_rust_future_cancel_pointer(`handle`: Long,
+): Unit
+fun ffi_rust_lib_bluebubbles_rust_future_free_pointer(`handle`: Long,
+): Unit
+fun ffi_rust_lib_bluebubbles_rust_future_complete_pointer(`handle`: Long,uniffi_out_err: UniffiRustCallStatus, 
+): Pointer
+fun ffi_rust_lib_bluebubbles_rust_future_poll_rust_buffer(`handle`: Long,`callback`: UniffiRustFutureContinuationCallback,`callbackData`: Long,
+): Unit
+fun ffi_rust_lib_bluebubbles_rust_future_cancel_rust_buffer(`handle`: Long,
+): Unit
+fun ffi_rust_lib_bluebubbles_rust_future_free_rust_buffer(`handle`: Long,
+): Unit
+fun ffi_rust_lib_bluebubbles_rust_future_complete_rust_buffer(`handle`: Long,uniffi_out_err: UniffiRustCallStatus, 
+): RustBuffer.ByValue
+fun ffi_rust_lib_bluebubbles_rust_future_poll_void(`handle`: Long,`callback`: UniffiRustFutureContinuationCallback,`callbackData`: Long,
+): Unit
+fun ffi_rust_lib_bluebubbles_rust_future_cancel_void(`handle`: Long,
+): Unit
+fun ffi_rust_lib_bluebubbles_rust_future_free_void(`handle`: Long,
+): Unit
+fun ffi_rust_lib_bluebubbles_rust_future_complete_void(`handle`: Long,uniffi_out_err: UniffiRustCallStatus, 
+): Unit
+
 }
 
-private fun uniffiCheckContractApiVersion(lib: UniffiLib) {
+private fun uniffiCheckContractApiVersion(lib: IntegrityCheckingUniffiLib) {
     // Get the bindings contract version from our ComponentInterface
-    val bindings_contract_version = 26
+    val bindings_contract_version = 29
     // Get the scaffolding contract version by calling the into the dylib
     val scaffolding_contract_version = lib.ffi_rust_lib_bluebubbles_uniffi_contract_version()
     if (bindings_contract_version != scaffolding_contract_version) {
@@ -998,7 +1074,7 @@ private fun uniffiCheckContractApiVersion(lib: UniffiLib) {
 }
 
 @Suppress("UNUSED_PARAMETER")
-private fun uniffiCheckApiChecksums(lib: UniffiLib) {
+private fun uniffiCheckApiChecksums(lib: IntegrityCheckingUniffiLib) {
     if (lib.uniffi_rust_lib_bluebubbles_checksum_func_get_carrier() != 30894.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
@@ -1009,6 +1085,9 @@ private fun uniffiCheckApiChecksums(lib: UniffiLib) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_rust_lib_bluebubbles_checksum_method_kotlinfilepackager_get_file() != 33145.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if (lib.uniffi_rust_lib_bluebubbles_checksum_method_kotlinfilepackager_scan_files() != 24120.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_rust_lib_bluebubbles_checksum_method_msgreceiver_receieved_msg() != 23713.toShort()) {
@@ -1026,6 +1105,13 @@ private fun uniffiCheckApiChecksums(lib: UniffiLib) {
     if (lib.uniffi_rust_lib_bluebubbles_checksum_method_nativepushstate_start_loop() != 19847.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
+}
+
+/**
+ * @suppress
+ */
+public fun uniffiEnsureInitialized() {
+    UniffiLib.INSTANCE
 }
 
 // Async support
@@ -1091,6 +1177,9 @@ interface Disposable {
     }
 }
 
+/**
+ * @suppress
+ */
 inline fun <T : Disposable?, R> T.use(block: (T) -> R) =
     try {
         block(this)
@@ -1103,9 +1192,16 @@ inline fun <T : Disposable?, R> T.use(block: (T) -> R) =
         }
     }
 
-/** Used to instantiate an interface without an actual pointer, for fakes in tests, mostly. */
+/** 
+ * Used to instantiate an interface without an actual pointer, for fakes in tests, mostly.
+ *
+ * @suppress
+ * */
 object NoPointer
 
+/**
+ * @suppress
+ */
 public object FfiConverterUInt: FfiConverter<UInt, Int> {
     override fun lift(value: Int): UInt {
         return value.toUInt()
@@ -1126,6 +1222,9 @@ public object FfiConverterUInt: FfiConverter<UInt, Int> {
     }
 }
 
+/**
+ * @suppress
+ */
 public object FfiConverterULong: FfiConverter<ULong, Long> {
     override fun lift(value: Long): ULong {
         return value.toULong()
@@ -1146,6 +1245,9 @@ public object FfiConverterULong: FfiConverter<ULong, Long> {
     }
 }
 
+/**
+ * @suppress
+ */
 public object FfiConverterDouble: FfiConverter<Double, Double> {
     override fun lift(value: Double): Double {
         return value
@@ -1166,6 +1268,9 @@ public object FfiConverterDouble: FfiConverter<Double, Double> {
     }
 }
 
+/**
+ * @suppress
+ */
 public object FfiConverterBoolean: FfiConverter<Boolean, Byte> {
     override fun lift(value: Byte): Boolean {
         return value.toInt() != 0
@@ -1186,6 +1291,9 @@ public object FfiConverterBoolean: FfiConverter<Boolean, Byte> {
     }
 }
 
+/**
+ * @suppress
+ */
 public object FfiConverterString: FfiConverter<String, RustBuffer.ByValue> {
     // Note: we don't inherit from FfiConverterRustBuffer, because we use a
     // special encoding when lowering/lifting.  We can use `RustBuffer.len` to
@@ -1240,6 +1348,9 @@ public object FfiConverterString: FfiConverter<String, RustBuffer.ByValue> {
     }
 }
 
+/**
+ * @suppress
+ */
 public object FfiConverterByteArray: FfiConverterRustBuffer<ByteArray> {
     override fun read(buf: ByteBuffer): ByteArray {
         val len = buf.getInt()
@@ -1355,12 +1466,16 @@ public object FfiConverterByteArray: FfiConverterRustBuffer<ByteArray> {
 //
 
 
-// The cleaner interface for Object finalization code to run.
-// This is the entry point to any implementation that we're using.
-//
-// The cleaner registers objects and returns cleanables, so now we are
-// defining a `UniffiCleaner` with a `UniffiClenaer.Cleanable` to abstract the
-// different implmentations available at compile time.
+/**
+ * The cleaner interface for Object finalization code to run.
+ * This is the entry point to any implementation that we're using.
+ *
+ * The cleaner registers objects and returns cleanables, so now we are
+ * defining a `UniffiCleaner` with a `UniffiClenaer.Cleanable` to abstract the
+ * different implmentations available at compile time.
+ *
+ * @suppress
+ */
 interface UniffiCleaner {
     interface Cleanable {
         fun clean()
@@ -1421,7 +1536,8 @@ public interface CarrierHandler {
     companion object
 }
 
-open class CarrierHandlerImpl: Disposable, AutoCloseable, CarrierHandler {
+open class CarrierHandlerImpl: Disposable, AutoCloseable, CarrierHandler
+{
 
     constructor(pointer: Pointer) {
         this.pointer = pointer
@@ -1528,6 +1644,9 @@ internal const val UNIFFI_CALLBACK_SUCCESS = 0
 internal const val UNIFFI_CALLBACK_ERROR = 1
 internal const val UNIFFI_CALLBACK_UNEXPECTED_ERROR = 2
 
+/**
+ * @suppress
+ */
 public abstract class FfiConverterCallbackInterface<CallbackInterface: Any>: FfiConverter<CallbackInterface, Long> {
     internal val handleMap = UniffiHandleMap<CallbackInterface>()
 
@@ -1584,6 +1703,9 @@ internal object uniffiCallbackInterfaceCarrierHandler {
     }
 }
 
+/**
+ * @suppress
+ */
 public object FfiConverterTypeCarrierHandler: FfiConverter<CarrierHandler, Pointer> {
     internal val handleMap = UniffiHandleMap<CarrierHandler>()
 
@@ -1713,10 +1835,13 @@ public interface KotlinFilePackager {
     
     fun `getFile`(`path`: kotlin.String): PackagedFile
     
+    fun `scanFiles`(`paths`: List<kotlin.String>)
+    
     companion object
 }
 
-open class KotlinFilePackagerImpl: Disposable, AutoCloseable, KotlinFilePackager {
+open class KotlinFilePackagerImpl: Disposable, AutoCloseable, KotlinFilePackager
+{
 
     constructor(pointer: Pointer) {
         this.pointer = pointer
@@ -1809,6 +1934,17 @@ open class KotlinFilePackagerImpl: Disposable, AutoCloseable, KotlinFilePackager
     }
     
 
+    override fun `scanFiles`(`paths`: List<kotlin.String>)
+        = 
+    callWithPointer {
+    uniffiRustCall() { _status ->
+    UniffiLib.INSTANCE.uniffi_rust_lib_bluebubbles_fn_method_kotlinfilepackager_scan_files(
+        it, FfiConverterSequenceString.lower(`paths`),_status)
+}
+    }
+    
+    
+
     
 
     
@@ -1832,6 +1968,18 @@ internal object uniffiCallbackInterfaceKotlinFilePackager {
             uniffiTraitInterfaceCall(uniffiCallStatus, makeCall, writeReturn)
         }
     }
+    internal object `scanFiles`: UniffiCallbackInterfaceKotlinFilePackagerMethod1 {
+        override fun callback(`uniffiHandle`: Long,`paths`: RustBuffer.ByValue,`uniffiOutReturn`: Pointer,uniffiCallStatus: UniffiRustCallStatus,) {
+            val uniffiObj = FfiConverterTypeKotlinFilePackager.handleMap.get(uniffiHandle)
+            val makeCall = { ->
+                uniffiObj.`scanFiles`(
+                    FfiConverterSequenceString.lift(`paths`),
+                )
+            }
+            val writeReturn = { _: Unit -> Unit }
+            uniffiTraitInterfaceCall(uniffiCallStatus, makeCall, writeReturn)
+        }
+    }
 
     internal object uniffiFree: UniffiCallbackInterfaceFree {
         override fun callback(handle: Long) {
@@ -1841,6 +1989,7 @@ internal object uniffiCallbackInterfaceKotlinFilePackager {
 
     internal var vtable = UniffiVTableCallbackInterfaceKotlinFilePackager.UniffiByValue(
         `getFile`,
+        `scanFiles`,
         uniffiFree,
     )
 
@@ -1851,6 +2000,9 @@ internal object uniffiCallbackInterfaceKotlinFilePackager {
     }
 }
 
+/**
+ * @suppress
+ */
 public object FfiConverterTypeKotlinFilePackager: FfiConverter<KotlinFilePackager, Pointer> {
     internal val handleMap = UniffiHandleMap<KotlinFilePackager>()
 
@@ -1985,7 +2137,8 @@ public interface MsgReceiver {
     companion object
 }
 
-open class MsgReceiverImpl: Disposable, AutoCloseable, MsgReceiver {
+open class MsgReceiverImpl: Disposable, AutoCloseable, MsgReceiver
+{
 
     constructor(pointer: Pointer) {
         this.pointer = pointer
@@ -2145,6 +2298,9 @@ internal object uniffiCallbackInterfaceMsgReceiver {
     }
 }
 
+/**
+ * @suppress
+ */
 public object FfiConverterTypeMsgReceiver: FfiConverter<MsgReceiver, Pointer> {
     internal val handleMap = UniffiHandleMap<MsgReceiver>()
 
@@ -2281,7 +2437,8 @@ public interface NativePushStateInterface {
     companion object
 }
 
-open class NativePushState: Disposable, AutoCloseable, NativePushStateInterface {
+open class NativePushState: Disposable, AutoCloseable, NativePushStateInterface
+{
 
     constructor(pointer: Pointer) {
         this.pointer = pointer
@@ -2413,6 +2570,9 @@ open class NativePushState: Disposable, AutoCloseable, NativePushStateInterface 
     
 }
 
+/**
+ * @suppress
+ */
 public object FfiConverterTypeNativePushState: FfiConverter<NativePushState, Pointer> {
 
     override fun lower(value: NativePushState): Pointer {
@@ -2450,6 +2610,9 @@ data class FileInfo (
     companion object
 }
 
+/**
+ * @suppress
+ */
 public object FfiConverterTypeFileInfo: FfiConverterRustBuffer<FileInfo> {
     override fun read(buf: ByteBuffer): FileInfo {
         return FileInfo(
@@ -2494,6 +2657,9 @@ sealed class PackagedFile {
     companion object
 }
 
+/**
+ * @suppress
+ */
 public object FfiConverterTypePackagedFile : FfiConverterRustBuffer<PackagedFile>{
     override fun read(buf: ByteBuffer): PackagedFile {
         return when(buf.getInt()) {
@@ -2545,6 +2711,9 @@ public object FfiConverterTypePackagedFile : FfiConverterRustBuffer<PackagedFile
 
 
 
+/**
+ * @suppress
+ */
 public object FfiConverterOptionalDouble: FfiConverterRustBuffer<kotlin.Double?> {
     override fun read(buf: ByteBuffer): kotlin.Double? {
         if (buf.get().toInt() == 0) {
@@ -2574,6 +2743,9 @@ public object FfiConverterOptionalDouble: FfiConverterRustBuffer<kotlin.Double?>
 
 
 
+/**
+ * @suppress
+ */
 public object FfiConverterOptionalString: FfiConverterRustBuffer<kotlin.String?> {
     override fun read(buf: ByteBuffer): kotlin.String? {
         if (buf.get().toInt() == 0) {
@@ -2603,6 +2775,9 @@ public object FfiConverterOptionalString: FfiConverterRustBuffer<kotlin.String?>
 
 
 
+/**
+ * @suppress
+ */
 public object FfiConverterOptionalByteArray: FfiConverterRustBuffer<kotlin.ByteArray?> {
     override fun read(buf: ByteBuffer): kotlin.ByteArray? {
         if (buf.get().toInt() == 0) {
@@ -2625,6 +2800,34 @@ public object FfiConverterOptionalByteArray: FfiConverterRustBuffer<kotlin.ByteA
         } else {
             buf.put(1)
             FfiConverterByteArray.write(value, buf)
+        }
+    }
+}
+
+
+
+
+/**
+ * @suppress
+ */
+public object FfiConverterSequenceString: FfiConverterRustBuffer<List<kotlin.String>> {
+    override fun read(buf: ByteBuffer): List<kotlin.String> {
+        val len = buf.getInt()
+        return List<kotlin.String>(len) {
+            FfiConverterString.read(buf)
+        }
+    }
+
+    override fun allocationSize(value: List<kotlin.String>): ULong {
+        val sizeForLength = 4UL
+        val sizeForItems = value.map { FfiConverterString.allocationSize(it) }.sum()
+        return sizeForLength + sizeForItems
+    }
+
+    override fun write(value: List<kotlin.String>, buf: ByteBuffer) {
+        buf.putInt(value.size)
+        value.iterator().forEach {
+            FfiConverterString.write(it, buf)
         }
     }
 }

@@ -58,9 +58,8 @@ class _PickedAttachmentState extends OptimizedState<PickedAttachment> with Autom
       image = await as.loadAndGetProperties(fakeAttachment, actualPath: file.path, onlyFetchData: true);
       setState(() {});
     } else if (mimeType.startsWith("image/")) {
-      setState(() {
-        image = file.bytes;
-      });
+      image = await file.getBytes();
+      setState(() { });
     } else {
       setState(() {
         image = Uint8List.fromList([]);

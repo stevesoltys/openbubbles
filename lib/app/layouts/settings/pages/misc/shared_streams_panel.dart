@@ -66,11 +66,11 @@ class _SharedStreamsPanelState extends OptimizedState<SharedStreamsPanel> {
   @override
   void initState() {
     super.initState();
+    refreshTimer = Timer.periodic(const Duration(seconds: 1), (timer) => updateSyncState());
     (() async {
       updateSyncState();
       await api.getAlbums(state: pushService.state, refresh: true);
       updateSyncState();
-      refreshTimer = Timer.periodic(const Duration(seconds: 1), (timer) => updateSyncState());
     })();
   }
 
@@ -276,7 +276,7 @@ class _SharedStreamsPanelState extends OptimizedState<SharedStreamsPanel> {
               path = "$dir/${album.name}";
               await Directory(path).create();
               try {
-                Directory(path).listSync();
+                Directory(path).statSync();
               } catch (e, stack) {
                 promptAllowAll();
                 Logger.error("Failed to list", error: e, trace: stack);
@@ -340,7 +340,12 @@ class _SharedStreamsPanelState extends OptimizedState<SharedStreamsPanel> {
                   backgroundColor: tileColor,
                   children: albums,
                 ),
-                if (Platform.isAndroid)
+                if (invites.isEmpty && albums.isEmpty)
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
+                  child: Text("No Albums! Apple users can invite you to a shared photo album and they'll show up here, where you can sync them to your gallery.", style: context.textTheme.bodyMedium!,),
+                ),
+                if (Platform.isAndroid && !(invites.isEmpty && albums.isEmpty))
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
                   child: Text("Allow all photos if prompted; limited access will cause problems. Shared Albums are synced to a folder in your Photos folder, which will appear as an album in your photo manager. Photos added on this device and removed on other devices will not be removed due to Android's permission model.", style: context.textTheme.bodySmall!.copyWith(color: context.theme.colorScheme.properOnSurface.withOpacity(0.75), height: 1.5),),
