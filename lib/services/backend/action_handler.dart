@@ -279,7 +279,7 @@ class ActionHandler extends GetxService {
 
       var mm = attachment.mimeType ?? mime(attachment.transferName);
       // 100 MB
-      if (dialog && mm != null && mm.startsWith("video/")) {
+      if (dialog && mm != null && mm.startsWith("video/") && Platform.isAndroid) {
 
         String tempPath = "$directory/temp.mp4";
         file.renameSync(tempPath);
@@ -378,6 +378,8 @@ class ActionHandler extends GetxService {
         await File(tempPath).delete();
         File("$directory/compressed.mp4").renameSync(pathName);
         attachment.totalBytes = File(pathName).lengthSync();
+      } else if (dialog != null) {
+        Get.back();
       }
     }
     await c.addMessage(m);
