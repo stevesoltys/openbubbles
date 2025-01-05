@@ -8,6 +8,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MessageProperties extends CustomStateful<MessageWidgetController> {
   MessageProperties({
@@ -105,7 +106,12 @@ class _MessagePropertiesState extends CustomState<MessageProperties, void, Messa
               actions: <Widget>[
                 TextButton(
                         onPressed: () async {
-                            Get.back();
+                          await launchUrl(Uri.parse("https://openbubbles.app/docs/faq.html#i-see-verification-failed-under-some-messages-what-does-this-mean"), mode: LaunchMode.externalApplication);
+                        },
+                        child: Text("Learn More", style: context.theme.textTheme.bodyLarge!.copyWith(color: context.theme.colorScheme.primary))),
+                TextButton(
+                        onPressed: () async {
+                          Get.back();
                         },
                         child: Text("Ok", style: context.theme.textTheme.bodyLarge!.copyWith(color: context.theme.colorScheme.primary))),
               ],

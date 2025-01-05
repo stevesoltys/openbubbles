@@ -378,7 +378,7 @@ class ActionHandler extends GetxService {
         await File(tempPath).delete();
         File("$directory/compressed.mp4").renameSync(pathName);
         attachment.totalBytes = File(pathName).lengthSync();
-      } else if (dialog != null) {
+      } else if (dialog) {
         Get.back();
       }
     }

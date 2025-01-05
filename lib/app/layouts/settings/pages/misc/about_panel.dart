@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:math';
 
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:bluebubbles/app/layouts/settings/widgets/content/next_button.dart';
 import 'package:bluebubbles/helpers/helpers.dart';
 import 'package:bluebubbles/app/layouts/settings/widgets/settings_widgets.dart';
@@ -25,19 +26,138 @@ class AboutPanel extends StatefulWidget {
 
 class _AboutPanelState extends OptimizedState<AboutPanel> {
 
+  Widget buildFormatted(String format) {
+    var splice = format.split("**");
+    bool bold = false;
+    return RichText(
+      text: TextSpan(
+        style: context.theme.textTheme.bodyMedium?.apply(fontSizeFactor: 1.1),
+        children: splice.map((item) {
+          bold = !bold;
+          return TextSpan(
+            text: item,
+            style: !bold ? const TextStyle(fontWeight: FontWeight.bold) : null
+          );
+        }).toList()
+      ),
+    );
+  }
+
+  AdaptiveThemeMode? mode;
+
+  @override
+  initState() {
+    super.initState();
+      WidgetsBinding.instance
+          .addPostFrameCallback((_) {
+            var isDark = context.theme.brightness == Brightness.dark;
+            if (!isDark) {
+              mode = AdaptiveTheme.of(context).mode;
+              AdaptiveTheme.of(context).setDark();
+            }
+          });
+  }
+
+  @override
+  dispose() {
+    super.dispose();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mode != null) {
+          AdaptiveTheme.of(Get.context!).setThemeMode(mode!);
+        }
+      });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SettingsScaffold(
         title: "About & Links",
-        initialHeader: "Links (from BlueBubbles)",
         iosSubtitle: iosSubtitle,
         materialSubtitle: materialSubtitle,
+        initialHeader: null,
         tileColor: tileColor,
         headerColor: headerColor,
         bodySlivers: [
           SliverList(
             delegate: SliverChildListDelegate(
               <Widget>[
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      RichText(
+                        text: TextSpan(
+                          style: context.theme.textTheme.titleLarge,
+                          children: [
+                            const TextSpan(
+                              text: "Would you "
+                            ),
+                            const TextSpan(
+                              text: "see it?",
+                              style: TextStyle(fontStyle: FontStyle.italic, fontWeight: FontWeight.bold),
+                            ),
+                          ]
+                        )
+                      ),
+                      const SizedBox(height: 15),
+                      buildFormatted("It **isn't obvious**"),
+                      const SizedBox(height: 15),
+                      buildFormatted("It **rarely looks like the movies**"),
+                      const SizedBox(height: 15),
+                      buildFormatted("It's a **good, normal person** who isn't fully aware of what they are doing. They could **even be your friend**"),
+                      const SizedBox(height: 15),
+                      buildFormatted("It **doesn't have to be physical or even spoken**. It just has to be a **clear and consistent message**"),
+                      const SizedBox(height: 25),
+                      RichText(
+                        text: TextSpan(
+                          style: context.theme.textTheme.bodyMedium?.apply(fontSizeFactor: 1.2),
+                          children: [
+                            const TextSpan(
+                              text: "You deserve to be treated with respect and kindness. ",
+                            ),
+                            const TextSpan(
+                              text: "Unwarranted, recurring hostility in the classroom or workplace ",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            const TextSpan(
+                              text: "is bullying and is never acceptable",
+                              style: TextStyle(fontStyle: FontStyle.italic, fontWeight: FontWeight.bold)
+                            ),
+                            const TextSpan(
+                              text: ".",
+                            )
+                          ],
+                        )
+                      ),
+                      const SizedBox(height: 25),
+                      buildFormatted("**Anyone can be a victim.** **Anyone can be a perpetrator.** If something is happening, know there is **no excuse.** You are **not the problem.** They **don't have to treat you this way.** It **won't fix itself.**"),
+                      const SizedBox(height: 15),
+                      buildFormatted("**Stand up for what is right. Do not attack the bully, assert the behavior is unacceptable.** There are no winners or losers. There is a bully who needs help. Abusing others is unacceptable and isn't going to get them what they need. We owe it to everyone to hold us accountable for our actions and help us grow."),
+                      const SizedBox(height: 15),
+                      Text("We can fix this together", style: context.theme.textTheme.bodyMedium?.apply(fontWeightDelta: 2, fontSizeFactor: 1.2)),
+                      RichText(
+                        text: TextSpan(
+                          style: context.theme.textTheme.bodyMedium?.apply(fontWeightDelta: 2, fontSizeFactor: 1.2),
+                          children: [
+                            TextSpan(
+                              text: 'stopbullying.gov',
+                              style: const TextStyle(color: Colors.blue),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  launchUrl(Uri.parse("https://www.stopbullying.gov/"), mode: LaunchMode.externalApplication);
+                              },
+                            )
+                          ]
+                        ),
+                      ),
+                    ],
+                  )
+                ),
+                SettingsHeader(
+                    iosSubtitle: iosSubtitle,
+                    materialSubtitle: materialSubtitle,
+                    text: "Links (from BlueBubbles)"),
                 SettingsSection(
                   backgroundColor: tileColor,
                   children: [

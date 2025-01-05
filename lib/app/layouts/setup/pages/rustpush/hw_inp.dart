@@ -367,7 +367,7 @@ class HwInpState extends OptimizedState<HwInp> {
                   style: const TextStyle(color: Colors.blue),
                   recognizer: TapGestureRecognizer()
                     ..onTap = () {
-                      launchUrl(Uri.parse("https://openbubbles.app/macos"));
+                      launchUrl(Uri.parse("https://openbubbles.app/macos"), mode: LaunchMode.externalApplication);
                   },
                 ),
                 const TextSpan(
