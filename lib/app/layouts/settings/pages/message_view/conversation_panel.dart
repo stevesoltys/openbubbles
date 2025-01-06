@@ -558,7 +558,7 @@ class _ConversationPanelState extends OptimizedState<ConversationPanel> {
                         padding: const EdgeInsets.only(bottom: 5.0),
                         child: SettingsOptions<String>(
                           title: "Quick Tapback",
-                          options: ReactionTypes.toList(),
+                          options: ReactionTypes.toList().take(6).toList(),
                           cupertinoCustomWidgets: [
                             Padding(
                               padding: const EdgeInsets.symmetric(vertical: 7.5),

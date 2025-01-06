@@ -297,6 +297,7 @@ class SearchViewState extends OptimizedState<SearchView> {
                         padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
                         controller: textEditingController,
                         placeholder: "Enter a search term...",
+                        autofocus: true,
                         style: context.theme.textTheme.bodyLarge,
                         placeholderStyle:
                             context.theme.textTheme.bodyLarge!.copyWith(color: context.theme.colorScheme.outline),

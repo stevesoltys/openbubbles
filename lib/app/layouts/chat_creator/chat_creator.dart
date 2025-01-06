@@ -471,7 +471,7 @@ class ChatCreatorState extends OptimizedState<ChatCreator> {
                                   maxLines: 1,
                                   selectionControls:
                                       iOS ? cupertinoTextSelectionControls : materialTextSelectionControls,
-                                  autofocus: kIsWeb || kIsDesktop,
+                                  autofocus: widget.initialAttachments.isEmpty && (widget.initialText?.isEmpty ?? true) && widget.initialSelected.isEmpty,
                                   enableIMEPersonalizedLearning: !ss.settings.incognitoKeyboard.value,
                                   textInputAction: TextInputAction.done,
                                   cursorColor: context.theme.colorScheme.primary,
