@@ -285,13 +285,20 @@ class ActionHandler extends GetxService {
         file.renameSync(tempPath);
         // use FFMPEG to shrink
         var info = await FFprobeKit.getMediaInformation(tempPath);
-        print(await info.getOutput());
+        Logger.info(await info.getOutput());
         var output = json.decode((await info.getOutput())!);
         double duration = double.parse(output["format"]["duration"]);
         List<dynamic> streams = output["streams"];
         var videoStream = streams.firstWhereOrNull((stream) => stream["codec_type"] == "video");
         int width = videoStream?["width"] ?? 1;
         int height = videoStream?["height"] ?? 1;
+        var rotation = ((videoStream?["side_data_list"] as List<dynamic>?)?.firstOrNull?["rotation"] ?? 0).abs();
+        var flip = rotation == 90 || rotation == 270;
+        if (flip) {
+          var tmp = width;
+          width = height;
+          height = tmp;
+        }
         if (width > height) {
           var aspect = height / width;
           width = 1920;
@@ -359,23 +366,27 @@ class ActionHandler extends GetxService {
                 )
               ],
             );
-          }).then((_) {
+          }).then((_) async {
             myUpdate = null;
             executed.cancel();
+            await File(tempPath).delete();
           });
         
         await c.future;
 
         var returnCode = await executed.getReturnCode();
         if (ReturnCode.isCancel(returnCode)) {
+          var output = File("$directory/compressed.mp4");
+          if (await output.exists()) {
+            await output.delete();
+          }
           throw Exception("User cancelled!");
         }
         if (!ReturnCode.isSuccess(returnCode)) {
           var output = await executed.getOutput();
           showSnackbar("Error", "Failed to compress video");
           throw Exception("FFMpeg failed $output code $returnCode");
-        }
-        await File(tempPath).delete();
+        } 
         File("$directory/compressed.mp4").renameSync(pathName);
         attachment.totalBytes = File(pathName).lengthSync();
       } else if (dialog) {
