@@ -168,7 +168,7 @@ class FullscreenMediaHolderState extends OptimizedState<FullscreenMediaHolder> {
                   itemBuilder: (BuildContext context, int index) {
                     final attachment = attachments[index];
                     dynamic content =
-                        as.getContent(attachment, path: attachment.guid == null ? attachment.transferName : null);
+                        as.getContent(attachment, path: attachment.guid == null ? attachment.sourcePath : null);
                     final key = attachment.guid ?? attachment.transferName ?? randomString(8);
 
                     if (content is PlatformFile) {

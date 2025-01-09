@@ -90,6 +90,7 @@ class _PickedAttachmentState extends OptimizedState<PickedAttachment> with Autom
                   transferName: widget.data.name,
                   mimeType: mime(widget.data.name) ?? "",
                   bytes: widget.data.bytes,
+                  sourcePath: widget.data.path,
                 );
                 return FullscreenMediaHolder(
                   attachment: fakeAttachment,

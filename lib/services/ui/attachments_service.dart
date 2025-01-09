@@ -45,7 +45,7 @@ class AttachmentsService extends GetxService {
         bytes: Uint8List.fromList([]),
       );
     }
-    if (kIsWeb || attachment.guid == null) {
+    if (kIsWeb || (attachment.guid == null && attachment.bytes != null)) {
       if (attachment.bytes == null && (autoDownload ?? ss.settings.autoDownload.value)) {
         return attachmentDownloader.startDownload(attachment, onComplete: onComplete);
       } else {
