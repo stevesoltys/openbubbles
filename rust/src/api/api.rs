@@ -13,7 +13,7 @@ pub use plist::Value;
 use prost::Message as prostMessage;
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use tokio::{runtime::Runtime, select, sync::{broadcast, mpsc, oneshot::{self, Sender}, watch, Mutex, RwLock}};
-use rustpush::{authenticate_apple, authenticate_phone, findmy::{FindMyClient, FindMyState, MULTIPLEX_SERVICE}, login_apple_delegates, sharedstreams::{AssetMetadata, FFMpegFilePackager, FileMetadata, FilePackager, PreparedAsset, PreparedFile, SharedStreamClient, SharedStreamsState, SyncController, SyncManager, SyncState}, APSMessage, LoginDelegate, MADRID_SERVICE};
+use rustpush::{authenticate_apple, authenticate_phone, IDSNGMIdentity, findmy::{FindMyClient, FindMyState, MULTIPLEX_SERVICE}, login_apple_delegates, sharedstreams::{AssetMetadata, FFMpegFilePackager, FileMetadata, FilePackager, PreparedAsset, PreparedFile, SharedStreamClient, SharedStreamsState, SyncController, SyncManager, SyncState}, APSMessage, LoginDelegate, MADRID_SERVICE};
 use rustpush::AnisetteProvider;
 pub use rustpush::findmy::{FindMyFriendsClient, FindMyPhoneClient};
 pub use rustpush::sharedstreams::{SharedAlbum, SyncStatus};
@@ -88,7 +88,7 @@ impl<T: Seek + Read> SeekRead for T {}
 #[derive(Serialize, Deserialize, Clone)]
 struct SavedHardwareState {
     push: APSState,
-    identity: IDSUserIdentity,
+    identity: IDSNGMIdentity,
     os_config: JoinedOSConfig,
 }
 
@@ -171,7 +171,7 @@ pub struct InnerPushState {
     pub os_config: Option<JoinedOSConfig>,
     pub account: Option<AppleAccount<DefaultAnisetteProvider>>,
     pub cancel_poll: Mutex<Option<Sender<()>>>,
-    pub identity: Option<IDSUserIdentity>,
+    pub identity: Option<IDSNGMIdentity>,
     pub local_messages: Mutex<mpsc::Receiver<PushMessage>>,
     pub local_broadcast: mpsc::Sender<PushMessage>,
     pub reg_state: Option<Mutex<watch::Receiver<ResourceState>>>,
@@ -312,6 +312,25 @@ async fn restore(curr_state: &PushState) {
         std::fs::write(&id_path, plist_to_string(&users).unwrap()).unwrap();
     }
 
+    let mut needs_rereg = false;
+
+    #[derive(Serialize, Deserialize, Clone)]
+    struct LegacySavedHardwareState {
+        push: APSState,
+        identity: IDSUserIdentity,
+        os_config: JoinedOSConfig,
+    }
+
+    if let Ok(config) = plist::from_file::<_, LegacySavedHardwareState>(&hw_config_path) {
+        std::fs::write(&hw_config_path, plist_to_string(&SavedHardwareState {
+            push: config.push,
+            identity: IDSNGMIdentity::new_with_legacy(config.identity).expect("Failed to create new identity!"),
+            os_config: config.os_config
+        }).unwrap()).unwrap();
+        needs_rereg = true;
+    }
+
+
     let Ok(state) = plist::from_file::<_, SavedHardwareState>(&hw_config_path) else { return };
 
     // even if we failed on the initial connection, we don't care cuz we're restoring.
@@ -331,6 +350,11 @@ async fn restore(curr_state: &PushState) {
             println!("updated keys!!!");
             std::fs::write(&id_path, plist_to_string(&updated_keys).unwrap()).unwrap();
         })).await);
+    
+    if needs_rereg {
+        // mark rereg
+        let _ = inner.client.as_ref().unwrap().identity.refresh_now().await;
+    }
 
     inner.reg_state = Some(Mutex::new(inner.client.as_ref().unwrap().identity.resource_state.subscribe()));
 
@@ -435,7 +459,7 @@ pub async fn register_ids(state: &Arc<PushState>, users: &Vec<IDSUser>) -> anyho
     Ok(None)
 }
 
-async fn setup_push(config: &JoinedOSConfig, identity: &IDSUserIdentity, state: Option<&APSState>, state_path: PathBuf) -> (APSConnection, Option<PushError>) {
+async fn setup_push(config: &JoinedOSConfig, identity: &IDSNGMIdentity, state: Option<&APSState>, state_path: PathBuf) -> (APSConnection, Option<PushError>) {
     let (conn, error) = APSConnectionResource::new(config.config(), state.cloned()).await;
 
     if error.is_none() {
@@ -490,7 +514,7 @@ pub async fn configure_macos(state: &Arc<PushState>, config: &JoinedOSConfig) ->
     let config = config.clone();
     let mut inner = state.0.write().await;
     inner.os_config = Some(config.clone());
-    inner.identity = Some(IDSUserIdentity::new()?);
+    inner.identity = Some(IDSNGMIdentity::new()?);
     // delete anisette provisioning to prevent 6005's
     let anisette_dir = inner.conf_dir.join("anisette_test");
     if anisette_dir.exists() {
