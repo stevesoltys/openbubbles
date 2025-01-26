@@ -115,7 +115,7 @@ class LifecycleService extends GetxService with WidgetsBindingObserver {
     }
     if (state == AppLifecycleState.detached && !(kIsDesktop || kIsWeb)) {
       isDead = true;
-      if (!outq.isProcessing && !inq.isProcessing) {
+      if (!outq.isProcessing.value && !inq.isProcessing.value) {
         Logger.info("Engine exit");
         await mcs.invokeMethod("engine-done");
       }

@@ -8,7 +8,7 @@ import 'package:bluebubbles/utils/logger/logger.dart';
 import 'package:get/get.dart';
 
 abstract class Queue extends GetxService {
-  bool isProcessing = false;
+  RxBool isProcessing = false.obs;
   List<QueueItem> items = [];
 
   Future<void> queue(QueueItem item, {bool prep = true}) async {
@@ -30,15 +30,15 @@ abstract class Queue extends GetxService {
     } else {
       items.add(item);
     }
-    if (!isProcessing || (items.isEmpty && item is IncomingItem)) processNextItem();
+    if (!isProcessing.value || (items.isEmpty && item is IncomingItem)) processNextItem();
   }
 
   Future<dynamic> prepItem(QueueItem _);
 
   Future<void> processNextItem() async {
     if (items.isEmpty) {
-      isProcessing = false;
-      if (ls.isDead && !inq.isProcessing && !outq.isProcessing) {
+      isProcessing.value = false;
+      if (ls.isDead && !inq.isProcessing.value && !outq.isProcessing.value) {
         Logger.info("Done! waiting a bit for any stragglers");
         ls.closeTimer = Timer(const Duration(seconds: 5), () {
           mcs.invokeMethod("engine-done");
@@ -50,7 +50,7 @@ abstract class Queue extends GetxService {
     ls.closeTimer?.cancel();
     ls.closeTimer = null;
 
-    isProcessing = true;
+    isProcessing.value = true;
     QueueItem queued = items.removeAt(0);
 
     try {

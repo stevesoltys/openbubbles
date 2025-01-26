@@ -2265,7 +2265,7 @@ class RustPushService extends GetxService {
       Logger.info("Queing");
       var service = backend as RustPushBackend;
       service.markDelivered(myMsg);
-      inq.queue(IncomingItem(
+      await inq.queue(IncomingItem(
         chat: chat,
         message: reflected,
         type: QueueType.newMessage
@@ -2395,6 +2395,17 @@ class RustPushService extends GetxService {
     }
   }
 
+  Future<void> markAsHandledAfter(String ptr) async {
+    if (inq.isProcessing.value) {
+      Logger.info("Marking as handled processing wait $ptr");
+      await for (final value in inq.isProcessing.stream) {
+        if (!value) break;
+      }
+    }
+    Logger.info("Marking as handled commit $ptr");
+    await api.completeMsg(ptr: ptr);
+  }
+
   Future recievedMsgPointer(String pointer, String retry) async {
     var message = await api.ptrToDart(ptr: pointer);
     if (message == null) {
@@ -2407,12 +2418,12 @@ class RustPushService extends GetxService {
       Logger.info("Handling $pointer $retry");
       await handleMsg(message);
       Logger.info("Marking as handled $pointer");
-      await api.completeMsg(ptr: pointer);
+      await markAsHandledAfter(pointer);
     } catch (e, s) {
       Logger.error("Handle failed", error: e, trace: s);
       if (retry == "3") {
         Logger.info("Failed; Marking as handled anyways $pointer");
-        await api.completeMsg(ptr: pointer);
+        await markAsHandledAfter(pointer);
       }
       rethrow;
     }
