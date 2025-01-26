@@ -229,6 +229,31 @@ class FaceTimeCreatorState extends OptimizedState<FaceTimeCreator> {
             actions: [],
           ),
         ),
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: context.theme.colorScheme.bubble(context, false),
+          shape: const CircleBorder(),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 5.0, right: 5.0, top: 2),
+            child: Icon(
+              CupertinoIcons.video_camera_solid,
+              color: context.theme.colorScheme.onBubble(context, false),
+              size: 30,
+            ),
+          ),
+          onPressed: () async {
+            if (selectedContacts.any((s) => s.iMessage.value == false)) {
+              showSnackbar("Error", "At least one selected user doesn't have FaceTime!");
+              return;
+            }
+            Get.back();
+            var handle = await (backend as RustPushBackend).getDefaultHandle();
+            List<String> targets = [];
+            for (var user in selectedContacts) {
+              targets.add(await RustPushBBUtils.formatAndAddPrefix(user.address));
+            }
+            await pushService.placeOutgoingCall(handle, targets);
+          },
+        ),
         body: FocusScope(
           child: Column(
             children: [
@@ -451,45 +476,6 @@ class FaceTimeCreatorState extends OptimizedState<FaceTimeCreator> {
                   }),
                 ),
               ),
-              Align(
-                alignment: Alignment.centerRight,
-                child: Padding(
-                  child: Material(
-                    borderRadius: BorderRadius.circular(15),
-                    color: context.theme.colorScheme.bubble(context, false),
-                    child: InkWell(
-                      onTap: () async {
-                        Get.back();
-                        var handle = await (backend as RustPushBackend).getDefaultHandle();
-                        List<String> targets = [];
-                        for (var user in selectedContacts) {
-                          targets.add(await RustPushBBUtils.formatAndAddPrefix(user.address));
-                        }
-                        await pushService.placeOutgoingCall(handle, targets);
-                      },
-                      borderRadius: BorderRadius.circular(15),
-                      child: SizedBox(
-                        height: 60,
-                        width: 100,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              CupertinoIcons.video_camera_solid,
-                              color: context.theme.colorScheme.onBubble(context, false),
-                              size: 30,
-                            ),
-                            Text("Call",
-                                style: context.theme.textTheme.bodySmall!.copyWith(color: context.theme.colorScheme.onBubble(context, false), fontWeight: FontWeight.w500)),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  padding: const EdgeInsets.only(right: 16, bottom: 8),
-                )
-              )
             ],
           ),
         ),

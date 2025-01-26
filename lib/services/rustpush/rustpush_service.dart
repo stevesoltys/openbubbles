@@ -1797,7 +1797,7 @@ class RustPushService extends GetxService {
 
   bool isSessionActive(api.FTSession session) {
     var anHourAgo = DateTime.now().millisecondsSinceEpoch - 3600000;
-    return session.participants.values.any((value) => value.active != null) && session.lastRekey != null && session.lastRekey! > anHourAgo;
+    return session.participants.values.any((value) => value.active != null) && (session.lastRekey ?? session.startTime) != null && (session.lastRekey ?? session.startTime)! > anHourAgo;
   }
 
   
