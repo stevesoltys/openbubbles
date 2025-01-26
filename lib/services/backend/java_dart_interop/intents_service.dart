@@ -106,7 +106,7 @@ class IntentsService extends GetxService {
           if (intent.extra?["answer"] == true) {
             await answerFaceTime(intent.extra?["callUuid"]!);
           } else {
-            await showFaceTimeOverlay(intent.extra?["callUuid"], intent.extra?["caller"], null, false);
+            await showFaceTimeOverlay(intent.extra?["callUuid"], intent.extra?["caller"], null, "");
           }
         }
     }

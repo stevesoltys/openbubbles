@@ -40,8 +40,12 @@ class DeleteNotificationHandler: MethodCallHandlerImpl() {
             // Return true cuz there wasn't technically an issue.
             if (notification == null) {
                 Log.d(Constants.logTag, "Notification with ID $notificationId not found!")
+                if (tag != null) {
+                    // nessesary for insistent full screen intent activities which don't show in activeNotifications
+                    notificationManager.cancel(tag, notificationId)
+                }
             } else {
-                Log.d(Constants.logTag, "Cancelling notification with ID, ${notificationId}")
+                Log.d(Constants.logTag, "Cancelling notification with ID, $notificationId")
                 notificationManager.cancel(notification.tag, notificationId)
             }
 

@@ -3,12 +3,15 @@ package com.bluebubbles.messaging.services.notifications
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
+import android.media.AudioAttributes
+import android.media.RingtoneManager
 import android.os.Build
 import android.util.Log
 import com.bluebubbles.messaging.Constants
 import com.bluebubbles.messaging.models.MethodCallHandlerImpl
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
+
 
 class NotificationChannelHandler: MethodCallHandlerImpl() {
     companion object {
@@ -49,6 +52,16 @@ class NotificationChannelHandler: MethodCallHandlerImpl() {
         // set 'Foreground Service' channel to low importance (avoid heads-up notification)
         } else if (channelId == "com.bluebubbles.foreground_service") {
             channel.importance = NotificationManager.IMPORTANCE_LOW
+        } else if (channelId == "com.bluebubbles.incoming_facetimes") {
+            val ringtoneUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE)
+            channel.setSound(
+                ringtoneUri,
+                AudioAttributes.Builder() // Setting the AudioAttributes is important as it identifies the purpose of your
+                    // notification sound.
+                    .setUsage(AudioAttributes.USAGE_NOTIFICATION_RINGTONE)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                    .build()
+            )
         }
         // create the channel
         notificationManager.createNotificationChannel(channel)

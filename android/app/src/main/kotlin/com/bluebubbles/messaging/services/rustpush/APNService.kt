@@ -37,7 +37,7 @@ class APNService : Service(), MsgReceiver {
     private var waitingHandleCb = ArrayList<(handle: ULong) -> Unit>();
 
     private val job = SupervisorJob()
-    private val scope = CoroutineScope(Dispatchers.IO + job)
+    val scope = CoroutineScope(Dispatchers.IO + job)
 
 
     fun ready() {

@@ -1138,6 +1138,1743 @@ abstract class DeleteTarget_Messages extends DeleteTarget {
 }
 
 /// @nodoc
+mixin _$FTMessage {
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(LetMeInRequest field0) letMeInRequest,
+    required TResult Function(String guid) linkChanged,
+    required TResult Function(
+            String guid, BigInt participant, String handle, bool ring)
+        joinEvent,
+    required TResult Function(String guid, Set<FTMember> members, bool ring)
+        addMembers,
+    required TResult Function(String guid, Set<FTMember> members) removeMembers,
+    required TResult Function(String guid, BigInt participant, String handle)
+        leaveEvent,
+    required TResult Function(String guid) ring,
+    required TResult Function(String guid) decline,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(LetMeInRequest field0)? letMeInRequest,
+    TResult? Function(String guid)? linkChanged,
+    TResult? Function(
+            String guid, BigInt participant, String handle, bool ring)?
+        joinEvent,
+    TResult? Function(String guid, Set<FTMember> members, bool ring)?
+        addMembers,
+    TResult? Function(String guid, Set<FTMember> members)? removeMembers,
+    TResult? Function(String guid, BigInt participant, String handle)?
+        leaveEvent,
+    TResult? Function(String guid)? ring,
+    TResult? Function(String guid)? decline,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(LetMeInRequest field0)? letMeInRequest,
+    TResult Function(String guid)? linkChanged,
+    TResult Function(String guid, BigInt participant, String handle, bool ring)?
+        joinEvent,
+    TResult Function(String guid, Set<FTMember> members, bool ring)? addMembers,
+    TResult Function(String guid, Set<FTMember> members)? removeMembers,
+    TResult Function(String guid, BigInt participant, String handle)?
+        leaveEvent,
+    TResult Function(String guid)? ring,
+    TResult Function(String guid)? decline,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(FTMessage_LetMeInRequest value) letMeInRequest,
+    required TResult Function(FTMessage_LinkChanged value) linkChanged,
+    required TResult Function(FTMessage_JoinEvent value) joinEvent,
+    required TResult Function(FTMessage_AddMembers value) addMembers,
+    required TResult Function(FTMessage_RemoveMembers value) removeMembers,
+    required TResult Function(FTMessage_LeaveEvent value) leaveEvent,
+    required TResult Function(FTMessage_Ring value) ring,
+    required TResult Function(FTMessage_Decline value) decline,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(FTMessage_LetMeInRequest value)? letMeInRequest,
+    TResult? Function(FTMessage_LinkChanged value)? linkChanged,
+    TResult? Function(FTMessage_JoinEvent value)? joinEvent,
+    TResult? Function(FTMessage_AddMembers value)? addMembers,
+    TResult? Function(FTMessage_RemoveMembers value)? removeMembers,
+    TResult? Function(FTMessage_LeaveEvent value)? leaveEvent,
+    TResult? Function(FTMessage_Ring value)? ring,
+    TResult? Function(FTMessage_Decline value)? decline,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(FTMessage_LetMeInRequest value)? letMeInRequest,
+    TResult Function(FTMessage_LinkChanged value)? linkChanged,
+    TResult Function(FTMessage_JoinEvent value)? joinEvent,
+    TResult Function(FTMessage_AddMembers value)? addMembers,
+    TResult Function(FTMessage_RemoveMembers value)? removeMembers,
+    TResult Function(FTMessage_LeaveEvent value)? leaveEvent,
+    TResult Function(FTMessage_Ring value)? ring,
+    TResult Function(FTMessage_Decline value)? decline,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $FTMessageCopyWith<$Res> {
+  factory $FTMessageCopyWith(FTMessage value, $Res Function(FTMessage) then) =
+      _$FTMessageCopyWithImpl<$Res, FTMessage>;
+}
+
+/// @nodoc
+class _$FTMessageCopyWithImpl<$Res, $Val extends FTMessage>
+    implements $FTMessageCopyWith<$Res> {
+  _$FTMessageCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of FTMessage
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+abstract class _$$FTMessage_LetMeInRequestImplCopyWith<$Res> {
+  factory _$$FTMessage_LetMeInRequestImplCopyWith(
+          _$FTMessage_LetMeInRequestImpl value,
+          $Res Function(_$FTMessage_LetMeInRequestImpl) then) =
+      __$$FTMessage_LetMeInRequestImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({LetMeInRequest field0});
+}
+
+/// @nodoc
+class __$$FTMessage_LetMeInRequestImplCopyWithImpl<$Res>
+    extends _$FTMessageCopyWithImpl<$Res, _$FTMessage_LetMeInRequestImpl>
+    implements _$$FTMessage_LetMeInRequestImplCopyWith<$Res> {
+  __$$FTMessage_LetMeInRequestImplCopyWithImpl(
+      _$FTMessage_LetMeInRequestImpl _value,
+      $Res Function(_$FTMessage_LetMeInRequestImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of FTMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? field0 = null,
+  }) {
+    return _then(_$FTMessage_LetMeInRequestImpl(
+      null == field0
+          ? _value.field0
+          : field0 // ignore: cast_nullable_to_non_nullable
+              as LetMeInRequest,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$FTMessage_LetMeInRequestImpl extends FTMessage_LetMeInRequest {
+  const _$FTMessage_LetMeInRequestImpl(this.field0) : super._();
+
+  @override
+  final LetMeInRequest field0;
+
+  @override
+  String toString() {
+    return 'FTMessage.letMeInRequest(field0: $field0)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$FTMessage_LetMeInRequestImpl &&
+            (identical(other.field0, field0) || other.field0 == field0));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, field0);
+
+  /// Create a copy of FTMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$FTMessage_LetMeInRequestImplCopyWith<_$FTMessage_LetMeInRequestImpl>
+      get copyWith => __$$FTMessage_LetMeInRequestImplCopyWithImpl<
+          _$FTMessage_LetMeInRequestImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(LetMeInRequest field0) letMeInRequest,
+    required TResult Function(String guid) linkChanged,
+    required TResult Function(
+            String guid, BigInt participant, String handle, bool ring)
+        joinEvent,
+    required TResult Function(String guid, Set<FTMember> members, bool ring)
+        addMembers,
+    required TResult Function(String guid, Set<FTMember> members) removeMembers,
+    required TResult Function(String guid, BigInt participant, String handle)
+        leaveEvent,
+    required TResult Function(String guid) ring,
+    required TResult Function(String guid) decline,
+  }) {
+    return letMeInRequest(field0);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(LetMeInRequest field0)? letMeInRequest,
+    TResult? Function(String guid)? linkChanged,
+    TResult? Function(
+            String guid, BigInt participant, String handle, bool ring)?
+        joinEvent,
+    TResult? Function(String guid, Set<FTMember> members, bool ring)?
+        addMembers,
+    TResult? Function(String guid, Set<FTMember> members)? removeMembers,
+    TResult? Function(String guid, BigInt participant, String handle)?
+        leaveEvent,
+    TResult? Function(String guid)? ring,
+    TResult? Function(String guid)? decline,
+  }) {
+    return letMeInRequest?.call(field0);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(LetMeInRequest field0)? letMeInRequest,
+    TResult Function(String guid)? linkChanged,
+    TResult Function(String guid, BigInt participant, String handle, bool ring)?
+        joinEvent,
+    TResult Function(String guid, Set<FTMember> members, bool ring)? addMembers,
+    TResult Function(String guid, Set<FTMember> members)? removeMembers,
+    TResult Function(String guid, BigInt participant, String handle)?
+        leaveEvent,
+    TResult Function(String guid)? ring,
+    TResult Function(String guid)? decline,
+    required TResult orElse(),
+  }) {
+    if (letMeInRequest != null) {
+      return letMeInRequest(field0);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(FTMessage_LetMeInRequest value) letMeInRequest,
+    required TResult Function(FTMessage_LinkChanged value) linkChanged,
+    required TResult Function(FTMessage_JoinEvent value) joinEvent,
+    required TResult Function(FTMessage_AddMembers value) addMembers,
+    required TResult Function(FTMessage_RemoveMembers value) removeMembers,
+    required TResult Function(FTMessage_LeaveEvent value) leaveEvent,
+    required TResult Function(FTMessage_Ring value) ring,
+    required TResult Function(FTMessage_Decline value) decline,
+  }) {
+    return letMeInRequest(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(FTMessage_LetMeInRequest value)? letMeInRequest,
+    TResult? Function(FTMessage_LinkChanged value)? linkChanged,
+    TResult? Function(FTMessage_JoinEvent value)? joinEvent,
+    TResult? Function(FTMessage_AddMembers value)? addMembers,
+    TResult? Function(FTMessage_RemoveMembers value)? removeMembers,
+    TResult? Function(FTMessage_LeaveEvent value)? leaveEvent,
+    TResult? Function(FTMessage_Ring value)? ring,
+    TResult? Function(FTMessage_Decline value)? decline,
+  }) {
+    return letMeInRequest?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(FTMessage_LetMeInRequest value)? letMeInRequest,
+    TResult Function(FTMessage_LinkChanged value)? linkChanged,
+    TResult Function(FTMessage_JoinEvent value)? joinEvent,
+    TResult Function(FTMessage_AddMembers value)? addMembers,
+    TResult Function(FTMessage_RemoveMembers value)? removeMembers,
+    TResult Function(FTMessage_LeaveEvent value)? leaveEvent,
+    TResult Function(FTMessage_Ring value)? ring,
+    TResult Function(FTMessage_Decline value)? decline,
+    required TResult orElse(),
+  }) {
+    if (letMeInRequest != null) {
+      return letMeInRequest(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class FTMessage_LetMeInRequest extends FTMessage {
+  const factory FTMessage_LetMeInRequest(final LetMeInRequest field0) =
+      _$FTMessage_LetMeInRequestImpl;
+  const FTMessage_LetMeInRequest._() : super._();
+
+  LetMeInRequest get field0;
+
+  /// Create a copy of FTMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$FTMessage_LetMeInRequestImplCopyWith<_$FTMessage_LetMeInRequestImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$FTMessage_LinkChangedImplCopyWith<$Res> {
+  factory _$$FTMessage_LinkChangedImplCopyWith(
+          _$FTMessage_LinkChangedImpl value,
+          $Res Function(_$FTMessage_LinkChangedImpl) then) =
+      __$$FTMessage_LinkChangedImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String guid});
+}
+
+/// @nodoc
+class __$$FTMessage_LinkChangedImplCopyWithImpl<$Res>
+    extends _$FTMessageCopyWithImpl<$Res, _$FTMessage_LinkChangedImpl>
+    implements _$$FTMessage_LinkChangedImplCopyWith<$Res> {
+  __$$FTMessage_LinkChangedImplCopyWithImpl(_$FTMessage_LinkChangedImpl _value,
+      $Res Function(_$FTMessage_LinkChangedImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of FTMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? guid = null,
+  }) {
+    return _then(_$FTMessage_LinkChangedImpl(
+      guid: null == guid
+          ? _value.guid
+          : guid // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$FTMessage_LinkChangedImpl extends FTMessage_LinkChanged {
+  const _$FTMessage_LinkChangedImpl({required this.guid}) : super._();
+
+  @override
+  final String guid;
+
+  @override
+  String toString() {
+    return 'FTMessage.linkChanged(guid: $guid)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$FTMessage_LinkChangedImpl &&
+            (identical(other.guid, guid) || other.guid == guid));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, guid);
+
+  /// Create a copy of FTMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$FTMessage_LinkChangedImplCopyWith<_$FTMessage_LinkChangedImpl>
+      get copyWith => __$$FTMessage_LinkChangedImplCopyWithImpl<
+          _$FTMessage_LinkChangedImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(LetMeInRequest field0) letMeInRequest,
+    required TResult Function(String guid) linkChanged,
+    required TResult Function(
+            String guid, BigInt participant, String handle, bool ring)
+        joinEvent,
+    required TResult Function(String guid, Set<FTMember> members, bool ring)
+        addMembers,
+    required TResult Function(String guid, Set<FTMember> members) removeMembers,
+    required TResult Function(String guid, BigInt participant, String handle)
+        leaveEvent,
+    required TResult Function(String guid) ring,
+    required TResult Function(String guid) decline,
+  }) {
+    return linkChanged(guid);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(LetMeInRequest field0)? letMeInRequest,
+    TResult? Function(String guid)? linkChanged,
+    TResult? Function(
+            String guid, BigInt participant, String handle, bool ring)?
+        joinEvent,
+    TResult? Function(String guid, Set<FTMember> members, bool ring)?
+        addMembers,
+    TResult? Function(String guid, Set<FTMember> members)? removeMembers,
+    TResult? Function(String guid, BigInt participant, String handle)?
+        leaveEvent,
+    TResult? Function(String guid)? ring,
+    TResult? Function(String guid)? decline,
+  }) {
+    return linkChanged?.call(guid);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(LetMeInRequest field0)? letMeInRequest,
+    TResult Function(String guid)? linkChanged,
+    TResult Function(String guid, BigInt participant, String handle, bool ring)?
+        joinEvent,
+    TResult Function(String guid, Set<FTMember> members, bool ring)? addMembers,
+    TResult Function(String guid, Set<FTMember> members)? removeMembers,
+    TResult Function(String guid, BigInt participant, String handle)?
+        leaveEvent,
+    TResult Function(String guid)? ring,
+    TResult Function(String guid)? decline,
+    required TResult orElse(),
+  }) {
+    if (linkChanged != null) {
+      return linkChanged(guid);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(FTMessage_LetMeInRequest value) letMeInRequest,
+    required TResult Function(FTMessage_LinkChanged value) linkChanged,
+    required TResult Function(FTMessage_JoinEvent value) joinEvent,
+    required TResult Function(FTMessage_AddMembers value) addMembers,
+    required TResult Function(FTMessage_RemoveMembers value) removeMembers,
+    required TResult Function(FTMessage_LeaveEvent value) leaveEvent,
+    required TResult Function(FTMessage_Ring value) ring,
+    required TResult Function(FTMessage_Decline value) decline,
+  }) {
+    return linkChanged(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(FTMessage_LetMeInRequest value)? letMeInRequest,
+    TResult? Function(FTMessage_LinkChanged value)? linkChanged,
+    TResult? Function(FTMessage_JoinEvent value)? joinEvent,
+    TResult? Function(FTMessage_AddMembers value)? addMembers,
+    TResult? Function(FTMessage_RemoveMembers value)? removeMembers,
+    TResult? Function(FTMessage_LeaveEvent value)? leaveEvent,
+    TResult? Function(FTMessage_Ring value)? ring,
+    TResult? Function(FTMessage_Decline value)? decline,
+  }) {
+    return linkChanged?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(FTMessage_LetMeInRequest value)? letMeInRequest,
+    TResult Function(FTMessage_LinkChanged value)? linkChanged,
+    TResult Function(FTMessage_JoinEvent value)? joinEvent,
+    TResult Function(FTMessage_AddMembers value)? addMembers,
+    TResult Function(FTMessage_RemoveMembers value)? removeMembers,
+    TResult Function(FTMessage_LeaveEvent value)? leaveEvent,
+    TResult Function(FTMessage_Ring value)? ring,
+    TResult Function(FTMessage_Decline value)? decline,
+    required TResult orElse(),
+  }) {
+    if (linkChanged != null) {
+      return linkChanged(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class FTMessage_LinkChanged extends FTMessage {
+  const factory FTMessage_LinkChanged({required final String guid}) =
+      _$FTMessage_LinkChangedImpl;
+  const FTMessage_LinkChanged._() : super._();
+
+  String get guid;
+
+  /// Create a copy of FTMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$FTMessage_LinkChangedImplCopyWith<_$FTMessage_LinkChangedImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$FTMessage_JoinEventImplCopyWith<$Res> {
+  factory _$$FTMessage_JoinEventImplCopyWith(_$FTMessage_JoinEventImpl value,
+          $Res Function(_$FTMessage_JoinEventImpl) then) =
+      __$$FTMessage_JoinEventImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String guid, BigInt participant, String handle, bool ring});
+}
+
+/// @nodoc
+class __$$FTMessage_JoinEventImplCopyWithImpl<$Res>
+    extends _$FTMessageCopyWithImpl<$Res, _$FTMessage_JoinEventImpl>
+    implements _$$FTMessage_JoinEventImplCopyWith<$Res> {
+  __$$FTMessage_JoinEventImplCopyWithImpl(_$FTMessage_JoinEventImpl _value,
+      $Res Function(_$FTMessage_JoinEventImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of FTMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? guid = null,
+    Object? participant = null,
+    Object? handle = null,
+    Object? ring = null,
+  }) {
+    return _then(_$FTMessage_JoinEventImpl(
+      guid: null == guid
+          ? _value.guid
+          : guid // ignore: cast_nullable_to_non_nullable
+              as String,
+      participant: null == participant
+          ? _value.participant
+          : participant // ignore: cast_nullable_to_non_nullable
+              as BigInt,
+      handle: null == handle
+          ? _value.handle
+          : handle // ignore: cast_nullable_to_non_nullable
+              as String,
+      ring: null == ring
+          ? _value.ring
+          : ring // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$FTMessage_JoinEventImpl extends FTMessage_JoinEvent {
+  const _$FTMessage_JoinEventImpl(
+      {required this.guid,
+      required this.participant,
+      required this.handle,
+      required this.ring})
+      : super._();
+
+  @override
+  final String guid;
+  @override
+  final BigInt participant;
+  @override
+  final String handle;
+  @override
+  final bool ring;
+
+  @override
+  String toString() {
+    return 'FTMessage.joinEvent(guid: $guid, participant: $participant, handle: $handle, ring: $ring)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$FTMessage_JoinEventImpl &&
+            (identical(other.guid, guid) || other.guid == guid) &&
+            (identical(other.participant, participant) ||
+                other.participant == participant) &&
+            (identical(other.handle, handle) || other.handle == handle) &&
+            (identical(other.ring, ring) || other.ring == ring));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, guid, participant, handle, ring);
+
+  /// Create a copy of FTMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$FTMessage_JoinEventImplCopyWith<_$FTMessage_JoinEventImpl> get copyWith =>
+      __$$FTMessage_JoinEventImplCopyWithImpl<_$FTMessage_JoinEventImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(LetMeInRequest field0) letMeInRequest,
+    required TResult Function(String guid) linkChanged,
+    required TResult Function(
+            String guid, BigInt participant, String handle, bool ring)
+        joinEvent,
+    required TResult Function(String guid, Set<FTMember> members, bool ring)
+        addMembers,
+    required TResult Function(String guid, Set<FTMember> members) removeMembers,
+    required TResult Function(String guid, BigInt participant, String handle)
+        leaveEvent,
+    required TResult Function(String guid) ring,
+    required TResult Function(String guid) decline,
+  }) {
+    return joinEvent(guid, participant, handle, this.ring);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(LetMeInRequest field0)? letMeInRequest,
+    TResult? Function(String guid)? linkChanged,
+    TResult? Function(
+            String guid, BigInt participant, String handle, bool ring)?
+        joinEvent,
+    TResult? Function(String guid, Set<FTMember> members, bool ring)?
+        addMembers,
+    TResult? Function(String guid, Set<FTMember> members)? removeMembers,
+    TResult? Function(String guid, BigInt participant, String handle)?
+        leaveEvent,
+    TResult? Function(String guid)? ring,
+    TResult? Function(String guid)? decline,
+  }) {
+    return joinEvent?.call(guid, participant, handle, this.ring);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(LetMeInRequest field0)? letMeInRequest,
+    TResult Function(String guid)? linkChanged,
+    TResult Function(String guid, BigInt participant, String handle, bool ring)?
+        joinEvent,
+    TResult Function(String guid, Set<FTMember> members, bool ring)? addMembers,
+    TResult Function(String guid, Set<FTMember> members)? removeMembers,
+    TResult Function(String guid, BigInt participant, String handle)?
+        leaveEvent,
+    TResult Function(String guid)? ring,
+    TResult Function(String guid)? decline,
+    required TResult orElse(),
+  }) {
+    if (joinEvent != null) {
+      return joinEvent(guid, participant, handle, this.ring);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(FTMessage_LetMeInRequest value) letMeInRequest,
+    required TResult Function(FTMessage_LinkChanged value) linkChanged,
+    required TResult Function(FTMessage_JoinEvent value) joinEvent,
+    required TResult Function(FTMessage_AddMembers value) addMembers,
+    required TResult Function(FTMessage_RemoveMembers value) removeMembers,
+    required TResult Function(FTMessage_LeaveEvent value) leaveEvent,
+    required TResult Function(FTMessage_Ring value) ring,
+    required TResult Function(FTMessage_Decline value) decline,
+  }) {
+    return joinEvent(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(FTMessage_LetMeInRequest value)? letMeInRequest,
+    TResult? Function(FTMessage_LinkChanged value)? linkChanged,
+    TResult? Function(FTMessage_JoinEvent value)? joinEvent,
+    TResult? Function(FTMessage_AddMembers value)? addMembers,
+    TResult? Function(FTMessage_RemoveMembers value)? removeMembers,
+    TResult? Function(FTMessage_LeaveEvent value)? leaveEvent,
+    TResult? Function(FTMessage_Ring value)? ring,
+    TResult? Function(FTMessage_Decline value)? decline,
+  }) {
+    return joinEvent?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(FTMessage_LetMeInRequest value)? letMeInRequest,
+    TResult Function(FTMessage_LinkChanged value)? linkChanged,
+    TResult Function(FTMessage_JoinEvent value)? joinEvent,
+    TResult Function(FTMessage_AddMembers value)? addMembers,
+    TResult Function(FTMessage_RemoveMembers value)? removeMembers,
+    TResult Function(FTMessage_LeaveEvent value)? leaveEvent,
+    TResult Function(FTMessage_Ring value)? ring,
+    TResult Function(FTMessage_Decline value)? decline,
+    required TResult orElse(),
+  }) {
+    if (joinEvent != null) {
+      return joinEvent(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class FTMessage_JoinEvent extends FTMessage {
+  const factory FTMessage_JoinEvent(
+      {required final String guid,
+      required final BigInt participant,
+      required final String handle,
+      required final bool ring}) = _$FTMessage_JoinEventImpl;
+  const FTMessage_JoinEvent._() : super._();
+
+  String get guid;
+  BigInt get participant;
+  String get handle;
+  bool get ring;
+
+  /// Create a copy of FTMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$FTMessage_JoinEventImplCopyWith<_$FTMessage_JoinEventImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$FTMessage_AddMembersImplCopyWith<$Res> {
+  factory _$$FTMessage_AddMembersImplCopyWith(_$FTMessage_AddMembersImpl value,
+          $Res Function(_$FTMessage_AddMembersImpl) then) =
+      __$$FTMessage_AddMembersImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String guid, Set<FTMember> members, bool ring});
+}
+
+/// @nodoc
+class __$$FTMessage_AddMembersImplCopyWithImpl<$Res>
+    extends _$FTMessageCopyWithImpl<$Res, _$FTMessage_AddMembersImpl>
+    implements _$$FTMessage_AddMembersImplCopyWith<$Res> {
+  __$$FTMessage_AddMembersImplCopyWithImpl(_$FTMessage_AddMembersImpl _value,
+      $Res Function(_$FTMessage_AddMembersImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of FTMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? guid = null,
+    Object? members = null,
+    Object? ring = null,
+  }) {
+    return _then(_$FTMessage_AddMembersImpl(
+      guid: null == guid
+          ? _value.guid
+          : guid // ignore: cast_nullable_to_non_nullable
+              as String,
+      members: null == members
+          ? _value._members
+          : members // ignore: cast_nullable_to_non_nullable
+              as Set<FTMember>,
+      ring: null == ring
+          ? _value.ring
+          : ring // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$FTMessage_AddMembersImpl extends FTMessage_AddMembers {
+  const _$FTMessage_AddMembersImpl(
+      {required this.guid,
+      required final Set<FTMember> members,
+      required this.ring})
+      : _members = members,
+        super._();
+
+  @override
+  final String guid;
+  final Set<FTMember> _members;
+  @override
+  Set<FTMember> get members {
+    if (_members is EqualUnmodifiableSetView) return _members;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableSetView(_members);
+  }
+
+  @override
+  final bool ring;
+
+  @override
+  String toString() {
+    return 'FTMessage.addMembers(guid: $guid, members: $members, ring: $ring)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$FTMessage_AddMembersImpl &&
+            (identical(other.guid, guid) || other.guid == guid) &&
+            const DeepCollectionEquality().equals(other._members, _members) &&
+            (identical(other.ring, ring) || other.ring == ring));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType, guid, const DeepCollectionEquality().hash(_members), ring);
+
+  /// Create a copy of FTMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$FTMessage_AddMembersImplCopyWith<_$FTMessage_AddMembersImpl>
+      get copyWith =>
+          __$$FTMessage_AddMembersImplCopyWithImpl<_$FTMessage_AddMembersImpl>(
+              this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(LetMeInRequest field0) letMeInRequest,
+    required TResult Function(String guid) linkChanged,
+    required TResult Function(
+            String guid, BigInt participant, String handle, bool ring)
+        joinEvent,
+    required TResult Function(String guid, Set<FTMember> members, bool ring)
+        addMembers,
+    required TResult Function(String guid, Set<FTMember> members) removeMembers,
+    required TResult Function(String guid, BigInt participant, String handle)
+        leaveEvent,
+    required TResult Function(String guid) ring,
+    required TResult Function(String guid) decline,
+  }) {
+    return addMembers(guid, members, this.ring);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(LetMeInRequest field0)? letMeInRequest,
+    TResult? Function(String guid)? linkChanged,
+    TResult? Function(
+            String guid, BigInt participant, String handle, bool ring)?
+        joinEvent,
+    TResult? Function(String guid, Set<FTMember> members, bool ring)?
+        addMembers,
+    TResult? Function(String guid, Set<FTMember> members)? removeMembers,
+    TResult? Function(String guid, BigInt participant, String handle)?
+        leaveEvent,
+    TResult? Function(String guid)? ring,
+    TResult? Function(String guid)? decline,
+  }) {
+    return addMembers?.call(guid, members, this.ring);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(LetMeInRequest field0)? letMeInRequest,
+    TResult Function(String guid)? linkChanged,
+    TResult Function(String guid, BigInt participant, String handle, bool ring)?
+        joinEvent,
+    TResult Function(String guid, Set<FTMember> members, bool ring)? addMembers,
+    TResult Function(String guid, Set<FTMember> members)? removeMembers,
+    TResult Function(String guid, BigInt participant, String handle)?
+        leaveEvent,
+    TResult Function(String guid)? ring,
+    TResult Function(String guid)? decline,
+    required TResult orElse(),
+  }) {
+    if (addMembers != null) {
+      return addMembers(guid, members, this.ring);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(FTMessage_LetMeInRequest value) letMeInRequest,
+    required TResult Function(FTMessage_LinkChanged value) linkChanged,
+    required TResult Function(FTMessage_JoinEvent value) joinEvent,
+    required TResult Function(FTMessage_AddMembers value) addMembers,
+    required TResult Function(FTMessage_RemoveMembers value) removeMembers,
+    required TResult Function(FTMessage_LeaveEvent value) leaveEvent,
+    required TResult Function(FTMessage_Ring value) ring,
+    required TResult Function(FTMessage_Decline value) decline,
+  }) {
+    return addMembers(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(FTMessage_LetMeInRequest value)? letMeInRequest,
+    TResult? Function(FTMessage_LinkChanged value)? linkChanged,
+    TResult? Function(FTMessage_JoinEvent value)? joinEvent,
+    TResult? Function(FTMessage_AddMembers value)? addMembers,
+    TResult? Function(FTMessage_RemoveMembers value)? removeMembers,
+    TResult? Function(FTMessage_LeaveEvent value)? leaveEvent,
+    TResult? Function(FTMessage_Ring value)? ring,
+    TResult? Function(FTMessage_Decline value)? decline,
+  }) {
+    return addMembers?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(FTMessage_LetMeInRequest value)? letMeInRequest,
+    TResult Function(FTMessage_LinkChanged value)? linkChanged,
+    TResult Function(FTMessage_JoinEvent value)? joinEvent,
+    TResult Function(FTMessage_AddMembers value)? addMembers,
+    TResult Function(FTMessage_RemoveMembers value)? removeMembers,
+    TResult Function(FTMessage_LeaveEvent value)? leaveEvent,
+    TResult Function(FTMessage_Ring value)? ring,
+    TResult Function(FTMessage_Decline value)? decline,
+    required TResult orElse(),
+  }) {
+    if (addMembers != null) {
+      return addMembers(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class FTMessage_AddMembers extends FTMessage {
+  const factory FTMessage_AddMembers(
+      {required final String guid,
+      required final Set<FTMember> members,
+      required final bool ring}) = _$FTMessage_AddMembersImpl;
+  const FTMessage_AddMembers._() : super._();
+
+  String get guid;
+  Set<FTMember> get members;
+  bool get ring;
+
+  /// Create a copy of FTMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$FTMessage_AddMembersImplCopyWith<_$FTMessage_AddMembersImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$FTMessage_RemoveMembersImplCopyWith<$Res> {
+  factory _$$FTMessage_RemoveMembersImplCopyWith(
+          _$FTMessage_RemoveMembersImpl value,
+          $Res Function(_$FTMessage_RemoveMembersImpl) then) =
+      __$$FTMessage_RemoveMembersImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String guid, Set<FTMember> members});
+}
+
+/// @nodoc
+class __$$FTMessage_RemoveMembersImplCopyWithImpl<$Res>
+    extends _$FTMessageCopyWithImpl<$Res, _$FTMessage_RemoveMembersImpl>
+    implements _$$FTMessage_RemoveMembersImplCopyWith<$Res> {
+  __$$FTMessage_RemoveMembersImplCopyWithImpl(
+      _$FTMessage_RemoveMembersImpl _value,
+      $Res Function(_$FTMessage_RemoveMembersImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of FTMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? guid = null,
+    Object? members = null,
+  }) {
+    return _then(_$FTMessage_RemoveMembersImpl(
+      guid: null == guid
+          ? _value.guid
+          : guid // ignore: cast_nullable_to_non_nullable
+              as String,
+      members: null == members
+          ? _value._members
+          : members // ignore: cast_nullable_to_non_nullable
+              as Set<FTMember>,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$FTMessage_RemoveMembersImpl extends FTMessage_RemoveMembers {
+  const _$FTMessage_RemoveMembersImpl(
+      {required this.guid, required final Set<FTMember> members})
+      : _members = members,
+        super._();
+
+  @override
+  final String guid;
+  final Set<FTMember> _members;
+  @override
+  Set<FTMember> get members {
+    if (_members is EqualUnmodifiableSetView) return _members;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableSetView(_members);
+  }
+
+  @override
+  String toString() {
+    return 'FTMessage.removeMembers(guid: $guid, members: $members)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$FTMessage_RemoveMembersImpl &&
+            (identical(other.guid, guid) || other.guid == guid) &&
+            const DeepCollectionEquality().equals(other._members, _members));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType, guid, const DeepCollectionEquality().hash(_members));
+
+  /// Create a copy of FTMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$FTMessage_RemoveMembersImplCopyWith<_$FTMessage_RemoveMembersImpl>
+      get copyWith => __$$FTMessage_RemoveMembersImplCopyWithImpl<
+          _$FTMessage_RemoveMembersImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(LetMeInRequest field0) letMeInRequest,
+    required TResult Function(String guid) linkChanged,
+    required TResult Function(
+            String guid, BigInt participant, String handle, bool ring)
+        joinEvent,
+    required TResult Function(String guid, Set<FTMember> members, bool ring)
+        addMembers,
+    required TResult Function(String guid, Set<FTMember> members) removeMembers,
+    required TResult Function(String guid, BigInt participant, String handle)
+        leaveEvent,
+    required TResult Function(String guid) ring,
+    required TResult Function(String guid) decline,
+  }) {
+    return removeMembers(guid, members);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(LetMeInRequest field0)? letMeInRequest,
+    TResult? Function(String guid)? linkChanged,
+    TResult? Function(
+            String guid, BigInt participant, String handle, bool ring)?
+        joinEvent,
+    TResult? Function(String guid, Set<FTMember> members, bool ring)?
+        addMembers,
+    TResult? Function(String guid, Set<FTMember> members)? removeMembers,
+    TResult? Function(String guid, BigInt participant, String handle)?
+        leaveEvent,
+    TResult? Function(String guid)? ring,
+    TResult? Function(String guid)? decline,
+  }) {
+    return removeMembers?.call(guid, members);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(LetMeInRequest field0)? letMeInRequest,
+    TResult Function(String guid)? linkChanged,
+    TResult Function(String guid, BigInt participant, String handle, bool ring)?
+        joinEvent,
+    TResult Function(String guid, Set<FTMember> members, bool ring)? addMembers,
+    TResult Function(String guid, Set<FTMember> members)? removeMembers,
+    TResult Function(String guid, BigInt participant, String handle)?
+        leaveEvent,
+    TResult Function(String guid)? ring,
+    TResult Function(String guid)? decline,
+    required TResult orElse(),
+  }) {
+    if (removeMembers != null) {
+      return removeMembers(guid, members);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(FTMessage_LetMeInRequest value) letMeInRequest,
+    required TResult Function(FTMessage_LinkChanged value) linkChanged,
+    required TResult Function(FTMessage_JoinEvent value) joinEvent,
+    required TResult Function(FTMessage_AddMembers value) addMembers,
+    required TResult Function(FTMessage_RemoveMembers value) removeMembers,
+    required TResult Function(FTMessage_LeaveEvent value) leaveEvent,
+    required TResult Function(FTMessage_Ring value) ring,
+    required TResult Function(FTMessage_Decline value) decline,
+  }) {
+    return removeMembers(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(FTMessage_LetMeInRequest value)? letMeInRequest,
+    TResult? Function(FTMessage_LinkChanged value)? linkChanged,
+    TResult? Function(FTMessage_JoinEvent value)? joinEvent,
+    TResult? Function(FTMessage_AddMembers value)? addMembers,
+    TResult? Function(FTMessage_RemoveMembers value)? removeMembers,
+    TResult? Function(FTMessage_LeaveEvent value)? leaveEvent,
+    TResult? Function(FTMessage_Ring value)? ring,
+    TResult? Function(FTMessage_Decline value)? decline,
+  }) {
+    return removeMembers?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(FTMessage_LetMeInRequest value)? letMeInRequest,
+    TResult Function(FTMessage_LinkChanged value)? linkChanged,
+    TResult Function(FTMessage_JoinEvent value)? joinEvent,
+    TResult Function(FTMessage_AddMembers value)? addMembers,
+    TResult Function(FTMessage_RemoveMembers value)? removeMembers,
+    TResult Function(FTMessage_LeaveEvent value)? leaveEvent,
+    TResult Function(FTMessage_Ring value)? ring,
+    TResult Function(FTMessage_Decline value)? decline,
+    required TResult orElse(),
+  }) {
+    if (removeMembers != null) {
+      return removeMembers(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class FTMessage_RemoveMembers extends FTMessage {
+  const factory FTMessage_RemoveMembers(
+      {required final String guid,
+      required final Set<FTMember> members}) = _$FTMessage_RemoveMembersImpl;
+  const FTMessage_RemoveMembers._() : super._();
+
+  String get guid;
+  Set<FTMember> get members;
+
+  /// Create a copy of FTMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$FTMessage_RemoveMembersImplCopyWith<_$FTMessage_RemoveMembersImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$FTMessage_LeaveEventImplCopyWith<$Res> {
+  factory _$$FTMessage_LeaveEventImplCopyWith(_$FTMessage_LeaveEventImpl value,
+          $Res Function(_$FTMessage_LeaveEventImpl) then) =
+      __$$FTMessage_LeaveEventImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String guid, BigInt participant, String handle});
+}
+
+/// @nodoc
+class __$$FTMessage_LeaveEventImplCopyWithImpl<$Res>
+    extends _$FTMessageCopyWithImpl<$Res, _$FTMessage_LeaveEventImpl>
+    implements _$$FTMessage_LeaveEventImplCopyWith<$Res> {
+  __$$FTMessage_LeaveEventImplCopyWithImpl(_$FTMessage_LeaveEventImpl _value,
+      $Res Function(_$FTMessage_LeaveEventImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of FTMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? guid = null,
+    Object? participant = null,
+    Object? handle = null,
+  }) {
+    return _then(_$FTMessage_LeaveEventImpl(
+      guid: null == guid
+          ? _value.guid
+          : guid // ignore: cast_nullable_to_non_nullable
+              as String,
+      participant: null == participant
+          ? _value.participant
+          : participant // ignore: cast_nullable_to_non_nullable
+              as BigInt,
+      handle: null == handle
+          ? _value.handle
+          : handle // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$FTMessage_LeaveEventImpl extends FTMessage_LeaveEvent {
+  const _$FTMessage_LeaveEventImpl(
+      {required this.guid, required this.participant, required this.handle})
+      : super._();
+
+  @override
+  final String guid;
+  @override
+  final BigInt participant;
+  @override
+  final String handle;
+
+  @override
+  String toString() {
+    return 'FTMessage.leaveEvent(guid: $guid, participant: $participant, handle: $handle)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$FTMessage_LeaveEventImpl &&
+            (identical(other.guid, guid) || other.guid == guid) &&
+            (identical(other.participant, participant) ||
+                other.participant == participant) &&
+            (identical(other.handle, handle) || other.handle == handle));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, guid, participant, handle);
+
+  /// Create a copy of FTMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$FTMessage_LeaveEventImplCopyWith<_$FTMessage_LeaveEventImpl>
+      get copyWith =>
+          __$$FTMessage_LeaveEventImplCopyWithImpl<_$FTMessage_LeaveEventImpl>(
+              this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(LetMeInRequest field0) letMeInRequest,
+    required TResult Function(String guid) linkChanged,
+    required TResult Function(
+            String guid, BigInt participant, String handle, bool ring)
+        joinEvent,
+    required TResult Function(String guid, Set<FTMember> members, bool ring)
+        addMembers,
+    required TResult Function(String guid, Set<FTMember> members) removeMembers,
+    required TResult Function(String guid, BigInt participant, String handle)
+        leaveEvent,
+    required TResult Function(String guid) ring,
+    required TResult Function(String guid) decline,
+  }) {
+    return leaveEvent(guid, participant, handle);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(LetMeInRequest field0)? letMeInRequest,
+    TResult? Function(String guid)? linkChanged,
+    TResult? Function(
+            String guid, BigInt participant, String handle, bool ring)?
+        joinEvent,
+    TResult? Function(String guid, Set<FTMember> members, bool ring)?
+        addMembers,
+    TResult? Function(String guid, Set<FTMember> members)? removeMembers,
+    TResult? Function(String guid, BigInt participant, String handle)?
+        leaveEvent,
+    TResult? Function(String guid)? ring,
+    TResult? Function(String guid)? decline,
+  }) {
+    return leaveEvent?.call(guid, participant, handle);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(LetMeInRequest field0)? letMeInRequest,
+    TResult Function(String guid)? linkChanged,
+    TResult Function(String guid, BigInt participant, String handle, bool ring)?
+        joinEvent,
+    TResult Function(String guid, Set<FTMember> members, bool ring)? addMembers,
+    TResult Function(String guid, Set<FTMember> members)? removeMembers,
+    TResult Function(String guid, BigInt participant, String handle)?
+        leaveEvent,
+    TResult Function(String guid)? ring,
+    TResult Function(String guid)? decline,
+    required TResult orElse(),
+  }) {
+    if (leaveEvent != null) {
+      return leaveEvent(guid, participant, handle);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(FTMessage_LetMeInRequest value) letMeInRequest,
+    required TResult Function(FTMessage_LinkChanged value) linkChanged,
+    required TResult Function(FTMessage_JoinEvent value) joinEvent,
+    required TResult Function(FTMessage_AddMembers value) addMembers,
+    required TResult Function(FTMessage_RemoveMembers value) removeMembers,
+    required TResult Function(FTMessage_LeaveEvent value) leaveEvent,
+    required TResult Function(FTMessage_Ring value) ring,
+    required TResult Function(FTMessage_Decline value) decline,
+  }) {
+    return leaveEvent(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(FTMessage_LetMeInRequest value)? letMeInRequest,
+    TResult? Function(FTMessage_LinkChanged value)? linkChanged,
+    TResult? Function(FTMessage_JoinEvent value)? joinEvent,
+    TResult? Function(FTMessage_AddMembers value)? addMembers,
+    TResult? Function(FTMessage_RemoveMembers value)? removeMembers,
+    TResult? Function(FTMessage_LeaveEvent value)? leaveEvent,
+    TResult? Function(FTMessage_Ring value)? ring,
+    TResult? Function(FTMessage_Decline value)? decline,
+  }) {
+    return leaveEvent?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(FTMessage_LetMeInRequest value)? letMeInRequest,
+    TResult Function(FTMessage_LinkChanged value)? linkChanged,
+    TResult Function(FTMessage_JoinEvent value)? joinEvent,
+    TResult Function(FTMessage_AddMembers value)? addMembers,
+    TResult Function(FTMessage_RemoveMembers value)? removeMembers,
+    TResult Function(FTMessage_LeaveEvent value)? leaveEvent,
+    TResult Function(FTMessage_Ring value)? ring,
+    TResult Function(FTMessage_Decline value)? decline,
+    required TResult orElse(),
+  }) {
+    if (leaveEvent != null) {
+      return leaveEvent(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class FTMessage_LeaveEvent extends FTMessage {
+  const factory FTMessage_LeaveEvent(
+      {required final String guid,
+      required final BigInt participant,
+      required final String handle}) = _$FTMessage_LeaveEventImpl;
+  const FTMessage_LeaveEvent._() : super._();
+
+  String get guid;
+  BigInt get participant;
+  String get handle;
+
+  /// Create a copy of FTMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$FTMessage_LeaveEventImplCopyWith<_$FTMessage_LeaveEventImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$FTMessage_RingImplCopyWith<$Res> {
+  factory _$$FTMessage_RingImplCopyWith(_$FTMessage_RingImpl value,
+          $Res Function(_$FTMessage_RingImpl) then) =
+      __$$FTMessage_RingImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String guid});
+}
+
+/// @nodoc
+class __$$FTMessage_RingImplCopyWithImpl<$Res>
+    extends _$FTMessageCopyWithImpl<$Res, _$FTMessage_RingImpl>
+    implements _$$FTMessage_RingImplCopyWith<$Res> {
+  __$$FTMessage_RingImplCopyWithImpl(
+      _$FTMessage_RingImpl _value, $Res Function(_$FTMessage_RingImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of FTMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? guid = null,
+  }) {
+    return _then(_$FTMessage_RingImpl(
+      guid: null == guid
+          ? _value.guid
+          : guid // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$FTMessage_RingImpl extends FTMessage_Ring {
+  const _$FTMessage_RingImpl({required this.guid}) : super._();
+
+  @override
+  final String guid;
+
+  @override
+  String toString() {
+    return 'FTMessage.ring(guid: $guid)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$FTMessage_RingImpl &&
+            (identical(other.guid, guid) || other.guid == guid));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, guid);
+
+  /// Create a copy of FTMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$FTMessage_RingImplCopyWith<_$FTMessage_RingImpl> get copyWith =>
+      __$$FTMessage_RingImplCopyWithImpl<_$FTMessage_RingImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(LetMeInRequest field0) letMeInRequest,
+    required TResult Function(String guid) linkChanged,
+    required TResult Function(
+            String guid, BigInt participant, String handle, bool ring)
+        joinEvent,
+    required TResult Function(String guid, Set<FTMember> members, bool ring)
+        addMembers,
+    required TResult Function(String guid, Set<FTMember> members) removeMembers,
+    required TResult Function(String guid, BigInt participant, String handle)
+        leaveEvent,
+    required TResult Function(String guid) ring,
+    required TResult Function(String guid) decline,
+  }) {
+    return ring(guid);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(LetMeInRequest field0)? letMeInRequest,
+    TResult? Function(String guid)? linkChanged,
+    TResult? Function(
+            String guid, BigInt participant, String handle, bool ring)?
+        joinEvent,
+    TResult? Function(String guid, Set<FTMember> members, bool ring)?
+        addMembers,
+    TResult? Function(String guid, Set<FTMember> members)? removeMembers,
+    TResult? Function(String guid, BigInt participant, String handle)?
+        leaveEvent,
+    TResult? Function(String guid)? ring,
+    TResult? Function(String guid)? decline,
+  }) {
+    return ring?.call(guid);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(LetMeInRequest field0)? letMeInRequest,
+    TResult Function(String guid)? linkChanged,
+    TResult Function(String guid, BigInt participant, String handle, bool ring)?
+        joinEvent,
+    TResult Function(String guid, Set<FTMember> members, bool ring)? addMembers,
+    TResult Function(String guid, Set<FTMember> members)? removeMembers,
+    TResult Function(String guid, BigInt participant, String handle)?
+        leaveEvent,
+    TResult Function(String guid)? ring,
+    TResult Function(String guid)? decline,
+    required TResult orElse(),
+  }) {
+    if (ring != null) {
+      return ring(guid);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(FTMessage_LetMeInRequest value) letMeInRequest,
+    required TResult Function(FTMessage_LinkChanged value) linkChanged,
+    required TResult Function(FTMessage_JoinEvent value) joinEvent,
+    required TResult Function(FTMessage_AddMembers value) addMembers,
+    required TResult Function(FTMessage_RemoveMembers value) removeMembers,
+    required TResult Function(FTMessage_LeaveEvent value) leaveEvent,
+    required TResult Function(FTMessage_Ring value) ring,
+    required TResult Function(FTMessage_Decline value) decline,
+  }) {
+    return ring(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(FTMessage_LetMeInRequest value)? letMeInRequest,
+    TResult? Function(FTMessage_LinkChanged value)? linkChanged,
+    TResult? Function(FTMessage_JoinEvent value)? joinEvent,
+    TResult? Function(FTMessage_AddMembers value)? addMembers,
+    TResult? Function(FTMessage_RemoveMembers value)? removeMembers,
+    TResult? Function(FTMessage_LeaveEvent value)? leaveEvent,
+    TResult? Function(FTMessage_Ring value)? ring,
+    TResult? Function(FTMessage_Decline value)? decline,
+  }) {
+    return ring?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(FTMessage_LetMeInRequest value)? letMeInRequest,
+    TResult Function(FTMessage_LinkChanged value)? linkChanged,
+    TResult Function(FTMessage_JoinEvent value)? joinEvent,
+    TResult Function(FTMessage_AddMembers value)? addMembers,
+    TResult Function(FTMessage_RemoveMembers value)? removeMembers,
+    TResult Function(FTMessage_LeaveEvent value)? leaveEvent,
+    TResult Function(FTMessage_Ring value)? ring,
+    TResult Function(FTMessage_Decline value)? decline,
+    required TResult orElse(),
+  }) {
+    if (ring != null) {
+      return ring(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class FTMessage_Ring extends FTMessage {
+  const factory FTMessage_Ring({required final String guid}) =
+      _$FTMessage_RingImpl;
+  const FTMessage_Ring._() : super._();
+
+  String get guid;
+
+  /// Create a copy of FTMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$FTMessage_RingImplCopyWith<_$FTMessage_RingImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$FTMessage_DeclineImplCopyWith<$Res> {
+  factory _$$FTMessage_DeclineImplCopyWith(_$FTMessage_DeclineImpl value,
+          $Res Function(_$FTMessage_DeclineImpl) then) =
+      __$$FTMessage_DeclineImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String guid});
+}
+
+/// @nodoc
+class __$$FTMessage_DeclineImplCopyWithImpl<$Res>
+    extends _$FTMessageCopyWithImpl<$Res, _$FTMessage_DeclineImpl>
+    implements _$$FTMessage_DeclineImplCopyWith<$Res> {
+  __$$FTMessage_DeclineImplCopyWithImpl(_$FTMessage_DeclineImpl _value,
+      $Res Function(_$FTMessage_DeclineImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of FTMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? guid = null,
+  }) {
+    return _then(_$FTMessage_DeclineImpl(
+      guid: null == guid
+          ? _value.guid
+          : guid // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$FTMessage_DeclineImpl extends FTMessage_Decline {
+  const _$FTMessage_DeclineImpl({required this.guid}) : super._();
+
+  @override
+  final String guid;
+
+  @override
+  String toString() {
+    return 'FTMessage.decline(guid: $guid)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$FTMessage_DeclineImpl &&
+            (identical(other.guid, guid) || other.guid == guid));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, guid);
+
+  /// Create a copy of FTMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$FTMessage_DeclineImplCopyWith<_$FTMessage_DeclineImpl> get copyWith =>
+      __$$FTMessage_DeclineImplCopyWithImpl<_$FTMessage_DeclineImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(LetMeInRequest field0) letMeInRequest,
+    required TResult Function(String guid) linkChanged,
+    required TResult Function(
+            String guid, BigInt participant, String handle, bool ring)
+        joinEvent,
+    required TResult Function(String guid, Set<FTMember> members, bool ring)
+        addMembers,
+    required TResult Function(String guid, Set<FTMember> members) removeMembers,
+    required TResult Function(String guid, BigInt participant, String handle)
+        leaveEvent,
+    required TResult Function(String guid) ring,
+    required TResult Function(String guid) decline,
+  }) {
+    return decline(guid);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(LetMeInRequest field0)? letMeInRequest,
+    TResult? Function(String guid)? linkChanged,
+    TResult? Function(
+            String guid, BigInt participant, String handle, bool ring)?
+        joinEvent,
+    TResult? Function(String guid, Set<FTMember> members, bool ring)?
+        addMembers,
+    TResult? Function(String guid, Set<FTMember> members)? removeMembers,
+    TResult? Function(String guid, BigInt participant, String handle)?
+        leaveEvent,
+    TResult? Function(String guid)? ring,
+    TResult? Function(String guid)? decline,
+  }) {
+    return decline?.call(guid);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(LetMeInRequest field0)? letMeInRequest,
+    TResult Function(String guid)? linkChanged,
+    TResult Function(String guid, BigInt participant, String handle, bool ring)?
+        joinEvent,
+    TResult Function(String guid, Set<FTMember> members, bool ring)? addMembers,
+    TResult Function(String guid, Set<FTMember> members)? removeMembers,
+    TResult Function(String guid, BigInt participant, String handle)?
+        leaveEvent,
+    TResult Function(String guid)? ring,
+    TResult Function(String guid)? decline,
+    required TResult orElse(),
+  }) {
+    if (decline != null) {
+      return decline(guid);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(FTMessage_LetMeInRequest value) letMeInRequest,
+    required TResult Function(FTMessage_LinkChanged value) linkChanged,
+    required TResult Function(FTMessage_JoinEvent value) joinEvent,
+    required TResult Function(FTMessage_AddMembers value) addMembers,
+    required TResult Function(FTMessage_RemoveMembers value) removeMembers,
+    required TResult Function(FTMessage_LeaveEvent value) leaveEvent,
+    required TResult Function(FTMessage_Ring value) ring,
+    required TResult Function(FTMessage_Decline value) decline,
+  }) {
+    return decline(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(FTMessage_LetMeInRequest value)? letMeInRequest,
+    TResult? Function(FTMessage_LinkChanged value)? linkChanged,
+    TResult? Function(FTMessage_JoinEvent value)? joinEvent,
+    TResult? Function(FTMessage_AddMembers value)? addMembers,
+    TResult? Function(FTMessage_RemoveMembers value)? removeMembers,
+    TResult? Function(FTMessage_LeaveEvent value)? leaveEvent,
+    TResult? Function(FTMessage_Ring value)? ring,
+    TResult? Function(FTMessage_Decline value)? decline,
+  }) {
+    return decline?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(FTMessage_LetMeInRequest value)? letMeInRequest,
+    TResult Function(FTMessage_LinkChanged value)? linkChanged,
+    TResult Function(FTMessage_JoinEvent value)? joinEvent,
+    TResult Function(FTMessage_AddMembers value)? addMembers,
+    TResult Function(FTMessage_RemoveMembers value)? removeMembers,
+    TResult Function(FTMessage_LeaveEvent value)? leaveEvent,
+    TResult Function(FTMessage_Ring value)? ring,
+    TResult Function(FTMessage_Decline value)? decline,
+    required TResult orElse(),
+  }) {
+    if (decline != null) {
+      return decline(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class FTMessage_Decline extends FTMessage {
+  const factory FTMessage_Decline({required final String guid}) =
+      _$FTMessage_DeclineImpl;
+  const FTMessage_Decline._() : super._();
+
+  String get guid;
+
+  /// Create a copy of FTMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$FTMessage_DeclineImplCopyWith<_$FTMessage_DeclineImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
 mixin _$LoginState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
@@ -10468,6 +12205,7 @@ mixin _$PushMessage {
     required TResult Function(String uuid, String? error) sendConfirm,
     required TResult Function(RegisterState field0) registrationState,
     required TResult Function(SharedAlbum field0) newPhotostream,
+    required TResult Function(FTMessage field0) faceTime,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -10476,6 +12214,7 @@ mixin _$PushMessage {
     TResult? Function(String uuid, String? error)? sendConfirm,
     TResult? Function(RegisterState field0)? registrationState,
     TResult? Function(SharedAlbum field0)? newPhotostream,
+    TResult? Function(FTMessage field0)? faceTime,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -10484,6 +12223,7 @@ mixin _$PushMessage {
     TResult Function(String uuid, String? error)? sendConfirm,
     TResult Function(RegisterState field0)? registrationState,
     TResult Function(SharedAlbum field0)? newPhotostream,
+    TResult Function(FTMessage field0)? faceTime,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -10494,6 +12234,7 @@ mixin _$PushMessage {
     required TResult Function(PushMessage_RegistrationState value)
         registrationState,
     required TResult Function(PushMessage_NewPhotostream value) newPhotostream,
+    required TResult Function(PushMessage_FaceTime value) faceTime,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -10502,6 +12243,7 @@ mixin _$PushMessage {
     TResult? Function(PushMessage_SendConfirm value)? sendConfirm,
     TResult? Function(PushMessage_RegistrationState value)? registrationState,
     TResult? Function(PushMessage_NewPhotostream value)? newPhotostream,
+    TResult? Function(PushMessage_FaceTime value)? faceTime,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -10510,6 +12252,7 @@ mixin _$PushMessage {
     TResult Function(PushMessage_SendConfirm value)? sendConfirm,
     TResult Function(PushMessage_RegistrationState value)? registrationState,
     TResult Function(PushMessage_NewPhotostream value)? newPhotostream,
+    TResult Function(PushMessage_FaceTime value)? faceTime,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -10610,6 +12353,7 @@ class _$PushMessage_IMessageImpl extends PushMessage_IMessage {
     required TResult Function(String uuid, String? error) sendConfirm,
     required TResult Function(RegisterState field0) registrationState,
     required TResult Function(SharedAlbum field0) newPhotostream,
+    required TResult Function(FTMessage field0) faceTime,
   }) {
     return iMessage(field0);
   }
@@ -10621,6 +12365,7 @@ class _$PushMessage_IMessageImpl extends PushMessage_IMessage {
     TResult? Function(String uuid, String? error)? sendConfirm,
     TResult? Function(RegisterState field0)? registrationState,
     TResult? Function(SharedAlbum field0)? newPhotostream,
+    TResult? Function(FTMessage field0)? faceTime,
   }) {
     return iMessage?.call(field0);
   }
@@ -10632,6 +12377,7 @@ class _$PushMessage_IMessageImpl extends PushMessage_IMessage {
     TResult Function(String uuid, String? error)? sendConfirm,
     TResult Function(RegisterState field0)? registrationState,
     TResult Function(SharedAlbum field0)? newPhotostream,
+    TResult Function(FTMessage field0)? faceTime,
     required TResult orElse(),
   }) {
     if (iMessage != null) {
@@ -10648,6 +12394,7 @@ class _$PushMessage_IMessageImpl extends PushMessage_IMessage {
     required TResult Function(PushMessage_RegistrationState value)
         registrationState,
     required TResult Function(PushMessage_NewPhotostream value) newPhotostream,
+    required TResult Function(PushMessage_FaceTime value) faceTime,
   }) {
     return iMessage(this);
   }
@@ -10659,6 +12406,7 @@ class _$PushMessage_IMessageImpl extends PushMessage_IMessage {
     TResult? Function(PushMessage_SendConfirm value)? sendConfirm,
     TResult? Function(PushMessage_RegistrationState value)? registrationState,
     TResult? Function(PushMessage_NewPhotostream value)? newPhotostream,
+    TResult? Function(PushMessage_FaceTime value)? faceTime,
   }) {
     return iMessage?.call(this);
   }
@@ -10670,6 +12418,7 @@ class _$PushMessage_IMessageImpl extends PushMessage_IMessage {
     TResult Function(PushMessage_SendConfirm value)? sendConfirm,
     TResult Function(PushMessage_RegistrationState value)? registrationState,
     TResult Function(PushMessage_NewPhotostream value)? newPhotostream,
+    TResult Function(PushMessage_FaceTime value)? faceTime,
     required TResult orElse(),
   }) {
     if (iMessage != null) {
@@ -10777,6 +12526,7 @@ class _$PushMessage_SendConfirmImpl extends PushMessage_SendConfirm {
     required TResult Function(String uuid, String? error) sendConfirm,
     required TResult Function(RegisterState field0) registrationState,
     required TResult Function(SharedAlbum field0) newPhotostream,
+    required TResult Function(FTMessage field0) faceTime,
   }) {
     return sendConfirm(uuid, error);
   }
@@ -10788,6 +12538,7 @@ class _$PushMessage_SendConfirmImpl extends PushMessage_SendConfirm {
     TResult? Function(String uuid, String? error)? sendConfirm,
     TResult? Function(RegisterState field0)? registrationState,
     TResult? Function(SharedAlbum field0)? newPhotostream,
+    TResult? Function(FTMessage field0)? faceTime,
   }) {
     return sendConfirm?.call(uuid, error);
   }
@@ -10799,6 +12550,7 @@ class _$PushMessage_SendConfirmImpl extends PushMessage_SendConfirm {
     TResult Function(String uuid, String? error)? sendConfirm,
     TResult Function(RegisterState field0)? registrationState,
     TResult Function(SharedAlbum field0)? newPhotostream,
+    TResult Function(FTMessage field0)? faceTime,
     required TResult orElse(),
   }) {
     if (sendConfirm != null) {
@@ -10815,6 +12567,7 @@ class _$PushMessage_SendConfirmImpl extends PushMessage_SendConfirm {
     required TResult Function(PushMessage_RegistrationState value)
         registrationState,
     required TResult Function(PushMessage_NewPhotostream value) newPhotostream,
+    required TResult Function(PushMessage_FaceTime value) faceTime,
   }) {
     return sendConfirm(this);
   }
@@ -10826,6 +12579,7 @@ class _$PushMessage_SendConfirmImpl extends PushMessage_SendConfirm {
     TResult? Function(PushMessage_SendConfirm value)? sendConfirm,
     TResult? Function(PushMessage_RegistrationState value)? registrationState,
     TResult? Function(PushMessage_NewPhotostream value)? newPhotostream,
+    TResult? Function(PushMessage_FaceTime value)? faceTime,
   }) {
     return sendConfirm?.call(this);
   }
@@ -10837,6 +12591,7 @@ class _$PushMessage_SendConfirmImpl extends PushMessage_SendConfirm {
     TResult Function(PushMessage_SendConfirm value)? sendConfirm,
     TResult Function(PushMessage_RegistrationState value)? registrationState,
     TResult Function(PushMessage_NewPhotostream value)? newPhotostream,
+    TResult Function(PushMessage_FaceTime value)? faceTime,
     required TResult orElse(),
   }) {
     if (sendConfirm != null) {
@@ -10951,6 +12706,7 @@ class _$PushMessage_RegistrationStateImpl
     required TResult Function(String uuid, String? error) sendConfirm,
     required TResult Function(RegisterState field0) registrationState,
     required TResult Function(SharedAlbum field0) newPhotostream,
+    required TResult Function(FTMessage field0) faceTime,
   }) {
     return registrationState(field0);
   }
@@ -10962,6 +12718,7 @@ class _$PushMessage_RegistrationStateImpl
     TResult? Function(String uuid, String? error)? sendConfirm,
     TResult? Function(RegisterState field0)? registrationState,
     TResult? Function(SharedAlbum field0)? newPhotostream,
+    TResult? Function(FTMessage field0)? faceTime,
   }) {
     return registrationState?.call(field0);
   }
@@ -10973,6 +12730,7 @@ class _$PushMessage_RegistrationStateImpl
     TResult Function(String uuid, String? error)? sendConfirm,
     TResult Function(RegisterState field0)? registrationState,
     TResult Function(SharedAlbum field0)? newPhotostream,
+    TResult Function(FTMessage field0)? faceTime,
     required TResult orElse(),
   }) {
     if (registrationState != null) {
@@ -10989,6 +12747,7 @@ class _$PushMessage_RegistrationStateImpl
     required TResult Function(PushMessage_RegistrationState value)
         registrationState,
     required TResult Function(PushMessage_NewPhotostream value) newPhotostream,
+    required TResult Function(PushMessage_FaceTime value) faceTime,
   }) {
     return registrationState(this);
   }
@@ -11000,6 +12759,7 @@ class _$PushMessage_RegistrationStateImpl
     TResult? Function(PushMessage_SendConfirm value)? sendConfirm,
     TResult? Function(PushMessage_RegistrationState value)? registrationState,
     TResult? Function(PushMessage_NewPhotostream value)? newPhotostream,
+    TResult? Function(PushMessage_FaceTime value)? faceTime,
   }) {
     return registrationState?.call(this);
   }
@@ -11011,6 +12771,7 @@ class _$PushMessage_RegistrationStateImpl
     TResult Function(PushMessage_SendConfirm value)? sendConfirm,
     TResult Function(PushMessage_RegistrationState value)? registrationState,
     TResult Function(PushMessage_NewPhotostream value)? newPhotostream,
+    TResult Function(PushMessage_FaceTime value)? faceTime,
     required TResult orElse(),
   }) {
     if (registrationState != null) {
@@ -11110,6 +12871,7 @@ class _$PushMessage_NewPhotostreamImpl extends PushMessage_NewPhotostream {
     required TResult Function(String uuid, String? error) sendConfirm,
     required TResult Function(RegisterState field0) registrationState,
     required TResult Function(SharedAlbum field0) newPhotostream,
+    required TResult Function(FTMessage field0) faceTime,
   }) {
     return newPhotostream(field0);
   }
@@ -11121,6 +12883,7 @@ class _$PushMessage_NewPhotostreamImpl extends PushMessage_NewPhotostream {
     TResult? Function(String uuid, String? error)? sendConfirm,
     TResult? Function(RegisterState field0)? registrationState,
     TResult? Function(SharedAlbum field0)? newPhotostream,
+    TResult? Function(FTMessage field0)? faceTime,
   }) {
     return newPhotostream?.call(field0);
   }
@@ -11132,6 +12895,7 @@ class _$PushMessage_NewPhotostreamImpl extends PushMessage_NewPhotostream {
     TResult Function(String uuid, String? error)? sendConfirm,
     TResult Function(RegisterState field0)? registrationState,
     TResult Function(SharedAlbum field0)? newPhotostream,
+    TResult Function(FTMessage field0)? faceTime,
     required TResult orElse(),
   }) {
     if (newPhotostream != null) {
@@ -11148,6 +12912,7 @@ class _$PushMessage_NewPhotostreamImpl extends PushMessage_NewPhotostream {
     required TResult Function(PushMessage_RegistrationState value)
         registrationState,
     required TResult Function(PushMessage_NewPhotostream value) newPhotostream,
+    required TResult Function(PushMessage_FaceTime value) faceTime,
   }) {
     return newPhotostream(this);
   }
@@ -11159,6 +12924,7 @@ class _$PushMessage_NewPhotostreamImpl extends PushMessage_NewPhotostream {
     TResult? Function(PushMessage_SendConfirm value)? sendConfirm,
     TResult? Function(PushMessage_RegistrationState value)? registrationState,
     TResult? Function(PushMessage_NewPhotostream value)? newPhotostream,
+    TResult? Function(PushMessage_FaceTime value)? faceTime,
   }) {
     return newPhotostream?.call(this);
   }
@@ -11170,6 +12936,7 @@ class _$PushMessage_NewPhotostreamImpl extends PushMessage_NewPhotostream {
     TResult Function(PushMessage_SendConfirm value)? sendConfirm,
     TResult Function(PushMessage_RegistrationState value)? registrationState,
     TResult Function(PushMessage_NewPhotostream value)? newPhotostream,
+    TResult Function(PushMessage_FaceTime value)? faceTime,
     required TResult orElse(),
   }) {
     if (newPhotostream != null) {
@@ -11190,6 +12957,181 @@ abstract class PushMessage_NewPhotostream extends PushMessage {
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$PushMessage_NewPhotostreamImplCopyWith<_$PushMessage_NewPhotostreamImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$PushMessage_FaceTimeImplCopyWith<$Res> {
+  factory _$$PushMessage_FaceTimeImplCopyWith(_$PushMessage_FaceTimeImpl value,
+          $Res Function(_$PushMessage_FaceTimeImpl) then) =
+      __$$PushMessage_FaceTimeImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({FTMessage field0});
+
+  $FTMessageCopyWith<$Res> get field0;
+}
+
+/// @nodoc
+class __$$PushMessage_FaceTimeImplCopyWithImpl<$Res>
+    extends _$PushMessageCopyWithImpl<$Res, _$PushMessage_FaceTimeImpl>
+    implements _$$PushMessage_FaceTimeImplCopyWith<$Res> {
+  __$$PushMessage_FaceTimeImplCopyWithImpl(_$PushMessage_FaceTimeImpl _value,
+      $Res Function(_$PushMessage_FaceTimeImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of PushMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? field0 = null,
+  }) {
+    return _then(_$PushMessage_FaceTimeImpl(
+      null == field0
+          ? _value.field0
+          : field0 // ignore: cast_nullable_to_non_nullable
+              as FTMessage,
+    ));
+  }
+
+  /// Create a copy of PushMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $FTMessageCopyWith<$Res> get field0 {
+    return $FTMessageCopyWith<$Res>(_value.field0, (value) {
+      return _then(_value.copyWith(field0: value));
+    });
+  }
+}
+
+/// @nodoc
+
+class _$PushMessage_FaceTimeImpl extends PushMessage_FaceTime {
+  const _$PushMessage_FaceTimeImpl(this.field0) : super._();
+
+  @override
+  final FTMessage field0;
+
+  @override
+  String toString() {
+    return 'PushMessage.faceTime(field0: $field0)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$PushMessage_FaceTimeImpl &&
+            (identical(other.field0, field0) || other.field0 == field0));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, field0);
+
+  /// Create a copy of PushMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$PushMessage_FaceTimeImplCopyWith<_$PushMessage_FaceTimeImpl>
+      get copyWith =>
+          __$$PushMessage_FaceTimeImplCopyWithImpl<_$PushMessage_FaceTimeImpl>(
+              this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(MessageInst field0) iMessage,
+    required TResult Function(String uuid, String? error) sendConfirm,
+    required TResult Function(RegisterState field0) registrationState,
+    required TResult Function(SharedAlbum field0) newPhotostream,
+    required TResult Function(FTMessage field0) faceTime,
+  }) {
+    return faceTime(field0);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(MessageInst field0)? iMessage,
+    TResult? Function(String uuid, String? error)? sendConfirm,
+    TResult? Function(RegisterState field0)? registrationState,
+    TResult? Function(SharedAlbum field0)? newPhotostream,
+    TResult? Function(FTMessage field0)? faceTime,
+  }) {
+    return faceTime?.call(field0);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(MessageInst field0)? iMessage,
+    TResult Function(String uuid, String? error)? sendConfirm,
+    TResult Function(RegisterState field0)? registrationState,
+    TResult Function(SharedAlbum field0)? newPhotostream,
+    TResult Function(FTMessage field0)? faceTime,
+    required TResult orElse(),
+  }) {
+    if (faceTime != null) {
+      return faceTime(field0);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(PushMessage_IMessage value) iMessage,
+    required TResult Function(PushMessage_SendConfirm value) sendConfirm,
+    required TResult Function(PushMessage_RegistrationState value)
+        registrationState,
+    required TResult Function(PushMessage_NewPhotostream value) newPhotostream,
+    required TResult Function(PushMessage_FaceTime value) faceTime,
+  }) {
+    return faceTime(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(PushMessage_IMessage value)? iMessage,
+    TResult? Function(PushMessage_SendConfirm value)? sendConfirm,
+    TResult? Function(PushMessage_RegistrationState value)? registrationState,
+    TResult? Function(PushMessage_NewPhotostream value)? newPhotostream,
+    TResult? Function(PushMessage_FaceTime value)? faceTime,
+  }) {
+    return faceTime?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(PushMessage_IMessage value)? iMessage,
+    TResult Function(PushMessage_SendConfirm value)? sendConfirm,
+    TResult Function(PushMessage_RegistrationState value)? registrationState,
+    TResult Function(PushMessage_NewPhotostream value)? newPhotostream,
+    TResult Function(PushMessage_FaceTime value)? faceTime,
+    required TResult orElse(),
+  }) {
+    if (faceTime != null) {
+      return faceTime(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class PushMessage_FaceTime extends PushMessage {
+  const factory PushMessage_FaceTime(final FTMessage field0) =
+      _$PushMessage_FaceTimeImpl;
+  const PushMessage_FaceTime._() : super._();
+
+  FTMessage get field0;
+
+  /// Create a copy of PushMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$PushMessage_FaceTimeImplCopyWith<_$PushMessage_FaceTimeImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 

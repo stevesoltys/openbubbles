@@ -9,7 +9,7 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'package:freezed_annotation/freezed_annotation.dart' hide protected;
 part 'api.freezed.dart';
 
-// These functions are ignored because they are not marked as `pub`: `config`, `do_login`, `get_login_config`, `get_phase`, `handle_photostream`, `plist_to_bin`, `plist_to_buf`, `plist_to_string`, `restore`, `setup_push`, `wrap_sink`
+// These functions are ignored because they are not marked as `pub`: `config`, `do_login`, `get_login_config`, `get_phase`, `handle_photostream`, `plist_to_bin`, `plist_to_buf`, `plist_to_string`, `restore`, `setup_push`, `shared_items`, `subscribe_streams`, `wrap_sink`
 // These types are ignored because they are not used by any `pub` functions: `FLUTTER_RUST_BRIDGE_HANDLER`, `InnerPushState`, `NSArrayClass`, `NSArrayIconArray`, `NSArrayImageArray`, `SavedHardwareState`
 // These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `deref`, `deref`, `eq`, `fmt`, `get_files`, `initialize`, `spawn`
 
@@ -123,6 +123,50 @@ Future<void> syncNow({required ArcPushState state}) =>
 
 Future<bool> supportsSharedStreams({required ArcPushState state}) =>
     RustLib.instance.api.crateApiApiSupportsSharedStreams(state: state);
+
+Future<List<FTSession>> ftSessions({required ArcPushState state}) =>
+    RustLib.instance.api.crateApiApiFtSessions(state: state);
+
+Future<String> getFtLink(
+        {required ArcPushState state, required String usage}) =>
+    RustLib.instance.api.crateApiApiGetFtLink(state: state, usage: usage);
+
+Future<void> useLinkFor(
+        {required ArcPushState state,
+        required String oldUsage,
+        required String usage}) =>
+    RustLib.instance.api
+        .crateApiApiUseLinkFor(state: state, oldUsage: oldUsage, usage: usage);
+
+Future<void> answerFtRequest(
+        {required ArcPushState state,
+        required LetMeInRequest request,
+        String? approvedGroup}) =>
+    RustLib.instance.api.crateApiApiAnswerFtRequest(
+        state: state, request: request, approvedGroup: approvedGroup);
+
+Future<void> declineFacetime(
+        {required ArcPushState state, required String guid}) =>
+    RustLib.instance.api.crateApiApiDeclineFacetime(state: state, guid: guid);
+
+Future<void> createFacetime(
+        {required ArcPushState state,
+        required String uuid,
+        required String handle,
+        required List<String> participants}) =>
+    RustLib.instance.api.crateApiApiCreateFacetime(
+        state: state, uuid: uuid, handle: handle, participants: participants);
+
+Future<void> cancelFacetime(
+        {required ArcPushState state, required String guid}) =>
+    RustLib.instance.api.crateApiApiCancelFacetime(state: state, guid: guid);
+
+Future<List<String>> validateTargetsFacetime(
+        {required ArcPushState state,
+        required List<String> targets,
+        required String sender}) =>
+    RustLib.instance.api.crateApiApiValidateTargetsFacetime(
+        state: state, targets: targets, sender: sender);
 
 Future<PollResult> recvWait({required ArcPushState state}) =>
     RustLib.instance.api.crateApiApiRecvWait(state: state);
@@ -305,6 +349,12 @@ Future<List<PrivateDeviceInfo>> getSmsTargets(
         required bool refresh}) =>
     RustLib.instance.api.crateApiApiGetSmsTargets(
         state: state, handle: handle, refresh: refresh);
+
+// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ConversationLink>>
+abstract class ConversationLink implements RustOpaqueInterface {}
+
+// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<ConversationParticipant>>
+abstract class ConversationParticipant implements RustOpaqueInterface {}
 
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<FindMyFriendsClient < DefaultAnisetteProvider >>>
 abstract class FindMyFriendsClientDefaultAnisetteProvider
@@ -908,6 +958,167 @@ class FoundDevice {
           deviceClass == other.deviceClass;
 }
 
+class FTMember {
+  final String? nickname;
+  final String handle;
+
+  const FTMember({
+    this.nickname,
+    required this.handle,
+  });
+
+  @override
+  int get hashCode => nickname.hashCode ^ handle.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is FTMember &&
+          runtimeType == other.runtimeType &&
+          nickname == other.nickname &&
+          handle == other.handle;
+}
+
+@freezed
+sealed class FTMessage with _$FTMessage {
+  const FTMessage._();
+
+  const factory FTMessage.letMeInRequest(
+    LetMeInRequest field0,
+  ) = FTMessage_LetMeInRequest;
+  const factory FTMessage.linkChanged({
+    required String guid,
+  }) = FTMessage_LinkChanged;
+  const factory FTMessage.joinEvent({
+    required String guid,
+    required BigInt participant,
+    required String handle,
+    required bool ring,
+  }) = FTMessage_JoinEvent;
+  const factory FTMessage.addMembers({
+    required String guid,
+    required Set<FTMember> members,
+    required bool ring,
+  }) = FTMessage_AddMembers;
+  const factory FTMessage.removeMembers({
+    required String guid,
+    required Set<FTMember> members,
+  }) = FTMessage_RemoveMembers;
+  const factory FTMessage.leaveEvent({
+    required String guid,
+    required BigInt participant,
+    required String handle,
+  }) = FTMessage_LeaveEvent;
+  const factory FTMessage.ring({
+    required String guid,
+  }) = FTMessage_Ring;
+  const factory FTMessage.decline({
+    required String guid,
+  }) = FTMessage_Decline;
+}
+
+enum FTMode {
+  outgoing,
+  incoming,
+  missed,
+  missedOutgoing,
+  ;
+}
+
+class FTParticipant {
+  final String? token;
+  final String handle;
+  final int participantId;
+  final int? lastJoinDate;
+  final ConversationParticipant? active;
+
+  const FTParticipant({
+    this.token,
+    required this.handle,
+    required this.participantId,
+    this.lastJoinDate,
+    this.active,
+  });
+
+  @override
+  int get hashCode =>
+      token.hashCode ^
+      handle.hashCode ^
+      participantId.hashCode ^
+      lastJoinDate.hashCode ^
+      active.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is FTParticipant &&
+          runtimeType == other.runtimeType &&
+          token == other.token &&
+          handle == other.handle &&
+          participantId == other.participantId &&
+          lastJoinDate == other.lastJoinDate &&
+          active == other.active;
+}
+
+class FTSession {
+  final String groupId;
+  final List<String> myHandles;
+  final Map<String, FTParticipant> participants;
+  final ConversationLink? link;
+  final Set<FTMember> members;
+  final String reportId;
+  final int? startTime;
+  final int? lastRekey;
+  final bool isPropped;
+  final bool isRingingInaccurate;
+  final FTMode? mode;
+
+  const FTSession({
+    required this.groupId,
+    required this.myHandles,
+    required this.participants,
+    this.link,
+    required this.members,
+    required this.reportId,
+    this.startTime,
+    this.lastRekey,
+    required this.isPropped,
+    required this.isRingingInaccurate,
+    this.mode,
+  });
+
+  @override
+  int get hashCode =>
+      groupId.hashCode ^
+      myHandles.hashCode ^
+      participants.hashCode ^
+      link.hashCode ^
+      members.hashCode ^
+      reportId.hashCode ^
+      startTime.hashCode ^
+      lastRekey.hashCode ^
+      isPropped.hashCode ^
+      isRingingInaccurate.hashCode ^
+      mode.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is FTSession &&
+          runtimeType == other.runtimeType &&
+          groupId == other.groupId &&
+          myHandles == other.myHandles &&
+          participants == other.participants &&
+          link == other.link &&
+          members == other.members &&
+          reportId == other.reportId &&
+          startTime == other.startTime &&
+          lastRekey == other.lastRekey &&
+          isPropped == other.isPropped &&
+          isRingingInaccurate == other.isRingingInaccurate &&
+          mode == other.mode;
+}
+
 class HwExtra {
   final String version;
   final int protocolVersion;
@@ -986,6 +1197,49 @@ class IndexedMessagePart {
           part_ == other.part_ &&
           idx == other.idx &&
           ext == other.ext;
+}
+
+class LetMeInRequest {
+  final Uint8List sharedSecret;
+  final String pseud;
+  final String requestor;
+  final String? nickname;
+  final Uint8List token;
+  final String? delegationUuid;
+  final String? usage;
+
+  const LetMeInRequest({
+    required this.sharedSecret,
+    required this.pseud,
+    required this.requestor,
+    this.nickname,
+    required this.token,
+    this.delegationUuid,
+    this.usage,
+  });
+
+  @override
+  int get hashCode =>
+      sharedSecret.hashCode ^
+      pseud.hashCode ^
+      requestor.hashCode ^
+      nickname.hashCode ^
+      token.hashCode ^
+      delegationUuid.hashCode ^
+      usage.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is LetMeInRequest &&
+          runtimeType == other.runtimeType &&
+          sharedSecret == other.sharedSecret &&
+          pseud == other.pseud &&
+          requestor == other.requestor &&
+          nickname == other.nickname &&
+          token == other.token &&
+          delegationUuid == other.delegationUuid &&
+          usage == other.usage;
 }
 
 class LinkMeta {
@@ -1696,6 +1950,9 @@ sealed class PushMessage with _$PushMessage {
   const factory PushMessage.newPhotostream(
     SharedAlbum field0,
   ) = PushMessage_NewPhotostream;
+  const factory PushMessage.faceTime(
+    FTMessage field0,
+  ) = PushMessage_FaceTime;
 }
 
 class ReactMessage {

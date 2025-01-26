@@ -1,5 +1,6 @@
 package com.bluebubbles.messaging.services.notifications
 
+import android.app.Notification
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
@@ -12,6 +13,7 @@ import com.bluebubbles.messaging.Constants
 import com.bluebubbles.messaging.MainActivity
 import com.bluebubbles.messaging.R
 import com.bluebubbles.messaging.models.MethodCallHandlerImpl
+import com.bluebubbles.messaging.services.facetime.FaceTimeActivity
 import com.bluebubbles.messaging.services.intents.InternalIntentReceiver
 import com.bluebubbles.messaging.utils.Utils
 import io.flutter.plugin.common.MethodCall
@@ -31,9 +33,12 @@ class CreateIncomingFaceTimeNotification: MethodCallHandlerImpl() {
         val channelId: String = call.argument("channel_id")!!
         val notificationId: Int = call.argument("notification_id")!!
         // call details
-        val callUuid: String? = call.argument("call_uuid")
+        val callUuid: String? = call.argument("call_uuid")!!
         val title: String = call.argument("title")!!
-        val body: String = call.argument("body")!!
+        val link: String? = call.argument("link")!!
+        var username: String = call.argument("name")!!
+
+
         // contact details
         val callerName: String = call.argument("caller")!!
         val callerIcon: ByteArray? = call.argument("caller_avatar")
@@ -55,11 +60,13 @@ class CreateIncomingFaceTimeNotification: MethodCallHandlerImpl() {
         val openSummaryIntent = PendingIntent.getActivity(
             context,
             0,
-            Intent(context, MainActivity::class.java)
+            Intent(context, FaceTimeActivity::class.java)
                 .putExtras(extras)
                 .putExtra("answer", false)
-                .putExtra("caller", callerName)
-                .setType("OpenSummary"),
+                .putExtra("link", link)
+                .putExtra("name", username)
+                .putExtra("notificationId", notificationId)
+                .putExtra("desc", title),
             PendingIntent.FLAG_IMMUTABLE
         )
 
@@ -67,29 +74,26 @@ class CreateIncomingFaceTimeNotification: MethodCallHandlerImpl() {
         val answerIntent = PendingIntent.getActivity(
             context,
             notificationId + Constants.pendingIntentAnswerFaceTimeOffset,
-            Intent(context, MainActivity::class.java)
+            Intent(context, FaceTimeActivity::class.java)
                 .putExtras(extras)
                 .putExtra("answer", true)
-                .putExtra("caller", callerName)
-                .setType("AnswerFaceTime"),
+                .putExtra("link", link)
+                .putExtra("name", username)
+                .putExtra("notificationId", notificationId)
+                .putExtra("desc", title),
             PendingIntent.FLAG_IMMUTABLE
         )
-        val answerAction = NotificationCompat.Action.Builder(0, "Answer", answerIntent)
-            .setShowsUserInterface(false)
-            .build()
 
         // Create intent for declining the facetime
         val declineIntent = PendingIntent.getBroadcast(
             context,
             notificationId + Constants.pendingIntentDeclineFaceTimeOffset,
             Intent(context, InternalIntentReceiver::class.java)
+                .putExtras(extras)
                 .putExtra("notificationId", notificationId)
-                .setType("DeleteNotification"),
+                .setType("DeclineFaceTime"),
             PendingIntent.FLAG_IMMUTABLE
         )
-        val declineAction = NotificationCompat.Action.Builder(0, "Ignore", declineIntent)
-            .setShowsUserInterface(false)
-            .build()
 
         val notificationBuilder = NotificationCompat.Builder(context, channelId)
             .setSmallIcon(R.mipmap.ic_stat_icon)
@@ -97,25 +101,23 @@ class CreateIncomingFaceTimeNotification: MethodCallHandlerImpl() {
             .setOngoing(true)
             .setCategory(NotificationCompat.CATEGORY_CALL)
             .setPriority(NotificationCompat.PRIORITY_MAX)
-            .setContentTitle(title)
-            .setContentText(body)
+            .setStyle(NotificationCompat.CallStyle.forIncomingCall(caller, declineIntent, answerIntent))
             .addExtras(extras)
-            .addPerson(caller)
             .setColor(4888294)
-            .addAction(answerAction)
-            .addAction(declineAction)
-            .extend(NotificationCompat.WearableExtender().addAction(answerAction).addAction(declineAction))
         if (callerBitmap != null) {
             notificationBuilder.setLargeIcon(callerBitmap)
         }
-        if (callUuid != null) {
-            notificationBuilder.setContentIntent(openSummaryIntent);
-            // clear after 30 seconds in case we didn't get an event from the server
-            notificationBuilder.setTimeoutAfter(30000);
-        }
+        notificationBuilder.setContentIntent(openSummaryIntent)
+        notificationBuilder.setFullScreenIntent(openSummaryIntent, true)
+        // clear after 30 seconds in case we didn't get an event from the server
+        notificationBuilder.setTimeoutAfter(30000);
 
         val notificationManager = context.getSystemService(NotificationManager::class.java)
-        notificationManager.notify(Constants.newFaceTimeNotificationTag, notificationId, notificationBuilder.build())
+        val notification = notificationBuilder.build()
+        // loop ringtone
+        notification.flags = notification.flags or NotificationCompat.FLAG_INSISTENT
+
+        notificationManager.notify(Constants.newFaceTimeNotificationTag, notificationId, notification)
         result.success(null)
     }
 }

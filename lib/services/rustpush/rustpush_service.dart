@@ -10,6 +10,7 @@ import 'package:bluebubbles/app/layouts/settings/pages/misc/shared_streams_panel
 import 'package:bluebubbles/app/layouts/setup/setup_view.dart';
 import 'package:bluebubbles/app/wrappers/titlebar_wrapper.dart';
 import 'package:bluebubbles/database/database.dart';
+import 'package:bluebubbles/helpers/ui/facetime_helpers.dart';
 import 'package:bluebubbles/main.dart';
 import 'package:bluebubbles/src/rust/api/api.dart' as api;
 import 'package:bluebubbles/src/rust/lib.dart' as lib;
@@ -28,6 +29,7 @@ import 'package:get/get.dart';
 import 'package:supercharged/supercharged.dart';
 import 'package:tuple/tuple.dart';
 import 'package:universal_io/io.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../network/backend_service.dart';
 import 'package:dio/dio.dart';
 import 'package:uuid/uuid.dart';
@@ -43,6 +45,10 @@ RustPushService pushService =
 
 
 const rpApiRoot = "https://hw.openbubbles.app";
+
+class OutgoingCallSession {
+  
+}
 
 // utils for communicating between dart and rustpush.
 class RustPushBBUtils {
@@ -1789,9 +1795,193 @@ class RustPushService extends GetxService {
     return await Chat.findByRust(conversation, chat.guid.startsWith("iMessage") ? "iMessage" : "SMS");
   }
 
+  bool isSessionActive(api.FTSession session) {
+    var anHourAgo = DateTime.now().millisecondsSinceEpoch - 3600000;
+    return session.participants.values.any((value) => value.active != null) && session.lastRekey != null && session.lastRekey! > anHourAgo;
+  }
+
+  
+  RxList<api.FTSession> sessions = <api.FTSession>[].obs;
+  RxList<api.FTSession> activeSessions = <api.FTSession>[].obs;
+  Future<void> updateState() async {
+    var ftSessions = (await api.ftSessions(state: pushService.state)).filter((a) => a.startTime != null).toList();
+    ftSessions.sort((a, b) {
+      return b.startTime! - a.startTime!;
+    });
+
+    List<api.FTSession> othersessions = [];
+    List<api.FTSession> activesessions = [];
+    for (var session in ftSessions) {
+      if (isSessionActive(session)) {
+        activesessions.add(session);
+      } else {
+        othersessions.add(session);
+      }
+    }
+    
+    sessions.value = othersessions;
+    activeSessions.value = activesessions;
+  }
+
+  Future<void> rotateIncomingLink() async {
+    await api.useLinkFor(state: pushService.state, oldUsage: "incomingcall", usage: "incomingcall-old");
+    await api.useLinkFor(state: pushService.state, oldUsage: "nextincomingcall", usage: "incomingcall");
+    await api.getFtLink(state: pushService.state, usage: "nextincomingcall");
+  }
+
+  Future<void> rotateLink() async {
+    await api.useLinkFor(state: pushService.state, oldUsage: "current", usage: "current-old");
+    await api.useLinkFor(state: pushService.state, oldUsage: "next", usage: "current");
+    await api.getFtLink(state: pushService.state, usage: "next");
+  }
+
+  Timer? outgoingCallTimer;
+  Map<String, dynamic> outgoingCallMeta = {};
+  RxString? currentOutgoingCall;
+  Future<void> placeOutgoingCall(String caller, List<String> targets) async {
+
+    var outgoingguid = uuid.v4().toUpperCase();
+
+    var link = await api.getFtLink(state: pushService.state, usage: "next");
+    var desc = targets.map((p) => RustPushBBUtils.rustHandleToBB(p).displayName).join(" & ");
+    // rotate link
+    pushService.rotateLink().catchError((e, s) {
+      Logger.error("Failed to rotate link", error: e, trace: s);
+    });
+
+    // preload
+    mcs.invokeMethod("update-call-state", {
+      "name": ss.settings.userName.value == "You" ? (await api.getHandles(state: pushService.state)).first.replaceFirst("tel:", "").replaceFirst("mailto:", "") : ss.settings.userName.value,
+      "desc": desc,
+      "url": link,
+      "callUuid": outgoingguid,
+      "state": "ringing",
+    });
+
+    outgoingCallMeta = {
+      'link': link, 
+      'callUuid': outgoingguid, 
+      'desc': desc, 
+      'name': ss.settings.userName.value == "You" ? (await api.getHandles(state: pushService.state)).first.replaceFirst("tel:", "").replaceFirst("mailto:", "") : ss.settings.userName.value, 
+      'answer': true
+    };
+
+    outgoingCallTimer = Timer(const Duration(seconds: 30), () {
+      currentOutgoingCall?.value = "timeout";
+
+      // destroy webview
+      mcs.invokeMethod("update-call-state", {
+        "callUuid": outgoingguid,
+        "state": "timeout",
+      });
+      currentOutgoingCall = null;
+    });
+
+    currentOutgoingCall = outgoingguid.obs;
+
+    showOutgoingFaceTimeOverlay(currentOutgoingCall!, desc, caller, targets, null, link);
+    await api.createFacetime(state: pushService.state, uuid: outgoingguid, handle: caller, participants: targets);
+  }
+
   var notifiedFailed = false;
 
+  String? chosenFTRoomGuid;
+  String? currentCallGuid;
+
   Future handleMsg(api.PushMessage push) async {
+    if (push is api.PushMessage_FaceTime) {
+      var facetime = push.field0;
+      if (facetime is api.FTMessage_AddMembers ||
+          facetime is api.FTMessage_RemoveMembers ||
+          facetime is api.FTMessage_LeaveEvent ||
+          facetime is api.FTMessage_JoinEvent) {
+        await updateState();
+      }
+      String? ring;
+      if (facetime is api.FTMessage_JoinEvent) {
+        if (facetime.ring) {
+          ring = facetime.guid;
+        }
+        if (facetime.guid == currentOutgoingCall?.value) {
+          currentOutgoingCall?.value = "accepted";
+          hideFaceTimeOverlay(facetime.guid);
+
+          outgoingCallTimer?.cancel();
+          chosenFTRoomGuid = facetime.guid;
+
+          if (Platform.isAndroid) {
+            await mcs.invokeMethod("launch-facetime", outgoingCallMeta);
+          } else {
+            await launchUrl(
+                Uri.parse(outgoingCallMeta['link']),
+                mode: LaunchMode.externalApplication
+            );
+          }
+          
+          currentCallGuid = null;
+        }
+      } else if (facetime is api.FTMessage_AddMembers) {
+        if (facetime.ring) {
+          ring = facetime.guid;
+        }
+      } else if (facetime is api.FTMessage_Ring) {
+        ring = facetime.guid;
+      }
+
+      if (facetime is api.FTMessage_Decline) {
+        if (currentOutgoingCall?.value == facetime.guid) {
+          currentOutgoingCall?.value = "declined";
+          
+          outgoingCallTimer?.cancel();
+
+          // destroy webview
+          mcs.invokeMethod("update-call-state", {
+            "callUuid": facetime.guid,
+            "state": "timeout",
+          });
+          currentOutgoingCall = null;
+        }
+      }
+
+      if (ring != null) {
+        var session = activeSessions.firstWhereOrNull((a) => a.groupId == ring);
+        if (session == null) {
+          Logger.warn("Rung call $ring not found in active sessions!");
+          return;
+        }
+        var participants = session.members.where((a) => !session.myHandles.contains(a.handle)).map((a) {
+          if (a.nickname != null) {
+            return Handle(address: "Maybe: ${a.nickname}");
+          } else {
+            return RustPushBBUtils.rustHandleToBB(a.handle);
+          }
+        }).toList();
+        var link = await api.getFtLink(state: pushService.state, usage: "nextincomingcall");
+        rotateIncomingLink();
+        currentCallGuid = ring;
+        ah.handleIncomingFaceTimeCall({
+          "uuid": ring,
+          "address": participants.map((p) => p.displayName).join(" & "),
+          "link": link,
+        });
+      }
+
+      if (facetime is api.FTMessage_LeaveEvent) {
+        var nonActive = sessions.firstWhereOrNull((a) => a.groupId == facetime.guid);
+        if (nonActive != null) {
+          hideFaceTimeOverlay(facetime.guid, timeout: true); // they have given up the ringing
+        }
+      }
+
+      if (facetime is api.FTMessage_LetMeInRequest) {
+        var approvedGroup = chosenFTRoomGuid;
+        if (facetime.field0.usage == "incomingcall" || facetime.field0.usage == "nextincomingcall") {
+          approvedGroup = currentCallGuid;
+        }
+        await api.answerFtRequest(state: state, request: facetime.field0, approvedGroup: approvedGroup);
+      }
+      return;
+    }
 
     if (push is api.PushMessage_RegistrationState) {
       var state = push.field0;
@@ -2399,6 +2589,8 @@ class RustPushService extends GetxService {
     })();
     await initFuture;
     initPhotoStream();
+    // pre-cache next FT link
+    api.getFtLink(state: pushService.state, usage: "next");
     Logger.info("initDone");
     await correctState();
     final sendingProgress = Database.messages.query(Message_.sendingServiceId.notNull()).build().find();

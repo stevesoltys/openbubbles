@@ -13,7 +13,7 @@ pub use plist::Value;
 use prost::Message as prostMessage;
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use tokio::{runtime::Runtime, select, sync::{broadcast, mpsc, oneshot::{self, Sender}, watch, Mutex, RwLock}};
-use rustpush::{authenticate_apple, authenticate_phone, IDSNGMIdentity, findmy::{FindMyClient, FindMyState, MULTIPLEX_SERVICE}, login_apple_delegates, sharedstreams::{AssetMetadata, FFMpegFilePackager, FileMetadata, FilePackager, PreparedAsset, PreparedFile, SharedStreamClient, SharedStreamsState, SyncController, SyncManager, SyncState}, APSMessage, LoginDelegate, MADRID_SERVICE};
+use rustpush::{authenticate_apple, authenticate_phone, facetime::{FTClient, FTState, FACETIME_SERVICE, VIDEO_SERVICE}, findmy::{FindMyClient, FindMyState, MULTIPLEX_SERVICE}, login_apple_delegates, sharedstreams::{AssetMetadata, FFMpegFilePackager, FileMetadata, FilePackager, PreparedAsset, PreparedFile, SharedStreamClient, SharedStreamsState, SyncController, SyncManager, SyncState}, APSMessage, IDSNGMIdentity, LoginDelegate, MADRID_SERVICE};
 use rustpush::AnisetteProvider;
 pub use rustpush::findmy::{FindMyFriendsClient, FindMyPhoneClient};
 pub use rustpush::sharedstreams::{SharedAlbum, SyncStatus};
@@ -167,6 +167,7 @@ pub struct InnerPushState {
     pub client: Option<IMClient>,
     pub fmfd: Option<FindMyClient<DefaultAnisetteProvider>>,
     pub sharedstreams: Option<SyncManager<DefaultAnisetteProvider, MyFilePackager>>,
+    pub ft_client: Option<FTClient>,
     pub conf_dir: PathBuf,
     pub os_config: Option<JoinedOSConfig>,
     pub account: Option<AppleAccount<DefaultAnisetteProvider>>,
@@ -193,6 +194,7 @@ pub async fn new_push_state(dir: String) -> Arc<PushState> {
         reg_state: None,
         fmfd: None,
         sharedstreams: None,
+        ft_client: None,
         conf_dir: dir,
         os_config: None,
         account: None,
@@ -346,7 +348,7 @@ async fn restore(curr_state: &PushState) {
     let Ok(users) = plist::from_file::<_, Vec<IDSUser>>(&id_path) else { return };
 
     inner.client = Some(IMClient::new(inner.conn.as_ref().unwrap().clone(), users, state.identity,
-        &[&MADRID_SERVICE, &MULTIPLEX_SERVICE], inner.conf_dir.join("id_cache.plist"), inner.os_config.as_ref().unwrap().config(), Box::new(move |updated_keys| {
+        &[&MADRID_SERVICE, &MULTIPLEX_SERVICE, &FACETIME_SERVICE, &VIDEO_SERVICE], inner.conf_dir.join("id_cache.plist"), inner.os_config.as_ref().unwrap().config(), Box::new(move |updated_keys| {
             println!("updated keys!!!");
             std::fs::write(&id_path, plist_to_string(&updated_keys).unwrap()).unwrap();
         })).await);
@@ -372,6 +374,14 @@ async fn restore(curr_state: &PushState) {
         inner.sharedstreams = Some(SyncController::new(client, inner.conf_dir.join("sync.plist"), MyFilePackager::default(), Duration::from_secs(60 * 30)).await);
         subscribe_streams(inner.sharedstreams.clone().unwrap());
     }
+
+    info!("heer");
+    
+    let facetime_path = inner.conf_dir.join("facetime.plist");
+    let state: FTState = plist::from_file(&facetime_path).unwrap_or_default();
+    inner.ft_client = Some(FTClient::new(state, Box::new(move |state| {
+        plist::to_file_xml(&facetime_path, state).expect("Failed to serialize plist!");
+    }), inner.conn.as_ref().unwrap().clone(), inner.client.as_ref().unwrap().identity.clone(), inner.os_config.as_ref().unwrap().config()).await);
 }
 
 async fn shared_items<P: AnisetteProvider + Send + Sync + 'static, F: FilePackager + Send + Sync + 'static>(manager: &SyncManager<P, F>, seen_paths: &mut HashSet<PathBuf>) -> HashSet<PathBuf> {
@@ -427,7 +437,7 @@ pub async fn register_ids(state: &Arc<PushState>, users: &Vec<IDSUser>) -> anyho
     let mut inner = state.0.write().await;
     let conn_state = inner.conn.as_ref().unwrap().clone();
 
-    if let Err(err) = register(inner.os_config.as_deref().unwrap(), &*conn_state.state.read().await, &[&MADRID_SERVICE, &MULTIPLEX_SERVICE], &mut users, inner.identity.as_ref().unwrap()).await {
+    if let Err(err) = register(inner.os_config.as_deref().unwrap(), &*conn_state.state.read().await, &[&MADRID_SERVICE, &MULTIPLEX_SERVICE, &FACETIME_SERVICE, &VIDEO_SERVICE], &mut users, inner.identity.as_ref().unwrap()).await {
         return if let PushError::CustomerMessage(support) = err {
             Ok(Some(support))
         } else {
@@ -437,7 +447,7 @@ pub async fn register_ids(state: &Arc<PushState>, users: &Vec<IDSUser>) -> anyho
     let id_path = inner.conf_dir.join("id.plist");
     std::fs::write(&id_path, plist_to_string(&users).unwrap()).unwrap();
 
-    inner.client = Some(IMClient::new(conn_state, users, inner.identity.clone().unwrap(), &[&MADRID_SERVICE, &MULTIPLEX_SERVICE], inner.conf_dir.join("id_cache.plist"), inner.os_config.as_ref().unwrap().config(), Box::new(move |updated_keys| {
+    inner.client = Some(IMClient::new(conn_state, users, inner.identity.clone().unwrap(), &[&MADRID_SERVICE, &MULTIPLEX_SERVICE, &FACETIME_SERVICE, &VIDEO_SERVICE], inner.conf_dir.join("id_cache.plist"), inner.os_config.as_ref().unwrap().config(), Box::new(move |updated_keys| {
         std::fs::write(&id_path, plist_to_string(&updated_keys).unwrap()).unwrap();
     })).await);
 
@@ -455,6 +465,12 @@ pub async fn register_ids(state: &Arc<PushState>, users: &Vec<IDSUser>) -> anyho
         inner.sharedstreams = Some(SyncController::new(client, inner.conf_dir.join("sync.plist"), MyFilePackager::default(), Duration::from_secs(60 * 30)).await);
         subscribe_streams(inner.sharedstreams.clone().unwrap());
     }
+
+    let facetime_path = inner.conf_dir.join("facetime.plist");
+    let state: FTState = plist::from_file(&facetime_path).unwrap_or_default();
+    inner.ft_client = Some(FTClient::new(state, Box::new(move |state| {
+        plist::to_file_xml(&facetime_path, state).expect("Failed to serialize plist!");
+    }), inner.conn.as_ref().unwrap().clone(), inner.client.as_ref().unwrap().identity.clone(), inner.os_config.as_ref().unwrap().config()).await);
 
     Ok(None)
 }
@@ -715,6 +731,7 @@ pub enum PushMessage {
     },
     RegistrationState(RegisterState),
     NewPhotostream(SharedAlbum),
+    FaceTime(FTMessage),
 }
 
 async fn handle_photostream(client: &SharedStreamClient<DefaultAnisetteProvider>, changes: Vec<String>, local: &mpsc::Sender<PushMessage>) {
@@ -843,6 +860,70 @@ pub async fn supports_shared_streams(state: &Arc<PushState>) -> anyhow::Result<b
     Ok(plist::from_file::<_, SharedStreamsState>(id_path).is_ok())
 }
 
+
+pub async fn ft_sessions(state: &Arc<PushState>) -> anyhow::Result<Vec<FTSession>> {
+    let inner = state.0.read().await;
+    let facetime = inner.ft_client.as_ref().expect("No ft client??");
+    let sessions = facetime.state.read().await;
+    Ok(sessions.sessions.values().cloned().collect())
+}
+
+pub async fn get_ft_link(state: &Arc<PushState>, usage: String) -> anyhow::Result<String> {
+    let inner = state.0.read().await;
+    let facetime = inner.ft_client.as_ref().expect("No ft client??");
+    let handles = facetime.identity.get_handles().await.to_vec();
+    
+    let handle = handles[0].clone();
+    Ok(facetime.get_link_for_usage(&handle, &usage).await?)
+}
+
+pub async fn use_link_for(state: &Arc<PushState>, old_usage: String, usage: String) -> anyhow::Result<()> {
+    let inner = state.0.read().await;
+    let facetime = inner.ft_client.as_ref().expect("No ft client??");
+    
+    Ok(facetime.use_link_for(&old_usage, &usage).await?)
+}
+
+pub async fn answer_ft_request(state: &Arc<PushState>, request: LetMeInRequest, approved_group: Option<String>) -> anyhow::Result<()> {
+    let inner = state.0.read().await;
+    let facetime = inner.ft_client.as_ref().expect("No ft client??");
+    facetime.respond_letmein(request, approved_group.as_ref().map(|a| a.as_str())).await?;
+    Ok(())
+}
+
+pub async fn decline_facetime(state: &Arc<PushState>, guid: String) -> anyhow::Result<()> {
+    let inner = state.0.read().await;
+    let facetime = inner.ft_client.as_ref().expect("No ft client??");
+    let mut lock = facetime.state.write().await;
+    let state = lock.sessions.get_mut(&guid).expect("state");
+    facetime.ensure_allocations(state, &[]).await?;
+    facetime.decline_invite(state).await?;
+    Ok(())
+}
+
+pub async fn create_facetime(state: &Arc<PushState>, uuid: String, handle: String, participants: Vec<String>) -> anyhow::Result<()> {
+    let inner = state.0.read().await;
+    let facetime = inner.ft_client.as_ref().expect("No ft client??");
+    facetime.create_session(uuid, handle, &participants).await?;
+    Ok(())
+}
+
+pub async fn cancel_facetime(state: &Arc<PushState>, guid: String) -> anyhow::Result<()> {
+    let inner = state.0.read().await;
+    let facetime = inner.ft_client.as_ref().expect("No ft client??");
+    let mut lock = facetime.state.write().await;
+    let state = lock.sessions.get_mut(&guid).expect("state");
+    facetime.unprop_conv(state).await?;
+    Ok(())
+}
+
+pub async fn validate_targets_facetime(state: &Arc<PushState>, targets: Vec<String>, sender: String) -> anyhow::Result<Vec<String>> {
+    if !matches!(state.get_phase().await, RegistrationPhase::Registered) {
+        panic!("Wrong phase! (validate_targets)")
+    }
+    Ok(state.0.read().await.client.as_ref().unwrap().identity.validate_targets(&targets, "com.apple.private.alloy.facetime.multi", &sender).await?)
+}
+
 pub enum PollResult {
     Stop,
     Cont(Option<PushMessage>),
@@ -862,11 +943,23 @@ pub async fn recv_wait(state: &Arc<PushState>) -> PollResult {
         msg = inq_lock.recv() => {
             let msg = msg.unwrap();
             if let Some(fmfd) = &recv_path.fmfd {
-                let _ = fmfd.handle(msg.clone()).await;
+                if let Err(e) = fmfd.handle(msg.clone()).await {
+                    warn!("FMF import error {e}");
+                }
             }
             if let Some(photostream) = &recv_path.sharedstreams {
                 if let Ok(Some(changes)) = photostream.handle(msg.clone()).await {
                     handle_photostream(&photostream.client, changes, &recv_path.local_broadcast).await;
+                }
+            }
+            let ft_msg = recv_path.ft_client.as_ref().expect("no ft client??/").handle(msg.clone()).await;
+            match ft_msg {
+                Ok(Some(msg)) => return PollResult::Cont(Some(PushMessage::FaceTime(msg))),
+                Ok(None) => {},
+                Err(err) => {
+                    // log and ignore for now
+                    error!("ft err {}", err);
+                    return PollResult::Cont(None);
                 }
             }
             let msg = recv_path.client.as_ref().expect("no client??/").handle(msg).await;
@@ -1283,6 +1376,7 @@ pub async fn reset_state(state: &Arc<PushState>, reset_hw: bool) -> anyhow::Resu
     inner.account = None;
     let _ = std::fs::remove_file(inner.conf_dir.join("id.plist"));
     let _ = std::fs::remove_file(inner.conf_dir.join("findmy.plist"));
+    let _ = std::fs::remove_file(inner.conf_dir.join("facetime.plist"));
     let _ = std::fs::remove_file(inner.conf_dir.join("sharedstreams.plist"));
     let _ = std::fs::remove_file(inner.conf_dir.join("id_cache.plist"));
 

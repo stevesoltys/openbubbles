@@ -23,6 +23,7 @@ import 'package:get/get.dart' hide Response;
 import 'package:mime_type/mime_type.dart';
 import 'package:tuple/tuple.dart';
 import 'package:universal_io/io.dart';
+import 'package:bluebubbles/src/rust/api/api.dart' as api;
 
 ActionHandler ah = Get.isRegistered<ActionHandler>() ? Get.find<ActionHandler>() : Get.put(ActionHandler());
 
@@ -565,7 +566,7 @@ class ActionHandler extends GetxService {
     final callUuid = data["uuid"];
     String? address = data["handle"]?["address"];
     String caller = data["address"] ?? "Unknown Number";
-    bool isAudio = data["is_audio"];
+    String link = data["link"]!!;
     Uint8List? chatIcon;
 
     // Find the contact info for the caller
@@ -576,14 +577,25 @@ class ActionHandler extends GetxService {
       caller = contact?.displayName ?? caller;
     }
 
+    if (Platform.isAndroid) {
+      mcs.invokeMethod("update-call-state", {
+        "name": ss.settings.userName.value == "You" ? (await api.getHandles(state: pushService.state)).first.replaceFirst("tel:", "").replaceFirst("mailto:", "") : ss.settings.userName.value,
+        "desc": caller,
+        "url": link,
+        "callUuid": callUuid,
+        "state": "ringing",
+      });
+    }
+
     if (!ls.isAlive) {
       if (kIsDesktop) {
-        await showFaceTimeOverlay(callUuid, caller, chatIcon, isAudio);
+        await showFaceTimeOverlay(callUuid, caller, chatIcon, link);
       }
-      await notif.createIncomingFaceTimeNotification(callUuid, caller, chatIcon, isAudio);
     } else {
-      await showFaceTimeOverlay(callUuid, caller, chatIcon, isAudio);
+      await showFaceTimeOverlay(callUuid, caller, chatIcon, link);
     }
+    // always show facetime notification for ringtone
+    await notif.createIncomingFaceTimeNotification(callUuid, caller, link, chatIcon);
   }
 
   Future<void> handleIncomingFaceTimeCallLegacy(Map<String, dynamic> data) async {
@@ -599,7 +611,7 @@ class ActionHandler extends GetxService {
       Contact? contact = cs.getContact(address);
       chatIcon = contact?.avatar;
       caller = contact?.displayName ?? caller;
-      await notif.createIncomingFaceTimeNotification(null, caller!, chatIcon, false);
+      await notif.createIncomingFaceTimeNotification(null, caller!, "", chatIcon);
     }
   }
 

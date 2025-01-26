@@ -29,6 +29,18 @@ class ChatInfo extends StatefulWidget {
 
 class _ChatInfoState extends OptimizedState<ChatInfo> {
   Chat get chat => widget.chat;
+  bool facetimeSupported = false;
+
+  @override
+  void initState() {
+    super.initState();
+    (() async {
+      var data = await chat.getConversationData();
+      var supportedParticipants = await api.validateTargetsFacetime(state: pushService.state, targets: data.participants, sender: await chat.ensureHandle());
+      facetimeSupported = supportedParticipants.length == data.participants.length;
+      setState(() { });
+    })();
+  }
 
   Future<bool?> showMethodDialog(String title) async {
     return await showDialog<bool>(
@@ -330,6 +342,7 @@ class _ChatInfoState extends OptimizedState<ChatInfo> {
               mainAxisAlignment: kIsWeb || kIsDesktop ? MainAxisAlignment.center : MainAxisAlignment.spaceBetween,
               children: intersperse(const SizedBox(width: 5), [
                 if (canCall) CallButton(tileColor: tileColor, chat: chat, iOS: iOS),
+                if (facetimeSupported)
                 VideoCallButton(tileColor: tileColor, chat: chat, iOS: iOS),
                 if (chat.participants.isNotEmpty &&
                     ((chat.participants.first.contact?.emails.isNotEmpty ?? false) ||
@@ -545,13 +558,12 @@ class VideoCallButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(15),
         color: tileColor,
         child: InkWell(
-          onTap: () {
-            final contact = chat.participants.first.contact;
-            showAddressPicker(contact, chat.participants.first, context, video: true);
-          },
-          onLongPress: () {
-            final contact = chat.participants.first.contact;
-            showAddressPicker(contact, chat.participants.first, context, isLongPressed: true, video: true);
+          onTap: () async {
+            var data = await chat.getConversationData();
+            var handle = await chat.ensureHandle();
+            var handles = data.participants;
+            handles.remove(handle);
+            await pushService.placeOutgoingCall(handle, handles);
           },
           borderRadius: BorderRadius.circular(15),
           child: SizedBox(
@@ -563,7 +575,7 @@ class VideoCallButton extends StatelessWidget {
                 Icon(iOS ? CupertinoIcons.video_camera : Icons.video_call_outlined,
                     color: context.theme.colorScheme.onSurface, size: 25),
                 const SizedBox(height: 2.5),
-                Text("Video Call",
+                Text("FaceTime",
                     style: context.theme.textTheme.bodySmall!.copyWith(color: context.theme.colorScheme.onSurface)),
               ],
             ),

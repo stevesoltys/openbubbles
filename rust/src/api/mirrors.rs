@@ -6,6 +6,8 @@ pub use rustpush::{PushError, IDSUser, IMClient, ConversationData, register};
 pub use icloud_auth::{VerifyBody, TrustedPhoneNumber};
 pub use icloud_auth::{LoginState, AppleAccount};
 pub use rustpush::findmy::{Follow, Address, Location, FoundDevice};
+pub use rustpush::facetime::{FTSession, FTMode, FTParticipant, FTMember, LetMeInRequest, FTMessage};
+pub use rustpush::facetime::facetimep::{ConversationParticipant, ConversationLink};
 
 #[repr(C)]
 #[frb(mirror(SupportAction))]
@@ -555,6 +557,91 @@ pub struct DartFollow {
     pub opted_not_to_share: Option<bool>,
     pub last_location: Option<Location>,
     pub locate_in_progress: bool,
+}
+
+
+#[frb(type_64bit_int, mirror(FTParticipant))]
+pub struct DartFTParticipant {
+    pub token: Option<String>,
+    pub handle: String,
+    pub participant_id: u64,
+    pub last_join_date: Option<u64>,
+    pub active: Option<ConversationParticipant>,
+}
+
+#[frb(mirror(FTMember))]
+pub struct DartFTMember {
+    pub nickname: Option<String>,
+    pub handle: String,
+}
+
+#[frb(mirror(LetMeInRequest))]
+
+pub struct DartLetMeInRequest {
+    pub shared_secret: Vec<u8>,
+    pub pseud: String,
+    pub requestor: String,
+    pub nickname: Option<String>,
+    pub token: Vec<u8>,
+    pub delegation_uuid: Option<String>,
+    pub usage: Option<String>,
+}
+
+#[frb(type_64bit_int, mirror(FTMessage))]
+pub enum DartFTMessage {
+    LetMeInRequest(LetMeInRequest),
+    LinkChanged {
+        guid: String,
+    },
+    JoinEvent {
+        guid: String,
+        participant: u64,
+        handle: String,
+        ring: bool,
+    },
+    AddMembers {
+        guid: String,
+        members: HashSet<FTMember>,
+        ring: bool,
+    },
+    RemoveMembers {
+        guid: String,
+        members: HashSet<FTMember>,
+    },
+    LeaveEvent {
+        guid: String,
+        participant: u64,
+        handle: String,
+    },
+    Ring {
+        guid: String,
+    },
+    Decline {
+        guid: String,
+    },
+}
+
+#[frb(mirror(FTMode))]
+pub enum DartFTMode {
+    Outgoing,
+    Incoming,
+    Missed,
+    MissedOutgoing,
+}
+
+#[frb(type_64bit_int, mirror(FTSession))]
+pub struct DartFTSession {
+    pub group_id: String,
+    pub my_handles: Vec<String>,
+    pub participants: HashMap<String /* participant ID */, FTParticipant>,
+    pub link: Option<ConversationLink>,
+    pub members: HashSet<FTMember>,
+    pub report_id: String, // this is different from group_id because we are thinking different
+    pub start_time: Option<u64>,
+    pub last_rekey: Option<u64>, // ms since epoch
+    pub is_propped: bool,
+    pub is_ringing_inaccurate: bool,
+    pub mode: Option<FTMode>,
 }
 
 #[frb(mirror(Location))]

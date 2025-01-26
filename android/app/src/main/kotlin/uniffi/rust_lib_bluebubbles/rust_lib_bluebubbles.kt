@@ -819,6 +819,8 @@ internal open class UniffiVTableCallbackInterfaceMsgReceiver(
 
 
 
+
+
 // For large crates we prevent `MethodTooLargeException` (see #2340)
 // N.B. the name of the extension is very misleading, since it is 
 // rather `InterfaceTooLargeException`, caused by too many methods 
@@ -847,6 +849,8 @@ fun uniffi_rust_lib_bluebubbles_checksum_method_kotlinfilepackager_scan_files(
 fun uniffi_rust_lib_bluebubbles_checksum_method_msgreceiver_receieved_msg(
 ): Short
 fun uniffi_rust_lib_bluebubbles_checksum_method_msgreceiver_native_ready(
+): Short
+fun uniffi_rust_lib_bluebubbles_checksum_method_nativepushstate_decline_facetime(
 ): Short
 fun uniffi_rust_lib_bluebubbles_checksum_method_nativepushstate_get_ready(
 ): Short
@@ -937,6 +941,8 @@ fun uniffi_rust_lib_bluebubbles_fn_method_msgreceiver_native_ready(`ptr`: Pointe
 fun uniffi_rust_lib_bluebubbles_fn_clone_nativepushstate(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
 ): Pointer
 fun uniffi_rust_lib_bluebubbles_fn_free_nativepushstate(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
+): Unit
+fun uniffi_rust_lib_bluebubbles_fn_method_nativepushstate_decline_facetime(`ptr`: Pointer,`guid`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
 ): Unit
 fun uniffi_rust_lib_bluebubbles_fn_method_nativepushstate_get_ready(`ptr`: Pointer,
 ): Long
@@ -1094,6 +1100,9 @@ private fun uniffiCheckApiChecksums(lib: IntegrityCheckingUniffiLib) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_rust_lib_bluebubbles_checksum_method_msgreceiver_native_ready() != 22814.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if (lib.uniffi_rust_lib_bluebubbles_checksum_method_nativepushstate_decline_facetime() != 51777.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_rust_lib_bluebubbles_checksum_method_nativepushstate_get_ready() != 59575.toShort()) {
@@ -2428,6 +2437,8 @@ public object FfiConverterTypeMsgReceiver: FfiConverter<MsgReceiver, Pointer> {
 
 public interface NativePushStateInterface {
     
+    fun `declineFacetime`(`guid`: kotlin.String)
+    
     suspend fun `getReady`(): kotlin.Boolean
     
     fun `getState`(): kotlin.ULong
@@ -2518,6 +2529,17 @@ open class NativePushState: Disposable, AutoCloseable, NativePushStateInterface
             UniffiLib.INSTANCE.uniffi_rust_lib_bluebubbles_fn_clone_nativepushstate(pointer!!, status)
         }
     }
+
+    override fun `declineFacetime`(`guid`: kotlin.String)
+        = 
+    callWithPointer {
+    uniffiRustCall() { _status ->
+    UniffiLib.INSTANCE.uniffi_rust_lib_bluebubbles_fn_method_nativepushstate_decline_facetime(
+        it, FfiConverterString.lower(`guid`),_status)
+}
+    }
+    
+    
 
     
     @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")

@@ -3,6 +3,7 @@ import 'package:bluebubbles/app/components/avatars/contact_avatar_widget.dart';
 import 'package:bluebubbles/app/layouts/conversation_list/pages/search/search_view.dart';
 import 'package:bluebubbles/app/layouts/conversation_view/pages/conversation_view.dart';
 import 'package:bluebubbles/app/layouts/findmy/findmy_page.dart';
+import 'package:bluebubbles/app/layouts/facetime/facetime.dart';
 import 'package:bluebubbles/app/layouts/settings/pages/misc/shared_streams_panel.dart';
 import 'package:bluebubbles/app/layouts/settings/pages/profile/profile_panel.dart';
 import 'package:bluebubbles/helpers/helpers.dart';
@@ -126,6 +127,8 @@ class MaterialOverflowMenu extends StatelessWidget {
           goToRecentlyDeleted(context);
         } else if (value == 9) {
           goToSharedStreams(context);
+        } else if (value == 10) {
+          goToFaceTime(context);
         }
       },
       itemBuilder: (context) {
@@ -171,7 +174,14 @@ class MaterialOverflowMenu extends StatelessWidget {
             PopupMenuItem(
               value: 9,
               child: Text(
-                'Shared Photos',
+                'Shared Albums',
+                style: context.textTheme.bodyLarge!.apply(color: context.theme.colorScheme.properOnSurface),
+              ),
+            ),
+            PopupMenuItem(
+              value: 10,
+              child: Text(
+                'FaceTime',
                 style: context.textTheme.bodyLarge!.apply(color: context.theme.colorScheme.properOnSurface),
               ),
             ),
@@ -313,6 +323,11 @@ class CupertinoOverflowMenu extends StatelessWidget {
             icon: CupertinoIcons.photo,
             onTap: () => goToSharedStreams(context),
           ),
+        PullDownMenuItem(
+          title: 'FaceTime',
+          icon: CupertinoIcons.video_camera,
+          onTap: () => goToFaceTime(context),
+        ),
         if (extraItems)
           PullDownMenuItem(
             title: 'Search',
@@ -379,6 +394,33 @@ Future<void> goToRecentlyDeleted(BuildContext context) async {
       showDeletedMessages: true,
     )
   );
+}
+
+Future<void> goToFaceTime(BuildContext context) async {
+final currentChat = cm.activeChat?.chat;
+  ns.closeAllConversationView(context);
+  await cm.setAllInactive();
+  await Navigator.of(Get.context!).push(
+    ThemeSwitcher.buildPageRoute(
+      builder: (BuildContext context) {
+        return FaceTimePanel();
+      },
+    ),
+  );
+  if (currentChat != null) {
+    await cm.setActiveChat(currentChat);
+    if (ss.settings.tabletMode.value) {
+      ns.pushAndRemoveUntil(
+        context,
+        ConversationView(
+          chat: currentChat,
+        ),
+            (route) => route.isFirst,
+      );
+    } else {
+      cvc(currentChat).close();
+    }
+  }
 }
 
 Future<void> goToSharedStreams(BuildContext context) async {

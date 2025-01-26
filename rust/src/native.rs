@@ -1,12 +1,12 @@
 use std::{collections::{BTreeMap, HashMap}, fmt::Debug, sync::{Arc, LazyLock, OnceLock, RwLock}, time::Duration};
 
 use flexi_logger::{FileSpec, Logger, WriteMode};
-use log::{error, info};
+use log::{error, info, warn};
 use rustpush::get_gateways_for_mccmnc;
 use tokio::{runtime::{Handle, Runtime}, sync::Mutex};
 
 use futures::FutureExt;
-use crate::{api::api::{get_phase, new_push_state, recv_wait, PollResult, PushMessage, PushState, RegistrationPhase}, frb_generated::FLUTTER_RUST_BRIDGE_HANDLER, init_logger, RUNTIME};
+use crate::{api::api::{decline_facetime, get_phase, new_push_state, recv_wait, PollResult, PushMessage, PushState, RegistrationPhase}, frb_generated::FLUTTER_RUST_BRIDGE_HANDLER, init_logger, RUNTIME};
 
 #[derive(uniffi::Record)] 
 pub struct FileInfo {
@@ -137,5 +137,14 @@ impl NativePushState {
 
     async fn get_ready(&self) -> bool {
         matches!(get_phase(&self.state).await, RegistrationPhase::Registered)
+    }
+
+    pub fn decline_facetime(&self, guid: String) {
+        let state_ref = self.state.clone();
+        RUNTIME.spawn(async move {
+            if let Err(e) = decline_facetime(&state_ref, guid).await {
+                warn!("Failed to decline facetime {e}");
+            }
+        });
     }
 }

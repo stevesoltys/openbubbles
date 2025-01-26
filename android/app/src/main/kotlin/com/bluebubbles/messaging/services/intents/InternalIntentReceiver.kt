@@ -13,7 +13,10 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.RemoteInput
 import com.bluebubbles.messaging.Constants
 import com.bluebubbles.messaging.services.backend_ui_interop.DartWorkManager
+import com.bluebubbles.messaging.services.facetime.FaceTimeActivity
 import com.bluebubbles.messaging.services.notifications.DeleteNotificationHandler
+import com.bluebubbles.messaging.services.rustpush.APNClient
+import com.bluebubbles.messaging.services.rustpush.APNService
 import com.bluebubbles.messaging.utils.Utils
 import java.io.BufferedInputStream
 import java.io.DataInputStream
@@ -40,6 +43,19 @@ class InternalIntentReceiver: BroadcastReceiver() {
                 val tag: String? = intent.getStringExtra("tag")
                 DeleteNotificationHandler().deleteNotification(context, notificationId, tag)
                 DartWorkManager.createWorker(context, intent.type!!, hashMapOf("chatGuid" to chatGuid)) {}
+            }
+            "DeclineFaceTime" -> {
+                val callUuid: String? = intent.getStringExtra("callUuid")
+                val notificationId: Int = intent.getIntExtra("notificationId", 0)
+                DeleteNotificationHandler().deleteNotification(context, notificationId, null)
+                FaceTimeActivity.cachedWebview?.let {
+                    it.webView.destroy()
+                    FaceTimeActivity.cachedWebview = null
+                }
+                callUuid?.let { callUuid ->
+                    val service = (peekService(context, Intent(context, APNService::class.java)) as APNService.APNBinder).getService()
+                    service.pushState.declineFacetime(callUuid)
+                }
             }
             "ReplyChat" -> {
                 val notificationId: Int = intent.getIntExtra("notificationId", 0)

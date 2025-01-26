@@ -12,6 +12,8 @@ import 'package:bluebubbles/helpers/helpers.dart';
 import 'package:bluebubbles/helpers/ui/facetime_helpers.dart';
 import 'package:bluebubbles/database/models.dart';
 import 'package:bluebubbles/database/database.dart';
+import 'package:bluebubbles/services/network/backend_service.dart';
+import 'package:bluebubbles/services/rustpush/rustpush_service.dart';
 import 'package:bluebubbles/services/services.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
@@ -229,10 +231,10 @@ class NotificationsService extends GetxService {
     }
   }
 
-  Future<void> createIncomingFaceTimeNotification(String? callUuid, String caller, Uint8List? chatIcon, bool isAudio) async {
+  Future<void> createIncomingFaceTimeNotification(String? callUuid, String caller, String link, Uint8List? chatIcon) async {
     // Set some notification defaults
     String title = caller;
-    String text = "${callUuid == null ? "Incoming" : "Answer"} FaceTime ${isAudio ? 'Audio' : 'Video'} Call";
+    String text = "${callUuid == null ? "Incoming" : "Answer"} FaceTime Call";
     chatIcon ??= (await rootBundle.load("assets/images/person64.png")).buffer.asUint8List();
 
     if (kIsWeb && Notification.permission == "granted") {
@@ -243,7 +245,7 @@ class NotificationsService extends GetxService {
         });
       }
     } else if (kIsDesktop) {
-      _lock.synchronized(() async => await showPersistentDesktopFaceTimeNotif(callUuid, caller, chatIcon, isAudio));
+      _lock.synchronized(() async => await showPersistentDesktopFaceTimeNotif(callUuid, caller, chatIcon));
     } else {
       final numeric = callUuid?.numericOnly();
       await mcs.invokeMethod("create-incoming-facetime-notification", {
@@ -253,7 +255,9 @@ class NotificationsService extends GetxService {
         "body": text,
         "caller_avatar": chatIcon,
         "caller": caller,
-        "call_uuid": callUuid
+        "call_uuid": callUuid,
+        "link": link,
+        "name": ss.settings.userName.value == "You" ? (await api.getHandles(state: pushService.state)).first.replaceFirst("tel:", "").replaceFirst("mailto:", "") : ss.settings.userName.value,
       });
     }
   }
@@ -273,7 +277,7 @@ class NotificationsService extends GetxService {
     }
   }
 
-  Future<void> showPersistentDesktopFaceTimeNotif(String? callUuid, String caller, Uint8List? avatar, bool isAudio) async {
+  Future<void> showPersistentDesktopFaceTimeNotif(String? callUuid, String caller, Uint8List? avatar) async {
     List<String> actions = ["Answer", "Ignore"];
     List<LocalNotificationAction> nActions = actions.map((String a) => LocalNotificationAction(text: a)).toList();
     LocalNotification? toast;
@@ -292,7 +296,7 @@ class NotificationsService extends GetxService {
     toast = LocalNotification(
       imagePath: path,
       title: caller,
-      body: "Incoming FaceTime ${isAudio ? 'Audio' : 'Video'} Call",
+      body: "Incoming FaceTime Call",
       duration: LocalNotificationDuration.long,
       actions: callUuid == null ? null : nActions,
     );
