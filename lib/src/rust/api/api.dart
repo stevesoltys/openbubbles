@@ -1072,6 +1072,7 @@ class FTSession {
   final bool isPropped;
   final bool isRingingInaccurate;
   final FTMode? mode;
+  final Map<String, int> recentMemberAdds;
 
   const FTSession({
     required this.groupId,
@@ -1085,6 +1086,7 @@ class FTSession {
     required this.isPropped,
     required this.isRingingInaccurate,
     this.mode,
+    required this.recentMemberAdds,
   });
 
   @override
@@ -1099,7 +1101,8 @@ class FTSession {
       lastRekey.hashCode ^
       isPropped.hashCode ^
       isRingingInaccurate.hashCode ^
-      mode.hashCode;
+      mode.hashCode ^
+      recentMemberAdds.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -1116,7 +1119,8 @@ class FTSession {
           lastRekey == other.lastRekey &&
           isPropped == other.isPropped &&
           isRingingInaccurate == other.isRingingInaccurate &&
-          mode == other.mode;
+          mode == other.mode &&
+          recentMemberAdds == other.recentMemberAdds;
 }
 
 class HwExtra {

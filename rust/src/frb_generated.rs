@@ -4730,6 +4730,7 @@ const _: fn() = || {
         let _: bool = FTSession.is_propped;
         let _: bool = FTSession.is_ringing_inaccurate;
         let _: Option<crate::api::api::FTMode> = FTSession.mode;
+        let _: std::collections::HashMap<String, u64> = FTSession.recent_member_adds;
     }
     {
         let IconChangeMessage = None::<crate::api::api::IconChangeMessage>.unwrap();
@@ -5259,6 +5260,14 @@ impl SseDecode for VerifyBody {
             flutter_rust_bridge::for_generated::RustAutoOpaqueInner<VerifyBody>,
         >>::sse_decode(deserializer);
         return flutter_rust_bridge::for_generated::rust_auto_opaque_decode_owned(inner);
+    }
+}
+
+impl SseDecode for std::collections::HashMap<String, u64> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <Vec<(String, u64)>>::sse_decode(deserializer);
+        return inner.into_iter().collect();
     }
 }
 
@@ -5946,6 +5955,8 @@ impl SseDecode for crate::api::api::FTSession {
         let mut var_isPropped = <bool>::sse_decode(deserializer);
         let mut var_isRingingInaccurate = <bool>::sse_decode(deserializer);
         let mut var_mode = <Option<crate::api::api::FTMode>>::sse_decode(deserializer);
+        let mut var_recentMemberAdds =
+            <std::collections::HashMap<String, u64>>::sse_decode(deserializer);
         return crate::api::api::FTSession {
             group_id: var_groupId,
             my_handles: var_myHandles,
@@ -5958,6 +5969,7 @@ impl SseDecode for crate::api::api::FTSession {
             is_propped: var_isPropped,
             is_ringing_inaccurate: var_isRingingInaccurate,
             mode: var_mode,
+            recent_member_adds: var_recentMemberAdds,
         };
     }
 }
@@ -6197,6 +6209,18 @@ impl SseDecode for Vec<(String, bool)> {
         let mut ans_ = vec![];
         for idx_ in 0..len_ {
             ans_.push(<(String, bool)>::sse_decode(deserializer));
+        }
+        return ans_;
+    }
+}
+
+impl SseDecode for Vec<(String, u64)> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = vec![];
+        for idx_ in 0..len_ {
+            ans_.push(<(String, u64)>::sse_decode(deserializer));
         }
         return ans_;
     }
@@ -8588,6 +8612,7 @@ impl flutter_rust_bridge::IntoDart for FrbWrapper<crate::api::api::FTSession> {
             self.0.is_propped.into_into_dart().into_dart(),
             self.0.is_ringing_inaccurate.into_into_dart().into_dart(),
             self.0.mode.into_into_dart().into_dart(),
+            self.0.recent_member_adds.into_into_dart().into_dart(),
         ]
         .into_dart()
     }
@@ -9967,6 +9992,13 @@ impl SseEncode for VerifyBody {
     }
 }
 
+impl SseEncode for std::collections::HashMap<String, u64> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <Vec<(String, u64)>>::sse_encode(self.into_iter().collect(), serializer);
+    }
+}
+
 impl SseEncode for std::collections::HashMap<String, String> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -10528,6 +10560,7 @@ impl SseEncode for crate::api::api::FTSession {
         <bool>::sse_encode(self.is_propped, serializer);
         <bool>::sse_encode(self.is_ringing_inaccurate, serializer);
         <Option<crate::api::api::FTMode>>::sse_encode(self.mode, serializer);
+        <std::collections::HashMap<String, u64>>::sse_encode(self.recent_member_adds, serializer);
     }
 }
 
@@ -10710,6 +10743,16 @@ impl SseEncode for Vec<(String, bool)> {
         <i32>::sse_encode(self.len() as _, serializer);
         for item in self {
             <(String, bool)>::sse_encode(item, serializer);
+        }
+    }
+}
+
+impl SseEncode for Vec<(String, u64)> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <(String, u64)>::sse_encode(item, serializer);
         }
     }
 }

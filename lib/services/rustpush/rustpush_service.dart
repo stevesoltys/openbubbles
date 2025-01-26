@@ -1866,8 +1866,10 @@ class RustPushService extends GetxService {
       'answer': true
     };
 
-    outgoingCallTimer = Timer(const Duration(seconds: 30), () {
+    outgoingCallTimer = Timer(const Duration(seconds: 30), () async {
       currentOutgoingCall?.value = "timeout";
+
+      await api.cancelFacetime(state: pushService.state, guid: outgoingguid);
 
       // destroy webview
       mcs.invokeMethod("update-call-state", {

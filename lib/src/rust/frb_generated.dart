@@ -2876,6 +2876,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  Map<String, int> dco_decode_Map_String_CastedPrimitive_u_64(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return Map.fromEntries(
+        dco_decode_list_record_string_casted_primitive_u_64(raw)
+            .map((e) => MapEntry(e.$1, e.$2)));
+  }
+
+  @protected
   Map<String, String> dco_decode_Map_String_String(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return Map.fromEntries(dco_decode_list_record_string_string(raw)
@@ -3714,8 +3722,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   FTSession dco_decode_ft_session(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 11)
-      throw Exception('unexpected arr length: expect 11 but see ${arr.length}');
+    if (arr.length != 12)
+      throw Exception('unexpected arr length: expect 12 but see ${arr.length}');
     return FTSession(
       groupId: dco_decode_String(arr[0]),
       myHandles: dco_decode_list_String(arr[1]),
@@ -3730,6 +3738,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       isPropped: dco_decode_bool(arr[8]),
       isRingingInaccurate: dco_decode_bool(arr[9]),
       mode: dco_decode_opt_box_autoadd_ft_mode(arr[10]),
+      recentMemberAdds: dco_decode_Map_String_CastedPrimitive_u_64(arr[11]),
     );
   }
 
@@ -3895,6 +3904,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   List<(String, bool)> dco_decode_list_record_string_bool(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return (raw as List<dynamic>).map(dco_decode_record_string_bool).toList();
+  }
+
+  @protected
+  List<(String, int)> dco_decode_list_record_string_casted_primitive_u_64(
+      dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>)
+        .map(dco_decode_record_string_casted_primitive_u_64)
+        .toList();
   }
 
   @protected
@@ -4794,6 +4812,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  (String, int) dco_decode_record_string_casted_primitive_u_64(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2) {
+      throw Exception('Expected 2 elements, got ${arr.length}');
+    }
+    return (
+      dco_decode_String(arr[0]),
+      dco_decode_CastedPrimitive_u_64(arr[1]),
+    );
+  }
+
+  @protected
   (String, FTParticipant) dco_decode_record_string_ft_participant(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
@@ -5243,6 +5274,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var inner = sse_decode_usize(deserializer);
     return inner.toInt();
+  }
+
+  @protected
+  Map<String, int> sse_decode_Map_String_CastedPrimitive_u_64(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner =
+        sse_decode_list_record_string_casted_primitive_u_64(deserializer);
+    return Map.fromEntries(inner.map((e) => MapEntry(e.$1, e.$2)));
   }
 
   @protected
@@ -6181,6 +6221,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_isPropped = sse_decode_bool(deserializer);
     var var_isRingingInaccurate = sse_decode_bool(deserializer);
     var var_mode = sse_decode_opt_box_autoadd_ft_mode(deserializer);
+    var var_recentMemberAdds =
+        sse_decode_Map_String_CastedPrimitive_u_64(deserializer);
     return FTSession(
         groupId: var_groupId,
         myHandles: var_myHandles,
@@ -6192,7 +6234,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         lastRekey: var_lastRekey,
         isPropped: var_isPropped,
         isRingingInaccurate: var_isRingingInaccurate,
-        mode: var_mode);
+        mode: var_mode,
+        recentMemberAdds: var_recentMemberAdds);
   }
 
   @protected
@@ -6421,6 +6464,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var ans_ = <(String, bool)>[];
     for (var idx_ = 0; idx_ < len_; ++idx_) {
       ans_.add(sse_decode_record_string_bool(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
+  List<(String, int)> sse_decode_list_record_string_casted_primitive_u_64(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <(String, int)>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_record_string_casted_primitive_u_64(deserializer));
     }
     return ans_;
   }
@@ -7528,6 +7584,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  (String, int) sse_decode_record_string_casted_primitive_u_64(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_field0 = sse_decode_String(deserializer);
+    var var_field1 = sse_decode_CastedPrimitive_u_64(deserializer);
+    return (var_field0, var_field1);
+  }
+
+  @protected
   (String, FTParticipant) sse_decode_record_string_ft_participant(
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -7965,6 +8030,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   void sse_encode_CastedPrimitive_usize(int self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_usize(sseEncodeCastedPrimitiveU64(self), serializer);
+  }
+
+  @protected
+  void sse_encode_Map_String_CastedPrimitive_u_64(
+      Map<String, int> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_list_record_string_casted_primitive_u_64(
+        self.entries.map((e) => (e.key, e.value)).toList(), serializer);
   }
 
   @protected
@@ -8824,6 +8897,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_bool(self.isPropped, serializer);
     sse_encode_bool(self.isRingingInaccurate, serializer);
     sse_encode_opt_box_autoadd_ft_mode(self.mode, serializer);
+    sse_encode_Map_String_CastedPrimitive_u_64(
+        self.recentMemberAdds, serializer);
   }
 
   @protected
@@ -9009,6 +9084,16 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_i_32(self.length, serializer);
     for (final item in self) {
       sse_encode_record_string_bool(item, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_list_record_string_casted_primitive_u_64(
+      List<(String, int)> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_record_string_casted_primitive_u_64(item, serializer);
     }
   }
 
@@ -9953,6 +10038,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_String(self.$1, serializer);
     sse_encode_bool(self.$2, serializer);
+  }
+
+  @protected
+  void sse_encode_record_string_casted_primitive_u_64(
+      (String, int) self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.$1, serializer);
+    sse_encode_CastedPrimitive_u_64(self.$2, serializer);
   }
 
   @protected

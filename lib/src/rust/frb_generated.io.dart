@@ -147,6 +147,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   int dco_decode_CastedPrimitive_usize(dynamic raw);
 
   @protected
+  Map<String, int> dco_decode_Map_String_CastedPrimitive_u_64(dynamic raw);
+
+  @protected
   Map<String, String> dco_decode_Map_String_String(dynamic raw);
 
   @protected
@@ -524,6 +527,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   List<(String, bool)> dco_decode_list_record_string_bool(dynamic raw);
 
   @protected
+  List<(String, int)> dco_decode_list_record_string_casted_primitive_u_64(
+      dynamic raw);
+
+  @protected
   List<(String, FTParticipant)> dco_decode_list_record_string_ft_participant(
       dynamic raw);
 
@@ -767,6 +774,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   (String, bool) dco_decode_record_string_bool(dynamic raw);
 
   @protected
+  (String, int) dco_decode_record_string_casted_primitive_u_64(dynamic raw);
+
+  @protected
   (String, FTParticipant) dco_decode_record_string_ft_participant(dynamic raw);
 
   @protected
@@ -927,6 +937,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   int sse_decode_CastedPrimitive_usize(SseDeserializer deserializer);
+
+  @protected
+  Map<String, int> sse_decode_Map_String_CastedPrimitive_u_64(
+      SseDeserializer deserializer);
 
   @protected
   Map<String, String> sse_decode_Map_String_String(
@@ -1337,6 +1351,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       SseDeserializer deserializer);
 
   @protected
+  List<(String, int)> sse_decode_list_record_string_casted_primitive_u_64(
+      SseDeserializer deserializer);
+
+  @protected
   List<(String, FTParticipant)> sse_decode_list_record_string_ft_participant(
       SseDeserializer deserializer);
 
@@ -1600,6 +1618,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   (String, bool) sse_decode_record_string_bool(SseDeserializer deserializer);
 
   @protected
+  (String, int) sse_decode_record_string_casted_primitive_u_64(
+      SseDeserializer deserializer);
+
+  @protected
   (String, FTParticipant) sse_decode_record_string_ft_participant(
       SseDeserializer deserializer);
 
@@ -1771,6 +1793,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_CastedPrimitive_usize(int self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_Map_String_CastedPrimitive_u_64(
+      Map<String, int> self, SseSerializer serializer);
 
   @protected
   void sse_encode_Map_String_String(
@@ -2201,6 +2227,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       List<(String, bool)> self, SseSerializer serializer);
 
   @protected
+  void sse_encode_list_record_string_casted_primitive_u_64(
+      List<(String, int)> self, SseSerializer serializer);
+
+  @protected
   void sse_encode_list_record_string_ft_participant(
       List<(String, FTParticipant)> self, SseSerializer serializer);
 
@@ -2472,6 +2502,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_record_string_bool(
       (String, bool) self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_record_string_casted_primitive_u_64(
+      (String, int) self, SseSerializer serializer);
 
   @protected
   void sse_encode_record_string_ft_participant(

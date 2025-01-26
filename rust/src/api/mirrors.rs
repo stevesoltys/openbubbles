@@ -642,6 +642,7 @@ pub struct DartFTSession {
     pub is_propped: bool,
     pub is_ringing_inaccurate: bool,
     pub mode: Option<FTMode>,
+    pub recent_member_adds: HashMap<String, u64>,
 }
 
 #[frb(mirror(Location))]
