@@ -270,6 +270,14 @@ class SetupViewController extends StatefulController {
       // ss.settings.cachedCodes.clear();
       Logger.debug("Success registered!");
       await pushService.configured();
+
+      var handles = await api.getHandles(state: pushService.state);
+      var phone = handles.firstWhereOrNull((h) => h.startsWith("tel:"));
+      if (phone != null) {
+        ss.settings.defaultHandle.value = phone;
+        ss.saveSettings();
+      }
+
       Logger.debug("Finishing!");
       setup.finishSetup();
     } catch(e) {
