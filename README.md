@@ -1,6 +1,6 @@
 # OpenBubbles
 
-OpenBubbles is an open-source and cross-platform ecosystem of apps aimed to bring Apple platform services to Android, Windows, Linux, and the Web! With OpenBubbles, you'll be able to send messages, media, and much more to your friends and family.
+OpenBubbles is an open-source and cross-platform ecosystem of apps aimed to bring Apple platform services to Android and Windows! With OpenBubbles, you'll be able to send messages, media, and much more to your friends and family.
 
 **Please note that OpenBubbles requires a Mac and an Apple ID to function!
 
