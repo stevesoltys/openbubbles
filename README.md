@@ -12,7 +12,7 @@ Key Features:
 - Unsend messages 
 - Call your friends on FaceTime
 - Answer calls from your friends on FaceTime
-- See friend's locations on FindMy
+- See friends' locations on FindMy
 - Join and Sync iCloud Shared Albums
 - See typing indicators
 - Receive stickers
