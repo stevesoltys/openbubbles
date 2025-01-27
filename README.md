@@ -10,7 +10,8 @@ Key Features:
 - Send formatted messages (bold, italic, etc)
 - Edit messages
 - Unsend messages 
-- Make and answer FaceTime calls
+- Call your friends on FaceTime
+- Answer calls from your friends on FaceTime
 - See friend's locations on FindMy
 - Join and Sync iCloud Shared Albums
 - See typing indicators
