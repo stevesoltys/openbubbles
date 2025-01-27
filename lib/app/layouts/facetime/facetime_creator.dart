@@ -372,7 +372,7 @@ class FaceTimeCreatorState extends OptimizedState<FaceTimeCreator> {
                                   decoration: InputDecoration(
                                     border: InputBorder.none,
                                     fillColor: Colors.transparent,
-                                    hintText: "Enter a name...",
+                                    hintText: "Enter a name, number, or email...",
                                     hintStyle: context.theme.textTheme.bodyMedium!
                                         .copyWith(color: context.theme.colorScheme.outline),
                                   ),

@@ -157,15 +157,15 @@ class _AboutPanelState extends OptimizedState<AboutPanel> {
                 SettingsHeader(
                     iosSubtitle: iosSubtitle,
                     materialSubtitle: materialSubtitle,
-                    text: "Links (from BlueBubbles)"),
+                    text: "Links"),
                 SettingsSection(
                   backgroundColor: tileColor,
                   children: [
                     SettingsTile(
-                      title: "BlueBubbles Website",
-                      subtitle: "Visit the BlueBubbles Homepage",
+                      title: "OpenBubbles Website",
+                      subtitle: "Visit the OpenBubbles Homepage",
                       onTap: () async {
-                        await launchUrl(Uri(scheme: "https", host: "bluebubbles.app"), mode: LaunchMode.externalApplication);
+                        await launchUrl(Uri(scheme: "https", host: "openbubbles.app"), mode: LaunchMode.externalApplication);
                       },
                       leading: const SettingsLeadingIcon(
                         iosIcon: CupertinoIcons.globe,
@@ -191,9 +191,9 @@ class _AboutPanelState extends OptimizedState<AboutPanel> {
                     const SettingsDivider(),
                     SettingsTile(
                       title: "Documentation",
-                      subtitle: "RTFM: Read the [Fine] Manual and learn how to use BlueBubbles or fix common issues",
+                      subtitle: "Learn how to use OpenBubbles or fix common issues",
                       onTap: () async {
-                        await launchUrl(Uri(scheme: "https", host: "docs.bluebubbles.app"), mode: LaunchMode.externalApplication);
+                        await launchUrl(Uri(scheme: "https", host: "openbubbles.app", path: "docs/faq.html"), mode: LaunchMode.externalApplication);
                       },
                       leading: const SettingsLeadingIcon(
                         iosIcon: CupertinoIcons.doc_append,
@@ -205,12 +205,12 @@ class _AboutPanelState extends OptimizedState<AboutPanel> {
                     const SettingsDivider(),
                     SettingsTile(
                       title: "Source Code",
-                      subtitle: "View the source code for BlueBubbles, and contribute!",
+                      subtitle: "View the source code for OpenBubbles, and contribute!",
                       onTap: () async {
-                        await launchUrl(Uri(scheme: "https", host: "github.com", path: "TaeHagen/bluebubbles-app"), mode: LaunchMode.externalApplication);
+                        await launchUrl(Uri(scheme: "https", host: "github.com", path: "OpenBubbles/openbubbles-app"), mode: LaunchMode.externalApplication);
                       },
                       onLongPress: () async {
-                        await launchUrl(Uri(scheme: "https", host: "github.com", path: "TaeHagen/bluebubbles-app/issues"), mode: LaunchMode.externalApplication);
+                        await launchUrl(Uri(scheme: "https", host: "github.com", path: "OpenBubbles/openbubbles-app/issues"), mode: LaunchMode.externalApplication);
                       },
                       leading: const SettingsLeadingIcon(
                         iosIcon: CupertinoIcons.chevron_left_slash_chevron_right,
@@ -224,7 +224,7 @@ class _AboutPanelState extends OptimizedState<AboutPanel> {
                       title: "Report a Bug",
                       subtitle: "Found a bug? Report it here!",
                       onTap: () async {
-                        await launchUrl(Uri(scheme: "https", host: "github.com", path: "BlueBubblesApp/bluebubbles-app/issues"), mode: LaunchMode.externalApplication);
+                        await launchUrl(Uri(scheme: "https", host: "github.com", path: "OpenBubbles/openbubbles-app/issues"), mode: LaunchMode.externalApplication);
                       },
                       leading: const SettingsLeadingIcon(
                         iosIcon: CupertinoIcons.triangle_righthalf_fill,
