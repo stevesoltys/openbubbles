@@ -1015,6 +1015,9 @@ sealed class FTMessage with _$FTMessage {
   const factory FTMessage.decline({
     required String guid,
   }) = FTMessage_Decline;
+  const factory FTMessage.respondedElsewhere({
+    required String guid,
+  }) = FTMessage_RespondedElsewhere;
 }
 
 enum FTMode {

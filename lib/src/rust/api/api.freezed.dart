@@ -1153,6 +1153,7 @@ mixin _$FTMessage {
         leaveEvent,
     required TResult Function(String guid) ring,
     required TResult Function(String guid) decline,
+    required TResult Function(String guid) respondedElsewhere,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -1169,6 +1170,7 @@ mixin _$FTMessage {
         leaveEvent,
     TResult? Function(String guid)? ring,
     TResult? Function(String guid)? decline,
+    TResult? Function(String guid)? respondedElsewhere,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -1183,6 +1185,7 @@ mixin _$FTMessage {
         leaveEvent,
     TResult Function(String guid)? ring,
     TResult Function(String guid)? decline,
+    TResult Function(String guid)? respondedElsewhere,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -1196,6 +1199,8 @@ mixin _$FTMessage {
     required TResult Function(FTMessage_LeaveEvent value) leaveEvent,
     required TResult Function(FTMessage_Ring value) ring,
     required TResult Function(FTMessage_Decline value) decline,
+    required TResult Function(FTMessage_RespondedElsewhere value)
+        respondedElsewhere,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -1208,6 +1213,7 @@ mixin _$FTMessage {
     TResult? Function(FTMessage_LeaveEvent value)? leaveEvent,
     TResult? Function(FTMessage_Ring value)? ring,
     TResult? Function(FTMessage_Decline value)? decline,
+    TResult? Function(FTMessage_RespondedElsewhere value)? respondedElsewhere,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -1220,6 +1226,7 @@ mixin _$FTMessage {
     TResult Function(FTMessage_LeaveEvent value)? leaveEvent,
     TResult Function(FTMessage_Ring value)? ring,
     TResult Function(FTMessage_Decline value)? decline,
+    TResult Function(FTMessage_RespondedElsewhere value)? respondedElsewhere,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -1328,6 +1335,7 @@ class _$FTMessage_LetMeInRequestImpl extends FTMessage_LetMeInRequest {
         leaveEvent,
     required TResult Function(String guid) ring,
     required TResult Function(String guid) decline,
+    required TResult Function(String guid) respondedElsewhere,
   }) {
     return letMeInRequest(field0);
   }
@@ -1347,6 +1355,7 @@ class _$FTMessage_LetMeInRequestImpl extends FTMessage_LetMeInRequest {
         leaveEvent,
     TResult? Function(String guid)? ring,
     TResult? Function(String guid)? decline,
+    TResult? Function(String guid)? respondedElsewhere,
   }) {
     return letMeInRequest?.call(field0);
   }
@@ -1364,6 +1373,7 @@ class _$FTMessage_LetMeInRequestImpl extends FTMessage_LetMeInRequest {
         leaveEvent,
     TResult Function(String guid)? ring,
     TResult Function(String guid)? decline,
+    TResult Function(String guid)? respondedElsewhere,
     required TResult orElse(),
   }) {
     if (letMeInRequest != null) {
@@ -1383,6 +1393,8 @@ class _$FTMessage_LetMeInRequestImpl extends FTMessage_LetMeInRequest {
     required TResult Function(FTMessage_LeaveEvent value) leaveEvent,
     required TResult Function(FTMessage_Ring value) ring,
     required TResult Function(FTMessage_Decline value) decline,
+    required TResult Function(FTMessage_RespondedElsewhere value)
+        respondedElsewhere,
   }) {
     return letMeInRequest(this);
   }
@@ -1398,6 +1410,7 @@ class _$FTMessage_LetMeInRequestImpl extends FTMessage_LetMeInRequest {
     TResult? Function(FTMessage_LeaveEvent value)? leaveEvent,
     TResult? Function(FTMessage_Ring value)? ring,
     TResult? Function(FTMessage_Decline value)? decline,
+    TResult? Function(FTMessage_RespondedElsewhere value)? respondedElsewhere,
   }) {
     return letMeInRequest?.call(this);
   }
@@ -1413,6 +1426,7 @@ class _$FTMessage_LetMeInRequestImpl extends FTMessage_LetMeInRequest {
     TResult Function(FTMessage_LeaveEvent value)? leaveEvent,
     TResult Function(FTMessage_Ring value)? ring,
     TResult Function(FTMessage_Decline value)? decline,
+    TResult Function(FTMessage_RespondedElsewhere value)? respondedElsewhere,
     required TResult orElse(),
   }) {
     if (letMeInRequest != null) {
@@ -1518,6 +1532,7 @@ class _$FTMessage_LinkChangedImpl extends FTMessage_LinkChanged {
         leaveEvent,
     required TResult Function(String guid) ring,
     required TResult Function(String guid) decline,
+    required TResult Function(String guid) respondedElsewhere,
   }) {
     return linkChanged(guid);
   }
@@ -1537,6 +1552,7 @@ class _$FTMessage_LinkChangedImpl extends FTMessage_LinkChanged {
         leaveEvent,
     TResult? Function(String guid)? ring,
     TResult? Function(String guid)? decline,
+    TResult? Function(String guid)? respondedElsewhere,
   }) {
     return linkChanged?.call(guid);
   }
@@ -1554,6 +1570,7 @@ class _$FTMessage_LinkChangedImpl extends FTMessage_LinkChanged {
         leaveEvent,
     TResult Function(String guid)? ring,
     TResult Function(String guid)? decline,
+    TResult Function(String guid)? respondedElsewhere,
     required TResult orElse(),
   }) {
     if (linkChanged != null) {
@@ -1573,6 +1590,8 @@ class _$FTMessage_LinkChangedImpl extends FTMessage_LinkChanged {
     required TResult Function(FTMessage_LeaveEvent value) leaveEvent,
     required TResult Function(FTMessage_Ring value) ring,
     required TResult Function(FTMessage_Decline value) decline,
+    required TResult Function(FTMessage_RespondedElsewhere value)
+        respondedElsewhere,
   }) {
     return linkChanged(this);
   }
@@ -1588,6 +1607,7 @@ class _$FTMessage_LinkChangedImpl extends FTMessage_LinkChanged {
     TResult? Function(FTMessage_LeaveEvent value)? leaveEvent,
     TResult? Function(FTMessage_Ring value)? ring,
     TResult? Function(FTMessage_Decline value)? decline,
+    TResult? Function(FTMessage_RespondedElsewhere value)? respondedElsewhere,
   }) {
     return linkChanged?.call(this);
   }
@@ -1603,6 +1623,7 @@ class _$FTMessage_LinkChangedImpl extends FTMessage_LinkChanged {
     TResult Function(FTMessage_LeaveEvent value)? leaveEvent,
     TResult Function(FTMessage_Ring value)? ring,
     TResult Function(FTMessage_Decline value)? decline,
+    TResult Function(FTMessage_RespondedElsewhere value)? respondedElsewhere,
     required TResult orElse(),
   }) {
     if (linkChanged != null) {
@@ -1737,6 +1758,7 @@ class _$FTMessage_JoinEventImpl extends FTMessage_JoinEvent {
         leaveEvent,
     required TResult Function(String guid) ring,
     required TResult Function(String guid) decline,
+    required TResult Function(String guid) respondedElsewhere,
   }) {
     return joinEvent(guid, participant, handle, this.ring);
   }
@@ -1756,6 +1778,7 @@ class _$FTMessage_JoinEventImpl extends FTMessage_JoinEvent {
         leaveEvent,
     TResult? Function(String guid)? ring,
     TResult? Function(String guid)? decline,
+    TResult? Function(String guid)? respondedElsewhere,
   }) {
     return joinEvent?.call(guid, participant, handle, this.ring);
   }
@@ -1773,6 +1796,7 @@ class _$FTMessage_JoinEventImpl extends FTMessage_JoinEvent {
         leaveEvent,
     TResult Function(String guid)? ring,
     TResult Function(String guid)? decline,
+    TResult Function(String guid)? respondedElsewhere,
     required TResult orElse(),
   }) {
     if (joinEvent != null) {
@@ -1792,6 +1816,8 @@ class _$FTMessage_JoinEventImpl extends FTMessage_JoinEvent {
     required TResult Function(FTMessage_LeaveEvent value) leaveEvent,
     required TResult Function(FTMessage_Ring value) ring,
     required TResult Function(FTMessage_Decline value) decline,
+    required TResult Function(FTMessage_RespondedElsewhere value)
+        respondedElsewhere,
   }) {
     return joinEvent(this);
   }
@@ -1807,6 +1833,7 @@ class _$FTMessage_JoinEventImpl extends FTMessage_JoinEvent {
     TResult? Function(FTMessage_LeaveEvent value)? leaveEvent,
     TResult? Function(FTMessage_Ring value)? ring,
     TResult? Function(FTMessage_Decline value)? decline,
+    TResult? Function(FTMessage_RespondedElsewhere value)? respondedElsewhere,
   }) {
     return joinEvent?.call(this);
   }
@@ -1822,6 +1849,7 @@ class _$FTMessage_JoinEventImpl extends FTMessage_JoinEvent {
     TResult Function(FTMessage_LeaveEvent value)? leaveEvent,
     TResult Function(FTMessage_Ring value)? ring,
     TResult Function(FTMessage_Decline value)? decline,
+    TResult Function(FTMessage_RespondedElsewhere value)? respondedElsewhere,
     required TResult orElse(),
   }) {
     if (joinEvent != null) {
@@ -1961,6 +1989,7 @@ class _$FTMessage_AddMembersImpl extends FTMessage_AddMembers {
         leaveEvent,
     required TResult Function(String guid) ring,
     required TResult Function(String guid) decline,
+    required TResult Function(String guid) respondedElsewhere,
   }) {
     return addMembers(guid, members, this.ring);
   }
@@ -1980,6 +2009,7 @@ class _$FTMessage_AddMembersImpl extends FTMessage_AddMembers {
         leaveEvent,
     TResult? Function(String guid)? ring,
     TResult? Function(String guid)? decline,
+    TResult? Function(String guid)? respondedElsewhere,
   }) {
     return addMembers?.call(guid, members, this.ring);
   }
@@ -1997,6 +2027,7 @@ class _$FTMessage_AddMembersImpl extends FTMessage_AddMembers {
         leaveEvent,
     TResult Function(String guid)? ring,
     TResult Function(String guid)? decline,
+    TResult Function(String guid)? respondedElsewhere,
     required TResult orElse(),
   }) {
     if (addMembers != null) {
@@ -2016,6 +2047,8 @@ class _$FTMessage_AddMembersImpl extends FTMessage_AddMembers {
     required TResult Function(FTMessage_LeaveEvent value) leaveEvent,
     required TResult Function(FTMessage_Ring value) ring,
     required TResult Function(FTMessage_Decline value) decline,
+    required TResult Function(FTMessage_RespondedElsewhere value)
+        respondedElsewhere,
   }) {
     return addMembers(this);
   }
@@ -2031,6 +2064,7 @@ class _$FTMessage_AddMembersImpl extends FTMessage_AddMembers {
     TResult? Function(FTMessage_LeaveEvent value)? leaveEvent,
     TResult? Function(FTMessage_Ring value)? ring,
     TResult? Function(FTMessage_Decline value)? decline,
+    TResult? Function(FTMessage_RespondedElsewhere value)? respondedElsewhere,
   }) {
     return addMembers?.call(this);
   }
@@ -2046,6 +2080,7 @@ class _$FTMessage_AddMembersImpl extends FTMessage_AddMembers {
     TResult Function(FTMessage_LeaveEvent value)? leaveEvent,
     TResult Function(FTMessage_Ring value)? ring,
     TResult Function(FTMessage_Decline value)? decline,
+    TResult Function(FTMessage_RespondedElsewhere value)? respondedElsewhere,
     required TResult orElse(),
   }) {
     if (addMembers != null) {
@@ -2173,6 +2208,7 @@ class _$FTMessage_RemoveMembersImpl extends FTMessage_RemoveMembers {
         leaveEvent,
     required TResult Function(String guid) ring,
     required TResult Function(String guid) decline,
+    required TResult Function(String guid) respondedElsewhere,
   }) {
     return removeMembers(guid, members);
   }
@@ -2192,6 +2228,7 @@ class _$FTMessage_RemoveMembersImpl extends FTMessage_RemoveMembers {
         leaveEvent,
     TResult? Function(String guid)? ring,
     TResult? Function(String guid)? decline,
+    TResult? Function(String guid)? respondedElsewhere,
   }) {
     return removeMembers?.call(guid, members);
   }
@@ -2209,6 +2246,7 @@ class _$FTMessage_RemoveMembersImpl extends FTMessage_RemoveMembers {
         leaveEvent,
     TResult Function(String guid)? ring,
     TResult Function(String guid)? decline,
+    TResult Function(String guid)? respondedElsewhere,
     required TResult orElse(),
   }) {
     if (removeMembers != null) {
@@ -2228,6 +2266,8 @@ class _$FTMessage_RemoveMembersImpl extends FTMessage_RemoveMembers {
     required TResult Function(FTMessage_LeaveEvent value) leaveEvent,
     required TResult Function(FTMessage_Ring value) ring,
     required TResult Function(FTMessage_Decline value) decline,
+    required TResult Function(FTMessage_RespondedElsewhere value)
+        respondedElsewhere,
   }) {
     return removeMembers(this);
   }
@@ -2243,6 +2283,7 @@ class _$FTMessage_RemoveMembersImpl extends FTMessage_RemoveMembers {
     TResult? Function(FTMessage_LeaveEvent value)? leaveEvent,
     TResult? Function(FTMessage_Ring value)? ring,
     TResult? Function(FTMessage_Decline value)? decline,
+    TResult? Function(FTMessage_RespondedElsewhere value)? respondedElsewhere,
   }) {
     return removeMembers?.call(this);
   }
@@ -2258,6 +2299,7 @@ class _$FTMessage_RemoveMembersImpl extends FTMessage_RemoveMembers {
     TResult Function(FTMessage_LeaveEvent value)? leaveEvent,
     TResult Function(FTMessage_Ring value)? ring,
     TResult Function(FTMessage_Decline value)? decline,
+    TResult Function(FTMessage_RespondedElsewhere value)? respondedElsewhere,
     required TResult orElse(),
   }) {
     if (removeMembers != null) {
@@ -2384,6 +2426,7 @@ class _$FTMessage_LeaveEventImpl extends FTMessage_LeaveEvent {
         leaveEvent,
     required TResult Function(String guid) ring,
     required TResult Function(String guid) decline,
+    required TResult Function(String guid) respondedElsewhere,
   }) {
     return leaveEvent(guid, participant, handle);
   }
@@ -2403,6 +2446,7 @@ class _$FTMessage_LeaveEventImpl extends FTMessage_LeaveEvent {
         leaveEvent,
     TResult? Function(String guid)? ring,
     TResult? Function(String guid)? decline,
+    TResult? Function(String guid)? respondedElsewhere,
   }) {
     return leaveEvent?.call(guid, participant, handle);
   }
@@ -2420,6 +2464,7 @@ class _$FTMessage_LeaveEventImpl extends FTMessage_LeaveEvent {
         leaveEvent,
     TResult Function(String guid)? ring,
     TResult Function(String guid)? decline,
+    TResult Function(String guid)? respondedElsewhere,
     required TResult orElse(),
   }) {
     if (leaveEvent != null) {
@@ -2439,6 +2484,8 @@ class _$FTMessage_LeaveEventImpl extends FTMessage_LeaveEvent {
     required TResult Function(FTMessage_LeaveEvent value) leaveEvent,
     required TResult Function(FTMessage_Ring value) ring,
     required TResult Function(FTMessage_Decline value) decline,
+    required TResult Function(FTMessage_RespondedElsewhere value)
+        respondedElsewhere,
   }) {
     return leaveEvent(this);
   }
@@ -2454,6 +2501,7 @@ class _$FTMessage_LeaveEventImpl extends FTMessage_LeaveEvent {
     TResult? Function(FTMessage_LeaveEvent value)? leaveEvent,
     TResult? Function(FTMessage_Ring value)? ring,
     TResult? Function(FTMessage_Decline value)? decline,
+    TResult? Function(FTMessage_RespondedElsewhere value)? respondedElsewhere,
   }) {
     return leaveEvent?.call(this);
   }
@@ -2469,6 +2517,7 @@ class _$FTMessage_LeaveEventImpl extends FTMessage_LeaveEvent {
     TResult Function(FTMessage_LeaveEvent value)? leaveEvent,
     TResult Function(FTMessage_Ring value)? ring,
     TResult Function(FTMessage_Decline value)? decline,
+    TResult Function(FTMessage_RespondedElsewhere value)? respondedElsewhere,
     required TResult orElse(),
   }) {
     if (leaveEvent != null) {
@@ -2577,6 +2626,7 @@ class _$FTMessage_RingImpl extends FTMessage_Ring {
         leaveEvent,
     required TResult Function(String guid) ring,
     required TResult Function(String guid) decline,
+    required TResult Function(String guid) respondedElsewhere,
   }) {
     return ring(guid);
   }
@@ -2596,6 +2646,7 @@ class _$FTMessage_RingImpl extends FTMessage_Ring {
         leaveEvent,
     TResult? Function(String guid)? ring,
     TResult? Function(String guid)? decline,
+    TResult? Function(String guid)? respondedElsewhere,
   }) {
     return ring?.call(guid);
   }
@@ -2613,6 +2664,7 @@ class _$FTMessage_RingImpl extends FTMessage_Ring {
         leaveEvent,
     TResult Function(String guid)? ring,
     TResult Function(String guid)? decline,
+    TResult Function(String guid)? respondedElsewhere,
     required TResult orElse(),
   }) {
     if (ring != null) {
@@ -2632,6 +2684,8 @@ class _$FTMessage_RingImpl extends FTMessage_Ring {
     required TResult Function(FTMessage_LeaveEvent value) leaveEvent,
     required TResult Function(FTMessage_Ring value) ring,
     required TResult Function(FTMessage_Decline value) decline,
+    required TResult Function(FTMessage_RespondedElsewhere value)
+        respondedElsewhere,
   }) {
     return ring(this);
   }
@@ -2647,6 +2701,7 @@ class _$FTMessage_RingImpl extends FTMessage_Ring {
     TResult? Function(FTMessage_LeaveEvent value)? leaveEvent,
     TResult? Function(FTMessage_Ring value)? ring,
     TResult? Function(FTMessage_Decline value)? decline,
+    TResult? Function(FTMessage_RespondedElsewhere value)? respondedElsewhere,
   }) {
     return ring?.call(this);
   }
@@ -2662,6 +2717,7 @@ class _$FTMessage_RingImpl extends FTMessage_Ring {
     TResult Function(FTMessage_LeaveEvent value)? leaveEvent,
     TResult Function(FTMessage_Ring value)? ring,
     TResult Function(FTMessage_Decline value)? decline,
+    TResult Function(FTMessage_RespondedElsewhere value)? respondedElsewhere,
     required TResult orElse(),
   }) {
     if (ring != null) {
@@ -2766,6 +2822,7 @@ class _$FTMessage_DeclineImpl extends FTMessage_Decline {
         leaveEvent,
     required TResult Function(String guid) ring,
     required TResult Function(String guid) decline,
+    required TResult Function(String guid) respondedElsewhere,
   }) {
     return decline(guid);
   }
@@ -2785,6 +2842,7 @@ class _$FTMessage_DeclineImpl extends FTMessage_Decline {
         leaveEvent,
     TResult? Function(String guid)? ring,
     TResult? Function(String guid)? decline,
+    TResult? Function(String guid)? respondedElsewhere,
   }) {
     return decline?.call(guid);
   }
@@ -2802,6 +2860,7 @@ class _$FTMessage_DeclineImpl extends FTMessage_Decline {
         leaveEvent,
     TResult Function(String guid)? ring,
     TResult Function(String guid)? decline,
+    TResult Function(String guid)? respondedElsewhere,
     required TResult orElse(),
   }) {
     if (decline != null) {
@@ -2821,6 +2880,8 @@ class _$FTMessage_DeclineImpl extends FTMessage_Decline {
     required TResult Function(FTMessage_LeaveEvent value) leaveEvent,
     required TResult Function(FTMessage_Ring value) ring,
     required TResult Function(FTMessage_Decline value) decline,
+    required TResult Function(FTMessage_RespondedElsewhere value)
+        respondedElsewhere,
   }) {
     return decline(this);
   }
@@ -2836,6 +2897,7 @@ class _$FTMessage_DeclineImpl extends FTMessage_Decline {
     TResult? Function(FTMessage_LeaveEvent value)? leaveEvent,
     TResult? Function(FTMessage_Ring value)? ring,
     TResult? Function(FTMessage_Decline value)? decline,
+    TResult? Function(FTMessage_RespondedElsewhere value)? respondedElsewhere,
   }) {
     return decline?.call(this);
   }
@@ -2851,6 +2913,7 @@ class _$FTMessage_DeclineImpl extends FTMessage_Decline {
     TResult Function(FTMessage_LeaveEvent value)? leaveEvent,
     TResult Function(FTMessage_Ring value)? ring,
     TResult Function(FTMessage_Decline value)? decline,
+    TResult Function(FTMessage_RespondedElsewhere value)? respondedElsewhere,
     required TResult orElse(),
   }) {
     if (decline != null) {
@@ -2872,6 +2935,206 @@ abstract class FTMessage_Decline extends FTMessage {
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$FTMessage_DeclineImplCopyWith<_$FTMessage_DeclineImpl> get copyWith =>
       throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$FTMessage_RespondedElsewhereImplCopyWith<$Res> {
+  factory _$$FTMessage_RespondedElsewhereImplCopyWith(
+          _$FTMessage_RespondedElsewhereImpl value,
+          $Res Function(_$FTMessage_RespondedElsewhereImpl) then) =
+      __$$FTMessage_RespondedElsewhereImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String guid});
+}
+
+/// @nodoc
+class __$$FTMessage_RespondedElsewhereImplCopyWithImpl<$Res>
+    extends _$FTMessageCopyWithImpl<$Res, _$FTMessage_RespondedElsewhereImpl>
+    implements _$$FTMessage_RespondedElsewhereImplCopyWith<$Res> {
+  __$$FTMessage_RespondedElsewhereImplCopyWithImpl(
+      _$FTMessage_RespondedElsewhereImpl _value,
+      $Res Function(_$FTMessage_RespondedElsewhereImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of FTMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? guid = null,
+  }) {
+    return _then(_$FTMessage_RespondedElsewhereImpl(
+      guid: null == guid
+          ? _value.guid
+          : guid // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$FTMessage_RespondedElsewhereImpl extends FTMessage_RespondedElsewhere {
+  const _$FTMessage_RespondedElsewhereImpl({required this.guid}) : super._();
+
+  @override
+  final String guid;
+
+  @override
+  String toString() {
+    return 'FTMessage.respondedElsewhere(guid: $guid)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$FTMessage_RespondedElsewhereImpl &&
+            (identical(other.guid, guid) || other.guid == guid));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, guid);
+
+  /// Create a copy of FTMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$FTMessage_RespondedElsewhereImplCopyWith<
+          _$FTMessage_RespondedElsewhereImpl>
+      get copyWith => __$$FTMessage_RespondedElsewhereImplCopyWithImpl<
+          _$FTMessage_RespondedElsewhereImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(LetMeInRequest field0) letMeInRequest,
+    required TResult Function(String guid) linkChanged,
+    required TResult Function(
+            String guid, BigInt participant, String handle, bool ring)
+        joinEvent,
+    required TResult Function(String guid, Set<FTMember> members, bool ring)
+        addMembers,
+    required TResult Function(String guid, Set<FTMember> members) removeMembers,
+    required TResult Function(String guid, BigInt participant, String handle)
+        leaveEvent,
+    required TResult Function(String guid) ring,
+    required TResult Function(String guid) decline,
+    required TResult Function(String guid) respondedElsewhere,
+  }) {
+    return respondedElsewhere(guid);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(LetMeInRequest field0)? letMeInRequest,
+    TResult? Function(String guid)? linkChanged,
+    TResult? Function(
+            String guid, BigInt participant, String handle, bool ring)?
+        joinEvent,
+    TResult? Function(String guid, Set<FTMember> members, bool ring)?
+        addMembers,
+    TResult? Function(String guid, Set<FTMember> members)? removeMembers,
+    TResult? Function(String guid, BigInt participant, String handle)?
+        leaveEvent,
+    TResult? Function(String guid)? ring,
+    TResult? Function(String guid)? decline,
+    TResult? Function(String guid)? respondedElsewhere,
+  }) {
+    return respondedElsewhere?.call(guid);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(LetMeInRequest field0)? letMeInRequest,
+    TResult Function(String guid)? linkChanged,
+    TResult Function(String guid, BigInt participant, String handle, bool ring)?
+        joinEvent,
+    TResult Function(String guid, Set<FTMember> members, bool ring)? addMembers,
+    TResult Function(String guid, Set<FTMember> members)? removeMembers,
+    TResult Function(String guid, BigInt participant, String handle)?
+        leaveEvent,
+    TResult Function(String guid)? ring,
+    TResult Function(String guid)? decline,
+    TResult Function(String guid)? respondedElsewhere,
+    required TResult orElse(),
+  }) {
+    if (respondedElsewhere != null) {
+      return respondedElsewhere(guid);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(FTMessage_LetMeInRequest value) letMeInRequest,
+    required TResult Function(FTMessage_LinkChanged value) linkChanged,
+    required TResult Function(FTMessage_JoinEvent value) joinEvent,
+    required TResult Function(FTMessage_AddMembers value) addMembers,
+    required TResult Function(FTMessage_RemoveMembers value) removeMembers,
+    required TResult Function(FTMessage_LeaveEvent value) leaveEvent,
+    required TResult Function(FTMessage_Ring value) ring,
+    required TResult Function(FTMessage_Decline value) decline,
+    required TResult Function(FTMessage_RespondedElsewhere value)
+        respondedElsewhere,
+  }) {
+    return respondedElsewhere(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(FTMessage_LetMeInRequest value)? letMeInRequest,
+    TResult? Function(FTMessage_LinkChanged value)? linkChanged,
+    TResult? Function(FTMessage_JoinEvent value)? joinEvent,
+    TResult? Function(FTMessage_AddMembers value)? addMembers,
+    TResult? Function(FTMessage_RemoveMembers value)? removeMembers,
+    TResult? Function(FTMessage_LeaveEvent value)? leaveEvent,
+    TResult? Function(FTMessage_Ring value)? ring,
+    TResult? Function(FTMessage_Decline value)? decline,
+    TResult? Function(FTMessage_RespondedElsewhere value)? respondedElsewhere,
+  }) {
+    return respondedElsewhere?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(FTMessage_LetMeInRequest value)? letMeInRequest,
+    TResult Function(FTMessage_LinkChanged value)? linkChanged,
+    TResult Function(FTMessage_JoinEvent value)? joinEvent,
+    TResult Function(FTMessage_AddMembers value)? addMembers,
+    TResult Function(FTMessage_RemoveMembers value)? removeMembers,
+    TResult Function(FTMessage_LeaveEvent value)? leaveEvent,
+    TResult Function(FTMessage_Ring value)? ring,
+    TResult Function(FTMessage_Decline value)? decline,
+    TResult Function(FTMessage_RespondedElsewhere value)? respondedElsewhere,
+    required TResult orElse(),
+  }) {
+    if (respondedElsewhere != null) {
+      return respondedElsewhere(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class FTMessage_RespondedElsewhere extends FTMessage {
+  const factory FTMessage_RespondedElsewhere({required final String guid}) =
+      _$FTMessage_RespondedElsewhereImpl;
+  const FTMessage_RespondedElsewhere._() : super._();
+
+  String get guid;
+
+  /// Create a copy of FTMessage
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$FTMessage_RespondedElsewhereImplCopyWith<
+          _$FTMessage_RespondedElsewhereImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc

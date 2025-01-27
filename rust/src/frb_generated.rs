@@ -4707,6 +4707,9 @@ const _: fn() = || {
         crate::api::api::FTMessage::Decline { guid } => {
             let _: String = guid;
         }
+        crate::api::api::FTMessage::RespondedElsewhere { guid } => {
+            let _: String = guid;
+        }
     }
     {
         let FTParticipant = None::<crate::api::api::FTParticipant>.unwrap();
@@ -5897,6 +5900,10 @@ impl SseDecode for crate::api::api::FTMessage {
             7 => {
                 let mut var_guid = <String>::sse_decode(deserializer);
                 return crate::api::api::FTMessage::Decline { guid: var_guid };
+            }
+            8 => {
+                let mut var_guid = <String>::sse_decode(deserializer);
+                return crate::api::api::FTMessage::RespondedElsewhere { guid: var_guid };
             }
             _ => {
                 unimplemented!("");
@@ -8533,6 +8540,9 @@ impl flutter_rust_bridge::IntoDart for FrbWrapper<crate::api::api::FTMessage> {
             crate::api::api::FTMessage::Decline { guid } => {
                 [7.into_dart(), guid.into_into_dart().into_dart()].into_dart()
             }
+            crate::api::api::FTMessage::RespondedElsewhere { guid } => {
+                [8.into_dart(), guid.into_into_dart().into_dart()].into_dart()
+            }
             _ => {
                 unimplemented!("");
             }
@@ -10502,6 +10512,10 @@ impl SseEncode for crate::api::api::FTMessage {
             }
             crate::api::api::FTMessage::Decline { guid } => {
                 <i32>::sse_encode(7, serializer);
+                <String>::sse_encode(guid, serializer);
+            }
+            crate::api::api::FTMessage::RespondedElsewhere { guid } => {
+                <i32>::sse_encode(8, serializer);
                 <String>::sse_encode(guid, serializer);
             }
             _ => {

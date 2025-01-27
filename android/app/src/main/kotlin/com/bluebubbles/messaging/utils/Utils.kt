@@ -5,11 +5,21 @@ import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
+import android.media.AudioManager
+import android.os.Build
 import androidx.core.graphics.drawable.IconCompat
 import com.bluebubbles.messaging.services.firebase.FirebaseAuthHandler
 import com.bluebubbles.messaging.services.firebase.ServerUrlRequestHandler
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
+
+fun AudioManager.getStreamMinVolumeCompat(stream: Int): Int {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+        getStreamMinVolume(stream)
+    } else {
+        0
+    }
+}
 
 object Utils {
     fun getAdaptiveIconFromByteArray(data: ByteArray): IconCompat {

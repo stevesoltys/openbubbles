@@ -3690,6 +3690,10 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         return FTMessage_Decline(
           guid: dco_decode_String(raw[1]),
         );
+      case 8:
+        return FTMessage_RespondedElsewhere(
+          guid: dco_decode_String(raw[1]),
+        );
       default:
         throw Exception("unreachable");
     }
@@ -6175,6 +6179,9 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       case 7:
         var var_guid = sse_decode_String(deserializer);
         return FTMessage_Decline(guid: var_guid);
+      case 8:
+        var var_guid = sse_decode_String(deserializer);
+        return FTMessage_RespondedElsewhere(guid: var_guid);
       default:
         throw UnimplementedError('');
     }
@@ -8859,6 +8866,9 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_String(guid, serializer);
       case FTMessage_Decline(guid: final guid):
         sse_encode_i_32(7, serializer);
+        sse_encode_String(guid, serializer);
+      case FTMessage_RespondedElsewhere(guid: final guid):
+        sse_encode_i_32(8, serializer);
         sse_encode_String(guid, serializer);
       default:
         throw UnimplementedError('');

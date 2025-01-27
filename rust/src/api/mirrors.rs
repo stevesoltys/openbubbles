@@ -619,6 +619,9 @@ pub enum DartFTMessage {
     Decline {
         guid: String,
     },
+    RespondedElsewhere {
+        guid: String,
+    },
 }
 
 #[frb(mirror(FTMode))]

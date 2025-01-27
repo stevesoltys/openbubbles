@@ -1975,6 +1975,10 @@ class RustPushService extends GetxService {
         }
       }
 
+      if (facetime is api.FTMessage_RespondedElsewhere) {
+        hideFaceTimeOverlay(facetime.guid, timeout: true); // they have given up the ringing
+      }
+
       if (facetime is api.FTMessage_LetMeInRequest) {
         var approvedGroup = chosenFTRoomGuid;
         if (facetime.field0.usage == "incomingcall" || facetime.field0.usage == "nextincomingcall") {

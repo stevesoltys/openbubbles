@@ -1,19 +1,17 @@
 package com.bluebubbles.messaging.services.facetime
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.PendingIntent
 import android.app.PictureInPictureParams
 import android.app.RemoteAction
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Configuration
+import android.database.ContentObserver
 import android.graphics.Color
 import android.graphics.Rect
 import android.graphics.drawable.Icon
-import android.media.AudioDeviceInfo
 import android.media.AudioManager
 import android.os.Build
 import android.os.Bundle
@@ -33,6 +31,9 @@ import com.bluebubbles.messaging.databinding.ActivityFaceTimeBinding
 import com.bluebubbles.messaging.services.notifications.DeleteNotificationHandler
 import com.bluebubbles.messaging.services.rustpush.APNClient
 import com.bluebubbles.messaging.services.rustpush.APNService
+import com.bluebubbles.messaging.utils.getStreamMinVolumeCompat
+import com.google.android.material.math.MathUtils
+import kotlin.math.roundToInt
 
 class FaceTimeActivity : Activity() {
     private lateinit var binding: ActivityFaceTimeBinding
@@ -50,6 +51,7 @@ class FaceTimeActivity : Activity() {
     private lateinit var cached: CachedWebview
 
     private lateinit var webView: WebView
+    private var initialMediaVolume: Int? = null;
 
     companion object {
         var activeFaceTimeActivity: FaceTimeActivity? = null
@@ -92,6 +94,33 @@ class FaceTimeActivity : Activity() {
         finishAndRemoveTask()
     }
 
+    private fun invLerp(a: Int, b: Int, x: Int): Float {
+        return (x - a).toFloat() / (b - a).toFloat()
+    }
+
+    private fun updateMediaVolume(audioManager: AudioManager) {
+        try {
+            val progress = invLerp(
+                audioManager.getStreamMinVolumeCompat(AudioManager.STREAM_VOICE_CALL),
+                audioManager.getStreamMaxVolume(AudioManager.STREAM_VOICE_CALL),
+                audioManager.getStreamVolume(AudioManager.STREAM_VOICE_CALL),
+            )
+            val volume = MathUtils.lerp(
+                audioManager.getStreamMinVolumeCompat(AudioManager.STREAM_MUSIC).toFloat(),
+                audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC).toFloat(),
+                progress
+            ).roundToInt()
+            audioManager.setStreamVolume(
+                AudioManager.STREAM_MUSIC,
+                volume,
+                0
+            )
+        } catch (e: SecurityException) {
+            Log.w("FaceTime", "Unable to set stream volume!")
+        }
+
+    }
+
     private fun handlePermissionRequests() {
         for (request in cached.deferredRequests) {
             handlePermissionRequest(request)
@@ -103,6 +132,23 @@ class FaceTimeActivity : Activity() {
             }
             cached.deferredRequests.clear()
         }
+
+        // weird bug where it uses the Music stream but the default stream is set to call
+        // you want it maxed. Trust me. And if you don't the UI will open so you know :)
+        val audioManager = getSystemService(AUDIO_SERVICE) as AudioManager
+        initialMediaVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
+        updateMediaVolume(audioManager)
+        applicationContext.contentResolver.registerContentObserver(android.provider.Settings.System.CONTENT_URI, true, object : ContentObserver(
+            Handler(Looper.getMainLooper())
+        ) {
+            override fun deliverSelfNotifications(): Boolean {
+                return false
+            }
+
+            override fun onChange(selfChange: Boolean) {
+                updateMediaVolume(audioManager)
+            }
+        })
     }
 
     private fun answerCall() {
@@ -217,6 +263,20 @@ class FaceTimeActivity : Activity() {
     override fun onDestroy() {
         webView.destroy()
         activeFaceTimeActivity = null
+
+        // restore default media volume
+        initialMediaVolume?.let {
+            try {
+                val audioManager = getSystemService(AUDIO_SERVICE) as AudioManager
+                audioManager.setStreamVolume(
+                    AudioManager.STREAM_MUSIC,
+                    it,
+                    0
+                )
+            } catch (e: SecurityException) {
+                Log.w("FaceTime", "Unable to set stream volume!")
+            }
+        }
 
         super.onDestroy()
     }
