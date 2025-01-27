@@ -1,4 +1,5 @@
 import 'package:bluebubbles/app/layouts/conversation_details/dialogs/address_picker.dart';
+import 'package:bluebubbles/services/rustpush/rustpush_service.dart';
 import 'package:bluebubbles/utils/logger/logger.dart';
 import 'package:bluebubbles/app/components/avatars/contact_avatar_widget.dart';
 import 'package:bluebubbles/database/models.dart';
@@ -18,6 +19,7 @@ class ContactTile extends StatelessWidget {
   final Handle handle;
   final Chat chat;
   final bool canBeRemoved;
+  final bool facetimeSupported;
 
   Contact? get contact => handle.contact;
 
@@ -26,6 +28,7 @@ class ContactTile extends StatelessWidget {
     required this.handle,
     required this.chat,
     required this.canBeRemoved,
+    required this.facetimeSupported,
   });
 
   @override
@@ -117,7 +120,7 @@ class ContactTile extends StatelessWidget {
                     ),
                   ),
                 ),
-              if (((contact == null && !isEmail) || (contact?.phones.length ?? 0) > 0) && !kIsWeb && !kIsDesktop)
+              if (!kIsWeb && !kIsDesktop && facetimeSupported)
                 ButtonTheme(
                   minWidth: 1,
                   child: TextButton(
@@ -125,8 +128,10 @@ class ContactTile extends StatelessWidget {
                       shape: const CircleBorder(),
                       backgroundColor: ss.settings.skin.value != Skins.iOS ? null : context.theme.colorScheme.secondary,
                     ),
-                    onLongPress: () => showAddressPicker(contact, handle, context, isLongPressed: true, video: true),
-                    onPressed: () => showAddressPicker(contact, handle, context, video: true),
+                    onPressed: () async {
+                      var h = await chat.ensureHandle();
+                      await pushService.placeOutgoingCall(h, [RustPushBBUtils.bbHandleToRust(handle)]);
+                    },
                     child: Icon(
                         ss.settings.skin.value == Skins.iOS
                             ? CupertinoIcons.video_camera

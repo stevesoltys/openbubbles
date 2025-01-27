@@ -239,6 +239,7 @@ Future<void> showOutgoingFaceTimeOverlay(RxString callState, String desc, String
                   hideFaceTimeOverlay(callUuid, timeout: true);
                   pushService.outgoingCallTimer?.cancel();
                   await api.cancelFacetime(state: pushService.state, guid: callUuid);
+                  pushService.currentOutgoingCall = null;
                 },
               ),
             ],

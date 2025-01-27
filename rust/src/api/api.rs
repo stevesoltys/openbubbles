@@ -521,6 +521,7 @@ pub async fn configure_app_review(state: &Arc<PushState>) -> anyhow::Result<()> 
     let inner = state.0.write().await;
     std::fs::write(inner.conf_dir.join("id.plist"), include_str!("id_testing.plist"))?;
     std::fs::write(inner.conf_dir.join("hw_info.plist"), include_str!("hw_testing.plist"))?;
+    std::fs::write(inner.conf_dir.join("sharedstreams.plist"), include_str!("sharedstreams_testing.plist"))?;
     drop(inner);
     restore(state).await;
     Ok(())

@@ -2632,6 +2632,8 @@ class RustPushService extends GetxService {
     } else {
       doPoll();
     }
+    pushService.findMy = await api.canFindMy(state: state);
+    pushService.sharedStreams = await api.supportsSharedStreams(state: state);
     try {
       await (backend as RustPushBackend).invalidateSelf();
     } catch (e) {

@@ -65,7 +65,7 @@ class CreateIncomingFaceTimeNotification: MethodCallHandlerImpl() {
                 .putExtra("answer", false)
                 .putExtra("link", link)
                 .putExtra("name", username)
-                .putExtra("notificationId", notificationId)
+                .putExtra("notificationId", notificationId.toString())
                 .putExtra("desc", title),
             PendingIntent.FLAG_IMMUTABLE
         )
@@ -79,7 +79,7 @@ class CreateIncomingFaceTimeNotification: MethodCallHandlerImpl() {
                 .putExtra("answer", true)
                 .putExtra("link", link)
                 .putExtra("name", username)
-                .putExtra("notificationId", notificationId)
+                .putExtra("notificationId", notificationId.toString())
                 .putExtra("desc", title),
             PendingIntent.FLAG_IMMUTABLE
         )
@@ -90,7 +90,7 @@ class CreateIncomingFaceTimeNotification: MethodCallHandlerImpl() {
             notificationId + Constants.pendingIntentDeclineFaceTimeOffset,
             Intent(context, InternalIntentReceiver::class.java)
                 .putExtras(extras)
-                .putExtra("notificationId", notificationId)
+                .putExtra("notificationId", notificationId.toString())
                 .setType("DeclineFaceTime"),
             PendingIntent.FLAG_IMMUTABLE
         )

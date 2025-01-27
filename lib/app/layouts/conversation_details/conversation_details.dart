@@ -12,6 +12,7 @@ import 'package:bluebubbles/app/layouts/settings/widgets/settings_widgets.dart';
 import 'package:bluebubbles/app/wrappers/stateful_boilerplate.dart';
 import 'package:bluebubbles/database/database.dart';
 import 'package:bluebubbles/database/models.dart';
+import 'package:bluebubbles/services/rustpush/rustpush_service.dart';
 import 'package:bluebubbles/services/services.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
@@ -23,6 +24,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:bluebubbles/services/network/backend_service.dart';
+import 'package:bluebubbles/src/rust/api/api.dart' as api;
 
 class ConversationDetails extends StatefulWidget {
   final Chat chat;
@@ -48,11 +50,19 @@ class _ConversationDetailsState extends OptimizedState<ConversationDetails> with
       ? chat.participants
       : chat.participants.take(5).toList();
 
+  List<String> ftSupportedParticipants = [];
+
   @override
   void initState() {
     super.initState();
 
     cm.setActiveToDead();
+
+    (() async {
+      var data = await chat.getConversationData();
+      ftSupportedParticipants = await api.validateTargetsFacetime(state: pushService.state, targets: data.participants, sender: await chat.ensureHandle());
+      setState(() { });
+    })();
 
     if (!kIsWeb) {
       final chatQuery = Database.chats.query(Chat_.guid.equals(chat.guid)).watch();
@@ -197,10 +207,21 @@ class _ConversationDetailsState extends OptimizedState<ConversationDetails> with
                 return const SizedBox.shrink();
               }
             }),
+            if (ftSupportedParticipants.length == (chat.participants.length + 1))
+            IconButton(
+              icon: Icon(CupertinoIcons.video_camera_solid, color: context.theme.colorScheme.onBackground),
+              onPressed: () async {
+                var data = await chat.getConversationData();
+                var handle = await chat.ensureHandle();
+                var handles = data.participants;
+                handles.remove(handle);
+                await pushService.placeOutgoingCall(handle, handles);
+              },
+            ),
           ],
           bodySlivers: [
             SliverToBoxAdapter(
-              child: ChatInfo(chat: chat),
+              child: ChatInfo(chat: chat, ftSupportedParticipants: ftSupportedParticipants,),
             ),
             if (chat.isGroup)
               SliverList(
@@ -276,6 +297,7 @@ class _ConversationDetailsState extends OptimizedState<ConversationDetails> with
                     canBeRemoved: chat.participants.length > 1
                         && ss.settings.enablePrivateAPI.value
                         && chat.isIMessage,
+                    facetimeSupported: ftSupportedParticipants.contains(RustPushBBUtils.bbHandleToRust(chat.participants[index])),
                   );
                 }, childCount: clippedParticipants.length + 2),
               ),

@@ -19,9 +19,10 @@ import 'package:universal_io/io.dart';
 import 'package:bluebubbles/src/rust/api/api.dart' as api;
 
 class ChatInfo extends StatefulWidget {
-  const ChatInfo({super.key, required this.chat});
+  const ChatInfo({super.key, required this.chat, required this.ftSupportedParticipants});
 
   final Chat chat;
+  final List<String> ftSupportedParticipants;
 
   @override
   OptimizedState createState() => _ChatInfoState();
@@ -29,18 +30,7 @@ class ChatInfo extends StatefulWidget {
 
 class _ChatInfoState extends OptimizedState<ChatInfo> {
   Chat get chat => widget.chat;
-  bool facetimeSupported = false;
-
-  @override
-  void initState() {
-    super.initState();
-    (() async {
-      var data = await chat.getConversationData();
-      var supportedParticipants = await api.validateTargetsFacetime(state: pushService.state, targets: data.participants, sender: await chat.ensureHandle());
-      facetimeSupported = supportedParticipants.length == data.participants.length;
-      setState(() { });
-    })();
-  }
+  bool get facetimeSupported => widget.ftSupportedParticipants.length == (chat.participants.length + 1 /* my handle */);
 
   Future<bool?> showMethodDialog(String title) async {
     return await showDialog<bool>(
@@ -312,6 +302,7 @@ class _ChatInfoState extends OptimizedState<ChatInfo> {
             handle: chat.participants.first,
             chat: chat,
             canBeRemoved: false,
+            facetimeSupported: widget.ftSupportedParticipants.contains(RustPushBBUtils.bbHandleToRust(chat.participants.first)),
           ),
         if (chat.isGroup && iOS)
           Center(

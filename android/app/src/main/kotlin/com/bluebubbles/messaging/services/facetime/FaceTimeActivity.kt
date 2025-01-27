@@ -334,7 +334,7 @@ class FaceTimeActivity : Activity() {
         webView = cached.webView
 
         val isAnsweringCall = extras.containsKey("answer")
-        notificationId = extras.getInt("notificationId")
+        notificationId = extras.getString("notificationId")?.toInt() ?: 0
         callUuid = extras.getString("callUuid")
 
         if (isAnsweringCall) {
