@@ -121,6 +121,8 @@ class FaceTimeActivity : Activity() {
 
     }
 
+    var contentObserver: ContentObserver? = null
+
     private fun handlePermissionRequests() {
         for (request in cached.deferredRequests) {
             handlePermissionRequest(request)
@@ -138,7 +140,7 @@ class FaceTimeActivity : Activity() {
         val audioManager = getSystemService(AUDIO_SERVICE) as AudioManager
         initialMediaVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
         updateMediaVolume(audioManager)
-        applicationContext.contentResolver.registerContentObserver(android.provider.Settings.System.CONTENT_URI, true, object : ContentObserver(
+        val observer = object : ContentObserver(
             Handler(Looper.getMainLooper())
         ) {
             override fun deliverSelfNotifications(): Boolean {
@@ -148,7 +150,9 @@ class FaceTimeActivity : Activity() {
             override fun onChange(selfChange: Boolean) {
                 updateMediaVolume(audioManager)
             }
-        })
+        }
+        applicationContext.contentResolver.registerContentObserver(android.provider.Settings.System.CONTENT_URI, true, observer)
+        contentObserver = observer
     }
 
     private fun answerCall() {
@@ -276,6 +280,10 @@ class FaceTimeActivity : Activity() {
             } catch (e: SecurityException) {
                 Log.w("FaceTime", "Unable to set stream volume!")
             }
+        }
+
+        contentObserver?.let {
+            applicationContext.contentResolver.unregisterContentObserver(it)
         }
 
         super.onDestroy()

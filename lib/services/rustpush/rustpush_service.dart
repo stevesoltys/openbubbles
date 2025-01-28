@@ -475,7 +475,7 @@ class RustPushBackend implements BackendService {
           subject: m.subject,
           app: m.payloadData == null ? null : pushService.dataToApp(m.payloadData!),
           voice: isAudioMessage,
-          scheduledMs: m.dateScheduled?.millisecondsSinceEpoch,
+          scheduled: m.dateScheduled != null ? api.ScheduleMode(ms: m.dateScheduled!.millisecondsSinceEpoch, schedule: true) : null
         )));
     if (m.stagingGuid != null) {
       msg.id = m.stagingGuid!;
@@ -833,7 +833,7 @@ class RustPushBackend implements BackendService {
         app: m.payloadData == null ? null : pushService.dataToApp(m.payloadData!),
         linkMeta: linkMeta,
         voice: false,
-        scheduledMs: m.dateScheduled?.millisecondsSinceEpoch,
+        scheduled: m.dateScheduled != null ? api.ScheduleMode(ms: m.dateScheduled!.millisecondsSinceEpoch, schedule: true) : null
       )),
     );
     Logger.info("sending ${msg.id}");
@@ -1479,7 +1479,7 @@ class RustPushService extends GetxService {
         isFromMe: myHandles.contains(sender),
         handle: RustPushBBUtils.rustHandleToBB(sender!),
         dateCreated: DateTime.fromMillisecondsSinceEpoch(myMsg.sentTimestamp),
-        dateScheduled: innerMsg.field0.scheduledMs != null ? DateTime.fromMillisecondsSinceEpoch(innerMsg.field0.scheduledMs!) : null,
+        dateScheduled: innerMsg.field0.scheduled != null ? DateTime.fromMillisecondsSinceEpoch(innerMsg.field0.scheduled!.ms) : null,
         subject: innerMsg.field0.subject,
         threadOriginatorPart: innerMsg.field0.replyPart?.toString(),
         threadOriginatorGuid: innerMsg.field0.replyGuid,

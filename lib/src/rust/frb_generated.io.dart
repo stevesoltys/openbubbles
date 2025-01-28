@@ -392,6 +392,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       dco_decode_box_autoadd_rich_link_image_attachment_substitute(dynamic raw);
 
   @protected
+  ScheduleMode dco_decode_box_autoadd_schedule_mode(dynamic raw);
+
+  @protected
   SharedAlbum dco_decode_box_autoadd_shared_album(dynamic raw);
 
   @protected
@@ -706,6 +709,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           dynamic raw);
 
   @protected
+  ScheduleMode? dco_decode_opt_box_autoadd_schedule_mode(dynamic raw);
+
+  @protected
   SupportAction? dco_decode_opt_box_autoadd_support_action(dynamic raw);
 
   @protected
@@ -800,6 +806,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   RichLinkImageAttachmentSubstitute
       dco_decode_rich_link_image_attachment_substitute(dynamic raw);
+
+  @protected
+  ScheduleMode dco_decode_schedule_mode(dynamic raw);
 
   @protected
   SharedAlbum dco_decode_shared_album(dynamic raw);
@@ -1205,6 +1214,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           SseDeserializer deserializer);
 
   @protected
+  ScheduleMode sse_decode_box_autoadd_schedule_mode(
+      SseDeserializer deserializer);
+
+  @protected
   SharedAlbum sse_decode_box_autoadd_shared_album(SseDeserializer deserializer);
 
   @protected
@@ -1544,6 +1557,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           SseDeserializer deserializer);
 
   @protected
+  ScheduleMode? sse_decode_opt_box_autoadd_schedule_mode(
+      SseDeserializer deserializer);
+
+  @protected
   SupportAction? sse_decode_opt_box_autoadd_support_action(
       SseDeserializer deserializer);
 
@@ -1649,6 +1666,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   RichLinkImageAttachmentSubstitute
       sse_decode_rich_link_image_attachment_substitute(
           SseDeserializer deserializer);
+
+  @protected
+  ScheduleMode sse_decode_schedule_mode(SseDeserializer deserializer);
 
   @protected
   SharedAlbum sse_decode_shared_album(SseDeserializer deserializer);
@@ -2072,6 +2092,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       RichLinkImageAttachmentSubstitute self, SseSerializer serializer);
 
   @protected
+  void sse_encode_box_autoadd_schedule_mode(
+      ScheduleMode self, SseSerializer serializer);
+
+  @protected
   void sse_encode_box_autoadd_shared_album(
       SharedAlbum self, SseSerializer serializer);
 
@@ -2432,6 +2456,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       RichLinkImageAttachmentSubstitute? self, SseSerializer serializer);
 
   @protected
+  void sse_encode_opt_box_autoadd_schedule_mode(
+      ScheduleMode? self, SseSerializer serializer);
+
+  @protected
   void sse_encode_opt_box_autoadd_support_action(
       SupportAction? self, SseSerializer serializer);
 
@@ -2536,6 +2564,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_rich_link_image_attachment_substitute(
       RichLinkImageAttachmentSubstitute self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_schedule_mode(ScheduleMode self, SseSerializer serializer);
 
   @protected
   void sse_encode_shared_album(SharedAlbum self, SseSerializer serializer);

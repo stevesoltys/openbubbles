@@ -3401,6 +3401,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  ScheduleMode dco_decode_box_autoadd_schedule_mode(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_schedule_mode(raw);
+  }
+
+  @protected
   SharedAlbum dco_decode_box_autoadd_shared_album(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return dco_decode_shared_album(raw);
@@ -4296,7 +4302,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       app: dco_decode_opt_box_autoadd_extension_app(arr[6]),
       linkMeta: dco_decode_opt_box_autoadd_link_meta(arr[7]),
       voice: dco_decode_bool(arr[8]),
-      scheduledMs: dco_decode_opt_CastedPrimitive_u_64(arr[9]),
+      scheduled: dco_decode_opt_box_autoadd_schedule_mode(arr[9]),
     );
   }
 
@@ -4539,6 +4545,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     return raw == null
         ? null
         : dco_decode_box_autoadd_rich_link_image_attachment_substitute(raw);
+  }
+
+  @protected
+  ScheduleMode? dco_decode_opt_box_autoadd_schedule_mode(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_box_autoadd_schedule_mode(raw);
   }
 
   @protected
@@ -4927,6 +4939,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     return RichLinkImageAttachmentSubstitute(
       mimeType: dco_decode_String(arr[0]),
       richLinkImageAttachmentSubstituteIndex: dco_decode_u_64(arr[1]),
+    );
+  }
+
+  @protected
+  ScheduleMode dco_decode_schedule_mode(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2)
+      throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
+    return ScheduleMode(
+      ms: dco_decode_CastedPrimitive_u_64(arr[0]),
+      schedule: dco_decode_bool(arr[1]),
     );
   }
 
@@ -5850,6 +5874,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return (sse_decode_rich_link_image_attachment_substitute(deserializer));
+  }
+
+  @protected
+  ScheduleMode sse_decode_box_autoadd_schedule_mode(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_schedule_mode(deserializer));
   }
 
   @protected
@@ -6895,7 +6926,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_app = sse_decode_opt_box_autoadd_extension_app(deserializer);
     var var_linkMeta = sse_decode_opt_box_autoadd_link_meta(deserializer);
     var var_voice = sse_decode_bool(deserializer);
-    var var_scheduledMs = sse_decode_opt_CastedPrimitive_u_64(deserializer);
+    var var_scheduled = sse_decode_opt_box_autoadd_schedule_mode(deserializer);
     return NormalMessage(
         parts: var_parts,
         effect: var_effect,
@@ -6906,7 +6937,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         app: var_app,
         linkMeta: var_linkMeta,
         voice: var_voice,
-        scheduledMs: var_scheduledMs);
+        scheduled: var_scheduled);
   }
 
   @protected
@@ -7286,6 +7317,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     if (sse_decode_bool(deserializer)) {
       return (sse_decode_box_autoadd_rich_link_image_attachment_substitute(
           deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
+  ScheduleMode? sse_decode_opt_box_autoadd_schedule_mode(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_box_autoadd_schedule_mode(deserializer));
     } else {
       return null;
     }
@@ -7681,6 +7724,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         mimeType: var_mimeType,
         richLinkImageAttachmentSubstituteIndex:
             var_richLinkImageAttachmentSubstituteIndex);
+  }
+
+  @protected
+  ScheduleMode sse_decode_schedule_mode(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_ms = sse_decode_CastedPrimitive_u_64(deserializer);
+    var var_schedule = sse_decode_bool(deserializer);
+    return ScheduleMode(ms: var_ms, schedule: var_schedule);
   }
 
   @protected
@@ -8615,6 +8666,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_box_autoadd_schedule_mode(
+      ScheduleMode self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_schedule_mode(self, serializer);
+  }
+
+  @protected
   void sse_encode_box_autoadd_shared_album(
       SharedAlbum self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -9431,7 +9489,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_opt_box_autoadd_extension_app(self.app, serializer);
     sse_encode_opt_box_autoadd_link_meta(self.linkMeta, serializer);
     sse_encode_bool(self.voice, serializer);
-    sse_encode_opt_CastedPrimitive_u_64(self.scheduledMs, serializer);
+    sse_encode_opt_box_autoadd_schedule_mode(self.scheduled, serializer);
   }
 
   @protected
@@ -9787,6 +9845,17 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_opt_box_autoadd_schedule_mode(
+      ScheduleMode? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_box_autoadd_schedule_mode(self, serializer);
+    }
+  }
+
+  @protected
   void sse_encode_opt_box_autoadd_support_action(
       SupportAction? self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -10127,6 +10196,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_String(self.mimeType, serializer);
     sse_encode_u_64(self.richLinkImageAttachmentSubstituteIndex, serializer);
+  }
+
+  @protected
+  void sse_encode_schedule_mode(ScheduleMode self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_CastedPrimitive_u_64(self.ms, serializer);
+    sse_encode_bool(self.schedule, serializer);
   }
 
   @protected

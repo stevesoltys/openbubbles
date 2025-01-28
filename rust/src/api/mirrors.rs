@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 
 pub use rustpush::{DeleteTarget, MoveToRecycleBinMessage, OperatedChat};
-pub use rustpush::{NSArrayClass, TextFlags, TextEffect, TextFormat, SupportAction, NSArray, SupportAlert, PrivateDeviceInfo, PermanentDeleteMessage, NormalMessage, MessageType, UpdateExtensionMessage, ErrorMessage, UnsendMessage, EditMessage, PartExtension, IconChangeMessage, RichLinkImageAttachmentSubstitute, ChangeParticipantMessage, ReactMessage, Reaction, ReactMessageType, RenameMessage, LPLinkMetadata, NSURL, LPIconMetadata, LPImageMetadata, LinkMeta, ExtensionApp, NSDictionaryClass, BalloonLayout, Balloon, IndexedMessagePart, AttachmentType, MacOSConfig, Message, MessageTarget, HardwareConfig, APSConnection, APSConnectionResource, APSState, Attachment, AuthPhone, IDSUserIdentity, MMCSFile, MessageInst, MessagePart, MessageParts, OSConfig, RelayConfig, ResourceState};
+pub use rustpush::{NSArrayClass, TextFlags, TextEffect, TextFormat, ScheduleMode, SupportAction, NSArray, SupportAlert, PrivateDeviceInfo, PermanentDeleteMessage, NormalMessage, MessageType, UpdateExtensionMessage, ErrorMessage, UnsendMessage, EditMessage, PartExtension, IconChangeMessage, RichLinkImageAttachmentSubstitute, ChangeParticipantMessage, ReactMessage, Reaction, ReactMessageType, RenameMessage, LPLinkMetadata, NSURL, LPIconMetadata, LPImageMetadata, LinkMeta, ExtensionApp, NSDictionaryClass, BalloonLayout, Balloon, IndexedMessagePart, AttachmentType, MacOSConfig, Message, MessageTarget, HardwareConfig, APSConnection, APSConnectionResource, APSState, Attachment, AuthPhone, IDSUserIdentity, MMCSFile, MessageInst, MessagePart, MessageParts, OSConfig, RelayConfig, ResourceState};
 pub use rustpush::{PushError, IDSUser, IMClient, ConversationData, register};
 pub use icloud_auth::{VerifyBody, TrustedPhoneNumber};
 pub use icloud_auth::{LoginState, AppleAccount};
@@ -246,6 +246,12 @@ pub struct DartPermanentDeleteMessage {
     pub is_scheduled: bool,
 }
 
+#[frb(mirror(ScheduleMode), type_64bit_int)]
+pub struct DartScheduleMode {
+    pub ms: u64,
+    pub schedule: bool,
+}
+
 #[frb(mirror(NormalMessage), type_64bit_int)]
 #[repr(C)]
 pub struct DartNormalMessage {
@@ -267,7 +273,7 @@ pub struct DartNormalMessage {
     #[frb(non_final)]
     pub voice: bool,
     #[frb(non_final)]
-    pub scheduled_ms: Option<u64>,
+    pub scheduled: Option<ScheduleMode>,
 }
 
 #[repr(C)]

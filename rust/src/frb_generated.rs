@@ -4944,7 +4944,7 @@ const _: fn() = || {
         let _: Option<crate::api::api::ExtensionApp> = NormalMessage.app;
         let _: Option<crate::api::api::LinkMeta> = NormalMessage.link_meta;
         let _: bool = NormalMessage.voice;
-        let _: Option<u64> = NormalMessage.scheduled_ms;
+        let _: Option<crate::api::api::ScheduleMode> = NormalMessage.scheduled;
     }
     {
         let NSURL = None::<crate::api::api::NSURL>.unwrap();
@@ -5045,6 +5045,11 @@ const _: fn() = || {
             None::<crate::api::api::RichLinkImageAttachmentSubstitute>.unwrap();
         let _: String = RichLinkImageAttachmentSubstitute.mime_type;
         let _: u64 = RichLinkImageAttachmentSubstitute.rich_link_image_attachment_substitute_index;
+    }
+    {
+        let ScheduleMode = None::<crate::api::api::ScheduleMode>.unwrap();
+        let _: u64 = ScheduleMode.ms;
+        let _: bool = ScheduleMode.schedule;
     }
     {
         let SharedAlbum = None::<crate::api::api::SharedAlbum>.unwrap();
@@ -6700,7 +6705,7 @@ impl SseDecode for crate::api::api::NormalMessage {
         let mut var_app = <Option<crate::api::api::ExtensionApp>>::sse_decode(deserializer);
         let mut var_linkMeta = <Option<crate::api::api::LinkMeta>>::sse_decode(deserializer);
         let mut var_voice = <bool>::sse_decode(deserializer);
-        let mut var_scheduledMs = <Option<u64>>::sse_decode(deserializer);
+        let mut var_scheduled = <Option<crate::api::api::ScheduleMode>>::sse_decode(deserializer);
         return crate::api::api::NormalMessage {
             parts: var_parts,
             effect: var_effect,
@@ -6711,7 +6716,7 @@ impl SseDecode for crate::api::api::NormalMessage {
             app: var_app,
             link_meta: var_linkMeta,
             voice: var_voice,
-            scheduled_ms: var_scheduledMs,
+            scheduled: var_scheduled,
         };
     }
 }
@@ -7075,6 +7080,17 @@ impl SseDecode for Option<crate::api::api::RichLinkImageAttachmentSubstitute> {
             return Some(
                 <crate::api::api::RichLinkImageAttachmentSubstitute>::sse_decode(deserializer),
             );
+        } else {
+            return None;
+        }
+    }
+}
+
+impl SseDecode for Option<crate::api::api::ScheduleMode> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<crate::api::api::ScheduleMode>::sse_decode(deserializer));
         } else {
             return None;
         }
@@ -7507,6 +7523,18 @@ impl SseDecode for crate::api::api::RichLinkImageAttachmentSubstitute {
         return crate::api::api::RichLinkImageAttachmentSubstitute {
             mime_type: var_mimeType,
             rich_link_image_attachment_substitute_index: var_richLinkImageAttachmentSubstituteIndex,
+        };
+    }
+}
+
+impl SseDecode for crate::api::api::ScheduleMode {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_ms = <u64>::sse_decode(deserializer);
+        let mut var_schedule = <bool>::sse_decode(deserializer);
+        return crate::api::api::ScheduleMode {
+            ms: var_ms,
+            schedule: var_schedule,
         };
     }
 }
@@ -9197,7 +9225,7 @@ impl flutter_rust_bridge::IntoDart for FrbWrapper<crate::api::api::NormalMessage
             self.0.app.into_into_dart().into_dart(),
             self.0.link_meta.into_into_dart().into_dart(),
             self.0.voice.into_into_dart().into_dart(),
-            self.0.scheduled_ms.into_into_dart().into_dart(),
+            self.0.scheduled.into_into_dart().into_dart(),
         ]
         .into_dart()
     }
@@ -9622,6 +9650,27 @@ impl
     > for crate::api::api::RichLinkImageAttachmentSubstitute
 {
     fn into_into_dart(self) -> FrbWrapper<crate::api::api::RichLinkImageAttachmentSubstitute> {
+        self.into()
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<crate::api::api::ScheduleMode> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.0.ms.into_into_dart().into_dart(),
+            self.0.schedule.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<crate::api::api::ScheduleMode>
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<crate::api::api::ScheduleMode>>
+    for crate::api::api::ScheduleMode
+{
+    fn into_into_dart(self) -> FrbWrapper<crate::api::api::ScheduleMode> {
         self.into()
     }
 }
@@ -11143,7 +11192,7 @@ impl SseEncode for crate::api::api::NormalMessage {
         <Option<crate::api::api::ExtensionApp>>::sse_encode(self.app, serializer);
         <Option<crate::api::api::LinkMeta>>::sse_encode(self.link_meta, serializer);
         <bool>::sse_encode(self.voice, serializer);
-        <Option<u64>>::sse_encode(self.scheduled_ms, serializer);
+        <Option<crate::api::api::ScheduleMode>>::sse_encode(self.scheduled, serializer);
     }
 }
 
@@ -11468,6 +11517,16 @@ impl SseEncode for Option<crate::api::api::RichLinkImageAttachmentSubstitute> {
         <bool>::sse_encode(self.is_some(), serializer);
         if let Some(value) = self {
             <crate::api::api::RichLinkImageAttachmentSubstitute>::sse_encode(value, serializer);
+        }
+    }
+}
+
+impl SseEncode for Option<crate::api::api::ScheduleMode> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <crate::api::api::ScheduleMode>::sse_encode(value, serializer);
         }
     }
 }
@@ -11838,6 +11897,14 @@ impl SseEncode for crate::api::api::RichLinkImageAttachmentSubstitute {
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <String>::sse_encode(self.mime_type, serializer);
         <u64>::sse_encode(self.rich_link_image_attachment_substitute_index, serializer);
+    }
+}
+
+impl SseEncode for crate::api::api::ScheduleMode {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <u64>::sse_encode(self.ms, serializer);
+        <bool>::sse_encode(self.schedule, serializer);
     }
 }
 

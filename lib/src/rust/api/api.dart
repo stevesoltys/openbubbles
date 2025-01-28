@@ -1742,7 +1742,7 @@ class NormalMessage {
   ExtensionApp? app;
   LinkMeta? linkMeta;
   bool voice;
-  int? scheduledMs;
+  ScheduleMode? scheduled;
 
   NormalMessage({
     required this.parts,
@@ -1754,7 +1754,7 @@ class NormalMessage {
     this.app,
     this.linkMeta,
     required this.voice,
-    this.scheduledMs,
+    this.scheduled,
   });
 
   @override
@@ -1768,7 +1768,7 @@ class NormalMessage {
       app.hashCode ^
       linkMeta.hashCode ^
       voice.hashCode ^
-      scheduledMs.hashCode;
+      scheduled.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -1784,7 +1784,7 @@ class NormalMessage {
           app == other.app &&
           linkMeta == other.linkMeta &&
           voice == other.voice &&
-          scheduledMs == other.scheduledMs;
+          scheduled == other.scheduled;
 }
 
 enum NSDictionaryClass {
@@ -2083,6 +2083,27 @@ class RichLinkImageAttachmentSubstitute {
           mimeType == other.mimeType &&
           richLinkImageAttachmentSubstituteIndex ==
               other.richLinkImageAttachmentSubstituteIndex;
+}
+
+class ScheduleMode {
+  final int ms;
+  final bool schedule;
+
+  const ScheduleMode({
+    required this.ms,
+    required this.schedule,
+  });
+
+  @override
+  int get hashCode => ms.hashCode ^ schedule.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ScheduleMode &&
+          runtimeType == other.runtimeType &&
+          ms == other.ms &&
+          schedule == other.schedule;
 }
 
 class SharedAlbum {

@@ -68,6 +68,31 @@ Future<void> showFaceTimeOverlay(String callUuid, String caller, Uint8List? chat
             MaterialButton(
               elevation: 0,
               hoverElevation: 0,
+              color: Colors.red.withOpacity(0.2),
+              splashColor: Colors.red,
+              highlightColor: Colors.red.withOpacity(0.5),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+              padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 36.0),
+              child: Column(
+                children: [
+                  Icon(
+                    ss.settings.skin.value == Skins.iOS ? CupertinoIcons.phone_down : Icons.call_end_outlined,
+                    color: Colors.red,
+                  ),
+                  const Text(
+                    "Decline",
+                  ),
+                ],
+              ),
+              onPressed: () async {
+                hideFaceTimeOverlay(callUuid);
+                await api.declineFacetime(state: pushService.state, guid: callUuid);
+              },
+            ),
+            const SizedBox(width: 16.0),
+            MaterialButton(
+              elevation: 0,
+              hoverElevation: 0,
               color: Colors.green.withOpacity(0.2),
               splashColor: Colors.green,
               highlightColor: Colors.green.withOpacity(0.5),
@@ -94,31 +119,6 @@ Future<void> showFaceTimeOverlay(String callUuid, String caller, Uint8List? chat
                       mode: LaunchMode.externalApplication
                   );
                 }
-              },
-            ),
-            const SizedBox(width: 16.0),
-            MaterialButton(
-              elevation: 0,
-              hoverElevation: 0,
-              color: Colors.red.withOpacity(0.2),
-              splashColor: Colors.red,
-              highlightColor: Colors.red.withOpacity(0.5),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-              padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 36.0),
-              child: Column(
-                children: [
-                  Icon(
-                    ss.settings.skin.value == Skins.iOS ? CupertinoIcons.phone_down : Icons.call_end_outlined,
-                    color: Colors.red,
-                  ),
-                  const Text(
-                    "Decline",
-                  ),
-                ],
-              ),
-              onPressed: () async {
-                hideFaceTimeOverlay(callUuid);
-                await api.declineFacetime(state: pushService.state, guid: callUuid);
               },
             ),
           ],
