@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:bluebubbles/app/layouts/facetime/facetime.dart';
 import 'package:bluebubbles/app/layouts/settings/pages/misc/shared_streams_panel.dart';
 import 'package:bluebubbles/app/layouts/settings/pages/profile/profile_panel.dart';
 import 'package:bluebubbles/app/layouts/settings/pages/scheduling/scheduled_messages_panel.dart';
@@ -7,6 +8,7 @@ import 'package:bluebubbles/app/layouts/settings/pages/server/server_management_
 import 'package:bluebubbles/app/wrappers/theme_switcher.dart';
 import 'package:bluebubbles/helpers/backend/startup_tasks.dart';
 import 'package:bluebubbles/helpers/ui/facetime_helpers.dart';
+import 'package:bluebubbles/services/rustpush/rustpush_service.dart';
 
 import 'package:bluebubbles/utils/logger/logger.dart';
 import 'package:bluebubbles/helpers/helpers.dart';
@@ -51,6 +53,35 @@ class IntentsService extends GetxService {
     if (intent == null) return;
 
     switch (intent.action) {
+      case "com.bluebubbles.messaging.CallBackFT":
+      final id = intent.extra!["callUuid"];
+      var call = pushService.activeSessions.firstWhereOrNull((a) => a.groupId == id);
+      if (call == null) {
+        call = pushService.sessions.firstWhereOrNull((a) => a.groupId == id);
+        if (call == null) {
+          Logger.warn("callback uuid $id not found!");
+          return;
+        }
+      }
+      var handles = call.members.map((a) => a.handle).where((a) => a != call!.myHandles.first && !a.startsWith("temp:")).toList();
+      pushService.placeOutgoingCall(call.myHandles.first, handles);
+      mcs.invokeMethod(
+        "delete-notification",
+        {
+          "notification_id": intent.extra!["notificationId"],
+          "tag": NotificationsService.NEW_MESSAGE_TAG
+        }
+      );
+      return;
+      case "com.bluebubbles.messaging.RecentCalls":
+        Navigator.of(Get.context!).push(
+          ThemeSwitcher.buildPageRoute(
+            builder: (BuildContext context) {
+              return FaceTimePanel();
+            },
+          ),
+        );
+        return;
       case "android.intent.action.SEND":
       case "android.intent.action.SEND_MULTIPLE":
         final id = intent.extra?["android.intent.extra.shortcut.ID"];
@@ -103,11 +134,7 @@ class IntentsService extends GetxService {
           await openChat(guid);
         } else if (intent.extra?["callUuid"] != null) {
           await StartupTasks.waitForUI();
-          if (intent.extra?["answer"] == true) {
-            await answerFaceTime(intent.extra?["callUuid"]!);
-          } else {
-            await showFaceTimeOverlay(intent.extra?["callUuid"], intent.extra?["caller"], null, "");
-          }
+          Logger.info(intent.action);
         }
     }
   }

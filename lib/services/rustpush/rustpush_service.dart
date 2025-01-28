@@ -1885,10 +1885,30 @@ class RustPushService extends GetxService {
     await api.createFacetime(state: pushService.state, uuid: outgoingguid, handle: caller, participants: targets);
   }
 
+  String? getSessionName(String guid, bool active) {
+    var session = activeSessions.firstWhereOrNull((a) => a.groupId == guid);
+    if (session == null) {
+      if (!active) {
+        session = sessions.firstWhereOrNull((a) => a.groupId == guid);
+      }
+      if (session == null) {
+        return null;
+      }
+    }
+    var participants = session.members.where((a) => !session!.myHandles.contains(a.handle)).map((a) {
+      if (a.nickname != null) {
+        return Handle(address: "Maybe: ${a.nickname}");
+      } else {
+        return RustPushBBUtils.rustHandleToBB(a.handle);
+      }
+    }).toList();
+    return participants.map((p) => p.displayName).join(" & ");
+  }
+
   var notifiedFailed = false;
 
   String? chosenFTRoomGuid;
-  String? currentCallGuid;
+  String? incomingRingingCallGuid;
 
   Future handleMsg(api.PushMessage push) async {
     if (push is api.PushMessage_FaceTime) {
@@ -1920,7 +1940,7 @@ class RustPushService extends GetxService {
             );
           }
           
-          currentCallGuid = null;
+          incomingRingingCallGuid = null;
         }
       } else if (facetime is api.FTMessage_AddMembers) {
         if (facetime.ring) {
@@ -1946,24 +1966,17 @@ class RustPushService extends GetxService {
       }
 
       if (ring != null) {
-        var session = activeSessions.firstWhereOrNull((a) => a.groupId == ring);
+        var session = getSessionName(ring, true);
         if (session == null) {
           Logger.warn("Rung call $ring not found in active sessions!");
           return;
         }
-        var participants = session.members.where((a) => !session.myHandles.contains(a.handle)).map((a) {
-          if (a.nickname != null) {
-            return Handle(address: "Maybe: ${a.nickname}");
-          } else {
-            return RustPushBBUtils.rustHandleToBB(a.handle);
-          }
-        }).toList();
         var link = await api.getFtLink(state: pushService.state, usage: "nextincomingcall");
         rotateIncomingLink();
-        currentCallGuid = ring;
+        incomingRingingCallGuid = ring;
         ah.handleIncomingFaceTimeCall({
           "uuid": ring,
-          "address": participants.map((p) => p.displayName).join(" & "),
+          "address": session,
           "link": link,
         });
       }
@@ -1971,18 +1984,30 @@ class RustPushService extends GetxService {
       if (facetime is api.FTMessage_LeaveEvent) {
         var nonActive = sessions.firstWhereOrNull((a) => a.groupId == facetime.guid);
         if (nonActive != null) {
+          if (incomingRingingCallGuid != null) {
+            var session = getSessionName(facetime.guid, false);
+            if (session == null) {
+              Logger.warn("Missed call $ring not found in active sessions!");
+              return;
+            }
+            // this is a missed call
+            notif.createMissedCallNotification(session, facetime.guid);
+          }
+
           hideFaceTimeOverlay(facetime.guid, timeout: true); // they have given up the ringing
         }
       }
 
       if (facetime is api.FTMessage_RespondedElsewhere) {
         hideFaceTimeOverlay(facetime.guid, timeout: true); // they have given up the ringing
+        incomingRingingCallGuid = null;
       }
 
       if (facetime is api.FTMessage_LetMeInRequest) {
         var approvedGroup = chosenFTRoomGuid;
         if (facetime.field0.usage == "incomingcall" || facetime.field0.usage == "nextincomingcall") {
-          approvedGroup = currentCallGuid;
+          approvedGroup = incomingRingingCallGuid;
+          incomingRingingCallGuid = null;
         }
         await api.answerFtRequest(state: state, request: facetime.field0, approvedGroup: approvedGroup);
       }

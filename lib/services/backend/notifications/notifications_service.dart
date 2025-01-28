@@ -674,6 +674,42 @@ class NotificationsService extends GetxService {
     }
   }
 
+  Future<void> createMissedCallNotification(String name, String callUuid) async {
+    const text = "Missed FaceTime Call";
+
+    if (kIsDesktop) {
+      if (aliasesToast?.body == text) {
+        return;
+      } else {
+        await aliasesToast?.close();
+      }
+
+      aliasesToast = LocalNotification(
+        title: name,
+        body: text,
+        actions: [],
+      );
+
+      aliasesToast!.onClick = () async {
+        aliasesToast = null;
+        await windowManager.show();
+      };
+
+      await aliasesToast!.show();
+    } else {
+      final numeric = callUuid.numericOnly();
+      var notifId = int.parse(numeric.substring(0, min(8, numeric.length))) + 2;
+
+
+      await mcs.invokeMethod("create-missed-facetime-notification", {
+        "channel_id": FACETIME_CHANNEL,
+        "notification_id": notifId,
+        "call_uuid": callUuid,
+        "title": name,
+      });
+    }
+  }
+
   Future<void> createAliasesRemovedNotification(List<String> aliases) async {
     const title = "iMessage alias deregistered!";
     const notifId = -3;

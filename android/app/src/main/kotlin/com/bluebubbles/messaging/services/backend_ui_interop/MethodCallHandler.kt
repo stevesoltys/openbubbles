@@ -36,6 +36,7 @@ import com.bluebubbles.messaging.services.system.PushShareTargetsHandler
 import com.bluebubbles.messaging.services.system.StartGoogleDuoRequestHandler
 import com.bluebubbles.messaging.services.foreground.StartForegroundServiceHandler
 import com.bluebubbles.messaging.services.foreground.StopForegroundServiceHandler
+import com.bluebubbles.messaging.services.notifications.CreateMissedFaceTimeNotification
 import com.bluebubbles.messaging.services.rustpush.GetNativeHandleHandler
 import com.bluebubbles.telephony_plus.receive.SMSObserver
 import com.google.gson.GsonBuilder
@@ -102,6 +103,7 @@ class MethodCallHandler {
             SIMInfoQuery.tag -> SIMInfoQuery().handleMethodCall(call, result, context)
             FaceTimeLaunchHandler.tag -> FaceTimeLaunchHandler().handleMethodCall(call, result, context)
             FaceTimeCallStateHandler.tag -> FaceTimeCallStateHandler().handleMethodCall(call, result, context)
+            CreateMissedFaceTimeNotification.tag -> CreateMissedFaceTimeNotification().handleMethodCall(call, result, context)
             "ready" -> { MainActivity.engine_ready = true }
             else -> {
                 val error = "Could not find method call handler for ${call.method}!"
