@@ -123,11 +123,19 @@ class _FindMyPageState extends OptimizedState<FindMyPage> with SingleTickerProvi
         granted = await Geolocator.requestPermission();
       }
       if (granted == LocationPermission.whileInUse || granted == LocationPermission.always) {
-        Geolocator.getCurrentPosition().then((loc) {
+        Geolocator.getCurrentPosition(locationSettings: const LocationSettings(timeLimit: Duration(seconds: 30))).then((loc) {
+          if (!mounted) return;
+          if (ss.settings.lastLocation.value == null) {
+            mapController.move(LatLng(loc.latitude, loc.longitude), 10);
+          }
+          ss.settings.lastLocation.value = "${loc.latitude},${loc.longitude}";
+          ss.saveSettings();
           location = loc;
           buildLocationMarker(location!);
           if (!kIsDesktop && locationSub == null) {
             locationSub = Geolocator.getPositionStream().listen((event) {
+              ss.settings.lastLocation.value = "${event.latitude},${event.longitude}";
+              ss.saveSettings();
               setState(() {
                 buildLocationMarker(event);
               });
@@ -1467,13 +1475,15 @@ class _FindMyPageState extends OptimizedState<FindMyPage> with SingleTickerProvi
   }
 
   Widget buildMap() {
+    var lastLocation = ss.settings.lastLocation.value?.split(",");
+    var savedLocation = lastLocation != null ? LatLng(double.parse(lastLocation[0]), double.parse(lastLocation[1])) : const LatLng(0, 0);
     return FlutterMap(
       mapController: mapController,
       options: MapOptions(
-        initialZoom: 15.0,
+        initialZoom: location == null ? 14.0 : 15.0,
         minZoom: 1.0,
         maxZoom: 18.0,
-        initialCenter: location == null ? const LatLng(0, 0) : LatLng(location!.latitude, location!.longitude),
+        initialCenter: location == null ? savedLocation : LatLng(location!.latitude, location!.longitude),
         onTap: (_, __) => popupController.hideAllPopups(),
         // Hide popup when the map is tapped.
         keepAlive: true,

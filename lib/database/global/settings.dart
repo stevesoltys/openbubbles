@@ -91,6 +91,7 @@ class Settings {
   final RxnString userAvatarPath = RxnString();
   final RxBool hideNamesForReactions = false.obs;
   final RxBool replaceEmoticonsWithEmoji = true.obs;
+  final RxnString lastLocation = RxnString();
 
   // final RxString emojiFontFamily;
 
@@ -386,6 +387,7 @@ class Settings {
       'vpnWarned': vpnWarned.value,
       'smsForwardingTargets': smsForwardingTargets,
       'developerMode': developerMode,
+      'lastLocation': lastLocation,
     };
     if (includeAll) {
       map.addAll({
@@ -537,6 +539,7 @@ class Settings {
     ss.settings.cachedCodes.value = map['cachedCodes'] ?? {};
     ss.settings.smsForwardingTargets.value = (map['smsForwardingTargets']?.runtimeType == String ? jsonDecode(map['smsForwardingTargets']) as List : []).cast<String>();
     ss.settings.developerMode.value = (map['developerMode']?.runtimeType == String ? jsonDecode(map['developerMode']) as List : []).cast<String>();
+    ss.settings.lastLocation.value = map['lastLocation'];
     ss.settings.save();
 
     eventDispatcher.emit("theme-update", null);
@@ -685,6 +688,7 @@ class Settings {
     s.cachedCodes.value =  map['cachedCodes'] is String ? jsonDecode(map['cachedCodes']).cast<String, String>() : <String, String>{};
     s.smsForwardingTargets.value = (map['smsForwardingTargets']?.runtimeType == String ? jsonDecode(map['smsForwardingTargets']) as List : []).cast<String>();
     s.developerMode.value = (map['developerMode']?.runtimeType == String ? jsonDecode(map['developerMode']) as List : []).cast<String>();
+    s.lastLocation.value = map['lastLocation'];
     return s;
   }
 
