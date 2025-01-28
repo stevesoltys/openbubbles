@@ -5,12 +5,14 @@ import 'package:bluebubbles/app/layouts/chat_creator/chat_creator.dart';
 import 'package:bluebubbles/app/wrappers/stateful_boilerplate.dart';
 import 'package:bluebubbles/helpers/helpers.dart';
 import 'package:bluebubbles/database/models.dart';
+import 'package:bluebubbles/services/rustpush/rustpush_service.dart';
 import 'package:bluebubbles/services/services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:universal_io/io.dart';
 import 'package:bluebubbles/services/network/backend_service.dart';
+import 'package:bluebubbles/src/rust/api/api.dart' as api;
 
 class ManualMark extends StatefulWidget {
   const ManualMark({required this.controller});
@@ -122,6 +124,62 @@ class ManualMarkState extends OptimizedState<ManualMark> {
         ],
       );
     });
+  }
+}
+
+
+class FaceTimeBtn extends StatefulWidget {
+  const FaceTimeBtn({required this.controller});
+
+  final ConversationViewController controller;
+
+  @override
+  State<StatefulWidget> createState() => FaceTimeBtnState();
+}
+
+class FaceTimeBtnState extends OptimizedState<FaceTimeBtn> {
+  bool marked = false;
+  bool marking = false;
+
+  List<String> ftSupportedParticipants = [];
+
+
+  @override
+  void initState() {
+    super.initState();
+    (() async {
+      var data = await chat.getConversationData();
+      ftSupportedParticipants = await api.validateTargetsFacetime(state: pushService.state, targets: data.participants, sender: await chat.ensureHandle());
+      setState(() { });
+    })();
+  }
+
+  Chat get chat => widget.controller.chat;
+
+  @override
+  Widget build(BuildContext context) {
+    if (ftSupportedParticipants.length != (chat.participants.length + 1)) return const SizedBox.shrink();
+    return Padding(
+      padding: iOS ? const EdgeInsets.only(top: 5) : EdgeInsets.zero,
+      child: IconButton(
+        icon: Icon(
+          (iOS ? CupertinoIcons.video_camera : Icons.videocam_outlined),
+          color: !iOS ? context.theme.colorScheme.onBackground
+              : (!marked && !marking || widget.controller.inSelectMode.value)
+              ? context.theme.colorScheme.primary
+              : context.theme.colorScheme.outline,
+          size: iOS ? 35 : null,
+        ),
+        tooltip: "FaceTime Call",
+        onPressed: () async {
+          var data = await chat.getConversationData();
+          var handle = await chat.ensureHandle();
+          var handles = data.participants;
+          handles.remove(handle);
+          await pushService.placeOutgoingCall(handle, handles);
+        },
+      ),
+    );
   }
 }
 

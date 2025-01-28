@@ -151,7 +151,13 @@ class CupertinoHeader extends StatelessWidget implements PreferredSizeWidget {
                       ),
                       Padding(
                           padding: const EdgeInsets.only(top: 5),
-                          child: Align(alignment: Alignment.topRight, child: ManualMark(controller: controller))),
+                          child: Align(alignment: Alignment.topRight, child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              FaceTimeBtn(controller: controller),
+                              ManualMark(controller: controller),
+                            ],
+                          ))),
                     ]),
                   ),
                 ),

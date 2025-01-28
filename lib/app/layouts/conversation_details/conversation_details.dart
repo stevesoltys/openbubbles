@@ -207,17 +207,6 @@ class _ConversationDetailsState extends OptimizedState<ConversationDetails> with
                 return const SizedBox.shrink();
               }
             }),
-            if (ftSupportedParticipants.length == (chat.participants.length + 1))
-            IconButton(
-              icon: Icon(CupertinoIcons.video_camera_solid, color: context.theme.colorScheme.onBackground),
-              onPressed: () async {
-                var data = await chat.getConversationData();
-                var handle = await chat.ensureHandle();
-                var handles = data.participants;
-                handles.remove(handle);
-                await pushService.placeOutgoingCall(handle, handles);
-              },
-            ),
           ],
           bodySlivers: [
             SliverToBoxAdapter(
