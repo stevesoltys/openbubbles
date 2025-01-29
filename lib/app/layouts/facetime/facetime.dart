@@ -52,6 +52,7 @@ class _FaceTimePanelState extends OptimizedState<FaceTimePanel> {
       }
     }).toList();
     return SettingsTile(
+      key: ValueKey(session.groupId),
       title: participants.isEmpty ? "Empty" : participants.map((a) => a.displayName).join(", "),
       subtitle: active ? "Tap to Join" : "FaceTime",
       leading: ContactAvatarGroupWidget(
@@ -152,7 +153,7 @@ class _FaceTimePanelState extends OptimizedState<FaceTimePanel> {
                   backgroundColor: tileColor,
                   children: [
                     ListView.builder(itemBuilder: (context, idx) => buildSession(pushService.sessions[idx], false), itemCount: pushService.sessions.length,
-                      shrinkWrap: true, physics: const NeverScrollableScrollPhysics(),)
+                      shrinkWrap: true, physics: const NeverScrollableScrollPhysics(), findChildIndexCallback: (key) => findChildIndexByKey(pushService.sessions, key, (item) => item.groupId),)
                   ]
                 ),
                 if (pushService.sessions.isEmpty && pushService.activeSessions.isEmpty)

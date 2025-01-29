@@ -13,6 +13,8 @@ import 'package:get/get.dart';
 import 'package:universal_io/io.dart';
 import 'package:bluebubbles/services/network/backend_service.dart';
 import 'package:bluebubbles/src/rust/api/api.dart' as api;
+import 'package:bluebubbles/utils/logger/logger.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ManualMark extends StatefulWidget {
   const ManualMark({required this.controller});
@@ -159,27 +161,87 @@ class FaceTimeBtnState extends OptimizedState<FaceTimeBtn> {
   @override
   Widget build(BuildContext context) {
     if (ftSupportedParticipants.length != (chat.participants.length + 1)) return const SizedBox.shrink();
-    return Padding(
-      padding: iOS ? const EdgeInsets.only(top: 5) : EdgeInsets.zero,
-      child: IconButton(
-        icon: Icon(
-          (iOS ? CupertinoIcons.video_camera : Icons.videocam_outlined),
-          color: !iOS ? context.theme.colorScheme.onBackground
-              : (!marked && !marking || widget.controller.inSelectMode.value)
-              ? context.theme.colorScheme.primary
-              : context.theme.colorScheme.outline,
-          size: iOS ? 35 : null,
+    return Obx(() {
+      // first active FT session that contains *all* of our chat's members
+      final session = pushService.activeSessions.firstWhereOrNull((s) => chat.participants.every((p) => s.members.any((m) => m.handle == RustPushBBUtils.bbHandleToRust(p))));
+      Logger.info("Guid $session");
+      if (session != null) {
+        return Padding(
+          padding: iOS ? const EdgeInsets.only(top: 15) : const EdgeInsets.symmetric(horizontal: 5),
+          child: Material(
+            borderRadius: BorderRadius.circular(100),
+            color: context.theme.colorScheme.bubble(context, false),
+            child: InkWell(
+              onTap: () async {
+                var participants = session.members.where((a) => !session.myHandles.contains(a.handle)).map((a) {
+                  if (a.nickname != null) {
+                    return Handle(address: "Maybe: ${a.nickname}");
+                  } else {
+                    return RustPushBBUtils.rustHandleToBB(a.handle);
+                  }
+                }).toList();
+                pushService.chosenFTRoomGuid = session.groupId;
+                // should be cached
+                var link = await api.getFtLink(state: pushService.state, usage: "next");
+                var desc = participants.map((p) => p.displayName).join(" & ");
+                // rotate link
+                pushService.rotateLink().catchError((e, s) {
+                  Logger.error("Failed to rotate link", error: e, trace: s);
+                });
+
+                if (Platform.isAndroid) {
+                  await mcs.invokeMethod("launch-facetime", {'link': link, 'desc': desc, 'callUuid': session.groupId});
+                } else {
+                  await launchUrl(
+                      Uri.parse(link),
+                      mode: LaunchMode.externalApplication
+                  );
+                }
+              },
+              borderRadius: BorderRadius.circular(100),
+              child: SizedBox(
+                height: 35,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(iOS ? CupertinoIcons.video_camera_solid : Icons.video_call,
+                          color: context.theme.colorScheme.onBubble(context, false), size: 20),
+                      const SizedBox(width: 2.5),
+                      Text("Join",
+                          style: context.theme.textTheme.bodyMedium!.copyWith(color: context.theme.colorScheme.onBubble(context, false), fontSize: 15)),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          )
+        );
+      }
+      return Padding(
+        padding: iOS ? const EdgeInsets.only(top: 5) : EdgeInsets.zero,
+        child: IconButton(
+          icon: Icon(
+            (iOS ? CupertinoIcons.video_camera : Icons.videocam_outlined),
+            color: !iOS ? context.theme.colorScheme.onBackground
+                : (!marked && !marking || widget.controller.inSelectMode.value)
+                ? context.theme.colorScheme.primary
+                : context.theme.colorScheme.outline,
+            size: iOS ? 35 : null,
+          ),
+          tooltip: "FaceTime Call",
+          onPressed: () async {
+            var data = await chat.getConversationData();
+            var handle = await chat.ensureHandle();
+            var handles = data.participants;
+            handles.remove(handle);
+            await pushService.placeOutgoingCall(handle, handles);
+          },
         ),
-        tooltip: "FaceTime Call",
-        onPressed: () async {
-          var data = await chat.getConversationData();
-          var handle = await chat.ensureHandle();
-          var handles = data.participants;
-          handles.remove(handle);
-          await pushService.placeOutgoingCall(handle, handles);
-        },
-      ),
-    );
+      );
+    });
   }
 }
 
