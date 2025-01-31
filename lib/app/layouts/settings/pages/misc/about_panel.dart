@@ -131,7 +131,7 @@ class _AboutPanelState extends OptimizedState<AboutPanel> {
                         )
                       ),
                       const SizedBox(height: 25),
-                      buildFormatted("**Anyone can be a victim.** **Anyone can be a perpetrator.** If something is happening, know there is **no excuse.** You are **not the problem.** They **don't have to treat you this way.** It **won't fix itself.**"),
+                      buildFormatted("**Anyone can be a victim.** **Anyone can be a perpetrator.** If something is happening, know there is **no excuse, especially if society has normalized the behavior outside a group.** You are **not the problem.** They **don't have to treat you this way.** It **won't fix itself.**"),
                       const SizedBox(height: 15),
                       buildFormatted("**Stand up for what is right. Do not attack the bully, assert the behavior is unacceptable.** There are no winners or losers. There is a bully who needs help. Abusing others is unacceptable and isn't going to get them what they need. We owe it to everyone to hold us accountable for our actions and help us grow."),
                       const SizedBox(height: 15),
@@ -176,10 +176,10 @@ class _AboutPanelState extends OptimizedState<AboutPanel> {
                     ),
                     const SettingsDivider(),
                     SettingsTile(
-                      title: "Make a Donation [BlueBubbles]",
-                      subtitle: "Support the developers by making a one-time or recurring donation to the BlueBubbles Team!",
+                      title: "Make a Donation",
+                      subtitle: "Support the developers by making a one-time or recurring donation to the OpenBubbles Team!",
                       onTap: () async {
-                        await launchUrl(Uri(scheme: "https", host: "bluebubbles.app", path: "donate"), mode: LaunchMode.externalApplication);
+                        await launchUrl(Uri.parse("https://www.paypal.com/donate/?hosted_button_id=MUZH6LH6ZGN6G"), mode: LaunchMode.externalApplication);
                       },
                       leading: const SettingsLeadingIcon(
                         iosIcon: CupertinoIcons.money_dollar_circle,
