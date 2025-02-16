@@ -37,7 +37,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:convert/convert.dart';
 import 'package:app_links/app_links.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-
+import 'package:in_app_purchase_android/billing_client_wrappers.dart';
 
 class SetupViewController extends StatefulController {
   final pageController = PageController(initialPage: 0);
@@ -62,6 +62,54 @@ class SetupViewController extends StatefulController {
   Map<int, api.IdsUser> currentPhoneUsers = {};
 
   RxBool phoneValidating = false.obs;
+  Rxn<SubscriptionOfferDetailsWrapper> availableIAP = Rxn();
+  String? token;
+  DateTime tokenExpiry = DateTime.fromMillisecondsSinceEpoch(0);
+
+  bool hasValidToken() {
+    return !tokenExpiry.isBefore(DateTime.now());
+  }
+
+  Future<String> ensureToken() async {
+    if (!hasValidToken()) {
+      // we need to refresh tokens
+      final response2 = await http.dio.post(
+        "https://hw.openbubbles.app/ticket",
+      );
+
+      if (response2.statusCode == 429) {
+        throw Exception("Too many reserved tickets!");
+      }
+
+      token = response2.data["code"];
+      tokenExpiry = DateTime.fromMillisecondsSinceEpoch(response2.data["expiry"] * 1000, isUtc: true);
+    }
+
+    return token!;
+  }
+
+  Future<void> updateIAPState() async {
+    await pushService.client.runWithClientNonRetryable<void>((client) async {
+      if (!hasValidToken()) {
+        final status = await http.dio.get("https://hw.openbubbles.app/status");
+        var hasCapacity = status.data["available"];
+        if (!hasCapacity) {
+          availableIAP.value = null;
+          return;
+        }
+      }
+      var details = await client.queryProductDetails(productList: [const ProductWrapper(productId: 'monthly_hosted', productType: ProductType.subs)]);
+      if (details.productDetailsList.isEmpty) {
+        Logger.warn("Product not found!");
+        availableIAP.value = null;
+        return;
+      }
+
+      print(details);
+
+      availableIAP.value = details.productDetailsList.first.subscriptionOfferDetails?.first;
+    });
+  }
 
   void updateSucceeded(Function finish) async {
     finish(true);
@@ -336,6 +384,15 @@ class SetupViewController extends StatefulController {
 
   int get pageOfNoReturn => kIsWeb || kIsDesktop ? 3 : 5;
 
+  void restoreTicket(String ticket) async {
+    token = ticket;
+    // really just placeholder for never, token should be assumed to be valid.
+    tokenExpiry = DateTime.now().add(const Duration(days: 7));
+    if (availableIAP.value == null) {
+      await updateIAPState();
+    }
+  }
+
   void updatePage(int newPage) {
     currentPage = newPage;
     updateWidgets<PageNumber>(newPage);
@@ -402,11 +459,22 @@ class _SetupViewState extends OptimizedState<SetupView> {
 
     (() async {
 
+      try {
+        await controller.updateIAPState();
+      } catch (e, s) {
+        Logger.error("failed to fetch IAP state", error: e, trace: s);
+      }
       final _appLinks = AppLinks();
       var link = await _appLinks.getLatestLink();
 
       _appLinks.uriLinkStream.listen((uri) async {
         var text = uri.toString();
+        Logger.info("Got uri stream $text");
+        var ticketheader = "https://hw.openbubbles.app/ticket/";
+        if (text.startsWith(ticketheader)) {
+          controller.restoreTicket(text.replaceFirst(ticketheader, ""));
+          return;
+        }
         var header = "$rpApiRoot/";
         if (text.startsWith(header)) {
           Logger.debug("caching code");
@@ -417,6 +485,11 @@ class _SetupViewState extends OptimizedState<SetupView> {
 
       if (link != null) {
         var text = link.toString();
+        var ticketheader = "https://hw.openbubbles.app/ticket/";
+        if (text.startsWith(ticketheader)) {
+          controller.restoreTicket(text.replaceFirst(ticketheader, ""));
+          return;
+        }
         var header = "$rpApiRoot/";
         if (text.startsWith(header)) {
           Logger.debug("caching code");

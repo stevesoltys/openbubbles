@@ -606,7 +606,8 @@ pub async fn validate_relay(state: &Arc<PushState>) -> anyhow::Result<Option<Str
         JoinedOSConfig::MacOS(macos) => None,
         JoinedOSConfig::Relay(relay) => Some(relay.code.clone())
     }) };
-    if !message.contains("Subscription not active!") {
+    if !message.contains("Subscription not active!") && !message.contains("Ticket not activated!") {
+        info!("Validation failed {message}");
         return Ok(None);
     }
     Ok(match config_ref {

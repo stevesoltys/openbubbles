@@ -44,38 +44,17 @@ class HwInpState extends OptimizedState<HwInp> {
 
   bool loading = false;
   bool hosted = true;
-  bool iapAvailable = true;
-  SubscriptionOfferDetailsWrapper? iapDetails;
 
   bool stagingMine = true;
   api.JoinedOsConfig? staging;
   api.DeviceInfo? stagingInfo;
   String deviceName = "";
 
-  String token = "";
-  DateTime tokenExpiry = DateTime.fromMillisecondsSinceEpoch(0);
 
   bool stagingNonInp = false;
   bool alreadyActivated = false;
   bool usingBeeper = false;
 
-  Future<String> ensureToken() async {
-    if (tokenExpiry.isBefore(DateTime.now())) {
-      // we need to refresh tokens
-      final response2 = await http.dio.post(
-        "https://hw.openbubbles.app/ticket",
-      );
-
-      if (response2.statusCode == 429) {
-        throw Exception("Too many reserved tickets!");
-      }
-
-      token = response2.data["code"];
-      tokenExpiry = DateTime.fromMillisecondsSinceEpoch(response2.data["expiry"] * 1000, isUtc: true);
-    }
-
-    return token;
-  } 
 
   Future<void> scanQRCode() async { 
     // Make sure we have the correct permissions
@@ -348,11 +327,15 @@ class HwInpState extends OptimizedState<HwInp> {
         alreadyActivated = true;
         var parsed = (await api.getConfigState(state: pushService.state))!;
         select(parsed, ss.settings.macIsMine.value);
+        if (ss.settings.deviceIsHosted.value) {
+          var code = await api.validateRelay(state: pushService.state);
+          if (code != null) {
+            controller.restoreTicket(code);
+          }
+        }
       }
     }
   }
-
-  late Future<SubscriptionOfferDetailsWrapper?> details;
 
   StreamSubscription<PurchasesResultWrapper>? subscription;
 
@@ -393,7 +376,7 @@ class HwInpState extends OptimizedState<HwInp> {
   Future<void> handleSubscriptionToken(String subscription) async {
     String token;
     try {
-      token = await ensureToken();
+      token = await controller.ensureToken();
     } catch (e, s) {
       showDialog(
         context: context,
@@ -457,28 +440,7 @@ class HwInpState extends OptimizedState<HwInp> {
 
     updateInitial();
 
-    details = pushService.client.runWithClientNonRetryable<SubscriptionOfferDetailsWrapper?>((client) async {
-      final status = await http.dio.get("https://hw.openbubbles.app/status");
-      var hasCapacity = status.data["available"];
-      if (!hasCapacity) {
-        iapAvailable = false;
-        setState(() {});
-        return null;
-      }
-      var details = await client.queryProductDetails(productList: [const ProductWrapper(productId: 'monthly_hosted', productType: ProductType.subs)]);
-      if (details.productDetailsList.isEmpty) {
-        Logger.warn("Product not found!");
-        iapAvailable = false;
-        setState(() {});
-        return null;
-      }
-
-      print(details);
-
-      iapDetails = details.productDetailsList.first.subscriptionOfferDetails?.first;
-      setState(() {});
-      return iapDetails!;
-    });
+    controller.updateIAPState();
 
     if (ss.settings.cachedCodes.containsKey("restore")) {
       handleOpenAbsinthe("restore");
@@ -614,8 +576,8 @@ class HwInpState extends OptimizedState<HwInp> {
                         if(!stagingNonInp && stagingInfo == null)
                         Row(
                           children: [
-                            Expanded(
-                              child: iapAvailable ? materialButton(
+                            Obx(() => Expanded(
+                              child: controller.availableIAP.value != null ? materialButton(
                                 Row(
                                   children: [
                                     Expanded(child: Column(
@@ -627,8 +589,7 @@ class HwInpState extends OptimizedState<HwInp> {
                                             style: context.theme.textTheme.titleMedium!.copyWith(color: !hosted ? null : context.theme.colorScheme.onPrimary)),
                                         Text("We'll take care of everything for you. \nYour phone number will become a blue bubble!",
                                             style: context.theme.textTheme.bodySmall!.copyWith(color: !hosted ? null : context.theme.colorScheme.onPrimary)),
-                                        if (iapDetails != null)
-                                        Text("\n${iapDetails!.pricingPhases.last.formattedPrice}/mo${iapDetails!.pricingPhases.length > 1 ? '. 7-day free trial.' : ''}",
+                                        Text("\n${controller.availableIAP.value!.pricingPhases.last.formattedPrice}/mo${controller.availableIAP.value!.pricingPhases.length > 1 ? '. 7-day free trial.' : ''}",
                                             style: context.theme.textTheme.bodySmall!.copyWith(color: !hosted ? null : context.theme.colorScheme.onPrimary)),
                                       ],
                                     ),),
@@ -643,11 +604,11 @@ class HwInpState extends OptimizedState<HwInp> {
                                 () async {
                                   if (hosted) {
                                     wrapSubscriptionPromise<void>((() async {
-                                      await ensureToken();
+                                      await controller.ensureToken();
                                       pushService.client.runWithClientNonRetryable<void>((client) async {
                                         var purchases = await client.queryPurchases(ProductType.subs);
                                         if (await handlePurchases(purchases)) return;
-                                        var d = await details;
+                                        var d = controller.availableIAP.value;
                                         if (d == null) return;
                                         client.launchBillingFlow(product: 'monthly_hosted', offerToken: d.offerIdToken);
                                       });
@@ -678,7 +639,7 @@ class HwInpState extends OptimizedState<HwInp> {
                                           children: [
                                             Text("Hosted",
                                                 style: context.theme.textTheme.titleMedium!),
-                                            Text("Currently unavailable. Join the waitlist!",
+                                            Text("Currently unavailable. If you got an invite, click your link. Otherwise, join the waitlist!",
                                                 style: context.theme.textTheme.bodySmall!),
                                           ],
                                         )),
@@ -690,7 +651,7 @@ class HwInpState extends OptimizedState<HwInp> {
                                   )
                                 ),
                               )
-                            )
+                            )),
                           ],
                           mainAxisSize: MainAxisSize.max,
                         ),
