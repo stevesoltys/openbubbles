@@ -55,6 +55,7 @@ class SetupViewController extends StatefulController {
 
   bool goingTo2fa = true;
   bool success = false;
+  bool triedBattery = false;
 
   api.LoginState state = const api.LoginState.needsLogin();
   api.IdsUser? currentAppleUser;
@@ -491,19 +492,7 @@ class SetupHeader extends StatelessWidget {
               ),
             ],
           ),
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(25),
-              gradient: LinearGradient(
-                begin: AlignmentDirectional.topStart,
-                colors: [HexColor('2772C3'), HexColor('5CA7F8').darkenPercent(5)],
-              ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 13),
-              child: PageNumber(parentController: controller),
-            ),
-          ),
+          PageNumber(parentController: controller),
         ],
       ),
     );
@@ -527,18 +516,30 @@ class _PageNumberState extends CustomState<PageNumber, int, SetupViewController>
 
   @override
   Widget build(BuildContext context) {
-    return RichText(
-      text: TextSpan(
-        children: [
-          TextSpan(
-            text: "${controller.currentPage}",
-            style: context.theme.textTheme.bodyLarge!.copyWith(color: Colors.white, fontWeight: FontWeight.bold)
+    return controller.currentPage == 1 ? const SizedBox.square(dimension: 40.0,) : Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(25),
+        gradient: LinearGradient(
+          begin: AlignmentDirectional.topStart,
+          colors: [HexColor('2772C3'), HexColor('5CA7F8').darkenPercent(5)],
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 13),
+        child: RichText(
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: "${controller.currentPage}",
+                style: context.theme.textTheme.bodyLarge!.copyWith(color: Colors.white, fontWeight: FontWeight.bold)
+              ),
+              TextSpan(
+                text: " of ${kIsWeb ? "4" : kIsDesktop ? "5" : "8"}",
+                style: context.theme.textTheme.bodyLarge!.copyWith(color: Colors.white38, fontWeight: FontWeight.bold)
+              ),
+            ],
           ),
-          TextSpan(
-            text: " of ${kIsWeb ? "4" : kIsDesktop ? "5" : "7"}",
-            style: context.theme.textTheme.bodyLarge!.copyWith(color: Colors.white38, fontWeight: FontWeight.bold)
-          ),
-        ],
+        ),
       ),
     );
   }

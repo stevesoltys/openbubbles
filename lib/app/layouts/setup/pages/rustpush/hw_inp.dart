@@ -24,6 +24,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge.dart';
 import 'package:get/get.dart' hide Response;
+import 'package:in_app_purchase_android/billing_client_wrappers.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:convert/convert.dart';
@@ -42,17 +43,41 @@ class HwInpState extends OptimizedState<HwInp> {
   final FocusNode focusNode = FocusNode();
 
   bool loading = false;
+  bool hosted = true;
+  bool iapAvailable = true;
+  SubscriptionOfferDetailsWrapper? iapDetails;
 
   bool stagingMine = true;
   api.JoinedOsConfig? staging;
   api.DeviceInfo? stagingInfo;
   String deviceName = "";
 
+  String token = "";
+  DateTime tokenExpiry = DateTime.fromMillisecondsSinceEpoch(0);
+
   bool stagingNonInp = false;
   bool alreadyActivated = false;
   bool usingBeeper = false;
 
-  Future<void> scanQRCode() async {
+  Future<String> ensureToken() async {
+    if (tokenExpiry.isBefore(DateTime.now())) {
+      // we need to refresh tokens
+      final response2 = await http.dio.post(
+        "https://hw.openbubbles.app/ticket",
+      );
+
+      if (response2.statusCode == 429) {
+        throw Exception("Too many reserved tickets!");
+      }
+
+      token = response2.data["code"];
+      tokenExpiry = DateTime.fromMillisecondsSinceEpoch(response2.data["expiry"] * 1000, isUtc: true);
+    }
+
+    return token;
+  } 
+
+  Future<void> scanQRCode() async { 
     // Make sure we have the correct permissions
     PermissionStatus status = await Permission.camera.status;
     if (!status.isPermanentlyDenied && !status.isGranted) {
@@ -327,11 +352,133 @@ class HwInpState extends OptimizedState<HwInp> {
     }
   }
 
+  late Future<SubscriptionOfferDetailsWrapper?> details;
+
+  StreamSubscription<PurchasesResultWrapper>? subscription;
+
+  Future<T> wrapSubscriptionPromise<T>(Future<T> inner) async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: context.theme.colorScheme.properSurface,
+          title: Text(
+            "Validating subscription...",
+            style: context.theme.textTheme.titleLarge,
+          ),
+          content: Container(
+            height: 70,
+            child: Center(
+              child: CircularProgressIndicator(
+                backgroundColor: context.theme.colorScheme.properSurface,
+                valueColor: AlwaysStoppedAnimation<Color>(context.theme.colorScheme.primary),
+              ),
+            ),
+          ),
+        );
+      }
+    );
+    T result;
+    try {
+      result = await inner;
+    } catch (e, s) {
+      Get.back();
+      showSnackbar("Failure handling subscription! Please try again", e.toString());
+      rethrow;
+    }
+    Get.back();
+    return result;
+  }
+
+  Future<void> handleSubscriptionToken(String subscription) async {
+    String token;
+    try {
+      token = await ensureToken();
+    } catch (e, s) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text(
+            "We're so sorry!",
+            style: context.theme.textTheme.titleLarge,
+          ),
+          backgroundColor: context.theme.colorScheme.properSurface,
+          content: Text("When you start the subscription process, we reserve a device for you for 15 minutes. Unfortunately, it appears you took longer to complete the subscription, and, in that time, we gave your device to someone else and no longer have a device free. Feel free to retry periodically in the app, and, if you don't manage to get in within the next few days, your subscription will be automatically refunded by Google.", style: context.theme.textTheme.bodyLarge),
+          actions: [
+            TextButton(
+              child: Text(
+                  "Close",
+                  style: context.theme.textTheme.bodyLarge!.copyWith(color: context.theme.colorScheme.primary)
+              ),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ],
+        ),
+      );
+      return;
+    }
+    
+    var activated = await http.dio.post("https://hw.openbubbles.app/ticket/$token/activate", data: {"purchase_token": subscription});
+    var ticket = activated.data["ticket"];
+    var parsed = await api.configFromRelay(code: ticket, host: "https://hw.openbubbles.app");
+    usingBeeper = false;
+    await connect(parsed, isHosted: true);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    subscription?.cancel();
+  }
+
+  Future<bool> handlePurchases(PurchasesResultWrapper details) async {
+    for (var detail in details.purchasesList) {
+      if (detail.purchaseState != PurchaseStateWrapper.purchased) continue;
+      if (!detail.isAcknowledged) {
+        ss.settings.hostedPendingTransaction.value = detail.purchaseToken;
+      } else {
+        ss.settings.hostedPendingTransaction.value = null;
+      }
+      ss.saveSettings();
+      await wrapSubscriptionPromise(handleSubscriptionToken(detail.purchaseToken));
+      Logger.info("Purchased token ${detail.purchaseToken}");
+      return true;
+    }
+    return false;
+  }
+
   @override
   void initState() {
     super.initState();
 
+    subscription = pushService.client.purchasesUpdatedStream.listen((PurchasesResultWrapper details) {
+      handlePurchases(details);
+    });
+
     updateInitial();
+
+    details = pushService.client.runWithClientNonRetryable<SubscriptionOfferDetailsWrapper?>((client) async {
+      final status = await http.dio.get("https://hw.openbubbles.app/status");
+      var hasCapacity = status.data["available"];
+      if (!hasCapacity) {
+        iapAvailable = false;
+        setState(() {});
+        return null;
+      }
+      var details = await client.queryProductDetails(productList: [const ProductWrapper(productId: 'monthly_hosted', productType: ProductType.subs)]);
+      if (details.productDetailsList.isEmpty) {
+        Logger.warn("Product not found!");
+        iapAvailable = false;
+        setState(() {});
+        return null;
+      }
+
+      print(details);
+
+      iapDetails = details.productDetailsList.first.subscriptionOfferDetails?.first;
+      setState(() {});
+      return iapDetails!;
+    });
 
     if (ss.settings.cachedCodes.containsKey("restore")) {
       handleOpenAbsinthe("restore");
@@ -343,12 +490,43 @@ class HwInpState extends OptimizedState<HwInp> {
     });
   }
 
+  Widget materialButton(Widget inner, bool selected, void Function() onTap) {
+    if (!selected) {
+      return Container(
+        decoration: BoxDecoration(
+          border: Border.all(color: context.theme.colorScheme.primary),
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(15),
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: inner,
+          )
+        ),
+      );
+    }
+    return Material(
+      borderRadius: BorderRadius.circular(15),
+      color: context.theme.colorScheme.primary,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(15),
+        child: Padding(
+          padding: const EdgeInsets.all(17),
+          child: inner
+        )
+      ),
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
     return SetupPageTemplate(
-      title: staging == null ? "Hardware info" : stagingMine ? "My Device" : "Shared Device",
-      customSubtitle: staging != null ? Container() : Padding(
+      title: staging == null ? "Activation" : ss.settings.deviceIsHosted.value ? "Hosted Device" : stagingMine ? "My Device" : "Shared Device",
+      customSubtitle: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Align(
           alignment: Alignment.centerLeft,
@@ -358,21 +536,26 @@ class HwInpState extends OptimizedState<HwInp> {
                 fontSizeDelta: 1.5,
                 color: context.theme.colorScheme.outline,
               ).copyWith(height: 2),
-              children: [
+              children: staging != null ? [
                 const TextSpan(
-                  text: "To authenticate with iMessage, Apple requires hardware identifiers. If you don't have a code, run "
+                  text: "This device has no access to your Apple account or messages."
+                ),
+              ] : hosted ? [
+                const TextSpan(
+                  text: "To activate iMessage, Apple requires a physical iDevice to validate your sign in."
+                ),
+              ] : [
+                const TextSpan(
+                  text: "To activate iMessage, Apple requires a physical iDevice to validate your sign in. "
                 ),
                 TextSpan(
-                  text: 'the generator on a Mac',
+                  text: 'Learn how to activate OpenBubbles.',
                   style: const TextStyle(color: Colors.blue),
                   recognizer: TapGestureRecognizer()
                     ..onTap = () {
                       launchUrl(Uri.parse("https://openbubbles.app/macos"), mode: LaunchMode.externalApplication);
                   },
                 ),
-                const TextSpan(
-                  text: ". The Mac does not need to remain online. Compatible with iOS relay codes."
-                )
               ]
             ),
           ),
@@ -428,9 +611,122 @@ class HwInpState extends OptimizedState<HwInp> {
                         ),
                         if (!stagingNonInp)
                         const SizedBox(height: 20),
-                        if (!stagingNonInp)
+                        if(!stagingNonInp && stagingInfo == null)
+                        Row(
+                          children: [
+                            Expanded(
+                              child: iapAvailable ? materialButton(
+                                Row(
+                                  children: [
+                                    Expanded(child: Column(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text("Hosted",
+                                            style: context.theme.textTheme.titleMedium!.copyWith(color: !hosted ? null : context.theme.colorScheme.onPrimary)),
+                                        Text("We'll take care of everything for you. \nYour phone number will become a blue bubble!",
+                                            style: context.theme.textTheme.bodySmall!.copyWith(color: !hosted ? null : context.theme.colorScheme.onPrimary)),
+                                        if (iapDetails != null)
+                                        Text("\n${iapDetails!.pricingPhases.last.formattedPrice}/mo${iapDetails!.pricingPhases.length > 1 ? '. 7-day free trial.' : ''}",
+                                            style: context.theme.textTheme.bodySmall!.copyWith(color: !hosted ? null : context.theme.colorScheme.onPrimary)),
+                                      ],
+                                    ),),
+                                    const SizedBox(width: 10),
+                                    Icon(
+                                      Icons.arrow_forward,
+                                      color: hosted ? context.theme.colorScheme.onPrimary : Colors.transparent,
+                                    ),
+                                  ],
+                                ),
+                                hosted,
+                                () async {
+                                  if (hosted) {
+                                    wrapSubscriptionPromise<void>((() async {
+                                      await ensureToken();
+                                      pushService.client.runWithClientNonRetryable<void>((client) async {
+                                        var purchases = await client.queryPurchases(ProductType.subs);
+                                        if (await handlePurchases(purchases)) return;
+                                        var d = await details;
+                                        if (d == null) return;
+                                        client.launchBillingFlow(product: 'monthly_hosted', offerToken: d.offerIdToken);
+                                      });
+                                    })());
+                                  }
+                                  setState(() {
+                                    hosted = true;
+                                  });
+                                }
+                              ) : Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: context.theme.colorScheme.primary),
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                child: InkWell(
+                                  onTap: () async {
+                                    launchUrl(Uri.parse("https://docs.google.com/forms/d/e/1FAIpQLSf0psSFctObU_2Ib44H4WZlXhwpy-nLWy-jteYExWgKZ_mnhg/viewform?usp=header"));
+                                  },
+                                  borderRadius: BorderRadius.circular(15),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(16),
+                                    child: Row(
+                                      children: [
+                                        Expanded(child: Column(
+                                          mainAxisSize: MainAxisSize.max,
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text("Hosted",
+                                                style: context.theme.textTheme.titleMedium!),
+                                            Text("Currently unavailable. Join the waitlist!",
+                                                style: context.theme.textTheme.bodySmall!),
+                                          ],
+                                        )),
+                                        const SizedBox(width: 10),
+                                        const Icon(
+                                          Icons.arrow_forward,
+                                        ),
+                                      ]),
+                                  )
+                                ),
+                              )
+                            )
+                          ],
+                          mainAxisSize: MainAxisSize.max,
+                        ),
+                        if(!stagingNonInp && stagingInfo == null)
+                        const SizedBox(height: 15),
+                        if(!stagingNonInp && stagingInfo == null)
+                        Row(
+                          children: [
+                            Expanded(
+                              child: materialButton(
+                                Column(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text("Self-managed",
+                                        style: context.theme.textTheme.titleMedium!.copyWith(color: hosted ? null : context.theme.colorScheme.onPrimary)),
+                                    Text("One-time access to a Mac or a supported, always-online iPhone required. Mac devices cannot use this phone's number.",
+                                        style: context.theme.textTheme.bodySmall!.copyWith(color: hosted ? null : context.theme.colorScheme.onPrimary)),
+                                  ],
+                                ),
+                                !hosted,
+                                () {
+                                  setState(() {
+                                    hosted = false;
+                                  });
+                                }
+                              )
+                            )
+                          ],
+                          mainAxisSize: MainAxisSize.max,
+                        ),
+                        if (!stagingNonInp && stagingInfo == null)
+                        const SizedBox(height: 10),
+                        if (!stagingNonInp && !hosted)
                         Container(
-                          width: context.width * 2 / 3,
                           child: Focus(
                             focusNode: focusNode,
                             onKey: (node, event) {
@@ -463,6 +759,12 @@ class HwInpState extends OptimizedState<HwInp> {
                               ),
                             ),
                           ),
+                        ),
+                        if (!stagingNonInp && stagingInfo == null)
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 5),
+                          child: Text("Both options are open-source and secure. Your messages go straight to Apple servers. The device you use has no access to your account or messages.",
+                                            style: context.theme.textTheme.bodySmall!),
                         ),
                         const SizedBox(height: 20),
                         Row(
@@ -515,7 +817,7 @@ class HwInpState extends OptimizedState<HwInp> {
                                 ),
                               ),
                             ),
-                            if (staging == null && !kIsDesktop && !loading)
+                            if (staging == null && !kIsDesktop && !loading && !hosted)
                             Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(25),
@@ -620,7 +922,7 @@ class HwInpState extends OptimizedState<HwInp> {
     );
   }
 
-  Future<void> connect(api.JoinedOsConfig config) async {
+  Future<void> connect(api.JoinedOsConfig config, {bool isHosted = false}) async {
     setState(() {
       loading = true;
     });
@@ -628,9 +930,16 @@ class HwInpState extends OptimizedState<HwInp> {
     try {
       if (!alreadyActivated) {
         ss.settings.macIsMine.value = stagingMine;
+        ss.settings.deviceIsHosted.value = isHosted;
         ss.settings.save();
         await api.configureMacos(state: pushService.state, config: config);
         controller.currentPhoneUsers = {}; // reset validated phone numbers as we have a new token now
+        var list = ss.settings.cachedCodes.entries.toList();
+        for (var items in list) {
+          if (!items.key.startsWith("sms-auth-")) continue;
+          ss.settings.cachedCodes.remove(items.key);
+        }
+        ss.saveSettings();
       }
 
       var state = await api.getDeviceInfoState(state: pushService.state);

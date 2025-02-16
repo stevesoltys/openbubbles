@@ -26,6 +26,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge.dart';
 import 'package:get/get.dart';
+import 'package:in_app_purchase_android/billing_client_wrappers.dart';
 import 'package:supercharged/supercharged.dart';
 import 'package:tuple/tuple.dart';
 import 'package:universal_io/io.dart';
@@ -44,7 +45,7 @@ RustPushService pushService =
     Get.isRegistered<RustPushService>() ? Get.find<RustPushService>() : Get.put(RustPushService());
 
 
-const rpApiRoot = "https://hw.openbubbles.app";
+const rpApiRoot = "https://hw.openbubbles.app/code";
 
 class OutgoingCallSession {
   
@@ -322,10 +323,10 @@ class RustPushBackend implements BackendService {
   }
   
 
-  void markFailedToLogin() async {
+  void markFailedToLogin({bool hw = false}) async {
     Logger.error("markingfailed");
     if (usingRustPush) {
-      await pushService.reset(false);
+      await pushService.reset(hw);
     }
     ss.settings.finishedSetup.value = false;
     ss.saveSettings();
@@ -596,10 +597,13 @@ class RustPushBackend implements BackendService {
 
   @override
   Future<Map<String, dynamic>> getAccountInfo() async {
+    var detail = await pushService.getPurchaseDetails();
     var handles = await api.getHandles(state: pushService.state);
     var state = await api.getRegstate(state: pushService.state);
     var stateStr = "";
-    if (state is api.RegisterState_Registered) {
+    if (detail == null && ss.settings.deviceIsHosted.value) {
+      stateStr = "Subscription not active!";
+    } else if (state is api.RegisterState_Registered) {
       stateStr = "Connected (renew in ${formatDuration(state.nextS)})";
     } else if (state is api.RegisterState_Registering) {
       stateStr = "Reregistering...";
@@ -774,11 +778,14 @@ class RustPushBackend implements BackendService {
           final response = await http.dio.get(iconUrl, options: Options(responseType: ResponseType.bytes));
           if (response.statusCode == 200) {
             var contentType = response.headers.value('content-type')!;
+            // some sites don't send favicons for the favicon
+            if (contentType.startsWith("image/")) {
 
-            iconmeta = api.LPIconMetadata(url: api.NSURL(base: "\$null", relative: iconUrl), version: 1);
+              iconmeta = api.LPIconMetadata(url: api.NSURL(base: "\$null", relative: iconUrl), version: 1);
 
-            icon = api.RichLinkImageAttachmentSubstitute(mimeType: contentType, richLinkImageAttachmentSubstituteIndex: BigInt.from(attachments.length));
-            attachments.add(response.data as Uint8List);
+              icon = api.RichLinkImageAttachmentSubstitute(mimeType: contentType, richLinkImageAttachmentSubstituteIndex: BigInt.from(attachments.length));
+              attachments.add(response.data as Uint8List);
+            }
           }
 
           if (metadata.image != null) {
@@ -1823,6 +1830,24 @@ class RustPushService extends GetxService {
     activeSessions.value = activesessions;
   }
 
+  Future<PurchaseWrapper?> getPurchaseDetails() async {
+    var purchases = await pushService.client.runWithClient((client) => client.queryPurchases(ProductType.subs));
+    return purchases.purchasesList.firstOrNull;
+  }
+
+  Future<void> handleRegistered() async {
+    if (ss.settings.hostedPendingTransaction.value != null) {
+      var detail = await getPurchaseDetails();
+      if (detail == null) return;
+
+      if (!detail.isAcknowledged) {
+        await pushService.client.runWithClient((client) => client.acknowledgePurchase(detail.purchaseToken));
+      }
+      ss.settings.hostedPendingTransaction.value = null;
+      ss.saveSettings();
+    }
+  }
+
   Future<void> rotateIncomingLink() async {
     await api.useLinkFor(state: pushService.state, oldUsage: "incomingcall", usage: "incomingcall-old");
     await api.useLinkFor(state: pushService.state, oldUsage: "nextincomingcall", usage: "incomingcall");
@@ -1906,6 +1931,7 @@ class RustPushService extends GetxService {
   }
 
   var notifiedFailed = false;
+  var notifiedSubFailed = false;
 
   String? chosenFTRoomGuid;
   String? incomingRingingCallGuid;
@@ -2018,6 +2044,7 @@ class RustPushService extends GetxService {
       var state = push.field0;
       if (state is api.RegisterState_Registered) {
         notifiedFailed = false;
+        handleRegistered();
       }
       if (state is api.RegisterState_Failed && !notifiedFailed) {
         notif.createRegisterFailed(state.retryWait == null);
@@ -2596,8 +2623,27 @@ class RustPushService extends GetxService {
     });
   }
 
+  void validateSubState() async {
+    // only show notification if we are registered
+    if ((await api.getPhase(state: state)) != api.RegistrationPhase.registered) {
+      return;
+    }
+    if (!ss.settings.deviceIsHosted.value) return;
+    var detail = await getPurchaseDetails();
+    if (detail == null) {
+      if (!notifiedSubFailed) {
+        notif.createSubscriptionFailed();
+        notifiedSubFailed = true;
+      }
+    } else if (notifiedSubFailed) {
+      notifiedSubFailed = false;
+    }
+  }
+
   // uniquely identify the backend service that is running
   String serviceId = "";
+
+  BillingClientManager client = BillingClientManager();
 
   @override
   Future<void> onInit() async {
@@ -2613,6 +2659,7 @@ class RustPushService extends GetxService {
         state = await api.serviceFromPtr(ptr: serviceId);
         Logger.info("statecheck");
         if ((await api.getPhase(state: state)) == api.RegistrationPhase.registered) {
+          handleRegistered();
           ss.settings.finishedSetup.value = true;
           ss.saveSettings();
         }
@@ -2628,6 +2675,8 @@ class RustPushService extends GetxService {
       }
       pushService.findMy = await api.canFindMy(state: state);
       pushService.sharedStreams = await api.supportsSharedStreams(state: state);
+      Timer.periodic(const Duration(days: 1), (timer) => validateSubState());
+      validateSubState();
     })();
     await initFuture;
     initPhotoStream();
@@ -2652,6 +2701,7 @@ class RustPushService extends GetxService {
   }
 
   Future configured() async {
+    await handleRegistered();
     if (Platform.isAndroid) {
       await mcs.invokeMethod("notify-native-configured");
     } else {

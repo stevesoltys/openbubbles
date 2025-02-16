@@ -184,6 +184,8 @@ class Settings {
   // RustPush settings
   final RxString defaultHandle = "".obs;
   final RxBool macIsMine = true.obs;
+  final RxBool deviceIsHosted = false.obs;
+  final RxnString hostedPendingTransaction = RxnString();
   final RxBool isSmsRouter = false.obs; // true if we can send/recieve from the app, and via sms forwarding over APNs
   final RxBool vpnWarned = false.obs;
   final RxMap<String, String> cachedCodes = <String, String>{}.obs;
@@ -382,6 +384,8 @@ class Settings {
       'lastReviewRequestTimestamp': lastReviewRequestTimestamp.value,
       'defaultHandle': defaultHandle.value,
       'macIsMine': macIsMine.value,
+      'deviceIsHosted': deviceIsHosted.value,
+      'hostedPendingTransaction': hostedPendingTransaction.value,
       'isSmsRouter': isSmsRouter.value,
       'developerEnabled': developerEnabled.value,
       'vpnWarned': vpnWarned.value,
@@ -533,6 +537,8 @@ class Settings {
     ss.settings.replaceEmoticonsWithEmoji.value = map['replaceEmoticonsWithEmoji'] ?? false;
     ss.settings.defaultHandle.value = map['defaultHandle'] ?? "";
     // ss.settings.macIsMine.value = map['macIsMine'] ?? true;
+    // ss.settings.deviceIsHosted.value = map['deviceIsHosted'] ?? false;
+    ss.settings.hostedPendingTransaction.value = map['hostedPendingTransaction'];
     ss.settings.isSmsRouter.value = map['isSmsRouter'] ?? false;
     ss.settings.developerEnabled.value = map['developerEnabled'] ?? false;
     ss.settings.vpnWarned.value = map['vpnWarned'] ?? false;
@@ -682,6 +688,8 @@ class Settings {
     s.lastReviewRequestTimestamp.value = map['lastReviewRequestTimestamp'] ?? 0;
     s.defaultHandle.value = map['defaultHandle'] ?? "";
     s.macIsMine.value = map['macIsMine'] ?? true;
+    s.deviceIsHosted.value = map['deviceIsHosted'] ?? false;
+    s.hostedPendingTransaction.value = map['hostedPendingTransaction'];
     s.isSmsRouter.value = map['isSmsRouter'] ?? false;
     s.developerEnabled.value = map['developerEnabled'] ?? false;
     s.vpnWarned.value = map['vpnWarned'] ?? false;

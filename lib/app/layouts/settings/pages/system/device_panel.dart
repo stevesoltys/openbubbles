@@ -49,7 +49,7 @@ class _DevicePanelState extends CustomState<DevicePanel, void, DevicePanelContro
 
     return Obx(
       () => SettingsScaffold(
-        title: "${ss.settings.macIsMine.value ? 'My' : 'Shared'} Device",
+        title: "${ss.settings.deviceIsHosted.value ? "Hosted" : ss.settings.macIsMine.value ? 'My' : 'Shared'} Device",
         initialHeader: null,
         iosSubtitle: iosSubtitle,
         materialSubtitle: materialSubtitle,

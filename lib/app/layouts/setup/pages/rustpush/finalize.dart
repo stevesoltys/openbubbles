@@ -86,37 +86,6 @@ class _FinalizePageState extends OptimizedState<FinalizePage> {
                 await backend.setDefaultHandle(value);
               },
             ),
-            if (!kIsDesktop)
-              Padding(padding: const EdgeInsets.symmetric(vertical: 5),
-                child: Obx(() => SettingsSwitch(
-                  padding: false,
-                  onChanged: (bool val) async {
-                    if (val) {
-                      var granted = await TelephonyPlus().requestPermissions();
-                      if (!granted) {
-                        showSnackbar("SMS denied", "Please enable SMS permission in settings");
-                        return;
-                      }
-                    }
-                    setState(() {
-                      ss.settings.isSmsRouter.value = val;
-                      ss.saveSettings();
-                    });
-                  },
-                  initialVal: ss.settings.isSmsRouter.value,
-                  title: "Use SMS with this phone (BETA)",
-                  subtitle: "Use this phone with OpenBubbles and your other Apple devices${(handles.any((i) => i.contains("tel:")) ?? false) ? "" : ". Warning: no phone handles are registered; official Apple clients will only be able to receive forwarded SMS"}",
-                  backgroundColor: tileColor,
-                  isThreeLine: true,
-                )),
-              ),
-            if (ss.settings.isSmsRouter.value)
-              const Padding(padding: EdgeInsets.symmetric(vertical: 5),
-                child: Text(
-                  "Enable SMS on other devices in settings.",
-                  textAlign: TextAlign.center,
-                ),
-              ),
           ],
         ),
       ),

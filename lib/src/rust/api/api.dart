@@ -47,6 +47,9 @@ Future<JoinedOsConfig> configFromRelay(
     RustLib.instance.api
         .crateApiApiConfigFromRelay(code: code, host: host, token: token);
 
+Future<String?> validateRelay({required ArcPushState state}) =>
+    RustLib.instance.api.crateApiApiValidateRelay(state: state);
+
 Future<DeviceInfo> getDeviceInfoState({required ArcPushState state}) =>
     RustLib.instance.api.crateApiApiGetDeviceInfoState(state: state);
 

@@ -860,6 +860,47 @@ class NotificationsService extends GetxService {
     );
   }
 
+  Future<void> createSubscriptionFailed() async {
+    const title = "Your subscription is no longer active!";
+    const subtitle =
+        "Your device will be given to someone else soon, and iMessage will no longer be activated.";
+    if (kIsDesktop) {
+      failedToast = LocalNotification(
+        title: title,
+        body: subtitle,
+        actions: [],
+      );
+
+      failedToast!.onClick = () async {
+        failedToast = null;
+        await windowManager.show();
+        if (ss.settings.finishedSetup.value) {
+          ns.pushLeft(Get.context!, ProfilePanel());
+        }
+      };
+
+      await failedToast!.show();
+      return;
+    }
+    await flnp.show(
+      -1 - 50 /* OB */,
+      title,
+      subtitle,
+      NotificationDetails(
+        android: AndroidNotificationDetails(
+          ERROR_CHANNEL,
+          'Errors',
+          channelDescription:
+              'Displays message send failures, connection failures, and more',
+          priority: Priority.max,
+          importance: Importance.max,
+          color: HexColor("4990de"),
+        ),
+      ),
+      payload: "-51"
+    );
+  }
+
   Future<void> createInvitation(api.SharedAlbum album) async {
     const title = "Shared albums";
     final subtitle =

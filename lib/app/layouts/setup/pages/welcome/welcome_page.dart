@@ -61,7 +61,7 @@ class _WelcomePageState extends OptimizedState<WelcomePage> with TickerProviderS
   Widget build(BuildContext context) {
     return SetupPageTemplate(
       title: "Welcome to OpenBubbles",
-      subtitle: "Experience a clean, customizable iMessage client across all platforms",
+      subtitle: "Send and receive iMessages from your Android. Become a blue bubble!",
       aboveTitle: Theme(
         data: context.theme.copyWith(
           // in case some components still use legacy theming

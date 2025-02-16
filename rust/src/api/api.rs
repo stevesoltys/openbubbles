@@ -599,6 +599,22 @@ pub async fn config_from_relay(code: String, host: String, token: &Option<String
     })))
 }
 
+pub async fn validate_relay(state: &Arc<PushState>) -> anyhow::Result<Option<String>> {
+    let locked = state.0.read().await;
+    let config_ref = locked.os_config.as_ref().expect("No os config??");
+    let Err(PushError::RelayError(_, message)) = config_ref.generate_validation_data().await else { return Ok(match config_ref {
+        JoinedOSConfig::MacOS(macos) => None,
+        JoinedOSConfig::Relay(relay) => Some(relay.code.clone())
+    }) };
+    if !message.contains("Subscription not active!") {
+        return Ok(None);
+    }
+    Ok(match config_ref {
+        JoinedOSConfig::MacOS(macos) => None,
+        JoinedOSConfig::Relay(relay) => Some(relay.code.clone())
+    })
+}
+
 pub struct DeviceInfo {
     pub name: String,
     pub serial: String,

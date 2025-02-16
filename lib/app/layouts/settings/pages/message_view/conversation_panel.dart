@@ -209,6 +209,57 @@ class _ConversationPanelState extends OptimizedState<ConversationPanel> {
                     backgroundColor: tileColor,
                     children: [
                       SettingsTile(
+                        title: "Download Sounds",
+                        subtitle: "Downloads the official send/receive sounds",
+                        onTap: () async {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                backgroundColor: context.theme.colorScheme.properSurface,
+                                title: Text(
+                                  "Downloading sounds...",
+                                  style: context.theme.textTheme.titleLarge,
+                                ),
+                                content: Container(
+                                  height: 70,
+                                  child: Center(
+                                    child: CircularProgressIndicator(
+                                      backgroundColor: context.theme.colorScheme.properSurface,
+                                      valueColor: AlwaysStoppedAnimation<Color>(context.theme.colorScheme.primary),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }
+                          );
+                          try {
+                            final sendmsgaudio = await http.downloadFromUrl(
+                                  "https://chatsupport.apple.com/WebAPI801/sound/send-message-audio.m4a",
+                              progress: (current, total) {},
+                            );
+                            final recvmsgaudio = await http.downloadFromUrl(
+                                  "https://chatsupport.apple.com/WebAPI801/sound/received-message-audio.m4a",
+                              progress: (current, total) {},
+                            );
+                            String path = "${fs.appDocDir.path}/sounds/send-message-audio.m4a";
+                            await File(path).create(recursive: true);
+                            await File(path).writeAsBytes(sendmsgaudio.data!);
+                            ss.settings.sendSoundPath.value = path;
+                            String path2 = "${fs.appDocDir.path}/sounds/receive-message-audio.m4a";
+                            await File(path2).create(recursive: true);
+                            await File(path2).writeAsBytes(recvmsgaudio.data!);
+                            ss.settings.receiveSoundPath.value = path2;
+                            ss.saveSettings();
+                            Get.back();
+                          } catch (e, s) {
+                            Get.back();
+                            showSnackbar("Error", "Failed to fetch audio");
+                            rethrow;
+                          }
+                        },
+                      ),
+                      SettingsTile(
                         title: "${ss.settings.sendSoundPath.value == null ? "Add" : "Change"} Send Sound",
                         subtitle: ss.settings.sendSoundPath.value != null
                             ? basename(ss.settings.sendSoundPath.value!).substring("send-".length)

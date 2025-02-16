@@ -387,6 +387,8 @@ class _AppleIdLoginState extends OptimizedState<AppleIdLogin> {
   }
 
   Future<void> connect(String appleId, String password) async {
+    // apple only takes lowercase
+    appleId = appleId.toLowerCase();
     controller.updateConnectError("");
     setState(() {
       loading = true;

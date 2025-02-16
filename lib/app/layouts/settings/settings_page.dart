@@ -341,7 +341,7 @@ class _SettingsPageState extends OptimizedState<SettingsPage> {
                                       enabled: deviceInfo == null,
                                       child: SettingsTile(
                                         backgroundColor: tileColor,
-                                        title: deviceInfo == null ? null : RustPushBBUtils.modelToUser(deviceInfo!.name),
+                                        title: ss.settings.deviceIsHosted.value ? "Hosted Device" : deviceInfo == null ? null : RustPushBBUtils.modelToUser(deviceInfo!.name),
                                         subtitle: ss.settings.redactedMode.value ? "Serial Number" : deviceInfo?.serial,
                                         onTap: () {
                                           ns.pushAndRemoveSettingsUntil(
@@ -1050,6 +1050,16 @@ class _SettingsPageState extends OptimizedState<SettingsPage> {
                                                                     .colorScheme
                                                                     .primary)),
                                                     onPressed: () async {
+                                                      if (ss.settings.deviceIsHosted.value) {
+                                                        String? ticket = await api.validateRelay(state: pushService.state);
+                                                        if (ticket != null) {
+                                                          var activated = await http.dio.post("https://hw.openbubbles.app/ticket/$ticket/release");
+                                                          if (activated.statusCode == 200) {
+                                                            (backend as RustPushBackend).markFailedToLogin(hw: true);
+                                                            return;
+                                                          }
+                                                        }
+                                                      }
                                                       (backend as RustPushBackend).markFailedToLogin();
                                                     }
                                                   ),

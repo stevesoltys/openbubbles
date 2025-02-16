@@ -132,7 +132,7 @@ class _AppleId2FAState extends OptimizedState<AppleId2FA> {
                             appleHelp();
                           },
                           child: Text(
-                            controller.isSms.value ? "Resend code" : "Can't access an Apple device?",
+                            controller.isSms.value ? "Resend code" : "Resend to Phone #",
                             style: context.theme.textTheme.bodyLarge!.apply(fontSizeFactor: 1.1, color: appleHelping ? HexColor('777777') : HexColor('2772C3'))
                           )
                         ),

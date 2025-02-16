@@ -18,7 +18,7 @@ class RequestContacts extends StatelessWidget {
         initialData: PermissionStatus.denied,
         builder: (context, snapshot) {
           bool granted = snapshot.data! == PermissionStatus.granted;
-          return Padding(
+          return granted ? Padding(
             padding: const EdgeInsets.all(8.0),
             child: Align(
               alignment: Alignment.centerLeft,
@@ -28,7 +28,7 @@ class RequestContacts extends StatelessWidget {
                   color: granted ? Colors.green : context.theme.colorScheme.error,
                 ).copyWith(height: 2)),
             ),
-          );
+          ) : const SizedBox.shrink();
         },
       ),
       onNextPressed: () async {

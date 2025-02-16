@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:bluebubbles/app/components/avatars/contact_avatar_widget.dart';
 import 'package:bluebubbles/app/layouts/settings/pages/theming/avatar/avatar_crop.dart';
+import 'package:bluebubbles/app/layouts/settings/widgets/content/next_button.dart';
 import 'package:bluebubbles/app/wrappers/theme_switcher.dart';
 import 'package:bluebubbles/helpers/helpers.dart';
 import 'package:bluebubbles/app/layouts/settings/widgets/settings_widgets.dart';
@@ -9,10 +11,13 @@ import 'package:bluebubbles/app/wrappers/stateful_boilerplate.dart';
 import 'package:bluebubbles/database/models.dart';
 import 'package:bluebubbles/main.dart';
 import 'package:bluebubbles/services/services.dart';
+import 'package:bluebubbles/utils/logger/logger.dart';
 import 'package:collection/collection.dart';
 import 'package:bluebubbles/services/network/backend_service.dart';
 import 'package:bluebubbles/services/rustpush/rustpush_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rust_bridge/flutter_rust_bridge.dart';
+import 'package:in_app_purchase_android/billing_client_wrappers.dart';
 import 'package:get/get.dart';
 import 'package:bluebubbles/services/network/backend_service.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -35,12 +40,95 @@ class _ProfilePanelState extends OptimizedState<ProfilePanel> with WidgetsBindin
   final RxMap<String, dynamic> accountContact = RxMap({});
   final RxnBool reregisteringIds = RxnBool();
 
+  StreamSubscription<PurchasesResultWrapper>? subscription;
+  String? ticket;
+
   RxList<api.PrivateDeviceInfo> forwardingTargets = RxList([]);
+
+  Future<void> handleSubscriptionToken(String subscription) async {
+    var activated = await http.dio.post("https://hw.openbubbles.app/ticket/${ticket!}/activate", data: {"purchase_token": subscription});
+    var useTicket = activated.data["ticket"];
+    if (useTicket != ticket) {
+      throw Exception("Ticket changed???");
+    }
+    (() async {
+      try {
+        reregisteringIds.value = true;
+        await api.doReregister(state: pushService.state);
+        getDetails();
+        showSnackbar("Success", "Registered");
+      } catch (e) {
+        showSnackbar("Failure", e.toString());
+        rethrow;
+      } finally {
+        reregisteringIds.value = false;
+      }
+    })();
+  }
+
+  Future<T> wrapSubscriptionPromise<T>(Future<T> inner) async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: context.theme.colorScheme.properSurface,
+          title: Text(
+            "Validating subscription...",
+            style: context.theme.textTheme.titleLarge,
+          ),
+          content: Container(
+            height: 70,
+            child: Center(
+              child: CircularProgressIndicator(
+                backgroundColor: context.theme.colorScheme.properSurface,
+                valueColor: AlwaysStoppedAnimation<Color>(context.theme.colorScheme.primary),
+              ),
+            ),
+          ),
+        );
+      }
+    );
+    T result;
+    try {
+      result = await inner;
+    } catch (e, s) {
+      Get.back();
+      showSnackbar("Failure handling subscription! Please try again", e.toString());
+      rethrow;
+    }
+    Get.back();
+    return result;
+  }
+
+  Future<bool> handlePurchases(PurchasesResultWrapper details) async {
+    for (var detail in details.purchasesList) {
+      if (detail.purchaseState != PurchaseStateWrapper.purchased) continue;
+      if (!detail.isAcknowledged) {
+        ss.settings.hostedPendingTransaction.value = detail.purchaseToken;
+      } else {
+        ss.settings.hostedPendingTransaction.value = null;
+      }
+      ss.saveSettings();
+      await wrapSubscriptionPromise(handleSubscriptionToken(detail.purchaseToken));
+      Logger.info("Purchased token ${detail.purchaseToken}");
+      return true;
+    }
+    return false;
+  }
 
   @override
   void initState() {
     super.initState();
     getDetails();
+    subscription = pushService.client.purchasesUpdatedStream.listen((PurchasesResultWrapper details) {
+      handlePurchases(details);
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    subscription?.cancel();
   }
 
   void getDetails() async {
@@ -368,15 +456,74 @@ class _ProfilePanelState extends OptimizedState<ProfilePanel> with WidgetsBindin
                       if (accountInfo['login_status_message']?.startsWith("Deregistered") ?? false)
                         Container(
                           color: tileColor,
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 15.0),
-                            child: SettingsDivider(color: context.theme.colorScheme.surfaceVariant),
-                          ),
+                          child: SettingsDivider(color: context.theme.colorScheme.surfaceVariant, padding: EdgeInsets.zero,),
                         ),
-                      if (accountInfo['login_status_message']?.startsWith("Deregistered") ?? false)
+                      if ((accountInfo['login_status_message']?.startsWith("Deregistered") ?? false) || (accountInfo['login_status_message']?.contains("Subscription not active!") ?? false))
                         SettingsTile(
-                        title: "Retry now",
+                        title: accountInfo['login_status_message']!.contains("Ticket not reserved!") ? "Reserve a new device" : accountInfo['login_status_message']!.contains("Subscription not active!") ? "Renew subscription" : "Retry now",
                         onTap: () async {
+                          if (accountInfo['login_status_message']!.contains("Ticket not reserved!")) {
+                            (backend as RustPushBackend).markFailedToLogin(hw: true);
+                            return;
+                          }
+                          if (accountInfo['login_status_message']!.contains("Subscription not active!")) {
+                            wrapSubscriptionPromise((() async {
+                              ticket = await api.validateRelay(state: pushService.state);
+                              if (ticket == null) {
+                                final status = await http.dio.get("https://hw.openbubbles.app/status");
+                                var hasCapacity = status.data["available"];
+                                var description = "When an OpenBubbles subscription becomes invalid, we reserve your device for a few days as a courtesy should you choose to restart your subscription. Unfortunately, however, we have already released your device to another user.";
+                                if (hasCapacity) {
+                                  description += " We have more devices available, however, you will have to re-activate. Backing up your messages now is recommended in case you aren't able to get back in.";
+                                } else {
+                                  description += " Double unfortunately, we are currently out of devices. Please check back later.";
+                                }
+                                // if we're not told we're not active, that means we have lost privileges to our device.
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                    title: Text(
+                                      "We're so sorry!",
+                                      style: context.theme.textTheme.titleLarge,
+                                    ),
+                                    backgroundColor: context.theme.colorScheme.properSurface,
+                                    content: Text(description, style: context.theme.textTheme.bodyLarge),
+                                    actions: [
+                                      TextButton(
+                                        child: Text(
+                                            "Close",
+                                            style: context.theme.textTheme.bodyLarge!.copyWith(color: context.theme.colorScheme.primary)
+                                        ),
+                                        onPressed: () => Navigator.of(context).pop(),
+                                      ),
+                                      if (hasCapacity)
+                                      TextButton(
+                                        child: Text(
+                                            "Restart subscription",
+                                            style: context.theme.textTheme.bodyLarge!.copyWith(color: context.theme.colorScheme.primary)
+                                        ),
+                                        onPressed: () {
+                                          (backend as RustPushBackend).markFailedToLogin(hw: true);
+                                        }
+                                      ),
+                                    ],
+                                  ),
+                                );
+                                return;
+                              }
+                              pushService.client.runWithClientNonRetryable<void>((client) async {
+                                var purchases = await client.queryPurchases(ProductType.subs);
+                                if (await handlePurchases(purchases)) return;
+
+                                var details = await client.queryProductDetails(productList: [const ProductWrapper(productId: 'monthly_hosted', productType: ProductType.subs)]);
+                                if (details.productDetailsList.isEmpty) {
+                                  return;
+                                }
+                                client.launchBillingFlow(product: 'monthly_hosted', offerToken: details.productDetailsList.first.subscriptionOfferDetails?.first.offerIdToken);
+                              });
+                            })());
+                            return;
+                          }
                           try {
                             reregisteringIds.value = true;
                             await api.doReregister(state: pushService.state);
@@ -390,7 +537,7 @@ class _ProfilePanelState extends OptimizedState<ProfilePanel> with WidgetsBindin
                           }
                         },
                         trailing: Obx(() => reregisteringIds.value == null
-                            ? const SizedBox.shrink()
+                            ? const NextButton()
                             : reregisteringIds.value == true ? Container(
                             constraints: const BoxConstraints(
                               maxHeight: 20,
@@ -404,10 +551,7 @@ class _ProfilePanelState extends OptimizedState<ProfilePanel> with WidgetsBindin
                       if (accountInfo['active_alias'] != null)
                         Container(
                           color: tileColor,
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 15.0),
-                            child: SettingsDivider(color: context.theme.colorScheme.surfaceVariant),
-                          ),
+                          child: SettingsDivider(color: context.theme.colorScheme.surfaceVariant, padding: EdgeInsets.zero,),
                         ),
                       if (accountInfo['active_alias'] != null)
                         SettingsOptions<String>(
