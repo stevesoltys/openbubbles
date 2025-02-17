@@ -463,7 +463,44 @@ class _ProfilePanelState extends OptimizedState<ProfilePanel> with WidgetsBindin
                         title: accountInfo['login_status_message']!.contains("Ticket not reserved!") ? "Reserve a new device" : accountInfo['login_status_message']!.contains("Subscription not active!") ? "Renew subscription" : "Retry now",
                         onTap: () async {
                           if (accountInfo['login_status_message']!.contains("Ticket not reserved!")) {
-                            (backend as RustPushBackend).markFailedToLogin(hw: true);
+                            final status = await http.dio.get("https://hw.openbubbles.app/status");
+                            var hasCapacity = status.data["available"];
+                            if (!hasCapacity) {
+                              var description = "We had to release your device for maintenance purposes, and cannot currently reserve another device. Please contact support@openbubbles.app for assistance. We apologize for the inconvenience, and will process refunds if we don't have another device for you.";
+                              // if we're not told we're not active, that means we have lost privileges to our device.
+                              showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  title: Text(
+                                    "We're so sorry!",
+                                    style: context.theme.textTheme.titleLarge,
+                                  ),
+                                  backgroundColor: context.theme.colorScheme.properSurface,
+                                  content: Text(description, style: context.theme.textTheme.bodyLarge),
+                                  actions: [
+                                    TextButton(
+                                      child: Text(
+                                          "Close",
+                                          style: context.theme.textTheme.bodyLarge!.copyWith(color: context.theme.colorScheme.primary)
+                                      ),
+                                      onPressed: () => Navigator.of(context).pop(),
+                                    ),
+                                    if (hasCapacity)
+                                    TextButton(
+                                      child: Text(
+                                          "Restart subscription",
+                                          style: context.theme.textTheme.bodyLarge!.copyWith(color: context.theme.colorScheme.primary)
+                                      ),
+                                      onPressed: () {
+                                        (backend as RustPushBackend).markFailedToLogin(hw: true);
+                                      }
+                                    ),
+                                  ],
+                                ),
+                              );
+                            } else {
+                              (backend as RustPushBackend).markFailedToLogin(hw: true);
+                            }
                             return;
                           }
                           if (accountInfo['login_status_message']!.contains("Subscription not active!")) {

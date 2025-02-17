@@ -327,12 +327,6 @@ class HwInpState extends OptimizedState<HwInp> {
         alreadyActivated = true;
         var parsed = (await api.getConfigState(state: pushService.state))!;
         select(parsed, ss.settings.macIsMine.value);
-        if (ss.settings.deviceIsHosted.value) {
-          var code = await api.validateRelay(state: pushService.state);
-          if (code != null) {
-            controller.restoreTicket(code);
-          }
-        }
       }
     }
   }

@@ -89,26 +89,33 @@ class SetupViewController extends StatefulController {
   }
 
   Future<void> updateIAPState() async {
-    await pushService.client.runWithClientNonRetryable<void>((client) async {
-      if (!hasValidToken()) {
-        final status = await http.dio.get("https://hw.openbubbles.app/status");
-        var hasCapacity = status.data["available"];
-        if (!hasCapacity) {
-          availableIAP.value = null;
+    if (!hasValidToken()) {
+      var details = await pushService.getPurchaseDetails();
+      if (details != null) {
+        final status = await http.dio.post("https://hw.openbubbles.app/restore", data: {"purchase_token": details.purchaseToken});
+        if (status.statusCode == 200) {
+          var ticket = status.data["code"];
+          await restoreTicket(ticket);
           return;
         }
       }
-      var details = await client.queryProductDetails(productList: [const ProductWrapper(productId: 'monthly_hosted', productType: ProductType.subs)]);
-      if (details.productDetailsList.isEmpty) {
-        Logger.warn("Product not found!");
+      final status = await http.dio.get("https://hw.openbubbles.app/status");
+      var hasCapacity = status.data["available"];
+      if (!hasCapacity) {
         availableIAP.value = null;
         return;
       }
+    }
+    var details = await pushService.client.runWithClient((client) => client.queryProductDetails(productList: [const ProductWrapper(productId: 'monthly_hosted', productType: ProductType.subs)]));
+    if (details.productDetailsList.isEmpty) {
+      Logger.warn("Product not found!");
+      availableIAP.value = null;
+      return;
+    }
 
-      print(details);
+    print(details);
 
-      availableIAP.value = details.productDetailsList.first.subscriptionOfferDetails?.first;
-    });
+    availableIAP.value = details.productDetailsList.first.subscriptionOfferDetails?.first;
   }
 
   void updateSucceeded(Function finish) async {
@@ -384,7 +391,7 @@ class SetupViewController extends StatefulController {
 
   int get pageOfNoReturn => kIsWeb || kIsDesktop ? 3 : 5;
 
-  void restoreTicket(String ticket) async {
+  Future<void> restoreTicket(String ticket) async {
     token = ticket;
     // really just placeholder for never, token should be assumed to be valid.
     tokenExpiry = DateTime.now().add(const Duration(days: 7));
