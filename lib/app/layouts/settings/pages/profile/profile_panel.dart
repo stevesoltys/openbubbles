@@ -485,16 +485,6 @@ class _ProfilePanelState extends OptimizedState<ProfilePanel> with WidgetsBindin
                                       ),
                                       onPressed: () => Navigator.of(context).pop(),
                                     ),
-                                    if (hasCapacity)
-                                    TextButton(
-                                      child: Text(
-                                          "Restart subscription",
-                                          style: context.theme.textTheme.bodyLarge!.copyWith(color: context.theme.colorScheme.primary)
-                                      ),
-                                      onPressed: () {
-                                        (backend as RustPushBackend).markFailedToLogin(hw: true);
-                                      }
-                                    ),
                                   ],
                                 ),
                               );
