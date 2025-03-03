@@ -10,6 +10,7 @@ import com.bluebubbles.messaging.services.extension.MessageUpdateHandler
 import com.bluebubbles.messaging.services.extension.StatusQuery
 import com.bluebubbles.messaging.services.extension.TemplateTapHandler
 import com.bluebubbles.messaging.services.facetime.FaceTimeCallStateHandler
+import com.bluebubbles.messaging.services.facetime.FaceTimeGetActiveCallHandler
 import com.bluebubbles.messaging.services.facetime.FaceTimeLaunchHandler
 import com.bluebubbles.messaging.services.filesystem.GetContentUriPathHandler
 import com.bluebubbles.messaging.services.firebase.FirebaseAuthHandler
@@ -104,6 +105,7 @@ class MethodCallHandler {
             FaceTimeLaunchHandler.tag -> FaceTimeLaunchHandler().handleMethodCall(call, result, context)
             FaceTimeCallStateHandler.tag -> FaceTimeCallStateHandler().handleMethodCall(call, result, context)
             CreateMissedFaceTimeNotification.tag -> CreateMissedFaceTimeNotification().handleMethodCall(call, result, context)
+            FaceTimeGetActiveCallHandler.tag -> FaceTimeGetActiveCallHandler().handleMethodCall(call, result, context)
             "ready" -> { MainActivity.engine_ready = true }
             else -> {
                 val error = "Could not find method call handler for ${call.method}!"

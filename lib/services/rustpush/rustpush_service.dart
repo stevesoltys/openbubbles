@@ -1992,6 +1992,13 @@ class RustPushService extends GetxService {
       }
 
       if (ring != null) {
+        String? existingCall = await mcs.invokeMethod("get-active-call");
+        if (existingCall == ring) {
+          // we already answered this call
+          Logger.info("Not ringing call $ring because we have already answered it!");
+          return;
+        }
+
         var session = getSessionName(ring, true);
         if (session == null) {
           Logger.warn("Rung call $ring not found in active sessions!");

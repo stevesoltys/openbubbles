@@ -1275,7 +1275,7 @@ pub async fn try_auth(state: &Arc<PushState>, username: String, password: String
 
     let mut user = None;
     if let Some(pet) = apple_account.get_pet() {
-        let identity = do_login(&inner.conf_dir, username.trim(), &pet, None, apple_account.spd.as_ref().unwrap(), inner.anisette.as_ref().unwrap(), inner.os_config.as_deref().unwrap()).await?;
+        let identity = do_login(&inner.conf_dir, apple_account.username.as_ref().unwrap().trim(), &pet, None, apple_account.spd.as_ref().unwrap(), inner.anisette.as_ref().unwrap(), inner.os_config.as_deref().unwrap()).await?;
         user = Some(identity);
 
         // who needs extra steps when you have a PET, amirite?

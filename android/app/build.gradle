@@ -121,6 +121,7 @@ android {
             productFlavors.alpha.signingConfig signingConfigs.debug
             productFlavors.beta.signingConfig signingConfigs.release
             productFlavors.prod.signingConfig signingConfigs.release
+            productFlavors.alpha.signingConfig signingConfigs.release
             minifyEnabled false
             shrinkResources false
         }

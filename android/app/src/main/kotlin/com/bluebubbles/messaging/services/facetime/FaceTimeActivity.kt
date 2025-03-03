@@ -47,7 +47,7 @@ class FaceTimeActivity : Activity() {
     var answered = false
     private var mirrorReady = false
     private var notificationId = 0
-    private var callUuid: String? = null
+    var callUuid: String? = null
     private lateinit var cached: CachedWebview
 
     private lateinit var webView: WebView

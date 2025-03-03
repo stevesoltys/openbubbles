@@ -117,7 +117,7 @@ class _AboutPanelState extends OptimizedState<AboutPanel> {
                               text: "You deserve to be treated with respect and kindness. ",
                             ),
                             const TextSpan(
-                              text: "Unwarranted, recurring hostility in the classroom or workplace ",
+                              text: "Unwarranted, recurring, and targeted hostility in the classroom or workplace ",
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                             const TextSpan(

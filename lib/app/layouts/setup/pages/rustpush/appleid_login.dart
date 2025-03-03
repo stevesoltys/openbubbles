@@ -439,6 +439,9 @@ class _AppleIdLoginState extends OptimizedState<AppleIdLogin> {
         }
         controller.updateConnectError(e.message);
       }
+      if (e is PanicException) {
+        controller.updateConnectError(e.message);
+      }
       rethrow;
     } finally {
       setState(() {
