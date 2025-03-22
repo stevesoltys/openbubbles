@@ -619,7 +619,7 @@ class HwInpState extends OptimizedState<HwInp> {
                                 ),
                                 child: InkWell(
                                   onTap: () async {
-                                    launchUrl(Uri.parse("https://docs.google.com/forms/d/e/1FAIpQLSf0psSFctObU_2Ib44H4WZlXhwpy-nLWy-jteYExWgKZ_mnhg/viewform?usp=header"));
+                                    launchUrl(Uri.parse("https://openbubbles.app/waitlist.html"));
                                   },
                                   borderRadius: BorderRadius.circular(15),
                                   child: Padding(

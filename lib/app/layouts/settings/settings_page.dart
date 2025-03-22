@@ -1050,6 +1050,67 @@ class _SettingsPageState extends OptimizedState<SettingsPage> {
                                                                     .colorScheme
                                                                     .primary)),
                                                     onPressed: () async {
+                                                      (backend as RustPushBackend).markFailedToLogin();
+                                                    }
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
+                                        },
+                                        leading: SettingsLeadingIcon(
+                                          iosIcon: CupertinoIcons.wrench_fill,
+                                          materialIcon: Icons.settings,
+                                          containerColor: Colors.red[700],
+                                        ),
+                                        title: "Reconfigure",
+                                        subtitle: "Keep messages and reconfigure",
+                                      ),
+                                      const SettingsDivider(),
+                                      SettingsTile(
+                                        backgroundColor: tileColor,
+                                        onTap: () {
+                                          showDialog(
+                                            barrierDismissible: true,
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: Text(
+                                                  "Are you sure?",
+                                                  style: context
+                                                      .theme.textTheme.titleLarge,
+                                                ),
+                                                content: Text(
+                                                  "Re-login will be required. No messages will be deleted.",
+                                                  style: context
+                                                      .theme.textTheme.bodyLarge,
+                                                ),
+                                                backgroundColor: context.theme
+                                                    .colorScheme.properSurface,
+                                                actions: <Widget>[
+                                                  TextButton(
+                                                    child: Text("No",
+                                                        style: context.theme
+                                                            .textTheme.bodyLarge!
+                                                            .copyWith(
+                                                                color: context
+                                                                    .theme
+                                                                    .colorScheme
+                                                                    .primary)),
+                                                    onPressed: () {
+                                                      Navigator.of(context).pop();
+                                                    },
+                                                  ),
+                                                  TextButton(
+                                                    child: Text("Yes",
+                                                        style: context.theme
+                                                            .textTheme.bodyLarge!
+                                                            .copyWith(
+                                                                color: context
+                                                                    .theme
+                                                                    .colorScheme
+                                                                    .primary)),
+                                                    onPressed: () async {
                                                       if (ss.settings.deviceIsHosted.value) {
                                                         String? ticket = await api.validateRelay(state: pushService.state);
                                                         if (ticket != null) {

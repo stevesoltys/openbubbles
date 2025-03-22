@@ -1,4 +1,5 @@
 import 'package:barcode_widget/barcode_widget.dart';
+import 'package:bluebubbles/app/layouts/settings/widgets/content/next_button.dart';
 import 'package:bluebubbles/helpers/helpers.dart';
 import 'package:bluebubbles/services/rustpush/rustpush_service.dart';
 import 'package:bluebubbles/utils/share.dart';
@@ -10,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart' hide Response;
 import 'package:bluebubbles/src/rust/api/api.dart' as api;
+import 'package:url_launcher/url_launcher.dart';
 
 class DevicePanelController extends StatefulController {
 
@@ -82,6 +84,14 @@ class _DevicePanelState extends CustomState<DevicePanel, void, DevicePanelContro
                         ],
                       )
                     ),
+                    if (ss.settings.deviceIsHosted.value)
+                      SettingsTile(
+                      title: "Manage subscription",
+                      onTap: () async {
+                        launchUrl(Uri.parse("https://play.google.com/store/account/subscriptions?sku=monthly_hosted&package=com.openbubbles.messaging"), mode: LaunchMode.externalNonBrowserApplication);
+                      },
+                      trailing: const NextButton()
+                      ),
                   ],
                 ),
                 if (ss.settings.macIsMine.value && deviceInfo?.encodedData != null && !ss.settings.redactedMode.value)

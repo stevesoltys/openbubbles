@@ -1778,6 +1778,31 @@ class RustPushService extends GetxService {
           await updateChatParticipants(result, myMsg, data.participants, myMsg.conversation!.participants);
         }
       }
+      if (myMsg.message is! api.Message_RenameMessage && myMsg.conversation!.cvName != null && myMsg.conversation!.cvName != result.apnTitle) {
+        if (!result.lockChatName) {
+          result.displayName = myMsg.conversation!.cvName;
+        }
+        result.apnTitle = myMsg.conversation!.cvName;
+        myMsg.conversation?.cvName = myMsg.conversation!.cvName;
+        result.save(updateDisplayName: true, updateAPNTitle: true);
+
+        var myHandles = await api.getHandles(state: pushService.state);
+        var msg = Message(
+          guid: uuid.v4(),
+          isFromMe: myHandles.contains(myMsg.sender),
+          handleId: RustPushBBUtils.rustHandleToBB(myMsg.sender!).originalROWID!,
+          dateCreated: DateTime.fromMillisecondsSinceEpoch(myMsg.sentTimestamp),
+          itemType: 2,
+          groupActionType: 2,
+          groupTitle: myMsg.conversation!.cvName,
+        );
+
+        inq.queue(IncomingItem(
+          chat: result,
+          message: msg,
+          type: QueueType.newMessage
+        ));
+      }
     }
     if (result.dateDeleted != null) {
       Chat.unDelete(result);
@@ -2098,6 +2123,10 @@ class RustPushService extends GetxService {
       var message = myMsg.message as api.Message_Error;
       var mistakeFor = Message.findOne(guid: message.field0.forUuid);
       if (mistakeFor == null) return; // multiple errors will likely come in, at which point guid will be bad.
+      // do not flag 300 error messages for self handles
+      var myHandles = (await api.getHandles(state: pushService.state));
+      if (!myHandles.contains(myMsg.sender)) return;
+
       markFailed(mistakeFor, message.field0.statusStr);
       return;
     }

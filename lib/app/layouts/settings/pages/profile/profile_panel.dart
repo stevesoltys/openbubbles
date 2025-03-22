@@ -25,6 +25,7 @@ import 'package:supercharged/supercharged.dart';
 import 'package:telephony_plus/telephony_plus.dart';
 import 'package:universal_io/io.dart';
 import 'package:bluebubbles/src/rust/api/api.dart' as api;
+import 'package:url_launcher/url_launcher.dart';
 
 class ProfilePanel extends StatefulWidget {
 
@@ -575,6 +576,14 @@ class _ProfilePanelState extends OptimizedState<ProfilePanel> with WidgetsBindin
                               valueColor: AlwaysStoppedAnimation<Color>(context.theme.colorScheme.primary),
                             )) : Icon(Icons.check, color: context.theme.colorScheme.outline))
                         ),
+                      if (!(accountInfo['login_status_message']?.contains("Subscription not active!") ?? false) && ss.settings.deviceIsHosted.value)
+                        SettingsTile(
+                        title: "Manage subscription",
+                        onTap: () async {
+                          launchUrl(Uri.parse("https://play.google.com/store/account/subscriptions?sku=monthly_hosted&package=com.openbubbles.messaging"), mode: LaunchMode.externalNonBrowserApplication);
+                        },
+                        trailing: const NextButton()
+                      ),
                       if (accountInfo['active_alias'] != null)
                         Container(
                           color: tileColor,

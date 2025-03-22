@@ -43,6 +43,8 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="29"/>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CAMERA" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
 
     <!-- Features -->
     <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
@@ -110,6 +112,11 @@
             android:name="com.bluebubbles.telephony_plus.send.MySentReceiver"
             android:taskAffinity="com.bluebubbles.messaging.SMS_SENT1" />
 
+        <service
+            android:name=".services.facetime.FaceTimeInCallService"
+            android:foregroundServiceType="camera|microphone"
+            android:exported="false" />
+        
         <service
             android:name=".services.rustpush.APNService"
             android:foregroundServiceType="specialUse"
@@ -254,6 +261,8 @@
                 <data android:scheme="http" />
                 <data android:host="hw.openbubbles.app" />
                 <data android:scheme="https" />
+                <data android:pathPrefix="/code/" />
+                <data android:pathPrefix="/ticket/" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

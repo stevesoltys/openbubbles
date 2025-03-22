@@ -254,10 +254,23 @@ class FaceTimeActivity : Activity() {
         }
     }
 
+    var serviceStarted: Boolean = false
+
+    fun startService() {
+        if (serviceStarted) return
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val intent = Intent(this, FaceTimeInCallService::class.java)
+            startForegroundService(intent)
+        }
+        serviceStarted = true
+    }
+
     fun handlePermissionRequest(request: PermissionRequest) {
         val permissions = request.resources.flatMap { i -> permissionMap[i] ?: listOf() }
         if (permissions.all { checkSelfPermission(it) == PackageManager.PERMISSION_GRANTED }) {
             request.grant(request.resources)
+            startService()
             return
         }
         permissionRequests.add(request)
@@ -267,6 +280,10 @@ class FaceTimeActivity : Activity() {
     override fun onDestroy() {
         webView.destroy()
         activeFaceTimeActivity = null
+
+        val intent = Intent(this, FaceTimeInCallService::class.java)
+        stopService(intent)
+        serviceStarted = false
 
         // restore default media volume
         initialMediaVolume?.let {
@@ -304,6 +321,7 @@ class FaceTimeActivity : Activity() {
             }.toTypedArray())
         }
         permissionRequests = arrayListOf()
+        startService()
     }
 
     private fun connecting() {
