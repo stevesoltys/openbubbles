@@ -773,7 +773,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
       id: const obx_int.IdUid(17, 2547083341603323785),
       name: 'Contact',
-      lastPropertyId: const obx_int.IdUid(10, 3612117664568604198),
+      lastPropertyId: const obx_int.IdUid(12, 761555548860852325),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
@@ -811,6 +811,16 @@ final _entities = <obx_int.ModelEntity>[
             id: const obx_int.IdUid(10, 3612117664568604198),
             name: 'dbStructuredName',
             type: 9,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(11, 3140177684889918471),
+            name: 'isShared',
+            type: 1,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(12, 761555548860852325),
+            name: 'isDismissed',
+            type: 1,
             flags: 0)
       ],
       relations: <obx_int.ModelRelation>[],
@@ -1878,7 +1888,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
           final dbStructuredNameOffset = object.dbStructuredName == null
               ? null
               : fbb.writeString(object.dbStructuredName!);
-          fbb.startTable(11);
+          fbb.startTable(13);
           fbb.addInt64(0, object.dbId ?? 0);
           fbb.addOffset(1, idOffset);
           fbb.addOffset(2, displayNameOffset);
@@ -1886,6 +1896,8 @@ obx_int.ModelDefinition getObjectBoxModel() {
           fbb.addOffset(5, emailsOffset);
           fbb.addOffset(7, avatarOffset);
           fbb.addOffset(9, dbStructuredNameOffset);
+          fbb.addBool(10, object.isShared);
+          fbb.addBool(11, object.isDismissed);
           fbb.finish(fbb.endTable());
           return object.dbId ?? 0;
         },
@@ -1909,13 +1921,19 @@ obx_int.ModelDefinition getObjectBoxModel() {
               .vTableGet(buffer, rootOffset, 14, []);
           final avatarParam = const fb.Uint8ListReader(lazy: false)
               .vTableGetNullable(buffer, rootOffset, 18) as Uint8List?;
+          final isSharedParam =
+              const fb.BoolReader().vTableGet(buffer, rootOffset, 24, false);
+          final isDismissedParam =
+              const fb.BoolReader().vTableGet(buffer, rootOffset, 26, false);
           final object = Contact(
               dbId: dbIdParam,
               id: idParam,
               displayName: displayNameParam,
               phones: phonesParam,
               emails: emailsParam,
-              avatar: avatarParam)
+              avatar: avatarParam,
+              isShared: isSharedParam,
+              isDismissed: isDismissedParam)
             ..dbStructuredName = const fb.StringReader(asciiOptimization: true)
                 .vTableGetNullable(buffer, rootOffset, 22);
 
@@ -2504,4 +2522,12 @@ class Contact_ {
   /// See [Contact.dbStructuredName].
   static final dbStructuredName =
       obx.QueryStringProperty<Contact>(_entities[8].properties[6]);
+
+  /// See [Contact.isShared].
+  static final isShared =
+      obx.QueryBooleanProperty<Contact>(_entities[8].properties[7]);
+
+  /// See [Contact.isDismissed].
+  static final isDismissed =
+      obx.QueryBooleanProperty<Contact>(_entities[8].properties[8]);
 }

@@ -171,6 +171,27 @@ Future<List<String>> validateTargetsFacetime(
     RustLib.instance.api.crateApiApiValidateTargetsFacetime(
         state: state, targets: targets, sender: sender);
 
+Future<String> encodeProfileMessage({required ShareProfileMessage p}) =>
+    RustLib.instance.api.crateApiApiEncodeProfileMessage(p: p);
+
+Future<ShareProfileMessage> decodeProfileMessage({required String s}) =>
+    RustLib.instance.api.crateApiApiDecodeProfileMessage(s: s);
+
+Future<IMessageNicknameRecord> fetchProfile(
+        {required ArcPushState state, required ShareProfileMessage message}) =>
+    RustLib.instance.api
+        .crateApiApiFetchProfile(state: state, message: message);
+
+Future<ShareProfileMessage> setProfile(
+        {required ArcPushState state,
+        required IMessageNicknameRecord record,
+        ShareProfileMessage? existing}) =>
+    RustLib.instance.api.crateApiApiSetProfile(
+        state: state, record: record, existing: existing);
+
+Future<bool> canProfileShare({required ArcPushState state}) =>
+    RustLib.instance.api.crateApiApiCanProfileShare(state: state);
+
 Future<PollResult> recvWait({required ArcPushState state}) =>
     RustLib.instance.api.crateApiApiRecvWait(state: state);
 
@@ -1164,6 +1185,78 @@ class HwExtra {
           aoskitVersion == other.aoskitVersion;
 }
 
+class IMessageNameRecord {
+  final String name;
+  final String first;
+  final String last;
+
+  const IMessageNameRecord({
+    required this.name,
+    required this.first,
+    required this.last,
+  });
+
+  @override
+  int get hashCode => name.hashCode ^ first.hashCode ^ last.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is IMessageNameRecord &&
+          runtimeType == other.runtimeType &&
+          name == other.name &&
+          first == other.first &&
+          last == other.last;
+}
+
+class IMessageNicknameRecord {
+  final IMessageNameRecord name;
+  final Uint8List? image;
+  final IMessagePosterRecord? poster;
+
+  const IMessageNicknameRecord({
+    required this.name,
+    this.image,
+    this.poster,
+  });
+
+  @override
+  int get hashCode => name.hashCode ^ image.hashCode ^ poster.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is IMessageNicknameRecord &&
+          runtimeType == other.runtimeType &&
+          name == other.name &&
+          image == other.image &&
+          poster == other.poster;
+}
+
+class IMessagePosterRecord {
+  final Uint8List lowResPoster;
+  final Uint8List package;
+  final Uint8List meta;
+
+  const IMessagePosterRecord({
+    required this.lowResPoster,
+    required this.package,
+    required this.meta,
+  });
+
+  @override
+  int get hashCode => lowResPoster.hashCode ^ package.hashCode ^ meta.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is IMessagePosterRecord &&
+          runtimeType == other.runtimeType &&
+          lowResPoster == other.lowResPoster &&
+          package == other.package &&
+          meta == other.meta;
+}
+
 class IconChangeMessage {
   final MMCSFile? file;
   final int groupVersion;
@@ -1524,6 +1617,15 @@ sealed class Message with _$Message {
     PermanentDeleteMessage field0,
   ) = Message_PermanentDelete;
   const factory Message.unschedule() = Message_Unschedule;
+  const factory Message.updateProfile(
+    UpdateProfileMessage field0,
+  ) = Message_UpdateProfile;
+  const factory Message.updateProfileSharing(
+    UpdateProfileSharingMessage field0,
+  ) = Message_UpdateProfileSharing;
+  const factory Message.shareProfile(
+    ShareProfileMessage field0,
+  ) = Message_ShareProfile;
 }
 
 class MessageInst {
@@ -1746,6 +1848,7 @@ class NormalMessage {
   LinkMeta? linkMeta;
   bool voice;
   ScheduleMode? scheduled;
+  ShareProfileMessage? embeddedProfile;
 
   NormalMessage({
     required this.parts,
@@ -1758,6 +1861,7 @@ class NormalMessage {
     this.linkMeta,
     required this.voice,
     this.scheduled,
+    this.embeddedProfile,
   });
 
   @override
@@ -1771,7 +1875,8 @@ class NormalMessage {
       app.hashCode ^
       linkMeta.hashCode ^
       voice.hashCode ^
-      scheduled.hashCode;
+      scheduled.hashCode ^
+      embeddedProfile.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -1787,7 +1892,8 @@ class NormalMessage {
           app == other.app &&
           linkMeta == other.linkMeta &&
           voice == other.voice &&
-          scheduled == other.scheduled;
+          scheduled == other.scheduled &&
+          embeddedProfile == other.embeddedProfile;
 }
 
 enum NSDictionaryClass {
@@ -1970,17 +2076,23 @@ class ReactMessage {
   final int? toPart;
   final ReactMessageType reaction;
   final String toText;
+  final ShareProfileMessage? embeddedProfile;
 
   const ReactMessage({
     required this.toUuid,
     this.toPart,
     required this.reaction,
     required this.toText,
+    this.embeddedProfile,
   });
 
   @override
   int get hashCode =>
-      toUuid.hashCode ^ toPart.hashCode ^ reaction.hashCode ^ toText.hashCode;
+      toUuid.hashCode ^
+      toPart.hashCode ^
+      reaction.hashCode ^
+      toText.hashCode ^
+      embeddedProfile.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -1990,7 +2102,8 @@ class ReactMessage {
           toUuid == other.toUuid &&
           toPart == other.toPart &&
           reaction == other.reaction &&
-          toText == other.toText;
+          toText == other.toText &&
+          embeddedProfile == other.embeddedProfile;
 }
 
 @freezed
@@ -2109,6 +2222,33 @@ class ScheduleMode {
           schedule == other.schedule;
 }
 
+class ShareProfileMessage {
+  final Uint8List cloudKitDecryptionRecordKey;
+  final String cloudKitRecordKey;
+  final SharedPoster? poster;
+
+  const ShareProfileMessage({
+    required this.cloudKitDecryptionRecordKey,
+    required this.cloudKitRecordKey,
+    this.poster,
+  });
+
+  @override
+  int get hashCode =>
+      cloudKitDecryptionRecordKey.hashCode ^
+      cloudKitRecordKey.hashCode ^
+      poster.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ShareProfileMessage &&
+          runtimeType == other.runtimeType &&
+          cloudKitDecryptionRecordKey == other.cloudKitDecryptionRecordKey &&
+          cloudKitRecordKey == other.cloudKitRecordKey &&
+          poster == other.poster;
+}
+
 class SharedAlbum {
   final String? name;
   final String? fullname;
@@ -2158,6 +2298,31 @@ class SharedAlbum {
           albumlocation == other.albumlocation &&
           assets == other.assets &&
           delete == other.delete;
+}
+
+class SharedPoster {
+  final Uint8List lowResWallpaperTag;
+  final Uint8List wallpaperTag;
+  final Uint8List messageTag;
+
+  const SharedPoster({
+    required this.lowResWallpaperTag,
+    required this.wallpaperTag,
+    required this.messageTag,
+  });
+
+  @override
+  int get hashCode =>
+      lowResWallpaperTag.hashCode ^ wallpaperTag.hashCode ^ messageTag.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is SharedPoster &&
+          runtimeType == other.runtimeType &&
+          lowResWallpaperTag == other.lowResWallpaperTag &&
+          wallpaperTag == other.wallpaperTag &&
+          messageTag == other.messageTag;
 }
 
 class SupportAction {
@@ -2371,4 +2536,50 @@ class UpdateExtensionMessage {
           runtimeType == other.runtimeType &&
           forUuid == other.forUuid &&
           ext == other.ext;
+}
+
+class UpdateProfileMessage {
+  final ShareProfileMessage? profile;
+  final bool shareContacts;
+
+  const UpdateProfileMessage({
+    this.profile,
+    required this.shareContacts,
+  });
+
+  @override
+  int get hashCode => profile.hashCode ^ shareContacts.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is UpdateProfileMessage &&
+          runtimeType == other.runtimeType &&
+          profile == other.profile &&
+          shareContacts == other.shareContacts;
+}
+
+class UpdateProfileSharingMessage {
+  final List<String> sharedDismissed;
+  final List<String> sharedAll;
+  final int version;
+
+  const UpdateProfileSharingMessage({
+    required this.sharedDismissed,
+    required this.sharedAll,
+    required this.version,
+  });
+
+  @override
+  int get hashCode =>
+      sharedDismissed.hashCode ^ sharedAll.hashCode ^ version.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is UpdateProfileSharingMessage &&
+          runtimeType == other.runtimeType &&
+          sharedDismissed == other.sharedDismissed &&
+          sharedAll == other.sharedAll &&
+          version == other.version;
 }

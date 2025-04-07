@@ -4354,6 +4354,10 @@ mixin _$Message {
     required TResult Function(OperatedChat field0) recoverChat,
     required TResult Function(PermanentDeleteMessage field0) permanentDelete,
     required TResult Function() unschedule,
+    required TResult Function(UpdateProfileMessage field0) updateProfile,
+    required TResult Function(UpdateProfileSharingMessage field0)
+        updateProfileSharing,
+    required TResult Function(ShareProfileMessage field0) shareProfile,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -4380,6 +4384,9 @@ mixin _$Message {
     TResult? Function(OperatedChat field0)? recoverChat,
     TResult? Function(PermanentDeleteMessage field0)? permanentDelete,
     TResult? Function()? unschedule,
+    TResult? Function(UpdateProfileMessage field0)? updateProfile,
+    TResult? Function(UpdateProfileSharingMessage field0)? updateProfileSharing,
+    TResult? Function(ShareProfileMessage field0)? shareProfile,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -4406,6 +4413,9 @@ mixin _$Message {
     TResult Function(OperatedChat field0)? recoverChat,
     TResult Function(PermanentDeleteMessage field0)? permanentDelete,
     TResult Function()? unschedule,
+    TResult Function(UpdateProfileMessage field0)? updateProfile,
+    TResult Function(UpdateProfileSharingMessage field0)? updateProfileSharing,
+    TResult Function(ShareProfileMessage field0)? shareProfile,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -4437,6 +4447,10 @@ mixin _$Message {
     required TResult Function(Message_RecoverChat value) recoverChat,
     required TResult Function(Message_PermanentDelete value) permanentDelete,
     required TResult Function(Message_Unschedule value) unschedule,
+    required TResult Function(Message_UpdateProfile value) updateProfile,
+    required TResult Function(Message_UpdateProfileSharing value)
+        updateProfileSharing,
+    required TResult Function(Message_ShareProfile value) shareProfile,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -4463,6 +4477,9 @@ mixin _$Message {
     TResult? Function(Message_RecoverChat value)? recoverChat,
     TResult? Function(Message_PermanentDelete value)? permanentDelete,
     TResult? Function(Message_Unschedule value)? unschedule,
+    TResult? Function(Message_UpdateProfile value)? updateProfile,
+    TResult? Function(Message_UpdateProfileSharing value)? updateProfileSharing,
+    TResult? Function(Message_ShareProfile value)? shareProfile,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -4489,6 +4506,9 @@ mixin _$Message {
     TResult Function(Message_RecoverChat value)? recoverChat,
     TResult Function(Message_PermanentDelete value)? permanentDelete,
     TResult Function(Message_Unschedule value)? unschedule,
+    TResult Function(Message_UpdateProfile value)? updateProfile,
+    TResult Function(Message_UpdateProfileSharing value)? updateProfileSharing,
+    TResult Function(Message_ShareProfile value)? shareProfile,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -4606,6 +4626,10 @@ class _$Message_MessageImpl extends Message_Message {
     required TResult Function(OperatedChat field0) recoverChat,
     required TResult Function(PermanentDeleteMessage field0) permanentDelete,
     required TResult Function() unschedule,
+    required TResult Function(UpdateProfileMessage field0) updateProfile,
+    required TResult Function(UpdateProfileSharingMessage field0)
+        updateProfileSharing,
+    required TResult Function(ShareProfileMessage field0) shareProfile,
   }) {
     return message(field0);
   }
@@ -4635,6 +4659,9 @@ class _$Message_MessageImpl extends Message_Message {
     TResult? Function(OperatedChat field0)? recoverChat,
     TResult? Function(PermanentDeleteMessage field0)? permanentDelete,
     TResult? Function()? unschedule,
+    TResult? Function(UpdateProfileMessage field0)? updateProfile,
+    TResult? Function(UpdateProfileSharingMessage field0)? updateProfileSharing,
+    TResult? Function(ShareProfileMessage field0)? shareProfile,
   }) {
     return message?.call(field0);
   }
@@ -4664,6 +4691,9 @@ class _$Message_MessageImpl extends Message_Message {
     TResult Function(OperatedChat field0)? recoverChat,
     TResult Function(PermanentDeleteMessage field0)? permanentDelete,
     TResult Function()? unschedule,
+    TResult Function(UpdateProfileMessage field0)? updateProfile,
+    TResult Function(UpdateProfileSharingMessage field0)? updateProfileSharing,
+    TResult Function(ShareProfileMessage field0)? shareProfile,
     required TResult orElse(),
   }) {
     if (message != null) {
@@ -4701,6 +4731,10 @@ class _$Message_MessageImpl extends Message_Message {
     required TResult Function(Message_RecoverChat value) recoverChat,
     required TResult Function(Message_PermanentDelete value) permanentDelete,
     required TResult Function(Message_Unschedule value) unschedule,
+    required TResult Function(Message_UpdateProfile value) updateProfile,
+    required TResult Function(Message_UpdateProfileSharing value)
+        updateProfileSharing,
+    required TResult Function(Message_ShareProfile value) shareProfile,
   }) {
     return message(this);
   }
@@ -4730,6 +4764,9 @@ class _$Message_MessageImpl extends Message_Message {
     TResult? Function(Message_RecoverChat value)? recoverChat,
     TResult? Function(Message_PermanentDelete value)? permanentDelete,
     TResult? Function(Message_Unschedule value)? unschedule,
+    TResult? Function(Message_UpdateProfile value)? updateProfile,
+    TResult? Function(Message_UpdateProfileSharing value)? updateProfileSharing,
+    TResult? Function(Message_ShareProfile value)? shareProfile,
   }) {
     return message?.call(this);
   }
@@ -4759,6 +4796,9 @@ class _$Message_MessageImpl extends Message_Message {
     TResult Function(Message_RecoverChat value)? recoverChat,
     TResult Function(Message_PermanentDelete value)? permanentDelete,
     TResult Function(Message_Unschedule value)? unschedule,
+    TResult Function(Message_UpdateProfile value)? updateProfile,
+    TResult Function(Message_UpdateProfileSharing value)? updateProfileSharing,
+    TResult Function(Message_ShareProfile value)? shareProfile,
     required TResult orElse(),
   }) {
     if (message != null) {
@@ -4875,6 +4915,10 @@ class _$Message_RenameMessageImpl extends Message_RenameMessage {
     required TResult Function(OperatedChat field0) recoverChat,
     required TResult Function(PermanentDeleteMessage field0) permanentDelete,
     required TResult Function() unschedule,
+    required TResult Function(UpdateProfileMessage field0) updateProfile,
+    required TResult Function(UpdateProfileSharingMessage field0)
+        updateProfileSharing,
+    required TResult Function(ShareProfileMessage field0) shareProfile,
   }) {
     return renameMessage(field0);
   }
@@ -4904,6 +4948,9 @@ class _$Message_RenameMessageImpl extends Message_RenameMessage {
     TResult? Function(OperatedChat field0)? recoverChat,
     TResult? Function(PermanentDeleteMessage field0)? permanentDelete,
     TResult? Function()? unschedule,
+    TResult? Function(UpdateProfileMessage field0)? updateProfile,
+    TResult? Function(UpdateProfileSharingMessage field0)? updateProfileSharing,
+    TResult? Function(ShareProfileMessage field0)? shareProfile,
   }) {
     return renameMessage?.call(field0);
   }
@@ -4933,6 +4980,9 @@ class _$Message_RenameMessageImpl extends Message_RenameMessage {
     TResult Function(OperatedChat field0)? recoverChat,
     TResult Function(PermanentDeleteMessage field0)? permanentDelete,
     TResult Function()? unschedule,
+    TResult Function(UpdateProfileMessage field0)? updateProfile,
+    TResult Function(UpdateProfileSharingMessage field0)? updateProfileSharing,
+    TResult Function(ShareProfileMessage field0)? shareProfile,
     required TResult orElse(),
   }) {
     if (renameMessage != null) {
@@ -4970,6 +5020,10 @@ class _$Message_RenameMessageImpl extends Message_RenameMessage {
     required TResult Function(Message_RecoverChat value) recoverChat,
     required TResult Function(Message_PermanentDelete value) permanentDelete,
     required TResult Function(Message_Unschedule value) unschedule,
+    required TResult Function(Message_UpdateProfile value) updateProfile,
+    required TResult Function(Message_UpdateProfileSharing value)
+        updateProfileSharing,
+    required TResult Function(Message_ShareProfile value) shareProfile,
   }) {
     return renameMessage(this);
   }
@@ -4999,6 +5053,9 @@ class _$Message_RenameMessageImpl extends Message_RenameMessage {
     TResult? Function(Message_RecoverChat value)? recoverChat,
     TResult? Function(Message_PermanentDelete value)? permanentDelete,
     TResult? Function(Message_Unschedule value)? unschedule,
+    TResult? Function(Message_UpdateProfile value)? updateProfile,
+    TResult? Function(Message_UpdateProfileSharing value)? updateProfileSharing,
+    TResult? Function(Message_ShareProfile value)? shareProfile,
   }) {
     return renameMessage?.call(this);
   }
@@ -5028,6 +5085,9 @@ class _$Message_RenameMessageImpl extends Message_RenameMessage {
     TResult Function(Message_RecoverChat value)? recoverChat,
     TResult Function(Message_PermanentDelete value)? permanentDelete,
     TResult Function(Message_Unschedule value)? unschedule,
+    TResult Function(Message_UpdateProfile value)? updateProfile,
+    TResult Function(Message_UpdateProfileSharing value)? updateProfileSharing,
+    TResult Function(Message_ShareProfile value)? shareProfile,
     required TResult orElse(),
   }) {
     if (renameMessage != null) {
@@ -5145,6 +5205,10 @@ class _$Message_ChangeParticipantsImpl extends Message_ChangeParticipants {
     required TResult Function(OperatedChat field0) recoverChat,
     required TResult Function(PermanentDeleteMessage field0) permanentDelete,
     required TResult Function() unschedule,
+    required TResult Function(UpdateProfileMessage field0) updateProfile,
+    required TResult Function(UpdateProfileSharingMessage field0)
+        updateProfileSharing,
+    required TResult Function(ShareProfileMessage field0) shareProfile,
   }) {
     return changeParticipants(field0);
   }
@@ -5174,6 +5238,9 @@ class _$Message_ChangeParticipantsImpl extends Message_ChangeParticipants {
     TResult? Function(OperatedChat field0)? recoverChat,
     TResult? Function(PermanentDeleteMessage field0)? permanentDelete,
     TResult? Function()? unschedule,
+    TResult? Function(UpdateProfileMessage field0)? updateProfile,
+    TResult? Function(UpdateProfileSharingMessage field0)? updateProfileSharing,
+    TResult? Function(ShareProfileMessage field0)? shareProfile,
   }) {
     return changeParticipants?.call(field0);
   }
@@ -5203,6 +5270,9 @@ class _$Message_ChangeParticipantsImpl extends Message_ChangeParticipants {
     TResult Function(OperatedChat field0)? recoverChat,
     TResult Function(PermanentDeleteMessage field0)? permanentDelete,
     TResult Function()? unschedule,
+    TResult Function(UpdateProfileMessage field0)? updateProfile,
+    TResult Function(UpdateProfileSharingMessage field0)? updateProfileSharing,
+    TResult Function(ShareProfileMessage field0)? shareProfile,
     required TResult orElse(),
   }) {
     if (changeParticipants != null) {
@@ -5240,6 +5310,10 @@ class _$Message_ChangeParticipantsImpl extends Message_ChangeParticipants {
     required TResult Function(Message_RecoverChat value) recoverChat,
     required TResult Function(Message_PermanentDelete value) permanentDelete,
     required TResult Function(Message_Unschedule value) unschedule,
+    required TResult Function(Message_UpdateProfile value) updateProfile,
+    required TResult Function(Message_UpdateProfileSharing value)
+        updateProfileSharing,
+    required TResult Function(Message_ShareProfile value) shareProfile,
   }) {
     return changeParticipants(this);
   }
@@ -5269,6 +5343,9 @@ class _$Message_ChangeParticipantsImpl extends Message_ChangeParticipants {
     TResult? Function(Message_RecoverChat value)? recoverChat,
     TResult? Function(Message_PermanentDelete value)? permanentDelete,
     TResult? Function(Message_Unschedule value)? unschedule,
+    TResult? Function(Message_UpdateProfile value)? updateProfile,
+    TResult? Function(Message_UpdateProfileSharing value)? updateProfileSharing,
+    TResult? Function(Message_ShareProfile value)? shareProfile,
   }) {
     return changeParticipants?.call(this);
   }
@@ -5298,6 +5375,9 @@ class _$Message_ChangeParticipantsImpl extends Message_ChangeParticipants {
     TResult Function(Message_RecoverChat value)? recoverChat,
     TResult Function(Message_PermanentDelete value)? permanentDelete,
     TResult Function(Message_Unschedule value)? unschedule,
+    TResult Function(Message_UpdateProfile value)? updateProfile,
+    TResult Function(Message_UpdateProfileSharing value)? updateProfileSharing,
+    TResult Function(Message_ShareProfile value)? shareProfile,
     required TResult orElse(),
   }) {
     if (changeParticipants != null) {
@@ -5412,6 +5492,10 @@ class _$Message_ReactImpl extends Message_React {
     required TResult Function(OperatedChat field0) recoverChat,
     required TResult Function(PermanentDeleteMessage field0) permanentDelete,
     required TResult Function() unschedule,
+    required TResult Function(UpdateProfileMessage field0) updateProfile,
+    required TResult Function(UpdateProfileSharingMessage field0)
+        updateProfileSharing,
+    required TResult Function(ShareProfileMessage field0) shareProfile,
   }) {
     return react(field0);
   }
@@ -5441,6 +5525,9 @@ class _$Message_ReactImpl extends Message_React {
     TResult? Function(OperatedChat field0)? recoverChat,
     TResult? Function(PermanentDeleteMessage field0)? permanentDelete,
     TResult? Function()? unschedule,
+    TResult? Function(UpdateProfileMessage field0)? updateProfile,
+    TResult? Function(UpdateProfileSharingMessage field0)? updateProfileSharing,
+    TResult? Function(ShareProfileMessage field0)? shareProfile,
   }) {
     return react?.call(field0);
   }
@@ -5470,6 +5557,9 @@ class _$Message_ReactImpl extends Message_React {
     TResult Function(OperatedChat field0)? recoverChat,
     TResult Function(PermanentDeleteMessage field0)? permanentDelete,
     TResult Function()? unschedule,
+    TResult Function(UpdateProfileMessage field0)? updateProfile,
+    TResult Function(UpdateProfileSharingMessage field0)? updateProfileSharing,
+    TResult Function(ShareProfileMessage field0)? shareProfile,
     required TResult orElse(),
   }) {
     if (react != null) {
@@ -5507,6 +5597,10 @@ class _$Message_ReactImpl extends Message_React {
     required TResult Function(Message_RecoverChat value) recoverChat,
     required TResult Function(Message_PermanentDelete value) permanentDelete,
     required TResult Function(Message_Unschedule value) unschedule,
+    required TResult Function(Message_UpdateProfile value) updateProfile,
+    required TResult Function(Message_UpdateProfileSharing value)
+        updateProfileSharing,
+    required TResult Function(Message_ShareProfile value) shareProfile,
   }) {
     return react(this);
   }
@@ -5536,6 +5630,9 @@ class _$Message_ReactImpl extends Message_React {
     TResult? Function(Message_RecoverChat value)? recoverChat,
     TResult? Function(Message_PermanentDelete value)? permanentDelete,
     TResult? Function(Message_Unschedule value)? unschedule,
+    TResult? Function(Message_UpdateProfile value)? updateProfile,
+    TResult? Function(Message_UpdateProfileSharing value)? updateProfileSharing,
+    TResult? Function(Message_ShareProfile value)? shareProfile,
   }) {
     return react?.call(this);
   }
@@ -5565,6 +5662,9 @@ class _$Message_ReactImpl extends Message_React {
     TResult Function(Message_RecoverChat value)? recoverChat,
     TResult Function(Message_PermanentDelete value)? permanentDelete,
     TResult Function(Message_Unschedule value)? unschedule,
+    TResult Function(Message_UpdateProfile value)? updateProfile,
+    TResult Function(Message_UpdateProfileSharing value)? updateProfileSharing,
+    TResult Function(Message_ShareProfile value)? shareProfile,
     required TResult orElse(),
   }) {
     if (react != null) {
@@ -5651,6 +5751,10 @@ class _$Message_DeliveredImpl extends Message_Delivered {
     required TResult Function(OperatedChat field0) recoverChat,
     required TResult Function(PermanentDeleteMessage field0) permanentDelete,
     required TResult Function() unschedule,
+    required TResult Function(UpdateProfileMessage field0) updateProfile,
+    required TResult Function(UpdateProfileSharingMessage field0)
+        updateProfileSharing,
+    required TResult Function(ShareProfileMessage field0) shareProfile,
   }) {
     return delivered();
   }
@@ -5680,6 +5784,9 @@ class _$Message_DeliveredImpl extends Message_Delivered {
     TResult? Function(OperatedChat field0)? recoverChat,
     TResult? Function(PermanentDeleteMessage field0)? permanentDelete,
     TResult? Function()? unschedule,
+    TResult? Function(UpdateProfileMessage field0)? updateProfile,
+    TResult? Function(UpdateProfileSharingMessage field0)? updateProfileSharing,
+    TResult? Function(ShareProfileMessage field0)? shareProfile,
   }) {
     return delivered?.call();
   }
@@ -5709,6 +5816,9 @@ class _$Message_DeliveredImpl extends Message_Delivered {
     TResult Function(OperatedChat field0)? recoverChat,
     TResult Function(PermanentDeleteMessage field0)? permanentDelete,
     TResult Function()? unschedule,
+    TResult Function(UpdateProfileMessage field0)? updateProfile,
+    TResult Function(UpdateProfileSharingMessage field0)? updateProfileSharing,
+    TResult Function(ShareProfileMessage field0)? shareProfile,
     required TResult orElse(),
   }) {
     if (delivered != null) {
@@ -5746,6 +5856,10 @@ class _$Message_DeliveredImpl extends Message_Delivered {
     required TResult Function(Message_RecoverChat value) recoverChat,
     required TResult Function(Message_PermanentDelete value) permanentDelete,
     required TResult Function(Message_Unschedule value) unschedule,
+    required TResult Function(Message_UpdateProfile value) updateProfile,
+    required TResult Function(Message_UpdateProfileSharing value)
+        updateProfileSharing,
+    required TResult Function(Message_ShareProfile value) shareProfile,
   }) {
     return delivered(this);
   }
@@ -5775,6 +5889,9 @@ class _$Message_DeliveredImpl extends Message_Delivered {
     TResult? Function(Message_RecoverChat value)? recoverChat,
     TResult? Function(Message_PermanentDelete value)? permanentDelete,
     TResult? Function(Message_Unschedule value)? unschedule,
+    TResult? Function(Message_UpdateProfile value)? updateProfile,
+    TResult? Function(Message_UpdateProfileSharing value)? updateProfileSharing,
+    TResult? Function(Message_ShareProfile value)? shareProfile,
   }) {
     return delivered?.call(this);
   }
@@ -5804,6 +5921,9 @@ class _$Message_DeliveredImpl extends Message_Delivered {
     TResult Function(Message_RecoverChat value)? recoverChat,
     TResult Function(Message_PermanentDelete value)? permanentDelete,
     TResult Function(Message_Unschedule value)? unschedule,
+    TResult Function(Message_UpdateProfile value)? updateProfile,
+    TResult Function(Message_UpdateProfileSharing value)? updateProfileSharing,
+    TResult Function(Message_ShareProfile value)? shareProfile,
     required TResult orElse(),
   }) {
     if (delivered != null) {
@@ -5882,6 +6002,10 @@ class _$Message_ReadImpl extends Message_Read {
     required TResult Function(OperatedChat field0) recoverChat,
     required TResult Function(PermanentDeleteMessage field0) permanentDelete,
     required TResult Function() unschedule,
+    required TResult Function(UpdateProfileMessage field0) updateProfile,
+    required TResult Function(UpdateProfileSharingMessage field0)
+        updateProfileSharing,
+    required TResult Function(ShareProfileMessage field0) shareProfile,
   }) {
     return read();
   }
@@ -5911,6 +6035,9 @@ class _$Message_ReadImpl extends Message_Read {
     TResult? Function(OperatedChat field0)? recoverChat,
     TResult? Function(PermanentDeleteMessage field0)? permanentDelete,
     TResult? Function()? unschedule,
+    TResult? Function(UpdateProfileMessage field0)? updateProfile,
+    TResult? Function(UpdateProfileSharingMessage field0)? updateProfileSharing,
+    TResult? Function(ShareProfileMessage field0)? shareProfile,
   }) {
     return read?.call();
   }
@@ -5940,6 +6067,9 @@ class _$Message_ReadImpl extends Message_Read {
     TResult Function(OperatedChat field0)? recoverChat,
     TResult Function(PermanentDeleteMessage field0)? permanentDelete,
     TResult Function()? unschedule,
+    TResult Function(UpdateProfileMessage field0)? updateProfile,
+    TResult Function(UpdateProfileSharingMessage field0)? updateProfileSharing,
+    TResult Function(ShareProfileMessage field0)? shareProfile,
     required TResult orElse(),
   }) {
     if (read != null) {
@@ -5977,6 +6107,10 @@ class _$Message_ReadImpl extends Message_Read {
     required TResult Function(Message_RecoverChat value) recoverChat,
     required TResult Function(Message_PermanentDelete value) permanentDelete,
     required TResult Function(Message_Unschedule value) unschedule,
+    required TResult Function(Message_UpdateProfile value) updateProfile,
+    required TResult Function(Message_UpdateProfileSharing value)
+        updateProfileSharing,
+    required TResult Function(Message_ShareProfile value) shareProfile,
   }) {
     return read(this);
   }
@@ -6006,6 +6140,9 @@ class _$Message_ReadImpl extends Message_Read {
     TResult? Function(Message_RecoverChat value)? recoverChat,
     TResult? Function(Message_PermanentDelete value)? permanentDelete,
     TResult? Function(Message_Unschedule value)? unschedule,
+    TResult? Function(Message_UpdateProfile value)? updateProfile,
+    TResult? Function(Message_UpdateProfileSharing value)? updateProfileSharing,
+    TResult? Function(Message_ShareProfile value)? shareProfile,
   }) {
     return read?.call(this);
   }
@@ -6035,6 +6172,9 @@ class _$Message_ReadImpl extends Message_Read {
     TResult Function(Message_RecoverChat value)? recoverChat,
     TResult Function(Message_PermanentDelete value)? permanentDelete,
     TResult Function(Message_Unschedule value)? unschedule,
+    TResult Function(Message_UpdateProfile value)? updateProfile,
+    TResult Function(Message_UpdateProfileSharing value)? updateProfileSharing,
+    TResult Function(Message_ShareProfile value)? shareProfile,
     required TResult orElse(),
   }) {
     if (read != null) {
@@ -6113,6 +6253,10 @@ class _$Message_TypingImpl extends Message_Typing {
     required TResult Function(OperatedChat field0) recoverChat,
     required TResult Function(PermanentDeleteMessage field0) permanentDelete,
     required TResult Function() unschedule,
+    required TResult Function(UpdateProfileMessage field0) updateProfile,
+    required TResult Function(UpdateProfileSharingMessage field0)
+        updateProfileSharing,
+    required TResult Function(ShareProfileMessage field0) shareProfile,
   }) {
     return typing();
   }
@@ -6142,6 +6286,9 @@ class _$Message_TypingImpl extends Message_Typing {
     TResult? Function(OperatedChat field0)? recoverChat,
     TResult? Function(PermanentDeleteMessage field0)? permanentDelete,
     TResult? Function()? unschedule,
+    TResult? Function(UpdateProfileMessage field0)? updateProfile,
+    TResult? Function(UpdateProfileSharingMessage field0)? updateProfileSharing,
+    TResult? Function(ShareProfileMessage field0)? shareProfile,
   }) {
     return typing?.call();
   }
@@ -6171,6 +6318,9 @@ class _$Message_TypingImpl extends Message_Typing {
     TResult Function(OperatedChat field0)? recoverChat,
     TResult Function(PermanentDeleteMessage field0)? permanentDelete,
     TResult Function()? unschedule,
+    TResult Function(UpdateProfileMessage field0)? updateProfile,
+    TResult Function(UpdateProfileSharingMessage field0)? updateProfileSharing,
+    TResult Function(ShareProfileMessage field0)? shareProfile,
     required TResult orElse(),
   }) {
     if (typing != null) {
@@ -6208,6 +6358,10 @@ class _$Message_TypingImpl extends Message_Typing {
     required TResult Function(Message_RecoverChat value) recoverChat,
     required TResult Function(Message_PermanentDelete value) permanentDelete,
     required TResult Function(Message_Unschedule value) unschedule,
+    required TResult Function(Message_UpdateProfile value) updateProfile,
+    required TResult Function(Message_UpdateProfileSharing value)
+        updateProfileSharing,
+    required TResult Function(Message_ShareProfile value) shareProfile,
   }) {
     return typing(this);
   }
@@ -6237,6 +6391,9 @@ class _$Message_TypingImpl extends Message_Typing {
     TResult? Function(Message_RecoverChat value)? recoverChat,
     TResult? Function(Message_PermanentDelete value)? permanentDelete,
     TResult? Function(Message_Unschedule value)? unschedule,
+    TResult? Function(Message_UpdateProfile value)? updateProfile,
+    TResult? Function(Message_UpdateProfileSharing value)? updateProfileSharing,
+    TResult? Function(Message_ShareProfile value)? shareProfile,
   }) {
     return typing?.call(this);
   }
@@ -6266,6 +6423,9 @@ class _$Message_TypingImpl extends Message_Typing {
     TResult Function(Message_RecoverChat value)? recoverChat,
     TResult Function(Message_PermanentDelete value)? permanentDelete,
     TResult Function(Message_Unschedule value)? unschedule,
+    TResult Function(Message_UpdateProfile value)? updateProfile,
+    TResult Function(Message_UpdateProfileSharing value)? updateProfileSharing,
+    TResult Function(Message_ShareProfile value)? shareProfile,
     required TResult orElse(),
   }) {
     if (typing != null) {
@@ -6372,6 +6532,10 @@ class _$Message_UnsendImpl extends Message_Unsend {
     required TResult Function(OperatedChat field0) recoverChat,
     required TResult Function(PermanentDeleteMessage field0) permanentDelete,
     required TResult Function() unschedule,
+    required TResult Function(UpdateProfileMessage field0) updateProfile,
+    required TResult Function(UpdateProfileSharingMessage field0)
+        updateProfileSharing,
+    required TResult Function(ShareProfileMessage field0) shareProfile,
   }) {
     return unsend(field0);
   }
@@ -6401,6 +6565,9 @@ class _$Message_UnsendImpl extends Message_Unsend {
     TResult? Function(OperatedChat field0)? recoverChat,
     TResult? Function(PermanentDeleteMessage field0)? permanentDelete,
     TResult? Function()? unschedule,
+    TResult? Function(UpdateProfileMessage field0)? updateProfile,
+    TResult? Function(UpdateProfileSharingMessage field0)? updateProfileSharing,
+    TResult? Function(ShareProfileMessage field0)? shareProfile,
   }) {
     return unsend?.call(field0);
   }
@@ -6430,6 +6597,9 @@ class _$Message_UnsendImpl extends Message_Unsend {
     TResult Function(OperatedChat field0)? recoverChat,
     TResult Function(PermanentDeleteMessage field0)? permanentDelete,
     TResult Function()? unschedule,
+    TResult Function(UpdateProfileMessage field0)? updateProfile,
+    TResult Function(UpdateProfileSharingMessage field0)? updateProfileSharing,
+    TResult Function(ShareProfileMessage field0)? shareProfile,
     required TResult orElse(),
   }) {
     if (unsend != null) {
@@ -6467,6 +6637,10 @@ class _$Message_UnsendImpl extends Message_Unsend {
     required TResult Function(Message_RecoverChat value) recoverChat,
     required TResult Function(Message_PermanentDelete value) permanentDelete,
     required TResult Function(Message_Unschedule value) unschedule,
+    required TResult Function(Message_UpdateProfile value) updateProfile,
+    required TResult Function(Message_UpdateProfileSharing value)
+        updateProfileSharing,
+    required TResult Function(Message_ShareProfile value) shareProfile,
   }) {
     return unsend(this);
   }
@@ -6496,6 +6670,9 @@ class _$Message_UnsendImpl extends Message_Unsend {
     TResult? Function(Message_RecoverChat value)? recoverChat,
     TResult? Function(Message_PermanentDelete value)? permanentDelete,
     TResult? Function(Message_Unschedule value)? unschedule,
+    TResult? Function(Message_UpdateProfile value)? updateProfile,
+    TResult? Function(Message_UpdateProfileSharing value)? updateProfileSharing,
+    TResult? Function(Message_ShareProfile value)? shareProfile,
   }) {
     return unsend?.call(this);
   }
@@ -6525,6 +6702,9 @@ class _$Message_UnsendImpl extends Message_Unsend {
     TResult Function(Message_RecoverChat value)? recoverChat,
     TResult Function(Message_PermanentDelete value)? permanentDelete,
     TResult Function(Message_Unschedule value)? unschedule,
+    TResult Function(Message_UpdateProfile value)? updateProfile,
+    TResult Function(Message_UpdateProfileSharing value)? updateProfileSharing,
+    TResult Function(Message_ShareProfile value)? shareProfile,
     required TResult orElse(),
   }) {
     if (unsend != null) {
@@ -6639,6 +6819,10 @@ class _$Message_EditImpl extends Message_Edit {
     required TResult Function(OperatedChat field0) recoverChat,
     required TResult Function(PermanentDeleteMessage field0) permanentDelete,
     required TResult Function() unschedule,
+    required TResult Function(UpdateProfileMessage field0) updateProfile,
+    required TResult Function(UpdateProfileSharingMessage field0)
+        updateProfileSharing,
+    required TResult Function(ShareProfileMessage field0) shareProfile,
   }) {
     return edit(field0);
   }
@@ -6668,6 +6852,9 @@ class _$Message_EditImpl extends Message_Edit {
     TResult? Function(OperatedChat field0)? recoverChat,
     TResult? Function(PermanentDeleteMessage field0)? permanentDelete,
     TResult? Function()? unschedule,
+    TResult? Function(UpdateProfileMessage field0)? updateProfile,
+    TResult? Function(UpdateProfileSharingMessage field0)? updateProfileSharing,
+    TResult? Function(ShareProfileMessage field0)? shareProfile,
   }) {
     return edit?.call(field0);
   }
@@ -6697,6 +6884,9 @@ class _$Message_EditImpl extends Message_Edit {
     TResult Function(OperatedChat field0)? recoverChat,
     TResult Function(PermanentDeleteMessage field0)? permanentDelete,
     TResult Function()? unschedule,
+    TResult Function(UpdateProfileMessage field0)? updateProfile,
+    TResult Function(UpdateProfileSharingMessage field0)? updateProfileSharing,
+    TResult Function(ShareProfileMessage field0)? shareProfile,
     required TResult orElse(),
   }) {
     if (edit != null) {
@@ -6734,6 +6924,10 @@ class _$Message_EditImpl extends Message_Edit {
     required TResult Function(Message_RecoverChat value) recoverChat,
     required TResult Function(Message_PermanentDelete value) permanentDelete,
     required TResult Function(Message_Unschedule value) unschedule,
+    required TResult Function(Message_UpdateProfile value) updateProfile,
+    required TResult Function(Message_UpdateProfileSharing value)
+        updateProfileSharing,
+    required TResult Function(Message_ShareProfile value) shareProfile,
   }) {
     return edit(this);
   }
@@ -6763,6 +6957,9 @@ class _$Message_EditImpl extends Message_Edit {
     TResult? Function(Message_RecoverChat value)? recoverChat,
     TResult? Function(Message_PermanentDelete value)? permanentDelete,
     TResult? Function(Message_Unschedule value)? unschedule,
+    TResult? Function(Message_UpdateProfile value)? updateProfile,
+    TResult? Function(Message_UpdateProfileSharing value)? updateProfileSharing,
+    TResult? Function(Message_ShareProfile value)? shareProfile,
   }) {
     return edit?.call(this);
   }
@@ -6792,6 +6989,9 @@ class _$Message_EditImpl extends Message_Edit {
     TResult Function(Message_RecoverChat value)? recoverChat,
     TResult Function(Message_PermanentDelete value)? permanentDelete,
     TResult Function(Message_Unschedule value)? unschedule,
+    TResult Function(Message_UpdateProfile value)? updateProfile,
+    TResult Function(Message_UpdateProfileSharing value)? updateProfileSharing,
+    TResult Function(Message_ShareProfile value)? shareProfile,
     required TResult orElse(),
   }) {
     if (edit != null) {
@@ -6906,6 +7106,10 @@ class _$Message_IconChangeImpl extends Message_IconChange {
     required TResult Function(OperatedChat field0) recoverChat,
     required TResult Function(PermanentDeleteMessage field0) permanentDelete,
     required TResult Function() unschedule,
+    required TResult Function(UpdateProfileMessage field0) updateProfile,
+    required TResult Function(UpdateProfileSharingMessage field0)
+        updateProfileSharing,
+    required TResult Function(ShareProfileMessage field0) shareProfile,
   }) {
     return iconChange(field0);
   }
@@ -6935,6 +7139,9 @@ class _$Message_IconChangeImpl extends Message_IconChange {
     TResult? Function(OperatedChat field0)? recoverChat,
     TResult? Function(PermanentDeleteMessage field0)? permanentDelete,
     TResult? Function()? unschedule,
+    TResult? Function(UpdateProfileMessage field0)? updateProfile,
+    TResult? Function(UpdateProfileSharingMessage field0)? updateProfileSharing,
+    TResult? Function(ShareProfileMessage field0)? shareProfile,
   }) {
     return iconChange?.call(field0);
   }
@@ -6964,6 +7171,9 @@ class _$Message_IconChangeImpl extends Message_IconChange {
     TResult Function(OperatedChat field0)? recoverChat,
     TResult Function(PermanentDeleteMessage field0)? permanentDelete,
     TResult Function()? unschedule,
+    TResult Function(UpdateProfileMessage field0)? updateProfile,
+    TResult Function(UpdateProfileSharingMessage field0)? updateProfileSharing,
+    TResult Function(ShareProfileMessage field0)? shareProfile,
     required TResult orElse(),
   }) {
     if (iconChange != null) {
@@ -7001,6 +7211,10 @@ class _$Message_IconChangeImpl extends Message_IconChange {
     required TResult Function(Message_RecoverChat value) recoverChat,
     required TResult Function(Message_PermanentDelete value) permanentDelete,
     required TResult Function(Message_Unschedule value) unschedule,
+    required TResult Function(Message_UpdateProfile value) updateProfile,
+    required TResult Function(Message_UpdateProfileSharing value)
+        updateProfileSharing,
+    required TResult Function(Message_ShareProfile value) shareProfile,
   }) {
     return iconChange(this);
   }
@@ -7030,6 +7244,9 @@ class _$Message_IconChangeImpl extends Message_IconChange {
     TResult? Function(Message_RecoverChat value)? recoverChat,
     TResult? Function(Message_PermanentDelete value)? permanentDelete,
     TResult? Function(Message_Unschedule value)? unschedule,
+    TResult? Function(Message_UpdateProfile value)? updateProfile,
+    TResult? Function(Message_UpdateProfileSharing value)? updateProfileSharing,
+    TResult? Function(Message_ShareProfile value)? shareProfile,
   }) {
     return iconChange?.call(this);
   }
@@ -7059,6 +7276,9 @@ class _$Message_IconChangeImpl extends Message_IconChange {
     TResult Function(Message_RecoverChat value)? recoverChat,
     TResult Function(Message_PermanentDelete value)? permanentDelete,
     TResult Function(Message_Unschedule value)? unschedule,
+    TResult Function(Message_UpdateProfile value)? updateProfile,
+    TResult Function(Message_UpdateProfileSharing value)? updateProfileSharing,
+    TResult Function(Message_ShareProfile value)? shareProfile,
     required TResult orElse(),
   }) {
     if (iconChange != null) {
@@ -7146,6 +7366,10 @@ class _$Message_StopTypingImpl extends Message_StopTyping {
     required TResult Function(OperatedChat field0) recoverChat,
     required TResult Function(PermanentDeleteMessage field0) permanentDelete,
     required TResult Function() unschedule,
+    required TResult Function(UpdateProfileMessage field0) updateProfile,
+    required TResult Function(UpdateProfileSharingMessage field0)
+        updateProfileSharing,
+    required TResult Function(ShareProfileMessage field0) shareProfile,
   }) {
     return stopTyping();
   }
@@ -7175,6 +7399,9 @@ class _$Message_StopTypingImpl extends Message_StopTyping {
     TResult? Function(OperatedChat field0)? recoverChat,
     TResult? Function(PermanentDeleteMessage field0)? permanentDelete,
     TResult? Function()? unschedule,
+    TResult? Function(UpdateProfileMessage field0)? updateProfile,
+    TResult? Function(UpdateProfileSharingMessage field0)? updateProfileSharing,
+    TResult? Function(ShareProfileMessage field0)? shareProfile,
   }) {
     return stopTyping?.call();
   }
@@ -7204,6 +7431,9 @@ class _$Message_StopTypingImpl extends Message_StopTyping {
     TResult Function(OperatedChat field0)? recoverChat,
     TResult Function(PermanentDeleteMessage field0)? permanentDelete,
     TResult Function()? unschedule,
+    TResult Function(UpdateProfileMessage field0)? updateProfile,
+    TResult Function(UpdateProfileSharingMessage field0)? updateProfileSharing,
+    TResult Function(ShareProfileMessage field0)? shareProfile,
     required TResult orElse(),
   }) {
     if (stopTyping != null) {
@@ -7241,6 +7471,10 @@ class _$Message_StopTypingImpl extends Message_StopTyping {
     required TResult Function(Message_RecoverChat value) recoverChat,
     required TResult Function(Message_PermanentDelete value) permanentDelete,
     required TResult Function(Message_Unschedule value) unschedule,
+    required TResult Function(Message_UpdateProfile value) updateProfile,
+    required TResult Function(Message_UpdateProfileSharing value)
+        updateProfileSharing,
+    required TResult Function(Message_ShareProfile value) shareProfile,
   }) {
     return stopTyping(this);
   }
@@ -7270,6 +7504,9 @@ class _$Message_StopTypingImpl extends Message_StopTyping {
     TResult? Function(Message_RecoverChat value)? recoverChat,
     TResult? Function(Message_PermanentDelete value)? permanentDelete,
     TResult? Function(Message_Unschedule value)? unschedule,
+    TResult? Function(Message_UpdateProfile value)? updateProfile,
+    TResult? Function(Message_UpdateProfileSharing value)? updateProfileSharing,
+    TResult? Function(Message_ShareProfile value)? shareProfile,
   }) {
     return stopTyping?.call(this);
   }
@@ -7299,6 +7536,9 @@ class _$Message_StopTypingImpl extends Message_StopTyping {
     TResult Function(Message_RecoverChat value)? recoverChat,
     TResult Function(Message_PermanentDelete value)? permanentDelete,
     TResult Function(Message_Unschedule value)? unschedule,
+    TResult Function(Message_UpdateProfile value)? updateProfile,
+    TResult Function(Message_UpdateProfileSharing value)? updateProfileSharing,
+    TResult Function(Message_ShareProfile value)? shareProfile,
     required TResult orElse(),
   }) {
     if (stopTyping != null) {
@@ -7407,6 +7647,10 @@ class _$Message_EnableSmsActivationImpl extends Message_EnableSmsActivation {
     required TResult Function(OperatedChat field0) recoverChat,
     required TResult Function(PermanentDeleteMessage field0) permanentDelete,
     required TResult Function() unschedule,
+    required TResult Function(UpdateProfileMessage field0) updateProfile,
+    required TResult Function(UpdateProfileSharingMessage field0)
+        updateProfileSharing,
+    required TResult Function(ShareProfileMessage field0) shareProfile,
   }) {
     return enableSmsActivation(field0);
   }
@@ -7436,6 +7680,9 @@ class _$Message_EnableSmsActivationImpl extends Message_EnableSmsActivation {
     TResult? Function(OperatedChat field0)? recoverChat,
     TResult? Function(PermanentDeleteMessage field0)? permanentDelete,
     TResult? Function()? unschedule,
+    TResult? Function(UpdateProfileMessage field0)? updateProfile,
+    TResult? Function(UpdateProfileSharingMessage field0)? updateProfileSharing,
+    TResult? Function(ShareProfileMessage field0)? shareProfile,
   }) {
     return enableSmsActivation?.call(field0);
   }
@@ -7465,6 +7712,9 @@ class _$Message_EnableSmsActivationImpl extends Message_EnableSmsActivation {
     TResult Function(OperatedChat field0)? recoverChat,
     TResult Function(PermanentDeleteMessage field0)? permanentDelete,
     TResult Function()? unschedule,
+    TResult Function(UpdateProfileMessage field0)? updateProfile,
+    TResult Function(UpdateProfileSharingMessage field0)? updateProfileSharing,
+    TResult Function(ShareProfileMessage field0)? shareProfile,
     required TResult orElse(),
   }) {
     if (enableSmsActivation != null) {
@@ -7502,6 +7752,10 @@ class _$Message_EnableSmsActivationImpl extends Message_EnableSmsActivation {
     required TResult Function(Message_RecoverChat value) recoverChat,
     required TResult Function(Message_PermanentDelete value) permanentDelete,
     required TResult Function(Message_Unschedule value) unschedule,
+    required TResult Function(Message_UpdateProfile value) updateProfile,
+    required TResult Function(Message_UpdateProfileSharing value)
+        updateProfileSharing,
+    required TResult Function(Message_ShareProfile value) shareProfile,
   }) {
     return enableSmsActivation(this);
   }
@@ -7531,6 +7785,9 @@ class _$Message_EnableSmsActivationImpl extends Message_EnableSmsActivation {
     TResult? Function(Message_RecoverChat value)? recoverChat,
     TResult? Function(Message_PermanentDelete value)? permanentDelete,
     TResult? Function(Message_Unschedule value)? unschedule,
+    TResult? Function(Message_UpdateProfile value)? updateProfile,
+    TResult? Function(Message_UpdateProfileSharing value)? updateProfileSharing,
+    TResult? Function(Message_ShareProfile value)? shareProfile,
   }) {
     return enableSmsActivation?.call(this);
   }
@@ -7560,6 +7817,9 @@ class _$Message_EnableSmsActivationImpl extends Message_EnableSmsActivation {
     TResult Function(Message_RecoverChat value)? recoverChat,
     TResult Function(Message_PermanentDelete value)? permanentDelete,
     TResult Function(Message_Unschedule value)? unschedule,
+    TResult Function(Message_UpdateProfile value)? updateProfile,
+    TResult Function(Message_UpdateProfileSharing value)? updateProfileSharing,
+    TResult Function(Message_ShareProfile value)? shareProfile,
     required TResult orElse(),
   }) {
     if (enableSmsActivation != null) {
@@ -7650,6 +7910,10 @@ class _$Message_MessageReadOnDeviceImpl extends Message_MessageReadOnDevice {
     required TResult Function(OperatedChat field0) recoverChat,
     required TResult Function(PermanentDeleteMessage field0) permanentDelete,
     required TResult Function() unschedule,
+    required TResult Function(UpdateProfileMessage field0) updateProfile,
+    required TResult Function(UpdateProfileSharingMessage field0)
+        updateProfileSharing,
+    required TResult Function(ShareProfileMessage field0) shareProfile,
   }) {
     return messageReadOnDevice();
   }
@@ -7679,6 +7943,9 @@ class _$Message_MessageReadOnDeviceImpl extends Message_MessageReadOnDevice {
     TResult? Function(OperatedChat field0)? recoverChat,
     TResult? Function(PermanentDeleteMessage field0)? permanentDelete,
     TResult? Function()? unschedule,
+    TResult? Function(UpdateProfileMessage field0)? updateProfile,
+    TResult? Function(UpdateProfileSharingMessage field0)? updateProfileSharing,
+    TResult? Function(ShareProfileMessage field0)? shareProfile,
   }) {
     return messageReadOnDevice?.call();
   }
@@ -7708,6 +7975,9 @@ class _$Message_MessageReadOnDeviceImpl extends Message_MessageReadOnDevice {
     TResult Function(OperatedChat field0)? recoverChat,
     TResult Function(PermanentDeleteMessage field0)? permanentDelete,
     TResult Function()? unschedule,
+    TResult Function(UpdateProfileMessage field0)? updateProfile,
+    TResult Function(UpdateProfileSharingMessage field0)? updateProfileSharing,
+    TResult Function(ShareProfileMessage field0)? shareProfile,
     required TResult orElse(),
   }) {
     if (messageReadOnDevice != null) {
@@ -7745,6 +8015,10 @@ class _$Message_MessageReadOnDeviceImpl extends Message_MessageReadOnDevice {
     required TResult Function(Message_RecoverChat value) recoverChat,
     required TResult Function(Message_PermanentDelete value) permanentDelete,
     required TResult Function(Message_Unschedule value) unschedule,
+    required TResult Function(Message_UpdateProfile value) updateProfile,
+    required TResult Function(Message_UpdateProfileSharing value)
+        updateProfileSharing,
+    required TResult Function(Message_ShareProfile value) shareProfile,
   }) {
     return messageReadOnDevice(this);
   }
@@ -7774,6 +8048,9 @@ class _$Message_MessageReadOnDeviceImpl extends Message_MessageReadOnDevice {
     TResult? Function(Message_RecoverChat value)? recoverChat,
     TResult? Function(Message_PermanentDelete value)? permanentDelete,
     TResult? Function(Message_Unschedule value)? unschedule,
+    TResult? Function(Message_UpdateProfile value)? updateProfile,
+    TResult? Function(Message_UpdateProfileSharing value)? updateProfileSharing,
+    TResult? Function(Message_ShareProfile value)? shareProfile,
   }) {
     return messageReadOnDevice?.call(this);
   }
@@ -7803,6 +8080,9 @@ class _$Message_MessageReadOnDeviceImpl extends Message_MessageReadOnDevice {
     TResult Function(Message_RecoverChat value)? recoverChat,
     TResult Function(Message_PermanentDelete value)? permanentDelete,
     TResult Function(Message_Unschedule value)? unschedule,
+    TResult Function(Message_UpdateProfile value)? updateProfile,
+    TResult Function(Message_UpdateProfileSharing value)? updateProfileSharing,
+    TResult Function(Message_ShareProfile value)? shareProfile,
     required TResult orElse(),
   }) {
     if (messageReadOnDevice != null) {
@@ -7912,6 +8192,10 @@ class _$Message_SmsConfirmSentImpl extends Message_SmsConfirmSent {
     required TResult Function(OperatedChat field0) recoverChat,
     required TResult Function(PermanentDeleteMessage field0) permanentDelete,
     required TResult Function() unschedule,
+    required TResult Function(UpdateProfileMessage field0) updateProfile,
+    required TResult Function(UpdateProfileSharingMessage field0)
+        updateProfileSharing,
+    required TResult Function(ShareProfileMessage field0) shareProfile,
   }) {
     return smsConfirmSent(field0);
   }
@@ -7941,6 +8225,9 @@ class _$Message_SmsConfirmSentImpl extends Message_SmsConfirmSent {
     TResult? Function(OperatedChat field0)? recoverChat,
     TResult? Function(PermanentDeleteMessage field0)? permanentDelete,
     TResult? Function()? unschedule,
+    TResult? Function(UpdateProfileMessage field0)? updateProfile,
+    TResult? Function(UpdateProfileSharingMessage field0)? updateProfileSharing,
+    TResult? Function(ShareProfileMessage field0)? shareProfile,
   }) {
     return smsConfirmSent?.call(field0);
   }
@@ -7970,6 +8257,9 @@ class _$Message_SmsConfirmSentImpl extends Message_SmsConfirmSent {
     TResult Function(OperatedChat field0)? recoverChat,
     TResult Function(PermanentDeleteMessage field0)? permanentDelete,
     TResult Function()? unschedule,
+    TResult Function(UpdateProfileMessage field0)? updateProfile,
+    TResult Function(UpdateProfileSharingMessage field0)? updateProfileSharing,
+    TResult Function(ShareProfileMessage field0)? shareProfile,
     required TResult orElse(),
   }) {
     if (smsConfirmSent != null) {
@@ -8007,6 +8297,10 @@ class _$Message_SmsConfirmSentImpl extends Message_SmsConfirmSent {
     required TResult Function(Message_RecoverChat value) recoverChat,
     required TResult Function(Message_PermanentDelete value) permanentDelete,
     required TResult Function(Message_Unschedule value) unschedule,
+    required TResult Function(Message_UpdateProfile value) updateProfile,
+    required TResult Function(Message_UpdateProfileSharing value)
+        updateProfileSharing,
+    required TResult Function(Message_ShareProfile value) shareProfile,
   }) {
     return smsConfirmSent(this);
   }
@@ -8036,6 +8330,9 @@ class _$Message_SmsConfirmSentImpl extends Message_SmsConfirmSent {
     TResult? Function(Message_RecoverChat value)? recoverChat,
     TResult? Function(Message_PermanentDelete value)? permanentDelete,
     TResult? Function(Message_Unschedule value)? unschedule,
+    TResult? Function(Message_UpdateProfile value)? updateProfile,
+    TResult? Function(Message_UpdateProfileSharing value)? updateProfileSharing,
+    TResult? Function(Message_ShareProfile value)? shareProfile,
   }) {
     return smsConfirmSent?.call(this);
   }
@@ -8065,6 +8362,9 @@ class _$Message_SmsConfirmSentImpl extends Message_SmsConfirmSent {
     TResult Function(Message_RecoverChat value)? recoverChat,
     TResult Function(Message_PermanentDelete value)? permanentDelete,
     TResult Function(Message_Unschedule value)? unschedule,
+    TResult Function(Message_UpdateProfile value)? updateProfile,
+    TResult Function(Message_UpdateProfileSharing value)? updateProfileSharing,
+    TResult Function(Message_ShareProfile value)? shareProfile,
     required TResult orElse(),
   }) {
     if (smsConfirmSent != null) {
@@ -8152,6 +8452,10 @@ class _$Message_MarkUnreadImpl extends Message_MarkUnread {
     required TResult Function(OperatedChat field0) recoverChat,
     required TResult Function(PermanentDeleteMessage field0) permanentDelete,
     required TResult Function() unschedule,
+    required TResult Function(UpdateProfileMessage field0) updateProfile,
+    required TResult Function(UpdateProfileSharingMessage field0)
+        updateProfileSharing,
+    required TResult Function(ShareProfileMessage field0) shareProfile,
   }) {
     return markUnread();
   }
@@ -8181,6 +8485,9 @@ class _$Message_MarkUnreadImpl extends Message_MarkUnread {
     TResult? Function(OperatedChat field0)? recoverChat,
     TResult? Function(PermanentDeleteMessage field0)? permanentDelete,
     TResult? Function()? unschedule,
+    TResult? Function(UpdateProfileMessage field0)? updateProfile,
+    TResult? Function(UpdateProfileSharingMessage field0)? updateProfileSharing,
+    TResult? Function(ShareProfileMessage field0)? shareProfile,
   }) {
     return markUnread?.call();
   }
@@ -8210,6 +8517,9 @@ class _$Message_MarkUnreadImpl extends Message_MarkUnread {
     TResult Function(OperatedChat field0)? recoverChat,
     TResult Function(PermanentDeleteMessage field0)? permanentDelete,
     TResult Function()? unschedule,
+    TResult Function(UpdateProfileMessage field0)? updateProfile,
+    TResult Function(UpdateProfileSharingMessage field0)? updateProfileSharing,
+    TResult Function(ShareProfileMessage field0)? shareProfile,
     required TResult orElse(),
   }) {
     if (markUnread != null) {
@@ -8247,6 +8557,10 @@ class _$Message_MarkUnreadImpl extends Message_MarkUnread {
     required TResult Function(Message_RecoverChat value) recoverChat,
     required TResult Function(Message_PermanentDelete value) permanentDelete,
     required TResult Function(Message_Unschedule value) unschedule,
+    required TResult Function(Message_UpdateProfile value) updateProfile,
+    required TResult Function(Message_UpdateProfileSharing value)
+        updateProfileSharing,
+    required TResult Function(Message_ShareProfile value) shareProfile,
   }) {
     return markUnread(this);
   }
@@ -8276,6 +8590,9 @@ class _$Message_MarkUnreadImpl extends Message_MarkUnread {
     TResult? Function(Message_RecoverChat value)? recoverChat,
     TResult? Function(Message_PermanentDelete value)? permanentDelete,
     TResult? Function(Message_Unschedule value)? unschedule,
+    TResult? Function(Message_UpdateProfile value)? updateProfile,
+    TResult? Function(Message_UpdateProfileSharing value)? updateProfileSharing,
+    TResult? Function(Message_ShareProfile value)? shareProfile,
   }) {
     return markUnread?.call(this);
   }
@@ -8305,6 +8622,9 @@ class _$Message_MarkUnreadImpl extends Message_MarkUnread {
     TResult Function(Message_RecoverChat value)? recoverChat,
     TResult Function(Message_PermanentDelete value)? permanentDelete,
     TResult Function(Message_Unschedule value)? unschedule,
+    TResult Function(Message_UpdateProfile value)? updateProfile,
+    TResult Function(Message_UpdateProfileSharing value)? updateProfileSharing,
+    TResult Function(Message_ShareProfile value)? shareProfile,
     required TResult orElse(),
   }) {
     if (markUnread != null) {
@@ -8386,6 +8706,10 @@ class _$Message_PeerCacheInvalidateImpl extends Message_PeerCacheInvalidate {
     required TResult Function(OperatedChat field0) recoverChat,
     required TResult Function(PermanentDeleteMessage field0) permanentDelete,
     required TResult Function() unschedule,
+    required TResult Function(UpdateProfileMessage field0) updateProfile,
+    required TResult Function(UpdateProfileSharingMessage field0)
+        updateProfileSharing,
+    required TResult Function(ShareProfileMessage field0) shareProfile,
   }) {
     return peerCacheInvalidate();
   }
@@ -8415,6 +8739,9 @@ class _$Message_PeerCacheInvalidateImpl extends Message_PeerCacheInvalidate {
     TResult? Function(OperatedChat field0)? recoverChat,
     TResult? Function(PermanentDeleteMessage field0)? permanentDelete,
     TResult? Function()? unschedule,
+    TResult? Function(UpdateProfileMessage field0)? updateProfile,
+    TResult? Function(UpdateProfileSharingMessage field0)? updateProfileSharing,
+    TResult? Function(ShareProfileMessage field0)? shareProfile,
   }) {
     return peerCacheInvalidate?.call();
   }
@@ -8444,6 +8771,9 @@ class _$Message_PeerCacheInvalidateImpl extends Message_PeerCacheInvalidate {
     TResult Function(OperatedChat field0)? recoverChat,
     TResult Function(PermanentDeleteMessage field0)? permanentDelete,
     TResult Function()? unschedule,
+    TResult Function(UpdateProfileMessage field0)? updateProfile,
+    TResult Function(UpdateProfileSharingMessage field0)? updateProfileSharing,
+    TResult Function(ShareProfileMessage field0)? shareProfile,
     required TResult orElse(),
   }) {
     if (peerCacheInvalidate != null) {
@@ -8481,6 +8811,10 @@ class _$Message_PeerCacheInvalidateImpl extends Message_PeerCacheInvalidate {
     required TResult Function(Message_RecoverChat value) recoverChat,
     required TResult Function(Message_PermanentDelete value) permanentDelete,
     required TResult Function(Message_Unschedule value) unschedule,
+    required TResult Function(Message_UpdateProfile value) updateProfile,
+    required TResult Function(Message_UpdateProfileSharing value)
+        updateProfileSharing,
+    required TResult Function(Message_ShareProfile value) shareProfile,
   }) {
     return peerCacheInvalidate(this);
   }
@@ -8510,6 +8844,9 @@ class _$Message_PeerCacheInvalidateImpl extends Message_PeerCacheInvalidate {
     TResult? Function(Message_RecoverChat value)? recoverChat,
     TResult? Function(Message_PermanentDelete value)? permanentDelete,
     TResult? Function(Message_Unschedule value)? unschedule,
+    TResult? Function(Message_UpdateProfile value)? updateProfile,
+    TResult? Function(Message_UpdateProfileSharing value)? updateProfileSharing,
+    TResult? Function(Message_ShareProfile value)? shareProfile,
   }) {
     return peerCacheInvalidate?.call(this);
   }
@@ -8539,6 +8876,9 @@ class _$Message_PeerCacheInvalidateImpl extends Message_PeerCacheInvalidate {
     TResult Function(Message_RecoverChat value)? recoverChat,
     TResult Function(Message_PermanentDelete value)? permanentDelete,
     TResult Function(Message_Unschedule value)? unschedule,
+    TResult Function(Message_UpdateProfile value)? updateProfile,
+    TResult Function(Message_UpdateProfileSharing value)? updateProfileSharing,
+    TResult Function(Message_ShareProfile value)? shareProfile,
     required TResult orElse(),
   }) {
     if (peerCacheInvalidate != null) {
@@ -8648,6 +8988,10 @@ class _$Message_UpdateExtensionImpl extends Message_UpdateExtension {
     required TResult Function(OperatedChat field0) recoverChat,
     required TResult Function(PermanentDeleteMessage field0) permanentDelete,
     required TResult Function() unschedule,
+    required TResult Function(UpdateProfileMessage field0) updateProfile,
+    required TResult Function(UpdateProfileSharingMessage field0)
+        updateProfileSharing,
+    required TResult Function(ShareProfileMessage field0) shareProfile,
   }) {
     return updateExtension(field0);
   }
@@ -8677,6 +9021,9 @@ class _$Message_UpdateExtensionImpl extends Message_UpdateExtension {
     TResult? Function(OperatedChat field0)? recoverChat,
     TResult? Function(PermanentDeleteMessage field0)? permanentDelete,
     TResult? Function()? unschedule,
+    TResult? Function(UpdateProfileMessage field0)? updateProfile,
+    TResult? Function(UpdateProfileSharingMessage field0)? updateProfileSharing,
+    TResult? Function(ShareProfileMessage field0)? shareProfile,
   }) {
     return updateExtension?.call(field0);
   }
@@ -8706,6 +9053,9 @@ class _$Message_UpdateExtensionImpl extends Message_UpdateExtension {
     TResult Function(OperatedChat field0)? recoverChat,
     TResult Function(PermanentDeleteMessage field0)? permanentDelete,
     TResult Function()? unschedule,
+    TResult Function(UpdateProfileMessage field0)? updateProfile,
+    TResult Function(UpdateProfileSharingMessage field0)? updateProfileSharing,
+    TResult Function(ShareProfileMessage field0)? shareProfile,
     required TResult orElse(),
   }) {
     if (updateExtension != null) {
@@ -8743,6 +9093,10 @@ class _$Message_UpdateExtensionImpl extends Message_UpdateExtension {
     required TResult Function(Message_RecoverChat value) recoverChat,
     required TResult Function(Message_PermanentDelete value) permanentDelete,
     required TResult Function(Message_Unschedule value) unschedule,
+    required TResult Function(Message_UpdateProfile value) updateProfile,
+    required TResult Function(Message_UpdateProfileSharing value)
+        updateProfileSharing,
+    required TResult Function(Message_ShareProfile value) shareProfile,
   }) {
     return updateExtension(this);
   }
@@ -8772,6 +9126,9 @@ class _$Message_UpdateExtensionImpl extends Message_UpdateExtension {
     TResult? Function(Message_RecoverChat value)? recoverChat,
     TResult? Function(Message_PermanentDelete value)? permanentDelete,
     TResult? Function(Message_Unschedule value)? unschedule,
+    TResult? Function(Message_UpdateProfile value)? updateProfile,
+    TResult? Function(Message_UpdateProfileSharing value)? updateProfileSharing,
+    TResult? Function(Message_ShareProfile value)? shareProfile,
   }) {
     return updateExtension?.call(this);
   }
@@ -8801,6 +9158,9 @@ class _$Message_UpdateExtensionImpl extends Message_UpdateExtension {
     TResult Function(Message_RecoverChat value)? recoverChat,
     TResult Function(Message_PermanentDelete value)? permanentDelete,
     TResult Function(Message_Unschedule value)? unschedule,
+    TResult Function(Message_UpdateProfile value)? updateProfile,
+    TResult Function(Message_UpdateProfileSharing value)? updateProfileSharing,
+    TResult Function(Message_ShareProfile value)? shareProfile,
     required TResult orElse(),
   }) {
     if (updateExtension != null) {
@@ -8915,6 +9275,10 @@ class _$Message_ErrorImpl extends Message_Error {
     required TResult Function(OperatedChat field0) recoverChat,
     required TResult Function(PermanentDeleteMessage field0) permanentDelete,
     required TResult Function() unschedule,
+    required TResult Function(UpdateProfileMessage field0) updateProfile,
+    required TResult Function(UpdateProfileSharingMessage field0)
+        updateProfileSharing,
+    required TResult Function(ShareProfileMessage field0) shareProfile,
   }) {
     return error(field0);
   }
@@ -8944,6 +9308,9 @@ class _$Message_ErrorImpl extends Message_Error {
     TResult? Function(OperatedChat field0)? recoverChat,
     TResult? Function(PermanentDeleteMessage field0)? permanentDelete,
     TResult? Function()? unschedule,
+    TResult? Function(UpdateProfileMessage field0)? updateProfile,
+    TResult? Function(UpdateProfileSharingMessage field0)? updateProfileSharing,
+    TResult? Function(ShareProfileMessage field0)? shareProfile,
   }) {
     return error?.call(field0);
   }
@@ -8973,6 +9340,9 @@ class _$Message_ErrorImpl extends Message_Error {
     TResult Function(OperatedChat field0)? recoverChat,
     TResult Function(PermanentDeleteMessage field0)? permanentDelete,
     TResult Function()? unschedule,
+    TResult Function(UpdateProfileMessage field0)? updateProfile,
+    TResult Function(UpdateProfileSharingMessage field0)? updateProfileSharing,
+    TResult Function(ShareProfileMessage field0)? shareProfile,
     required TResult orElse(),
   }) {
     if (error != null) {
@@ -9010,6 +9380,10 @@ class _$Message_ErrorImpl extends Message_Error {
     required TResult Function(Message_RecoverChat value) recoverChat,
     required TResult Function(Message_PermanentDelete value) permanentDelete,
     required TResult Function(Message_Unschedule value) unschedule,
+    required TResult Function(Message_UpdateProfile value) updateProfile,
+    required TResult Function(Message_UpdateProfileSharing value)
+        updateProfileSharing,
+    required TResult Function(Message_ShareProfile value) shareProfile,
   }) {
     return error(this);
   }
@@ -9039,6 +9413,9 @@ class _$Message_ErrorImpl extends Message_Error {
     TResult? Function(Message_RecoverChat value)? recoverChat,
     TResult? Function(Message_PermanentDelete value)? permanentDelete,
     TResult? Function(Message_Unschedule value)? unschedule,
+    TResult? Function(Message_UpdateProfile value)? updateProfile,
+    TResult? Function(Message_UpdateProfileSharing value)? updateProfileSharing,
+    TResult? Function(Message_ShareProfile value)? shareProfile,
   }) {
     return error?.call(this);
   }
@@ -9068,6 +9445,9 @@ class _$Message_ErrorImpl extends Message_Error {
     TResult Function(Message_RecoverChat value)? recoverChat,
     TResult Function(Message_PermanentDelete value)? permanentDelete,
     TResult Function(Message_Unschedule value)? unschedule,
+    TResult Function(Message_UpdateProfile value)? updateProfile,
+    TResult Function(Message_UpdateProfileSharing value)? updateProfileSharing,
+    TResult Function(Message_ShareProfile value)? shareProfile,
     required TResult orElse(),
   }) {
     if (error != null) {
@@ -9184,6 +9564,10 @@ class _$Message_MoveToRecycleBinImpl extends Message_MoveToRecycleBin {
     required TResult Function(OperatedChat field0) recoverChat,
     required TResult Function(PermanentDeleteMessage field0) permanentDelete,
     required TResult Function() unschedule,
+    required TResult Function(UpdateProfileMessage field0) updateProfile,
+    required TResult Function(UpdateProfileSharingMessage field0)
+        updateProfileSharing,
+    required TResult Function(ShareProfileMessage field0) shareProfile,
   }) {
     return moveToRecycleBin(field0);
   }
@@ -9213,6 +9597,9 @@ class _$Message_MoveToRecycleBinImpl extends Message_MoveToRecycleBin {
     TResult? Function(OperatedChat field0)? recoverChat,
     TResult? Function(PermanentDeleteMessage field0)? permanentDelete,
     TResult? Function()? unschedule,
+    TResult? Function(UpdateProfileMessage field0)? updateProfile,
+    TResult? Function(UpdateProfileSharingMessage field0)? updateProfileSharing,
+    TResult? Function(ShareProfileMessage field0)? shareProfile,
   }) {
     return moveToRecycleBin?.call(field0);
   }
@@ -9242,6 +9629,9 @@ class _$Message_MoveToRecycleBinImpl extends Message_MoveToRecycleBin {
     TResult Function(OperatedChat field0)? recoverChat,
     TResult Function(PermanentDeleteMessage field0)? permanentDelete,
     TResult Function()? unschedule,
+    TResult Function(UpdateProfileMessage field0)? updateProfile,
+    TResult Function(UpdateProfileSharingMessage field0)? updateProfileSharing,
+    TResult Function(ShareProfileMessage field0)? shareProfile,
     required TResult orElse(),
   }) {
     if (moveToRecycleBin != null) {
@@ -9279,6 +9669,10 @@ class _$Message_MoveToRecycleBinImpl extends Message_MoveToRecycleBin {
     required TResult Function(Message_RecoverChat value) recoverChat,
     required TResult Function(Message_PermanentDelete value) permanentDelete,
     required TResult Function(Message_Unschedule value) unschedule,
+    required TResult Function(Message_UpdateProfile value) updateProfile,
+    required TResult Function(Message_UpdateProfileSharing value)
+        updateProfileSharing,
+    required TResult Function(Message_ShareProfile value) shareProfile,
   }) {
     return moveToRecycleBin(this);
   }
@@ -9308,6 +9702,9 @@ class _$Message_MoveToRecycleBinImpl extends Message_MoveToRecycleBin {
     TResult? Function(Message_RecoverChat value)? recoverChat,
     TResult? Function(Message_PermanentDelete value)? permanentDelete,
     TResult? Function(Message_Unschedule value)? unschedule,
+    TResult? Function(Message_UpdateProfile value)? updateProfile,
+    TResult? Function(Message_UpdateProfileSharing value)? updateProfileSharing,
+    TResult? Function(Message_ShareProfile value)? shareProfile,
   }) {
     return moveToRecycleBin?.call(this);
   }
@@ -9337,6 +9734,9 @@ class _$Message_MoveToRecycleBinImpl extends Message_MoveToRecycleBin {
     TResult Function(Message_RecoverChat value)? recoverChat,
     TResult Function(Message_PermanentDelete value)? permanentDelete,
     TResult Function(Message_Unschedule value)? unschedule,
+    TResult Function(Message_UpdateProfile value)? updateProfile,
+    TResult Function(Message_UpdateProfileSharing value)? updateProfileSharing,
+    TResult Function(Message_ShareProfile value)? shareProfile,
     required TResult orElse(),
   }) {
     if (moveToRecycleBin != null) {
@@ -9452,6 +9852,10 @@ class _$Message_RecoverChatImpl extends Message_RecoverChat {
     required TResult Function(OperatedChat field0) recoverChat,
     required TResult Function(PermanentDeleteMessage field0) permanentDelete,
     required TResult Function() unschedule,
+    required TResult Function(UpdateProfileMessage field0) updateProfile,
+    required TResult Function(UpdateProfileSharingMessage field0)
+        updateProfileSharing,
+    required TResult Function(ShareProfileMessage field0) shareProfile,
   }) {
     return recoverChat(field0);
   }
@@ -9481,6 +9885,9 @@ class _$Message_RecoverChatImpl extends Message_RecoverChat {
     TResult? Function(OperatedChat field0)? recoverChat,
     TResult? Function(PermanentDeleteMessage field0)? permanentDelete,
     TResult? Function()? unschedule,
+    TResult? Function(UpdateProfileMessage field0)? updateProfile,
+    TResult? Function(UpdateProfileSharingMessage field0)? updateProfileSharing,
+    TResult? Function(ShareProfileMessage field0)? shareProfile,
   }) {
     return recoverChat?.call(field0);
   }
@@ -9510,6 +9917,9 @@ class _$Message_RecoverChatImpl extends Message_RecoverChat {
     TResult Function(OperatedChat field0)? recoverChat,
     TResult Function(PermanentDeleteMessage field0)? permanentDelete,
     TResult Function()? unschedule,
+    TResult Function(UpdateProfileMessage field0)? updateProfile,
+    TResult Function(UpdateProfileSharingMessage field0)? updateProfileSharing,
+    TResult Function(ShareProfileMessage field0)? shareProfile,
     required TResult orElse(),
   }) {
     if (recoverChat != null) {
@@ -9547,6 +9957,10 @@ class _$Message_RecoverChatImpl extends Message_RecoverChat {
     required TResult Function(Message_RecoverChat value) recoverChat,
     required TResult Function(Message_PermanentDelete value) permanentDelete,
     required TResult Function(Message_Unschedule value) unschedule,
+    required TResult Function(Message_UpdateProfile value) updateProfile,
+    required TResult Function(Message_UpdateProfileSharing value)
+        updateProfileSharing,
+    required TResult Function(Message_ShareProfile value) shareProfile,
   }) {
     return recoverChat(this);
   }
@@ -9576,6 +9990,9 @@ class _$Message_RecoverChatImpl extends Message_RecoverChat {
     TResult? Function(Message_RecoverChat value)? recoverChat,
     TResult? Function(Message_PermanentDelete value)? permanentDelete,
     TResult? Function(Message_Unschedule value)? unschedule,
+    TResult? Function(Message_UpdateProfile value)? updateProfile,
+    TResult? Function(Message_UpdateProfileSharing value)? updateProfileSharing,
+    TResult? Function(Message_ShareProfile value)? shareProfile,
   }) {
     return recoverChat?.call(this);
   }
@@ -9605,6 +10022,9 @@ class _$Message_RecoverChatImpl extends Message_RecoverChat {
     TResult Function(Message_RecoverChat value)? recoverChat,
     TResult Function(Message_PermanentDelete value)? permanentDelete,
     TResult Function(Message_Unschedule value)? unschedule,
+    TResult Function(Message_UpdateProfile value)? updateProfile,
+    TResult Function(Message_UpdateProfileSharing value)? updateProfileSharing,
+    TResult Function(Message_ShareProfile value)? shareProfile,
     required TResult orElse(),
   }) {
     if (recoverChat != null) {
@@ -9722,6 +10142,10 @@ class _$Message_PermanentDeleteImpl extends Message_PermanentDelete {
     required TResult Function(OperatedChat field0) recoverChat,
     required TResult Function(PermanentDeleteMessage field0) permanentDelete,
     required TResult Function() unschedule,
+    required TResult Function(UpdateProfileMessage field0) updateProfile,
+    required TResult Function(UpdateProfileSharingMessage field0)
+        updateProfileSharing,
+    required TResult Function(ShareProfileMessage field0) shareProfile,
   }) {
     return permanentDelete(field0);
   }
@@ -9751,6 +10175,9 @@ class _$Message_PermanentDeleteImpl extends Message_PermanentDelete {
     TResult? Function(OperatedChat field0)? recoverChat,
     TResult? Function(PermanentDeleteMessage field0)? permanentDelete,
     TResult? Function()? unschedule,
+    TResult? Function(UpdateProfileMessage field0)? updateProfile,
+    TResult? Function(UpdateProfileSharingMessage field0)? updateProfileSharing,
+    TResult? Function(ShareProfileMessage field0)? shareProfile,
   }) {
     return permanentDelete?.call(field0);
   }
@@ -9780,6 +10207,9 @@ class _$Message_PermanentDeleteImpl extends Message_PermanentDelete {
     TResult Function(OperatedChat field0)? recoverChat,
     TResult Function(PermanentDeleteMessage field0)? permanentDelete,
     TResult Function()? unschedule,
+    TResult Function(UpdateProfileMessage field0)? updateProfile,
+    TResult Function(UpdateProfileSharingMessage field0)? updateProfileSharing,
+    TResult Function(ShareProfileMessage field0)? shareProfile,
     required TResult orElse(),
   }) {
     if (permanentDelete != null) {
@@ -9817,6 +10247,10 @@ class _$Message_PermanentDeleteImpl extends Message_PermanentDelete {
     required TResult Function(Message_RecoverChat value) recoverChat,
     required TResult Function(Message_PermanentDelete value) permanentDelete,
     required TResult Function(Message_Unschedule value) unschedule,
+    required TResult Function(Message_UpdateProfile value) updateProfile,
+    required TResult Function(Message_UpdateProfileSharing value)
+        updateProfileSharing,
+    required TResult Function(Message_ShareProfile value) shareProfile,
   }) {
     return permanentDelete(this);
   }
@@ -9846,6 +10280,9 @@ class _$Message_PermanentDeleteImpl extends Message_PermanentDelete {
     TResult? Function(Message_RecoverChat value)? recoverChat,
     TResult? Function(Message_PermanentDelete value)? permanentDelete,
     TResult? Function(Message_Unschedule value)? unschedule,
+    TResult? Function(Message_UpdateProfile value)? updateProfile,
+    TResult? Function(Message_UpdateProfileSharing value)? updateProfileSharing,
+    TResult? Function(Message_ShareProfile value)? shareProfile,
   }) {
     return permanentDelete?.call(this);
   }
@@ -9875,6 +10312,9 @@ class _$Message_PermanentDeleteImpl extends Message_PermanentDelete {
     TResult Function(Message_RecoverChat value)? recoverChat,
     TResult Function(Message_PermanentDelete value)? permanentDelete,
     TResult Function(Message_Unschedule value)? unschedule,
+    TResult Function(Message_UpdateProfile value)? updateProfile,
+    TResult Function(Message_UpdateProfileSharing value)? updateProfileSharing,
+    TResult Function(Message_ShareProfile value)? shareProfile,
     required TResult orElse(),
   }) {
     if (permanentDelete != null) {
@@ -9962,6 +10402,10 @@ class _$Message_UnscheduleImpl extends Message_Unschedule {
     required TResult Function(OperatedChat field0) recoverChat,
     required TResult Function(PermanentDeleteMessage field0) permanentDelete,
     required TResult Function() unschedule,
+    required TResult Function(UpdateProfileMessage field0) updateProfile,
+    required TResult Function(UpdateProfileSharingMessage field0)
+        updateProfileSharing,
+    required TResult Function(ShareProfileMessage field0) shareProfile,
   }) {
     return unschedule();
   }
@@ -9991,6 +10435,9 @@ class _$Message_UnscheduleImpl extends Message_Unschedule {
     TResult? Function(OperatedChat field0)? recoverChat,
     TResult? Function(PermanentDeleteMessage field0)? permanentDelete,
     TResult? Function()? unschedule,
+    TResult? Function(UpdateProfileMessage field0)? updateProfile,
+    TResult? Function(UpdateProfileSharingMessage field0)? updateProfileSharing,
+    TResult? Function(ShareProfileMessage field0)? shareProfile,
   }) {
     return unschedule?.call();
   }
@@ -10020,6 +10467,9 @@ class _$Message_UnscheduleImpl extends Message_Unschedule {
     TResult Function(OperatedChat field0)? recoverChat,
     TResult Function(PermanentDeleteMessage field0)? permanentDelete,
     TResult Function()? unschedule,
+    TResult Function(UpdateProfileMessage field0)? updateProfile,
+    TResult Function(UpdateProfileSharingMessage field0)? updateProfileSharing,
+    TResult Function(ShareProfileMessage field0)? shareProfile,
     required TResult orElse(),
   }) {
     if (unschedule != null) {
@@ -10057,6 +10507,10 @@ class _$Message_UnscheduleImpl extends Message_Unschedule {
     required TResult Function(Message_RecoverChat value) recoverChat,
     required TResult Function(Message_PermanentDelete value) permanentDelete,
     required TResult Function(Message_Unschedule value) unschedule,
+    required TResult Function(Message_UpdateProfile value) updateProfile,
+    required TResult Function(Message_UpdateProfileSharing value)
+        updateProfileSharing,
+    required TResult Function(Message_ShareProfile value) shareProfile,
   }) {
     return unschedule(this);
   }
@@ -10086,6 +10540,9 @@ class _$Message_UnscheduleImpl extends Message_Unschedule {
     TResult? Function(Message_RecoverChat value)? recoverChat,
     TResult? Function(Message_PermanentDelete value)? permanentDelete,
     TResult? Function(Message_Unschedule value)? unschedule,
+    TResult? Function(Message_UpdateProfile value)? updateProfile,
+    TResult? Function(Message_UpdateProfileSharing value)? updateProfileSharing,
+    TResult? Function(Message_ShareProfile value)? shareProfile,
   }) {
     return unschedule?.call(this);
   }
@@ -10115,6 +10572,9 @@ class _$Message_UnscheduleImpl extends Message_Unschedule {
     TResult Function(Message_RecoverChat value)? recoverChat,
     TResult Function(Message_PermanentDelete value)? permanentDelete,
     TResult Function(Message_Unschedule value)? unschedule,
+    TResult Function(Message_UpdateProfile value)? updateProfile,
+    TResult Function(Message_UpdateProfileSharing value)? updateProfileSharing,
+    TResult Function(Message_ShareProfile value)? shareProfile,
     required TResult orElse(),
   }) {
     if (unschedule != null) {
@@ -10127,6 +10587,877 @@ class _$Message_UnscheduleImpl extends Message_Unschedule {
 abstract class Message_Unschedule extends Message {
   const factory Message_Unschedule() = _$Message_UnscheduleImpl;
   const Message_Unschedule._() : super._();
+}
+
+/// @nodoc
+abstract class _$$Message_UpdateProfileImplCopyWith<$Res> {
+  factory _$$Message_UpdateProfileImplCopyWith(
+          _$Message_UpdateProfileImpl value,
+          $Res Function(_$Message_UpdateProfileImpl) then) =
+      __$$Message_UpdateProfileImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({UpdateProfileMessage field0});
+}
+
+/// @nodoc
+class __$$Message_UpdateProfileImplCopyWithImpl<$Res>
+    extends _$MessageCopyWithImpl<$Res, _$Message_UpdateProfileImpl>
+    implements _$$Message_UpdateProfileImplCopyWith<$Res> {
+  __$$Message_UpdateProfileImplCopyWithImpl(_$Message_UpdateProfileImpl _value,
+      $Res Function(_$Message_UpdateProfileImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of Message
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? field0 = null,
+  }) {
+    return _then(_$Message_UpdateProfileImpl(
+      null == field0
+          ? _value.field0
+          : field0 // ignore: cast_nullable_to_non_nullable
+              as UpdateProfileMessage,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$Message_UpdateProfileImpl extends Message_UpdateProfile {
+  const _$Message_UpdateProfileImpl(this.field0) : super._();
+
+  @override
+  final UpdateProfileMessage field0;
+
+  @override
+  String toString() {
+    return 'Message.updateProfile(field0: $field0)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$Message_UpdateProfileImpl &&
+            (identical(other.field0, field0) || other.field0 == field0));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, field0);
+
+  /// Create a copy of Message
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$Message_UpdateProfileImplCopyWith<_$Message_UpdateProfileImpl>
+      get copyWith => __$$Message_UpdateProfileImplCopyWithImpl<
+          _$Message_UpdateProfileImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(NormalMessage field0) message,
+    required TResult Function(RenameMessage field0) renameMessage,
+    required TResult Function(ChangeParticipantMessage field0)
+        changeParticipants,
+    required TResult Function(ReactMessage field0) react,
+    required TResult Function() delivered,
+    required TResult Function() read,
+    required TResult Function() typing,
+    required TResult Function(UnsendMessage field0) unsend,
+    required TResult Function(EditMessage field0) edit,
+    required TResult Function(IconChangeMessage field0) iconChange,
+    required TResult Function() stopTyping,
+    required TResult Function(bool field0) enableSmsActivation,
+    required TResult Function() messageReadOnDevice,
+    required TResult Function(bool field0) smsConfirmSent,
+    required TResult Function() markUnread,
+    required TResult Function() peerCacheInvalidate,
+    required TResult Function(UpdateExtensionMessage field0) updateExtension,
+    required TResult Function(ErrorMessage field0) error,
+    required TResult Function(MoveToRecycleBinMessage field0) moveToRecycleBin,
+    required TResult Function(OperatedChat field0) recoverChat,
+    required TResult Function(PermanentDeleteMessage field0) permanentDelete,
+    required TResult Function() unschedule,
+    required TResult Function(UpdateProfileMessage field0) updateProfile,
+    required TResult Function(UpdateProfileSharingMessage field0)
+        updateProfileSharing,
+    required TResult Function(ShareProfileMessage field0) shareProfile,
+  }) {
+    return updateProfile(field0);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(NormalMessage field0)? message,
+    TResult? Function(RenameMessage field0)? renameMessage,
+    TResult? Function(ChangeParticipantMessage field0)? changeParticipants,
+    TResult? Function(ReactMessage field0)? react,
+    TResult? Function()? delivered,
+    TResult? Function()? read,
+    TResult? Function()? typing,
+    TResult? Function(UnsendMessage field0)? unsend,
+    TResult? Function(EditMessage field0)? edit,
+    TResult? Function(IconChangeMessage field0)? iconChange,
+    TResult? Function()? stopTyping,
+    TResult? Function(bool field0)? enableSmsActivation,
+    TResult? Function()? messageReadOnDevice,
+    TResult? Function(bool field0)? smsConfirmSent,
+    TResult? Function()? markUnread,
+    TResult? Function()? peerCacheInvalidate,
+    TResult? Function(UpdateExtensionMessage field0)? updateExtension,
+    TResult? Function(ErrorMessage field0)? error,
+    TResult? Function(MoveToRecycleBinMessage field0)? moveToRecycleBin,
+    TResult? Function(OperatedChat field0)? recoverChat,
+    TResult? Function(PermanentDeleteMessage field0)? permanentDelete,
+    TResult? Function()? unschedule,
+    TResult? Function(UpdateProfileMessage field0)? updateProfile,
+    TResult? Function(UpdateProfileSharingMessage field0)? updateProfileSharing,
+    TResult? Function(ShareProfileMessage field0)? shareProfile,
+  }) {
+    return updateProfile?.call(field0);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(NormalMessage field0)? message,
+    TResult Function(RenameMessage field0)? renameMessage,
+    TResult Function(ChangeParticipantMessage field0)? changeParticipants,
+    TResult Function(ReactMessage field0)? react,
+    TResult Function()? delivered,
+    TResult Function()? read,
+    TResult Function()? typing,
+    TResult Function(UnsendMessage field0)? unsend,
+    TResult Function(EditMessage field0)? edit,
+    TResult Function(IconChangeMessage field0)? iconChange,
+    TResult Function()? stopTyping,
+    TResult Function(bool field0)? enableSmsActivation,
+    TResult Function()? messageReadOnDevice,
+    TResult Function(bool field0)? smsConfirmSent,
+    TResult Function()? markUnread,
+    TResult Function()? peerCacheInvalidate,
+    TResult Function(UpdateExtensionMessage field0)? updateExtension,
+    TResult Function(ErrorMessage field0)? error,
+    TResult Function(MoveToRecycleBinMessage field0)? moveToRecycleBin,
+    TResult Function(OperatedChat field0)? recoverChat,
+    TResult Function(PermanentDeleteMessage field0)? permanentDelete,
+    TResult Function()? unschedule,
+    TResult Function(UpdateProfileMessage field0)? updateProfile,
+    TResult Function(UpdateProfileSharingMessage field0)? updateProfileSharing,
+    TResult Function(ShareProfileMessage field0)? shareProfile,
+    required TResult orElse(),
+  }) {
+    if (updateProfile != null) {
+      return updateProfile(field0);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(Message_Message value) message,
+    required TResult Function(Message_RenameMessage value) renameMessage,
+    required TResult Function(Message_ChangeParticipants value)
+        changeParticipants,
+    required TResult Function(Message_React value) react,
+    required TResult Function(Message_Delivered value) delivered,
+    required TResult Function(Message_Read value) read,
+    required TResult Function(Message_Typing value) typing,
+    required TResult Function(Message_Unsend value) unsend,
+    required TResult Function(Message_Edit value) edit,
+    required TResult Function(Message_IconChange value) iconChange,
+    required TResult Function(Message_StopTyping value) stopTyping,
+    required TResult Function(Message_EnableSmsActivation value)
+        enableSmsActivation,
+    required TResult Function(Message_MessageReadOnDevice value)
+        messageReadOnDevice,
+    required TResult Function(Message_SmsConfirmSent value) smsConfirmSent,
+    required TResult Function(Message_MarkUnread value) markUnread,
+    required TResult Function(Message_PeerCacheInvalidate value)
+        peerCacheInvalidate,
+    required TResult Function(Message_UpdateExtension value) updateExtension,
+    required TResult Function(Message_Error value) error,
+    required TResult Function(Message_MoveToRecycleBin value) moveToRecycleBin,
+    required TResult Function(Message_RecoverChat value) recoverChat,
+    required TResult Function(Message_PermanentDelete value) permanentDelete,
+    required TResult Function(Message_Unschedule value) unschedule,
+    required TResult Function(Message_UpdateProfile value) updateProfile,
+    required TResult Function(Message_UpdateProfileSharing value)
+        updateProfileSharing,
+    required TResult Function(Message_ShareProfile value) shareProfile,
+  }) {
+    return updateProfile(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(Message_Message value)? message,
+    TResult? Function(Message_RenameMessage value)? renameMessage,
+    TResult? Function(Message_ChangeParticipants value)? changeParticipants,
+    TResult? Function(Message_React value)? react,
+    TResult? Function(Message_Delivered value)? delivered,
+    TResult? Function(Message_Read value)? read,
+    TResult? Function(Message_Typing value)? typing,
+    TResult? Function(Message_Unsend value)? unsend,
+    TResult? Function(Message_Edit value)? edit,
+    TResult? Function(Message_IconChange value)? iconChange,
+    TResult? Function(Message_StopTyping value)? stopTyping,
+    TResult? Function(Message_EnableSmsActivation value)? enableSmsActivation,
+    TResult? Function(Message_MessageReadOnDevice value)? messageReadOnDevice,
+    TResult? Function(Message_SmsConfirmSent value)? smsConfirmSent,
+    TResult? Function(Message_MarkUnread value)? markUnread,
+    TResult? Function(Message_PeerCacheInvalidate value)? peerCacheInvalidate,
+    TResult? Function(Message_UpdateExtension value)? updateExtension,
+    TResult? Function(Message_Error value)? error,
+    TResult? Function(Message_MoveToRecycleBin value)? moveToRecycleBin,
+    TResult? Function(Message_RecoverChat value)? recoverChat,
+    TResult? Function(Message_PermanentDelete value)? permanentDelete,
+    TResult? Function(Message_Unschedule value)? unschedule,
+    TResult? Function(Message_UpdateProfile value)? updateProfile,
+    TResult? Function(Message_UpdateProfileSharing value)? updateProfileSharing,
+    TResult? Function(Message_ShareProfile value)? shareProfile,
+  }) {
+    return updateProfile?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(Message_Message value)? message,
+    TResult Function(Message_RenameMessage value)? renameMessage,
+    TResult Function(Message_ChangeParticipants value)? changeParticipants,
+    TResult Function(Message_React value)? react,
+    TResult Function(Message_Delivered value)? delivered,
+    TResult Function(Message_Read value)? read,
+    TResult Function(Message_Typing value)? typing,
+    TResult Function(Message_Unsend value)? unsend,
+    TResult Function(Message_Edit value)? edit,
+    TResult Function(Message_IconChange value)? iconChange,
+    TResult Function(Message_StopTyping value)? stopTyping,
+    TResult Function(Message_EnableSmsActivation value)? enableSmsActivation,
+    TResult Function(Message_MessageReadOnDevice value)? messageReadOnDevice,
+    TResult Function(Message_SmsConfirmSent value)? smsConfirmSent,
+    TResult Function(Message_MarkUnread value)? markUnread,
+    TResult Function(Message_PeerCacheInvalidate value)? peerCacheInvalidate,
+    TResult Function(Message_UpdateExtension value)? updateExtension,
+    TResult Function(Message_Error value)? error,
+    TResult Function(Message_MoveToRecycleBin value)? moveToRecycleBin,
+    TResult Function(Message_RecoverChat value)? recoverChat,
+    TResult Function(Message_PermanentDelete value)? permanentDelete,
+    TResult Function(Message_Unschedule value)? unschedule,
+    TResult Function(Message_UpdateProfile value)? updateProfile,
+    TResult Function(Message_UpdateProfileSharing value)? updateProfileSharing,
+    TResult Function(Message_ShareProfile value)? shareProfile,
+    required TResult orElse(),
+  }) {
+    if (updateProfile != null) {
+      return updateProfile(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class Message_UpdateProfile extends Message {
+  const factory Message_UpdateProfile(final UpdateProfileMessage field0) =
+      _$Message_UpdateProfileImpl;
+  const Message_UpdateProfile._() : super._();
+
+  UpdateProfileMessage get field0;
+
+  /// Create a copy of Message
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$Message_UpdateProfileImplCopyWith<_$Message_UpdateProfileImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$Message_UpdateProfileSharingImplCopyWith<$Res> {
+  factory _$$Message_UpdateProfileSharingImplCopyWith(
+          _$Message_UpdateProfileSharingImpl value,
+          $Res Function(_$Message_UpdateProfileSharingImpl) then) =
+      __$$Message_UpdateProfileSharingImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({UpdateProfileSharingMessage field0});
+}
+
+/// @nodoc
+class __$$Message_UpdateProfileSharingImplCopyWithImpl<$Res>
+    extends _$MessageCopyWithImpl<$Res, _$Message_UpdateProfileSharingImpl>
+    implements _$$Message_UpdateProfileSharingImplCopyWith<$Res> {
+  __$$Message_UpdateProfileSharingImplCopyWithImpl(
+      _$Message_UpdateProfileSharingImpl _value,
+      $Res Function(_$Message_UpdateProfileSharingImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of Message
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? field0 = null,
+  }) {
+    return _then(_$Message_UpdateProfileSharingImpl(
+      null == field0
+          ? _value.field0
+          : field0 // ignore: cast_nullable_to_non_nullable
+              as UpdateProfileSharingMessage,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$Message_UpdateProfileSharingImpl extends Message_UpdateProfileSharing {
+  const _$Message_UpdateProfileSharingImpl(this.field0) : super._();
+
+  @override
+  final UpdateProfileSharingMessage field0;
+
+  @override
+  String toString() {
+    return 'Message.updateProfileSharing(field0: $field0)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$Message_UpdateProfileSharingImpl &&
+            (identical(other.field0, field0) || other.field0 == field0));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, field0);
+
+  /// Create a copy of Message
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$Message_UpdateProfileSharingImplCopyWith<
+          _$Message_UpdateProfileSharingImpl>
+      get copyWith => __$$Message_UpdateProfileSharingImplCopyWithImpl<
+          _$Message_UpdateProfileSharingImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(NormalMessage field0) message,
+    required TResult Function(RenameMessage field0) renameMessage,
+    required TResult Function(ChangeParticipantMessage field0)
+        changeParticipants,
+    required TResult Function(ReactMessage field0) react,
+    required TResult Function() delivered,
+    required TResult Function() read,
+    required TResult Function() typing,
+    required TResult Function(UnsendMessage field0) unsend,
+    required TResult Function(EditMessage field0) edit,
+    required TResult Function(IconChangeMessage field0) iconChange,
+    required TResult Function() stopTyping,
+    required TResult Function(bool field0) enableSmsActivation,
+    required TResult Function() messageReadOnDevice,
+    required TResult Function(bool field0) smsConfirmSent,
+    required TResult Function() markUnread,
+    required TResult Function() peerCacheInvalidate,
+    required TResult Function(UpdateExtensionMessage field0) updateExtension,
+    required TResult Function(ErrorMessage field0) error,
+    required TResult Function(MoveToRecycleBinMessage field0) moveToRecycleBin,
+    required TResult Function(OperatedChat field0) recoverChat,
+    required TResult Function(PermanentDeleteMessage field0) permanentDelete,
+    required TResult Function() unschedule,
+    required TResult Function(UpdateProfileMessage field0) updateProfile,
+    required TResult Function(UpdateProfileSharingMessage field0)
+        updateProfileSharing,
+    required TResult Function(ShareProfileMessage field0) shareProfile,
+  }) {
+    return updateProfileSharing(field0);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(NormalMessage field0)? message,
+    TResult? Function(RenameMessage field0)? renameMessage,
+    TResult? Function(ChangeParticipantMessage field0)? changeParticipants,
+    TResult? Function(ReactMessage field0)? react,
+    TResult? Function()? delivered,
+    TResult? Function()? read,
+    TResult? Function()? typing,
+    TResult? Function(UnsendMessage field0)? unsend,
+    TResult? Function(EditMessage field0)? edit,
+    TResult? Function(IconChangeMessage field0)? iconChange,
+    TResult? Function()? stopTyping,
+    TResult? Function(bool field0)? enableSmsActivation,
+    TResult? Function()? messageReadOnDevice,
+    TResult? Function(bool field0)? smsConfirmSent,
+    TResult? Function()? markUnread,
+    TResult? Function()? peerCacheInvalidate,
+    TResult? Function(UpdateExtensionMessage field0)? updateExtension,
+    TResult? Function(ErrorMessage field0)? error,
+    TResult? Function(MoveToRecycleBinMessage field0)? moveToRecycleBin,
+    TResult? Function(OperatedChat field0)? recoverChat,
+    TResult? Function(PermanentDeleteMessage field0)? permanentDelete,
+    TResult? Function()? unschedule,
+    TResult? Function(UpdateProfileMessage field0)? updateProfile,
+    TResult? Function(UpdateProfileSharingMessage field0)? updateProfileSharing,
+    TResult? Function(ShareProfileMessage field0)? shareProfile,
+  }) {
+    return updateProfileSharing?.call(field0);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(NormalMessage field0)? message,
+    TResult Function(RenameMessage field0)? renameMessage,
+    TResult Function(ChangeParticipantMessage field0)? changeParticipants,
+    TResult Function(ReactMessage field0)? react,
+    TResult Function()? delivered,
+    TResult Function()? read,
+    TResult Function()? typing,
+    TResult Function(UnsendMessage field0)? unsend,
+    TResult Function(EditMessage field0)? edit,
+    TResult Function(IconChangeMessage field0)? iconChange,
+    TResult Function()? stopTyping,
+    TResult Function(bool field0)? enableSmsActivation,
+    TResult Function()? messageReadOnDevice,
+    TResult Function(bool field0)? smsConfirmSent,
+    TResult Function()? markUnread,
+    TResult Function()? peerCacheInvalidate,
+    TResult Function(UpdateExtensionMessage field0)? updateExtension,
+    TResult Function(ErrorMessage field0)? error,
+    TResult Function(MoveToRecycleBinMessage field0)? moveToRecycleBin,
+    TResult Function(OperatedChat field0)? recoverChat,
+    TResult Function(PermanentDeleteMessage field0)? permanentDelete,
+    TResult Function()? unschedule,
+    TResult Function(UpdateProfileMessage field0)? updateProfile,
+    TResult Function(UpdateProfileSharingMessage field0)? updateProfileSharing,
+    TResult Function(ShareProfileMessage field0)? shareProfile,
+    required TResult orElse(),
+  }) {
+    if (updateProfileSharing != null) {
+      return updateProfileSharing(field0);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(Message_Message value) message,
+    required TResult Function(Message_RenameMessage value) renameMessage,
+    required TResult Function(Message_ChangeParticipants value)
+        changeParticipants,
+    required TResult Function(Message_React value) react,
+    required TResult Function(Message_Delivered value) delivered,
+    required TResult Function(Message_Read value) read,
+    required TResult Function(Message_Typing value) typing,
+    required TResult Function(Message_Unsend value) unsend,
+    required TResult Function(Message_Edit value) edit,
+    required TResult Function(Message_IconChange value) iconChange,
+    required TResult Function(Message_StopTyping value) stopTyping,
+    required TResult Function(Message_EnableSmsActivation value)
+        enableSmsActivation,
+    required TResult Function(Message_MessageReadOnDevice value)
+        messageReadOnDevice,
+    required TResult Function(Message_SmsConfirmSent value) smsConfirmSent,
+    required TResult Function(Message_MarkUnread value) markUnread,
+    required TResult Function(Message_PeerCacheInvalidate value)
+        peerCacheInvalidate,
+    required TResult Function(Message_UpdateExtension value) updateExtension,
+    required TResult Function(Message_Error value) error,
+    required TResult Function(Message_MoveToRecycleBin value) moveToRecycleBin,
+    required TResult Function(Message_RecoverChat value) recoverChat,
+    required TResult Function(Message_PermanentDelete value) permanentDelete,
+    required TResult Function(Message_Unschedule value) unschedule,
+    required TResult Function(Message_UpdateProfile value) updateProfile,
+    required TResult Function(Message_UpdateProfileSharing value)
+        updateProfileSharing,
+    required TResult Function(Message_ShareProfile value) shareProfile,
+  }) {
+    return updateProfileSharing(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(Message_Message value)? message,
+    TResult? Function(Message_RenameMessage value)? renameMessage,
+    TResult? Function(Message_ChangeParticipants value)? changeParticipants,
+    TResult? Function(Message_React value)? react,
+    TResult? Function(Message_Delivered value)? delivered,
+    TResult? Function(Message_Read value)? read,
+    TResult? Function(Message_Typing value)? typing,
+    TResult? Function(Message_Unsend value)? unsend,
+    TResult? Function(Message_Edit value)? edit,
+    TResult? Function(Message_IconChange value)? iconChange,
+    TResult? Function(Message_StopTyping value)? stopTyping,
+    TResult? Function(Message_EnableSmsActivation value)? enableSmsActivation,
+    TResult? Function(Message_MessageReadOnDevice value)? messageReadOnDevice,
+    TResult? Function(Message_SmsConfirmSent value)? smsConfirmSent,
+    TResult? Function(Message_MarkUnread value)? markUnread,
+    TResult? Function(Message_PeerCacheInvalidate value)? peerCacheInvalidate,
+    TResult? Function(Message_UpdateExtension value)? updateExtension,
+    TResult? Function(Message_Error value)? error,
+    TResult? Function(Message_MoveToRecycleBin value)? moveToRecycleBin,
+    TResult? Function(Message_RecoverChat value)? recoverChat,
+    TResult? Function(Message_PermanentDelete value)? permanentDelete,
+    TResult? Function(Message_Unschedule value)? unschedule,
+    TResult? Function(Message_UpdateProfile value)? updateProfile,
+    TResult? Function(Message_UpdateProfileSharing value)? updateProfileSharing,
+    TResult? Function(Message_ShareProfile value)? shareProfile,
+  }) {
+    return updateProfileSharing?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(Message_Message value)? message,
+    TResult Function(Message_RenameMessage value)? renameMessage,
+    TResult Function(Message_ChangeParticipants value)? changeParticipants,
+    TResult Function(Message_React value)? react,
+    TResult Function(Message_Delivered value)? delivered,
+    TResult Function(Message_Read value)? read,
+    TResult Function(Message_Typing value)? typing,
+    TResult Function(Message_Unsend value)? unsend,
+    TResult Function(Message_Edit value)? edit,
+    TResult Function(Message_IconChange value)? iconChange,
+    TResult Function(Message_StopTyping value)? stopTyping,
+    TResult Function(Message_EnableSmsActivation value)? enableSmsActivation,
+    TResult Function(Message_MessageReadOnDevice value)? messageReadOnDevice,
+    TResult Function(Message_SmsConfirmSent value)? smsConfirmSent,
+    TResult Function(Message_MarkUnread value)? markUnread,
+    TResult Function(Message_PeerCacheInvalidate value)? peerCacheInvalidate,
+    TResult Function(Message_UpdateExtension value)? updateExtension,
+    TResult Function(Message_Error value)? error,
+    TResult Function(Message_MoveToRecycleBin value)? moveToRecycleBin,
+    TResult Function(Message_RecoverChat value)? recoverChat,
+    TResult Function(Message_PermanentDelete value)? permanentDelete,
+    TResult Function(Message_Unschedule value)? unschedule,
+    TResult Function(Message_UpdateProfile value)? updateProfile,
+    TResult Function(Message_UpdateProfileSharing value)? updateProfileSharing,
+    TResult Function(Message_ShareProfile value)? shareProfile,
+    required TResult orElse(),
+  }) {
+    if (updateProfileSharing != null) {
+      return updateProfileSharing(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class Message_UpdateProfileSharing extends Message {
+  const factory Message_UpdateProfileSharing(
+          final UpdateProfileSharingMessage field0) =
+      _$Message_UpdateProfileSharingImpl;
+  const Message_UpdateProfileSharing._() : super._();
+
+  UpdateProfileSharingMessage get field0;
+
+  /// Create a copy of Message
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$Message_UpdateProfileSharingImplCopyWith<
+          _$Message_UpdateProfileSharingImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$Message_ShareProfileImplCopyWith<$Res> {
+  factory _$$Message_ShareProfileImplCopyWith(_$Message_ShareProfileImpl value,
+          $Res Function(_$Message_ShareProfileImpl) then) =
+      __$$Message_ShareProfileImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({ShareProfileMessage field0});
+}
+
+/// @nodoc
+class __$$Message_ShareProfileImplCopyWithImpl<$Res>
+    extends _$MessageCopyWithImpl<$Res, _$Message_ShareProfileImpl>
+    implements _$$Message_ShareProfileImplCopyWith<$Res> {
+  __$$Message_ShareProfileImplCopyWithImpl(_$Message_ShareProfileImpl _value,
+      $Res Function(_$Message_ShareProfileImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of Message
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? field0 = null,
+  }) {
+    return _then(_$Message_ShareProfileImpl(
+      null == field0
+          ? _value.field0
+          : field0 // ignore: cast_nullable_to_non_nullable
+              as ShareProfileMessage,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$Message_ShareProfileImpl extends Message_ShareProfile {
+  const _$Message_ShareProfileImpl(this.field0) : super._();
+
+  @override
+  final ShareProfileMessage field0;
+
+  @override
+  String toString() {
+    return 'Message.shareProfile(field0: $field0)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$Message_ShareProfileImpl &&
+            (identical(other.field0, field0) || other.field0 == field0));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, field0);
+
+  /// Create a copy of Message
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$Message_ShareProfileImplCopyWith<_$Message_ShareProfileImpl>
+      get copyWith =>
+          __$$Message_ShareProfileImplCopyWithImpl<_$Message_ShareProfileImpl>(
+              this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(NormalMessage field0) message,
+    required TResult Function(RenameMessage field0) renameMessage,
+    required TResult Function(ChangeParticipantMessage field0)
+        changeParticipants,
+    required TResult Function(ReactMessage field0) react,
+    required TResult Function() delivered,
+    required TResult Function() read,
+    required TResult Function() typing,
+    required TResult Function(UnsendMessage field0) unsend,
+    required TResult Function(EditMessage field0) edit,
+    required TResult Function(IconChangeMessage field0) iconChange,
+    required TResult Function() stopTyping,
+    required TResult Function(bool field0) enableSmsActivation,
+    required TResult Function() messageReadOnDevice,
+    required TResult Function(bool field0) smsConfirmSent,
+    required TResult Function() markUnread,
+    required TResult Function() peerCacheInvalidate,
+    required TResult Function(UpdateExtensionMessage field0) updateExtension,
+    required TResult Function(ErrorMessage field0) error,
+    required TResult Function(MoveToRecycleBinMessage field0) moveToRecycleBin,
+    required TResult Function(OperatedChat field0) recoverChat,
+    required TResult Function(PermanentDeleteMessage field0) permanentDelete,
+    required TResult Function() unschedule,
+    required TResult Function(UpdateProfileMessage field0) updateProfile,
+    required TResult Function(UpdateProfileSharingMessage field0)
+        updateProfileSharing,
+    required TResult Function(ShareProfileMessage field0) shareProfile,
+  }) {
+    return shareProfile(field0);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(NormalMessage field0)? message,
+    TResult? Function(RenameMessage field0)? renameMessage,
+    TResult? Function(ChangeParticipantMessage field0)? changeParticipants,
+    TResult? Function(ReactMessage field0)? react,
+    TResult? Function()? delivered,
+    TResult? Function()? read,
+    TResult? Function()? typing,
+    TResult? Function(UnsendMessage field0)? unsend,
+    TResult? Function(EditMessage field0)? edit,
+    TResult? Function(IconChangeMessage field0)? iconChange,
+    TResult? Function()? stopTyping,
+    TResult? Function(bool field0)? enableSmsActivation,
+    TResult? Function()? messageReadOnDevice,
+    TResult? Function(bool field0)? smsConfirmSent,
+    TResult? Function()? markUnread,
+    TResult? Function()? peerCacheInvalidate,
+    TResult? Function(UpdateExtensionMessage field0)? updateExtension,
+    TResult? Function(ErrorMessage field0)? error,
+    TResult? Function(MoveToRecycleBinMessage field0)? moveToRecycleBin,
+    TResult? Function(OperatedChat field0)? recoverChat,
+    TResult? Function(PermanentDeleteMessage field0)? permanentDelete,
+    TResult? Function()? unschedule,
+    TResult? Function(UpdateProfileMessage field0)? updateProfile,
+    TResult? Function(UpdateProfileSharingMessage field0)? updateProfileSharing,
+    TResult? Function(ShareProfileMessage field0)? shareProfile,
+  }) {
+    return shareProfile?.call(field0);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(NormalMessage field0)? message,
+    TResult Function(RenameMessage field0)? renameMessage,
+    TResult Function(ChangeParticipantMessage field0)? changeParticipants,
+    TResult Function(ReactMessage field0)? react,
+    TResult Function()? delivered,
+    TResult Function()? read,
+    TResult Function()? typing,
+    TResult Function(UnsendMessage field0)? unsend,
+    TResult Function(EditMessage field0)? edit,
+    TResult Function(IconChangeMessage field0)? iconChange,
+    TResult Function()? stopTyping,
+    TResult Function(bool field0)? enableSmsActivation,
+    TResult Function()? messageReadOnDevice,
+    TResult Function(bool field0)? smsConfirmSent,
+    TResult Function()? markUnread,
+    TResult Function()? peerCacheInvalidate,
+    TResult Function(UpdateExtensionMessage field0)? updateExtension,
+    TResult Function(ErrorMessage field0)? error,
+    TResult Function(MoveToRecycleBinMessage field0)? moveToRecycleBin,
+    TResult Function(OperatedChat field0)? recoverChat,
+    TResult Function(PermanentDeleteMessage field0)? permanentDelete,
+    TResult Function()? unschedule,
+    TResult Function(UpdateProfileMessage field0)? updateProfile,
+    TResult Function(UpdateProfileSharingMessage field0)? updateProfileSharing,
+    TResult Function(ShareProfileMessage field0)? shareProfile,
+    required TResult orElse(),
+  }) {
+    if (shareProfile != null) {
+      return shareProfile(field0);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(Message_Message value) message,
+    required TResult Function(Message_RenameMessage value) renameMessage,
+    required TResult Function(Message_ChangeParticipants value)
+        changeParticipants,
+    required TResult Function(Message_React value) react,
+    required TResult Function(Message_Delivered value) delivered,
+    required TResult Function(Message_Read value) read,
+    required TResult Function(Message_Typing value) typing,
+    required TResult Function(Message_Unsend value) unsend,
+    required TResult Function(Message_Edit value) edit,
+    required TResult Function(Message_IconChange value) iconChange,
+    required TResult Function(Message_StopTyping value) stopTyping,
+    required TResult Function(Message_EnableSmsActivation value)
+        enableSmsActivation,
+    required TResult Function(Message_MessageReadOnDevice value)
+        messageReadOnDevice,
+    required TResult Function(Message_SmsConfirmSent value) smsConfirmSent,
+    required TResult Function(Message_MarkUnread value) markUnread,
+    required TResult Function(Message_PeerCacheInvalidate value)
+        peerCacheInvalidate,
+    required TResult Function(Message_UpdateExtension value) updateExtension,
+    required TResult Function(Message_Error value) error,
+    required TResult Function(Message_MoveToRecycleBin value) moveToRecycleBin,
+    required TResult Function(Message_RecoverChat value) recoverChat,
+    required TResult Function(Message_PermanentDelete value) permanentDelete,
+    required TResult Function(Message_Unschedule value) unschedule,
+    required TResult Function(Message_UpdateProfile value) updateProfile,
+    required TResult Function(Message_UpdateProfileSharing value)
+        updateProfileSharing,
+    required TResult Function(Message_ShareProfile value) shareProfile,
+  }) {
+    return shareProfile(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(Message_Message value)? message,
+    TResult? Function(Message_RenameMessage value)? renameMessage,
+    TResult? Function(Message_ChangeParticipants value)? changeParticipants,
+    TResult? Function(Message_React value)? react,
+    TResult? Function(Message_Delivered value)? delivered,
+    TResult? Function(Message_Read value)? read,
+    TResult? Function(Message_Typing value)? typing,
+    TResult? Function(Message_Unsend value)? unsend,
+    TResult? Function(Message_Edit value)? edit,
+    TResult? Function(Message_IconChange value)? iconChange,
+    TResult? Function(Message_StopTyping value)? stopTyping,
+    TResult? Function(Message_EnableSmsActivation value)? enableSmsActivation,
+    TResult? Function(Message_MessageReadOnDevice value)? messageReadOnDevice,
+    TResult? Function(Message_SmsConfirmSent value)? smsConfirmSent,
+    TResult? Function(Message_MarkUnread value)? markUnread,
+    TResult? Function(Message_PeerCacheInvalidate value)? peerCacheInvalidate,
+    TResult? Function(Message_UpdateExtension value)? updateExtension,
+    TResult? Function(Message_Error value)? error,
+    TResult? Function(Message_MoveToRecycleBin value)? moveToRecycleBin,
+    TResult? Function(Message_RecoverChat value)? recoverChat,
+    TResult? Function(Message_PermanentDelete value)? permanentDelete,
+    TResult? Function(Message_Unschedule value)? unschedule,
+    TResult? Function(Message_UpdateProfile value)? updateProfile,
+    TResult? Function(Message_UpdateProfileSharing value)? updateProfileSharing,
+    TResult? Function(Message_ShareProfile value)? shareProfile,
+  }) {
+    return shareProfile?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(Message_Message value)? message,
+    TResult Function(Message_RenameMessage value)? renameMessage,
+    TResult Function(Message_ChangeParticipants value)? changeParticipants,
+    TResult Function(Message_React value)? react,
+    TResult Function(Message_Delivered value)? delivered,
+    TResult Function(Message_Read value)? read,
+    TResult Function(Message_Typing value)? typing,
+    TResult Function(Message_Unsend value)? unsend,
+    TResult Function(Message_Edit value)? edit,
+    TResult Function(Message_IconChange value)? iconChange,
+    TResult Function(Message_StopTyping value)? stopTyping,
+    TResult Function(Message_EnableSmsActivation value)? enableSmsActivation,
+    TResult Function(Message_MessageReadOnDevice value)? messageReadOnDevice,
+    TResult Function(Message_SmsConfirmSent value)? smsConfirmSent,
+    TResult Function(Message_MarkUnread value)? markUnread,
+    TResult Function(Message_PeerCacheInvalidate value)? peerCacheInvalidate,
+    TResult Function(Message_UpdateExtension value)? updateExtension,
+    TResult Function(Message_Error value)? error,
+    TResult Function(Message_MoveToRecycleBin value)? moveToRecycleBin,
+    TResult Function(Message_RecoverChat value)? recoverChat,
+    TResult Function(Message_PermanentDelete value)? permanentDelete,
+    TResult Function(Message_Unschedule value)? unschedule,
+    TResult Function(Message_UpdateProfile value)? updateProfile,
+    TResult Function(Message_UpdateProfileSharing value)? updateProfileSharing,
+    TResult Function(Message_ShareProfile value)? shareProfile,
+    required TResult orElse(),
+  }) {
+    if (shareProfile != null) {
+      return shareProfile(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class Message_ShareProfile extends Message {
+  const factory Message_ShareProfile(final ShareProfileMessage field0) =
+      _$Message_ShareProfileImpl;
+  const Message_ShareProfile._() : super._();
+
+  ShareProfileMessage get field0;
+
+  /// Create a copy of Message
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$Message_ShareProfileImplCopyWith<_$Message_ShareProfileImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc

@@ -169,7 +169,7 @@ class _ContactAvatarWidgetState extends OptimizedState<ContactAvatarWidget> {
                 final hide = ss.settings.redactedMode.value && ss.settings.hideContactInfo.value;
                 final iOS = ss.settings.skin.value == Skins.iOS;
                 final avatar = contact?.avatar;
-                if (!hide && widget.handle == null && ss.settings.userAvatarPath.value != null) {
+                if (!hide && widget.handle == null && contact == null && ss.settings.userAvatarPath.value != null) {
                   dynamic file = File(ss.settings.userAvatarPath.value!);
                   return CircleAvatar(
                     key: ValueKey(ss.settings.userAvatarPath.value!),

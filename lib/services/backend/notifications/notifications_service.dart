@@ -819,6 +819,17 @@ class NotificationsService extends GetxService {
     );
   }
 
+  void clearRegisterFailed() {
+    if (Platform.isAndroid) {
+      mcs.invokeMethod(
+        "delete-notification",
+        {
+          "notification_id": -1 - 50,
+        }
+      );
+    }
+  }
+
   Future<void> createRegisterFailed(bool loggedOut) async {
     final title = loggedOut ? 'Logged out by Apple!' : 'Failed to renew registration!';
     const subtitle =

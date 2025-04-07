@@ -93,6 +93,15 @@ class Settings {
   final RxBool replaceEmoticonsWithEmoji = true.obs;
   final RxnString lastLocation = RxnString();
 
+  final RxBool nameAndPhotoSharing = false.obs;
+  final RxBool shareContactAutomatically = true.obs;
+  final RxnString shareProfileMessage = RxnString();
+  final RxnString firstName = RxnString();
+  final RxnString lastName = RxnString();
+  final RxList<String> sharedContacts = <String>[].obs;
+  final RxList<String> dismissedContacts = <String>[].obs;
+  final RxInt shareVersion = 0.obs;
+
   // final RxString emojiFontFamily;
 
   // Private API features
@@ -341,6 +350,14 @@ class Settings {
       'unarchiveOnNewMessage': unarchiveOnNewMessage.value,
       'scrollToLastUnread': scrollToLastUnread.value,
       'userName': userName.value,
+      'nameAndPhotoSharing': nameAndPhotoSharing.value,
+      'shareContactAutomatically': shareContactAutomatically.value,
+      'shareProfileMessage': shareProfileMessage.value,
+      'firstName': firstName.value,
+      'lastName': lastName.value,
+      'sharedContacts': sharedContacts,
+      'dismissedContacts': dismissedContacts,
+      'shareVersion': shareVersion.value,
       'privateAPISend': privateAPISend.value,
       'privateAPIAttachmentSend': privateAPIAttachmentSend.value,
       'enableUnifiedPush': enableUnifiedPush.value,
@@ -481,6 +498,14 @@ class Settings {
     ss.settings.unarchiveOnNewMessage.value = map['unarchiveOnNewMessage'] ?? false;
     ss.settings.scrollToLastUnread.value = map['scrollToLastUnread'] ?? false;
     ss.settings.userName.value = map['userName'] ?? "You";
+    ss.settings.nameAndPhotoSharing.value = map['nameAndPhotoSharing'] ?? false;
+    ss.settings.shareContactAutomatically.value = map['shareContactAutomatically'] ?? true;
+    ss.settings.shareProfileMessage.value = map['shareProfileMessage'];
+    ss.settings.firstName.value = map['firstName'];
+    ss.settings.lastName.value = map['lastName'];
+    ss.settings.sharedContacts.value = (map['sharedContacts']?.runtimeType == String ? jsonDecode(map['sharedContacts']) as List : []).cast<String>();
+    ss.settings.dismissedContacts.value = (map['dismissedContacts']?.runtimeType == String ? jsonDecode(map['dismissedContacts']) as List : []).cast<String>();
+    ss.settings.shareVersion.value = map['shareVersion'] ?? 0;
     ss.settings.privateAPISend.value = map['privateAPISend'] ?? false;
     ss.settings.privateAPIAttachmentSend.value = map['privateAPIAttachmentSend'] ?? false;
     ss.settings.enablePrivateAPI.value = usingRustPush ? true : map['enablePrivateAPI'] ?? false;
@@ -630,6 +655,14 @@ class Settings {
     s.unarchiveOnNewMessage.value = map['unarchiveOnNewMessage'] ?? false;
     s.scrollToLastUnread.value = map['scrollToLastUnread'] ?? false;
     s.userName.value = map['userName'] ?? "You";
+    s.nameAndPhotoSharing.value = map['nameAndPhotoSharing'] ?? false;
+    s.shareContactAutomatically.value = map['shareContactAutomatically'] ?? true;
+    s.shareProfileMessage.value = map['shareProfileMessage'];
+    s.firstName.value = map['firstName'];
+    s.lastName.value = map['lastName'];
+    s.sharedContacts.value = (map['sharedContacts']?.runtimeType == String ? jsonDecode(map['sharedContacts']) as List : []).cast<String>();
+    s.dismissedContacts.value = (map['dismissedContacts']?.runtimeType == String ? jsonDecode(map['dismissedContacts']) as List : []).cast<String>();
+    s.shareVersion.value = map['shareVersion'] ?? 0;
     s.userAvatarPath.value = map['userAvatarPath'];
     s.privateAPISend.value = map['privateAPISend'] ?? false;
     s.privateAPIAttachmentSend.value = map['privateAPIAttachmentSend'] ?? false;

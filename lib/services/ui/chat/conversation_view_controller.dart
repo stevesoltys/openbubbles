@@ -86,15 +86,42 @@ class ConversationViewController extends StatefulController with GetSingleTicker
     handle: e,
   )).toList();
 
+  final Rxn<Contact> suggestedContact = Rxn<Contact>(null);
+  final RxBool suggestShare = false.obs;
   bool keyboardOpen = false;
   double _keyboardOffset = 0;
   Timer? _scrollDownDebounce;
   Future<void> Function(Tuple7<List<PlatformFile>, AttributedBody, String, String?, int?, String?, PayloadData?>, bool, DateTime?)? sendFunc;
   bool isProcessingImage = false;
 
+  void updateContactInfo() {
+    if (chat.participants.length == 1) {
+      Contact? sharedContact;
+      if ((chat.participants.first.contact?.isShared ?? false)) {
+        sharedContact = chat.participants.firstOrNull!.contact!;
+      } else {
+        sharedContact = Contact.findOne(address: chat.participants.firstOrNull!.address, wantShared: true);
+      }
+      if (sharedContact != null && !sharedContact.isDismissed) {
+        suggestedContact.value = sharedContact;
+      }
+
+      // (not in our contacts or contact sharing disabled) and not shared
+      suggestShare.value = ((chat.participants.first.contact?.isShared ?? true) || !ss.settings.shareContactAutomatically.value) 
+          && !ss.settings.sharedContacts.contains(chat.participants.first.address)
+          && !ss.settings.dismissedContacts.contains(chat.participants.first.address);
+    }
+  }
+
+  StreamSubscription<int>? shareSubscription;
+
   @override
   void onInit() {
     super.onInit();
+
+    shareSubscription = ss.settings.shareVersion.listen((s) => updateContactInfo());
+
+    updateContactInfo();
 
     textController.mentionables = mentionables;
     KeyboardVisibilityController().onChange.listen((bool visible) async {
@@ -154,6 +181,7 @@ class ConversationViewController extends StatefulController with GetSingleTicker
       a.player.dispose();
     }
     scrollController.dispose();
+    shareSubscription?.cancel();
     super.onClose();
   }
 

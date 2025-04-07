@@ -1,7 +1,8 @@
 use std::collections::HashMap;
 
+pub use rustpush::name_photo_sharing::{IMessageNameRecord, IMessagePosterRecord, IMessageNicknameRecord};
 pub use rustpush::{DeleteTarget, MoveToRecycleBinMessage, OperatedChat};
-pub use rustpush::{NSArrayClass, TextFlags, TextEffect, TextFormat, ScheduleMode, SupportAction, NSArray, SupportAlert, PrivateDeviceInfo, PermanentDeleteMessage, NormalMessage, MessageType, UpdateExtensionMessage, ErrorMessage, UnsendMessage, EditMessage, PartExtension, IconChangeMessage, RichLinkImageAttachmentSubstitute, ChangeParticipantMessage, ReactMessage, Reaction, ReactMessageType, RenameMessage, LPLinkMetadata, NSURL, LPIconMetadata, LPImageMetadata, LinkMeta, ExtensionApp, NSDictionaryClass, BalloonLayout, Balloon, IndexedMessagePart, AttachmentType, MacOSConfig, Message, MessageTarget, HardwareConfig, APSConnection, APSConnectionResource, APSState, Attachment, AuthPhone, IDSUserIdentity, MMCSFile, MessageInst, MessagePart, MessageParts, OSConfig, RelayConfig, ResourceState};
+pub use rustpush::{ShareProfileMessage, SharedPoster, UpdateProfileSharingMessage, UpdateProfileMessage, NSArrayClass, TextFlags, TextEffect, TextFormat, ScheduleMode, SupportAction, NSArray, SupportAlert, PrivateDeviceInfo, PermanentDeleteMessage, NormalMessage, MessageType, UpdateExtensionMessage, ErrorMessage, UnsendMessage, EditMessage, PartExtension, IconChangeMessage, RichLinkImageAttachmentSubstitute, ChangeParticipantMessage, ReactMessage, Reaction, ReactMessageType, RenameMessage, LPLinkMetadata, NSURL, LPIconMetadata, LPImageMetadata, LinkMeta, ExtensionApp, NSDictionaryClass, BalloonLayout, Balloon, IndexedMessagePart, AttachmentType, MacOSConfig, Message, MessageTarget, HardwareConfig, APSConnection, APSConnectionResource, APSState, Attachment, AuthPhone, IDSUserIdentity, MMCSFile, MessageInst, MessagePart, MessageParts, OSConfig, RelayConfig, ResourceState};
 pub use rustpush::{PushError, IDSUser, IMClient, ConversationData, register};
 pub use icloud_auth::{VerifyBody, TrustedPhoneNumber};
 pub use icloud_auth::{LoginState, AppleAccount};
@@ -274,6 +275,8 @@ pub struct DartNormalMessage {
     pub voice: bool,
     #[frb(non_final)]
     pub scheduled: Option<ScheduleMode>,
+    #[frb(non_final)]
+    pub embedded_profile: Option<ShareProfileMessage>,
 }
 
 #[repr(C)]
@@ -395,6 +398,27 @@ pub enum DartReactMessageType {
     },
 }
 
+#[frb(mirror(IMessageNameRecord))]
+pub struct DartIMessageNameRecord {
+    pub name: String,
+    pub first: String,
+    pub last: String,
+}
+
+#[frb(mirror(IMessagePosterRecord))]
+pub struct DartIMessagePosterRecord {
+    pub low_res_poster: Vec<u8>,
+    pub package: Vec<u8>,
+    pub meta: Vec<u8>,
+}
+
+#[frb(mirror(IMessageNicknameRecord))]
+pub struct DartIMessageNicknameRecord {
+    pub name: IMessageNameRecord,
+    pub image: Option<Vec<u8>>,
+    pub poster: Option<IMessagePosterRecord>,
+}
+
 #[repr(C)]
 #[frb(type_64bit_int, mirror(ReactMessage))]
 pub struct DartReactMessage {
@@ -402,6 +426,7 @@ pub struct DartReactMessage {
     pub to_part: Option<u64>,
     pub reaction: ReactMessageType,
     pub to_text: String,
+    pub embedded_profile: Option<ShareProfileMessage>,
 }
 
 #[repr(C)]
@@ -466,6 +491,33 @@ pub struct DartMoveToRecycleBinMessage {
     recoverable_delete_date: u64,
 }
 
+#[frb(mirror(UpdateProfileMessage))]
+pub struct DartUpdateProfileMessage {
+    pub profile: Option<ShareProfileMessage>,
+    pub share_contacts: bool,
+}
+
+#[frb(mirror(SharedPoster))]
+pub struct DartSharedPoster {
+    pub low_res_wallpaper_tag: Vec<u8>,
+    pub wallpaper_tag: Vec<u8>,
+    pub message_tag: Vec<u8>, 
+}
+
+#[frb(mirror(ShareProfileMessage))]
+pub struct DartShareProfileMessage {
+    pub cloud_kit_decryption_record_key: Vec<u8>,
+    pub cloud_kit_record_key: String,
+    pub poster: Option<SharedPoster>,
+}
+
+#[frb(type_64bit_int, mirror(UpdateProfileSharingMessage))]
+pub struct DartUpdateProfileSharingMessage {
+    pub shared_dismissed: Vec<String>,
+    pub shared_all: Vec<String>,
+    pub version: u64,
+}
+
 #[repr(C)]
 #[frb(non_opaque, mirror(Message))]
 pub enum DartMessage {
@@ -491,6 +543,9 @@ pub enum DartMessage {
     RecoverChat(OperatedChat),
     PermanentDelete(PermanentDeleteMessage),
     Unschedule,
+    UpdateProfile(UpdateProfileMessage),
+    UpdateProfileSharing(UpdateProfileSharingMessage),
+    ShareProfile(ShareProfileMessage),
 }
 
 #[frb(mirror(MessageTarget))]

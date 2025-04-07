@@ -13,7 +13,8 @@ import 'package:image/image.dart' as img;
 class AvatarCrop extends StatefulWidget {
   final int? index;
   final Chat? chat;
-  AvatarCrop({this.index, this.chat});
+  final Function? cropped;
+  AvatarCrop({this.index, this.chat, this.cropped});
 
   @override
   State<AvatarCrop> createState() => _AvatarCropState();
@@ -56,6 +57,7 @@ class _AvatarCropState extends OptimizedState<AvatarCrop> {
       Get.back();
       Navigator.of(context).pop();
       showSnackbar("Notice", "Custom chat avatar saved successfully");
+      
     } else {
       File file = File("$appDocPath/avatars/${widget.chat!.guid.characters.where((char) => char.isAlphabetOnly || char.isNumericOnly).join()}/avatar-${croppedData.length}.jpg");
       if (!(await file.exists())) {
@@ -70,6 +72,9 @@ class _AvatarCropState extends OptimizedState<AvatarCrop> {
       Get.back();
       Navigator.of(context).pop(widget.chat!.customAvatarPath);
       showSnackbar("Notice", "Custom chat avatar saved successfully");
+    }
+    if (widget.cropped != null) {
+      widget.cropped!();
     }
   }
 

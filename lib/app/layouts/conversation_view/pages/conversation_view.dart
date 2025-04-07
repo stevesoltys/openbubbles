@@ -111,11 +111,11 @@ class ConversationViewState extends OptimizedState<ConversationView> {
           child: SafeArea(
             top: false,
             bottom: false,
-            child: Scaffold(
+            child: Obx(() => Scaffold(
               backgroundColor: ss.settings.windowEffect.value != WindowEffect.disabled ? Colors.transparent : context.theme.colorScheme.background,
               extendBodyBehindAppBar: true,
               appBar: PreferredSize(
-                  preferredSize: Size(ns.width(context), (kIsDesktop ? (!iOS ? 25 : 5) : 0) + 90 * (iOS ? ss.settings.avatarScale.value : 0) + (!iOS ? kToolbarHeight : 0)),
+                  preferredSize: Size(ns.width(context), ((kIsDesktop ? (!iOS ? 25 : 5) : 0) + 90 * (iOS ? ss.settings.avatarScale.value : 0) + (!iOS ? kToolbarHeight : 0) + (controller.suggestedContact.value != null || controller.suggestShare.value ? 68 : 0))),
                   child: iOS
                   ? CupertinoHeader(controller: controller)
                   : MaterialHeader(controller: controller) as PreferredSizeWidget),
@@ -236,7 +236,7 @@ class ConversationViewState extends OptimizedState<ConversationView> {
                   ),
                 ),
               ),
-            ),
+            )),
           ),
         )
       ),

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:bluebubbles/app/components/avatars/contact_avatar_widget.dart';
 import 'package:bluebubbles/app/layouts/settings/pages/theming/avatar/avatar_crop.dart';
@@ -130,6 +131,71 @@ class _ProfilePanelState extends OptimizedState<ProfilePanel> with WidgetsBindin
   void dispose() {
     super.dispose();
     subscription?.cancel();
+    (() async {
+      if (profileDirty) {
+        api.ShareProfileMessage? profile;
+        if (cloudKitRecordDirty && ss.settings.nameAndPhotoSharing.value) {
+          api.ShareProfileMessage? existing;
+          if (ss.settings.shareProfileMessage.value != null) {
+            existing = await api.decodeProfileMessage(s: ss.settings.shareProfileMessage.value!);
+          }
+          Uint8List? image;
+          if (ss.settings.userAvatarPath.value != null) {
+            image = await File(ss.settings.userAvatarPath.value!).readAsBytes();
+          }
+          showDialog(
+            context: Get.context!,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                backgroundColor: context.theme.colorScheme.properSurface,
+                title: Text(
+                  "Updating profile...",
+                  style: context.theme.textTheme.titleLarge,
+                ),
+                content: Container(
+                  height: 70,
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      backgroundColor: context.theme.colorScheme.properSurface,
+                      valueColor: AlwaysStoppedAnimation<Color>(context.theme.colorScheme.primary),
+                    ),
+                  ),
+                ),
+              );
+            }
+          );
+          api.ShareProfileMessage message;
+          try {
+            message = await api.setProfile(state: pushService.state, record: api.IMessageNicknameRecord(
+              name: api.IMessageNameRecord(name: ss.settings.userName.value, first: ss.settings.firstName.value!, last: ss.settings.lastName.value!),
+              image: image,
+            ), existing: existing);
+          } catch(e, s) {
+            Get.back();
+            showSnackbar("Error", "Failed to update profile!");
+            rethrow;
+          }
+          Get.back();
+
+          ss.settings.sharedContacts.clear();
+          ss.settings.dismissedContacts.clear();
+          ss.settings.shareProfileMessage.value = await api.encodeProfileMessage(p: message);
+          ss.saveSettings();
+          profile = message;
+        }
+
+        pushService.updateShareState();
+
+        var handle = (await api.getHandles(state: pushService.state)).first;
+        var msg = await api.newMsg(
+          state: pushService.state,
+          conversation: api.ConversationData(participants: [handle]),
+          sender: handle,
+          message: api.Message.updateProfile(api.UpdateProfileMessage(shareContacts: ss.settings.shareContactAutomatically.value, profile: profile)),
+        );
+        await (backend as RustPushBackend).sendMsg(msg);
+      }
+    })();
   }
 
   void getDetails() async {
@@ -152,15 +218,20 @@ class _ProfilePanelState extends OptimizedState<ProfilePanel> with WidgetsBindin
   }
 
   void updateName() async {
-    final nameController = TextEditingController(text: ss.settings.userName.value);
+    final firstName = TextEditingController(text: ss.settings.firstName.value);
+    final lastName = TextEditingController(text: ss.settings.lastName.value);
     done() async {
-      if (nameController.text.isEmpty) {
+      if (firstName.text.isEmpty) {
         showSnackbar("Error", "Enter a name!");
         return;
       }
       Get.back();
-      ss.settings.userName.value = nameController.text;
-      await ss.settings.saveOne("userName");
+      ss.settings.firstName.value = firstName.text;
+      ss.settings.lastName.value = lastName.text;
+      ss.settings.userName.value = "${firstName.text} ${lastName.text}";
+      cloudKitRecordDirty = true;
+      profileDirty = true;
+      await ss.saveSettings();
       setState(() {});
     }
     await showDialog(
@@ -179,16 +250,30 @@ class _ProfilePanelState extends OptimizedState<ProfilePanel> with WidgetsBindin
                 },
               ),
             ],
-            content: TextField(
-              controller: nameController,
-              onSubmitted: (_) => done.call(),
-              autofocus: true,
-              decoration: const InputDecoration(
-                labelText: "Name",
-                border: OutlineInputBorder(),
-              ),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(
+                  controller: firstName,
+                  autofocus: true,
+                  textInputAction: TextInputAction.next,
+                  decoration: const InputDecoration(
+                    labelText: "First Name",
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(height: 16,),
+                TextField(
+                  controller: lastName,
+                  onSubmitted: (_) => done.call(),
+                  decoration: const InputDecoration(
+                    labelText: "Last Name",
+                    border: OutlineInputBorder(),
+                  ),
+                )
+              ],
             ),
-            title: Text("User Profile Name", style: context.theme.textTheme.titleLarge),
+            title: Text("Change Name", style: context.theme.textTheme.titleLarge),
             backgroundColor: context.theme.colorScheme.properSurface,
           );
         }
@@ -198,16 +283,24 @@ class _ProfilePanelState extends OptimizedState<ProfilePanel> with WidgetsBindin
   void updatePhoto() async {
     Navigator.of(context).push(
       ThemeSwitcher.buildPageRoute(
-        builder: (context) => AvatarCrop(),
+        builder: (context) => AvatarCrop(cropped: () {
+          cloudKitRecordDirty = true;
+          profileDirty = true;
+        },),
       ),
     );
   }
+
+  bool cloudKitRecordDirty = false;
+  bool profileDirty = false;
 
   void removePhoto() {
     File file = File(ss.settings.userAvatarPath.value!);
     file.delete();
     ss.settings.userAvatarPath.value = null;
     ss.saveSettings();
+    cloudKitRecordDirty = true;
+    profileDirty = true;
   }
 
   @override
@@ -403,6 +496,40 @@ class _ProfilePanelState extends OptimizedState<ProfilePanel> with WidgetsBindin
                       ),
                     ),
                   ) : const SizedBox.shrink()),
+                SettingsHeader(
+                    iosSubtitle: iosSubtitle,
+                    materialSubtitle: materialSubtitle,
+                    text: "Sharing"),
+                SettingsSection(
+                    backgroundColor: tileColor,
+                    children: [
+                      Obx(() => SettingsSwitch(
+                        onChanged: (bool val) async {
+                          ss.settings.nameAndPhotoSharing.value = val;
+                          profileDirty = true;
+                          ss.saveSettings();
+                        },
+                        initialVal: ss.settings.nameAndPhotoSharing.value,
+                        title: "Name and Photo Sharing",
+                        backgroundColor: tileColor,
+                      )),
+                      Obx(() => ss.settings.nameAndPhotoSharing.value ? SettingsOptions<String>(
+                        title: "Share Automatically",
+                        initial: ss.settings.shareContactAutomatically.value ? "Contacts Only" : "Always Ask",
+                        clampWidth: false,
+                        options: ["Contacts Only", "Always Ask"],
+                        secondaryColor: headerColor,
+                        useCupertino: false,
+                        capitalize: false,
+                        textProcessing: (s) => s,
+                        onChanged: (value) async {
+                          ss.settings.shareContactAutomatically.value = value == "Contacts Only";
+                          profileDirty = true;
+                          ss.saveSettings();
+                        },
+                      ) : const SizedBox.shrink()),
+                    ]
+                ),
                 SettingsHeader(
                     iosSubtitle: iosSubtitle,
                     materialSubtitle: materialSubtitle,

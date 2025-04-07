@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:convert';
 
+import 'package:bluebubbles/app/components/avatars/contact_avatar_widget.dart';
 import 'package:bluebubbles/app/layouts/conversation_details/conversation_details.dart';
 import 'package:bluebubbles/app/layouts/conversation_view/widgets/header/header_widgets.dart';
 import 'package:bluebubbles/app/components/avatars/contact_avatar_group_widget.dart';
@@ -9,6 +11,8 @@ import 'package:bluebubbles/app/wrappers/stateful_boilerplate.dart';
 import 'package:bluebubbles/helpers/helpers.dart';
 import 'package:bluebubbles/database/database.dart';
 import 'package:bluebubbles/database/models.dart';
+import 'package:bluebubbles/services/network/backend_service.dart';
+import 'package:bluebubbles/services/rustpush/rustpush_service.dart';
 import 'package:bluebubbles/services/services.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' hide BackButton;
@@ -17,6 +21,7 @@ import 'package:flutter_acrylic/flutter_acrylic.dart';
 import 'package:get/get.dart';
 import 'package:universal_io/io.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:bluebubbles/src/rust/api/api.dart' as api;
 
 class MaterialHeader extends StatelessWidget implements PreferredSizeWidget {
   const MaterialHeader({Key? key, required this.controller});
@@ -27,7 +32,9 @@ class MaterialHeader extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     final Rx<Color> _backgroundColor = context.theme.colorScheme.background.withOpacity((kIsDesktop && ss.settings.windowEffect.value != WindowEffect.disabled) ? 0.4 : 1).obs;
 
-    return Stack(
+    return Column(
+      children:[
+        Expanded(child: Stack(
           children: [Obx(() => AppBar(
       backgroundColor: _backgroundColor.value,
       systemOverlayStyle: context.theme.colorScheme.brightness == Brightness.dark
@@ -239,6 +246,154 @@ class MaterialHeader extends StatelessWidget implements PreferredSizeWidget {
         left: 0,
         right: 0,
       ),
+    ])),
+     Obx(() => controller.suggestedContact.value != null ? 
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      color: context.theme.colorScheme.surface.withAlpha(128),
+                      child: Row(
+                        children: [
+                          if (controller.suggestedContact.value!.avatar != null)
+                          ContactAvatarWidget(
+                            contact: controller.suggestedContact.value,
+                            size: 38,
+                            preferHighResAvatar: true,
+                            scaleSize: false,
+                          ),
+                          if (controller.suggestedContact.value!.avatar != null)  
+                          const SizedBox(width: 15,),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("New Contact Info", style: context.theme.textTheme.titleMedium,),
+                              Text(controller.suggestedContact.value!.displayName.replaceFirst("Maybe: ", ""), style: context.theme.textTheme.bodyMedium?.copyWith(color: context.theme.colorScheme.outline),),
+                            ],
+                          ),
+                          const Spacer(),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: context.theme.colorScheme.outline.withAlpha(64),
+                              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 13),
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                              elevation: 0.0,
+                              minimumSize: Size.zero,
+                            ),
+                            onPressed: () async {
+                              var contact = controller.suggestedContact.value!;
+                              if (Platform.isAndroid) {
+                                var parameters = {'address': controller.chat.participants.first.address, 'address_type': controller.chat.participants.first.address.isEmail ? 'email' : 'phone'}; 
+                                parameters["name"] = contact.displayName.replaceFirst("Maybe: ", "");
+                                if (contact.avatar != null) parameters["image"] = base64Encode(contact.avatar!);
+                                if (!(controller.chat.participants.first.contact?.isShared ?? true)) {
+                                  parameters["existing"] = controller.chat.participants.first.contact!.id;
+
+                                  // contact syncing takes forever...
+                                  var update = controller.chat.participants.first.contact!;
+                                  update.displayName = contact.displayName.replaceFirst("Maybe: ", "");
+                                  update.structuredName = contact.structuredName;
+                                  update.avatar = contact.avatar;
+                                  update.save();
+                                }
+                                await mcs.invokeMethod("open-contact-form", parameters);
+                              } else {
+                                var update = controller.chat.participants.first.contact!;
+                                update.displayName = contact.displayName.replaceFirst("Maybe: ", "");
+                                update.structuredName = contact.structuredName;
+                                update.avatar = contact.avatar;
+                                update.isShared = false;
+                                update.save();
+                              }
+                              contact.isDismissed = true;
+                              contact.save();
+                              controller.suggestedContact.value = null;
+                            },
+                            child: Text(
+                              (controller.chat.participants.first.contact?.isShared ?? true) ? "Add" : "Update", style: context.theme.textTheme.titleMedium,
+                            ),
+                          ),
+                          const SizedBox(width: 5,),
+                          Opacity(opacity: 0.5, child: IconButton(
+                            icon: Icon(
+                              Icons.clear,
+                              color: context.theme.colorScheme.outline,
+                              size: 24,
+                            ),
+                            style: ElevatedButton.styleFrom(splashFactory: NoSplash.splashFactory),
+                            visualDensity: Platform.isAndroid ? VisualDensity.compact : null,
+                            onPressed: () async {
+                              var contact = controller.suggestedContact.value!;
+                              contact.isDismissed = true;
+                              contact.save();
+                              controller.suggestedContact.value = null;
+                            },
+                          ),)
+                        ],
+                      ),
+                    ) : const SizedBox.shrink()),
+                    Obx(() => controller.suggestedContact.value == null && controller.suggestShare.value ? 
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      color: context.theme.colorScheme.surface.withAlpha(128), 
+                      child: Row(
+                        children: [
+                          ContactAvatarWidget(
+                            size: 38,
+                            preferHighResAvatar: true,
+                            scaleSize: false,
+                          ),
+                          const SizedBox(width: 15,),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("Share your name and photo?", style: context.theme.textTheme.titleMedium,),
+                              Text(ss.settings.userName.value, style: context.theme.textTheme.bodyMedium?.copyWith(color: context.theme.colorScheme.outline),),
+                            ],
+                          ),
+                          const Spacer(),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: context.theme.colorScheme.outline.withAlpha(64),
+                              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 13),
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                              elevation: 0.0,
+                              minimumSize: Size.zero,
+                            ),
+                            onPressed: () async {
+                              ss.settings.sharedContacts.add(controller.chat.participants.first.address);
+                              ss.saveSettings();
+                              controller.suggestShare.value = false;
+                              pushService.updateShareState();
+
+                              var msg = await api.newMsg(
+                                state: pushService.state,
+                                conversation: api.ConversationData(participants: [RustPushBBUtils.bbHandleToRust(controller.chat.participants.first)]),
+                                sender: await controller.chat.ensureHandle(),
+                                message: api.Message.shareProfile(await api.decodeProfileMessage(s: ss.settings.shareProfileMessage.value!)),
+                              );
+                              await (backend as RustPushBackend).sendMsg(msg);
+                            },
+                            child: Text("Share", style: context.theme.textTheme.titleMedium),
+                          ),
+                          const SizedBox(width: 5,),
+                          Opacity(opacity: 0.5, child: IconButton(
+                            icon: Icon(
+                              Icons.clear,
+                              color: context.theme.colorScheme.outline,
+                              size: 24,
+                            ),
+                            style: ElevatedButton.styleFrom(splashFactory: NoSplash.splashFactory),
+                            visualDensity: Platform.isAndroid ? VisualDensity.compact : null,
+                            onPressed: () async {
+                              ss.settings.dismissedContacts.add(controller.chat.participants.first.address);
+                              ss.saveSettings();
+                              controller.suggestShare.value = false;
+                              pushService.updateShareState();
+                            },
+                          ),)
+                        ],
+                      ),
+                    ) : const SizedBox.shrink()),
+
     ]);
   }
 
@@ -259,9 +414,20 @@ class _ChatIconAndTitleState extends CustomState<_ChatIconAndTitle, void, Conver
   String? cachedDisplayName = "";
   List<Handle> cachedParticipants = [];
 
+  late StreamSubscription sub2;
+
   @override
   void initState() {
     super.initState();
+
+    sub2 = controller.suggestedContact.listen((c) {
+      setState(() {
+        cachedDisplayName = controller.chat.displayName;
+        cachedParticipants = controller.chat.handles;
+        title = controller.chat.getTitle();
+      });
+    });
+
     tag = controller.chat.guid;
     // keep controller in memory since the widget is part of a list
     // (it will be disposed when scrolled out of view)
@@ -315,6 +481,7 @@ class _ChatIconAndTitleState extends CustomState<_ChatIconAndTitle, void, Conver
   @override
   void dispose() {
     sub.cancel();
+    sub2.cancel();
     super.dispose();
   }
 

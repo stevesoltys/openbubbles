@@ -93,6 +93,12 @@ class PhoneNumberState extends OptimizedState<PhoneNumber> {
         var msg = e.code;
         controller.updateConnectError(msg);
       }
+      if (e is AnyhowException) {
+        controller.updateConnectError(e.message);
+      }
+      if (e is PanicException) {
+        controller.updateConnectError(e.message);
+      }
       rethrow;
     } finally {
       controller.phoneValidating.value = false;

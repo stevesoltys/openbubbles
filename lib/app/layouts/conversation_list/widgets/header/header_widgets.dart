@@ -278,11 +278,6 @@ class CupertinoOverflowMenu extends StatelessWidget {
                 borderThickness: 0.1,
                 editable: false,
                 fontSize: 16,
-                contact: Contact(
-                  id: 'you',
-                  displayName: ss.settings.userName.value,
-                  emails: [ss.settings.iCloudAccount.value],
-                ),
               )
             );
           },

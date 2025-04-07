@@ -51,6 +51,11 @@ class Handle {
   String? get initials {
     // Remove any numbers, certain symbols, and non-alphabet characters
     if (address.startsWith("urn:biz")) return null;
+    String displayName = this.displayName;
+    if (contact?.isShared ?? false) {
+      displayName = displayName.replaceFirst("Maybe: ", ""); // remove maybe when computing initials
+    }
+    
     String importantChars = displayName.toUpperCase().replaceAll(RegExp(r'[^a-zA-Z _-]'), "").trim();
     if (importantChars.isEmpty) return null;
 

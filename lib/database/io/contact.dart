@@ -21,6 +21,8 @@ class Contact {
     this.emails = const [],
     this.structuredName,
     this.avatar,
+    this.isShared = false,
+    this.isDismissed = false,
   });
 
   @Id()
@@ -32,6 +34,8 @@ class Contact {
   List<String> emails;
   StructuredName? structuredName;
   Uint8List? avatar;
+  bool isShared;
+  bool isDismissed;
 
   String? get dbStructuredName => structuredName == null ? null : jsonEncode(structuredName!.toMap());
   set dbStructuredName(String? json) => structuredName = json == null ? null : StructuredName.fromMap(jsonDecode(json));
@@ -65,7 +69,7 @@ class Contact {
     return this;
   }
 
-  static Contact? findOne({String? id, String? address}) {
+  static Contact? findOne({String? id, String? address, bool wantShared = false}) {
     if (kIsWeb) return null;
     if (id != null) {
       final query = Database.contacts.query(Contact_.id.equals(id)).build();
@@ -74,8 +78,13 @@ class Contact {
       query.close();
       return result;
     } else if (address != null) {
+      var cond = Contact_.phones.containsElement(address) | Contact_.emails.containsElement(address);
+      if (wantShared) {
+        cond = cond.and(Contact_.isShared.equals(true));
+      }
       final query =
-          Database.contacts.query(Contact_.phones.containsElement(address) | Contact_.emails.containsElement(address)).build();
+          Database.contacts.query(cond)
+          .order(Contact_.isShared).build();
       query.limit = 1;
       final result = query.findFirst();
       query.close();

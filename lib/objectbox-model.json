@@ -749,7 +749,7 @@
     },
     {
       "id": "17:2547083341603323785",
-      "lastPropertyId": "10:3612117664568604198",
+      "lastPropertyId": "12:761555548860852325",
       "name": "Contact",
       "properties": [
         {
@@ -789,6 +789,16 @@
           "id": "10:3612117664568604198",
           "name": "dbStructuredName",
           "type": 9
+        },
+        {
+          "id": "11:3140177684889918471",
+          "name": "isShared",
+          "type": 1
+        },
+        {
+          "id": "12:761555548860852325",
+          "name": "isDismissed",
+          "type": 1
         }
       ],
       "relations": []

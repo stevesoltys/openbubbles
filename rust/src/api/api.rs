@@ -13,7 +13,7 @@ pub use plist::Value;
 use prost::Message as prostMessage;
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use tokio::{runtime::Runtime, select, sync::{broadcast, mpsc, oneshot::{self, Sender}, watch, Mutex, RwLock}};
-use rustpush::{authenticate_apple, authenticate_phone, facetime::{FTClient, FTState, FACETIME_SERVICE, VIDEO_SERVICE}, findmy::{FindMyClient, FindMyState, MULTIPLEX_SERVICE}, login_apple_delegates, sharedstreams::{AssetMetadata, FFMpegFilePackager, FileMetadata, FilePackager, PreparedAsset, PreparedFile, SharedStreamClient, SharedStreamsState, SyncController, SyncManager, SyncState}, APSMessage, IDSNGMIdentity, LoginDelegate, MADRID_SERVICE};
+use rustpush::{authenticate_apple, authenticate_phone, cloudkit::{CloudKitClient, CloudKitState}, facetime::{FTClient, FTState, FACETIME_SERVICE, VIDEO_SERVICE}, findmy::{FindMyClient, FindMyState, MULTIPLEX_SERVICE}, login_apple_delegates, name_photo_sharing::ProfilesClient, sharedstreams::{AssetMetadata, FFMpegFilePackager, FileMetadata, FilePackager, PreparedAsset, PreparedFile, SharedStreamClient, SharedStreamsState, SyncController, SyncManager, SyncState}, APSMessage, IDSNGMIdentity, LoginDelegate, MADRID_SERVICE};
 use rustpush::AnisetteProvider;
 pub use rustpush::findmy::{FindMyFriendsClient, FindMyPhoneClient};
 pub use rustpush::sharedstreams::{SharedAlbum, SyncStatus};
@@ -168,6 +168,7 @@ pub struct InnerPushState {
     pub fmfd: Option<FindMyClient<DefaultAnisetteProvider>>,
     pub sharedstreams: Option<SyncManager<DefaultAnisetteProvider, MyFilePackager>>,
     pub ft_client: Option<FTClient>,
+    pub profiles_client: Option<ProfilesClient<DefaultAnisetteProvider>>,
     pub conf_dir: PathBuf,
     pub os_config: Option<JoinedOSConfig>,
     pub account: Option<AppleAccount<DefaultAnisetteProvider>>,
@@ -194,6 +195,7 @@ pub async fn new_push_state(dir: String) -> Arc<PushState> {
         reg_state: None,
         fmfd: None,
         sharedstreams: None,
+        profiles_client: None,
         ft_client: None,
         conf_dir: dir,
         os_config: None,
@@ -382,6 +384,17 @@ async fn restore(curr_state: &PushState) {
     inner.ft_client = Some(FTClient::new(state, Box::new(move |state| {
         plist::to_file_xml(&facetime_path, state).expect("Failed to serialize plist!");
     }), inner.conn.as_ref().unwrap().clone(), inner.client.as_ref().unwrap().identity.clone(), inner.os_config.as_ref().unwrap().config()).await);
+
+    let cloudkit_path = inner.conf_dir.join("cloudkit.plist");
+    if let Ok(state) = plist::from_file(&cloudkit_path) {
+        let cloudkit = Arc::new(CloudKitClient {
+            state: RwLock::new(state),
+            anisette: inner.anisette.clone().unwrap(),
+            config: inner.os_config.as_ref().unwrap().config(),
+        });
+
+        inner.profiles_client = Some(ProfilesClient::new(cloudkit));
+    }
 }
 
 async fn shared_items<P: AnisetteProvider + Send + Sync + 'static, F: FilePackager + Send + Sync + 'static>(manager: &SyncManager<P, F>, seen_paths: &mut HashSet<PathBuf>) -> HashSet<PathBuf> {
@@ -472,6 +485,16 @@ pub async fn register_ids(state: &Arc<PushState>, users: &Vec<IDSUser>) -> anyho
         plist::to_file_xml(&facetime_path, state).expect("Failed to serialize plist!");
     }), inner.conn.as_ref().unwrap().clone(), inner.client.as_ref().unwrap().identity.clone(), inner.os_config.as_ref().unwrap().config()).await);
 
+    let cloudkit_path = inner.conf_dir.join("cloudkit.plist");
+    if let Ok(state) = plist::from_file(&cloudkit_path) {
+        let cloudkit = Arc::new(CloudKitClient {
+            state: RwLock::new(state),
+            anisette: inner.anisette.clone().unwrap(),
+            config: inner.os_config.as_ref().unwrap().config(),
+        });
+
+        inner.profiles_client = Some(ProfilesClient::new(cloudkit));
+    }
     Ok(None)
 }
 
@@ -942,6 +965,32 @@ pub async fn validate_targets_facetime(state: &Arc<PushState>, targets: Vec<Stri
     Ok(state.0.read().await.client.as_ref().unwrap().identity.validate_targets(&targets, "com.apple.private.alloy.facetime.multi", &sender).await?)
 }
 
+pub fn encode_profile_message(p: &ShareProfileMessage) -> String {
+    plist_to_string(&p).unwrap()
+}
+
+pub fn decode_profile_message(s: String) -> anyhow::Result<ShareProfileMessage> {
+    Ok(plist::from_bytes(s.as_bytes())?)
+}
+
+pub async fn fetch_profile(state: &Arc<PushState>, message: &ShareProfileMessage) -> anyhow::Result<IMessageNicknameRecord> {
+    let inner = state.0.read().await;
+    let Some(profiles) = inner.profiles_client.as_ref() else { return Err(anyhow!("No profile client!")) };
+    Ok(profiles.get_record(message).await?)
+}
+
+pub async fn set_profile(state: &Arc<PushState>, record: IMessageNicknameRecord, mut existing: Option<ShareProfileMessage>) -> anyhow::Result<ShareProfileMessage> {
+    let inner = state.0.read().await;
+    let Some(profiles) = inner.profiles_client.as_ref() else { return Err(anyhow!("No profile client!")) };
+    profiles.set_record(record, &mut existing).await?;
+    Ok(existing.expect("No profile set??"))
+}
+
+pub async fn can_profile_share(state: &Arc<PushState>) -> bool {
+    let inner = state.0.read().await;
+    inner.profiles_client.is_some()
+}
+
 pub enum PollResult {
     Stop,
     Cont(Option<PushMessage>),
@@ -1260,6 +1309,10 @@ async fn do_login(conf_dir: &Path, username: &str, pet: &str, cookie: Option<&st
     let id_path = conf_dir.join("sharedstreams.plist");
     std::fs::write(id_path, plist_to_string(&shared_streams).unwrap()).unwrap();
 
+    let cloudkitstate = CloudKitState::new(spd["DsPrsId"].as_unsigned_integer().unwrap().to_string(), &mobileme);
+    let id_path = conf_dir.join("cloudkit.plist");
+    std::fs::write(id_path, plist_to_string(&cloudkitstate).unwrap()).unwrap();
+
     let user = authenticate_apple(delegates.ids.unwrap(), os_config).await?;
     Ok(user)
 }
@@ -1395,6 +1448,7 @@ pub async fn reset_state(state: &Arc<PushState>, reset_hw: bool) -> anyhow::Resu
     let _ = std::fs::remove_file(inner.conf_dir.join("id.plist"));
     let _ = std::fs::remove_file(inner.conf_dir.join("findmy.plist"));
     let _ = std::fs::remove_file(inner.conf_dir.join("facetime.plist"));
+    let _ = std::fs::remove_dir(inner.conf_dir.join("cloudkit.plist"));
     let _ = std::fs::remove_file(inner.conf_dir.join("sharedstreams.plist"));
     let _ = std::fs::remove_file(inner.conf_dir.join("id_cache.plist"));
 

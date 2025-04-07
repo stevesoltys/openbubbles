@@ -116,6 +116,9 @@ class ContactsService extends GetxService {
 
           if (h.contactRelation.target == null) {
             changedIds.last.add(h.id!);
+          } else if (c.isShared) {
+            // we have an existing contact, and we're shared.
+            continue;
           }
 
           h.contactRelation.target = c;

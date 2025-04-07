@@ -27,6 +27,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge.dart';
 import 'package:get/get.dart';
 import 'package:in_app_purchase_android/billing_client_wrappers.dart';
+import 'package:slugify/slugify.dart';
 import 'package:supercharged/supercharged.dart';
 import 'package:tuple/tuple.dart';
 import 'package:universal_io/io.dart';
@@ -385,6 +386,7 @@ class RustPushBackend implements BackendService {
               parts: await partsFromBody(message),
                   service: await getService(chat.isRpSms),
                   voice: false,
+                  embeddedProfile: await pushService.getShareProfileMessageFor(chat.participants),
                   )),
           sender: handle);
       if (chat.isRpSms) {
@@ -476,7 +478,8 @@ class RustPushBackend implements BackendService {
           subject: m.subject,
           app: m.payloadData == null ? null : pushService.dataToApp(m.payloadData!),
           voice: isAudioMessage,
-          scheduled: m.dateScheduled != null ? api.ScheduleMode(ms: m.dateScheduled!.millisecondsSinceEpoch, schedule: true) : null
+          scheduled: m.dateScheduled != null ? api.ScheduleMode(ms: m.dateScheduled!.millisecondsSinceEpoch, schedule: true) : null,
+          embeddedProfile: await pushService.getShareProfileMessageFor(chat.participants),
         )));
     if (m.stagingGuid != null) {
       msg.id = m.stagingGuid!;
@@ -840,7 +843,8 @@ class RustPushBackend implements BackendService {
         app: m.payloadData == null ? null : pushService.dataToApp(m.payloadData!),
         linkMeta: linkMeta,
         voice: false,
-        scheduled: m.dateScheduled != null ? api.ScheduleMode(ms: m.dateScheduled!.millisecondsSinceEpoch, schedule: true) : null
+        scheduled: m.dateScheduled != null ? api.ScheduleMode(ms: m.dateScheduled!.millisecondsSinceEpoch, schedule: true) : null,
+        embeddedProfile: await pushService.getShareProfileMessageFor(chat.participants),
       )),
     );
     Logger.info("sending ${msg.id}");
@@ -1022,6 +1026,7 @@ class RustPushBackend implements BackendService {
         message: api.Message.react(api.ReactMessage(
             toUuid: selected.guid!,
             toPart: repPart ?? 0,
+            embeddedProfile: await pushService.getShareProfileMessageFor(chat.participants),
             toText: selected.text ?? "",
             reaction: api.ReactMessageType.react(reaction: reactionMap[reaction]?.call() ?? api.Reaction.emoji(reaction), enable: enabled))));
     await sendMsg(msg);
@@ -1039,6 +1044,7 @@ class RustPushBackend implements BackendService {
         message: api.Message.react(api.ReactMessage(
             toUuid: old.amkSessionId!,
             toText: "",
+            embeddedProfile: await pushService.getShareProfileMessageFor(chat.participants),
             reaction: api.ReactMessageType.extension_(
               spec: pushService.dataToApp(newData),
               body: api.MessageParts(field0: [
@@ -1547,6 +1553,10 @@ class RustPushService extends GetxService {
       );
     } else if (myMsg.message is api.Message_React) {
       var msg = myMsg.message as api.Message_React;
+      if (msg.field0.embeddedProfile != null) {
+        handleSharedProfile(msg.field0.embeddedProfile!, myMsg.sender!, chat?.participants ?? []);
+      }
+
       String? reaction;
       String? emoji;
       api.ExtensionApp? app;
@@ -1861,6 +1871,7 @@ class RustPushService extends GetxService {
   }
 
   Future<void> handleRegistered() async {
+    notif.clearRegisterFailed();
     if (ss.settings.hostedPendingTransaction.value != null) {
       var detail = await getPurchaseDetails();
       if (detail == null) return;
@@ -1953,6 +1964,83 @@ class RustPushService extends GetxService {
       }
     }).toList();
     return participants.map((p) => p.displayName).join(" & ");
+  }
+
+  Future<void> updateShareState() async {
+    var handle = (await api.getHandles(state: pushService.state)).first;
+    ss.settings.shareVersion.value++;
+    var msg = await api.newMsg(
+      state: pushService.state,
+      conversation: api.ConversationData(participants: [handle]),
+      sender: handle,
+      message: api.Message.updateProfileSharing(api.UpdateProfileSharingMessage(
+        sharedAll: ss.settings.sharedContacts.toList(),
+        sharedDismissed: ss.settings.dismissedContacts.toList(),
+        version: ss.settings.shareVersion.value,
+      )),
+    );
+    await (backend as RustPushBackend).sendMsg(msg);
+    ss.saveSettings();
+  }
+
+  Future<api.ShareProfileMessage?> getShareProfileMessageFor(List<Handle> targets) async {
+    if (targets.length != 1) return null; // only share in 1-1 chats atm
+    if (ss.settings.shareProfileMessage.value == null || !ss.settings.shareContactAutomatically.value || !ss.settings.nameAndPhotoSharing.value) return null;
+    if (targets.every((t) => !(t.contact?.isShared ?? true) && !ss.settings.sharedContacts.contains(t.address))) {
+      ss.settings.sharedContacts.addAll(targets.map((t) => t.address));
+      ss.saveSettings();
+      return api.decodeProfileMessage(s: ss.settings.shareProfileMessage.value!);
+    }
+    return null;
+  }
+
+  Future handleSharedProfile(api.ShareProfileMessage shared, String sender, List<Handle> targets) async {
+    var myHandles = await api.getHandles(state: pushService.state);
+    if (myHandles.contains(sender)) {
+      for (var target in targets) {
+        if (ss.settings.sharedContacts.contains(target.address)) {
+          continue;
+        }
+        ss.settings.sharedContacts.add(target.address);
+      }
+      ss.saveSettings();
+      return;
+    }
+    if (!(await api.canProfileShare(state: pushService.state))) return;
+
+    var fetch = await api.fetchProfile(state: pushService.state, message: shared);
+    var otherHandle = RustPushBBUtils.rustHandleToBB(sender);
+
+    var existingShared = Contact.findOne(address: otherHandle.address, wantShared: true);
+    if (existingShared != null) {
+      if (otherHandle.contactRelation.targetId == existingShared.dbId) {
+        otherHandle.contactRelation.target = null;
+      }
+      Database.contacts.remove(existingShared.dbId!);
+    }
+    var newId = Database.contacts.put(Contact(
+      id: shared.cloudKitRecordKey,
+      displayName: "Maybe: ${fetch.name.name}",
+      structuredName: StructuredName(
+        namePrefix: "",
+        nameSuffix: "",
+        givenName: fetch.name.first,
+        middleName: "",
+        familyName: fetch.name.last,
+      ),
+      avatar: fetch.image,
+      isShared: true,
+      phones: otherHandle.contact?.phones ?? (otherHandle.address.isEmail ? [] : [otherHandle.address]),
+      emails: otherHandle.contact?.emails ?? (otherHandle.address.isEmail ? [otherHandle.address] : []),
+    ));
+    if (otherHandle.contactRelation.target == null) {
+      otherHandle.contactRelation.targetId = newId;
+      Database.handles.put(otherHandle);
+    }
+    final result = (await Chat.findByRust(api.ConversationData(participants: [sender]), "iMessage", soft: true));
+    if (result != null) {
+      cvc(result).updateContactInfo();
+    }
   }
 
   var notifiedFailed = false;
@@ -2117,6 +2205,56 @@ class RustPushService extends GetxService {
         showSnackbar("Error", "Error activating SMS forwarding");
         rethrow;
       }
+      return;
+    }
+    if (myMsg.message is api.Message_ShareProfile) {
+      // someone shared to us
+      var message = myMsg.message as api.Message_ShareProfile;
+      await handleSharedProfile(message.field0, myMsg.sender!, []);
+      return;
+    }
+    if (myMsg.message is api.Message_UpdateProfileSharing) {
+      var message = myMsg.message as api.Message_UpdateProfileSharing;
+      ss.settings.sharedContacts.value = message.field0.sharedAll;
+      ss.settings.dismissedContacts.value = message.field0.sharedDismissed;
+      ss.settings.shareVersion.value = message.field0.version;
+      ss.saveSettings();
+      return;
+    }
+    if (myMsg.message is api.Message_UpdateProfile) {
+      var message = myMsg.message as api.Message_UpdateProfile;
+      ss.settings.nameAndPhotoSharing.value = message.field0.profile != null;
+      if (message.field0.profile != null) {
+        ss.settings.shareProfileMessage.value = await api.encodeProfileMessage(p: message.field0.profile!);
+        // delete old data
+        if (ss.settings.userAvatarPath.value != null) {
+          try {
+           await File(ss.settings.userAvatarPath.value!).delete(); 
+          } catch (e) { /*pass*/ }
+          ss.settings.userAvatarPath.value = null;
+        }
+        ss.settings.shareContactAutomatically.value = message.field0.shareContacts;
+        ss.saveSettings();
+        
+        if (!(await api.canProfileShare(state: pushService.state))) return;
+        var result = await api.fetchProfile(state: pushService.state, message: message.field0.profile!);
+
+        if (result.image != null) {
+          String appDocPath = fs.appDocDir.path;
+          File file = File("$appDocPath/avatars/you/avatar-${result.image!.length}.jpg");
+          if (!(await file.exists())) {
+            await file.create(recursive: true);
+          }
+          await file.writeAsBytes(result.image!);
+          ss.settings.userAvatarPath.value = file.path;
+        }
+        ss.settings.firstName.value = result.name.first;
+        ss.settings.lastName.value = result.name.last;
+        ss.settings.userName.value = result.name.name;
+      } else {
+        ss.settings.shareProfileMessage.value = null;
+      }
+      ss.saveSettings();
       return;
     }
     if (myMsg.message is api.Message_Error) {
@@ -2347,6 +2485,9 @@ class RustPushService extends GetxService {
         }
       }
       var msg = myMsg.message as api.Message_Message;
+      if (msg.field0.embeddedProfile != null) {
+        handleSharedProfile(msg.field0.embeddedProfile!, myMsg.sender!, chat.participants);
+      }
       if ((await msg.field0.parts.rawText()) == "" &&
           msg.field0.parts.field0.none((p0) => p0.part_ is api.MessagePart_Attachment)) {
         return;

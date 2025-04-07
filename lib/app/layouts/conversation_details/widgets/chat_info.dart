@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:bluebubbles/app/layouts/conversation_details/dialogs/address_picker.dart';
 import 'package:bluebubbles/app/layouts/conversation_details/dialogs/change_name.dart';
 import 'package:bluebubbles/app/layouts/conversation_details/widgets/contact_tile.dart';
@@ -446,12 +448,16 @@ class InfoButton extends StatelessWidget {
           onTap: () async {
             final contact = chat.participants.first.contact;
             final handle = chat.participants.first;
-            if (contact == null) {
-              await mcs.invokeMethod("open-contact-form",
-                  {'address': handle.address, 'address_type': handle.address.isEmail ? 'email' : 'phone'});
+            if (contact?.isShared ?? true) {
+              var parameters = {'address': handle.address, 'address_type': handle.address.isEmail ? 'email' : 'phone'}; 
+              if (contact != null) {
+                parameters["name"] = contact.displayName.replaceFirst("Maybe: ", "");
+                if (contact.avatar != null) parameters["image"] = base64Encode(contact.avatar!);
+              }
+              await mcs.invokeMethod("open-contact-form", parameters);
             } else {
               try {
-                await mcs.invokeMethod("view-contact-form", {'id': contact.id});
+                await mcs.invokeMethod("view-contact-form", {'id': contact!.id});
               } catch (_) {
                 showSnackbar("Error", "Failed to find contact on device!");
               }
@@ -465,14 +471,14 @@ class InfoButton extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(
-                  chat.participants.isNotEmpty && chat.participants.first.contact != null
+                  chat.participants.isNotEmpty && !(chat.participants.first.contact?.isShared ?? true)
                       ? (iOS ? CupertinoIcons.info : Icons.info)
                       : (iOS ? CupertinoIcons.plus_circle : Icons.add_circle_outline),
                   color: context.theme.colorScheme.onSurface,
                   size: 20,
                 ),
                 const SizedBox(height: 7.5),
-                Text(chat.participants.isNotEmpty && chat.participants.first.contact != null ? "Info" : "Add Contact",
+                Text(chat.participants.isNotEmpty && !(chat.participants.first.contact?.isShared ?? true) ? "Info" : "Add Contact",
                     style: context.theme.textTheme.bodySmall!.copyWith(color: context.theme.colorScheme.onSurface)),
               ],
             ),

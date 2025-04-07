@@ -317,6 +317,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   PlatformInt64 dco_decode_box_autoadd_i_64(dynamic raw);
 
   @protected
+  IMessageNicknameRecord dco_decode_box_autoadd_i_message_nickname_record(
+      dynamic raw);
+
+  @protected
+  IMessagePosterRecord dco_decode_box_autoadd_i_message_poster_record(
+      dynamic raw);
+
+  @protected
   IconChangeMessage dco_decode_box_autoadd_icon_change_message(dynamic raw);
 
   @protected
@@ -395,7 +403,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   ScheduleMode dco_decode_box_autoadd_schedule_mode(dynamic raw);
 
   @protected
+  ShareProfileMessage dco_decode_box_autoadd_share_profile_message(dynamic raw);
+
+  @protected
   SharedAlbum dco_decode_box_autoadd_shared_album(dynamic raw);
+
+  @protected
+  SharedPoster dco_decode_box_autoadd_shared_poster(dynamic raw);
 
   @protected
   SupportAction dco_decode_box_autoadd_support_action(dynamic raw);
@@ -418,6 +432,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   UpdateExtensionMessage dco_decode_box_autoadd_update_extension_message(
       dynamic raw);
+
+  @protected
+  UpdateProfileMessage dco_decode_box_autoadd_update_profile_message(
+      dynamic raw);
+
+  @protected
+  UpdateProfileSharingMessage
+      dco_decode_box_autoadd_update_profile_sharing_message(dynamic raw);
 
   @protected
   ChangeParticipantMessage dco_decode_change_participant_message(dynamic raw);
@@ -475,6 +497,15 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   PlatformInt64 dco_decode_i_64(dynamic raw);
+
+  @protected
+  IMessageNameRecord dco_decode_i_message_name_record(dynamic raw);
+
+  @protected
+  IMessageNicknameRecord dco_decode_i_message_nickname_record(dynamic raw);
+
+  @protected
+  IMessagePosterRecord dco_decode_i_message_poster_record(dynamic raw);
 
   @protected
   IconChangeMessage dco_decode_icon_change_message(dynamic raw);
@@ -674,6 +705,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   PlatformInt64? dco_decode_opt_box_autoadd_i_64(dynamic raw);
 
   @protected
+  IMessagePosterRecord? dco_decode_opt_box_autoadd_i_message_poster_record(
+      dynamic raw);
+
+  @protected
   LinkMeta? dco_decode_opt_box_autoadd_link_meta(dynamic raw);
 
   @protected
@@ -710,6 +745,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   ScheduleMode? dco_decode_opt_box_autoadd_schedule_mode(dynamic raw);
+
+  @protected
+  ShareProfileMessage? dco_decode_opt_box_autoadd_share_profile_message(
+      dynamic raw);
+
+  @protected
+  SharedPoster? dco_decode_opt_box_autoadd_shared_poster(dynamic raw);
 
   @protected
   SupportAction? dco_decode_opt_box_autoadd_support_action(dynamic raw);
@@ -811,7 +853,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   ScheduleMode dco_decode_schedule_mode(dynamic raw);
 
   @protected
+  ShareProfileMessage dco_decode_share_profile_message(dynamic raw);
+
+  @protected
   SharedAlbum dco_decode_shared_album(dynamic raw);
+
+  @protected
+  SharedPoster dco_decode_shared_poster(dynamic raw);
 
   @protected
   SupportAction dco_decode_support_action(dynamic raw);
@@ -854,6 +902,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   UpdateExtensionMessage dco_decode_update_extension_message(dynamic raw);
+
+  @protected
+  UpdateProfileMessage dco_decode_update_profile_message(dynamic raw);
+
+  @protected
+  UpdateProfileSharingMessage dco_decode_update_profile_sharing_message(
+      dynamic raw);
 
   @protected
   BigInt dco_decode_usize(dynamic raw);
@@ -1126,6 +1181,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   PlatformInt64 sse_decode_box_autoadd_i_64(SseDeserializer deserializer);
 
   @protected
+  IMessageNicknameRecord sse_decode_box_autoadd_i_message_nickname_record(
+      SseDeserializer deserializer);
+
+  @protected
+  IMessagePosterRecord sse_decode_box_autoadd_i_message_poster_record(
+      SseDeserializer deserializer);
+
+  @protected
   IconChangeMessage sse_decode_box_autoadd_icon_change_message(
       SseDeserializer deserializer);
 
@@ -1218,7 +1281,15 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       SseDeserializer deserializer);
 
   @protected
+  ShareProfileMessage sse_decode_box_autoadd_share_profile_message(
+      SseDeserializer deserializer);
+
+  @protected
   SharedAlbum sse_decode_box_autoadd_shared_album(SseDeserializer deserializer);
+
+  @protected
+  SharedPoster sse_decode_box_autoadd_shared_poster(
+      SseDeserializer deserializer);
 
   @protected
   SupportAction sse_decode_box_autoadd_support_action(
@@ -1244,6 +1315,15 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   UpdateExtensionMessage sse_decode_box_autoadd_update_extension_message(
       SseDeserializer deserializer);
+
+  @protected
+  UpdateProfileMessage sse_decode_box_autoadd_update_profile_message(
+      SseDeserializer deserializer);
+
+  @protected
+  UpdateProfileSharingMessage
+      sse_decode_box_autoadd_update_profile_sharing_message(
+          SseDeserializer deserializer);
 
   @protected
   ChangeParticipantMessage sse_decode_change_participant_message(
@@ -1302,6 +1382,18 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   PlatformInt64 sse_decode_i_64(SseDeserializer deserializer);
+
+  @protected
+  IMessageNameRecord sse_decode_i_message_name_record(
+      SseDeserializer deserializer);
+
+  @protected
+  IMessageNicknameRecord sse_decode_i_message_nickname_record(
+      SseDeserializer deserializer);
+
+  @protected
+  IMessagePosterRecord sse_decode_i_message_poster_record(
+      SseDeserializer deserializer);
 
   @protected
   IconChangeMessage sse_decode_icon_change_message(
@@ -1516,6 +1608,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   PlatformInt64? sse_decode_opt_box_autoadd_i_64(SseDeserializer deserializer);
 
   @protected
+  IMessagePosterRecord? sse_decode_opt_box_autoadd_i_message_poster_record(
+      SseDeserializer deserializer);
+
+  @protected
   LinkMeta? sse_decode_opt_box_autoadd_link_meta(SseDeserializer deserializer);
 
   @protected
@@ -1558,6 +1654,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   ScheduleMode? sse_decode_opt_box_autoadd_schedule_mode(
+      SseDeserializer deserializer);
+
+  @protected
+  ShareProfileMessage? sse_decode_opt_box_autoadd_share_profile_message(
+      SseDeserializer deserializer);
+
+  @protected
+  SharedPoster? sse_decode_opt_box_autoadd_shared_poster(
       SseDeserializer deserializer);
 
   @protected
@@ -1671,7 +1775,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   ScheduleMode sse_decode_schedule_mode(SseDeserializer deserializer);
 
   @protected
+  ShareProfileMessage sse_decode_share_profile_message(
+      SseDeserializer deserializer);
+
+  @protected
   SharedAlbum sse_decode_shared_album(SseDeserializer deserializer);
+
+  @protected
+  SharedPoster sse_decode_shared_poster(SseDeserializer deserializer);
 
   @protected
   SupportAction sse_decode_support_action(SseDeserializer deserializer);
@@ -1715,6 +1826,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   UpdateExtensionMessage sse_decode_update_extension_message(
+      SseDeserializer deserializer);
+
+  @protected
+  UpdateProfileMessage sse_decode_update_profile_message(
+      SseDeserializer deserializer);
+
+  @protected
+  UpdateProfileSharingMessage sse_decode_update_profile_sharing_message(
       SseDeserializer deserializer);
 
   @protected
@@ -2000,6 +2119,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       PlatformInt64 self, SseSerializer serializer);
 
   @protected
+  void sse_encode_box_autoadd_i_message_nickname_record(
+      IMessageNicknameRecord self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_i_message_poster_record(
+      IMessagePosterRecord self, SseSerializer serializer);
+
+  @protected
   void sse_encode_box_autoadd_icon_change_message(
       IconChangeMessage self, SseSerializer serializer);
 
@@ -2096,8 +2223,16 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       ScheduleMode self, SseSerializer serializer);
 
   @protected
+  void sse_encode_box_autoadd_share_profile_message(
+      ShareProfileMessage self, SseSerializer serializer);
+
+  @protected
   void sse_encode_box_autoadd_shared_album(
       SharedAlbum self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_shared_poster(
+      SharedPoster self, SseSerializer serializer);
 
   @protected
   void sse_encode_box_autoadd_support_action(
@@ -2125,6 +2260,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_box_autoadd_update_extension_message(
       UpdateExtensionMessage self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_update_profile_message(
+      UpdateProfileMessage self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_update_profile_sharing_message(
+      UpdateProfileSharingMessage self, SseSerializer serializer);
 
   @protected
   void sse_encode_change_participant_message(
@@ -2185,6 +2328,18 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_i_64(PlatformInt64 self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_i_message_name_record(
+      IMessageNameRecord self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_i_message_nickname_record(
+      IMessageNicknameRecord self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_i_message_poster_record(
+      IMessagePosterRecord self, SseSerializer serializer);
 
   @protected
   void sse_encode_icon_change_message(
@@ -2413,6 +2568,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       PlatformInt64? self, SseSerializer serializer);
 
   @protected
+  void sse_encode_opt_box_autoadd_i_message_poster_record(
+      IMessagePosterRecord? self, SseSerializer serializer);
+
+  @protected
   void sse_encode_opt_box_autoadd_link_meta(
       LinkMeta? self, SseSerializer serializer);
 
@@ -2458,6 +2617,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_opt_box_autoadd_schedule_mode(
       ScheduleMode? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_share_profile_message(
+      ShareProfileMessage? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_shared_poster(
+      SharedPoster? self, SseSerializer serializer);
 
   @protected
   void sse_encode_opt_box_autoadd_support_action(
@@ -2569,7 +2736,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_schedule_mode(ScheduleMode self, SseSerializer serializer);
 
   @protected
+  void sse_encode_share_profile_message(
+      ShareProfileMessage self, SseSerializer serializer);
+
+  @protected
   void sse_encode_shared_album(SharedAlbum self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_shared_poster(SharedPoster self, SseSerializer serializer);
 
   @protected
   void sse_encode_support_action(SupportAction self, SseSerializer serializer);
@@ -2615,6 +2789,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_update_extension_message(
       UpdateExtensionMessage self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_update_profile_message(
+      UpdateProfileMessage self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_update_profile_sharing_message(
+      UpdateProfileSharingMessage self, SseSerializer serializer);
 
   @protected
   void sse_encode_usize(BigInt self, SseSerializer serializer);

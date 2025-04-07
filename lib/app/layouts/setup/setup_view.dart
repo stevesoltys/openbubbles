@@ -95,7 +95,7 @@ class SetupViewController extends StatefulController {
         final status = await http.dio.post("https://hw.openbubbles.app/restore", data: {"purchase_token": details.purchaseToken});
         if (status.statusCode == 200) {
           var ticket = status.data["code"];
-          await restoreTicket(ticket);
+          await restoreTicket(ticket, const Duration(days: 7));
           return;
         }
       }
@@ -391,10 +391,9 @@ class SetupViewController extends StatefulController {
 
   int get pageOfNoReturn => kIsWeb || kIsDesktop ? 3 : 5;
 
-  Future<void> restoreTicket(String ticket) async {
+  Future<void> restoreTicket(String ticket, Duration length) async {
     token = ticket;
-    // really just placeholder for never, token should be assumed to be valid.
-    tokenExpiry = DateTime.now().add(const Duration(days: 7));
+    tokenExpiry = DateTime.now().add(length);
     if (availableIAP.value == null) {
       await updateIAPState();
     }
@@ -479,7 +478,7 @@ class _SetupViewState extends OptimizedState<SetupView> {
         Logger.info("Got uri stream $text");
         var ticketheader = "https://hw.openbubbles.app/ticket/";
         if (text.startsWith(ticketheader)) {
-          controller.restoreTicket(text.replaceFirst(ticketheader, ""));
+          controller.restoreTicket(text.replaceFirst(ticketheader, ""), const Duration(minutes: 15));
           return;
         }
         var header = "$rpApiRoot/";
@@ -494,7 +493,7 @@ class _SetupViewState extends OptimizedState<SetupView> {
         var text = link.toString();
         var ticketheader = "https://hw.openbubbles.app/ticket/";
         if (text.startsWith(ticketheader)) {
-          controller.restoreTicket(text.replaceFirst(ticketheader, ""));
+          controller.restoreTicket(text.replaceFirst(ticketheader, ""), const Duration(minutes: 15));
           return;
         }
         var header = "$rpApiRoot/";
