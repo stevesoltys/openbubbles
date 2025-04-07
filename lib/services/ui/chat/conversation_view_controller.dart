@@ -109,7 +109,8 @@ class ConversationViewController extends StatefulController with GetSingleTicker
       // (not in our contacts or contact sharing disabled) and not shared
       suggestShare.value = ((chat.participants.first.contact?.isShared ?? true) || !ss.settings.shareContactAutomatically.value) 
           && !ss.settings.sharedContacts.contains(chat.participants.first.address)
-          && !ss.settings.dismissedContacts.contains(chat.participants.first.address);
+          && !ss.settings.dismissedContacts.contains(chat.participants.first.address)
+          && ss.settings.nameAndPhotoSharing.value;
     }
   }
 
