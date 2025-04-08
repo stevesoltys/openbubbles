@@ -39,6 +39,7 @@ import com.bluebubbles.messaging.services.foreground.StartForegroundServiceHandl
 import com.bluebubbles.messaging.services.foreground.StopForegroundServiceHandler
 import com.bluebubbles.messaging.services.notifications.CreateMissedFaceTimeNotification
 import com.bluebubbles.messaging.services.rustpush.GetNativeHandleHandler
+import com.bluebubbles.messaging.services.system.RecentContactsRequestHandler
 import com.bluebubbles.telephony_plus.receive.SMSObserver
 import com.google.gson.GsonBuilder
 import com.google.gson.ToNumberPolicy
@@ -106,6 +107,7 @@ class MethodCallHandler {
             FaceTimeCallStateHandler.tag -> FaceTimeCallStateHandler().handleMethodCall(call, result, context)
             CreateMissedFaceTimeNotification.tag -> CreateMissedFaceTimeNotification().handleMethodCall(call, result, context)
             FaceTimeGetActiveCallHandler.tag -> FaceTimeGetActiveCallHandler().handleMethodCall(call, result, context)
+            RecentContactsRequestHandler.tag -> RecentContactsRequestHandler().handleMethodCall(call, result, context)
             "ready" -> { MainActivity.engine_ready = true }
             else -> {
                 val error = "Could not find method call handler for ${call.method}!"

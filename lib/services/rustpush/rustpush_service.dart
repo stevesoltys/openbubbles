@@ -2008,6 +2008,8 @@ class RustPushService extends GetxService {
     }
     if (!(await api.canProfileShare(state: pushService.state))) return;
 
+    if (Contact.findOne(id: shared.cloudKitRecordKey) != null) return; // already downloaded
+
     var fetch = await api.fetchProfile(state: pushService.state, message: shared);
     var otherHandle = RustPushBBUtils.rustHandleToBB(sender);
 

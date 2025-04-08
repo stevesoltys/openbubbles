@@ -117,7 +117,7 @@ class _FaceTimePanelState extends OptimizedState<FaceTimePanel> {
   @override
   Widget build(BuildContext context) {
     return Obx(() => SettingsScaffold(
-        title: "FaceTime",
+        title: "Video Calls",
         initialHeader: pushService.activeSessions.isEmpty ? "Calls" : "Active",
         iosSubtitle: iosSubtitle,
         materialSubtitle: materialSubtitle,

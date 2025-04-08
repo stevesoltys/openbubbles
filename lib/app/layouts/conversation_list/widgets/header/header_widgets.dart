@@ -166,7 +166,7 @@ class MaterialOverflowMenu extends StatelessWidget {
             PopupMenuItem(
               value: 5,
               child: Text(
-                'FindMy',
+                'Map',
                 style: context.textTheme.bodyLarge!.apply(color: context.theme.colorScheme.properOnSurface),
               ),
             ),
@@ -181,7 +181,7 @@ class MaterialOverflowMenu extends StatelessWidget {
             PopupMenuItem(
               value: 10,
               child: Text(
-                'FaceTime',
+                'Video Calls',
                 style: context.textTheme.bodyLarge!.apply(color: context.theme.colorScheme.properOnSurface),
               ),
             ),
@@ -308,7 +308,7 @@ class CupertinoOverflowMenu extends StatelessWidget {
           ),
         if (backend.supportsFindMy())
           PullDownMenuItem(
-            title: 'Find My',
+            title: 'Map',
             icon: CupertinoIcons.location,
             onTap: () => goToFindMy(context),
           ),
@@ -319,7 +319,7 @@ class CupertinoOverflowMenu extends StatelessWidget {
             onTap: () => goToSharedStreams(context),
           ),
         PullDownMenuItem(
-          title: 'FaceTime',
+          title: 'Video Calls',
           icon: CupertinoIcons.video_camera,
           onTap: () => goToFaceTime(context),
         ),

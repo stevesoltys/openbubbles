@@ -307,7 +307,7 @@ class _ProfilePanelState extends OptimizedState<ProfilePanel> with WidgetsBindin
   Widget build(BuildContext context) {
     return SettingsScaffold(
       headerColor: headerColor,
-      title: "iMessage Profile",
+      title: "Profile",
       tileColor: tileColor,
       initialHeader: null,
       iosSubtitle: iosSubtitle,
@@ -505,6 +505,11 @@ class _ProfilePanelState extends OptimizedState<ProfilePanel> with WidgetsBindin
                     children: [
                       Obx(() => SettingsSwitch(
                         onChanged: (bool val) async {
+                          var canShare = await api.canProfileShare(state: pushService.state);
+                          if (val && !canShare) {
+                            showSnackbar("Relog required!", "Relog required to use profile sharing! Relog in Settings -> Reconfigure");
+                            return;
+                          }
                           ss.settings.nameAndPhotoSharing.value = val;
                           profileDirty = true;
                           ss.saveSettings();

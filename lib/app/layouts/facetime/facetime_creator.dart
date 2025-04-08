@@ -223,7 +223,7 @@ class FaceTimeCreatorState extends OptimizedState<FaceTimeCreator> {
             backgroundColor: Colors.transparent,
             centerTitle: ss.settings.skin.value == Skins.iOS,
             title: Text(
-              "New FaceTime",
+              "New Video Call",
               style: context.theme.textTheme.titleLarge,
             ),
             actions: [],

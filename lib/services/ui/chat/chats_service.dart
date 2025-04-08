@@ -1,10 +1,12 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:app_links/app_links.dart';
 import 'package:bluebubbles/app/layouts/chat_creator/chat_creator.dart';
 import 'package:bluebubbles/helpers/backend/startup_tasks.dart';
 import 'package:bluebubbles/helpers/helpers.dart';
 import 'package:bluebubbles/database/models.dart';
+import 'package:bluebubbles/services/rustpush/rustpush_service.dart';
 import 'package:bluebubbles/services/services.dart';
 import 'package:bluebubbles/services/network/backend_service.dart';
 import 'package:bluebubbles/utils/logger/logger.dart';
@@ -62,6 +64,30 @@ class ChatsService extends GetxService {
     }
   }
 
+  RxList<Handle> suggestedHandles = <Handle>[].obs;
+
+  Future<void> loadChatSuggestions() async {
+    if (!Platform.isAndroid) return;
+    if (chats.isNotEmpty) return;
+    List<String> recents = List<String>.from(await mcs.invokeMethod("recent-contacts"));
+    await pushService.initFuture;
+    List<String> suggestedHandles = [];
+    while (recents.isNotEmpty && suggestedHandles.length < 3) {
+      var wantedCount = min(3 - suggestedHandles.length, recents.length);
+      List<String> queryList = recents.sublist(0, wantedCount);
+      recents = recents.sublist(wantedCount);
+      List<String> formattedList = [];
+      for (var item in queryList) {
+        formattedList.add(await RustPushBBUtils.formatAndAddPrefix(item));
+      }
+      var handle = await (backend as RustPushBackend).getDefaultHandle();
+      suggestedHandles.addAll(await pushService.doValidateTargets(formattedList, handle));
+    }
+    List<Handle> results = suggestedHandles.map((s) => RustPushBBUtils.rustHandleToBB(s)).toList();
+    this.suggestedHandles.value = results;
+    Logger.info("response $suggestedHandles");
+  }
+
   Future<void> init({bool force = false}) async {
     if (!force && !ss.settings.finishedSetup.value) return;
     Logger.info("Fetching chats... ${StackTrace.current}", tag: "ChatBloc");
@@ -74,6 +100,7 @@ class ChatsService extends GetxService {
       hasChats.value = true;
     } else {
       loadedChatBatch.value = true;
+      loadChatSuggestions();
       return;
     }
 
@@ -102,6 +129,7 @@ class ChatsService extends GetxService {
       chats.value = newChats;
       loadedChatBatch.value = true;
     }
+    loadChatSuggestions();
     loadedAllChats.complete();
     Logger.info("Finished fetching chats (${chats.length}).", tag: "ChatBloc");
     // update share targets
