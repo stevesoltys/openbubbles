@@ -720,19 +720,6 @@ class RustPushBackend implements BackendService {
     await sendMsg(msg);
   }
 
-  Future<void> invalidateSelf() async {
-    var handles = await api.getHandles(state: pushService.state);
-    for (var handle in handles) {
-      var msg = await api.newMsg(
-        state: pushService.state,
-        conversation: api.ConversationData(participants: [handle]),
-        sender: handle,
-        message: const api.Message.peerCacheInvalidate(),
-      );
-      await sendMsg(msg);
-    }
-  }
-
   bool smsForwardingEnabled() {
     return ss.settings.isSmsRouter.value || ss.settings.smsForwardingTargets.isNotEmpty;
   }
@@ -2045,6 +2032,40 @@ class RustPushService extends GetxService {
     }
   }
 
+  Future invalidatePeerCaches() async {
+    var myHandles = (await api.getHandles(state: pushService.state));
+    // loop through recent chats (1 day or newer)
+    Query<Chat> query = Database.chats.query(Chat_.dateDeleted.isNull().and(Chat_.dbOnlyLatestMessageDate.greaterThan(DateTime.now().subtract(const Duration(hours: 12)).millisecondsSinceEpoch)))
+        .build();
+
+    // Execute the query, then close the DB connection
+    final chats = query.find();
+    query.close();
+
+    // notify participants of these chats that my keys have changed
+    Map<String, Set<String>> handleChats = <String, Set<String>>{};
+    for (var handle in myHandles) {
+      handleChats[handle] = {handle};
+    }
+
+    for (var chat in chats) {
+      var data = await chat.getConversationData();
+      var sender = await chat.ensureHandle();
+      handleChats[sender]?.addAll(data.participants);
+    }
+
+    for (var handle in myHandles) {
+      if (handleChats[handle]!.length == 1) continue; // if it's just us, we're good.
+      var msg = await api.newMsg(
+        state: pushService.state,
+        conversation: api.ConversationData(participants: handleChats[handle]!.toList()),
+        sender: handle,
+        message: const api.Message.peerCacheInvalidate(),
+      );
+      await (backend as RustPushBackend).sendMsg(msg);
+    }
+  }
+
   var notifiedFailed = false;
   var notifiedSubFailed = false;
 
@@ -2284,29 +2305,7 @@ class RustPushService extends GetxService {
       return;
     }
     if (myMsg.message is api.Message_PeerCacheInvalidate) {
-      var myHandles = (await api.getHandles(state: pushService.state));
-      if (!myHandles.contains(myMsg.sender)) return; // sanity check, shouldn't get here anyways otherwise
-      // loop through recent chats (1 day or newer)
-      Query<Chat> query = Database.chats.query(Chat_.dateDeleted.isNull().and(Chat_.usingHandle.equals(myMsg.sender!)).and(Chat_.dbOnlyLatestMessageDate.greaterThan(DateTime.now().subtract(const Duration(days: 1)).millisecondsSinceEpoch)))
-          .build();
-
-      // Execute the query, then close the DB connection
-      final chats = query.find();
-      query.close();
-
-      // notify participants of these chats that my keys have changed
-      for (var chat in chats) {
-        var data = await chat.getConversationData();
-        if (data.participants.filter((element) => !myHandles.contains(element)).isEmpty) continue;
-        var msg = await api.newMsg(
-          state: pushService.state,
-          conversation: data,
-          sender: myMsg.sender!,
-          message: const api.Message.peerCacheInvalidate(),
-        );
-        msg.id = myMsg.id;
-        await (backend as RustPushBackend).sendMsg(msg);
-      }
+      invalidatePeerCaches();
       return;
     }
     if (myMsg.message is api.Message_SmsConfirmSent) {
@@ -2888,11 +2887,6 @@ class RustPushService extends GetxService {
     }
     pushService.findMy = await api.canFindMy(state: state);
     pushService.sharedStreams = await api.supportsSharedStreams(state: state);
-    try {
-      await (backend as RustPushBackend).invalidateSelf();
-    } catch (e) {
-      // not that important
-    }
   }
 
   @override

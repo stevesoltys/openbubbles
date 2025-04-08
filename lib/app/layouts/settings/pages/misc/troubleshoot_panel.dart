@@ -472,6 +472,33 @@ class _TroubleshootPanelState extends OptimizedState<TroubleshootPanel> {
                         showSnackbar("Success", "Identity cache cleared! Try re-sending any messages.");
                       }),
                     SettingsTile(
+                      title: "Clear peer caches",
+                      subtitle: "Run this troubleshooter if you are told to do so.",
+                      onTap: () async {
+                        try {
+                          reregisteringIds.value = true;
+                          await pushService.invalidatePeerCaches();
+                          showSnackbar("Success", "Cleared peer caches");
+                        } catch (e) {
+                          showSnackbar("Failure", e.toString());
+                          rethrow;
+                        } finally {
+                          reregisteringIds.value = false;
+                        }
+                      },
+                      trailing: Obx(() => reregisteringIds.value == null
+                          ? const SizedBox.shrink()
+                          : reregisteringIds.value == true ? Container(
+                          constraints: const BoxConstraints(
+                            maxHeight: 20,
+                            maxWidth: 20,
+                          ),
+                          child: CircularProgressIndicator(
+                            strokeWidth: 3,
+                            valueColor: AlwaysStoppedAnimation<Color>(context.theme.colorScheme.primary),
+                          )) : Icon(Icons.check, color: context.theme.colorScheme.outline))
+                      ),
+                    SettingsTile(
                       title: "Reregister",
                       subtitle: "Run this troubleshooter if you are told to do so.",
                       onTap: () async {
