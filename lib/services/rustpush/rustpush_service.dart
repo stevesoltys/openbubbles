@@ -2764,7 +2764,7 @@ class RustPushService extends GetxService {
                   .theme.textTheme.titleLarge,
             ),
             content: Text(
-              "To get started, you'll have to change devices. Your old hardware info will be replaced. Re-login will be required. No messages will be deleted.",
+              "To get started, you'll have to drop your old device. Re-login will be required. No messages will be deleted.",
               style: context
                   .theme.textTheme.bodyLarge,
             ),
