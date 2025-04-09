@@ -1120,8 +1120,11 @@ class _SettingsPageState extends OptimizedState<SettingsPage> {
                                                             return;
                                                           }
                                                         }
+                                                        (backend as RustPushBackend).markFailedToLogin();
+                                                        return;
+                                                      } else {
+                                                        (backend as RustPushBackend).markFailedToLogin(hw: true);
                                                       }
-                                                      (backend as RustPushBackend).markFailedToLogin();
                                                     }
                                                   ),
                                                 ],

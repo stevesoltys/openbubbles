@@ -2748,10 +2748,66 @@ class RustPushService extends GetxService {
 
   bool subscribing = false;
 
-  void handlePhotoStreamLink(Uri link) async {
+  void handleAppLink(Uri link) async {
+    var text = link.toString();
+    Logger.info("Got uri stream $text");
+    var ticketheader = "https://hw.openbubbles.app/ticket/";
+    if (text.startsWith(ticketheader) && ss.settings.finishedSetup.value) {
+      showDialog(
+        barrierDismissible: true,
+        context: Get.context!,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              "Welcome to Hosted!",
+              style: context
+                  .theme.textTheme.titleLarge,
+            ),
+            content: Text(
+              "To get started, you'll have to change devices. Your old hardware info will be replaced. Re-login will be required. No messages will be deleted.",
+              style: context
+                  .theme.textTheme.bodyLarge,
+            ),
+            backgroundColor: context.theme
+                .colorScheme.properSurface,
+            actions: <Widget>[
+              TextButton(
+                child: Text("Not yet",
+                    style: context.theme
+                        .textTheme.bodyLarge!
+                        .copyWith(
+                            color: context
+                                .theme
+                                .colorScheme
+                                .primary)),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              TextButton(
+                child: Text("Continue",
+                    style: context.theme
+                        .textTheme.bodyLarge!
+                        .copyWith(
+                            color: context
+                                .theme
+                                .colorScheme
+                                .primary)),
+                onPressed: () async {
+                  (backend as RustPushBackend).markFailedToLogin(hw: true);
+                }
+              ),
+            ],
+          );
+        },
+      );
+      return;
+    }
+
     if (link.host != "www.icloud.com") return;
     var invitationId = link.queryParameters["invitation_id"];
     if (invitationId == null) return;
+    await initFuture;
     if (subscribing) return;
     subscribing = true;
     showDialog(
@@ -2791,13 +2847,13 @@ class RustPushService extends GetxService {
     subscribing = false;
   }
 
-  void initPhotoStream() async {
+  void initAppLinks() async {
     final _appLinks = AppLinks();
 
     var link = await _appLinks.getLatestLink();
-    if (link != null) handlePhotoStreamLink(link);
+    if (link != null) handleAppLink(link);
     final sub = _appLinks.uriLinkStream.listen((uri) {
-        handlePhotoStreamLink(uri);
+        handleAppLink(uri);
     });
   }
 
@@ -2856,8 +2912,8 @@ class RustPushService extends GetxService {
       Timer.periodic(const Duration(days: 1), (timer) => validateSubState());
       validateSubState();
     })();
+    initAppLinks();
     await initFuture;
-    initPhotoStream();
     // pre-cache next FT link
     api.getFtLink(state: pushService.state, usage: "next");
     Logger.info("initDone");

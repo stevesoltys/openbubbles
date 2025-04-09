@@ -317,7 +317,7 @@ class HwInpState extends OptimizedState<HwInp> {
     final _appLinks = AppLinks();
     var link = await _appLinks.getLatestLink();
 
-    if (link != null) {
+    if (link != null && link.toString().startsWith(rpApiRoot)) {
       checkCode(link.toString());
     } else {
       var state = await api.getPhase(state: pushService.state);
