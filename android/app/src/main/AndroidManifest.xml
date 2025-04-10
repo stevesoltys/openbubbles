@@ -263,6 +263,7 @@
                 <data android:scheme="https" />
                 <data android:pathPrefix="/code/" />
                 <data android:pathPrefix="/ticket/" />
+                <data android:pathPrefix="/waitlist/" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

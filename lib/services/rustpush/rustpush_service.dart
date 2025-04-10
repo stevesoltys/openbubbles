@@ -2751,8 +2751,7 @@ class RustPushService extends GetxService {
   void handleAppLink(Uri link) async {
     var text = link.toString();
     Logger.info("Got uri stream $text");
-    var ticketheader = "https://hw.openbubbles.app/ticket/";
-    if (text.startsWith(ticketheader) && ss.settings.finishedSetup.value) {
+    if ((text.startsWith("https://hw.openbubbles.app/ticket/") || text.startsWith("https://hw.openbubbles.app/waitlist/")) && ss.settings.finishedSetup.value) {
       showDialog(
         barrierDismissible: true,
         context: Get.context!,

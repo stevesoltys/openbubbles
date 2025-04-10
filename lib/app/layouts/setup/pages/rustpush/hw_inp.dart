@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:async_task/async_task_extension.dart';
 import 'package:bluebubbles/app/layouts/conversation_list/pages/conversation_list.dart';
@@ -39,6 +40,7 @@ class HwInp extends StatefulWidget {
 
 class HwInpState extends OptimizedState<HwInp> {
   final TextEditingController codeController = TextEditingController();
+  final TextEditingController hostedCodeController = TextEditingController();
   final controller = Get.find<SetupViewController>();
   final FocusNode focusNode = FocusNode();
 
@@ -444,6 +446,13 @@ class HwInpState extends OptimizedState<HwInp> {
     codeController.addListener(() async {
       checkCode(codeController.text);
     });
+
+    hostedCodeController.addListener(() async {
+      if (hostedCodeController.text.length == 36 || hostedCodeController.text.length == 9) {
+        controller.currentWaitlist = hostedCodeController.text;
+        controller.updateIAPState();
+      }
+    });
   }
 
   Widget materialButton(Widget inner, bool selected, void Function() onTap) {
@@ -529,7 +538,7 @@ class HwInpState extends OptimizedState<HwInp> {
                         labelStyle: TextStyle(color: context.theme.colorScheme.outline),
                       ),
                     ),
-                    child: Column(
+                    child: Obx(() => Column(
                       children: [
                         if(stagingInfo != null)
                           SettingsSection(
@@ -619,7 +628,13 @@ class HwInpState extends OptimizedState<HwInp> {
                                 ),
                                 child: InkWell(
                                   onTap: () async {
-                                    launchUrl(Uri.parse("https://openbubbles.app/waitlist.html"));
+                                    if (hosted) {
+                                      launchUrl(Uri.parse("https://openbubbles.app/waitlist.html"));
+                                    } else {
+                                      setState(() {
+                                        hosted = true;
+                                      });
+                                    }
                                   },
                                   borderRadius: BorderRadius.circular(15),
                                   child: Padding(
@@ -633,13 +648,14 @@ class HwInpState extends OptimizedState<HwInp> {
                                           children: [
                                             Text("Hosted",
                                                 style: context.theme.textTheme.titleMedium!),
-                                            Text("Currently unavailable. If you got an invite, click your link. Otherwise, join the waitlist!",
+                                            Text(controller.noCapErrorMsg.value,
                                                 style: context.theme.textTheme.bodySmall!),
                                           ],
                                         )),
                                         const SizedBox(width: 10),
-                                        const Icon(
+                                        Icon(
                                           Icons.arrow_forward,
+                                          color: hosted ? null : Colors.transparent,
                                         ),
                                       ]),
                                   )
@@ -648,6 +664,39 @@ class HwInpState extends OptimizedState<HwInp> {
                             )),
                           ],
                           mainAxisSize: MainAxisSize.max,
+                        ),
+                        if (!stagingNonInp && hosted && stagingInfo == null && controller.availableIAP.value == null && Platform.isAndroid)
+                        const SizedBox(height: 10),
+                        if (!stagingNonInp && hosted && controller.availableIAP.value == null && Platform.isAndroid)
+                        Container(
+                          child: Focus(
+                            focusNode: focusNode,
+                            onKey: (node, event) {
+                              if (event is RawKeyDownEvent &&
+                                  !event.data.isShiftPressed &&
+                                  event.logicalKey == LogicalKeyboardKey.tab) {
+                                node.nextFocus();
+                                return KeyEventResult.handled;
+                              }
+                              return KeyEventResult.ignored;
+                            },
+                            child: TextField(
+                              cursorColor: context.theme.colorScheme.primary,
+                              autocorrect: false,
+                              autofocus: false,
+                              controller: hostedCodeController,
+                              textInputAction: TextInputAction.done,
+                              decoration: InputDecoration(
+                                enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: context.theme.colorScheme.outline),
+                                    borderRadius: BorderRadius.circular(20)),
+                                focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: context.theme.colorScheme.primary),
+                                    borderRadius: BorderRadius.circular(20)),
+                                labelText: "Enter waitlist invite code",
+                              ),
+                            ),
+                          ),
                         ),
                         if(!stagingNonInp && stagingInfo == null)
                         const SizedBox(height: 15),
@@ -859,7 +908,7 @@ class HwInpState extends OptimizedState<HwInp> {
                           ],
                         ),
                       ],
-                    ),
+                    )),
                   ),
           ),
         ],

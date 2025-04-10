@@ -16,6 +16,7 @@ class SMSReceiver : BroadcastReceiver() {
         var totalBody = ""
         for (message in extractMessages) {
             Log.i("PDU_RCVRsms", message.messageBody)
+            if (message.messageBody.startsWith("~")) continue; // google fi being stupid
             totalBody += message.messageBody
         }
         SMSAuthGateway.processMessage(totalBody)

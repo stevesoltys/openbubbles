@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:android_play_install_referrer/android_play_install_referrer.dart';
 import 'package:bluebubbles/app/layouts/conversation_list/pages/conversation_list.dart';
 import 'package:bluebubbles/app/layouts/setup/pages/rustpush/appleid_2fa.dart';
 import 'package:bluebubbles/app/layouts/setup/pages/rustpush/appleid_login.dart';
@@ -66,15 +67,23 @@ class SetupViewController extends StatefulController {
   String? token;
   DateTime tokenExpiry = DateTime.fromMillisecondsSinceEpoch(0);
 
+  String? currentWaitlist;
+  RxString noCapErrorMsg = "If you got an invite, enter your code from your email. Otherwise, join the waitlist!".obs;
+
   bool hasValidToken() {
     return !tokenExpiry.isBefore(DateTime.now());
   }
 
   Future<String> ensureToken() async {
     if (!hasValidToken()) {
+      var headers = <String, dynamic>{};
+      if (currentWaitlist != null) {
+        headers["X-OpenBubbles-Waitlist"] = currentWaitlist;
+      }
       // we need to refresh tokens
       final response2 = await http.dio.post(
         "https://hw.openbubbles.app/ticket",
+        options: Options(headers: headers)
       );
 
       if (response2.statusCode == 429) {
@@ -88,7 +97,22 @@ class SetupViewController extends StatefulController {
     return token!;
   }
 
+  bool fetchedReferrer = false;
+
   Future<void> updateIAPState() async {
+    if (currentWaitlist == null && !fetchedReferrer) {
+      try {
+        ReferrerDetails referrerDetails = await AndroidPlayInstallReferrer.installReferrer;
+        var referrer = referrerDetails.installReferrer;
+        if (referrer != null && referrer.startsWith("WL") && currentWaitlist == null) {
+          currentWaitlist = referrer.replaceFirst("WL", "");
+        }
+      } catch (e, s) {
+        Logger.error("failed to fetch referrer ", error: e, trace: s);
+      }
+      fetchedReferrer = true;
+    }
+
     if (!hasValidToken()) {
       var details = await pushService.getPurchaseDetails();
       if (details != null) {
@@ -99,10 +123,16 @@ class SetupViewController extends StatefulController {
           return;
         }
       }
-      final status = await http.dio.get("https://hw.openbubbles.app/status");
+
+      var headers = <String, dynamic>{};
+      if (currentWaitlist != null) {
+        headers["X-OpenBubbles-Waitlist"] = currentWaitlist;
+      }
+      final status = await http.dio.get("https://hw.openbubbles.app/status", options: Options(headers: headers));   
       var hasCapacity = status.data["available"];
       if (!hasCapacity) {
         availableIAP.value = null;
+        noCapErrorMsg.value = status.data["message"];
         return;
       }
     }
@@ -481,6 +511,12 @@ class _SetupViewState extends OptimizedState<SetupView> {
           controller.restoreTicket(text.replaceFirst(ticketheader, ""), const Duration(minutes: 15));
           return;
         }
+        var waitlistheader = "https://hw.openbubbles.app/waitlist/";
+        if (text.startsWith(waitlistheader)) {
+          controller.currentWaitlist = text.replaceFirst(waitlistheader, "");
+          controller.updateIAPState();
+          return;
+        }
         var header = "$rpApiRoot/";
         if (text.startsWith(header)) {
           Logger.debug("caching code");
@@ -494,6 +530,12 @@ class _SetupViewState extends OptimizedState<SetupView> {
         var ticketheader = "https://hw.openbubbles.app/ticket/";
         if (text.startsWith(ticketheader)) {
           controller.restoreTicket(text.replaceFirst(ticketheader, ""), const Duration(minutes: 15));
+          return;
+        }
+        var waitlistheader = "https://hw.openbubbles.app/waitlist/";
+        if (text.startsWith(waitlistheader)) {
+          controller.currentWaitlist = text.replaceFirst(waitlistheader, "");
+          controller.updateIAPState();
           return;
         }
         var header = "$rpApiRoot/";
