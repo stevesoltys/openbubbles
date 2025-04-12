@@ -172,7 +172,7 @@ class _ProfilePanelState extends OptimizedState<ProfilePanel> with WidgetsBindin
             ), existing: existing);
           } catch(e, s) {
             Get.back();
-            showSnackbar("Error", "Failed to update profile!");
+            showSnackbar("Error", "Failed to update profile! $e");
             rethrow;
           }
           Get.back();
