@@ -1297,21 +1297,28 @@ pub async fn refresh_background_following(state: &Arc<PushState>) -> anyhow::Res
 }
 
 async fn do_login(conf_dir: &Path, username: &str, pet: &str, cookie: Option<&str>, spd: &Dictionary, anisette: &ArcAnisetteClient<DefaultAnisetteProvider>, os_config: &dyn OSConfig) -> anyhow::Result<IDSUser> {
-    let delegates = login_apple_delegates(username, pet, spd["adsid"].as_string().unwrap(), cookie, &mut *anisette.lock().await, os_config, &[LoginDelegate::IDS, LoginDelegate::MobileMe]).await?;
+    debug!("Got spd {:?}", spd);
+    let adsid = spd.get("adsid").ok_or(anyhow!("No adsid!"))?.as_string().unwrap();
+    let acname = spd.get("acname").ok_or(anyhow!("No acname!"))?.as_string().unwrap().to_string();
+    let dsid = spd.get("DsPrsId").ok_or(anyhow!("No dsid!"))?.as_unsigned_integer().unwrap().to_string();
+    
+    let delegates = login_apple_delegates(username, pet, adsid, cookie, &mut *anisette.lock().await, os_config, &[LoginDelegate::IDS, LoginDelegate::MobileMe]).await?;
 
     let mobileme = delegates.mobileme.unwrap();
-    let findmy = FindMyState::new(spd["DsPrsId"].as_unsigned_integer().unwrap().to_string(), spd["acname"].as_string().unwrap().to_string(), &mobileme);
+    let findmy = FindMyState::new(dsid.clone(), acname, &mobileme);
 
     let id_path = conf_dir.join("findmy.plist");
     std::fs::write(id_path, plist_to_string(&findmy).unwrap()).unwrap();
 
-    let shared_streams = SharedStreamsState::new(spd["DsPrsId"].as_unsigned_integer().unwrap().to_string(), &mobileme);
+    let shared_streams = SharedStreamsState::new(dsid.clone(), &mobileme);
     let id_path = conf_dir.join("sharedstreams.plist");
     std::fs::write(id_path, plist_to_string(&shared_streams).unwrap()).unwrap();
 
-    let cloudkitstate = CloudKitState::new(spd["DsPrsId"].as_unsigned_integer().unwrap().to_string(), &mobileme);
+    let cloudkitstate = CloudKitState::new(dsid.clone(), &mobileme);
     let id_path = conf_dir.join("cloudkit.plist");
     std::fs::write(id_path, plist_to_string(&cloudkitstate).unwrap()).unwrap();
+
+    debug!("Spd finish parse");
 
     let user = authenticate_apple(delegates.ids.unwrap(), os_config).await?;
     Ok(user)
