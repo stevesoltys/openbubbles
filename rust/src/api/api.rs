@@ -1457,13 +1457,18 @@ pub async fn reset_state(state: &Arc<PushState>, reset_hw: bool) -> anyhow::Resu
     let _ = std::fs::remove_file(inner.conf_dir.join("facetime.plist"));
     let _ = std::fs::remove_dir(inner.conf_dir.join("cloudkit.plist"));
     let _ = std::fs::remove_file(inner.conf_dir.join("sharedstreams.plist"));
-    let _ = std::fs::remove_file(inner.conf_dir.join("id_cache.plist"));
+    if let Ok(mut cache) = plist::from_file::<_, Dictionary>(inner.conf_dir.join("id_cache.plist")) {
+        // keep replay counters which are nessesary if our identity doesn't change
+        cache.get_mut("cache").expect("No cache?").as_dictionary_mut().unwrap().clear();
+        plist::to_file_xml(inner.conf_dir.join("id_cache.plist"), &cache)?;
+    }
 
     if reset_hw {
         inner.inq_queue = None;
         inner.conn = None;
         inner.os_config = None;
         let _ = std::fs::remove_file(inner.conf_dir.join("hw_info.plist"));
+        let _ = std::fs::remove_file(inner.conf_dir.join("id_cache.plist")); // our identity is wiped so we can wipe our counters too
     }
 
     Ok(())

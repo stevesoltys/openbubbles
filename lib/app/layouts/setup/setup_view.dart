@@ -107,6 +107,9 @@ class SetupViewController extends StatefulController {
         if (referrer != null && referrer.startsWith("WL") && currentWaitlist == null) {
           currentWaitlist = referrer.replaceFirst("WL", "");
         }
+        if (referrer != null && referrer.startsWith("CD")) {
+          await cacheCode(referrer.replaceFirst("CD", ""));
+        }
       } catch (e, s) {
         Logger.error("failed to fetch referrer ", error: e, trace: s);
       }
