@@ -200,28 +200,37 @@ class CupertinoHeader extends StatelessWidget implements PreferredSizeWidget {
                             ),
                             onPressed: () async {
                               var contact = controller.suggestedContact.value!;
+                              var existingParticipant = Handle.findOne(id: controller.chat.participants.first.id)!; // so contact field updates
                               if (Platform.isAndroid) {
-                                var parameters = {'address': controller.chat.participants.first.address, 'address_type': controller.chat.participants.first.address.isEmail ? 'email' : 'phone'}; 
+                                var parameters = {'address': existingParticipant.address, 'address_type': existingParticipant.address.isEmail ? 'email' : 'phone'}; 
                                 parameters["name"] = contact.displayName.replaceFirst("Maybe: ", "");
                                 if (contact.avatar != null) parameters["image"] = base64Encode(contact.avatar!);
-                                if (!(controller.chat.participants.first.contact?.isShared ?? true)) {
-                                  parameters["existing"] = controller.chat.participants.first.contact!.id;
+                                if (!(existingParticipant.contact?.isShared ?? true)) {
+                                  parameters["existing"] = existingParticipant.contact!.id;
 
                                   // contact syncing takes forever...
-                                  var update = controller.chat.participants.first.contact!;
+                                  var update = existingParticipant.contact!;
                                   update.displayName = contact.displayName.replaceFirst("Maybe: ", "");
                                   update.structuredName = contact.structuredName;
-                                  update.avatar = contact.avatar;
-                                  update.save();
+                                  update.avatar = contact.avatar;   
+                                  if (contact.id == update.id) {
+                                    contact = update;
+                                  } else {
+                                    update.save();
+                                  }
                                 }
                                 await mcs.invokeMethod("open-contact-form", parameters);
                               } else {
-                                var update = controller.chat.participants.first.contact!;
+                                var update = existingParticipant.contact!;
                                 update.displayName = contact.displayName.replaceFirst("Maybe: ", "");
                                 update.structuredName = contact.structuredName;
                                 update.avatar = contact.avatar;
                                 update.isShared = false;
-                                update.save();
+                                if (contact.id == update.id) {
+                                  contact = update;
+                                } else {
+                                  update.save();
+                                }
                               }
                               contact.isDismissed = true;
                               contact.save();

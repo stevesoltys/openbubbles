@@ -131,7 +131,7 @@ class _ProfilePanelState extends OptimizedState<ProfilePanel> with WidgetsBindin
   void dispose() {
     super.dispose();
     subscription?.cancel();
-    (() async {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (profileDirty) {
         api.ShareProfileMessage? profile;
         if (cloudKitRecordDirty && ss.settings.nameAndPhotoSharing.value) {
@@ -195,7 +195,7 @@ class _ProfilePanelState extends OptimizedState<ProfilePanel> with WidgetsBindin
         );
         await (backend as RustPushBackend).sendMsg(msg);
       }
-    })();
+    });
   }
 
   void getDetails() async {
@@ -217,7 +217,7 @@ class _ProfilePanelState extends OptimizedState<ProfilePanel> with WidgetsBindin
     setState(() {});
   }
 
-  void updateName() async {
+  Future<void> updateName() async {
     final firstName = TextEditingController(text: ss.settings.firstName.value);
     final lastName = TextEditingController(text: ss.settings.lastName.value);
     done() async {
@@ -508,6 +508,12 @@ class _ProfilePanelState extends OptimizedState<ProfilePanel> with WidgetsBindin
                           var canShare = await api.canProfileShare(state: pushService.state);
                           if (val && !canShare) {
                             showSnackbar("Relog required!", "Relog required to use profile sharing! Relog in Settings -> Reconfigure");
+                            return;
+                          }
+                          if (ss.settings.firstName.value == null || ss.settings.lastName.value == null) {
+                            await updateName();
+                          }
+                          if (ss.settings.firstName.value == null || ss.settings.lastName.value == null) {
                             return;
                           }
                           ss.settings.nameAndPhotoSharing.value = val;

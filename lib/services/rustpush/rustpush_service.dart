@@ -1853,8 +1853,13 @@ class RustPushService extends GetxService {
   }
 
   Future<PurchaseWrapper?> getPurchaseDetails() async {
-    var purchases = await pushService.client.runWithClient((client) => client.queryPurchases(ProductType.subs));
-    return purchases.purchasesList.firstOrNull;
+    try {
+      var purchases = await pushService.client.runWithClient((client) => client.queryPurchases(ProductType.subs));
+      return purchases.purchasesList.firstOrNull;
+    } catch (e, s) {
+      Logger.error("Failed to get purchase details", error: e, trace: s);
+      return null;
+    }
   }
 
   Future<void> handleRegistered() async {
