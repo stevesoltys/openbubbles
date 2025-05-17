@@ -8,14 +8,16 @@ crate-type = ["cdylib", "staticlib"]
 
 [dependencies]
 flutter_rust_bridge = "=2.3.0"
-rustpush = { path = "/home/tae/Documents/GitHub/rustpush" }
+rustpush = { path = "../rustpush", features = ["macos-validation-data", "remote-anisette-v3"] }
 plist = "1.5.0"
 tokio = { version = "1", features = ["full"] }
 serde = { version = "1.0", features = ["derive", "rc"] }
 anyhow = "1.0.75"
 uniffi = { git = "https://github.com/mozilla/uniffi-rs", features = [ "cli", "tokio" ] }
 async-recursion = "1.0.5"
-icloud_auth = { path = "/home/tae/Documents/GitHub/apple-private-apis/icloud-auth" }
+icloud_auth = { git = "https://github.com/OpenBubbles/apple-private-apis", rev = "a3b124439e3989312d55c4b55c60499e987f9f1d", features = ["remote-anisette-v3"] }
+omnisette = { git = "https://github.com/OpenBubbles/apple-private-apis", rev = "a3b124439e3989312d55c4b55c60499e987f9f1d", features = ["remote-anisette-v3"] }
+open-absinthe = { git = "https://github.com/stevesoltys/openbubbles-build-modules" }
 prost = "0.12"
 # Only necessary if using Protobuf well-known types:
 prost-types = "0.12"

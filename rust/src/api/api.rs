@@ -4,7 +4,7 @@ use std::{borrow::{Borrow, BorrowMut}, collections::HashSet, fs::{self, File}, f
 
 use anyhow::anyhow;
 use flutter_rust_bridge::{frb, IntoDart, JoinHandle};
-use icloud_auth::{default_provider, ArcAnisetteClient, LoginClientInfo};
+use omnisette::{default_provider, ArcAnisetteClient, LoginClientInfo};
 use log::{debug, error, info, warn};
 use plist::{Data, Dictionary};
 pub use plist::Value;
@@ -17,7 +17,7 @@ use rustpush::{authenticate_apple, authenticate_phone, cloudkit::{CloudKitClient
 use rustpush::AnisetteProvider;
 pub use rustpush::findmy::{FindMyFriendsClient, FindMyPhoneClient};
 pub use rustpush::sharedstreams::{SharedAlbum, SyncStatus};
-pub use icloud_auth::DefaultAnisetteProvider;
+pub use omnisette::DefaultAnisetteProvider;
 use uniffi::HandleAlloc;
 use uuid::Uuid;
 use std::io::Seek;
@@ -1328,7 +1328,7 @@ pub async fn try_auth(state: &Arc<PushState>, username: String, password: String
     let mut inner = state.0.write().await;
     let mut apple_account =
         AppleAccount::new_with_anisette(get_login_config(&*inner).await, inner.anisette.clone().unwrap())?;
-    let mut login_state = apple_account.login_email_pass(&username, &password).await?;
+    let mut login_state = apple_account.login_email_pass(&username, &password.encode_to_vec()).await?;
 
     inner.account = Some(apple_account);
     let apple_account = inner.account.as_ref().unwrap();

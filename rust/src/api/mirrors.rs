@@ -2,10 +2,12 @@ use std::collections::HashMap;
 
 pub use rustpush::name_photo_sharing::{IMessageNameRecord, IMessagePosterRecord, IMessageNicknameRecord};
 pub use rustpush::{DeleteTarget, MoveToRecycleBinMessage, OperatedChat};
-pub use rustpush::{ShareProfileMessage, SharedPoster, UpdateProfileSharingMessage, UpdateProfileMessage, NSArrayClass, TextFlags, TextEffect, TextFormat, ScheduleMode, SupportAction, NSArray, SupportAlert, PrivateDeviceInfo, PermanentDeleteMessage, NormalMessage, MessageType, UpdateExtensionMessage, ErrorMessage, UnsendMessage, EditMessage, PartExtension, IconChangeMessage, RichLinkImageAttachmentSubstitute, ChangeParticipantMessage, ReactMessage, Reaction, ReactMessageType, RenameMessage, LPLinkMetadata, NSURL, LPIconMetadata, LPImageMetadata, LinkMeta, ExtensionApp, NSDictionaryClass, BalloonLayout, Balloon, IndexedMessagePart, AttachmentType, MacOSConfig, Message, MessageTarget, HardwareConfig, APSConnection, APSConnectionResource, APSState, Attachment, AuthPhone, IDSUserIdentity, MMCSFile, MessageInst, MessagePart, MessageParts, OSConfig, RelayConfig, ResourceState};
+pub use rustpush::{ShareProfileMessage, SharedPoster, UpdateProfileSharingMessage, UpdateProfileMessage, NSArrayClass, TextFlags, TextEffect, TextFormat, ScheduleMode, SupportAction, NSArray, SupportAlert, PrivateDeviceInfo, PermanentDeleteMessage, NormalMessage, MessageType, UpdateExtensionMessage, ErrorMessage, UnsendMessage, EditMessage, PartExtension, IconChangeMessage, RichLinkImageAttachmentSubstitute, ChangeParticipantMessage, ReactMessage, Reaction, ReactMessageType, RenameMessage, LPLinkMetadata, NSURL, LPIconMetadata, LPImageMetadata, LinkMeta, ExtensionApp, NSDictionaryClass, BalloonLayout, Balloon, IndexedMessagePart, AttachmentType, Message, MessageTarget, APSConnection, APSConnectionResource, APSState, Attachment, AuthPhone, IDSUserIdentity, MMCSFile, MessageInst, MessagePart, MessageParts, OSConfig, RelayConfig, ResourceState};
 pub use rustpush::{PushError, IDSUser, IMClient, ConversationData, register};
 pub use icloud_auth::{VerifyBody, TrustedPhoneNumber};
 pub use icloud_auth::{LoginState, AppleAccount};
+pub use rustpush::macos::{MacOSConfig};
+pub use open_absinthe::nac::{HardwareConfig};
 pub use rustpush::findmy::{Follow, Address, Location, FoundDevice};
 pub use rustpush::facetime::{FTSession, FTMode, FTParticipant, FTMember, LetMeInRequest, FTMessage};
 pub use rustpush::facetime::facetimep::{ConversationParticipant, ConversationLink};
@@ -501,7 +503,7 @@ pub struct DartUpdateProfileMessage {
 pub struct DartSharedPoster {
     pub low_res_wallpaper_tag: Vec<u8>,
     pub wallpaper_tag: Vec<u8>,
-    pub message_tag: Vec<u8>, 
+    pub message_tag: Vec<u8>,
 }
 
 #[frb(mirror(ShareProfileMessage))]

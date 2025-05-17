@@ -13,7 +13,7 @@ import desktop_webview_auth
 import device_info_plus
 import dynamic_color
 import emoji_picker_flutter
-import ffmpeg_kit_flutter
+import ffmpeg_kit_flutter_new
 import file_selector_macos
 import flutter_image_compress_macos
 import flutter_inappwebview_macos

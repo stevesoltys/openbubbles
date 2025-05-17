@@ -55,7 +55,7 @@ class SIMInfoQuery: MethodCallHandlerImpl() {
                         val info = subscriptionManager.activeSubscriptionInfoList
                         if (MainActivity.engine != null) {
                             MethodCallHandler.invokeMethod("sim-info", hashMapOf(
-                                "info" to info.map { i ->
+                                "info" to (info ?: listOf()).map { i ->
                                     hashMapOf(
                                         "carrier" to i.displayName.toString(),
                                         "subscription" to i.subscriptionId

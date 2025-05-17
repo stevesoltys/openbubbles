@@ -30,7 +30,7 @@ if (flutterVersionName == null) {
 
 android {
     namespace "com.bluebubbles.messaging"
-    compileSdk 34
+    compileSdk 35
 
     lintOptions {
         checkReleaseBuilds false
@@ -52,8 +52,12 @@ android {
 
     compileOptions {
         coreLibraryDesugaringEnabled true
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
+    }
+
+    kotlinOptions {
+        jvmTarget = "21"
     }
 
     signingConfigs {

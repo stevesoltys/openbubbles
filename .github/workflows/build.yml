@@ -1,0 +1,44 @@
+on: [ push, pull_request ]
+name: Build
+jobs:
+  build:
+    name: OpenBubbles APK
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Free Disk Space (Ubuntu)
+        uses: jlumbroso/free-disk-space@main
+        with:
+          tool-cache: true
+          android: false
+          dotnet: true
+          haskell: true
+          large-packages: true
+          swap-storage: true
+
+      - name: Set up Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.24.5
+
+      - name: Set up Java
+        uses: actions/setup-java@v2
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Install Protobuf compiler
+        run: sudo apt-get install -y protobuf-compiler patchelf
+
+      # First run is expected to fail until ffmpeg_kit_flutter_new is fixed.
+      - name: Run Build Script
+        run: |
+          ./build.sh || true
+          ./build.sh
