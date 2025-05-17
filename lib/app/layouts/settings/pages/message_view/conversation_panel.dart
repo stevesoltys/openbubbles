@@ -8,7 +8,6 @@ import 'package:bluebubbles/app/layouts/settings/widgets/settings_widgets.dart';
 import 'package:bluebubbles/app/wrappers/stateful_boilerplate.dart';
 import 'package:bluebubbles/database/models.dart' hide PlatformFile;
 import 'package:bluebubbles/services/network/backend_service.dart';
-import 'package:bluebubbles/services/rustpush/rustpush_service.dart';
 import 'package:bluebubbles/services/services.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
@@ -16,7 +15,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide Response;
 import 'package:path/path.dart';
-import 'package:bluebubbles/src/rust/api/api.dart' as api;
 import 'package:universal_io/io.dart';
 
 class ConversationPanel extends StatefulWidget {
@@ -729,30 +727,6 @@ class _ConversationPanelState extends OptimizedState<ConversationPanel> {
                               iosIcon: CupertinoIcons.textformat,
                               materialIcon: Icons.text_format_rounded,
                               containerColor: Colors.blueAccent,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    AnimatedSizeAndFade.showHide(
-                      show: Platform.isAndroid,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const SettingsDivider(),
-                          SettingsSwitch(
-                            onChanged: (bool val) async  {
-                              pushService.setupZenMode(val);
-                            },
-                            initialVal: ss.settings.enableShareZen.value,
-                            title: "Share Status",
-                            subtitle: "Other users will see when you have notifications silenced.",
-                            backgroundColor: tileColor,
-                            isThreeLine: true,
-                            leading: const SettingsLeadingIcon(
-                              iosIcon: CupertinoIcons.moon_fill,
-                              materialIcon: CupertinoIcons.moon_fill,
-                              containerColor: Colors.deepPurple,
                             ),
                           ),
                         ],

@@ -15,7 +15,7 @@ class AttributedBody {
   factory AttributedBody.raw(String string) => AttributedBody(
     string: string,
     runs: [
-      Run(range: [0, string.length], attributes: Attributes(messagePart: 0))
+      Run(range: [0, string.length])
     ]
   );
 

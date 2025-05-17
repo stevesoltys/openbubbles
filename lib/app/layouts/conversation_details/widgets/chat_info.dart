@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ui';
 
 import 'package:bluebubbles/app/layouts/conversation_details/dialogs/address_picker.dart';
 import 'package:bluebubbles/app/layouts/conversation_details/dialogs/change_name.dart';
@@ -156,9 +155,8 @@ class _ChatInfoState extends OptimizedState<ChatInfo> {
 
     return DeferredPointerHandler(
       child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
-        if (chat.isGroup)
         const SizedBox(height: 10),
-        if (iOS && chat.isGroup)
+        if (iOS)
           Center(
             child: Stack(
               clipBehavior: Clip.none,
@@ -205,7 +203,7 @@ class _ChatInfoState extends OptimizedState<ChatInfo> {
               ],
             ),
           ),
-        if (iOS && chat.isGroup)
+        if (iOS)
           Padding(
             padding: const EdgeInsets.only(top: 12.0),
             child: Center(
@@ -300,6 +298,14 @@ class _ChatInfoState extends OptimizedState<ChatInfo> {
                   ),
                 )
               : const SizedBox.shrink()),
+        if (!chat.isGroup && !iOS)
+          ContactTile(
+            key: Key(chat.participants.first.address),
+            handle: chat.participants.first,
+            chat: chat,
+            canBeRemoved: false,
+            facetimeSupported: widget.ftSupportedParticipants.contains(RustPushBBUtils.bbHandleToRust(chat.participants.first)),
+          ),
         if (chat.isGroup && iOS)
           Center(
             child: TextButton(
@@ -322,9 +328,9 @@ class _ChatInfoState extends OptimizedState<ChatInfo> {
               },
             ),
           ),
-        if (!chat.isGroup)
+        if (!chat.isGroup && iOS)
           Padding(
-            padding: const EdgeInsets.only(left: 10.0, right: 10, top: 10),
+            padding: const EdgeInsets.only(left: 10.0, right: 10, top: 20),
             child: Row(
               mainAxisAlignment: kIsWeb || kIsDesktop ? MainAxisAlignment.center : MainAxisAlignment.spaceBetween,
               children: intersperse(const SizedBox(width: 5), [
@@ -366,8 +372,9 @@ class ShareButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: blurredCard(
-        context: context,
+      child: Material(
+        borderRadius: BorderRadius.circular(15),
+        color: tileColor,
         child: InkWell(
           onTap: () async {
             var ctx = context;
@@ -434,8 +441,9 @@ class InfoButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: blurredCard(
-        context: context,
+      child: Material(
+        borderRadius: BorderRadius.circular(15),
+        color: tileColor,
         child: InkWell(
           onTap: () async {
             final contact = chat.participants.first.contact;
@@ -496,8 +504,9 @@ class MailButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: blurredCard(
-        context: context,
+      child: Material(
+        borderRadius: BorderRadius.circular(15),
+        color: tileColor,
         child: InkWell(
           onTap: () {
             final contact = chat.participants.first.contact;
@@ -542,8 +551,9 @@ class VideoCallButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: blurredCard(
-        context: context,
+      child: Material(
+        borderRadius: BorderRadius.circular(15),
+        color: tileColor,
         child: InkWell(
           onTap: () async {
             var data = await chat.getConversationData();
@@ -562,7 +572,7 @@ class VideoCallButton extends StatelessWidget {
                 Icon(iOS ? CupertinoIcons.video_camera : Icons.video_call_outlined,
                     color: context.theme.colorScheme.onSurface, size: 25),
                 const SizedBox(height: 2.5),
-                Text("Video",
+                Text("FaceTime",
                     style: context.theme.textTheme.bodySmall!.copyWith(color: context.theme.colorScheme.onSurface)),
               ],
             ),
@@ -571,37 +581,6 @@ class VideoCallButton extends StatelessWidget {
       ),
     );
   }
-}
-
-const List<double> darkMatrix = <double>[
-  1.385, -0.56, -0.112, 0.0, 0.3, //
-  -0.315, 1.14, -0.112, 0.0, 0.3, //
-  -0.315, -0.56, 1.588, 0.0, 0.3, //
-  0.0, 0.0, 0.0, 1.0, 0.0
-];
-
-const List<double> lightMatrix = <double>[
-  1.74, -0.4, -0.17, 0.0, 0.0, //
-  -0.26, 1.6, -0.17, 0.0, 0.0, //
-  -0.26, -0.4, 1.83, 0.0, 0.0, //
-  0.0, 0.0, 0.0, 1.0, 0.0
-];
-
-Widget blurredCard({required Widget child, required BuildContext context}) {
-  return ClipRRect(borderRadius: BorderRadius.circular(15), child: BackdropFilter(
-    filter: ImageFilter.compose(
-    outer: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
-    inner: ColorFilter.matrix(
-      CupertinoTheme.maybeBrightnessOf(context) == Brightness.dark ? darkMatrix : lightMatrix,
-    )),
-    child: Container(
-      decoration: BoxDecoration(
-        color: context.theme.colorScheme.properSurface.withOpacity(0.3),
-      ),
-      clipBehavior: Clip.hardEdge,
-      child: child
-    )
-  ),);
 }
 
 class CallButton extends StatelessWidget {
@@ -619,8 +598,9 @@ class CallButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: blurredCard(
-        context: context,
+      child: Material(
+        borderRadius: BorderRadius.circular(15),
+        color: tileColor,
         child: InkWell(
           onTap: () {
             final contact = chat.participants.first.contact;

@@ -821,8 +821,6 @@ internal open class UniffiVTableCallbackInterfaceMsgReceiver(
 
 
 
-
-
 // For large crates we prevent `MethodTooLargeException` (see #2340)
 // N.B. the name of the extension is very misleading, since it is 
 // rather `InterfaceTooLargeException`, caused by too many methods 
@@ -857,8 +855,6 @@ fun uniffi_rust_lib_bluebubbles_checksum_method_nativepushstate_decline_facetime
 fun uniffi_rust_lib_bluebubbles_checksum_method_nativepushstate_get_ready(
 ): Short
 fun uniffi_rust_lib_bluebubbles_checksum_method_nativepushstate_get_state(
-): Short
-fun uniffi_rust_lib_bluebubbles_checksum_method_nativepushstate_publish_status(
 ): Short
 fun uniffi_rust_lib_bluebubbles_checksum_method_nativepushstate_start_loop(
 ): Short
@@ -952,8 +948,6 @@ fun uniffi_rust_lib_bluebubbles_fn_method_nativepushstate_get_ready(`ptr`: Point
 ): Long
 fun uniffi_rust_lib_bluebubbles_fn_method_nativepushstate_get_state(`ptr`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
 ): Long
-fun uniffi_rust_lib_bluebubbles_fn_method_nativepushstate_publish_status(`ptr`: Pointer,`guid`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
-): Unit
 fun uniffi_rust_lib_bluebubbles_fn_method_nativepushstate_start_loop(`ptr`: Pointer,`handler`: Pointer,uniffi_out_err: UniffiRustCallStatus, 
 ): Unit
 fun uniffi_rust_lib_bluebubbles_fn_func_get_carrier(`handler`: Pointer,`mccmnc`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
@@ -1115,9 +1109,6 @@ private fun uniffiCheckApiChecksums(lib: IntegrityCheckingUniffiLib) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_rust_lib_bluebubbles_checksum_method_nativepushstate_get_state() != 53880.toShort()) {
-        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
-    }
-    if (lib.uniffi_rust_lib_bluebubbles_checksum_method_nativepushstate_publish_status() != 57426.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_rust_lib_bluebubbles_checksum_method_nativepushstate_start_loop() != 19847.toShort()) {
@@ -2452,8 +2443,6 @@ public interface NativePushStateInterface {
     
     fun `getState`(): kotlin.ULong
     
-    fun `publishStatus`(`guid`: kotlin.String?)
-    
     fun `startLoop`(`handler`: MsgReceiver)
     
     companion object
@@ -2582,17 +2571,6 @@ open class NativePushState: Disposable, AutoCloseable, NativePushStateInterface
     }
     )
     }
-    
-
-    override fun `publishStatus`(`guid`: kotlin.String?)
-        = 
-    callWithPointer {
-    uniffiRustCall() { _status ->
-    UniffiLib.INSTANCE.uniffi_rust_lib_bluebubbles_fn_method_nativepushstate_publish_status(
-        it, FfiConverterOptionalString.lower(`guid`),_status)
-}
-    }
-    
     
 
     override fun `startLoop`(`handler`: MsgReceiver)

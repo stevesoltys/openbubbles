@@ -4,28 +4,23 @@ import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.Service
-import android.content.BroadcastReceiver
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.content.ServiceConnection
 import android.os.Binder
 import android.os.Build
 import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
-import android.provider.ContactsContract
 import android.util.Log
 import androidx.annotation.RequiresApi
-import androidx.core.content.ContextCompat
 import com.bluebubbles.messaging.MainActivity
 import com.bluebubbles.messaging.R
 import com.bluebubbles.messaging.services.backend_ui_interop.DartWorkManager
 import com.bluebubbles.messaging.services.backend_ui_interop.MethodCallHandler
-import com.bluebubbles.messaging.services.system.GetZenMode
-import com.bluebubbles.messaging.services.system.ZenModeUUIDHandler
 import com.bluebubbles.telephony_plus.receive.SMSObserver
+import com.google.common.io.Files
 import com.google.gson.GsonBuilder
 import com.google.gson.ToNumberPolicy
 import kotlinx.coroutines.CoroutineScope
@@ -34,6 +29,7 @@ import kotlinx.coroutines.SupervisorJob
 import uniffi.rust_lib_bluebubbles.NativePushState
 import uniffi.rust_lib_bluebubbles.initNative
 import uniffi.rust_lib_bluebubbles.MsgReceiver
+import java.io.File
 
 class APNService : Service(), MsgReceiver {
     lateinit var pushState: NativePushState
@@ -93,16 +89,6 @@ class APNService : Service(), MsgReceiver {
         ready()
     }
 
-    @RequiresApi(Build.VERSION_CODES.R)
-    fun updateZenMode() {
-        val zenMode = GetZenMode.getZenMode(this)
-
-        Log.i("OpenBubbles", "ZenModeChanged $zenMode")
-        val uuid = zenMode?.let { ZenModeUUIDHandler.getZenKey(this, it) }
-        pushState.publishStatus(uuid)
-    }
-
-
     fun launchAgent() {
         Log.i("launching agent", "herer")
         SMSObserver.init(applicationContext) { context, map ->
@@ -118,27 +104,6 @@ class APNService : Service(), MsgReceiver {
             MethodCallHandler.queuedMessages[MethodCallHandler.queueId] = gson.toJson(map).toString()
             DartWorkManager.createWorker(context, "SMSMsg", hashMapOf("id" to MethodCallHandler.queueId)) {}
         }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            val filter = IntentFilter(NotificationManager.ACTION_INTERRUPTION_FILTER_CHANGED)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) {
-                filter.addAction(NotificationManager.ACTION_CONSOLIDATED_NOTIFICATION_POLICY_CHANGED)
-            }
-            val myHandler = Handler(Looper.getMainLooper())
-            ContextCompat.registerReceiver(
-                this, object : BroadcastReceiver() {
-                    override fun onReceive(context: Context?, intent: Intent?) {
-                        if (!ZenModeUUIDHandler.isZenEnabled(this@APNService)) return
-                        myHandler.removeCallbacksAndMessages(null)
-                        myHandler.postDelayed({
-                            updateZenMode()
-                        }, 100)
-                    }
-
-                }, filter, ContextCompat.RECEIVER_EXPORTED
-            )
-        }
-
         initNative(applicationContext.filesDir.path, this, AndroidFilePackager(this))
     }
 
@@ -179,6 +144,19 @@ class APNService : Service(), MsgReceiver {
             }
             launchAgent()
             started = true
+
+            try {
+                // TODO: We need this to get the native library path from rustpush.
+                // We can do better than this...
+                val nativeLibraryDirectoryPath =
+                    File(applicationContext.filesDir, "native_library_directory")
+                Files.write(
+                    applicationInfo.nativeLibraryDir.toByteArray(),
+                    nativeLibraryDirectoryPath
+                )
+            } catch (e: Exception) {
+                Log.e("APNService", "Failed to write native library directory path", e)
+            }
         }
         return super.onStartCommand(intent, flags, startId)
     }

@@ -112,7 +112,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
       id: const obx_int.IdUid(3, 9017250848141753702),
       name: 'Chat',
-      lastPropertyId: const obx_int.IdUid(41, 7342392293130604386),
+      lastPropertyId: const obx_int.IdUid(35, 7774397079877699895),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
@@ -260,36 +260,6 @@ final _entities = <obx_int.ModelEntity>[
             id: const obx_int.IdUid(35, 7774397079877699895),
             name: 'textFieldAnnotations',
             type: 9,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(36, 7143894652284556003),
-            name: 'shareZenMode',
-            type: 1,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(37, 420507915079790972),
-            name: 'notifsSilenced',
-            type: 1,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(38, 7629993644602445500),
-            name: 'dateNotifiedAnyways',
-            type: 10,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(39, 1450447556768339740),
-            name: 'zenModeIsShared',
-            type: 6,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(40, 5580492826274966240),
-            name: 'senderIsKnown',
-            type: 1,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(41, 7342392293130604386),
-            name: 'isRoutingStub',
-            type: 1,
             flags: 0)
       ],
       relations: <obx_int.ModelRelation>[
@@ -349,7 +319,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
       id: const obx_int.IdUid(7, 1716592500251888002),
       name: 'Handle',
-      lastPropertyId: const obx_int.IdUid(15, 3522348185317901483),
+      lastPropertyId: const obx_int.IdUid(13, 2987973275926761435),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
@@ -409,16 +379,6 @@ final _entities = <obx_int.ModelEntity>[
             id: const obx_int.IdUid(13, 2987973275926761435),
             name: 'service',
             type: 9,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(14, 7319540363051031629),
-            name: 'posterPath',
-            type: 9,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(15, 3522348185317901483),
-            name: 'blocked',
-            type: 1,
             flags: 0)
       ],
       relations: <obx_int.ModelRelation>[],
@@ -813,7 +773,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
       id: const obx_int.IdUid(17, 2547083341603323785),
       name: 'Contact',
-      lastPropertyId: const obx_int.IdUid(13, 6585143364094241703),
+      lastPropertyId: const obx_int.IdUid(12, 761555548860852325),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
@@ -861,11 +821,6 @@ final _entities = <obx_int.ModelEntity>[
             id: const obx_int.IdUid(12, 761555548860852325),
             name: 'isDismissed',
             type: 1,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(13, 6585143364094241703),
-            name: 'posterPath',
-            type: 9,
             flags: 0)
       ],
       relations: <obx_int.ModelRelation>[],
@@ -1164,7 +1119,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
           final textFieldAnnotationsOffset = object.textFieldAnnotations == null
               ? null
               : fbb.writeString(object.textFieldAnnotations!);
-          fbb.startTable(42);
+          fbb.startTable(36);
           fbb.addInt64(0, object.id ?? 0);
           fbb.addOffset(2, guidOffset);
           fbb.addOffset(4, chatIdentifierOffset);
@@ -1195,12 +1150,6 @@ obx_int.ModelDefinition getObjectBoxModel() {
           fbb.addOffset(32, guidRefsOffset);
           fbb.addInt64(33, object.telephonyId);
           fbb.addOffset(34, textFieldAnnotationsOffset);
-          fbb.addBool(35, object.shareZenMode);
-          fbb.addBool(36, object.notifsSilenced);
-          fbb.addInt64(37, object.dateNotifiedAnyways?.millisecondsSinceEpoch);
-          fbb.addInt64(38, object.zenModeIsShared);
-          fbb.addBool(39, object.senderIsKnown);
-          fbb.addBool(40, object.isRoutingStub);
           fbb.finish(fbb.endTable());
           return object.id ?? 0;
         },
@@ -1211,8 +1160,6 @@ obx_int.ModelDefinition getObjectBoxModel() {
               const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 26);
           final dateDeletedValue =
               const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 50);
-          final dateNotifiedAnywaysValue =
-              const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 78);
           final idParam =
               const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 4);
           final guidParam = const fb.StringReader(asciiOptimization: true)
@@ -1266,19 +1213,6 @@ obx_int.ModelDefinition getObjectBoxModel() {
               const fb.BoolReader().vTableGet(buffer, rootOffset, 66, false);
           final telephonyIdParam =
               const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 70);
-          final shareZenModeParam =
-              const fb.BoolReader().vTableGetNullable(buffer, rootOffset, 74);
-          final notifsSilencedParam =
-              const fb.BoolReader().vTableGet(buffer, rootOffset, 76, false);
-          final dateNotifiedAnywaysParam = dateNotifiedAnywaysValue == null
-              ? null
-              : DateTime.fromMillisecondsSinceEpoch(dateNotifiedAnywaysValue);
-          final zenModeIsSharedParam =
-              const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 80);
-          final senderIsKnownParam =
-              const fb.BoolReader().vTableGetNullable(buffer, rootOffset, 82);
-          final isRoutingStubParam =
-              const fb.BoolReader().vTableGet(buffer, rootOffset, 84, false);
           final guidRefsParam = const fb.ListReader<String>(
                   fb.StringReader(asciiOptimization: true),
                   lazy: false)
@@ -1306,12 +1240,6 @@ obx_int.ModelDefinition getObjectBoxModel() {
               usingHandle: usingHandleParam,
               isRpSms: isRpSmsParam,
               telephonyId: telephonyIdParam,
-              shareZenMode: shareZenModeParam,
-              notifsSilenced: notifsSilencedParam,
-              dateNotifiedAnyways: dateNotifiedAnywaysParam,
-              zenModeIsShared: zenModeIsSharedParam,
-              senderIsKnown: senderIsKnownParam,
-              isRoutingStub: isRoutingStubParam,
               guidRefs: guidRefsParam)
             ..dbOnlyLatestMessageDate = dbOnlyLatestMessageDateValue == null
                 ? null
@@ -1430,10 +1358,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
           final uniqueAddressAndServiceOffset =
               fbb.writeString(object.uniqueAddressAndService);
           final serviceOffset = fbb.writeString(object.service);
-          final posterPathOffset = object.posterPath == null
-              ? null
-              : fbb.writeString(object.posterPath!);
-          fbb.startTable(16);
+          fbb.startTable(14);
           fbb.addInt64(0, object.id ?? 0);
           fbb.addInt64(1, object.originalROWID);
           fbb.addOffset(2, addressOffset);
@@ -1445,8 +1370,6 @@ obx_int.ModelDefinition getObjectBoxModel() {
           fbb.addInt64(10, object.contactRelation.targetId);
           fbb.addOffset(11, uniqueAddressAndServiceOffset);
           fbb.addOffset(12, serviceOffset);
-          fbb.addOffset(13, posterPathOffset);
-          fbb.addBool(14, object.blocked);
           fbb.finish(fbb.endTable());
           return object.id ?? 0;
         },
@@ -1475,8 +1398,6 @@ obx_int.ModelDefinition getObjectBoxModel() {
           final defaultPhoneParam =
               const fb.StringReader(asciiOptimization: true)
                   .vTableGetNullable(buffer, rootOffset, 14);
-          final blockedParam =
-              const fb.BoolReader().vTableGet(buffer, rootOffset, 32, false);
           final object = Handle(
               id: idParam,
               originalROWID: originalROWIDParam,
@@ -1486,12 +1407,9 @@ obx_int.ModelDefinition getObjectBoxModel() {
               uniqueAddressAndService: uniqueAddressAndServiceParam,
               country: countryParam,
               defaultEmail: defaultEmailParam,
-              defaultPhone: defaultPhoneParam,
-              blocked: blockedParam)
+              defaultPhone: defaultPhoneParam)
             ..color = const fb.StringReader(asciiOptimization: true)
-                .vTableGetNullable(buffer, rootOffset, 12)
-            ..posterPath = const fb.StringReader(asciiOptimization: true)
-                .vTableGetNullable(buffer, rootOffset, 30);
+                .vTableGetNullable(buffer, rootOffset, 12);
           object.contactRelation.targetId =
               const fb.Int64Reader().vTableGet(buffer, rootOffset, 24, 0);
           object.contactRelation.attach(store);
@@ -1970,10 +1888,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
           final dbStructuredNameOffset = object.dbStructuredName == null
               ? null
               : fbb.writeString(object.dbStructuredName!);
-          final posterPathOffset = object.posterPath == null
-              ? null
-              : fbb.writeString(object.posterPath!);
-          fbb.startTable(14);
+          fbb.startTable(13);
           fbb.addInt64(0, object.dbId ?? 0);
           fbb.addOffset(1, idOffset);
           fbb.addOffset(2, displayNameOffset);
@@ -1983,7 +1898,6 @@ obx_int.ModelDefinition getObjectBoxModel() {
           fbb.addOffset(9, dbStructuredNameOffset);
           fbb.addBool(10, object.isShared);
           fbb.addBool(11, object.isDismissed);
-          fbb.addOffset(12, posterPathOffset);
           fbb.finish(fbb.endTable());
           return object.dbId ?? 0;
         },
@@ -2011,8 +1925,6 @@ obx_int.ModelDefinition getObjectBoxModel() {
               const fb.BoolReader().vTableGet(buffer, rootOffset, 24, false);
           final isDismissedParam =
               const fb.BoolReader().vTableGet(buffer, rootOffset, 26, false);
-          final posterPathParam = const fb.StringReader(asciiOptimization: true)
-              .vTableGetNullable(buffer, rootOffset, 28);
           final object = Contact(
               dbId: dbIdParam,
               id: idParam,
@@ -2021,8 +1933,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
               emails: emailsParam,
               avatar: avatarParam,
               isShared: isSharedParam,
-              isDismissed: isDismissedParam,
-              posterPath: posterPathParam)
+              isDismissed: isDismissedParam)
             ..dbStructuredName = const fb.StringReader(asciiOptimization: true)
                 .vTableGetNullable(buffer, rootOffset, 22);
 
@@ -2208,30 +2119,6 @@ class Chat_ {
   static final textFieldAnnotations =
       obx.QueryStringProperty<Chat>(_entities[1].properties[28]);
 
-  /// See [Chat.shareZenMode].
-  static final shareZenMode =
-      obx.QueryBooleanProperty<Chat>(_entities[1].properties[29]);
-
-  /// See [Chat.notifsSilenced].
-  static final notifsSilenced =
-      obx.QueryBooleanProperty<Chat>(_entities[1].properties[30]);
-
-  /// See [Chat.dateNotifiedAnyways].
-  static final dateNotifiedAnyways =
-      obx.QueryDateProperty<Chat>(_entities[1].properties[31]);
-
-  /// See [Chat.zenModeIsShared].
-  static final zenModeIsShared =
-      obx.QueryIntegerProperty<Chat>(_entities[1].properties[32]);
-
-  /// See [Chat.senderIsKnown].
-  static final senderIsKnown =
-      obx.QueryBooleanProperty<Chat>(_entities[1].properties[33]);
-
-  /// See [Chat.isRoutingStub].
-  static final isRoutingStub =
-      obx.QueryBooleanProperty<Chat>(_entities[1].properties[34]);
-
   /// see [Chat.handles]
   static final handles =
       obx.QueryRelationToMany<Chat, Handle>(_entities[1].relations[0]);
@@ -2316,14 +2203,6 @@ class Handle_ {
   /// See [Handle.service].
   static final service =
       obx.QueryStringProperty<Handle>(_entities[3].properties[10]);
-
-  /// See [Handle.posterPath].
-  static final posterPath =
-      obx.QueryStringProperty<Handle>(_entities[3].properties[11]);
-
-  /// See [Handle.blocked].
-  static final blocked =
-      obx.QueryBooleanProperty<Handle>(_entities[3].properties[12]);
 }
 
 /// [ThemeEntry] entity fields to define ObjectBox queries.
@@ -2651,8 +2530,4 @@ class Contact_ {
   /// See [Contact.isDismissed].
   static final isDismissed =
       obx.QueryBooleanProperty<Contact>(_entities[8].properties[8]);
-
-  /// See [Contact.posterPath].
-  static final posterPath =
-      obx.QueryStringProperty<Contact>(_entities[8].properties[9]);
 }

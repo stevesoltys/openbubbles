@@ -18,9 +18,7 @@ class Constants {
         const val pendingIntentDeleteNotificationOffset = 300000
         const val pendingIntentAnswerFaceTimeOffset = -100000
         const val pendingIntentDeclineFaceTimeOffset = -200000
-        const val pendingIntentOpenFaceTimeOffset = -300000
         const val notificationListenerRequestCode = 1000
-        const val documentSaveRequestCode = 2000
         const val dartWorkerNotificationId = 1000000
     }
 }

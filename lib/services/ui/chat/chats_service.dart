@@ -17,7 +17,6 @@ import 'package:get/get.dart' hide Response;
 import 'package:tuple/tuple.dart';
 import 'package:universal_io/io.dart';
 import 'package:bluebubbles/database/database.dart';
-import 'package:bluebubbles/src/rust/api/api.dart' as api;
 
 ChatsService chats = Get.isRegistered<ChatsService>() ? Get.find<ChatsService>() : Get.put(ChatsService());
 
@@ -40,25 +39,23 @@ class ChatsService extends GetxService {
     super.onInit();
     if (!kIsWeb) {
       // watch for new chats
-      (() async {
-        final countQuery = (Database.chats.query(Chat_.dateDeleted.isNull().and(Chat_.telephonyId.isNull()).and(Chat_.isRoutingStub.equals(false).or(Chat_.isRoutingStub.isNull())))..order(Chat_.id, flags: Order.descending))
-            .watch(triggerImmediately: true);
-        countSub = countQuery.listen((event) async {
-          if (!ss.settings.finishedSetup.value) return;
-          final newCount = event.count();
-          if (newCount > currentCount && currentCount != 0) {
-            final chat = event.findFirst()!;
-            if (chat.latestMessage.dateCreated!.millisecondsSinceEpoch == 0) {
-              // wait for the chat.addMessage to go through
-              await Future.delayed(const Duration(milliseconds: 500));
-              // refresh the latest message
-              chat.dbLatestMessage;
-            }
-            await addChat(chat);
+      final countQuery = (Database.chats.query(Chat_.dateDeleted.isNull())..order(Chat_.id, flags: Order.descending))
+          .watch(triggerImmediately: true);
+      countSub = countQuery.listen((event) async {
+        if (!ss.settings.finishedSetup.value) return;
+        final newCount = event.count();
+        if (newCount > currentCount && currentCount != 0) {
+          final chat = event.findFirst()!;
+          if (chat.latestMessage.dateCreated!.millisecondsSinceEpoch == 0) {
+            // wait for the chat.addMessage to go through
+            await Future.delayed(const Duration(milliseconds: 500));
+            // refresh the latest message
+            chat.dbLatestMessage;
           }
-          currentCount = newCount;
-        });
-      })();
+          await addChat(chat);
+        }
+        currentCount = newCount;
+      });
     } else {
       countSub = WebListeners.newChat.listen((chat) async {
         if (!ss.settings.finishedSetup.value) return;
@@ -199,11 +196,6 @@ class ChatsService extends GetxService {
   bool updateChat(Chat updated, {bool shouldSort = false, bool override = false}) {
     final index = chats.indexWhere((e) => updated.guid == e.guid);
     if (index != -1) {
-      // delete
-      if (updated.isRoutingStub) {
-        chats.removeAt(index);
-        return true;
-      }
       final toUpdate = chats[index];
       // this is so the list doesn't re-render
       // ignore: invalid_use_of_protected_member
@@ -215,7 +207,6 @@ class ChatsService extends GetxService {
   }
 
   Future<void> addChat(Chat toAdd) async {
-    if (toAdd.isRoutingStub) return;
     chats.add(toAdd);
     cm.createChatController(toAdd);
     sort();

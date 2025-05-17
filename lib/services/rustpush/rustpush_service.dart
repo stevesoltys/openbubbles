@@ -7,7 +7,6 @@ import 'package:async_task/async_task_extension.dart';
 import 'package:bluebubbles/app/layouts/conversation_list/pages/conversation_list.dart';
 import 'package:bluebubbles/app/layouts/conversation_view/widgets/message/message_holder.dart';
 import 'package:bluebubbles/app/layouts/settings/pages/misc/shared_streams_panel.dart';
-import 'package:bluebubbles/app/layouts/settings/pages/profile/posterkit.dart';
 import 'package:bluebubbles/app/layouts/setup/setup_view.dart';
 import 'package:bluebubbles/app/wrappers/titlebar_wrapper.dart';
 import 'package:bluebubbles/database/database.dart';
@@ -22,7 +21,7 @@ import 'package:bluebubbles/utils/crypto_utils.dart';
 import 'package:bluebubbles/utils/logger/logger.dart';
 import 'package:collection/collection.dart';
 import 'package:crypto/crypto.dart';
-import 'package:ffmpeg_kit_flutter/ffmpeg_kit.dart';
+import 'package:ffmpeg_kit_flutter_new/ffmpeg_kit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge.dart';
@@ -41,7 +40,6 @@ import 'package:telephony_plus/telephony_plus.dart';
 import 'package:vpn_connection_detector/vpn_connection_detector.dart';
 import 'package:convert/convert.dart';
 import 'package:bluebubbles/helpers/types/constants.dart' as constants;
-import 'dart:ui' as ui;
 
 var uuid = const Uuid();
 RustPushService pushService =
@@ -50,6 +48,9 @@ RustPushService pushService =
 
 const rpApiRoot = "https://hw.openbubbles.app/code";
 
+class OutgoingCallSession {
+  
+}
 
 // utils for communicating between dart and rustpush.
 class RustPushBBUtils {
@@ -276,13 +277,6 @@ class RustPushBackend implements BackendService {
     return myHandles[0];
   }
 
-  Future<String> getDefaultSMSHandle() async {
-    var handle = await getDefaultHandle();
-    if (ss.settings.smsForwardingTargets.keys.isEmpty) return handle;
-    if (ss.settings.smsForwardingTargets.containsKey(handle)) return handle;
-    return ss.settings.smsForwardingTargets.keys.first;
-  }
-
   @override
   bool canSendSubject() {
     return true;
@@ -308,8 +302,8 @@ class RustPushBackend implements BackendService {
     return true;
   }
 
-  Future<api.MessageType> getService(Chat chat, {Message? forMessage}) async {
-    if (chat.isRpSms) {
+  Future<api.MessageType> getService(bool isSms, {Message? forMessage}) async {
+    if (isSms) {
       String? fromHandle;
       if (forMessage != null && forMessage.handle != null) {
         var myHandles = await api.getHandles(state: pushService.state);
@@ -318,7 +312,13 @@ class RustPushBackend implements BackendService {
           fromHandle = sender; // this is a forwarded message
         }
       }
-      return api.MessageType.sms(isPhone: await chat.shouldRoute(), usingNumber: await chat.ensureHandle(), fromHandle: fromHandle);
+      var number = "";
+      if (!kIsDesktop) {
+        // we don't need number on desktop, b/c it's only used for relaying messages to other devices
+        // which desktops will never do
+        number = await RustPushBBUtils.formatAddress(await TelephonyPlus().getNumber());
+      }
+      return api.MessageType.sms(isPhone: ss.settings.isSmsRouter.value, usingNumber: "tel:$number", fromHandle: fromHandle);
     }
     return const api.MessageType.iMessage();
   }
@@ -367,7 +367,7 @@ class RustPushBackend implements BackendService {
   @override
   Future<Chat> createChat(List<String> addresses, AttributedBody? message, String service,
       {CancelToken? cancelToken, String? existingGuid}) async {
-    var handle = service == "SMS" ? await getDefaultSMSHandle() : await getDefaultHandle();
+    var handle = await getDefaultHandle();
     var formattedHandles = (await Future.wait(
               addresses.map((e) async => RustPushBBUtils.rustHandleToBB(await RustPushBBUtils.formatAddress(e)))))
           .toList();
@@ -376,7 +376,6 @@ class RustPushBackend implements BackendService {
       participants: formattedHandles,
       usingHandle: handle,
       isRpSms: service == "SMS",
-      senderIsKnown: formattedHandles.any((handle) => !(handle.contact?.isShared ?? true)),
     );
     chat.save(); //save for reflectMessage
     if (message != null) {
@@ -385,13 +384,13 @@ class RustPushBackend implements BackendService {
           conversation: await chat.getConversationData(),
           message: api.Message.message(api.NormalMessage(
               parts: await partsFromBody(message),
-                  service: await getService(chat),
+                  service: await getService(chat.isRpSms),
                   voice: false,
                   embeddedProfile: await pushService.getShareProfileMessageFor(chat.participants),
                   )),
           sender: handle);
       if (chat.isRpSms) {
-        msg.target = await getSMSTargets(handle);
+        msg.target = getSMSTargets();
       }
       await sendMsg(msg);
       msg.sentTimestamp = DateTime.now().millisecondsSinceEpoch;
@@ -433,16 +432,8 @@ class RustPushBackend implements BackendService {
     return attachment.getFile();
   }
 
-  Future<List<api.MessageTarget>> getSMSTargets(String handle) async {
-    if (ss.settings.isSmsRouter.value) {
-      var registered = await api.getMyPhoneHandles(state: pushService.state);
-      if (registered.contains(handle)) {
-        return ss.settings.smsRoutingTargets.map((element) => api.MessageTarget.uuid(element)).toList();
-      }
-    }
-    var target = ss.settings.smsForwardingTargets[handle];
-    if (target == null) throw Exception("No SMS target for handle $handle");
-    return [api.MessageTarget.uuid(target)];
+  List<api.MessageTarget> getSMSTargets() {
+    return ss.settings.smsForwardingTargets.map((element) => api.MessageTarget.uuid(element)).toList();
   }
 
   @override
@@ -483,7 +474,7 @@ class RustPushBackend implements BackendService {
           replyGuid: m.threadOriginatorGuid,
           replyPart: m.threadOriginatorGuid == null ? null : m.threadOriginatorPart,
           effect: m.expressiveSendStyleId,
-          service: await getService(chat, forMessage: m),
+          service: await getService(chat.isRpSms, forMessage: m),
           subject: m.subject,
           app: m.payloadData == null ? null : pushService.dataToApp(m.payloadData!),
           voice: isAudioMessage,
@@ -494,7 +485,7 @@ class RustPushBackend implements BackendService {
       msg.id = m.stagingGuid!;
     }
     if (chat.isRpSms) {
-      msg.target = await getSMSTargets(msg.sender!);
+      msg.target = getSMSTargets();
     }
     m.stagingGuid = msg.id; // in case delivered comes in before sending "finishes" (also for retries, duh)
     m.save(chat: chat);
@@ -510,40 +501,23 @@ class RustPushBackend implements BackendService {
   }
 
   Future<Message> forwardMMSAttachment(Chat chat, Message m, Attachment att) async {
-    // 300 kb
-    api.Attachment? attachment;
-    var stream = api.uploadAttachment(
-        state: pushService.state,
-        path: att.getFile().path!,
-        mime: att.mimeType ?? "application/octet-stream",
-        uti: att.uti ?? "public.data",
-        name: att.transferName!);
-    if (att.getFile().size > 300000) {
-      await for (final event in stream) {
-        if (event.attachment != null) {
-          Logger.info("upload finish");
-          attachment = event.attachment;
-        }
-      }
-    } else {
-      attachment = api.Attachment(
-        aType: api.AttachmentType.inline(await att.getFile().getBytes()),
-        mime: att.mimeType ?? "application/octet-stream",
-        part_: 0,
-        utiType: att.uti ?? "public.data",
-        name: att.transferName!,
-        iris: false,
-      );
-    }
+    api.Attachment? attachment = api.Attachment(
+      aType: api.AttachmentType.inline(await att.getFile().getBytes()),
+      mime: att.mimeType ?? "application/octet-stream",
+      part_: 0,
+      utiType: att.uti ?? "public.data",
+      name: att.transferName!,
+      iris: false,
+    );
     Logger.info("uploaded");
-    var service = await getService(chat, forMessage: m);
+    var service = await getService(chat.isRpSms, forMessage: m);
     var msg = await api.newMsg(
         state: pushService.state,
         conversation: await chat.getConversationData(),
         sender: await chat.ensureHandle(),
         message: api.Message.message(api.NormalMessage(
           parts: api.MessageParts(
-              field0: [api.IndexedMessagePart(part_: api.MessagePart.attachment(attachment!))]),
+              field0: [api.IndexedMessagePart(part_: api.MessagePart.attachment(attachment))]),
           replyGuid: m.threadOriginatorGuid,
           replyPart: m.threadOriginatorGuid == null ? null : m.threadOriginatorPart,
           effect: m.expressiveSendStyleId,
@@ -553,7 +527,7 @@ class RustPushBackend implements BackendService {
     if (m.stagingGuid != null || (m.guid != null && m.guid!.contains("error") && m.guid!.contains("temp"))) {
       msg.id = m.stagingGuid ?? m.guid!;
     }
-    msg.target = await getSMSTargets(msg.sender!);
+    msg.target = getSMSTargets();
     await sendMsg(msg);
     msg.sentTimestamp = DateTime.now().millisecondsSinceEpoch;
     return (await pushService.reflectMessageDyn(msg))!;
@@ -586,7 +560,7 @@ class RustPushBackend implements BackendService {
     );
     msg.id = m.stagingGuid ?? m.guid!;
     if (c.isRpSms) {
-      msg.target = await getSMSTargets(msg.sender!);
+      msg.target = getSMSTargets();
     }
     await sendMsg(msg);
   }
@@ -629,7 +603,6 @@ class RustPushBackend implements BackendService {
     var detail = await pushService.getPurchaseDetails();
     var handles = await api.getHandles(state: pushService.state);
     var state = await api.getRegstate(state: pushService.state);
-    var deviceState = await api.getDeviceInfoState(state: pushService.state);
     var stateStr = "";
     if (detail == null && ss.settings.deviceIsHosted.value) {
       stateStr = "Subscription not active!";
@@ -656,8 +629,6 @@ class RustPushBackend implements BackendService {
       "active_alias": (await getDefaultHandle()).replaceFirst("tel:", "").replaceFirst("mailto:", ""),
       "sms_forwarding_capable": true,
       "sms_forwarding_enabled": smsForwardingEnabled(),
-      "can_pnr": deviceState.name.contains("iPhone") || deviceState.name.contains("iPod") || deviceState.name.contains("iPad"),
-      "can_forward": (await api.getMyPhoneHandles(state: pushService.state)).isNotEmpty,
     };
   }
 
@@ -854,7 +825,7 @@ class RustPushBackend implements BackendService {
         replyGuid: m.threadOriginatorGuid,
         replyPart: m.threadOriginatorGuid == null ? null : m.threadOriginatorPart,
         effect: m.expressiveSendStyleId,
-        service: await getService(chat, forMessage: m),
+        service: await getService(chat.isRpSms, forMessage: m),
         subject: m.subject == "" ? null : m.subject,
         app: m.payloadData == null ? null : pushService.dataToApp(m.payloadData!),
         linkMeta: linkMeta,
@@ -868,7 +839,7 @@ class RustPushBackend implements BackendService {
       msg.id = m.stagingGuid ?? m.guid!; // make sure we pass forwarded messages's original GUID so it doesn't get overwritten and marked as a different msg
     }
     if (chat.isRpSms) {
-      msg.target = await getSMSTargets(msg.sender!);
+      msg.target = getSMSTargets();
     }
     m.stagingGuid = msg.id; // in case delivered comes in before sending "finishes" (also for retries, duh)
     m.save(chat: chat);
@@ -876,7 +847,7 @@ class RustPushBackend implements BackendService {
       await sendMsg(msg);
     } catch (e) {
       Logger.error(e);
-      if (!chat.isRpSms || !ss.settings.isSmsRouter.value) {
+      if (!chat.isRpSms) {
         rethrow; // APN errors are fatal for non-SMS messages
       }
     }
@@ -889,10 +860,33 @@ class RustPushBackend implements BackendService {
     await m.forwardIfNessesary(chat);
     m.save(chat: chat);
     msg.sentTimestamp = DateTime.now().millisecondsSinceEpoch;
-    if (m.hasBeenForwarded) return m; // do not reflect back, it will just send it out again
-    return (await pushService.reflectMessageDyn(msg)) ?? m;
+    return (await pushService.reflectMessageDyn(msg))!;
   }
 
+  Future<bool> markDelivered(api.MessageInst message) async {
+    if (!message.sendDelivered) return true;
+    var chat = await pushService.chatForMessage(message);
+    if (chat.isRpSms) {
+      return true; // no delivery recipts :)
+    }
+    var msg = await api.newMsg(
+      state: pushService.state,
+      conversation: api.ConversationData(
+        participants: [message.sender!],
+        cvName: message.conversation!.cvName,
+        senderGuid: message.conversation!.senderGuid
+      ),
+      sender: await chat.ensureHandle(),
+      message: const api.Message.delivered(),
+    );
+    msg.id = message.id;
+    msg.target = message.target; // delivered is only sent to the device that sent it
+    if (msg.id.contains("temp") || msg.id.contains("error")) {
+      return true;
+    }
+    await sendMsg(msg);
+    return true;
+  }
 
   @override
   bool supportsFocusStates() {
@@ -937,7 +931,7 @@ class RustPushBackend implements BackendService {
       return true;
     }
     if (chat.isRpSms) {
-      msg.target = await getSMSTargets(msg.sender!);
+      msg.target = getSMSTargets();
     }
     await sendMsg(msg);
     return true;
@@ -1010,35 +1004,6 @@ class RustPushBackend implements BackendService {
   @override
   Future<Message> sendTapback(
       Chat chat, Message selected, String reaction, int? repPart) async {
-    if (!chat.isIMessage) {
-      String text;
-      if (ReactionTypes.reactionToVerb.containsKey(reaction)) {
-        var time = ReactionTypes.reactionToVerb[reaction]!;
-        // capitalize first letter
-        text = "${time[0].toUpperCase()}${time.substring(1).toLowerCase()}";
-      } else {
-        text = reaction.startsWith("-") ? "Removed ${reaction.substring(1)} from" : "Reacted $reaction to";
-      }
-      var annotations = AttributedBody.raw("$text “${selected.text}”");
-      final _message = Message(
-        text: annotations.string,
-        dateCreated: DateTime.now(),
-        hasAttachments: false,
-        isFromMe: true,
-        associatedMessageGuid: selected.guid,
-        associatedMessagePart: 0,
-        associatedMessageType: ReactionTypes.reactionToVerb.containsKey(reaction) ? reaction : reaction.startsWith("-") ? "-${ReactionTypes.EMOJI}" : ReactionTypes.EMOJI,
-        associatedMessageEmoji: ReactionTypes.reactionToVerb.containsKey(reaction) ? null : reaction.startsWith("-") ? reaction.substring(1) : reaction,
-        handleId: 0,
-        hasDdResults: true,
-        attributedBody: [
-          if (annotations.string.isNotEmpty)
-            annotations
-        ],
-      );
-      _message.generateTempGuid();
-      return await sendMessage(chat, _message);
-    }
     var enabled = !reaction.startsWith("-");
     reaction = enabled ? reaction : reaction.substring(1);
     var msg = await api.newMsg(
@@ -1204,9 +1169,6 @@ class RustPushService extends GetxService {
   var findMy = false;
   var sharedStreams = false;
 
-
-  var disableOutgoingSms = false;
-
   Map<String, api.Attachment> attachments = {};
 
   Future<List<String>> doValidateTargets(List<String> targets, String handle) async {
@@ -1357,9 +1319,6 @@ class RustPushService extends GetxService {
         if (part.field0.iris) {
           continue;
         }
-        if (part.field0.mime == "application/smil") {
-          continue; // who needs display info amirite?
-        }
         api.Attachment? myIris;
         var next = parts.elementAtOrNull(index + 1);
         if (next != null && next.part_ is api.MessagePart_Attachment) {
@@ -1492,18 +1451,11 @@ class RustPushService extends GetxService {
     Logger.info("reflecting msg");
     var chat = myMsg.conversation != null ? await chatForMessage(myMsg) : null;
     var myHandles = (await api.getHandles(state: pushService.state));
-    if (myMsg.message is api.Message_NotifyAnyways) {
-      var msgObj = Message.findOne(guid: myMsg.id)!;
-      msgObj.wasDeliveredQuietly = false;
-      Logger.info("Got notify anyways message");
-      MessageHelper.handleNotification(msgObj, msgObj.chat.target!, findExisting: false, notifyAnyways: true);
-      return msgObj;
-    } else if (myMsg.message is api.Message_Message) {
+    if (myMsg.message is api.Message_Message) {
       var innerMsg = myMsg.message as api.Message_Message;
       var attributedBodyData = await indexedPartsToAttributedBodyDyn(innerMsg.field0.parts.field0, myMsg.id, null);
       var sender = myMsg.sender;
       
-      bool hasBeenForwarded = false;
       var staging = false;
       var tempGuid = "temp-${randomString(8)}";
       if (innerMsg.field0.service is api.MessageType_SMS) {
@@ -1512,11 +1464,6 @@ class RustPushService extends GetxService {
           sender = smsServ.fromHandle;
         }
         staging = myHandles.contains(sender);
-        var myPhoneHandles = await api.getMyPhoneHandles(state: pushService.state);
-        if (!myPhoneHandles.contains(smsServ.usingNumber)) {
-          // this is a forwarded message from someone else
-          hasBeenForwarded = true;
-        }
         if (staging) {
           var found = Message.findOne(guid: myMsg.id);
           if (found != null && found.guid != null) {
@@ -1525,7 +1472,7 @@ class RustPushService extends GetxService {
         }
       }
 
-      var msg = Message(
+      return Message(
         guid: staging ? tempGuid : myMsg.id,
         stagingGuid: staging ? myMsg.id : null,
         text: attributedBodyData.$2,
@@ -1545,13 +1492,7 @@ class RustPushService extends GetxService {
         amkSessionId: innerMsg.field0.app?.balloon != null ? myMsg.id : null,
         verificationFailed: myMsg.verificationFailed,
         hasApplePayloadData: innerMsg.field0.app?.balloon != null,
-        hasBeenForwarded: hasBeenForwarded,
       );
-
-      if (innerMsg.field0.service is api.MessageType_SMS && chat != null) {
-        msg.inferReaction(chat);
-      }
-      return msg;
     } else if (myMsg.message is api.Message_RenameMessage) {
       var msg = myMsg.message as api.Message_RenameMessage;
       if (myMsg.verificationFailed) return null;
@@ -1744,18 +1685,7 @@ class RustPushService extends GetxService {
       msgObj.attributedBody = [attributedBodyDataInclusive.$1];
       return msgObj;
     }
-    throw Exception("bad message type! ${myMsg.message}");
-  }
-
-  File fileForAsset(String path, api.PosterAsset asset, String n, {bool friendly = false}) {
-    var name = "${asset.uuid}_$n";
-    if (friendly) {
-      File f2 = File("$path/${sha256.convert(name.codeUnits).toString()}.png");
-      if (f2.existsSync()) {
-        return f2;
-      }
-    }
-    return File("$path/${sha256.convert(name.codeUnits).toString()}");
+    throw Exception("bad message type!");
   }
 
   String getService(api.MessageInst msg) {
@@ -1770,7 +1700,7 @@ class RustPushService extends GetxService {
 
   // finds chat for message. Use over `Chat.findByRust` for incoming messages
   // to handle after conversation changes (renames, participants)
-  Future<Chat> chatForMessageInner(api.MessageInst myMsg, {bool routingStub = false}) async {
+  Future<Chat> chatForMessageInner(api.MessageInst myMsg) async {
     // find existing saved message and use that chat if we're getting a replay
     var existing = Message.findOne(guid: myMsg.id);
     if (myMsg.message is api.Message_Edit) {
@@ -1820,22 +1750,11 @@ class RustPushService extends GetxService {
         myMsg.conversation?.participants.remove(service.usingNumber);
       }
     }
-    return (await Chat.findByRust(myMsg.conversation!, getService(myMsg), routingStub: routingStub))!;
+    return (await Chat.findByRust(myMsg.conversation!, getService(myMsg)))!;
   }
 
   Future<Chat> chatForMessage(api.MessageInst myMsg) async {
-    var routingStub = false;
-    if (myMsg.message is api.Message_Message) {
-        var message = myMsg.message as api.Message_Message;
-        var service = message.field0.service;
-        var myNumbers = await api.getMyPhoneHandles(state: pushService.state);
-        if (service is api.MessageType_SMS) {
-          if (myNumbers.contains(service.usingNumber)) {
-            routingStub = true; // we are just forwarding this, search for routing stubs
-          }
-        }
-      }
-    var result = await chatForMessageInner(myMsg, routingStub: routingStub);
+    var result = await chatForMessageInner(myMsg);
     if (myMsg.conversation != null) {
       // conformance stuff
       if (myMsg.conversation!.senderGuid != null && !result.guidRefs.contains(myMsg.conversation!.senderGuid!)) {
@@ -1846,17 +1765,6 @@ class RustPushService extends GetxService {
       if (mine.isNotEmpty && !mine.contains(result.usingHandle)) {
         result.usingHandle = mine[0];
         result.save(updateUsingHandle: true);
-      }
-      if (myMsg.message is api.Message_Message) {
-        var message = myMsg.message as api.Message_Message;
-        var service = message.field0.service;
-        if (service is api.MessageType_SMS) {
-          if (service.usingNumber != result.usingHandle) {
-            Logger.info("Mismatch between chat handle ${result.usingHandle} and incoming handle ${service.usingNumber}, updating chat handle!");
-            result.usingHandle = service.usingNumber;
-            result.save(updateUsingHandle: true);
-          }
-        }
       }
       if (myMsg.message is! api.Message_ChangeParticipants) {
         var isNormal = myMsg.message is api.Message_Message;
@@ -2026,30 +1934,8 @@ class RustPushService extends GetxService {
 
     currentOutgoingCall = outgoingguid.obs;
 
-    Uint8List? icon;
-    String? poster;
-    if (targets.length == 1) {
-      var handle = RustPushBBUtils.rustHandleToBB(targets[0]);
-      icon = handle.contact?.avatar;
-      poster = handle.getPoster();
-    }
-
-    showOutgoingFaceTimeOverlay(currentOutgoingCall!, desc, caller, targets, icon, link, poster);
+    showOutgoingFaceTimeOverlay(currentOutgoingCall!, desc, caller, targets, null, link);
     await api.createFacetime(state: pushService.state, uuid: outgoingguid, handle: caller, participants: targets);
-  }
-
-  // returns handle to show poster of
-  String? getSessionIdentity(String guid, bool active) {
-    var session = activeSessions.firstWhereOrNull((a) => a.groupId == guid);
-    if (session == null) {
-      if (!active) {
-        session = sessions.firstWhereOrNull((a) => a.groupId == guid);
-      }
-      if (session == null) {
-        return null;
-      }
-    }
-    return session.members.where((a) => !session!.myHandles.contains(a.handle)).firstOrNull?.handle;
   }
 
   String? getSessionName(String guid, bool active) {
@@ -2100,7 +1986,6 @@ class RustPushService extends GetxService {
     return null;
   }
 
-  List<String> profilesDownloading = [];
   Future handleSharedProfile(api.ShareProfileMessage shared, String sender, List<Handle> targets) async {
     var myHandles = await api.getHandles(state: pushService.state);
     if (myHandles.contains(sender)) {
@@ -2115,128 +2000,41 @@ class RustPushService extends GetxService {
     }
     if (!(await api.canProfileShare(state: pushService.state))) return;
 
-    // mask with profilesDownloading because iPhones have a nasty habit of sharing once to every handle. We don't want to download 15 times for each handle
-    if (Contact.findOne(id: shared.cloudKitRecordKey) != null || profilesDownloading.contains(shared.cloudKitRecordKey)) return; // already downloaded
-    profilesDownloading.add(shared.cloudKitRecordKey);
+    if (Contact.findOne(id: shared.cloudKitRecordKey) != null) return; // already downloaded
 
-    try {
-      var fetch = await api.fetchProfile(state: pushService.state, message: shared);
-      var otherHandle = RustPushBBUtils.rustHandleToBB(sender);
+    var fetch = await api.fetchProfile(state: pushService.state, message: shared);
+    var otherHandle = RustPushBBUtils.rustHandleToBB(sender);
 
-      String? posterPath;
-      if (fetch.poster != null && !kIsDesktop) {
-        var decoded = await api.parsePoster(poster: fetch.poster!);
-        try {
-          posterPath = await savePoster(decoded, name: otherHandle.displayName);
-        } catch (e, t) {
-          Logger.error("Could not decode other poster", error: e, trace: t); 
-        }
+    var existingShared = Contact.findOne(address: otherHandle.address, wantShared: true);
+    if (existingShared != null) {
+      if (otherHandle.contactRelation.targetId == existingShared.dbId) {
+        otherHandle.contactRelation.target = null;
       }
-
-      var existingShared = Contact.findOne(address: otherHandle.address, wantShared: true);
-      if (existingShared != null) {
-        if (otherHandle.contactRelation.targetId == existingShared.dbId) {
-          otherHandle.contactRelation.target = null;
-        }
-        if (existingShared.posterPath != null) {
-          try {
-            await deletePoster(existingShared.posterPath!);
-          } catch (e) { /* */ }
-        }
-        Database.contacts.remove(existingShared.dbId!);
-      }
-      if (otherHandle.getPoster() == null) {
-        otherHandle.setPoster(posterPath);
-        posterPath = "alreadyset";
-      }
-      var newId = Database.contacts.put(Contact(
-        id: shared.cloudKitRecordKey,
-        displayName: "Maybe: ${fetch.name.name}",
-        structuredName: StructuredName(
-          namePrefix: "",
-          nameSuffix: "",
-          givenName: fetch.name.first,
-          middleName: "",
-          familyName: fetch.name.last,
-        ),
-        avatar: fetch.image,
-        isShared: true,
-        phones: otherHandle.contact?.phones ?? (otherHandle.address.isEmail ? [] : [otherHandle.address]),
-        emails: otherHandle.contact?.emails ?? (otherHandle.address.isEmail ? [otherHandle.address] : []),
-        posterPath: posterPath,
-      ));
-      if (otherHandle.contactRelation.target == null) {
-        otherHandle.contactRelation.targetId = newId;
-        Database.handles.put(otherHandle);
-      }
-      final result = (await Chat.findByRust(api.ConversationData(participants: [sender]), "iMessage", soft: true));
-      if (result != null) {
-        cvc(result).updateContactInfo();
-      }
-    } finally {
-      profilesDownloading.remove(shared.cloudKitRecordKey);
+      Database.contacts.remove(existingShared.dbId!);
     }
-  }
-
-  Future<void> deletePoster(String path) async {
-    if (Directory(path).existsSync()) {
-      await Directory(path).delete(recursive: true);
+    var newId = Database.contacts.put(Contact(
+      id: shared.cloudKitRecordKey,
+      displayName: "Maybe: ${fetch.name.name}",
+      structuredName: StructuredName(
+        namePrefix: "",
+        nameSuffix: "",
+        givenName: fetch.name.first,
+        middleName: "",
+        familyName: fetch.name.last,
+      ),
+      avatar: fetch.image,
+      isShared: true,
+      phones: otherHandle.contact?.phones ?? (otherHandle.address.isEmail ? [] : [otherHandle.address]),
+      emails: otherHandle.contact?.emails ?? (otherHandle.address.isEmail ? [otherHandle.address] : []),
+    ));
+    if (otherHandle.contactRelation.target == null) {
+      otherHandle.contactRelation.targetId = newId;
+      Database.handles.put(otherHandle);
     }
-    if (File("$path.jpg").existsSync()) {
-      await File("$path.jpg").delete(); 
+    final result = (await Chat.findByRust(api.ConversationData(participants: [sender]), "iMessage", soft: true));
+    if (result != null) {
+      cvc(result).updateContactInfo();
     }
-    if (File("$path-preview.png").existsSync()) {
-      await File("$path-preview.png").delete();
-    }
-  }
-
-  Future<String> savePoster(api.SimplifiedPoster decoded, {String? name}) async {
-    int number = Random().nextInt(9999999);
-
-    String appDocPath = fs.appDocDir.path;
-    if (decoded.type is api.PosterType_Photo) {
-      var photo = decoded.type as api.PosterType_Photo;
-      for (var asset in photo.assets) {
-        Map<String, Uint8List> entries = {};
-        for (var file in asset.files.entries) {
-          File f = fileForAsset("$appDocPath/avatars/you/poster-$number", asset, file.key);
-          if (!(await f.exists())) {
-            await f.create(recursive: true);
-          }
-          await f.writeAsBytes(file.value);
-
-          if (file.key.endsWith("HEIC")) {
-            await mcs.invokeMethod("decode-heif", {"file": f.path, "output": "${f.path}.png"});
-          }
-
-          entries[file.key] = Uint8List(0);
-        }
-        asset.files = entries;
-      }
-    }
-
-    if (decoded.type is api.PosterType_Memoji) {
-      var memoji = decoded.type as api.PosterType_Memoji;
-      File f = File("$appDocPath/avatars/you/poster-$number/memoji_orig.heic");
-      if (!(await f.exists())) {
-        await f.create(recursive: true);
-      }
-      await f.writeAsBytes(memoji.data.avatarImageData);
-
-      await mcs.invokeMethod("decode-heif", {"file": f.path, "output": "$appDocPath/avatars/you/poster-$number/memoji.png"});
-      memoji.data.avatarImageData = Uint8List(0);
-    }
-
-    var save = await api.parsePosterSave(poster: decoded);
-    File file = File("$appDocPath/avatars/you/poster-$number.jpg");
-    if (!(await file.exists())) {
-      await file.create(recursive: true);
-    }
-    await file.writeAsBytes(save);
-
-    Logger.info("Wrote poster $appDocPath/avatars/you/poster-$number");
-
-    return "$appDocPath/avatars/you/poster-$number";
   }
 
   Future invalidatePeerCaches() async {
@@ -2256,7 +2054,6 @@ class RustPushService extends GetxService {
     }
 
     for (var chat in chats) {
-      if (!chat.isIMessage) continue;
       var data = await chat.getConversationData();
       var sender = await chat.ensureHandle();
       handleChats[sender]?.addAll(data.participants);
@@ -2274,137 +2071,13 @@ class RustPushService extends GetxService {
     }
   }
 
-  void wantAddNumber() {
-    showDialog(
-      context: Get.context!,
-      builder: (context) => AlertDialog(
-        title: Text(
-          "Adding a phone number requires an iPhone",
-          style: context.theme.textTheme.titleLarge,
-        ),
-        backgroundColor: context.theme.colorScheme.properSurface,
-        content: Text("Join the waitlist for a just-works, paid, hosted solution. Or, jailbreak your own to self-host.", style: context.theme.textTheme.bodyLarge),
-        actions: [
-          TextButton(
-            child: Text(
-                "Close",
-                style: context.theme.textTheme.bodyLarge!.copyWith(color: context.theme.colorScheme.primary)
-            ),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-          TextButton(
-            child: Text(
-                "Self-host",
-                style: context.theme.textTheme.bodyLarge!.copyWith(color: context.theme.colorScheme.primary)
-            ),
-            onPressed: () {
-              launchUrl(Uri.parse("https://openbubbles.app/docs/pnr.html"));
-            }
-          ),
-          TextButton(
-            child: Text(
-                "Join the waitlist",
-                style: context.theme.textTheme.bodyLarge!.copyWith(color: context.theme.colorScheme.primary)
-            ),
-            onPressed: () {
-              launchUrl(Uri.parse("https://openbubbles.app/#hosted-waitlist"));
-            }
-          ),
-        ],
-      ),
-    );
-  }
-
   var notifiedFailed = false;
   var notifiedSubFailed = false;
 
   String? chosenFTRoomGuid;
   String? incomingRingingCallGuid;
 
-  Future<void> markCertified(api.PushMessage push) async {
-    if (push is! api.PushMessage_IMessage) return;
-    var sendDelivered = push.field0.sendDelivered;
-    try {
-      var chat = await pushService.chatForMessage(push.field0);
-      if (!chat.isGroup && chat.handles.length == 1 && chat.handles.first.isBlocked()) {
-        sendDelivered = false; // we are blocked
-      }
-      if (chat.isRpSms) {
-        sendDelivered = false; // no delivery recipts :)
-      }
-    } catch (e) { /* sending a receipt is more important */ }
-    if (push.field0.certifiedContext == null) {
-      if (sendDelivered) {
-        var chat = await pushService.chatForMessage(push.field0);
-        var message = push.field0;
-        var msg = await api.newMsg(
-          state: pushService.state,
-          conversation: api.ConversationData(
-            participants: [message.sender!],
-            cvName: message.conversation!.cvName,
-            senderGuid: message.conversation!.senderGuid
-          ),
-          sender: await chat.ensureHandle(),
-          message: const api.Message.delivered(),
-        );
-        msg.id = message.id;
-        msg.target = message.target; // delivered is only sent to the device that sent it
-        if (msg.id.contains("temp") || msg.id.contains("error")) {
-          return;
-        }
-        await (backend as RustPushBackend).sendMsg(msg);
-      }
-      return;
-    }
-    await api.certifyDelivery(state: pushService.state, context: push.field0.certifiedContext!, notify: sendDelivered);
-  }
-
-  Future markAsSpam(Chat chat) async {
-    List<api.ReportMessage> messages = [];
-    var chatMessages = Chat.getMessages(chat, limit: 5);
-    for (var message in chatMessages) {
-      api.MessageParts parts;
-      if (message.attributedBody.isNotEmpty) {
-        parts = await (backend as RustPushBackend).partsFromBody(message.attributedBody.first);
-      } else {
-        parts = api.MessageParts(field0: [api.IndexedMessagePart(part_: api.MessagePart.text(message.text!, pushService.defaultFormat()))]);
-      }
-      if (message.isFromMe!) continue;
-      messages.add(api.ReportMessage(
-        guid: message.guid!, 
-        sender: RustPushBBUtils.bbHandleToRust(message.handle!), 
-        conversationSize: chat.participants.length, 
-        parts: parts, 
-        timeOfMessage: message.dateCreated!.microsecondsSinceEpoch.toDouble() / 1000000
-      ));
-    }
-    await api.reportMessages(state: pushService.state, handle: await chat.ensureHandle(), messages: messages);
-    Chat.softDelete(chat);
-  }
-
-  Future handleMsg(api.PushMessage push, bool finalAttempt) async {
-    try {
-      await handleMsgInner(push);
-    } catch (e, s) {
-      if (finalAttempt) markCertified(push);
-      rethrow;
-    }
-    // if we complete successfully, mark delivery "certified"
-    markCertified(push);
-  }
-
-  Future handleMsgInner(api.PushMessage push) async {
-    if (push is api.PushMessage_StatusUpdate) {
-      var status = push.field0;
-      final result = (await Chat.findByRust(api.ConversationData(participants: [status.user]), "iMessage", soft: true));
-      if (result == null) return;
-      result.notifsSilenced = !status.allowed;
-      result.save(updateNotifsSilenced: true);
-      cvc(result).recipientNotifsSilenced.value = !status.allowed;
-      cvc(result).chat.notifsSilenced = !status.allowed; // make sure all our objects are in sync lmao
-      return;
-    }
-
+  Future handleMsg(api.PushMessage push) async {
     if (push is api.PushMessage_FaceTime) {
       var facetime = push.field0;
       if (facetime is api.FTMessage_AddMembers ||
@@ -2475,50 +2148,10 @@ class RustPushService extends GetxService {
         var link = await api.getFtLink(state: pushService.state, usage: "nextincomingcall");
         rotateIncomingLink();
         incomingRingingCallGuid = ring;
-
-        String? myPoster;
-        Uint8List? icon;
-        var identity = getSessionIdentity(ring, true);
-        if (identity != null) {
-          var handle = RustPushBBUtils.rustHandleToBB(identity);
-          if (handle.isBlocked()) {
-            incomingRingingCallGuid = null;
-            Logger.info("Dropping call from blocked handle $handle");
-            return;
-          }
-          icon = handle.contact?.avatar;
-          var poster = handle.getPoster();
-          if (poster != null && !kIsDesktop) {
-            var loaded = await api.fromPosterSave(poster: await File("$poster.jpg").readAsBytes());
-            var images = await loadPosterImages(poster, loaded);
-
-            var recorder = ui.PictureRecorder();
-            var canvas = Canvas(recorder);
-
-            var painter = PosterPainter(poster: loaded, images: images, name: handle.displayName);
-
-            Map<dynamic, dynamic> results = await mcs.invokeMethod("get-full-resolution");
-
-            var size = Size((results["width"]! as int).toDouble(), (results["height"]! as int).toDouble());
-            canvas.scale(results["ratio"]! as double);
-            painter.paint(canvas, size / (results["ratio"]! as double));
-
-            ui.Picture picture = recorder.endRecording();
-            ui.Image image = await picture.toImage(size.width.toInt(), size.height.toInt());
-
-            Uint8List bytes = (await image.toByteData(format: ui.ImageByteFormat.png))!.buffer.asUint8List();
-            File file = File("$poster-preview.png");
-            await file.writeAsBytes(bytes);
-            myPoster = file.path;
-          }
-        }
-
         ah.handleIncomingFaceTimeCall({
           "uuid": ring,
           "address": session,
           "link": link,
-          "icon": icon,
-          "poster": myPoster,
         });
       }
 
@@ -2533,7 +2166,6 @@ class RustPushService extends GetxService {
             }
             // this is a missed call
             notif.createMissedCallNotification(session, facetime.guid);
-            incomingRingingCallGuid = null;
           }
 
           hideFaceTimeOverlay(facetime.guid, timeout: true); // they have given up the ringing
@@ -2592,11 +2224,9 @@ class RustPushService extends GetxService {
       try {
         var peerUuid = await api.convertTokenToUuid(state: pushService.state, handle: myMsg.sender!, token: (myMsg.target!.first as api.MessageTarget_Token).field0);
         if (message.field0) {
-          ss.settings.smsForwardingTargets[myMsg.sender!] = peerUuid;
+          if (!ss.settings.smsForwardingTargets.contains(peerUuid)) ss.settings.smsForwardingTargets.add(peerUuid);
         } else {
-          if (ss.settings.smsForwardingTargets.containsKey(myMsg.sender!)) {
-            ss.settings.smsForwardingTargets.remove(myMsg.sender!);
-          }
+          ss.settings.smsForwardingTargets.remove(peerUuid);
         }
         ss.saveSettings();
       } catch (e) {
@@ -2631,12 +2261,6 @@ class RustPushService extends GetxService {
           } catch (e) { /*pass*/ }
           ss.settings.userAvatarPath.value = null;
         }
-        if (ss.settings.userPosterPath.value != null) {
-          try {
-            await deletePoster(ss.settings.userPosterPath.value!);
-          } catch (e) { /*pass*/ }
-          ss.settings.userPosterPath.value = null;
-        }
         ss.settings.shareContactAutomatically.value = message.field0.shareContacts;
         ss.saveSettings();
         
@@ -2652,16 +2276,6 @@ class RustPushService extends GetxService {
           await file.writeAsBytes(result.image!);
           ss.settings.userAvatarPath.value = file.path;
         }
-
-        if (result.poster != null && !kIsDesktop) {
-          var decoded = await api.parsePoster(poster: result.poster!);
-          try {
-            ss.settings.userPosterPath.value = await savePoster(decoded);
-          } catch (e, t) {
-            Logger.error("Could not decode poster", error: e, trace: t); 
-          }
-        }
-
         ss.settings.firstName.value = result.name.first;
         ss.settings.lastName.value = result.name.last;
         ss.settings.userName.value = result.name.name;
@@ -2803,7 +2417,7 @@ class RustPushService extends GetxService {
         return;
       }
       if (myMsg.verificationFailed) return;
-      if (myHandles.contains(myMsg.sender) && message.chat.target!.isIMessage) {
+      if (myHandles.contains(myMsg.sender)) {
         if (myMsg.message is api.Message_Read) {
           var chat = message.chat.target!;
           chat.toggleHasUnread(false, privateMark: false);
@@ -2814,10 +2428,6 @@ class RustPushService extends GetxService {
         message.dateDelivered = parseDate(myMsg.sentTimestamp);
       } else {
         message.dateRead = parseDate(myMsg.sentTimestamp);
-      }
-      if (message.chat.target!.notifsSilenced) {
-        var lastNotifiedAnyways = message.chat.target!.dateNotifiedAnyways;
-        message.wasDeliveredQuietly = lastNotifiedAnyways == null || DateTime.now().difference(lastNotifiedAnyways).inMinutes > 5;
       }
       message.save();
       inq.queue(IncomingItem(
@@ -2871,21 +2481,13 @@ class RustPushService extends GetxService {
       controller.cancelTypingIndicator?.cancel();
       controller.cancelTypingIndicator = null;
       if (chat.isRpSms && !myMsg.verificationFailed) {
-        var myHandles = await api.getMyPhoneHandles(state: pushService.state);
-        var service = (myMsg.message as api.Message_Message).field0.service;
-        if (service is api.MessageType_SMS && myHandles.contains(service.usingNumber)) {
-          var otherIds = ss.settings.smsRoutingTargets.copy();
-          var myToken = (myMsg.target!.first as api.MessageTarget_Token).field0;
-          var myId = await api.convertTokenToUuid(state: pushService.state, handle: myMsg.sender!, token: myToken);
-          otherIds.remove(myId);
-          if (otherIds.isNotEmpty) {
-            myMsg.target = otherIds.map((element) => api.MessageTarget.uuid(element)).toList(); // forward to other devices
-            await (backend as RustPushBackend).sendMsg(myMsg);
-          }
-          var msg = (await pushService.reflectMessageDyn(myMsg))!;
-          msg.temp = true;
-          msg.forwardIfNessesary(chat);
-          return;
+        var otherIds = ss.settings.smsForwardingTargets.copy();
+        var myToken = (myMsg.target!.first as api.MessageTarget_Token).field0;
+        var myId = await api.convertTokenToUuid(state: pushService.state, handle: myMsg.sender!, token: myToken);
+        otherIds.remove(myId);
+        if (otherIds.isNotEmpty) {
+          myMsg.target = otherIds.map((element) => api.MessageTarget.uuid(element)).toList(); // forward to other devices
+          await (backend as RustPushBackend).sendMsg(myMsg);
         }
       }
       var msg = myMsg.message as api.Message_Message;
@@ -2902,6 +2504,8 @@ class RustPushService extends GetxService {
     Logger.info("Reflect finished ${myMsg.id}");
     if (reflected != null) {
       Logger.info("Queing");
+      var service = backend as RustPushBackend;
+      service.markDelivered(myMsg);
       await inq.queue(IncomingItem(
         chat: chat,
         message: reflected,
@@ -3053,7 +2657,7 @@ class RustPushService extends GetxService {
     await initFuture;
     try {
       Logger.info("Handling $pointer $retry");
-      await handleMsg(message, retry == "3");
+      await handleMsg(message);
       Logger.info("Marking as handled $pointer");
       await markAsHandledAfter(pointer);
     } catch (e, s) {
@@ -3082,7 +2686,7 @@ class RustPushService extends GetxService {
         if (msg == null) {
           continue;
         }
-        await handleMsg(msg, true);
+        await handleMsg(msg);
       } catch (e, t) {
         // if there was an error somewhere, log it and move on.
         // don't stop our loop
@@ -3096,54 +2700,6 @@ class RustPushService extends GetxService {
   }
 
   late Future initFuture;
-
-  Future<bool> setupZenMode(bool val) async {
-    if (val) {
-      if (!await api.canStatuskit(state: pushService.state)) {
-        showSnackbar("Relog Required", "Re-log in Settings -> Reconfigure to use zen modes");
-        ss.settings.zenModeAware.value = false;
-        ss.saveSettings();
-        return false;
-      }
-      if (!await mcs.invokeMethod("zen-mode-setup")) return false;
-    }
-    await mcs.invokeMethod("zen-mode-uuid", {"key": val ? "enable" : "disable"});
-    ss.settings.enableShareZen.value = val;
-    ss.settings.zenModeAware.value = true;
-    ss.saveSettings();
-    return true;
-  }
-
-  void onboardZenMode() async {
-    if (ss.settings.zenModeAware.value || !ss.settings.finishedSetup.value) return;
-    String? currentMode = await mcs.invokeMethod("get-zen-mode");
-    if (currentMode == null) return;
-    ss.settings.zenModeAware.value = true;
-    ss.saveSettings();
-    await showDialog(
-        context: Get.context!,
-        barrierDismissible: false,
-        builder: (context) => AlertDialog(
-          backgroundColor: Get.theme.colorScheme.properSurface,
-          title: Text("Allow OpenBubbles to share that you have notifications silenced?", style: Get.textTheme.titleLarge),
-          content: Text(
-            "When you're using Do Not Disturb or other modes, OpenBubbles will share with your contacts that you have notifications silenced. Focus sharing on other devices will be turned off.",
-            style: Get.textTheme.bodyLarge,
-          ),
-          actions: [
-            TextButton(
-                onPressed: () => Get.back(),
-                child: Text("Don't allow", style: Get.textTheme.bodyLarge!.copyWith(color: Get.theme.colorScheme.primary))),
-            TextButton(
-                onPressed: () async {
-                  if (await setupZenMode(true)) {
-                    Get.back();
-                  }
-                },
-                child: Text("Allow", style: Get.textTheme.bodyLarge!.copyWith(color: Get.theme.colorScheme.primary)))
-          ],
-        ));
-  }
 
   void tryWarnVpn() async {
     var state = await VpnConnectionDetector.isVpnActive();

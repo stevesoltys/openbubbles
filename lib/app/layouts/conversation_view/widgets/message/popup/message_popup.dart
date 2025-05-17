@@ -333,7 +333,7 @@ class _MessagePopupState extends OptimizedState<MessagePopup> with SingleTickerP
                           child: reactions.isNotEmpty ? ReactionDetails(reactions: reactions) : const SizedBox.shrink(),
                         ),
                       ),
-                    if (ss.settings.enablePrivateAPI.value && isSent && minSierra && message.dateScheduled == null)
+                    if (ss.settings.enablePrivateAPI.value && isSent && minSierra && chat.isIMessage && message.dateScheduled == null)
                       Positioned(
                         bottom: (iOS ? itemHeight * numberToShow + 35 + widget.size.height : context.height - materialOffset)
                             .clamp(0, context.height - (narrowScreen ? 200 : 125)),
@@ -458,7 +458,7 @@ class _MessagePopupState extends OptimizedState<MessagePopup> with SingleTickerP
                                 ),
                         ),
                       ),
-                    if (ss.settings.enablePrivateAPI.value && isSent && minSierra && message.dateScheduled == null)
+                    if (ss.settings.enablePrivateAPI.value && isSent && minSierra && chat.isIMessage && message.dateScheduled == null)
                       Positioned(
                         bottom: (iOS ? itemHeight * numberToShow + 5 + widget.size.height : context.height - materialOffset - 30)
                             .clamp(0, context.height - (narrowScreen ? 200 : 125)),

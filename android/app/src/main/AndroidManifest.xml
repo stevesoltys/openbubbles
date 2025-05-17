@@ -87,7 +87,7 @@
             android:exported="false"
             android:supportsPictureInPicture="true"
             android:taskAffinity=".FaceTime"
-            android:theme="@style/Theme.Call"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:showOnLockScreen="true"/>
 
         <receiver

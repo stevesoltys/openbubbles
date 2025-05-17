@@ -4,21 +4,20 @@ use std::{borrow::{Borrow, BorrowMut}, collections::HashSet, fs::{self, File}, f
 
 use anyhow::anyhow;
 use flutter_rust_bridge::{frb, IntoDart, JoinHandle};
-use icloud_auth::{default_provider, ArcAnisetteClient, LoginClientInfo};
+use omnisette::{default_provider, ArcAnisetteClient, LoginClientInfo};
 use log::{debug, error, info, warn};
 use plist::{Data, Dictionary};
 pub use plist::Value;
-use sha2::Digest;
 
 
 use prost::Message as prostMessage;
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use tokio::{runtime::Runtime, select, sync::{broadcast, mpsc, oneshot::{self, Sender}, watch, Mutex, RwLock}};
-use rustpush::{authenticate_apple, authenticate_phone, cloudkit::{CloudKitClient, CloudKitState}, facetime::{FTClient, FTState, FACETIME_SERVICE, VIDEO_SERVICE}, findmy::{FindMyClient, FindMyState, MULTIPLEX_SERVICE}, login_apple_delegates, name_photo_sharing::ProfilesClient, sharedstreams::{AssetMetadata, FFMpegFilePackager, FileMetadata, FilePackager, PreparedAsset, PreparedFile, SharedStreamClient, SharedStreamsState, SyncController, SyncManager, SyncState}, statuskit::{ChannelInterestToken, StatusKitClient, StatusKitState, StatusKitStatus}, APSMessage, IDSNGMIdentity, LoginDelegate, MADRID_SERVICE};
+use rustpush::{authenticate_apple, authenticate_phone, cloudkit::{CloudKitClient, CloudKitState}, facetime::{FTClient, FTState, FACETIME_SERVICE, VIDEO_SERVICE}, findmy::{FindMyClient, FindMyState, MULTIPLEX_SERVICE}, login_apple_delegates, name_photo_sharing::ProfilesClient, sharedstreams::{AssetMetadata, FFMpegFilePackager, FileMetadata, FilePackager, PreparedAsset, PreparedFile, SharedStreamClient, SharedStreamsState, SyncController, SyncManager, SyncState}, APSMessage, IDSNGMIdentity, LoginDelegate, MADRID_SERVICE};
 use rustpush::AnisetteProvider;
 pub use rustpush::findmy::{FindMyFriendsClient, FindMyPhoneClient};
 pub use rustpush::sharedstreams::{SharedAlbum, SyncStatus};
-pub use icloud_auth::DefaultAnisetteProvider;
+pub use omnisette::DefaultAnisetteProvider;
 use uniffi::HandleAlloc;
 use uuid::Uuid;
 use std::io::Seek;
@@ -170,11 +169,9 @@ pub struct InnerPushState {
     pub sharedstreams: Option<SyncManager<DefaultAnisetteProvider, MyFilePackager>>,
     pub ft_client: Option<FTClient>,
     pub profiles_client: Option<ProfilesClient<DefaultAnisetteProvider>>,
-    pub statuskit_client: Option<Arc<StatusKitClient<DefaultAnisetteProvider>>>,
-    pub statuskit_interest_token: Mutex<Option<ChannelInterestToken<DefaultAnisetteProvider>>>,
     pub conf_dir: PathBuf,
     pub os_config: Option<JoinedOSConfig>,
-    pub account: Option<Arc<Mutex<AppleAccount<DefaultAnisetteProvider>>>>,
+    pub account: Option<AppleAccount<DefaultAnisetteProvider>>,
     pub cancel_poll: Mutex<Option<Sender<()>>>,
     pub identity: Option<IDSNGMIdentity>,
     pub local_messages: Mutex<mpsc::Receiver<PushMessage>>,
@@ -199,8 +196,6 @@ pub async fn new_push_state(dir: String) -> Arc<PushState> {
         fmfd: None,
         sharedstreams: None,
         profiles_client: None,
-        statuskit_client: None,
-        statuskit_interest_token: Mutex::new(None),
         ft_client: None,
         conf_dir: dir,
         os_config: None,
@@ -400,24 +395,6 @@ async fn restore(curr_state: &PushState) {
 
         inner.profiles_client = Some(ProfilesClient::new(cloudkit));
     }
-
-    if let Ok(state) = plist::from_file::<_, GSAConfig>(inner.conf_dir.join("gsa.plist")) {
-        let mut apple_account =
-            AppleAccount::new_with_anisette(get_login_config(&*inner).await, inner.anisette.clone().unwrap()).expect("aacbf?");
-        
-        apple_account.username = Some(state.username);
-        apple_account.hashed_password = Some(state.password.into());
-
-        inner.account = Some(Arc::new(Mutex::new(apple_account)));
-    }
-
-    if let Some(account) = &inner.account {
-        let path = inner.conf_dir.join("statuskit.plist");
-        let state: StatusKitState = plist::from_file(&path).unwrap_or_default();
-        inner.statuskit_client = Some(StatusKitClient::new(state, Box::new(move |state| {
-            plist::to_file_xml(&path, state).unwrap();
-        }), account.clone(), inner.conn.as_ref().unwrap().clone(), inner.os_config.as_ref().unwrap().config(), inner.client.as_ref().unwrap().identity.clone()).await);
-    }
 }
 
 async fn shared_items<P: AnisetteProvider + Send + Sync + 'static, F: FilePackager + Send + Sync + 'static>(manager: &SyncManager<P, F>, seen_paths: &mut HashSet<PathBuf>) -> HashSet<PathBuf> {
@@ -517,14 +494,6 @@ pub async fn register_ids(state: &Arc<PushState>, users: &Vec<IDSUser>) -> anyho
         });
 
         inner.profiles_client = Some(ProfilesClient::new(cloudkit));
-    }
-
-    if let Some(account) = &inner.account {
-        let path = inner.conf_dir.join("statuskit.plist");
-        let state: StatusKitState = plist::from_file(&path).unwrap_or_default();
-        inner.statuskit_client = Some(StatusKitClient::new(state, Box::new(move |state| {
-            plist::to_file_xml(&path, state).unwrap();
-        }), account.clone(), inner.conn.as_ref().unwrap().clone(), inner.os_config.as_ref().unwrap().config(), inner.client.as_ref().unwrap().identity.clone()).await);
     }
     Ok(None)
 }
@@ -670,31 +639,6 @@ pub async fn validate_relay(state: &Arc<PushState>) -> anyhow::Result<Option<Str
     })
 }
 
-pub fn parse_poster(poster: IMessagePosterRecord) -> anyhow::Result<SimplifiedPoster> {
-    Ok(SimplifiedPoster::from_poster(&poster)?)
-}
-
-pub fn from_poster(mut poster: SimplifiedPoster) -> anyhow::Result<IMessagePosterRecord> {
-    Ok(poster.to_poster()?)
-}
-
-// simple round trip to rust clones object
-#[frb(sync)]
-pub fn clone_poster(poster: SimplifiedPoster) -> anyhow::Result<SimplifiedPoster> {
-    Ok(poster)
-}
-
-pub fn parse_poster_save(poster: SimplifiedPoster) -> anyhow::Result<Vec<u8>> {
-    Ok(plist_to_bin(&poster)?)
-}
-
-pub fn from_poster_save(poster: Vec<u8>) -> anyhow::Result<SimplifiedPoster> {
-    debug!("Before");
-    let got = plist::from_bytes(&poster)?;
-    debug!("After");
-    Ok(got)
-}
-
 pub struct DeviceInfo {
     pub name: String,
     pub serial: String,
@@ -816,11 +760,6 @@ pub fn create_icon_array(img: LPIconMetadata) -> NSArray<LPIconMetadata> {
     }
 }
 
-#[frb(sync)]
-pub fn ns_null() -> Vec<u8> {
-    plist_to_bin(&Value::String("$null".to_string())).unwrap()
-}
-
 
 
 #[repr(C)]
@@ -834,7 +773,6 @@ pub enum PushMessage {
     RegistrationState(RegisterState),
     NewPhotostream(SharedAlbum),
     FaceTime(FTMessage),
-    StatusUpdate(StatusKitMessage),
 }
 
 async fn handle_photostream(client: &SharedStreamClient<DefaultAnisetteProvider>, changes: Vec<String>, local: &mpsc::Sender<PushMessage>) {
@@ -849,7 +787,7 @@ async fn handle_photostream(client: &SharedStreamClient<DefaultAnisetteProvider>
 
 pub async fn update_account_headers(state: &Arc<PushState>) -> anyhow::Result<String> {
     let mut state = state.0.write().await;
-    let account = state.account.as_ref().expect("no login state!").lock().await;
+    let account = state.account.as_mut().expect("no login state!");
 
     Ok(account.request_update_account().await?)
 }
@@ -864,8 +802,8 @@ pub async fn get_anisette_headers(state: &Arc<PushState>) -> anyhow::Result<Hash
 
 pub async fn retry_login(state: &Arc<PushState>) -> anyhow::Result<IDSUser> {
     let inner = state.0.read().await;
-    let account = inner.account.as_ref().expect("no login state!").lock().await;
-    do_login(&inner.conf_dir, &*account, account.get_pet().as_ref().unwrap(), Some("termsAccepted=true"), account.spd.as_ref().unwrap(), inner.anisette.as_ref().unwrap(), inner.os_config.as_deref().unwrap()).await
+    let account = inner.account.as_ref().expect("no login state!");
+    do_login(&inner.conf_dir, account.username.as_ref().unwrap().trim(), account.get_pet().as_ref().unwrap(), Some("termsAccepted=true"), account.spd.as_ref().unwrap(), inner.anisette.as_ref().unwrap(), inner.os_config.as_deref().unwrap()).await
 }
 
 pub async fn get_albums(state: &Arc<PushState>, refresh: bool) -> anyhow::Result<(Vec<SharedAlbum>, Vec<String>)> {
@@ -1027,16 +965,6 @@ pub async fn validate_targets_facetime(state: &Arc<PushState>, targets: Vec<Stri
     Ok(state.0.read().await.client.as_ref().unwrap().identity.validate_targets(&targets, "com.apple.private.alloy.facetime.multi", &sender).await?)
 }
 
-pub async fn certify_delivery(state: &Arc<PushState>, context: CertifiedContext, notify: bool) -> anyhow::Result<()> {
-    state.0.read().await.client.as_ref().unwrap().identity.certify_delivery("com.apple.madrid", &context, notify).await?;
-    Ok(())
-}
-
-pub async fn report_messages(state: &Arc<PushState>, handle: String, messages: Vec<ReportMessage>) -> anyhow::Result<()> {
-    state.0.read().await.client.as_ref().unwrap().identity.report_spam(&handle, &messages).await?;
-    Ok(())
-}
-
 pub fn encode_profile_message(p: &ShareProfileMessage) -> String {
     plist_to_string(&p).unwrap()
 }
@@ -1061,42 +989,6 @@ pub async fn set_profile(state: &Arc<PushState>, record: IMessageNicknameRecord,
 pub async fn can_profile_share(state: &Arc<PushState>) -> bool {
     let inner = state.0.read().await;
     inner.profiles_client.is_some()
-}
-
-pub async fn can_statuskit(state: &Arc<PushState>) -> bool {
-    let inner = state.0.read().await;
-    // let Some(status) = &inner.account else { return false };
-    // status.lock().await.get_token("token")
-    inner.account.is_some()
-}
-
-pub async fn invite_to_channel(state: &Arc<PushState>, handle: String, to: HashMap<String, StatusKitPersonalConfig>) -> anyhow::Result<()> {
-    let inner = state.0.read().await;
-    let Some(status) = inner.statuskit_client.as_ref() else { return Err(anyhow!("No profile client!")) };
-    Ok(status.invite_to_channel(&handle, to).await?)
-}
-
-pub async fn reset_channel_keys(state: &Arc<PushState>) -> anyhow::Result<()> {
-    let inner = state.0.read().await;
-    let Some(status) = inner.statuskit_client.as_ref() else { return Err(anyhow!("No profile client!")) };
-    Ok(status.reset_keys().await)
-}
-
-pub async fn request_handles(state: &Arc<PushState>, to: Vec<String>) -> anyhow::Result<()> {
-    let inner = state.0.read().await;
-    let Some(status) = inner.statuskit_client.as_ref() else { return Err(anyhow!("No profile client!")) };
-    *inner.statuskit_interest_token.lock().await = if to.is_empty() { None } else { Some(status.request_handles(&to).await.0) };
-    Ok(())
-}
-
-pub async fn set_status(state: &Arc<PushState>, new_status: Option<String>) -> anyhow::Result<()> {
-    let inner = state.0.read().await;
-    let Some(status) = inner.statuskit_client.as_ref() else { return Err(anyhow!("No profile client!")) };
-    status.share_status(&StatusKitStatus {
-        active: new_status.is_none(),
-        id: new_status,
-    }).await?;
-    Ok(())
 }
 
 pub enum PollResult {
@@ -1125,18 +1017,6 @@ pub async fn recv_wait(state: &Arc<PushState>) -> PollResult {
             if let Some(photostream) = &recv_path.sharedstreams {
                 if let Ok(Some(changes)) = photostream.handle(msg.clone()).await {
                     handle_photostream(&photostream.client, changes, &recv_path.local_broadcast).await;
-                }
-            }
-            if let Some(statuskit) = &recv_path.statuskit_client {
-                match statuskit.handle(msg.clone()).await {
-                    Err(e) => {
-                        error!("Statuskit handle error {e}");
-                        return PollResult::Cont(None);
-                    },
-                    Ok(None) => {},
-                    Ok(Some(msg)) => {
-                        return PollResult::Cont(Some(PushMessage::StatusUpdate(msg)))
-                    }
                 }
             }
             let ft_msg = recv_path.ft_client.as_ref().expect("no ft client??/").handle(msg.clone()).await;
@@ -1209,13 +1089,6 @@ pub async fn get_handles(state: &Arc<PushState>) -> anyhow::Result<Vec<String>> 
         panic!("Wrong phase! (send)")
     }
     Ok(state.0.read().await.client.as_ref().unwrap().identity.get_handles().await.to_vec())
-}
-
-pub async fn get_my_phone_handles(state: &Arc<PushState>) -> anyhow::Result<Vec<String>> {
-    if !matches!(state.get_phase().await, RegistrationPhase::Registered) {
-        panic!("Wrong phase! (send)")
-    }
-    Ok(state.0.read().await.client.as_ref().unwrap().identity.get_my_phone_handles().await.to_vec())
 }
 
 pub async fn do_reregister(state: &Arc<PushState>) -> anyhow::Result<()> {
@@ -1423,31 +1296,14 @@ pub async fn refresh_background_following(state: &Arc<PushState>) -> anyhow::Res
     Ok(x.following.clone())
 }
 
-#[derive(Serialize, Deserialize)]
-struct GSAConfig {
-    username: String,
-    password: Data,
-}
-
-async fn do_login(conf_dir: &Path, account: &AppleAccount<DefaultAnisetteProvider>, pet: &str, cookie: Option<&str>, spd: &Dictionary, anisette: &ArcAnisetteClient<DefaultAnisetteProvider>, os_config: &dyn OSConfig) -> anyhow::Result<IDSUser> {
+async fn do_login(conf_dir: &Path, username: &str, pet: &str, cookie: Option<&str>, spd: &Dictionary, anisette: &ArcAnisetteClient<DefaultAnisetteProvider>, os_config: &dyn OSConfig) -> anyhow::Result<IDSUser> {
     debug!("Got spd {:?}", spd);
     let adsid = spd.get("adsid").ok_or(anyhow!("No adsid!"))?.as_string().unwrap();
     let acname = spd.get("acname").ok_or(anyhow!("No acname!"))?.as_string().unwrap().to_string();
     let dsid = spd.get("DsPrsId").ok_or(anyhow!("No dsid!"))?.as_unsigned_integer().unwrap().to_string();
     
-    let delegates = login_apple_delegates(account.username.as_ref().unwrap(), pet, adsid, cookie, &mut *anisette.lock().await, os_config, &[LoginDelegate::IDS, LoginDelegate::MobileMe]).await?;
+    let delegates = login_apple_delegates(username, pet, adsid, cookie, &mut *anisette.lock().await, os_config, &[LoginDelegate::IDS, LoginDelegate::MobileMe]).await?;
 
-    plist::to_file_xml(conf_dir.join("gsa.plist"), &GSAConfig {
-        username: account.username.clone().unwrap(),
-        password: account.hashed_password.clone().unwrap().into()
-    }).unwrap();
-
-    let path = conf_dir.join("statuskit.plist");
-    std::fs::write(&path, plist_to_string(&StatusKitState {
-        my_key: None,
-        ..plist::from_file(&path).unwrap_or_default()
-    }).unwrap()).unwrap();
-    
     let mobileme = delegates.mobileme.unwrap();
     let findmy = FindMyState::new(dsid.clone(), acname, &mobileme);
 
@@ -1472,19 +1328,14 @@ pub async fn try_auth(state: &Arc<PushState>, username: String, password: String
     let mut inner = state.0.write().await;
     let mut apple_account =
         AppleAccount::new_with_anisette(get_login_config(&*inner).await, inner.anisette.clone().unwrap())?;
-    
-    let mut password_hasher = sha2::Sha256::new();
-    password_hasher.update(&password.as_bytes());
-    let hashed_password = password_hasher.finalize();
+    let mut login_state = apple_account.login_email_pass(&username, &password.encode_to_vec()).await?;
 
-    let mut login_state = apple_account.login_email_pass(&username, &hashed_password).await?;
-
-    inner.account = Some(Arc::new(Mutex::new(apple_account)));
-    let apple_account = inner.account.as_ref().unwrap().lock().await;
+    inner.account = Some(apple_account);
+    let apple_account = inner.account.as_ref().unwrap();
 
     let mut user = None;
     if let Some(pet) = apple_account.get_pet() {
-        let identity = do_login(&inner.conf_dir, &*apple_account, &pet, None, apple_account.spd.as_ref().unwrap(), inner.anisette.as_ref().unwrap(), inner.os_config.as_deref().unwrap()).await?;
+        let identity = do_login(&inner.conf_dir, apple_account.username.as_ref().unwrap().trim(), &pet, None, apple_account.spd.as_ref().unwrap(), inner.anisette.as_ref().unwrap(), inner.os_config.as_deref().unwrap()).await?;
         user = Some(identity);
 
         // who needs extra steps when you have a PET, amirite?
@@ -1511,19 +1362,20 @@ pub async fn auth_phone(state: &Arc<PushState>, number: String, sig: Vec<u8>) ->
 
 pub async fn send_2fa_to_devices(state: &Arc<PushState>) -> anyhow::Result<LoginState> {
     let inner = state.0.read().await;
-    let account = inner.account.as_ref().unwrap().lock().await;
+    let account = inner.account.as_ref().unwrap();
     Ok(account.send_2fa_to_devices().await?)
 
 }
 
 pub async fn verify_2fa(state: &Arc<PushState>, code: String) -> anyhow::Result<(LoginState, Option<IDSUser>)> {
     let mut inner = state.0.write().await;
-    let mut account = inner.account.as_ref().unwrap().lock().await;
+    let account = inner.account.as_mut().unwrap();
     let mut login_state = account.verify_2fa(code).await?;
+    let account = inner.account.as_ref().unwrap();
 
     let mut user = None;
     if let Some(pet) = account.get_pet() {
-        let identity = do_login(&inner.conf_dir, &*account, &pet, None, account.spd.as_ref().unwrap(), inner.anisette.as_ref().unwrap(), inner.os_config.as_deref().unwrap()).await?;
+        let identity = do_login(&inner.conf_dir, account.username.as_ref().unwrap().trim(), &pet, None, account.spd.as_ref().unwrap(), inner.anisette.as_ref().unwrap(), inner.os_config.as_deref().unwrap()).await?;
         user = Some(identity);
 
         // who needs extra steps when you have a PET, amirite?
@@ -1540,7 +1392,7 @@ pub async fn verify_2fa(state: &Arc<PushState>, code: String) -> anyhow::Result<
 
 pub async fn get_2fa_sms_opts(state: &Arc<PushState>) -> anyhow::Result<(Vec<TrustedPhoneNumber>, Option<LoginState>)> {
     let inner = state.0.read().await;
-    let account = inner.account.as_ref().unwrap().lock().await;
+    let account = inner.account.as_ref().unwrap();
     let extras = account.get_auth_extras().await?;
     Ok((
         extras.trusted_phone_numbers,
@@ -1550,18 +1402,19 @@ pub async fn get_2fa_sms_opts(state: &Arc<PushState>) -> anyhow::Result<(Vec<Tru
 
 pub async fn send_2fa_sms(state: &Arc<PushState>, phone_id: u32) -> anyhow::Result<LoginState> {
     let inner = state.0.read().await;
-    let account = inner.account.as_ref().unwrap().lock().await;
+    let account = inner.account.as_ref().unwrap();
     Ok(account.send_sms_2fa_to_devices(phone_id).await?)
 }
 
 pub async fn verify_2fa_sms(state: &Arc<PushState>, body: &VerifyBody, code: String) -> anyhow::Result<(LoginState, Option<IDSUser>)> {
     let mut inner = state.0.write().await;
-    let mut account = inner.account.as_ref().unwrap().lock().await;
+    let account = inner.account.as_mut().unwrap();
     let mut login_state = account.verify_sms_2fa(code, body.clone()).await?;
+    let account = inner.account.as_ref().unwrap();
 
     let mut user = None;
     if let Some(pet) = account.get_pet() {
-        let identity = do_login(&inner.conf_dir, &*account, &pet, None, account.spd.as_ref().unwrap(), inner.anisette.as_ref().unwrap(), inner.os_config.as_deref().unwrap()).await?;
+        let identity = do_login(&inner.conf_dir, account.username.as_ref().unwrap().trim(), &pet, None, account.spd.as_ref().unwrap(), inner.anisette.as_ref().unwrap(), inner.os_config.as_deref().unwrap()).await?;
         user = Some(identity);
 
         // who needs extra steps when you have a PET, amirite?
@@ -1595,9 +1448,6 @@ pub async fn reset_state(state: &Arc<PushState>, reset_hw: bool) -> anyhow::Resu
     inner.fmfd = None;
     inner.sharedstreams = None;
     inner.reg_state = None;
-    inner.profiles_client = None;
-    inner.statuskit_client = None;
-    *inner.statuskit_interest_token.lock().await = None;
     // try deregistering from iMessage, but if it fails we don't really care
     let _ = register(inner.os_config.as_deref().unwrap(), &*conn_state.state.read().await, &[], &mut [], inner.identity.as_ref().unwrap()).await;
     info!("c");
@@ -1607,18 +1457,11 @@ pub async fn reset_state(state: &Arc<PushState>, reset_hw: bool) -> anyhow::Resu
     let _ = std::fs::remove_file(inner.conf_dir.join("facetime.plist"));
     let _ = std::fs::remove_dir(inner.conf_dir.join("cloudkit.plist"));
     let _ = std::fs::remove_file(inner.conf_dir.join("sharedstreams.plist"));
-    let _ = std::fs::remove_file(inner.conf_dir.join("gsa.plist"));
     if let Ok(mut cache) = plist::from_file::<_, Dictionary>(inner.conf_dir.join("id_cache.plist")) {
         // keep replay counters which are nessesary if our identity doesn't change
         cache.get_mut("cache").expect("No cache?").as_dictionary_mut().unwrap().clear();
         plist::to_file_xml(inner.conf_dir.join("id_cache.plist"), &cache)?;
     }
-
-    let path = inner.conf_dir.join("statuskit.plist");
-    std::fs::write(&path, plist_to_string(&StatusKitState {
-        my_key: None,
-        ..plist::from_file(&path).unwrap_or_default()
-    }).unwrap()).unwrap();
 
     if reset_hw {
         inner.inq_queue = None;
@@ -1626,7 +1469,6 @@ pub async fn reset_state(state: &Arc<PushState>, reset_hw: bool) -> anyhow::Resu
         inner.os_config = None;
         let _ = std::fs::remove_file(inner.conf_dir.join("hw_info.plist"));
         let _ = std::fs::remove_file(inner.conf_dir.join("id_cache.plist")); // our identity is wiped so we can wipe our counters too
-        let _ = std::fs::remove_file(inner.conf_dir.join("statuskit.plist"));
     }
 
     Ok(())
@@ -1655,7 +1497,7 @@ impl PushState {
 // only valid before registration
 pub async fn get_user_name(state: &Arc<PushState>) -> anyhow::Result<String> {
     let inner = state.0.read().await;
-    let (first, last) = inner.account.as_ref().unwrap().lock().await.get_name();
+    let (first, last) = inner.account.as_ref().unwrap().get_name();
     Ok(format!("{first} {last}"))
 }
 

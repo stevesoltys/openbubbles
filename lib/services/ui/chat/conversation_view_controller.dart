@@ -29,8 +29,6 @@ class ConversationViewController extends StatefulController with GetSingleTicker
 
   ConversationViewController(this.chat, {String? tag_}) {
     tag = tag_ ?? chat.guid;
-    recipientNotifsSilenced.value = chat.notifsSilenced;
-    reportJunkAvailable.value = !(chat.senderIsKnown ?? true);
   }
 
   // caching items
@@ -66,7 +64,7 @@ class ConversationViewController extends StatefulController with GetSingleTicker
   final RxList<PlatformFile> pickedAttachments = <PlatformFile>[].obs;
   final focusNode = FocusNode();
   final subjectFocusNode = FocusNode();
-  late final textController = MentionTextEditingController(focusNode: focusNode, supportsFormatting: chat.isIMessage);
+  late final textController = MentionTextEditingController(focusNode: focusNode);
   late final subjectTextController = SpellCheckTextEditingController(focusNode: subjectFocusNode);
   final Rx<(PlatformFile?, PayloadData)?> pickedApp = Rx<(PlatformFile, PayloadData)?>(null);
   final RxBool showRecording = false.obs;
@@ -96,8 +94,6 @@ class ConversationViewController extends StatefulController with GetSingleTicker
   Future<void> Function(Tuple7<List<PlatformFile>, AttributedBody, String, String?, int?, String?, PayloadData?>, bool, DateTime?)? sendFunc;
   bool isProcessingImage = false;
 
-  final RxBool reportJunkAvailable = false.obs;
-
   void updateContactInfo() {
     if (chat.participants.length == 1) {
       Contact? sharedContact;
@@ -114,7 +110,7 @@ class ConversationViewController extends StatefulController with GetSingleTicker
       suggestShare.value = ((chat.participants.first.contact?.isShared ?? true) || !ss.settings.shareContactAutomatically.value) 
           && !ss.settings.sharedContacts.contains(chat.participants.first.address)
           && !ss.settings.dismissedContacts.contains(chat.participants.first.address)
-          && ss.settings.nameAndPhotoSharing.value && chat.isIMessage;
+          && ss.settings.nameAndPhotoSharing.value;
     }
   }
 

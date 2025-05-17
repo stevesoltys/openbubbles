@@ -42,7 +42,6 @@ class CupertinoConversationListState
   RxList<Chat> get deletedChats => widget.parentController.deletedChats;
 
   List<String> handles = [];
-  bool canPnr = true;
   Color get backgroundColor =>
       ss.settings.windowEffect.value == WindowEffect.disabled
           ? context.theme.colorScheme.background
@@ -62,8 +61,6 @@ class CupertinoConversationListState
     (() async {
       await pushService.initFuture;
       handles = await api.getHandles(state: pushService.state);
-      var deviceState = await api.getDeviceInfoState(state: pushService.state);
-      canPnr = deviceState.name.contains("iPhone") || deviceState.name.contains("iPod") || deviceState.name.contains("iPad");
       setState(() {});
     })();
   }
@@ -409,28 +406,6 @@ class CupertinoConversationListState
                                           ?.apply(color: context.theme.colorScheme.onSurface,),
                                     ),
                                   )),
-                              if (!canPnr)
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 0, vertical: 8),
-                                  child: GestureDetector(
-                                    child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(Icons.add, color: context.theme.colorScheme.onSurface,),
-                                      const SizedBox(width: 5,),
-                                      Text(
-                                        "Add your number",
-                                        style: context.theme.textTheme.titleMedium
-                                            ?.apply(color: context.theme.colorScheme.onSurface),
-                                      )
-                                    ],
-                                  ),
-                                  onTap: () {
-                                    pushService.wantAddNumber();
-                                  },
-                                )
-                              ),
                               if(chats.suggestedHandles.isNotEmpty)
                               const SizedBox(height: 16),
                               if(chats.suggestedHandles.isNotEmpty)

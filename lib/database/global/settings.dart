@@ -70,7 +70,7 @@ class Settings {
   final RxBool highlightSelectedChat = true.obs;
   final RxBool immersiveMode = false.obs;
   final RxDouble avatarScale = 1.0.obs;
-  final RxBool askWhereToSave = true.obs;
+  final RxBool askWhereToSave = false.obs;
   final RxBool statusIndicatorsOnChats = false.obs;
   final RxInt apiTimeout = 30000.obs;
   final RxBool allowUpsideDownRotation = false.obs;
@@ -89,7 +89,6 @@ class Settings {
   final RxBool scrollToLastUnread = false.obs;
   final RxString userName = "You".obs;
   final RxnString userAvatarPath = RxnString();
-  final RxnString userPosterPath = RxnString();
   final RxBool hideNamesForReactions = false.obs;
   final RxBool replaceEmoticonsWithEmoji = true.obs;
   final RxnString lastLocation = RxnString();
@@ -199,12 +198,7 @@ class Settings {
   final RxBool isSmsRouter = false.obs; // true if we can send/recieve from the app, and via sms forwarding over APNs
   final RxBool vpnWarned = false.obs;
   final RxMap<String, String> cachedCodes = <String, String>{}.obs;
-  final RxList<String> smsRoutingTargets = <String>[].obs;
-  final RxMap<String, String> smsForwardingTargets = <String, String>{}.obs;
-  final RxBool warnedTextChats = false.obs;
-
-  final RxBool enableShareZen = false.obs;
-  final RxBool zenModeAware = false.obs;
+  final RxList<String> smsForwardingTargets = <String>[].obs;
 
   final RxBool developerEnabled = false.obs;
   final RxList<String> developerMode = <String>[].obs;
@@ -412,12 +406,9 @@ class Settings {
       'isSmsRouter': isSmsRouter.value,
       'developerEnabled': developerEnabled.value,
       'vpnWarned': vpnWarned.value,
-      'smsForwardingTargets': smsRoutingTargets,
+      'smsForwardingTargets': smsForwardingTargets,
       'developerMode': developerMode,
       'lastLocation': lastLocation,
-      'enableShareZen': enableShareZen.value,
-      'warnedTextChats': warnedTextChats.value,
-      'zenModeAware': zenModeAware.value,
     };
     if (includeAll) {
       map.addAll({
@@ -430,12 +421,10 @@ class Settings {
         'colorsFromMedia': colorsFromMedia.value,
         'monetTheming': monetTheming.value.index,
         'userAvatarPath': userAvatarPath.value,
-        'userPosterPath': userPosterPath.value,
         'firstFcmRegisterDate': firstFcmRegisterDate.value,
         'sendSoundPath': sendSoundPath.value,
         'receiveSoundPath': receiveSoundPath.value,
         'cachedCodes': cachedCodes,
-        'smsIncomingTargets': smsForwardingTargets,
       });
     }
     return map;
@@ -579,11 +568,7 @@ class Settings {
     ss.settings.developerEnabled.value = map['developerEnabled'] ?? false;
     ss.settings.vpnWarned.value = map['vpnWarned'] ?? false;
     ss.settings.cachedCodes.value = map['cachedCodes'] ?? {};
-    ss.settings.smsForwardingTargets.value = map['smsIncomingTargets'] ?? {};
-    ss.settings.enableShareZen.value = map['enableShareZen'] ?? false;
-    ss.settings.warnedTextChats.value = map['warnedTextChats'] ?? false;
-    ss.settings.zenModeAware.value = map['zenModeAware'] ?? false;
-    ss.settings.smsRoutingTargets.value = (map['smsForwardingTargets']?.runtimeType == String ? jsonDecode(map['smsForwardingTargets']) as List : []).cast<String>();
+    ss.settings.smsForwardingTargets.value = (map['smsForwardingTargets']?.runtimeType == String ? jsonDecode(map['smsForwardingTargets']) as List : []).cast<String>();
     ss.settings.developerMode.value = (map['developerMode']?.runtimeType == String ? jsonDecode(map['developerMode']) as List : []).cast<String>();
     ss.settings.lastLocation.value = map['lastLocation'];
     ss.settings.save();
@@ -679,7 +664,6 @@ class Settings {
     s.dismissedContacts.value = (map['dismissedContacts']?.runtimeType == String ? jsonDecode(map['dismissedContacts']) as List : []).cast<String>();
     s.shareVersion.value = map['shareVersion'] ?? 0;
     s.userAvatarPath.value = map['userAvatarPath'];
-    s.userPosterPath.value = map['userPosterPath'];
     s.privateAPISend.value = map['privateAPISend'] ?? false;
     s.privateAPIAttachmentSend.value = map['privateAPIAttachmentSend'] ?? false;
     s.enablePrivateAPI.value = usingRustPush ? true : map['enablePrivateAPI'] ?? false;
@@ -743,11 +727,7 @@ class Settings {
     s.developerEnabled.value = map['developerEnabled'] ?? false;
     s.vpnWarned.value = map['vpnWarned'] ?? false;
     s.cachedCodes.value =  map['cachedCodes'] is String ? jsonDecode(map['cachedCodes']).cast<String, String>() : <String, String>{};
-    s.smsForwardingTargets.value = map['smsIncomingTargets'] is String ? jsonDecode(map['smsIncomingTargets']).cast<String, String>() : <String, String>{};
-    s.enableShareZen.value = map['enableShareZen'] ?? false;
-    s.warnedTextChats.value = map['warnedTextChats'] ?? false;
-    s.zenModeAware.value = map['zenModeAware'] ?? false;
-    s.smsRoutingTargets.value = (map['smsForwardingTargets']?.runtimeType == String ? jsonDecode(map['smsForwardingTargets']) as List : []).cast<String>();
+    s.smsForwardingTargets.value = (map['smsForwardingTargets']?.runtimeType == String ? jsonDecode(map['smsForwardingTargets']) as List : []).cast<String>();
     s.developerMode.value = (map['developerMode']?.runtimeType == String ? jsonDecode(map['developerMode']) as List : []).cast<String>();
     s.lastLocation.value = map['lastLocation'];
     return s;

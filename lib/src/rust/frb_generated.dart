@@ -67,7 +67,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.3.0';
 
   @override
-  int get rustContentHash => 1566519559;
+  int get rustContentHash => 2014287787;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -99,17 +99,8 @@ abstract class RustLibApi extends BaseApi {
 
   Future<bool> crateApiApiCanProfileShare({required ArcPushState state});
 
-  Future<bool> crateApiApiCanStatuskit({required ArcPushState state});
-
   Future<void> crateApiApiCancelFacetime(
       {required ArcPushState state, required String guid});
-
-  Future<void> crateApiApiCertifyDelivery(
-      {required ArcPushState state,
-      required CertifiedContext context,
-      required bool notify});
-
-  SimplifiedPoster crateApiApiClonePoster({required SimplifiedPoster poster});
 
   Future<void> crateApiApiCompleteMsg({required String ptr});
 
@@ -170,12 +161,6 @@ abstract class RustLibApi extends BaseApi {
 
   Future<FFIFilePackager> crateApiApiFfiFilePackagerDefault();
 
-  Future<IMessagePosterRecord> crateApiApiFromPoster(
-      {required SimplifiedPoster poster});
-
-  Future<SimplifiedPoster> crateApiApiFromPosterSave(
-      {required List<int> poster});
-
   Future<List<FTSession>> crateApiApiFtSessions({required ArcPushState state});
 
   Future<(List<TrustedPhoneNumber>, LoginState?)> crateApiApiGet2FaSmsOpts(
@@ -209,9 +194,6 @@ abstract class RustLibApi extends BaseApi {
 
   Future<List<String>> crateApiApiGetHandles({required ArcPushState state});
 
-  Future<List<String>> crateApiApiGetMyPhoneHandles(
-      {required ArcPushState state});
-
   Future<RegistrationPhase> crateApiApiGetPhase({required ArcPushState state});
 
   Future<RegisterState> crateApiApiGetRegstate({required ArcPushState state});
@@ -230,11 +212,6 @@ abstract class RustLibApi extends BaseApi {
 
   Future<void> crateApiApiInvalidateIdCache({required ArcPushState state});
 
-  Future<void> crateApiApiInviteToChannel(
-      {required ArcPushState state,
-      required String handle,
-      required Map<String, StatusKitPersonalConfig> to});
-
   Future<FindMyFriendsClientDefaultAnisetteProvider>
       crateApiApiMakeFindMyFriends({required ArcPushState state});
 
@@ -252,14 +229,6 @@ abstract class RustLibApi extends BaseApi {
       required Message message});
 
   Future<ArcPushState> crateApiApiNewPushState({required String dir});
-
-  Uint8List crateApiApiNsNull();
-
-  Future<SimplifiedPoster> crateApiApiParsePoster(
-      {required IMessagePosterRecord poster});
-
-  Future<Uint8List> crateApiApiParsePosterSave(
-      {required SimplifiedPoster poster});
 
   Future<PushMessage?> crateApiApiPtrToDart({required String ptr});
 
@@ -283,16 +252,6 @@ abstract class RustLibApi extends BaseApi {
 
   Future<List<SharedAlbum>> crateApiApiRemoveAlbum(
       {required ArcPushState state, required String guid});
-
-  Future<void> crateApiApiReportMessages(
-      {required ArcPushState state,
-      required String handle,
-      required List<ReportMessage> messages});
-
-  Future<void> crateApiApiRequestHandles(
-      {required ArcPushState state, required List<String> to});
-
-  Future<void> crateApiApiResetChannelKeys({required ArcPushState state});
 
   Future<void> crateApiApiResetState(
       {required ArcPushState state, required bool resetHw});
@@ -329,9 +288,6 @@ abstract class RustLibApi extends BaseApi {
       {required ArcPushState state,
       required IMessageNicknameRecord record,
       ShareProfileMessage? existing});
-
-  Future<void> crateApiApiSetStatus(
-      {required ArcPushState state, String? newStatus});
 
   Future<List<SharedAlbum>> crateApiApiSubscribe(
       {required ArcPushState state, required String guid});
@@ -652,31 +608,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
-  Future<bool> crateApiApiCanStatuskit({required ArcPushState state}) {
-    return handler.executeNormal(NormalTask(
-      callFfi: (port_) {
-        final serializer = SseSerializer(generalizedFrbRustBinding);
-        sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcPushState(
-            state, serializer);
-        pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 7, port: port_);
-      },
-      codec: SseCodec(
-        decodeSuccessData: sse_decode_bool,
-        decodeErrorData: null,
-      ),
-      constMeta: kCrateApiApiCanStatuskitConstMeta,
-      argValues: [state],
-      apiImpl: this,
-    ));
-  }
-
-  TaskConstMeta get kCrateApiApiCanStatuskitConstMeta => const TaskConstMeta(
-        debugName: "can_statuskit",
-        argNames: ["state"],
-      );
-
-  @override
   Future<void> crateApiApiCancelFacetime(
       {required ArcPushState state, required String guid}) {
     return handler.executeNormal(NormalTask(
@@ -686,7 +617,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             state, serializer);
         sse_encode_String(guid, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 8, port: port_);
+            funcId: 7, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -704,66 +635,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
-  Future<void> crateApiApiCertifyDelivery(
-      {required ArcPushState state,
-      required CertifiedContext context,
-      required bool notify}) {
-    return handler.executeNormal(NormalTask(
-      callFfi: (port_) {
-        final serializer = SseSerializer(generalizedFrbRustBinding);
-        sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcPushState(
-            state, serializer);
-        sse_encode_box_autoadd_certified_context(context, serializer);
-        sse_encode_bool(notify, serializer);
-        pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 9, port: port_);
-      },
-      codec: SseCodec(
-        decodeSuccessData: sse_decode_unit,
-        decodeErrorData: sse_decode_AnyhowException,
-      ),
-      constMeta: kCrateApiApiCertifyDeliveryConstMeta,
-      argValues: [state, context, notify],
-      apiImpl: this,
-    ));
-  }
-
-  TaskConstMeta get kCrateApiApiCertifyDeliveryConstMeta => const TaskConstMeta(
-        debugName: "certify_delivery",
-        argNames: ["state", "context", "notify"],
-      );
-
-  @override
-  SimplifiedPoster crateApiApiClonePoster({required SimplifiedPoster poster}) {
-    return handler.executeSync(SyncTask(
-      callFfi: () {
-        final serializer = SseSerializer(generalizedFrbRustBinding);
-        sse_encode_box_autoadd_simplified_poster(poster, serializer);
-        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 10)!;
-      },
-      codec: SseCodec(
-        decodeSuccessData: sse_decode_simplified_poster,
-        decodeErrorData: sse_decode_AnyhowException,
-      ),
-      constMeta: kCrateApiApiClonePosterConstMeta,
-      argValues: [poster],
-      apiImpl: this,
-    ));
-  }
-
-  TaskConstMeta get kCrateApiApiClonePosterConstMeta => const TaskConstMeta(
-        debugName: "clone_poster",
-        argNames: ["poster"],
-      );
-
-  @override
   Future<void> crateApiApiCompleteMsg({required String ptr}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_String(ptr, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 11, port: port_);
+            funcId: 8, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -788,7 +666,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_list_prim_u_8_loose(encoded, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 12, port: port_);
+            funcId: 9, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData:
@@ -817,7 +695,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_String(host, serializer);
         sse_encode_opt_String(token, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 13, port: port_);
+            funcId: 10, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData:
@@ -844,7 +722,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_list_prim_u_8_loose(data, serializer);
         sse_encode_box_autoadd_hw_extra(extra, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 14, port: port_);
+            funcId: 11, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData:
@@ -871,7 +749,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcPushState(
             state, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 15, port: port_);
+            funcId: 12, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -900,7 +778,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerJoinedOSConfig(
             config, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 16, port: port_);
+            funcId: 13, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -930,7 +808,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_String(handle, serializer);
         sse_encode_list_prim_u_8_loose(token, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 17, port: port_);
+            funcId: 14, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_String,
@@ -963,7 +841,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_String(handle, serializer);
         sse_encode_list_String(participants, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 18, port: port_);
+            funcId: 15, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -988,7 +866,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_box_autoadd_lp_icon_metadata(img, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 19, port: port_);
+            funcId: 16, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData:
@@ -1014,7 +892,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_box_autoadd_lp_image_metadata(img, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 20, port: port_);
+            funcId: 17, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData:
@@ -1043,7 +921,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             state, serializer);
         sse_encode_String(guid, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 21, port: port_);
+            funcId: 18, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -1068,7 +946,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_String(s, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 22, port: port_);
+            funcId: 19, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_share_profile_message,
@@ -1094,7 +972,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcPushState(
             state, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 23, port: port_);
+            funcId: 20, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -1126,7 +1004,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_box_autoadd_attachment(attachment, serializer);
         sse_encode_String(path, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 24, port: port_);
+            funcId: 21, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -1160,7 +1038,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_box_autoadd_mmcs_file(attachment, serializer);
         sse_encode_String(path, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 25, port: port_);
+            funcId: 22, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -1186,7 +1064,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_box_autoadd_share_profile_message(p, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 26, port: port_);
+            funcId: 23, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_String,
@@ -1214,7 +1092,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             state, serializer);
         sse_encode_box_autoadd_share_profile_message(message, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 27, port: port_);
+            funcId: 24, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_i_message_nickname_record,
@@ -1237,7 +1115,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       callFfi: (port_) {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 28, port: port_);
+            funcId: 25, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_ffi_file_packager,
@@ -1256,56 +1134,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
-  Future<IMessagePosterRecord> crateApiApiFromPoster(
-      {required SimplifiedPoster poster}) {
-    return handler.executeNormal(NormalTask(
-      callFfi: (port_) {
-        final serializer = SseSerializer(generalizedFrbRustBinding);
-        sse_encode_box_autoadd_simplified_poster(poster, serializer);
-        pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 29, port: port_);
-      },
-      codec: SseCodec(
-        decodeSuccessData: sse_decode_i_message_poster_record,
-        decodeErrorData: sse_decode_AnyhowException,
-      ),
-      constMeta: kCrateApiApiFromPosterConstMeta,
-      argValues: [poster],
-      apiImpl: this,
-    ));
-  }
-
-  TaskConstMeta get kCrateApiApiFromPosterConstMeta => const TaskConstMeta(
-        debugName: "from_poster",
-        argNames: ["poster"],
-      );
-
-  @override
-  Future<SimplifiedPoster> crateApiApiFromPosterSave(
-      {required List<int> poster}) {
-    return handler.executeNormal(NormalTask(
-      callFfi: (port_) {
-        final serializer = SseSerializer(generalizedFrbRustBinding);
-        sse_encode_list_prim_u_8_loose(poster, serializer);
-        pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 30, port: port_);
-      },
-      codec: SseCodec(
-        decodeSuccessData: sse_decode_simplified_poster,
-        decodeErrorData: sse_decode_AnyhowException,
-      ),
-      constMeta: kCrateApiApiFromPosterSaveConstMeta,
-      argValues: [poster],
-      apiImpl: this,
-    ));
-  }
-
-  TaskConstMeta get kCrateApiApiFromPosterSaveConstMeta => const TaskConstMeta(
-        debugName: "from_poster_save",
-        argNames: ["poster"],
-      );
-
-  @override
   Future<List<FTSession>> crateApiApiFtSessions({required ArcPushState state}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
@@ -1313,7 +1141,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcPushState(
             state, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 31, port: port_);
+            funcId: 26, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_list_ft_session,
@@ -1339,7 +1167,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcPushState(
             state, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 32, port: port_);
+            funcId: 27, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData:
@@ -1367,7 +1195,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             state, serializer);
         sse_encode_bool(refresh, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 33, port: port_);
+            funcId: 28, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_record_list_shared_album_list_string,
@@ -1393,7 +1221,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcPushState(
             state, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 34, port: port_);
+            funcId: 29, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_Map_String_String,
@@ -1420,7 +1248,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcPushState(
             state, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 35, port: port_);
+            funcId: 30, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_list_follow,
@@ -1447,7 +1275,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcPushState(
             state, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 36, port: port_);
+            funcId: 31, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData:
@@ -1474,7 +1302,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerJoinedOSConfig(
             config, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 37, port: port_);
+            funcId: 32, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_device_info,
@@ -1500,7 +1328,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcPushState(
             state, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 38, port: port_);
+            funcId: 33, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_device_info,
@@ -1527,7 +1355,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyPhoneClientDefaultAnisetteProvider(
             client, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 39, port: port_);
+            funcId: 34, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_list_found_device,
@@ -1553,7 +1381,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyFriendsClientDefaultAnisetteProvider(
             client, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 40, port: port_);
+            funcId: 35, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_list_follow,
@@ -1580,7 +1408,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             state, serializer);
         sse_encode_String(usage, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 41, port: port_);
+            funcId: 36, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_String,
@@ -1605,7 +1433,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcPushState(
             state, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 42, port: port_);
+            funcId: 37, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_list_String,
@@ -1623,33 +1451,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
-  Future<List<String>> crateApiApiGetMyPhoneHandles(
-      {required ArcPushState state}) {
-    return handler.executeNormal(NormalTask(
-      callFfi: (port_) {
-        final serializer = SseSerializer(generalizedFrbRustBinding);
-        sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcPushState(
-            state, serializer);
-        pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 43, port: port_);
-      },
-      codec: SseCodec(
-        decodeSuccessData: sse_decode_list_String,
-        decodeErrorData: sse_decode_AnyhowException,
-      ),
-      constMeta: kCrateApiApiGetMyPhoneHandlesConstMeta,
-      argValues: [state],
-      apiImpl: this,
-    ));
-  }
-
-  TaskConstMeta get kCrateApiApiGetMyPhoneHandlesConstMeta =>
-      const TaskConstMeta(
-        debugName: "get_my_phone_handles",
-        argNames: ["state"],
-      );
-
-  @override
   Future<RegistrationPhase> crateApiApiGetPhase({required ArcPushState state}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
@@ -1657,7 +1458,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcPushState(
             state, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 44, port: port_);
+            funcId: 38, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_registration_phase,
@@ -1682,7 +1483,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcPushState(
             state, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 45, port: port_);
+            funcId: 39, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_register_state,
@@ -1712,7 +1513,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_String(handle, serializer);
         sse_encode_bool(refresh, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 46, port: port_);
+            funcId: 40, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_list_private_device_info,
@@ -1738,7 +1539,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcPushState(
             state, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 47, port: port_);
+            funcId: 41, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData:
@@ -1764,7 +1565,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcPushState(
             state, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 48, port: port_);
+            funcId: 42, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_list_prim_u_8_strict,
@@ -1789,7 +1590,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcPushState(
             state, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 49, port: port_);
+            funcId: 43, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_String,
@@ -1814,7 +1615,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcPushState(
             state, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 50, port: port_);
+            funcId: 44, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -1833,36 +1634,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
-  Future<void> crateApiApiInviteToChannel(
-      {required ArcPushState state,
-      required String handle,
-      required Map<String, StatusKitPersonalConfig> to}) {
-    return handler.executeNormal(NormalTask(
-      callFfi: (port_) {
-        final serializer = SseSerializer(generalizedFrbRustBinding);
-        sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcPushState(
-            state, serializer);
-        sse_encode_String(handle, serializer);
-        sse_encode_Map_String_status_kit_personal_config(to, serializer);
-        pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 51, port: port_);
-      },
-      codec: SseCodec(
-        decodeSuccessData: sse_decode_unit,
-        decodeErrorData: sse_decode_AnyhowException,
-      ),
-      constMeta: kCrateApiApiInviteToChannelConstMeta,
-      argValues: [state, handle, to],
-      apiImpl: this,
-    ));
-  }
-
-  TaskConstMeta get kCrateApiApiInviteToChannelConstMeta => const TaskConstMeta(
-        debugName: "invite_to_channel",
-        argNames: ["state", "handle", "to"],
-      );
-
-  @override
   Future<FindMyFriendsClientDefaultAnisetteProvider>
       crateApiApiMakeFindMyFriends({required ArcPushState state}) {
     return handler.executeNormal(NormalTask(
@@ -1871,7 +1642,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcPushState(
             state, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 52, port: port_);
+            funcId: 45, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData:
@@ -1899,7 +1670,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcPushState(
             state, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 53, port: port_);
+            funcId: 46, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData:
@@ -1924,7 +1695,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_box_autoadd_message_parts(that, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 54, port: port_);
+            funcId: 47, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_String,
@@ -1948,7 +1719,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       callFfi: (port_) {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 55, port: port_);
+            funcId: 48, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_my_async_runtime,
@@ -1981,7 +1752,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_String(sender, serializer);
         sse_encode_box_autoadd_message(message, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 56, port: port_);
+            funcId: 49, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_message_inst,
@@ -2005,7 +1776,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_String(dir, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 57, port: port_);
+            funcId: 50, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData:
@@ -2024,85 +1795,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
-  Uint8List crateApiApiNsNull() {
-    return handler.executeSync(SyncTask(
-      callFfi: () {
-        final serializer = SseSerializer(generalizedFrbRustBinding);
-        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 58)!;
-      },
-      codec: SseCodec(
-        decodeSuccessData: sse_decode_list_prim_u_8_strict,
-        decodeErrorData: null,
-      ),
-      constMeta: kCrateApiApiNsNullConstMeta,
-      argValues: [],
-      apiImpl: this,
-    ));
-  }
-
-  TaskConstMeta get kCrateApiApiNsNullConstMeta => const TaskConstMeta(
-        debugName: "ns_null",
-        argNames: [],
-      );
-
-  @override
-  Future<SimplifiedPoster> crateApiApiParsePoster(
-      {required IMessagePosterRecord poster}) {
-    return handler.executeNormal(NormalTask(
-      callFfi: (port_) {
-        final serializer = SseSerializer(generalizedFrbRustBinding);
-        sse_encode_box_autoadd_i_message_poster_record(poster, serializer);
-        pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 59, port: port_);
-      },
-      codec: SseCodec(
-        decodeSuccessData: sse_decode_simplified_poster,
-        decodeErrorData: sse_decode_AnyhowException,
-      ),
-      constMeta: kCrateApiApiParsePosterConstMeta,
-      argValues: [poster],
-      apiImpl: this,
-    ));
-  }
-
-  TaskConstMeta get kCrateApiApiParsePosterConstMeta => const TaskConstMeta(
-        debugName: "parse_poster",
-        argNames: ["poster"],
-      );
-
-  @override
-  Future<Uint8List> crateApiApiParsePosterSave(
-      {required SimplifiedPoster poster}) {
-    return handler.executeNormal(NormalTask(
-      callFfi: (port_) {
-        final serializer = SseSerializer(generalizedFrbRustBinding);
-        sse_encode_box_autoadd_simplified_poster(poster, serializer);
-        pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 60, port: port_);
-      },
-      codec: SseCodec(
-        decodeSuccessData: sse_decode_list_prim_u_8_strict,
-        decodeErrorData: sse_decode_AnyhowException,
-      ),
-      constMeta: kCrateApiApiParsePosterSaveConstMeta,
-      argValues: [poster],
-      apiImpl: this,
-    ));
-  }
-
-  TaskConstMeta get kCrateApiApiParsePosterSaveConstMeta => const TaskConstMeta(
-        debugName: "parse_poster_save",
-        argNames: ["poster"],
-      );
-
-  @override
   Future<PushMessage?> crateApiApiPtrToDart({required String ptr}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_String(ptr, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 61, port: port_);
+            funcId: 51, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_opt_box_autoadd_push_message,
@@ -2127,7 +1826,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcPushState(
             state, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 62, port: port_);
+            funcId: 52, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_poll_result,
@@ -2153,7 +1852,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcPushState(
             state, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 63, port: port_);
+            funcId: 53, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_list_follow,
@@ -2183,7 +1882,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyPhoneClientDefaultAnisetteProvider(
             client, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 64, port: port_);
+            funcId: 54, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_list_found_device,
@@ -2212,7 +1911,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerFindMyFriendsClientDefaultAnisetteProvider(
             client, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 65, port: port_);
+            funcId: 55, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_list_follow,
@@ -2238,7 +1937,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcPushState(
             state, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 66, port: port_);
+            funcId: 56, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -2266,7 +1965,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_list_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIDSUser(
             users, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 67, port: port_);
+            funcId: 57, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_opt_box_autoadd_support_alert,
@@ -2293,7 +1992,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             state, serializer);
         sse_encode_String(guid, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 68, port: port_);
+            funcId: 58, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_list_shared_album,
@@ -2311,89 +2010,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
-  Future<void> crateApiApiReportMessages(
-      {required ArcPushState state,
-      required String handle,
-      required List<ReportMessage> messages}) {
-    return handler.executeNormal(NormalTask(
-      callFfi: (port_) {
-        final serializer = SseSerializer(generalizedFrbRustBinding);
-        sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcPushState(
-            state, serializer);
-        sse_encode_String(handle, serializer);
-        sse_encode_list_report_message(messages, serializer);
-        pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 69, port: port_);
-      },
-      codec: SseCodec(
-        decodeSuccessData: sse_decode_unit,
-        decodeErrorData: sse_decode_AnyhowException,
-      ),
-      constMeta: kCrateApiApiReportMessagesConstMeta,
-      argValues: [state, handle, messages],
-      apiImpl: this,
-    ));
-  }
-
-  TaskConstMeta get kCrateApiApiReportMessagesConstMeta => const TaskConstMeta(
-        debugName: "report_messages",
-        argNames: ["state", "handle", "messages"],
-      );
-
-  @override
-  Future<void> crateApiApiRequestHandles(
-      {required ArcPushState state, required List<String> to}) {
-    return handler.executeNormal(NormalTask(
-      callFfi: (port_) {
-        final serializer = SseSerializer(generalizedFrbRustBinding);
-        sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcPushState(
-            state, serializer);
-        sse_encode_list_String(to, serializer);
-        pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 70, port: port_);
-      },
-      codec: SseCodec(
-        decodeSuccessData: sse_decode_unit,
-        decodeErrorData: sse_decode_AnyhowException,
-      ),
-      constMeta: kCrateApiApiRequestHandlesConstMeta,
-      argValues: [state, to],
-      apiImpl: this,
-    ));
-  }
-
-  TaskConstMeta get kCrateApiApiRequestHandlesConstMeta => const TaskConstMeta(
-        debugName: "request_handles",
-        argNames: ["state", "to"],
-      );
-
-  @override
-  Future<void> crateApiApiResetChannelKeys({required ArcPushState state}) {
-    return handler.executeNormal(NormalTask(
-      callFfi: (port_) {
-        final serializer = SseSerializer(generalizedFrbRustBinding);
-        sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcPushState(
-            state, serializer);
-        pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 71, port: port_);
-      },
-      codec: SseCodec(
-        decodeSuccessData: sse_decode_unit,
-        decodeErrorData: sse_decode_AnyhowException,
-      ),
-      constMeta: kCrateApiApiResetChannelKeysConstMeta,
-      argValues: [state],
-      apiImpl: this,
-    ));
-  }
-
-  TaskConstMeta get kCrateApiApiResetChannelKeysConstMeta =>
-      const TaskConstMeta(
-        debugName: "reset_channel_keys",
-        argNames: ["state"],
-      );
-
-  @override
   Future<void> crateApiApiResetState(
       {required ArcPushState state, required bool resetHw}) {
     return handler.executeNormal(NormalTask(
@@ -2403,7 +2019,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             state, serializer);
         sse_encode_bool(resetHw, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 72, port: port_);
+            funcId: 59, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -2427,7 +2043,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_String(data, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 73, port: port_);
+            funcId: 60, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_attachment,
@@ -2452,7 +2068,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_String(user, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 74, port: port_);
+            funcId: 61, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData:
@@ -2478,7 +2094,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcPushState(
             state, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 75, port: port_);
+            funcId: 62, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData:
@@ -2503,7 +2119,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_box_autoadd_attachment(att, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 76, port: port_);
+            funcId: 63, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_String,
@@ -2528,7 +2144,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIDSUser(
             user, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 77, port: port_);
+            funcId: 64, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_String,
@@ -2555,7 +2171,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             state, serializer);
         sse_encode_opt_String(friend, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 78, port: port_);
+            funcId: 65, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_list_follow,
@@ -2587,7 +2203,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             client, serializer);
         sse_encode_opt_String(friend, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 79, port: port_);
+            funcId: 66, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_list_follow,
@@ -2614,7 +2230,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             state, serializer);
         sse_encode_box_autoadd_message_inst(msg, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 80, port: port_);
+            funcId: 67, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_bool,
@@ -2641,7 +2257,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             state, serializer);
         sse_encode_u_32(phoneId, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 81, port: port_);
+            funcId: 68, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_login_state,
@@ -2667,7 +2283,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcPushState(
             state, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 82, port: port_);
+            funcId: 69, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_login_state,
@@ -2692,7 +2308,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_String(ptr, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 83, port: port_);
+            funcId: 70, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData:
@@ -2723,7 +2339,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_box_autoadd_i_message_nickname_record(record, serializer);
         sse_encode_opt_box_autoadd_share_profile_message(existing, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 84, port: port_);
+            funcId: 71, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_share_profile_message,
@@ -2741,33 +2357,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
-  Future<void> crateApiApiSetStatus(
-      {required ArcPushState state, String? newStatus}) {
-    return handler.executeNormal(NormalTask(
-      callFfi: (port_) {
-        final serializer = SseSerializer(generalizedFrbRustBinding);
-        sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcPushState(
-            state, serializer);
-        sse_encode_opt_String(newStatus, serializer);
-        pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 85, port: port_);
-      },
-      codec: SseCodec(
-        decodeSuccessData: sse_decode_unit,
-        decodeErrorData: sse_decode_AnyhowException,
-      ),
-      constMeta: kCrateApiApiSetStatusConstMeta,
-      argValues: [state, newStatus],
-      apiImpl: this,
-    ));
-  }
-
-  TaskConstMeta get kCrateApiApiSetStatusConstMeta => const TaskConstMeta(
-        debugName: "set_status",
-        argNames: ["state", "newStatus"],
-      );
-
-  @override
   Future<List<SharedAlbum>> crateApiApiSubscribe(
       {required ArcPushState state, required String guid}) {
     return handler.executeNormal(NormalTask(
@@ -2777,7 +2366,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             state, serializer);
         sse_encode_String(guid, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 86, port: port_);
+            funcId: 72, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_list_shared_album,
@@ -2804,7 +2393,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             state, serializer);
         sse_encode_String(token, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 87, port: port_);
+            funcId: 73, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_list_shared_album,
@@ -2829,7 +2418,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcPushState(
             state, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 88, port: port_);
+            funcId: 74, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_bool,
@@ -2855,7 +2444,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcPushState(
             state, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 89, port: port_);
+            funcId: 75, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -2885,7 +2474,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_String(username, serializer);
         sse_encode_String(password, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 90, port: port_);
+            funcId: 76, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData:
@@ -2913,7 +2502,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             state, serializer);
         sse_encode_String(guid, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 91, port: port_);
+            funcId: 77, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_list_shared_album,
@@ -2939,7 +2528,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcPushState(
             state, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 92, port: port_);
+            funcId: 78, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_String,
@@ -2976,7 +2565,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_String(uti, serializer);
         sse_encode_String(name, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 93, port: port_);
+            funcId: 79, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -3007,7 +2596,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             state, serializer);
         sse_encode_String(path, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 94, port: port_);
+            funcId: 80, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -3038,7 +2627,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_String(oldUsage, serializer);
         sse_encode_String(usage, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 95, port: port_);
+            funcId: 81, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -3066,7 +2655,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerIDSUser(
             user, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 96, port: port_);
+            funcId: 82, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_list_String,
@@ -3091,7 +2680,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerArcPushState(
             state, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 97, port: port_);
+            funcId: 83, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_opt_String,
@@ -3121,7 +2710,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_list_String(targets, serializer);
         sse_encode_String(sender, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 98, port: port_);
+            funcId: 84, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_list_String,
@@ -3151,7 +2740,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_list_String(targets, serializer);
         sse_encode_String(sender, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 99, port: port_);
+            funcId: 85, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_list_String,
@@ -3179,7 +2768,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             state, serializer);
         sse_encode_String(code, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 100, port: port_);
+            funcId: 86, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData:
@@ -3211,7 +2800,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             body, serializer);
         sse_encode_String(code, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 101, port: port_);
+            funcId: 87, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData:
@@ -3490,24 +3079,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return Map.fromEntries(dco_decode_list_record_string_ft_participant(raw)
         .map((e) => MapEntry(e.$1, e.$2)));
-  }
-
-  @protected
-  Map<String, Uint8List> dco_decode_Map_String_list_prim_u_8_strict(
-      dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return Map.fromEntries(
-        dco_decode_list_record_string_list_prim_u_8_strict(raw)
-            .map((e) => MapEntry(e.$1, e.$2)));
-  }
-
-  @protected
-  Map<String, StatusKitPersonalConfig>
-      dco_decode_Map_String_status_kit_personal_config(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return Map.fromEntries(
-        dco_decode_list_record_string_status_kit_personal_config(raw)
-            .map((e) => MapEntry(e.$1, e.$2)));
   }
 
   @protected
@@ -3798,12 +3369,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  CertifiedContext dco_decode_box_autoadd_certified_context(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return dco_decode_certified_context(raw);
-  }
-
-  @protected
   ChangeParticipantMessage dco_decode_box_autoadd_change_participant_message(
       dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
@@ -3921,12 +3486,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  MemojiData dco_decode_box_autoadd_memoji_data(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return dco_decode_memoji_data(raw);
-  }
-
-  @protected
   Message dco_decode_box_autoadd_message(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return dco_decode_message(raw);
@@ -3948,12 +3507,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   MMCSFile dco_decode_box_autoadd_mmcs_file(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return dco_decode_mmcs_file(raw);
-  }
-
-  @protected
-  MonogramData dco_decode_box_autoadd_monogram_data(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return dco_decode_monogram_data(raw);
   }
 
   @protected
@@ -3992,19 +3545,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return dco_decode_permanent_delete_message(raw);
-  }
-
-  @protected
-  PosterColor dco_decode_box_autoadd_poster_color(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return dco_decode_poster_color(raw);
-  }
-
-  @protected
-  PRPosterContentMaterialStyle
-      dco_decode_box_autoadd_pr_poster_content_material_style(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return dco_decode_pr_poster_content_material_style(raw);
   }
 
   @protected
@@ -4077,18 +3617,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  SimplifiedPoster dco_decode_box_autoadd_simplified_poster(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return dco_decode_simplified_poster(raw);
-  }
-
-  @protected
-  StatusKitMessage dco_decode_box_autoadd_status_kit_message(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return dco_decode_status_kit_message(raw);
-  }
-
-  @protected
   SupportAction dco_decode_box_autoadd_support_action(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return dco_decode_support_action(raw);
@@ -4143,22 +3671,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       dco_decode_box_autoadd_update_profile_sharing_message(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return dco_decode_update_profile_sharing_message(raw);
-  }
-
-  @protected
-  CertifiedContext dco_decode_certified_context(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    final arr = raw as List<dynamic>;
-    if (arr.length != 6)
-      throw Exception('unexpected arr length: expect 6 but see ${arr.length}');
-    return CertifiedContext(
-      version: dco_decode_u_32(arr[0]),
-      receipt: dco_decode_list_prim_u_8_strict(arr[1]),
-      sender: dco_decode_String(arr[2]),
-      target: dco_decode_String(arr[3]),
-      uuid: dco_decode_list_prim_u_8_strict(arr[4]),
-      token: dco_decode_list_prim_u_8_strict(arr[5]),
-    );
   }
 
   @protected
@@ -4256,12 +3768,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       bundleId: dco_decode_String(arr[2]),
       balloon: dco_decode_opt_box_autoadd_balloon(arr[3]),
     );
-  }
-
-  @protected
-  double dco_decode_f_32(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return raw as double;
   }
 
   @protected
@@ -4644,24 +4150,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  List<PhotoPosterLayer> dco_decode_list_photo_poster_layer(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return (raw as List<dynamic>).map(dco_decode_photo_poster_layer).toList();
-  }
-
-  @protected
-  List<PosterAsset> dco_decode_list_poster_asset(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return (raw as List<dynamic>).map(dco_decode_poster_asset).toList();
-  }
-
-  @protected
-  Float64List dco_decode_list_prim_f_64_strict(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return raw as Float64List;
-  }
-
-  @protected
   List<int> dco_decode_list_prim_u_8_loose(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as List<int>;
@@ -4704,24 +4192,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  List<(String, Uint8List)> dco_decode_list_record_string_list_prim_u_8_strict(
-      dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return (raw as List<dynamic>)
-        .map(dco_decode_record_string_list_prim_u_8_strict)
-        .toList();
-  }
-
-  @protected
-  List<(String, StatusKitPersonalConfig)>
-      dco_decode_list_record_string_status_kit_personal_config(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return (raw as List<dynamic>)
-        .map(dco_decode_record_string_status_kit_personal_config)
-        .toList();
-  }
-
-  @protected
   List<(String, String)> dco_decode_list_record_string_string(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return (raw as List<dynamic>).map(dco_decode_record_string_string).toList();
@@ -4737,12 +4207,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  List<ReportMessage> dco_decode_list_report_message(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return (raw as List<dynamic>).map(dco_decode_report_message).toList();
-  }
-
-  @protected
   List<SharedAlbum> dco_decode_list_shared_album(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return (raw as List<dynamic>).map(dco_decode_shared_album).toList();
@@ -4752,12 +4216,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   List<TrustedPhoneNumber> dco_decode_list_trusted_phone_number(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return (raw as List<dynamic>).map(dco_decode_trusted_phone_number).toList();
-  }
-
-  @protected
-  List<UIColor> dco_decode_list_ui_color(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return (raw as List<dynamic>).map(dco_decode_ui_color).toList();
   }
 
   @protected
@@ -4866,21 +4324,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  MemojiData dco_decode_memoji_data(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    final arr = raw as List<dynamic>;
-    if (arr.length != 5)
-      throw Exception('unexpected arr length: expect 5 but see ${arr.length}');
-    return MemojiData(
-      backgroundColorDescription: dco_decode_poster_color(arr[0]),
-      avatarRecordData: dco_decode_list_prim_u_8_strict(arr[1]),
-      avatarPoseData: dco_decode_list_prim_u_8_strict(arr[2]),
-      hasBody: dco_decode_bool(arr[3]),
-      avatarImageData: dco_decode_list_prim_u_8_strict(arr[4]),
-    );
-  }
-
-  @protected
   Message dco_decode_message(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     switch (raw[0]) {
@@ -4968,8 +4411,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         return Message_ShareProfile(
           dco_decode_box_autoadd_share_profile_message(raw[1]),
         );
-      case 25:
-        return Message_NotifyAnyways();
       default:
         throw Exception("unreachable");
     }
@@ -4979,8 +4420,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   MessageInst dco_decode_message_inst(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 9)
-      throw Exception('unexpected arr length: expect 9 but see ${arr.length}');
+    if (arr.length != 8)
+      throw Exception('unexpected arr length: expect 8 but see ${arr.length}');
     return MessageInst(
       id: dco_decode_String(arr[0]),
       sender: dco_decode_opt_String(arr[1]),
@@ -4990,7 +4431,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       target: dco_decode_opt_list_message_target(arr[5]),
       sendDelivered: dco_decode_bool(arr[6]),
       verificationFailed: dco_decode_bool(arr[7]),
-      certifiedContext: dco_decode_opt_box_autoadd_certified_context(arr[8]),
     );
   }
 
@@ -5091,20 +4531,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       prog: dco_decode_CastedPrimitive_usize(arr[0]),
       total: dco_decode_CastedPrimitive_usize(arr[1]),
       file: dco_decode_opt_box_autoadd_mmcs_file(arr[2]),
-    );
-  }
-
-  @protected
-  MonogramData dco_decode_monogram_data(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    final arr = raw as List<dynamic>;
-    if (arr.length != 4)
-      throw Exception('unexpected arr length: expect 4 but see ${arr.length}');
-    return MonogramData(
-      topBackgroundColorDescription: dco_decode_poster_color(arr[0]),
-      backgroundColorDescription: dco_decode_poster_color(arr[1]),
-      initials: dco_decode_String(arr[2]),
-      monogramSupportedForName: dco_decode_bool(arr[3]),
     );
   }
 
@@ -5293,12 +4719,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  CertifiedContext? dco_decode_opt_box_autoadd_certified_context(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return raw == null ? null : dco_decode_box_autoadd_certified_context(raw);
-  }
-
-  @protected
   ConversationData? dco_decode_opt_box_autoadd_conversation_data(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw == null ? null : dco_decode_box_autoadd_conversation_data(raw);
@@ -5383,21 +4803,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   PartExtension? dco_decode_opt_box_autoadd_part_extension(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw == null ? null : dco_decode_box_autoadd_part_extension(raw);
-  }
-
-  @protected
-  PosterColor? dco_decode_opt_box_autoadd_poster_color(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return raw == null ? null : dco_decode_box_autoadd_poster_color(raw);
-  }
-
-  @protected
-  PRPosterContentMaterialStyle?
-      dco_decode_opt_box_autoadd_pr_poster_content_material_style(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return raw == null
-        ? null
-        : dco_decode_box_autoadd_pr_poster_content_material_style(raw);
   }
 
   @protected
@@ -5517,93 +4922,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  PhotoPosterContents dco_decode_photo_poster_contents(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    final arr = raw as List<dynamic>;
-    if (arr.length != 3)
-      throw Exception('unexpected arr length: expect 3 but see ${arr.length}');
-    return PhotoPosterContents(
-      version: dco_decode_u_32(arr[0]),
-      layers: dco_decode_list_photo_poster_layer(arr[1]),
-      properties: dco_decode_photo_poster_properties(arr[2]),
-    );
-  }
-
-  @protected
-  PhotoPosterContentsFrame dco_decode_photo_poster_contents_frame(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    final arr = raw as List<dynamic>;
-    if (arr.length != 4)
-      throw Exception('unexpected arr length: expect 4 but see ${arr.length}');
-    return PhotoPosterContentsFrame(
-      width: dco_decode_f_64(arr[0]),
-      height: dco_decode_f_64(arr[1]),
-      x: dco_decode_f_64(arr[2]),
-      y: dco_decode_f_64(arr[3]),
-    );
-  }
-
-  @protected
-  PhotoPosterContentsSize dco_decode_photo_poster_contents_size(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    final arr = raw as List<dynamic>;
-    if (arr.length != 2)
-      throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
-    return PhotoPosterContentsSize(
-      width: dco_decode_f_64(arr[0]),
-      height: dco_decode_f_64(arr[1]),
-    );
-  }
-
-  @protected
-  PhotoPosterLayer dco_decode_photo_poster_layer(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    final arr = raw as List<dynamic>;
-    if (arr.length != 4)
-      throw Exception('unexpected arr length: expect 4 but see ${arr.length}');
-    return PhotoPosterLayer(
-      frame: dco_decode_photo_poster_contents_frame(arr[0]),
-      filename: dco_decode_String(arr[1]),
-      zPosition: dco_decode_f_32(arr[2]),
-      identifier: dco_decode_String(arr[3]),
-    );
-  }
-
-  @protected
-  PhotoPosterLayout dco_decode_photo_poster_layout(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    final arr = raw as List<dynamic>;
-    if (arr.length != 9)
-      throw Exception('unexpected arr length: expect 9 but see ${arr.length}');
-    return PhotoPosterLayout(
-      clockIntersection: dco_decode_u_32(arr[0]),
-      deviceResolution: dco_decode_photo_poster_contents_size(arr[1]),
-      visibleFrame: dco_decode_photo_poster_contents_frame(arr[2]),
-      timeFrame: dco_decode_photo_poster_contents_frame(arr[3]),
-      clockLayerOrder: dco_decode_String(arr[4]),
-      hasTopEdgeContact: dco_decode_bool(arr[5]),
-      inactiveFrame: dco_decode_photo_poster_contents_frame(arr[6]),
-      imageSize: dco_decode_photo_poster_contents_size(arr[7]),
-      parallaxPadding: dco_decode_photo_poster_contents_size(arr[8]),
-    );
-  }
-
-  @protected
-  PhotoPosterProperties dco_decode_photo_poster_properties(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    final arr = raw as List<dynamic>;
-    if (arr.length != 5)
-      throw Exception('unexpected arr length: expect 5 but see ${arr.length}');
-    return PhotoPosterProperties(
-      portraitLayout: dco_decode_photo_poster_layout(arr[0]),
-      settlingEffectEnabled: dco_decode_bool(arr[1]),
-      depthEnabled: dco_decode_bool(arr[2]),
-      clockAreaLuminance: dco_decode_f_64(arr[3]),
-      parallaxDisabled: dco_decode_bool(arr[4]),
-    );
-  }
-
-  @protected
   PollResult dco_decode_poll_result(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     switch (raw[0]) {
@@ -5616,136 +4934,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       default:
         throw Exception("unreachable");
     }
-  }
-
-  @protected
-  PosterAsset dco_decode_poster_asset(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    final arr = raw as List<dynamic>;
-    if (arr.length != 3)
-      throw Exception('unexpected arr length: expect 3 but see ${arr.length}');
-    return PosterAsset(
-      contents: dco_decode_photo_poster_contents(arr[0]),
-      files: dco_decode_Map_String_list_prim_u_8_strict(arr[1]),
-      uuid: dco_decode_String(arr[2]),
-    );
-  }
-
-  @protected
-  PosterColor dco_decode_poster_color(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    final arr = raw as List<dynamic>;
-    if (arr.length != 4)
-      throw Exception('unexpected arr length: expect 4 but see ${arr.length}');
-    return PosterColor(
-      alpha: dco_decode_f_64(arr[0]),
-      blue: dco_decode_f_64(arr[1]),
-      green: dco_decode_f_64(arr[2]),
-      red: dco_decode_f_64(arr[3]),
-    );
-  }
-
-  @protected
-  PosterType dco_decode_poster_type(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    switch (raw[0]) {
-      case 0:
-        return PosterType_Photo(
-          assets: dco_decode_list_poster_asset(raw[1]),
-        );
-      case 1:
-        return PosterType_Monogram(
-          data: dco_decode_box_autoadd_monogram_data(raw[1]),
-          background: dco_decode_box_autoadd_poster_color(raw[2]),
-        );
-      case 2:
-        return PosterType_Memoji(
-          data: dco_decode_box_autoadd_memoji_data(raw[1]),
-          background: dco_decode_box_autoadd_poster_color(raw[2]),
-        );
-      default:
-        throw Exception("unreachable");
-    }
-  }
-
-  @protected
-  PRPosterColor dco_decode_pr_poster_color(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    final arr = raw as List<dynamic>;
-    if (arr.length != 4)
-      throw Exception('unexpected arr length: expect 4 but see ${arr.length}');
-    return PRPosterColor(
-      preferredStyle: dco_decode_u_32(arr[0]),
-      identifier: dco_decode_String(arr[1]),
-      suggested: dco_decode_bool(arr[2]),
-      color: dco_decode_ui_color(arr[3]),
-    );
-  }
-
-  @protected
-  PRPosterContentMaterialStyle dco_decode_pr_poster_content_material_style(
-      dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    switch (raw[0]) {
-      case 0:
-        return PRPosterContentMaterialStyle_PRPosterContentDiscreteColorsStyle(
-          variation: dco_decode_f_32(raw[1]),
-          colors: dco_decode_list_ui_color(raw[2]),
-          vibrant: dco_decode_bool(raw[3]),
-          supportsVariation: dco_decode_bool(raw[4]),
-          needsToResolveVariation: dco_decode_bool(raw[5]),
-        );
-      case 1:
-        return PRPosterContentMaterialStyle_PRPosterContentVibrantMaterialStyle();
-      case 2:
-        return PRPosterContentMaterialStyle_PRPosterContentGradientStyle(
-          gradientType: dco_decode_u_32(raw[1]),
-          colors: dco_decode_list_ui_color(raw[2]),
-          startPoint: dco_decode_String(raw[3]),
-          locations: dco_decode_list_prim_f_64_strict(raw[4]),
-          endPoint: dco_decode_String(raw[5]),
-        );
-      default:
-        throw Exception("unreachable");
-    }
-  }
-
-  @protected
-  PRPosterSystemTimeFontConfiguration
-      dco_decode_pr_poster_system_time_font_configuration(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    final arr = raw as List<dynamic>;
-    if (arr.length != 3)
-      throw Exception('unexpected arr length: expect 3 but see ${arr.length}');
-    return PRPosterSystemTimeFontConfiguration(
-      isSystemItem: dco_decode_bool(arr[0]),
-      timeFontIdentifier: dco_decode_String(arr[1]),
-      weight: dco_decode_f_64(arr[2]),
-    );
-  }
-
-  @protected
-  PRPosterTitleStyleConfiguration
-      dco_decode_pr_poster_title_style_configuration(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    final arr = raw as List<dynamic>;
-    if (arr.length != 11)
-      throw Exception('unexpected arr length: expect 11 but see ${arr.length}');
-    return PRPosterTitleStyleConfiguration(
-      alternateDateEnabled: dco_decode_bool(arr[0]),
-      contentsLuminence: dco_decode_f_64(arr[1]),
-      groupName: dco_decode_String(arr[2]),
-      preferredTitleAlignment: dco_decode_u_32(arr[3]),
-      preferredTitleLayout: dco_decode_u_32(arr[4]),
-      timeFontConfiguration:
-          dco_decode_pr_poster_system_time_font_configuration(arr[5]),
-      timeNumberingSystem: dco_decode_opt_list_prim_u_8_strict(arr[6]),
-      titleColor: dco_decode_pr_poster_color(arr[7]),
-      titleContentStyle: dco_decode_list_prim_u_8_strict(arr[8]),
-      userConfigured: dco_decode_bool(arr[9]),
-      titleStyle:
-          dco_decode_opt_box_autoadd_pr_poster_content_material_style(arr[10]),
-    );
   }
 
   @protected
@@ -5788,10 +4976,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       case 4:
         return PushMessage_FaceTime(
           dco_decode_box_autoadd_ft_message(raw[1]),
-        );
-      case 5:
-        return PushMessage_StatusUpdate(
-          dco_decode_box_autoadd_status_kit_message(raw[1]),
         );
       default:
         throw Exception("unreachable");
@@ -5966,34 +5150,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  (String, Uint8List) dco_decode_record_string_list_prim_u_8_strict(
-      dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    final arr = raw as List<dynamic>;
-    if (arr.length != 2) {
-      throw Exception('Expected 2 elements, got ${arr.length}');
-    }
-    return (
-      dco_decode_String(arr[0]),
-      dco_decode_list_prim_u_8_strict(arr[1]),
-    );
-  }
-
-  @protected
-  (String, StatusKitPersonalConfig)
-      dco_decode_record_string_status_kit_personal_config(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    final arr = raw as List<dynamic>;
-    if (arr.length != 2) {
-      throw Exception('Expected 2 elements, got ${arr.length}');
-    }
-    return (
-      dco_decode_String(arr[0]),
-      dco_decode_status_kit_personal_config(arr[1]),
-    );
-  }
-
-  @protected
   (String, String) dco_decode_record_string_string(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
@@ -6070,21 +5226,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  ReportMessage dco_decode_report_message(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    final arr = raw as List<dynamic>;
-    if (arr.length != 5)
-      throw Exception('unexpected arr length: expect 5 but see ${arr.length}');
-    return ReportMessage(
-      guid: dco_decode_String(arr[0]),
-      sender: dco_decode_String(arr[1]),
-      conversationSize: dco_decode_u_32(arr[2]),
-      parts: dco_decode_message_parts(arr[3]),
-      timeOfMessage: dco_decode_f_64(arr[4]),
-    );
-  }
-
-  @protected
   RichLinkImageAttachmentSubstitute
       dco_decode_rich_link_image_attachment_substitute(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
@@ -6151,47 +5292,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       lowResWallpaperTag: dco_decode_list_prim_u_8_strict(arr[0]),
       wallpaperTag: dco_decode_list_prim_u_8_strict(arr[1]),
       messageTag: dco_decode_list_prim_u_8_strict(arr[2]),
-    );
-  }
-
-  @protected
-  SimplifiedPoster dco_decode_simplified_poster(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    final arr = raw as List<dynamic>;
-    if (arr.length != 4)
-      throw Exception('unexpected arr length: expect 4 but see ${arr.length}');
-    return SimplifiedPoster(
-      textMetadata: dco_decode_wallpaper_metadata(arr[0]),
-      titleConfiguration:
-          dco_decode_pr_poster_title_style_configuration(arr[1]),
-      type: dco_decode_poster_type(arr[2]),
-      lowRes: dco_decode_list_prim_u_8_strict(arr[3]),
-    );
-  }
-
-  @protected
-  StatusKitMessage dco_decode_status_kit_message(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    switch (raw[0]) {
-      case 0:
-        return StatusKitMessage_StatusChanged(
-          user: dco_decode_String(raw[1]),
-          mode: dco_decode_opt_String(raw[2]),
-          allowed: dco_decode_bool(raw[3]),
-        );
-      default:
-        throw Exception("unreachable");
-    }
-  }
-
-  @protected
-  StatusKitPersonalConfig dco_decode_status_kit_personal_config(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    final arr = raw as List<dynamic>;
-    if (arr.length != 1)
-      throw Exception('unexpected arr length: expect 1 but see ${arr.length}');
-    return StatusKitPersonalConfig(
-      allowedModes: dco_decode_list_String(arr[0]),
     );
   }
 
@@ -6326,39 +5426,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  UIColor dco_decode_ui_color(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    switch (raw[0]) {
-      case 0:
-        return UIColor_RGBAColorSpace(
-          colorComponents: dco_decode_u_32(raw[1]),
-          green: dco_decode_f_64(raw[2]),
-          blue: dco_decode_f_64(raw[3]),
-          red: dco_decode_f_64(raw[4]),
-          greenDbl: dco_decode_opt_box_autoadd_f_64(raw[5]),
-          blueDbl: dco_decode_opt_box_autoadd_f_64(raw[6]),
-          redDbl: dco_decode_opt_box_autoadd_f_64(raw[7]),
-          alphaDbl: dco_decode_opt_box_autoadd_f_64(raw[8]),
-          alpha: dco_decode_f_64(raw[9]),
-          rgb: dco_decode_list_prim_u_8_strict(raw[10]),
-          colorSpace: dco_decode_u_32(raw[11]),
-          class_: dco_decode_String(raw[12]),
-        );
-      case 1:
-        return UIColor_GrayscaleAlphaColorSpace(
-          colorComponents: dco_decode_u_32(raw[1]),
-          white: dco_decode_f_64(raw[2]),
-          alpha: dco_decode_f_64(raw[3]),
-          bin: dco_decode_list_prim_u_8_strict(raw[4]),
-          colorSpace: dco_decode_u_32(raw[5]),
-          class_: dco_decode_String(raw[6]),
-        );
-      default:
-        throw Exception("unreachable");
-    }
-  }
-
-  @protected
   void dco_decode_unit(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return;
@@ -6418,23 +5485,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   BigInt dco_decode_usize(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return dcoDecodeU64(raw);
-  }
-
-  @protected
-  WallpaperMetadata dco_decode_wallpaper_metadata(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    final arr = raw as List<dynamic>;
-    if (arr.length != 7)
-      throw Exception('unexpected arr length: expect 7 but see ${arr.length}');
-    return WallpaperMetadata(
-      backgroundColorKey: dco_decode_opt_box_autoadd_poster_color(arr[0]),
-      fontColorKey: dco_decode_poster_color(arr[1]),
-      fontNameKey: dco_decode_String(arr[2]),
-      fontSizeKey: dco_decode_f_32(arr[3]),
-      fontWeightKey: dco_decode_f_32(arr[4]),
-      isVerticalKey: dco_decode_bool(arr[5]),
-      typeKey: dco_decode_String(arr[6]),
-    );
   }
 
   @protected
@@ -6631,25 +5681,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var inner = sse_decode_list_record_string_ft_participant(deserializer);
-    return Map.fromEntries(inner.map((e) => MapEntry(e.$1, e.$2)));
-  }
-
-  @protected
-  Map<String, Uint8List> sse_decode_Map_String_list_prim_u_8_strict(
-      SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    var inner =
-        sse_decode_list_record_string_list_prim_u_8_strict(deserializer);
-    return Map.fromEntries(inner.map((e) => MapEntry(e.$1, e.$2)));
-  }
-
-  @protected
-  Map<String, StatusKitPersonalConfig>
-      sse_decode_Map_String_status_kit_personal_config(
-          SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    var inner =
-        sse_decode_list_record_string_status_kit_personal_config(deserializer);
     return Map.fromEntries(inner.map((e) => MapEntry(e.$1, e.$2)));
   }
 
@@ -6967,13 +5998,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  CertifiedContext sse_decode_box_autoadd_certified_context(
-      SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return (sse_decode_certified_context(deserializer));
-  }
-
-  @protected
   ChangeParticipantMessage sse_decode_box_autoadd_change_participant_message(
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -7099,12 +6123,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  MemojiData sse_decode_box_autoadd_memoji_data(SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return (sse_decode_memoji_data(deserializer));
-  }
-
-  @protected
   Message sse_decode_box_autoadd_message(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return (sse_decode_message(deserializer));
@@ -7128,13 +6146,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   MMCSFile sse_decode_box_autoadd_mmcs_file(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return (sse_decode_mmcs_file(deserializer));
-  }
-
-  @protected
-  MonogramData sse_decode_box_autoadd_monogram_data(
-      SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return (sse_decode_monogram_data(deserializer));
   }
 
   @protected
@@ -7176,21 +6187,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return (sse_decode_permanent_delete_message(deserializer));
-  }
-
-  @protected
-  PosterColor sse_decode_box_autoadd_poster_color(
-      SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return (sse_decode_poster_color(deserializer));
-  }
-
-  @protected
-  PRPosterContentMaterialStyle
-      sse_decode_box_autoadd_pr_poster_content_material_style(
-          SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return (sse_decode_pr_poster_content_material_style(deserializer));
   }
 
   @protected
@@ -7271,20 +6267,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  SimplifiedPoster sse_decode_box_autoadd_simplified_poster(
-      SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return (sse_decode_simplified_poster(deserializer));
-  }
-
-  @protected
-  StatusKitMessage sse_decode_box_autoadd_status_kit_message(
-      SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return (sse_decode_status_kit_message(deserializer));
-  }
-
-  @protected
   SupportAction sse_decode_box_autoadd_support_action(
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -7343,24 +6325,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return (sse_decode_update_profile_sharing_message(deserializer));
-  }
-
-  @protected
-  CertifiedContext sse_decode_certified_context(SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    var var_version = sse_decode_u_32(deserializer);
-    var var_receipt = sse_decode_list_prim_u_8_strict(deserializer);
-    var var_sender = sse_decode_String(deserializer);
-    var var_target = sse_decode_String(deserializer);
-    var var_uuid = sse_decode_list_prim_u_8_strict(deserializer);
-    var var_token = sse_decode_list_prim_u_8_strict(deserializer);
-    return CertifiedContext(
-        version: var_version,
-        receipt: var_receipt,
-        sender: var_sender,
-        target: var_target,
-        uuid: var_uuid,
-        token: var_token);
   }
 
   @protected
@@ -7450,12 +6414,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         appId: var_appId,
         bundleId: var_bundleId,
         balloon: var_balloon);
-  }
-
-  @protected
-  double sse_decode_f_32(SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return deserializer.buffer.getFloat32();
   }
 
   @protected
@@ -7933,38 +6891,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  List<PhotoPosterLayer> sse_decode_list_photo_poster_layer(
-      SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-
-    var len_ = sse_decode_i_32(deserializer);
-    var ans_ = <PhotoPosterLayer>[];
-    for (var idx_ = 0; idx_ < len_; ++idx_) {
-      ans_.add(sse_decode_photo_poster_layer(deserializer));
-    }
-    return ans_;
-  }
-
-  @protected
-  List<PosterAsset> sse_decode_list_poster_asset(SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-
-    var len_ = sse_decode_i_32(deserializer);
-    var ans_ = <PosterAsset>[];
-    for (var idx_ = 0; idx_ < len_; ++idx_) {
-      ans_.add(sse_decode_poster_asset(deserializer));
-    }
-    return ans_;
-  }
-
-  @protected
-  Float64List sse_decode_list_prim_f_64_strict(SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    var len_ = sse_decode_i_32(deserializer);
-    return deserializer.buffer.getFloat64List(len_);
-  }
-
-  @protected
   List<int> sse_decode_list_prim_u_8_loose(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var len_ = sse_decode_i_32(deserializer);
@@ -8031,34 +6957,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  List<(String, Uint8List)> sse_decode_list_record_string_list_prim_u_8_strict(
-      SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-
-    var len_ = sse_decode_i_32(deserializer);
-    var ans_ = <(String, Uint8List)>[];
-    for (var idx_ = 0; idx_ < len_; ++idx_) {
-      ans_.add(sse_decode_record_string_list_prim_u_8_strict(deserializer));
-    }
-    return ans_;
-  }
-
-  @protected
-  List<(String, StatusKitPersonalConfig)>
-      sse_decode_list_record_string_status_kit_personal_config(
-          SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-
-    var len_ = sse_decode_i_32(deserializer);
-    var ans_ = <(String, StatusKitPersonalConfig)>[];
-    for (var idx_ = 0; idx_ < len_; ++idx_) {
-      ans_.add(
-          sse_decode_record_string_status_kit_personal_config(deserializer));
-    }
-    return ans_;
-  }
-
-  @protected
   List<(String, String)> sse_decode_list_record_string_string(
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -8085,19 +6983,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  List<ReportMessage> sse_decode_list_report_message(
-      SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-
-    var len_ = sse_decode_i_32(deserializer);
-    var ans_ = <ReportMessage>[];
-    for (var idx_ = 0; idx_ < len_; ++idx_) {
-      ans_.add(sse_decode_report_message(deserializer));
-    }
-    return ans_;
-  }
-
-  @protected
   List<SharedAlbum> sse_decode_list_shared_album(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
 
@@ -8118,18 +7003,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var ans_ = <TrustedPhoneNumber>[];
     for (var idx_ = 0; idx_ < len_; ++idx_) {
       ans_.add(sse_decode_trusted_phone_number(deserializer));
-    }
-    return ans_;
-  }
-
-  @protected
-  List<UIColor> sse_decode_list_ui_color(SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-
-    var len_ = sse_decode_i_32(deserializer);
-    var ans_ = <UIColor>[];
-    for (var idx_ = 0; idx_ < len_; ++idx_) {
-      ans_.add(sse_decode_ui_color(deserializer));
     }
     return ans_;
   }
@@ -8255,22 +7128,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  MemojiData sse_decode_memoji_data(SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    var var_backgroundColorDescription = sse_decode_poster_color(deserializer);
-    var var_avatarRecordData = sse_decode_list_prim_u_8_strict(deserializer);
-    var var_avatarPoseData = sse_decode_list_prim_u_8_strict(deserializer);
-    var var_hasBody = sse_decode_bool(deserializer);
-    var var_avatarImageData = sse_decode_list_prim_u_8_strict(deserializer);
-    return MemojiData(
-        backgroundColorDescription: var_backgroundColorDescription,
-        avatarRecordData: var_avatarRecordData,
-        avatarPoseData: var_avatarPoseData,
-        hasBody: var_hasBody,
-        avatarImageData: var_avatarImageData);
-  }
-
-  @protected
   Message sse_decode_message(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
 
@@ -8351,8 +7208,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         var var_field0 =
             sse_decode_box_autoadd_share_profile_message(deserializer);
         return Message_ShareProfile(var_field0);
-      case 25:
-        return Message_NotifyAnyways();
       default:
         throw UnimplementedError('');
     }
@@ -8370,8 +7225,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_target = sse_decode_opt_list_message_target(deserializer);
     var var_sendDelivered = sse_decode_bool(deserializer);
     var var_verificationFailed = sse_decode_bool(deserializer);
-    var var_certifiedContext =
-        sse_decode_opt_box_autoadd_certified_context(deserializer);
     return MessageInst(
         id: var_id,
         sender: var_sender,
@@ -8380,8 +7233,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sentTimestamp: var_sentTimestamp,
         target: var_target,
         sendDelivered: var_sendDelivered,
-        verificationFailed: var_verificationFailed,
-        certifiedContext: var_certifiedContext);
+        verificationFailed: var_verificationFailed);
   }
 
   @protected
@@ -8479,21 +7331,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_file = sse_decode_opt_box_autoadd_mmcs_file(deserializer);
     return MMCSTransferProgress(
         prog: var_prog, total: var_total, file: var_file);
-  }
-
-  @protected
-  MonogramData sse_decode_monogram_data(SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    var var_topBackgroundColorDescription =
-        sse_decode_poster_color(deserializer);
-    var var_backgroundColorDescription = sse_decode_poster_color(deserializer);
-    var var_initials = sse_decode_String(deserializer);
-    var var_monogramSupportedForName = sse_decode_bool(deserializer);
-    return MonogramData(
-        topBackgroundColorDescription: var_topBackgroundColorDescription,
-        backgroundColorDescription: var_backgroundColorDescription,
-        initials: var_initials,
-        monogramSupportedForName: var_monogramSupportedForName);
   }
 
   @protected
@@ -8738,18 +7575,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  CertifiedContext? sse_decode_opt_box_autoadd_certified_context(
-      SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-
-    if (sse_decode_bool(deserializer)) {
-      return (sse_decode_box_autoadd_certified_context(deserializer));
-    } else {
-      return null;
-    }
-  }
-
-  @protected
   ConversationData? sse_decode_opt_box_autoadd_conversation_data(
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -8905,32 +7730,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
     if (sse_decode_bool(deserializer)) {
       return (sse_decode_box_autoadd_part_extension(deserializer));
-    } else {
-      return null;
-    }
-  }
-
-  @protected
-  PosterColor? sse_decode_opt_box_autoadd_poster_color(
-      SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-
-    if (sse_decode_bool(deserializer)) {
-      return (sse_decode_box_autoadd_poster_color(deserializer));
-    } else {
-      return null;
-    }
-  }
-
-  @protected
-  PRPosterContentMaterialStyle?
-      sse_decode_opt_box_autoadd_pr_poster_content_material_style(
-          SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-
-    if (sse_decode_bool(deserializer)) {
-      return (sse_decode_box_autoadd_pr_poster_content_material_style(
-          deserializer));
     } else {
       return null;
     }
@@ -9129,97 +7928,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  PhotoPosterContents sse_decode_photo_poster_contents(
-      SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    var var_version = sse_decode_u_32(deserializer);
-    var var_layers = sse_decode_list_photo_poster_layer(deserializer);
-    var var_properties = sse_decode_photo_poster_properties(deserializer);
-    return PhotoPosterContents(
-        version: var_version, layers: var_layers, properties: var_properties);
-  }
-
-  @protected
-  PhotoPosterContentsFrame sse_decode_photo_poster_contents_frame(
-      SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    var var_width = sse_decode_f_64(deserializer);
-    var var_height = sse_decode_f_64(deserializer);
-    var var_x = sse_decode_f_64(deserializer);
-    var var_y = sse_decode_f_64(deserializer);
-    return PhotoPosterContentsFrame(
-        width: var_width, height: var_height, x: var_x, y: var_y);
-  }
-
-  @protected
-  PhotoPosterContentsSize sse_decode_photo_poster_contents_size(
-      SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    var var_width = sse_decode_f_64(deserializer);
-    var var_height = sse_decode_f_64(deserializer);
-    return PhotoPosterContentsSize(width: var_width, height: var_height);
-  }
-
-  @protected
-  PhotoPosterLayer sse_decode_photo_poster_layer(SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    var var_frame = sse_decode_photo_poster_contents_frame(deserializer);
-    var var_filename = sse_decode_String(deserializer);
-    var var_zPosition = sse_decode_f_32(deserializer);
-    var var_identifier = sse_decode_String(deserializer);
-    return PhotoPosterLayer(
-        frame: var_frame,
-        filename: var_filename,
-        zPosition: var_zPosition,
-        identifier: var_identifier);
-  }
-
-  @protected
-  PhotoPosterLayout sse_decode_photo_poster_layout(
-      SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    var var_clockIntersection = sse_decode_u_32(deserializer);
-    var var_deviceResolution =
-        sse_decode_photo_poster_contents_size(deserializer);
-    var var_visibleFrame = sse_decode_photo_poster_contents_frame(deserializer);
-    var var_timeFrame = sse_decode_photo_poster_contents_frame(deserializer);
-    var var_clockLayerOrder = sse_decode_String(deserializer);
-    var var_hasTopEdgeContact = sse_decode_bool(deserializer);
-    var var_inactiveFrame =
-        sse_decode_photo_poster_contents_frame(deserializer);
-    var var_imageSize = sse_decode_photo_poster_contents_size(deserializer);
-    var var_parallaxPadding =
-        sse_decode_photo_poster_contents_size(deserializer);
-    return PhotoPosterLayout(
-        clockIntersection: var_clockIntersection,
-        deviceResolution: var_deviceResolution,
-        visibleFrame: var_visibleFrame,
-        timeFrame: var_timeFrame,
-        clockLayerOrder: var_clockLayerOrder,
-        hasTopEdgeContact: var_hasTopEdgeContact,
-        inactiveFrame: var_inactiveFrame,
-        imageSize: var_imageSize,
-        parallaxPadding: var_parallaxPadding);
-  }
-
-  @protected
-  PhotoPosterProperties sse_decode_photo_poster_properties(
-      SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    var var_portraitLayout = sse_decode_photo_poster_layout(deserializer);
-    var var_settlingEffectEnabled = sse_decode_bool(deserializer);
-    var var_depthEnabled = sse_decode_bool(deserializer);
-    var var_clockAreaLuminance = sse_decode_f_64(deserializer);
-    var var_parallaxDisabled = sse_decode_bool(deserializer);
-    return PhotoPosterProperties(
-        portraitLayout: var_portraitLayout,
-        settlingEffectEnabled: var_settlingEffectEnabled,
-        depthEnabled: var_depthEnabled,
-        clockAreaLuminance: var_clockAreaLuminance,
-        parallaxDisabled: var_parallaxDisabled);
-  }
-
-  @protected
   PollResult sse_decode_poll_result(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
 
@@ -9233,149 +7941,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       default:
         throw UnimplementedError('');
     }
-  }
-
-  @protected
-  PosterAsset sse_decode_poster_asset(SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    var var_contents = sse_decode_photo_poster_contents(deserializer);
-    var var_files = sse_decode_Map_String_list_prim_u_8_strict(deserializer);
-    var var_uuid = sse_decode_String(deserializer);
-    return PosterAsset(
-        contents: var_contents, files: var_files, uuid: var_uuid);
-  }
-
-  @protected
-  PosterColor sse_decode_poster_color(SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    var var_alpha = sse_decode_f_64(deserializer);
-    var var_blue = sse_decode_f_64(deserializer);
-    var var_green = sse_decode_f_64(deserializer);
-    var var_red = sse_decode_f_64(deserializer);
-    return PosterColor(
-        alpha: var_alpha, blue: var_blue, green: var_green, red: var_red);
-  }
-
-  @protected
-  PosterType sse_decode_poster_type(SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-
-    var tag_ = sse_decode_i_32(deserializer);
-    switch (tag_) {
-      case 0:
-        var var_assets = sse_decode_list_poster_asset(deserializer);
-        return PosterType_Photo(assets: var_assets);
-      case 1:
-        var var_data = sse_decode_box_autoadd_monogram_data(deserializer);
-        var var_background = sse_decode_box_autoadd_poster_color(deserializer);
-        return PosterType_Monogram(data: var_data, background: var_background);
-      case 2:
-        var var_data = sse_decode_box_autoadd_memoji_data(deserializer);
-        var var_background = sse_decode_box_autoadd_poster_color(deserializer);
-        return PosterType_Memoji(data: var_data, background: var_background);
-      default:
-        throw UnimplementedError('');
-    }
-  }
-
-  @protected
-  PRPosterColor sse_decode_pr_poster_color(SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    var var_preferredStyle = sse_decode_u_32(deserializer);
-    var var_identifier = sse_decode_String(deserializer);
-    var var_suggested = sse_decode_bool(deserializer);
-    var var_color = sse_decode_ui_color(deserializer);
-    return PRPosterColor(
-        preferredStyle: var_preferredStyle,
-        identifier: var_identifier,
-        suggested: var_suggested,
-        color: var_color);
-  }
-
-  @protected
-  PRPosterContentMaterialStyle sse_decode_pr_poster_content_material_style(
-      SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-
-    var tag_ = sse_decode_i_32(deserializer);
-    switch (tag_) {
-      case 0:
-        var var_variation = sse_decode_f_32(deserializer);
-        var var_colors = sse_decode_list_ui_color(deserializer);
-        var var_vibrant = sse_decode_bool(deserializer);
-        var var_supportsVariation = sse_decode_bool(deserializer);
-        var var_needsToResolveVariation = sse_decode_bool(deserializer);
-        return PRPosterContentMaterialStyle_PRPosterContentDiscreteColorsStyle(
-            variation: var_variation,
-            colors: var_colors,
-            vibrant: var_vibrant,
-            supportsVariation: var_supportsVariation,
-            needsToResolveVariation: var_needsToResolveVariation);
-      case 1:
-        return PRPosterContentMaterialStyle_PRPosterContentVibrantMaterialStyle();
-      case 2:
-        var var_gradientType = sse_decode_u_32(deserializer);
-        var var_colors = sse_decode_list_ui_color(deserializer);
-        var var_startPoint = sse_decode_String(deserializer);
-        var var_locations = sse_decode_list_prim_f_64_strict(deserializer);
-        var var_endPoint = sse_decode_String(deserializer);
-        return PRPosterContentMaterialStyle_PRPosterContentGradientStyle(
-            gradientType: var_gradientType,
-            colors: var_colors,
-            startPoint: var_startPoint,
-            locations: var_locations,
-            endPoint: var_endPoint);
-      default:
-        throw UnimplementedError('');
-    }
-  }
-
-  @protected
-  PRPosterSystemTimeFontConfiguration
-      sse_decode_pr_poster_system_time_font_configuration(
-          SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    var var_isSystemItem = sse_decode_bool(deserializer);
-    var var_timeFontIdentifier = sse_decode_String(deserializer);
-    var var_weight = sse_decode_f_64(deserializer);
-    return PRPosterSystemTimeFontConfiguration(
-        isSystemItem: var_isSystemItem,
-        timeFontIdentifier: var_timeFontIdentifier,
-        weight: var_weight);
-  }
-
-  @protected
-  PRPosterTitleStyleConfiguration
-      sse_decode_pr_poster_title_style_configuration(
-          SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    var var_alternateDateEnabled = sse_decode_bool(deserializer);
-    var var_contentsLuminence = sse_decode_f_64(deserializer);
-    var var_groupName = sse_decode_String(deserializer);
-    var var_preferredTitleAlignment = sse_decode_u_32(deserializer);
-    var var_preferredTitleLayout = sse_decode_u_32(deserializer);
-    var var_timeFontConfiguration =
-        sse_decode_pr_poster_system_time_font_configuration(deserializer);
-    var var_timeNumberingSystem =
-        sse_decode_opt_list_prim_u_8_strict(deserializer);
-    var var_titleColor = sse_decode_pr_poster_color(deserializer);
-    var var_titleContentStyle = sse_decode_list_prim_u_8_strict(deserializer);
-    var var_userConfigured = sse_decode_bool(deserializer);
-    var var_titleStyle =
-        sse_decode_opt_box_autoadd_pr_poster_content_material_style(
-            deserializer);
-    return PRPosterTitleStyleConfiguration(
-        alternateDateEnabled: var_alternateDateEnabled,
-        contentsLuminence: var_contentsLuminence,
-        groupName: var_groupName,
-        preferredTitleAlignment: var_preferredTitleAlignment,
-        preferredTitleLayout: var_preferredTitleLayout,
-        timeFontConfiguration: var_timeFontConfiguration,
-        timeNumberingSystem: var_timeNumberingSystem,
-        titleColor: var_titleColor,
-        titleContentStyle: var_titleContentStyle,
-        userConfigured: var_userConfigured,
-        titleStyle: var_titleStyle);
   }
 
   @protected
@@ -9419,10 +7984,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       case 4:
         var var_field0 = sse_decode_box_autoadd_ft_message(deserializer);
         return PushMessage_FaceTime(var_field0);
-      case 5:
-        var var_field0 =
-            sse_decode_box_autoadd_status_kit_message(deserializer);
-        return PushMessage_StatusUpdate(var_field0);
       default:
         throw UnimplementedError('');
     }
@@ -9569,25 +8130,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  (String, Uint8List) sse_decode_record_string_list_prim_u_8_strict(
-      SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    var var_field0 = sse_decode_String(deserializer);
-    var var_field1 = sse_decode_list_prim_u_8_strict(deserializer);
-    return (var_field0, var_field1);
-  }
-
-  @protected
-  (String, StatusKitPersonalConfig)
-      sse_decode_record_string_status_kit_personal_config(
-          SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    var var_field0 = sse_decode_String(deserializer);
-    var var_field1 = sse_decode_status_kit_personal_config(deserializer);
-    return (var_field0, var_field1);
-  }
-
-  @protected
   (String, String) sse_decode_record_string_string(
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -9646,22 +8188,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var var_newName = sse_decode_String(deserializer);
     return RenameMessage(newName: var_newName);
-  }
-
-  @protected
-  ReportMessage sse_decode_report_message(SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    var var_guid = sse_decode_String(deserializer);
-    var var_sender = sse_decode_String(deserializer);
-    var var_conversationSize = sse_decode_u_32(deserializer);
-    var var_parts = sse_decode_message_parts(deserializer);
-    var var_timeOfMessage = sse_decode_f_64(deserializer);
-    return ReportMessage(
-        guid: var_guid,
-        sender: var_sender,
-        conversationSize: var_conversationSize,
-        parts: var_parts,
-        timeOfMessage: var_timeOfMessage);
   }
 
   @protected
@@ -9734,46 +8260,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         lowResWallpaperTag: var_lowResWallpaperTag,
         wallpaperTag: var_wallpaperTag,
         messageTag: var_messageTag);
-  }
-
-  @protected
-  SimplifiedPoster sse_decode_simplified_poster(SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    var var_textMetadata = sse_decode_wallpaper_metadata(deserializer);
-    var var_titleConfiguration =
-        sse_decode_pr_poster_title_style_configuration(deserializer);
-    var var_type = sse_decode_poster_type(deserializer);
-    var var_lowRes = sse_decode_list_prim_u_8_strict(deserializer);
-    return SimplifiedPoster(
-        textMetadata: var_textMetadata,
-        titleConfiguration: var_titleConfiguration,
-        type: var_type,
-        lowRes: var_lowRes);
-  }
-
-  @protected
-  StatusKitMessage sse_decode_status_kit_message(SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-
-    var tag_ = sse_decode_i_32(deserializer);
-    switch (tag_) {
-      case 0:
-        var var_user = sse_decode_String(deserializer);
-        var var_mode = sse_decode_opt_String(deserializer);
-        var var_allowed = sse_decode_bool(deserializer);
-        return StatusKitMessage_StatusChanged(
-            user: var_user, mode: var_mode, allowed: var_allowed);
-      default:
-        throw UnimplementedError('');
-    }
-  }
-
-  @protected
-  StatusKitPersonalConfig sse_decode_status_kit_personal_config(
-      SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    var var_allowedModes = sse_decode_list_String(deserializer);
-    return StatusKitPersonalConfig(allowedModes: var_allowedModes);
   }
 
   @protected
@@ -9898,57 +8384,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  UIColor sse_decode_ui_color(SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-
-    var tag_ = sse_decode_i_32(deserializer);
-    switch (tag_) {
-      case 0:
-        var var_colorComponents = sse_decode_u_32(deserializer);
-        var var_green = sse_decode_f_64(deserializer);
-        var var_blue = sse_decode_f_64(deserializer);
-        var var_red = sse_decode_f_64(deserializer);
-        var var_greenDbl = sse_decode_opt_box_autoadd_f_64(deserializer);
-        var var_blueDbl = sse_decode_opt_box_autoadd_f_64(deserializer);
-        var var_redDbl = sse_decode_opt_box_autoadd_f_64(deserializer);
-        var var_alphaDbl = sse_decode_opt_box_autoadd_f_64(deserializer);
-        var var_alpha = sse_decode_f_64(deserializer);
-        var var_rgb = sse_decode_list_prim_u_8_strict(deserializer);
-        var var_colorSpace = sse_decode_u_32(deserializer);
-        var var_class_ = sse_decode_String(deserializer);
-        return UIColor_RGBAColorSpace(
-            colorComponents: var_colorComponents,
-            green: var_green,
-            blue: var_blue,
-            red: var_red,
-            greenDbl: var_greenDbl,
-            blueDbl: var_blueDbl,
-            redDbl: var_redDbl,
-            alphaDbl: var_alphaDbl,
-            alpha: var_alpha,
-            rgb: var_rgb,
-            colorSpace: var_colorSpace,
-            class_: var_class_);
-      case 1:
-        var var_colorComponents = sse_decode_u_32(deserializer);
-        var var_white = sse_decode_f_64(deserializer);
-        var var_alpha = sse_decode_f_64(deserializer);
-        var var_bin = sse_decode_list_prim_u_8_strict(deserializer);
-        var var_colorSpace = sse_decode_u_32(deserializer);
-        var var_class_ = sse_decode_String(deserializer);
-        return UIColor_GrayscaleAlphaColorSpace(
-            colorComponents: var_colorComponents,
-            white: var_white,
-            alpha: var_alpha,
-            bin: var_bin,
-            colorSpace: var_colorSpace,
-            class_: var_class_);
-      default:
-        throw UnimplementedError('');
-    }
-  }
-
-  @protected
   void sse_decode_unit(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
   }
@@ -9998,28 +8433,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   BigInt sse_decode_usize(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return deserializer.buffer.getBigUint64();
-  }
-
-  @protected
-  WallpaperMetadata sse_decode_wallpaper_metadata(
-      SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    var var_backgroundColorKey =
-        sse_decode_opt_box_autoadd_poster_color(deserializer);
-    var var_fontColorKey = sse_decode_poster_color(deserializer);
-    var var_fontNameKey = sse_decode_String(deserializer);
-    var var_fontSizeKey = sse_decode_f_32(deserializer);
-    var var_fontWeightKey = sse_decode_f_32(deserializer);
-    var var_isVerticalKey = sse_decode_bool(deserializer);
-    var var_typeKey = sse_decode_String(deserializer);
-    return WallpaperMetadata(
-        backgroundColorKey: var_backgroundColorKey,
-        fontColorKey: var_fontColorKey,
-        fontNameKey: var_fontNameKey,
-        fontSizeKey: var_fontSizeKey,
-        fontWeightKey: var_fontWeightKey,
-        isVerticalKey: var_isVerticalKey,
-        typeKey: var_typeKey);
   }
 
   @protected
@@ -10234,22 +8647,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       Map<String, FTParticipant> self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_list_record_string_ft_participant(
-        self.entries.map((e) => (e.key, e.value)).toList(), serializer);
-  }
-
-  @protected
-  void sse_encode_Map_String_list_prim_u_8_strict(
-      Map<String, Uint8List> self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_list_record_string_list_prim_u_8_strict(
-        self.entries.map((e) => (e.key, e.value)).toList(), serializer);
-  }
-
-  @protected
-  void sse_encode_Map_String_status_kit_personal_config(
-      Map<String, StatusKitPersonalConfig> self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_list_record_string_status_kit_personal_config(
         self.entries.map((e) => (e.key, e.value)).toList(), serializer);
   }
 
@@ -10564,13 +8961,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  void sse_encode_box_autoadd_certified_context(
-      CertifiedContext self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_certified_context(self, serializer);
-  }
-
-  @protected
   void sse_encode_box_autoadd_change_participant_message(
       ChangeParticipantMessage self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -10701,13 +9091,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  void sse_encode_box_autoadd_memoji_data(
-      MemojiData self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_memoji_data(self, serializer);
-  }
-
-  @protected
   void sse_encode_box_autoadd_message(Message self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_message(self, serializer);
@@ -10732,13 +9115,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       MMCSFile self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_mmcs_file(self, serializer);
-  }
-
-  @protected
-  void sse_encode_box_autoadd_monogram_data(
-      MonogramData self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_monogram_data(self, serializer);
   }
 
   @protected
@@ -10780,20 +9156,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       PermanentDeleteMessage self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_permanent_delete_message(self, serializer);
-  }
-
-  @protected
-  void sse_encode_box_autoadd_poster_color(
-      PosterColor self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_poster_color(self, serializer);
-  }
-
-  @protected
-  void sse_encode_box_autoadd_pr_poster_content_material_style(
-      PRPosterContentMaterialStyle self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_pr_poster_content_material_style(self, serializer);
   }
 
   @protected
@@ -10874,20 +9236,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  void sse_encode_box_autoadd_simplified_poster(
-      SimplifiedPoster self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_simplified_poster(self, serializer);
-  }
-
-  @protected
-  void sse_encode_box_autoadd_status_kit_message(
-      StatusKitMessage self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_status_kit_message(self, serializer);
-  }
-
-  @protected
   void sse_encode_box_autoadd_support_action(
       SupportAction self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -10947,18 +9295,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       UpdateProfileSharingMessage self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_update_profile_sharing_message(self, serializer);
-  }
-
-  @protected
-  void sse_encode_certified_context(
-      CertifiedContext self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_u_32(self.version, serializer);
-    sse_encode_list_prim_u_8_strict(self.receipt, serializer);
-    sse_encode_String(self.sender, serializer);
-    sse_encode_String(self.target, serializer);
-    sse_encode_list_prim_u_8_strict(self.uuid, serializer);
-    sse_encode_list_prim_u_8_strict(self.token, serializer);
   }
 
   @protected
@@ -11026,12 +9362,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_opt_CastedPrimitive_u_64(self.appId, serializer);
     sse_encode_String(self.bundleId, serializer);
     sse_encode_opt_box_autoadd_balloon(self.balloon, serializer);
-  }
-
-  @protected
-  void sse_encode_f_32(double self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    serializer.buffer.putFloat32(self);
   }
 
   @protected
@@ -11386,34 +9716,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  void sse_encode_list_photo_poster_layer(
-      List<PhotoPosterLayer> self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_i_32(self.length, serializer);
-    for (final item in self) {
-      sse_encode_photo_poster_layer(item, serializer);
-    }
-  }
-
-  @protected
-  void sse_encode_list_poster_asset(
-      List<PosterAsset> self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_i_32(self.length, serializer);
-    for (final item in self) {
-      sse_encode_poster_asset(item, serializer);
-    }
-  }
-
-  @protected
-  void sse_encode_list_prim_f_64_strict(
-      Float64List self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_i_32(self.length, serializer);
-    serializer.buffer.putFloat64List(self);
-  }
-
-  @protected
   void sse_encode_list_prim_u_8_loose(
       List<int> self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -11471,26 +9773,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  void sse_encode_list_record_string_list_prim_u_8_strict(
-      List<(String, Uint8List)> self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_i_32(self.length, serializer);
-    for (final item in self) {
-      sse_encode_record_string_list_prim_u_8_strict(item, serializer);
-    }
-  }
-
-  @protected
-  void sse_encode_list_record_string_status_kit_personal_config(
-      List<(String, StatusKitPersonalConfig)> self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_i_32(self.length, serializer);
-    for (final item in self) {
-      sse_encode_record_string_status_kit_personal_config(item, serializer);
-    }
-  }
-
-  @protected
   void sse_encode_list_record_string_string(
       List<(String, String)> self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -11511,16 +9793,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  void sse_encode_list_report_message(
-      List<ReportMessage> self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_i_32(self.length, serializer);
-    for (final item in self) {
-      sse_encode_report_message(item, serializer);
-    }
-  }
-
-  @protected
   void sse_encode_list_shared_album(
       List<SharedAlbum> self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -11537,15 +9809,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_i_32(self.length, serializer);
     for (final item in self) {
       sse_encode_trusted_phone_number(item, serializer);
-    }
-  }
-
-  @protected
-  void sse_encode_list_ui_color(List<UIColor> self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_i_32(self.length, serializer);
-    for (final item in self) {
-      sse_encode_ui_color(item, serializer);
     }
   }
 
@@ -11635,16 +9898,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  void sse_encode_memoji_data(MemojiData self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_poster_color(self.backgroundColorDescription, serializer);
-    sse_encode_list_prim_u_8_strict(self.avatarRecordData, serializer);
-    sse_encode_list_prim_u_8_strict(self.avatarPoseData, serializer);
-    sse_encode_bool(self.hasBody, serializer);
-    sse_encode_list_prim_u_8_strict(self.avatarImageData, serializer);
-  }
-
-  @protected
   void sse_encode_message(Message self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     switch (self) {
@@ -11716,8 +9969,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       case Message_ShareProfile(field0: final field0):
         sse_encode_i_32(24, serializer);
         sse_encode_box_autoadd_share_profile_message(field0, serializer);
-      case Message_NotifyAnyways():
-        sse_encode_i_32(25, serializer);
       default:
         throw UnimplementedError('');
     }
@@ -11734,8 +9985,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_opt_list_message_target(self.target, serializer);
     sse_encode_bool(self.sendDelivered, serializer);
     sse_encode_bool(self.verificationFailed, serializer);
-    sse_encode_opt_box_autoadd_certified_context(
-        self.certifiedContext, serializer);
   }
 
   @protected
@@ -11819,15 +10068,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_CastedPrimitive_usize(self.prog, serializer);
     sse_encode_CastedPrimitive_usize(self.total, serializer);
     sse_encode_opt_box_autoadd_mmcs_file(self.file, serializer);
-  }
-
-  @protected
-  void sse_encode_monogram_data(MonogramData self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_poster_color(self.topBackgroundColorDescription, serializer);
-    sse_encode_poster_color(self.backgroundColorDescription, serializer);
-    sse_encode_String(self.initials, serializer);
-    sse_encode_bool(self.monogramSupportedForName, serializer);
   }
 
   @protected
@@ -12039,17 +10279,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  void sse_encode_opt_box_autoadd_certified_context(
-      CertifiedContext? self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-
-    sse_encode_bool(self != null, serializer);
-    if (self != null) {
-      sse_encode_box_autoadd_certified_context(self, serializer);
-    }
-  }
-
-  @protected
   void sse_encode_opt_box_autoadd_conversation_data(
       ConversationData? self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -12198,28 +10427,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_bool(self != null, serializer);
     if (self != null) {
       sse_encode_box_autoadd_part_extension(self, serializer);
-    }
-  }
-
-  @protected
-  void sse_encode_opt_box_autoadd_poster_color(
-      PosterColor? self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-
-    sse_encode_bool(self != null, serializer);
-    if (self != null) {
-      sse_encode_box_autoadd_poster_color(self, serializer);
-    }
-  }
-
-  @protected
-  void sse_encode_opt_box_autoadd_pr_poster_content_material_style(
-      PRPosterContentMaterialStyle? self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-
-    sse_encode_bool(self != null, serializer);
-    if (self != null) {
-      sse_encode_box_autoadd_pr_poster_content_material_style(self, serializer);
     }
   }
 
@@ -12402,69 +10609,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  void sse_encode_photo_poster_contents(
-      PhotoPosterContents self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_u_32(self.version, serializer);
-    sse_encode_list_photo_poster_layer(self.layers, serializer);
-    sse_encode_photo_poster_properties(self.properties, serializer);
-  }
-
-  @protected
-  void sse_encode_photo_poster_contents_frame(
-      PhotoPosterContentsFrame self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_f_64(self.width, serializer);
-    sse_encode_f_64(self.height, serializer);
-    sse_encode_f_64(self.x, serializer);
-    sse_encode_f_64(self.y, serializer);
-  }
-
-  @protected
-  void sse_encode_photo_poster_contents_size(
-      PhotoPosterContentsSize self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_f_64(self.width, serializer);
-    sse_encode_f_64(self.height, serializer);
-  }
-
-  @protected
-  void sse_encode_photo_poster_layer(
-      PhotoPosterLayer self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_photo_poster_contents_frame(self.frame, serializer);
-    sse_encode_String(self.filename, serializer);
-    sse_encode_f_32(self.zPosition, serializer);
-    sse_encode_String(self.identifier, serializer);
-  }
-
-  @protected
-  void sse_encode_photo_poster_layout(
-      PhotoPosterLayout self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_u_32(self.clockIntersection, serializer);
-    sse_encode_photo_poster_contents_size(self.deviceResolution, serializer);
-    sse_encode_photo_poster_contents_frame(self.visibleFrame, serializer);
-    sse_encode_photo_poster_contents_frame(self.timeFrame, serializer);
-    sse_encode_String(self.clockLayerOrder, serializer);
-    sse_encode_bool(self.hasTopEdgeContact, serializer);
-    sse_encode_photo_poster_contents_frame(self.inactiveFrame, serializer);
-    sse_encode_photo_poster_contents_size(self.imageSize, serializer);
-    sse_encode_photo_poster_contents_size(self.parallaxPadding, serializer);
-  }
-
-  @protected
-  void sse_encode_photo_poster_properties(
-      PhotoPosterProperties self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_photo_poster_layout(self.portraitLayout, serializer);
-    sse_encode_bool(self.settlingEffectEnabled, serializer);
-    sse_encode_bool(self.depthEnabled, serializer);
-    sse_encode_f_64(self.clockAreaLuminance, serializer);
-    sse_encode_bool(self.parallaxDisabled, serializer);
-  }
-
-  @protected
   void sse_encode_poll_result(PollResult self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     switch (self) {
@@ -12476,119 +10620,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       default:
         throw UnimplementedError('');
     }
-  }
-
-  @protected
-  void sse_encode_poster_asset(PosterAsset self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_photo_poster_contents(self.contents, serializer);
-    sse_encode_Map_String_list_prim_u_8_strict(self.files, serializer);
-    sse_encode_String(self.uuid, serializer);
-  }
-
-  @protected
-  void sse_encode_poster_color(PosterColor self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_f_64(self.alpha, serializer);
-    sse_encode_f_64(self.blue, serializer);
-    sse_encode_f_64(self.green, serializer);
-    sse_encode_f_64(self.red, serializer);
-  }
-
-  @protected
-  void sse_encode_poster_type(PosterType self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    switch (self) {
-      case PosterType_Photo(assets: final assets):
-        sse_encode_i_32(0, serializer);
-        sse_encode_list_poster_asset(assets, serializer);
-      case PosterType_Monogram(data: final data, background: final background):
-        sse_encode_i_32(1, serializer);
-        sse_encode_box_autoadd_monogram_data(data, serializer);
-        sse_encode_box_autoadd_poster_color(background, serializer);
-      case PosterType_Memoji(data: final data, background: final background):
-        sse_encode_i_32(2, serializer);
-        sse_encode_box_autoadd_memoji_data(data, serializer);
-        sse_encode_box_autoadd_poster_color(background, serializer);
-      default:
-        throw UnimplementedError('');
-    }
-  }
-
-  @protected
-  void sse_encode_pr_poster_color(
-      PRPosterColor self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_u_32(self.preferredStyle, serializer);
-    sse_encode_String(self.identifier, serializer);
-    sse_encode_bool(self.suggested, serializer);
-    sse_encode_ui_color(self.color, serializer);
-  }
-
-  @protected
-  void sse_encode_pr_poster_content_material_style(
-      PRPosterContentMaterialStyle self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    switch (self) {
-      case PRPosterContentMaterialStyle_PRPosterContentDiscreteColorsStyle(
-          variation: final variation,
-          colors: final colors,
-          vibrant: final vibrant,
-          supportsVariation: final supportsVariation,
-          needsToResolveVariation: final needsToResolveVariation
-        ):
-        sse_encode_i_32(0, serializer);
-        sse_encode_f_32(variation, serializer);
-        sse_encode_list_ui_color(colors, serializer);
-        sse_encode_bool(vibrant, serializer);
-        sse_encode_bool(supportsVariation, serializer);
-        sse_encode_bool(needsToResolveVariation, serializer);
-      case PRPosterContentMaterialStyle_PRPosterContentVibrantMaterialStyle():
-        sse_encode_i_32(1, serializer);
-      case PRPosterContentMaterialStyle_PRPosterContentGradientStyle(
-          gradientType: final gradientType,
-          colors: final colors,
-          startPoint: final startPoint,
-          locations: final locations,
-          endPoint: final endPoint
-        ):
-        sse_encode_i_32(2, serializer);
-        sse_encode_u_32(gradientType, serializer);
-        sse_encode_list_ui_color(colors, serializer);
-        sse_encode_String(startPoint, serializer);
-        sse_encode_list_prim_f_64_strict(locations, serializer);
-        sse_encode_String(endPoint, serializer);
-      default:
-        throw UnimplementedError('');
-    }
-  }
-
-  @protected
-  void sse_encode_pr_poster_system_time_font_configuration(
-      PRPosterSystemTimeFontConfiguration self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_bool(self.isSystemItem, serializer);
-    sse_encode_String(self.timeFontIdentifier, serializer);
-    sse_encode_f_64(self.weight, serializer);
-  }
-
-  @protected
-  void sse_encode_pr_poster_title_style_configuration(
-      PRPosterTitleStyleConfiguration self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_bool(self.alternateDateEnabled, serializer);
-    sse_encode_f_64(self.contentsLuminence, serializer);
-    sse_encode_String(self.groupName, serializer);
-    sse_encode_u_32(self.preferredTitleAlignment, serializer);
-    sse_encode_u_32(self.preferredTitleLayout, serializer);
-    sse_encode_pr_poster_system_time_font_configuration(
-        self.timeFontConfiguration, serializer);
-    sse_encode_opt_list_prim_u_8_strict(self.timeNumberingSystem, serializer);
-    sse_encode_pr_poster_color(self.titleColor, serializer);
-    sse_encode_list_prim_u_8_strict(self.titleContentStyle, serializer);
-    sse_encode_bool(self.userConfigured, serializer);
-    sse_encode_opt_box_autoadd_pr_poster_content_material_style(
-        self.titleStyle, serializer);
   }
 
   @protected
@@ -12623,9 +10654,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       case PushMessage_FaceTime(field0: final field0):
         sse_encode_i_32(4, serializer);
         sse_encode_box_autoadd_ft_message(field0, serializer);
-      case PushMessage_StatusUpdate(field0: final field0):
-        sse_encode_i_32(5, serializer);
-        sse_encode_box_autoadd_status_kit_message(field0, serializer);
       default:
         throw UnimplementedError('');
     }
@@ -12752,22 +10780,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  void sse_encode_record_string_list_prim_u_8_strict(
-      (String, Uint8List) self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_String(self.$1, serializer);
-    sse_encode_list_prim_u_8_strict(self.$2, serializer);
-  }
-
-  @protected
-  void sse_encode_record_string_status_kit_personal_config(
-      (String, StatusKitPersonalConfig) self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_String(self.$1, serializer);
-    sse_encode_status_kit_personal_config(self.$2, serializer);
-  }
-
-  @protected
   void sse_encode_record_string_string(
       (String, String) self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -12823,16 +10835,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  void sse_encode_report_message(ReportMessage self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_String(self.guid, serializer);
-    sse_encode_String(self.sender, serializer);
-    sse_encode_u_32(self.conversationSize, serializer);
-    sse_encode_message_parts(self.parts, serializer);
-    sse_encode_f_64(self.timeOfMessage, serializer);
-  }
-
-  @protected
   void sse_encode_rich_link_image_attachment_substitute(
       RichLinkImageAttachmentSubstitute self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -12877,43 +10879,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_list_prim_u_8_strict(self.lowResWallpaperTag, serializer);
     sse_encode_list_prim_u_8_strict(self.wallpaperTag, serializer);
     sse_encode_list_prim_u_8_strict(self.messageTag, serializer);
-  }
-
-  @protected
-  void sse_encode_simplified_poster(
-      SimplifiedPoster self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_wallpaper_metadata(self.textMetadata, serializer);
-    sse_encode_pr_poster_title_style_configuration(
-        self.titleConfiguration, serializer);
-    sse_encode_poster_type(self.type, serializer);
-    sse_encode_list_prim_u_8_strict(self.lowRes, serializer);
-  }
-
-  @protected
-  void sse_encode_status_kit_message(
-      StatusKitMessage self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    switch (self) {
-      case StatusKitMessage_StatusChanged(
-          user: final user,
-          mode: final mode,
-          allowed: final allowed
-        ):
-        sse_encode_i_32(0, serializer);
-        sse_encode_String(user, serializer);
-        sse_encode_opt_String(mode, serializer);
-        sse_encode_bool(allowed, serializer);
-      default:
-        throw UnimplementedError('');
-    }
-  }
-
-  @protected
-  void sse_encode_status_kit_personal_config(
-      StatusKitPersonalConfig self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_list_String(self.allowedModes, serializer);
   }
 
   @protected
@@ -13020,57 +10985,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  void sse_encode_ui_color(UIColor self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    switch (self) {
-      case UIColor_RGBAColorSpace(
-          colorComponents: final colorComponents,
-          green: final green,
-          blue: final blue,
-          red: final red,
-          greenDbl: final greenDbl,
-          blueDbl: final blueDbl,
-          redDbl: final redDbl,
-          alphaDbl: final alphaDbl,
-          alpha: final alpha,
-          rgb: final rgb,
-          colorSpace: final colorSpace,
-          class_: final class_
-        ):
-        sse_encode_i_32(0, serializer);
-        sse_encode_u_32(colorComponents, serializer);
-        sse_encode_f_64(green, serializer);
-        sse_encode_f_64(blue, serializer);
-        sse_encode_f_64(red, serializer);
-        sse_encode_opt_box_autoadd_f_64(greenDbl, serializer);
-        sse_encode_opt_box_autoadd_f_64(blueDbl, serializer);
-        sse_encode_opt_box_autoadd_f_64(redDbl, serializer);
-        sse_encode_opt_box_autoadd_f_64(alphaDbl, serializer);
-        sse_encode_f_64(alpha, serializer);
-        sse_encode_list_prim_u_8_strict(rgb, serializer);
-        sse_encode_u_32(colorSpace, serializer);
-        sse_encode_String(class_, serializer);
-      case UIColor_GrayscaleAlphaColorSpace(
-          colorComponents: final colorComponents,
-          white: final white,
-          alpha: final alpha,
-          bin: final bin,
-          colorSpace: final colorSpace,
-          class_: final class_
-        ):
-        sse_encode_i_32(1, serializer);
-        sse_encode_u_32(colorComponents, serializer);
-        sse_encode_f_64(white, serializer);
-        sse_encode_f_64(alpha, serializer);
-        sse_encode_list_prim_u_8_strict(bin, serializer);
-        sse_encode_u_32(colorSpace, serializer);
-        sse_encode_String(class_, serializer);
-      default:
-        throw UnimplementedError('');
-    }
-  }
-
-  @protected
   void sse_encode_unit(void self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
   }
@@ -13111,20 +11025,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   void sse_encode_usize(BigInt self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     serializer.buffer.putBigUint64(self);
-  }
-
-  @protected
-  void sse_encode_wallpaper_metadata(
-      WallpaperMetadata self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_opt_box_autoadd_poster_color(
-        self.backgroundColorKey, serializer);
-    sse_encode_poster_color(self.fontColorKey, serializer);
-    sse_encode_String(self.fontNameKey, serializer);
-    sse_encode_f_32(self.fontSizeKey, serializer);
-    sse_encode_f_32(self.fontWeightKey, serializer);
-    sse_encode_bool(self.isVerticalKey, serializer);
-    sse_encode_String(self.typeKey, serializer);
   }
 }
 

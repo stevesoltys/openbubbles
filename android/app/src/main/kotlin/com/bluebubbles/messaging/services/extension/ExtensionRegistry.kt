@@ -30,7 +30,7 @@ object ExtensionRegistry {
 
     fun registerDevExtension(context: Context, name: String) {
         val parts = ArrayList(name.split("."))
-        val cls = "." + parts.removeAt(parts.lastIndex)
+        val cls = "." + parts.removeLast()
         val pak = parts.joinToString(".")
         val component = ComponentName.createRelative(pak, cls)
         val service = context.packageManager.getServiceInfo(component, PackageManager.GET_META_DATA)

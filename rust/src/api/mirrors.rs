@@ -2,248 +2,21 @@ use std::collections::HashMap;
 
 pub use rustpush::name_photo_sharing::{IMessageNameRecord, IMessagePosterRecord, IMessageNicknameRecord};
 pub use rustpush::{DeleteTarget, MoveToRecycleBinMessage, OperatedChat};
-pub use rustpush::{ShareProfileMessage, SharedPoster, UpdateProfileSharingMessage, UpdateProfileMessage, NSArrayClass, TextFlags, TextEffect, TextFormat, ScheduleMode, SupportAction, NSArray, SupportAlert, PrivateDeviceInfo, PermanentDeleteMessage, NormalMessage, MessageType, UpdateExtensionMessage, ErrorMessage, UnsendMessage, EditMessage, PartExtension, IconChangeMessage, RichLinkImageAttachmentSubstitute, ChangeParticipantMessage, ReactMessage, Reaction, ReactMessageType, RenameMessage, LPLinkMetadata, NSURL, LPIconMetadata, LPImageMetadata, LinkMeta, ExtensionApp, NSDictionaryClass, BalloonLayout, Balloon, IndexedMessagePart, AttachmentType, MacOSConfig, Message, MessageTarget, HardwareConfig, APSConnection, APSConnectionResource, APSState, Attachment, AuthPhone, IDSUserIdentity, MMCSFile, MessageInst, MessagePart, MessageParts, OSConfig, RelayConfig, ResourceState};
-pub use rustpush::{CertifiedContext, PushError, IDSUser, IMClient, ConversationData, ReportMessage, register};
+pub use rustpush::{ShareProfileMessage, SharedPoster, UpdateProfileSharingMessage, UpdateProfileMessage, NSArrayClass, TextFlags, TextEffect, TextFormat, ScheduleMode, SupportAction, NSArray, SupportAlert, PrivateDeviceInfo, PermanentDeleteMessage, NormalMessage, MessageType, UpdateExtensionMessage, ErrorMessage, UnsendMessage, EditMessage, PartExtension, IconChangeMessage, RichLinkImageAttachmentSubstitute, ChangeParticipantMessage, ReactMessage, Reaction, ReactMessageType, RenameMessage, LPLinkMetadata, NSURL, LPIconMetadata, LPImageMetadata, LinkMeta, ExtensionApp, NSDictionaryClass, BalloonLayout, Balloon, IndexedMessagePart, AttachmentType, Message, MessageTarget, APSConnection, APSConnectionResource, APSState, Attachment, AuthPhone, IDSUserIdentity, MMCSFile, MessageInst, MessagePart, MessageParts, OSConfig, RelayConfig, ResourceState};
+pub use rustpush::{PushError, IDSUser, IMClient, ConversationData, register};
 pub use icloud_auth::{VerifyBody, TrustedPhoneNumber};
 pub use icloud_auth::{LoginState, AppleAccount};
+pub use rustpush::macos::{MacOSConfig};
+pub use open_absinthe::nac::{HardwareConfig};
 pub use rustpush::findmy::{Follow, Address, Location, FoundDevice};
 pub use rustpush::facetime::{FTSession, FTMode, FTParticipant, FTMember, LetMeInRequest, FTMessage};
 pub use rustpush::facetime::facetimep::{ConversationParticipant, ConversationLink};
-pub use rustpush::statuskit::{StatusKitPersonalConfig, StatusKitMessage};
-pub use rustpush::posterkit::{UIColor, PRPosterContentMaterialStyle, PosterAsset, PRPosterSystemTimeFontConfiguration, PRPosterColor, PRPosterTitleStyleConfiguration, WallpaperMetadata, PosterColor, PhotoPosterContentsFrame, PhotoPosterContentsSize, PhotoPosterLayer, PhotoPosterLayout, PhotoPosterProperties, PhotoPosterContents, MonogramData, MemojiData, PosterType, SimplifiedPoster};
-
-
-#[frb(non_opaque, mirror(PRPosterContentMaterialStyle))]
-pub enum DartPRPosterContentMaterialStyle {
-    PRPosterContentDiscreteColorsStyle {
-        variation: f32,
-        colors: Vec<UIColor>,
-        vibrant: bool,
-        supports_variation: bool,
-        needs_to_resolve_variation: bool,
-    },
-    PRPosterContentVibrantMaterialStyle,
-    PRPosterContentGradientStyle {
-        gradient_type: u32,
-        colors: Vec<UIColor>,
-        start_point: String,
-        locations: Vec<f64>,
-        end_point: String,
-    }
-}
-
-#[frb(mirror(ReportMessage))]
-pub struct DartReportMessage {
-    pub guid: String,
-    pub sender: String,
-    pub conversation_size: u32,
-    pub parts: MessageParts,
-    pub time_of_message: f64,
-}
-
-#[frb(mirror(PRPosterSystemTimeFontConfiguration))]
-pub struct DartPRPosterSystemTimeFontConfiguration {
-    pub is_system_item: bool,
-    #[frb(non_final)]
-    pub time_font_identifier: String,
-    #[frb(non_final)]
-    pub weight: f64,
-}
-
-#[frb(mirror(UIColor))]
-pub enum DartUIColor { // no uid items
-    RGBAColorSpace {
-        color_components: u32,
-        green: f64,
-        blue: f64,
-        red: f64,
-        green_dbl: Option<f64>,
-        blue_dbl: Option<f64>,
-        red_dbl: Option<f64>,
-        alpha_dbl: Option<f64>,
-        alpha: f64,
-        rgb: Vec<u8>,
-        color_space: u32, // 2
-        class: String,
-    },
-    GrayscaleAlphaColorSpace {
-        color_components: u32,
-        white: f64,
-        alpha: f64,
-        bin: Vec<u8>,
-        color_space: u32, // 4
-        class: String,
-    }
-}
-
-#[frb(mirror(PRPosterColor))]
-pub struct DartPRPosterColor {
-    pub preferred_style: u32,
-    pub identifier: String,
-    pub suggested: bool, // not uid
-    pub color: UIColor,
-}
-
-#[frb(mirror(PRPosterTitleStyleConfiguration))]
-pub struct DartPRPosterTitleStyleConfiguration {
-    pub alternate_date_enabled: bool,
-    pub contents_luminence: f64,
-    pub group_name: String,
-    pub preferred_title_alignment: u32,
-    pub preferred_title_layout: u32,
-    pub time_font_configuration: PRPosterSystemTimeFontConfiguration,
-    pub time_numbering_system: Option<Vec<u8>>,
-    #[frb(non_final)]
-    pub title_color: PRPosterColor,
-    pub title_content_style: Vec<u8>,
-    pub user_configured: bool,
-    #[frb(non_final)]
-    pub title_style: Option<PRPosterContentMaterialStyle>,
-}
-
-#[frb(mirror(PosterColor))]
-pub struct DartPosterColor {
-    pub alpha: f64,
-    pub blue: f64,
-    pub green: f64,
-    pub red: f64,
-}
-
-#[frb(mirror(PhotoPosterContentsFrame))]
-pub struct DartPhotoPosterContentsFrame {
-    pub width: f64,
-    pub height: f64,
-    pub x: f64,
-    pub y: f64,
-}
-
-#[frb(mirror(PhotoPosterContentsSize))]
-pub struct DartPhotoPosterContentsSize {
-    pub width: f64,
-    pub height: f64,
-}
-
-#[frb(mirror(PhotoPosterLayer))]
-pub struct DartPhotoPosterLayer {
-    #[frb(non_final)]
-    pub frame: PhotoPosterContentsFrame,
-    #[frb(non_final)]
-    pub filename: String,
-    pub z_position: f32,
-    pub identifier: String,
-}
-
-#[frb(mirror(PhotoPosterLayout))]
-pub struct DartPhotoPosterLayout {
-    pub clock_intersection: u32,
-    pub device_resolution: PhotoPosterContentsSize,
-    #[frb(non_final)]
-    pub visible_frame: PhotoPosterContentsFrame,
-    pub time_frame: PhotoPosterContentsFrame,
-    pub clock_layer_order: String,
-    #[frb(non_final)]
-    pub has_top_edge_contact: bool,
-    pub inactive_frame: PhotoPosterContentsFrame,
-    pub image_size: PhotoPosterContentsSize,
-    pub parallax_padding: PhotoPosterContentsSize,
-}
-
-#[frb(mirror(PhotoPosterProperties))]
-pub struct DartPhotoPosterProperties {
-    pub portrait_layout: PhotoPosterLayout,
-    pub settling_effect_enabled: bool,
-    pub depth_enabled: bool,
-    pub clock_area_luminance: f64,
-    pub parallax_disabled: bool,
-}
-
-#[frb(mirror(PhotoPosterContents))]
-pub struct DartPhotoPosterContents {
-    pub version: u32,
-    #[frb(non_final)]
-    pub layers: Vec<PhotoPosterLayer>,
-    pub properties: PhotoPosterProperties,
-}
-
-#[frb(mirror(MonogramData))]
-pub struct DartMonogramData {
-    #[frb(non_final)]
-    pub top_background_color_description: PosterColor,
-    #[frb(non_final)]
-    pub background_color_description: PosterColor,
-    #[frb(non_final)]
-    pub initials: String,
-    pub monogram_supported_for_name: bool,
-}
-
-#[frb(mirror(MemojiData))]
-pub struct DartMemojiData {
-    #[frb(non_final)]
-    pub background_color_description: PosterColor,
-    pub avatar_record_data: Vec<u8>,
-    pub avatar_pose_data: Vec<u8>,
-    pub has_body: bool,
-    #[frb(non_final)]
-    pub avatar_image_data: Vec<u8>,
-}
-
-#[frb(mirror(PosterAsset))]
-pub struct DartPosterAsset {
-    pub contents: PhotoPosterContents,
-    #[frb(non_final)]
-    pub files: HashMap<String, Vec<u8>>,
-    pub uuid: String,
-}
-
-#[frb(mirror(PosterType))]
-pub enum DartPosterType {
-    // com.apple.PhotosUIPrivate.PhotosPosterProvider
-    Photo {
-        assets: Vec<PosterAsset>,
-    },
-    Monogram {
-        data: MonogramData,
-        background: PosterColor,
-    },
-    Memoji {
-        data: MemojiData,
-        background: PosterColor,
-    },
-}
-
-#[frb(mirror(WallpaperMetadata))]
-pub struct DartWallpaperMetadata {
-    pub background_color_key: Option<PosterColor>,
-    pub font_color_key: PosterColor,
-    #[frb(non_final)]
-    pub font_name_key: String,
-    pub font_size_key: f32,
-    #[frb(non_final)]
-    pub font_weight_key: f32,
-    pub is_vertical_key: bool,
-    pub type_key: String,
-}
-
-#[frb(non_opaque, mirror(SimplifiedPoster))]
-pub struct DartSimplifiedPoster {
-    pub text_metadata: WallpaperMetadata,
-    pub title_configuration: PRPosterTitleStyleConfiguration,
-    #[frb(non_final)]
-    pub r#type: PosterType,
-    #[frb(non_final)]
-    pub low_res: Vec<u8>,
-}
 
 #[repr(C)]
 #[frb(mirror(SupportAction))]
 pub struct DartSupportAction {
     pub url: String,
     pub button: String,
-}
-
-#[frb(mirror(StatusKitPersonalConfig))]
-pub struct DartStatusKitPersonalConfig {
-    pub allowed_modes: Vec<String>,
 }
 
 #[repr(C)]
@@ -730,7 +503,7 @@ pub struct DartUpdateProfileMessage {
 pub struct DartSharedPoster {
     pub low_res_wallpaper_tag: Vec<u8>,
     pub wallpaper_tag: Vec<u8>,
-    pub message_tag: Vec<u8>, 
+    pub message_tag: Vec<u8>,
 }
 
 #[frb(mirror(ShareProfileMessage))]
@@ -745,15 +518,6 @@ pub struct DartUpdateProfileSharingMessage {
     pub shared_dismissed: Vec<String>,
     pub shared_all: Vec<String>,
     pub version: u64,
-}
-
-#[frb(mirror(StatusKitMessage))]
-pub enum DartStatusKitMessage {
-    StatusChanged {
-        user: String,
-        mode: Option<String>,
-        allowed: bool,
-    }
 }
 
 #[repr(C)]
@@ -784,7 +548,6 @@ pub enum DartMessage {
     UpdateProfile(UpdateProfileMessage),
     UpdateProfileSharing(UpdateProfileSharingMessage),
     ShareProfile(ShareProfileMessage),
-    NotifyAnyways,
 }
 
 #[frb(mirror(MessageTarget))]
@@ -792,16 +555,6 @@ pub enum DartMessage {
 pub enum DartMessageTarget {
     Token(Vec<u8>),
     Uuid(String),
-}
-
-#[frb(mirror(CertifiedContext))]
-pub struct DartCertifiedContext {
-    pub version: u32,
-    pub receipt: Vec<u8>,
-    pub sender: String,
-    pub target: String,
-    pub uuid: Vec<u8>,
-    pub token: Vec<u8>,
 }
 
 #[frb(type_64bit_int, mirror(MessageInst))]
@@ -823,8 +576,6 @@ pub struct DartIMessage {
     pub send_delivered: bool,
     #[frb(non_final)]
     pub verification_failed: bool,
-    #[frb(non_final)]
-    pub certified_context: Option<CertifiedContext>,
 }
 
 #[repr(C)]

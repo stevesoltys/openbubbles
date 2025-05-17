@@ -303,11 +303,6 @@ class MaterialHeader extends StatelessWidget implements PreferredSizeWidget {
                                 update.isShared = false;
                                 update.save();
                               }
-                              if (contact.posterPath != "alreadyset") {
-                                controller.chat.participants.first.setPoster(contact.posterPath); // make sure we are on the same page
-                              }
-                              contact.posterPath = null;
-
                               contact.isDismissed = true;
                               contact.save();
                               controller.suggestedContact.value = null;
@@ -328,12 +323,6 @@ class MaterialHeader extends StatelessWidget implements PreferredSizeWidget {
                             onPressed: () async {
                               var contact = controller.suggestedContact.value!;
                               contact.isDismissed = true;
-                              if (contact.posterPath != null) {
-                                if (contact.posterPath != "alreadyset") {
-                                  pushService.deletePoster(contact.posterPath!);
-                                }
-                                contact.posterPath = null;
-                              }
                               contact.save();
                               controller.suggestedContact.value = null;
                             },

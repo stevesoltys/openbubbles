@@ -1,13 +1,10 @@
 package com.bluebubbles.messaging.services.notifications
 
-import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.Person
 import androidx.core.app.RemoteInput
@@ -34,8 +31,7 @@ class CreateIncomingMessageNotification: MethodCallHandlerImpl() {
         context: Context
     ) {
         // channel details
-        val parentChannelId: String = call.argument("channel_id")!!
-        val notifyAnyways: Boolean = call.argument("notify_anyways") ?: false
+        val channelId: String = call.argument("channel_id")!!
         // chat details
         val chatGuid: String = call.argument("chat_guid")!!
         val chatTitle: String = call.argument("chat_title")!!
@@ -51,45 +47,11 @@ class CreateIncomingMessageNotification: MethodCallHandlerImpl() {
         val contactName: String = call.argument("contact_name")!!
         val contactIcon: ByteArray? = call.argument("contact_avatar")
         val contactBitmap = if ((contactIcon?.size ?: 0) == 0) null else Utils.getAdaptiveIconFromByteArray(contactIcon!!)
-        val chat_uri: String? = call.argument("contact_uri")
-
-        val name = if (notifyAnyways) {
-            "Notify Anyways: $chatTitle"
-        } else {
-            chatTitle
-        }
 
         // calculate a notification ID based on the chat database ID
         val notificationId: Int = call.argument("chat_id")!!
 
         val notificationManager = context.getSystemService(NotificationManager::class.java)
-
-        if (notifyAnyways) {
-            // cancel old notification so new one takes priority.
-            notificationManager.cancel(Constants.newMessageNotificationTag, notificationId)
-        }
-
-        val channelId = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            val channelId = if (notifyAnyways) {
-                "com.bluebubbles.new_messages.$chatGuid.notify_anyways"
-            } else {
-                "com.bluebubbles.new_messages.$chatGuid"
-            }
-            if (notificationManager.getNotificationChannel(channelId) == null) {
-                val channel = NotificationChannel(channelId, name, NotificationManager.IMPORTANCE_HIGH)
-                    .apply {
-                        setConversationId(parentChannelId, chatGuid)
-                        if (notifyAnyways) {
-                            setBypassDnd(true)
-                        }
-                    }
-                notificationManager.createNotificationChannel(channel)
-            }
-            channelId
-        } else {
-            parentChannelId
-        }
-
         // check if the message has already been posted as a notification
         val notificationPostedAlready = notificationManager.activeNotifications.firstOrNull { it.notification.extras.getString("chatGuid") == chatGuid && it.notification.extras.getString("messageGuid") == messageGuid } != null
         // this is used to copy the style, since the notification already exists
@@ -101,13 +63,6 @@ class CreateIncomingMessageNotification: MethodCallHandlerImpl() {
         val sender = Person.Builder()
             .setName(contactName)
             .setIcon(contactBitmap)
-            .let {
-                if (notifyAnyways) {
-                    it // do not set person, so we notify anyways
-                } else {
-                    it.setUri(chat_uri) // for focus bypass
-                }
-            }
             .setImportant(true)
             .build()
         PushShareTargetsHandler().pushShareTarget(context, chatTitle, chatGuid, chatIcon)
@@ -218,13 +173,7 @@ class CreateIncomingMessageNotification: MethodCallHandlerImpl() {
             .setAllowSystemGeneratedContextualActions(true)
             .setColor(4888294)
             .setBubbleMetadata(bubbleMetadata)
-            .let {
-                if (notifyAnyways) {
-                    it // do not set shortcut, so it notifys anyways
-                } else {
-                    it.setShortcutId(chatGuid)
-                }
-            }
+            .setShortcutId(chatGuid)
             .addAction(markAsReadAction)
             .addAction(replyAction)
             .addPerson(sender)

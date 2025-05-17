@@ -30,29 +30,6 @@ class _SupportedInteractiveState extends OptimizedState<SupportedInteractive> wi
   iMessageAppData get data => widget.data;
   dynamic get file => File(widget.content.path!);
 
-  static List<_SupportedInteractiveState> aliveExtensions = [];
-  
-  bool forcedDead = false;
-
-  @override
-  void initState() {
-    super.initState();
-    aliveExtensions.add(this);
-    if (aliveExtensions.length > 20) {
-      var oldExt = aliveExtensions.removeAt(0);
-      oldExt.forcedDead = true;
-      oldExt.setState(() { });
-    }
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    if (aliveExtensions.contains(this)) {
-      aliveExtensions.remove(this);
-    }
-  }
-
   @override
   bool get wantKeepAlive => true;
 
@@ -64,7 +41,7 @@ class _SupportedInteractiveState extends OptimizedState<SupportedInteractive> wi
       data["messageGuid"] = widget.guid;
       return SizedBox(
         height: 250,
-        child: forcedDead ? const SizedBox.shrink() : RepaintBoundary(
+        child: RepaintBoundary(
           child: AndroidView(
           viewType: "extension-live",
           layoutDirection: TextDirection.ltr,

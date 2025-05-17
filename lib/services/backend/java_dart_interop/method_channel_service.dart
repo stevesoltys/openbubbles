@@ -12,7 +12,6 @@ import 'package:bluebubbles/services/services.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:bluebubbles/src/rust/api/api.dart' as api;
 
 MethodChannelService mcs = Get.isRegistered<MethodChannelService>() ? Get.find<MethodChannelService>() : Get.put(MethodChannelService());
 
@@ -69,12 +68,7 @@ class MethodChannelService extends GetxService {
             var map = (e as Map<Object?, Object?>).cast<String, dynamic>();
             return map["address"] as String;
           }).toList());
-          // sent from me
-          bool fromMe = sender == "me";
-          if (fromMe && pushService.disableOutgoingSms) return true;
-          if (fromMe) sender = (await chat.ensureHandle()).replaceFirst("tel:", "");
-
-          await chat.deliverSMS(sender, fromMe, mapped);
+          await chat.deliverSMS(sender, mapped);
         } catch (e, s) {
           Logger.error("SMS deliver error", error: e, trace: s);
           rethrow;
@@ -116,14 +110,6 @@ class MethodChannelService extends GetxService {
           return true;
         } catch (e, s) {
           Logger.error("Extension update error", error: e, trace: s);
-          return Future.error(PlatformException(code: "500", message: e.toString()), s);
-        }
-      case "extension-set-suppress":
-        try {
-          await es.setSuppress(arguments!);
-          return true;
-        } catch (e, s) {
-          Logger.error("Set suppress error", error: e, trace: s);
           return Future.error(PlatformException(code: "500", message: e.toString()), s);
         }
       case "NewServerUrl":

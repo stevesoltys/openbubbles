@@ -88,14 +88,9 @@ class MessageHelper {
     return _messages;
   }
 
-  static Future<void> handleNotification(Message message, Chat chat, {bool findExisting = true, bool notifyAnyways = false}) async {
+  static Future<void> handleNotification(Message message, Chat chat, {bool findExisting = true}) async {
     // if from me
-    if (message.isFromMe! || message.handle == null || message.handle!.isBlocked()) return;
-    var session = message.payloadData?.appData?.firstOrNull?.session;
-    if (session != null && es.suppressingSessions.contains(session)) {
-      Logger.info("Suppressing incoming message notification for session $session per extension request");
-      return;
-    }
+    if (message.isFromMe! || message.handle == null) return;
     // if it is a "kept audio" message
     if (message.itemType == 5 && message.subject != null) return;
     // See if there is an existing message for the given GUID
@@ -106,7 +101,7 @@ class MessageHelper {
     if (ls.isAlive && cm.isChatActive(chat.guid)) return;
     // if app is alive, on chat list, but notifying on chat list is disabled
     if (ls.isAlive && cm.activeChat == null && Get.rawRoute?.settings.name == "/" && !ss.settings.notifyOnChatList.value) return;
-    await notif.createNotification(chat, message, notifyAnyways: notifyAnyways);
+    await notif.createNotification(chat, message);
   }
 
   static Future<void> handleSummaryNotification(List<Message> messages, {bool findExisting = true}) async {

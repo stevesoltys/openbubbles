@@ -128,14 +128,12 @@ class LifecycleService extends GetxService with WidgetsBindingObserver {
     }
     if (cm.activeChat != null) {
       cm.activeChat!.chat.toggleHasUnread(false);
-      cm.activeChat!.chat.fixZenModeShared();
       ConversationViewController _cvc = cvc(cm.activeChat!.chat);
       if (!_cvc.showingOverlays && _cvc.editing.isEmpty) {
         _cvc.lastFocusedNode.requestFocus();
       }
     }
     pushService.tryWarnVpn();
-    pushService.onboardZenMode();
 
     if (http.originOverride == null) {
       // NetworkTasks.detectLocalhost();

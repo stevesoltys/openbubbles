@@ -5,10 +5,8 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.Person
 import com.bluebubbles.messaging.Constants
@@ -24,8 +22,6 @@ import io.flutter.plugin.common.MethodChannel
 class CreateIncomingFaceTimeNotification: MethodCallHandlerImpl() {
     companion object {
         const val tag = "create-incoming-facetime-notification"
-
-        val avatarCache = mutableMapOf<String, Bitmap?>()
     }
 
     override fun handleMethodCall(
@@ -42,17 +38,12 @@ class CreateIncomingFaceTimeNotification: MethodCallHandlerImpl() {
         val link: String? = call.argument("link")!!
         var username: String = call.argument("name")!!
 
-        var poster: String? = call.argument("poster")
 
         // contact details
         val callerName: String = call.argument("caller")!!
         val callerIcon: ByteArray? = call.argument("caller_avatar")
         val callerBitmap = if ((callerIcon?.size ?: 0) == 0) null else BitmapFactory.decodeByteArray(callerIcon!!, 0, callerIcon.size)
         val callerIconCompat = if ((callerIcon?.size ?: 0) == 0) null else Utils.getAdaptiveIconFromByteArray(callerIcon!!)
-
-        if (callerBitmap != null) {
-            avatarCache[callUuid!!] = callerBitmap
-        }
 
         // build the caller object
         val caller = Person.Builder()
@@ -65,20 +56,17 @@ class CreateIncomingFaceTimeNotification: MethodCallHandlerImpl() {
         val extras = Bundle()
         extras.putString("callUuid", callUuid)
 
-        Log.i("FaceTime", "Creating notification for call $callUuid")
-
         // intent to open the app
         val openSummaryIntent = PendingIntent.getActivity(
             context,
-            notificationId + Constants.pendingIntentOpenFaceTimeOffset,
+            0,
             Intent(context, FaceTimeActivity::class.java)
                 .putExtras(extras)
                 .putExtra("answer", false)
                 .putExtra("link", link)
                 .putExtra("name", username)
                 .putExtra("notificationId", notificationId.toString())
-                .putExtra("desc", title)
-                .putExtra("poster", poster),
+                .putExtra("desc", title),
             PendingIntent.FLAG_IMMUTABLE
         )
 
@@ -92,8 +80,7 @@ class CreateIncomingFaceTimeNotification: MethodCallHandlerImpl() {
                 .putExtra("link", link)
                 .putExtra("name", username)
                 .putExtra("notificationId", notificationId.toString())
-                .putExtra("desc", title)
-                .putExtra("poster", poster),
+                .putExtra("desc", title),
             PendingIntent.FLAG_IMMUTABLE
         )
 

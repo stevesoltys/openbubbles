@@ -187,14 +187,12 @@ class ChatCreatorState extends OptimizedState<ChatCreator> {
     if (selectedContacts.any((element) => element.iMessage.value == false)) {
       setState(() {
         iMessage = false;
-        textController.supportsFormatting = false;
         sms = true;
         filteredChats = List<Chat>.from(existingChats.where((e) => !e.isIMessage));
       });
     } else {
       setState(() {
         iMessage = true;
-        textController.supportsFormatting = true;
         sms = false;
         filteredChats = List<Chat>.from(existingChats.where((e) => e.isIMessage));
       });
@@ -207,7 +205,7 @@ class ChatCreatorState extends OptimizedState<ChatCreator> {
         if (kIsWeb) {
           existingChat = await Chat.findOneWeb(chatIdentifier: slugify(address, delimiter: ''));
         } else {
-          final query = Database.chats.query(Chat_.chatIdentifier.equals(slugify(address, delimiter: '')).and(Chat_.isRoutingStub.equals(false).or(Chat_.isRoutingStub.isNull()))).build();
+          final query = Database.chats.query(Chat_.chatIdentifier.equals(slugify(address, delimiter: ''))).build();
           final result = query.find();
           existingChat = result.firstWhere((element) => element.isIMessage == iMessage);
           query.close();
@@ -219,7 +217,6 @@ class ChatCreatorState extends OptimizedState<ChatCreator> {
       for (Chat c in (checkDeleted ? Database.chats.getAll() : filteredChats)) {
         if (c.participants.length != selectedContacts.length) continue;
         if (c.isIMessage != iMessage) continue; // mke sure imessage status is the same
-        if (c.isRoutingStub) continue;
         int matches = 0;
         for (SelectedContact contact in selectedContacts) {
           for (Handle participant in c.participants) {
@@ -536,7 +533,6 @@ class ChatCreatorState extends OptimizedState<ChatCreator> {
                       if (index == 0) {
                         setState(() {
                           iMessage = true;
-                          textController.supportsFormatting = true;
                           sms = false;
                           filteredChats = List<Chat>.from(existingChats.where((e) => e.isIMessage));
                         });
@@ -545,7 +541,6 @@ class ChatCreatorState extends OptimizedState<ChatCreator> {
                       } else {
                         setState(() {
                           iMessage = false;
-                          textController.supportsFormatting = false;
                           sms = true;
                           filteredChats = List<Chat>.from(existingChats.where((e) => !e.isIMessage));
                         });
@@ -768,54 +763,6 @@ class ChatCreatorState extends OptimizedState<ChatCreator> {
                               existsOnServer = false;
                             }
                           }
-                          if (!iMessage && ss.settings.smsForwardingTargets.keys.isEmpty) {
-                            // we have no one to sms forward to, open the default messaging app
-                            if (kIsDesktop) {
-                              showSnackbar("Someone's not on iMessage!", "Enable SMS forwarding on another device!");
-                              return;
-                            }
-
-                            if (!ss.settings.warnedTextChats.value) {
-                              await showDialog(
-                                context: Get.context!,
-                                barrierDismissible: false,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: Text(
-                                      "Text chats open in Messages",
-                                      style: context.theme.textTheme.titleLarge,
-                                    ),
-                                    content: Text(
-                                      "You will be sent to your default messaging app if iMessage isn't supported by all participants.",
-                                      style: context.theme.textTheme.bodyLarge
-                                    ),
-                                    backgroundColor: context.theme.colorScheme.properSurface,
-                                    actions: <Widget>[
-                                      TextButton(
-                                        child: Text("Ok",
-                                            style: context.theme.textTheme.bodyLarge!
-                                                .copyWith(color: context.theme.colorScheme.primary)),
-                                        onPressed: () async {
-                                          Navigator.of(context).pop();
-                                          ss.settings.warnedTextChats.value = true;
-                                          ss.saveSettings();
-                                        },
-                                      ),
-                                    ],
-                                  );
-                                });
-                            }
-                            
-                            final participants = selectedContacts
-                                .map((e) => e.address.isEmail ? e.address : cleansePhoneNumber(e.address))
-                                .toList();
-                            mcs.invokeMethod("open-sms-app", {
-                              "targets": participants.join(";"),
-                              "body": textController.text
-                            });
-                            Navigator.of(context).pop();
-                            return;
-                          }
                           if (chat != null && existsOnServer) {
                             sendInitialMessage() async {
                               try {
@@ -857,7 +804,7 @@ class ChatCreatorState extends OptimizedState<ChatCreator> {
 
                             if (backend is RustPushBackend && widget.initialAttachments.isEmpty && widget.initialText == "") {
                               var b = backend as RustPushBackend;
-                              var handle = iMessage ? await b.getDefaultHandle() : await b.getDefaultSMSHandle();
+                              var handle = await b.getDefaultHandle();
                               chat.usingHandle = handle;
                               chat.save(updateUsingHandle: true);
                             }

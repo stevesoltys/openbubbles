@@ -11,12 +11,12 @@ import 'package:bluebubbles/services/network/backend_service.dart';
 import 'package:bluebubbles/utils/logger/logger.dart';
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
-import 'package:ffmpeg_kit_flutter/ffmpeg_kit.dart';
-import 'package:ffmpeg_kit_flutter/ffprobe_kit.dart';
-import 'package:ffmpeg_kit_flutter/log.dart';
-import 'package:ffmpeg_kit_flutter/return_code.dart';
-import 'package:ffmpeg_kit_flutter/session.dart';
-import 'package:ffmpeg_kit_flutter/statistics.dart';
+import 'package:ffmpeg_kit_flutter_new/ffmpeg_kit.dart';
+import 'package:ffmpeg_kit_flutter_new/ffprobe_kit.dart';
+import 'package:ffmpeg_kit_flutter_new/log.dart';
+import 'package:ffmpeg_kit_flutter_new/return_code.dart';
+import 'package:ffmpeg_kit_flutter_new/session.dart';
+import 'package:ffmpeg_kit_flutter_new/statistics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide Response;
@@ -567,8 +567,7 @@ class ActionHandler extends GetxService {
     String? address = data["handle"]?["address"];
     String caller = data["address"] ?? "Unknown Number";
     String link = data["link"]!!;
-    Uint8List? chatIcon = data["icon"];
-    String? poster = data["poster"];
+    Uint8List? chatIcon;
 
     // Find the contact info for the caller
     // Load the contact's avatar & name
@@ -588,12 +587,15 @@ class ActionHandler extends GetxService {
       });
     }
 
-    // only show on desktop, rely on notif for mobile as it is better UX
-    if (kIsDesktop) {
+    if (!ls.isAlive) {
+      if (kIsDesktop) {
+        await showFaceTimeOverlay(callUuid, caller, chatIcon, link);
+      }
+    } else {
       await showFaceTimeOverlay(callUuid, caller, chatIcon, link);
     }
     // always show facetime notification for ringtone
-    await notif.createIncomingFaceTimeNotification(callUuid, caller, link, chatIcon, poster);
+    await notif.createIncomingFaceTimeNotification(callUuid, caller, link, chatIcon);
   }
 
   Future<void> handleIncomingFaceTimeCallLegacy(Map<String, dynamic> data) async {
@@ -609,7 +611,7 @@ class ActionHandler extends GetxService {
       Contact? contact = cs.getContact(address);
       chatIcon = contact?.avatar;
       caller = contact?.displayName ?? caller;
-      await notif.createIncomingFaceTimeNotification(null, caller!, "", chatIcon, null);
+      await notif.createIncomingFaceTimeNotification(null, caller!, "", chatIcon);
     }
   }
 

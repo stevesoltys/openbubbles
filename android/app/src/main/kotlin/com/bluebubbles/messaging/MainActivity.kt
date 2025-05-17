@@ -12,13 +12,10 @@ import com.bluebubbles.messaging.services.foreground.ForegroundServiceBroadcastR
 import com.bluebubbles.messaging.Constants
 import com.bluebubbles.messaging.services.extension.KeyboardViewFactory
 import com.bluebubbles.messaging.services.extension.LiveExtensionFactory
-import com.bluebubbles.messaging.services.extension.MessageViewHandle
 import com.bluebubbles.messaging.services.rustpush.APNService
-import com.bluebubbles.messaging.services.system.CreateDocumentHandler
 import io.flutter.embedding.android.FlutterFragmentActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
-import java.io.FileInputStream
 
 class MainActivity : FlutterFragmentActivity(), ComponentCallbacks2 {
     companion object {
@@ -92,26 +89,6 @@ class MainActivity : FlutterFragmentActivity(), ComponentCallbacks2 {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == Constants.notificationListenerRequestCode) {
             MethodCallHandler.getNotificationListenerResult?.success(resultCode == Activity.RESULT_OK)
-        }
-        if (requestCode == Constants.documentSaveRequestCode) {
-            var result = CreateDocumentHandler.savedResult!!
-            CreateDocumentHandler.savedResult = null
-            val uri = data?.data
-            if (uri == null) {
-                result.success(null)
-                return
-            }
-
-            try {
-                val output = contentResolver.openOutputStream(uri)!!
-                val input = FileInputStream(CreateDocumentHandler.savedPath!!)
-                input.copyTo(output)
-                output.close()
-                input.close()
-                result.success(null)
-            } catch (e: Exception) {
-                result.error("FILE_WRITE_ERROR", e.message, null)
-            }
         }
     }
 }

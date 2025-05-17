@@ -12,24 +12,6 @@ class MessageViewHandle(val context: Context, val session: String, val appId: In
 
     var locked = false
     var alive = false
-    var suppressing = false
-
-    override fun setSuppressNotifications(suppress: Boolean) {
-        if (suppress && !locked) {
-            throw Exception("Trying to suppress notifications for unlocked handle!  ")
-        }
-        suppressing = suppress
-        Handler(context.mainLooper).post {
-            val myMsg = hashMapOf(
-                "appId" to appId,
-                "session" to session,
-                "suppress" to suppress,
-            )
-            MethodCallHandler.invokeMethod(
-                "extension-set-suppress",
-                myMsg)
-        }
-    }
 
     override fun updateMessage(
         message: MadridMessage?,
@@ -69,9 +51,6 @@ class MessageViewHandle(val context: Context, val session: String, val appId: In
 
     override fun unlock() {
         locked = false
-        if (suppressing) {
-            setSuppressNotifications(false)
-        }
         if (!alive) {
             destroy()
             MessageViewRegistry.registered.remove(session)

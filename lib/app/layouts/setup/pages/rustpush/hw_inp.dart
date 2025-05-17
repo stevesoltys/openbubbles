@@ -648,11 +648,7 @@ class HwInpState extends OptimizedState<HwInp> {
                                           children: [
                                             Text("Hosted",
                                                 style: context.theme.textTheme.titleMedium!),
-                                            if (!kIsDesktop)
                                             Text(controller.noCapErrorMsg.value,
-                                                style: context.theme.textTheme.bodySmall!),
-                                            if (kIsDesktop)
-                                            Text("Not available on desktop.",
                                                 style: context.theme.textTheme.bodySmall!),
                                           ],
                                         )),
@@ -714,7 +710,7 @@ class HwInpState extends OptimizedState<HwInp> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text("Self-hosted",
+                                    Text("Self-managed",
                                         style: context.theme.textTheme.titleMedium!.copyWith(color: hosted ? null : context.theme.colorScheme.onPrimary)),
                                     Text("One-time access to a Mac or a supported, always-online iPhone required. Mac devices cannot use this phone's number.",
                                         style: context.theme.textTheme.bodySmall!.copyWith(color: hosted ? null : context.theme.colorScheme.onPrimary)),

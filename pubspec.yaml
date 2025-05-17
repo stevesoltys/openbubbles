@@ -12,7 +12,7 @@ description: Send iMessages on Android using BlueBubbles!
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 
-version: 1.15.0+139
+version: 1.15.0+130
 publish_to: none
 
 environment:
@@ -199,16 +199,17 @@ dependencies:
     path: rust_builder
   freezed_annotation: ^2.4.1
   telephony_plus:
-    path: /home/tae/Downloads/telephony_plus
+    git:
+      url: https://github.com/stevesoltys/telephony_plus.git
+      ref: 6db951e1e2e055e8ec844ccaf4319161f6fe6e3e
   barcode_widget: ^2.0.4
   vpn_connection_detector: ^1.0.6
-  ffmpeg_kit_flutter: 6.0.3
+  ffmpeg_kit_flutter_new: 1.4.1
   dotted_border: ^2.1.0
   external_path: ^2.0.1
   flutter_inappwebview: ^6.1.5
   in_app_purchase_android: ^0.4.0
   android_play_install_referrer: ^0.4.0
-  palette_generator: ^0.3.3+6
 
 
 dependency_overrides:
@@ -270,21 +271,6 @@ flutter:
   # - family: AppleColorEmoji
   #   fonts:
   #     - asset: assets/fonts/AppleColorEmoji.ttf
-  shaders:
-    - shaders/vertical_blur_gradient.frag
-  fonts:
-    - family: Inter
-      fonts:
-        - asset: assets/fonts/Inter-VariableFont_opsz,wght.ttf
-    - family: Alegreya
-      fonts:
-        - asset: assets/fonts/Alegreya-VariableFont_wght.ttf
-    - family: Nunito
-      fonts:
-        - asset: assets/fonts/Nunito-VariableFont_wght.ttf
-    - family: RobotoCondensed
-      fonts:
-        - asset: assets/fonts/RobotoCondensed-VariableFont_wght.ttf
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
@@ -326,7 +312,6 @@ flutter:
     - assets/badges/badge-10.ico
     - assets/rustpush/uti-map.json
     - assets/scripts/AppleAccountSetup.js
-    - .env
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
   # For details regarding adding assets from package dependencies, see

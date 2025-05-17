@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:android_play_install_referrer/android_play_install_referrer.dart';
 import 'package:bluebubbles/app/layouts/conversation_list/pages/conversation_list.dart';
@@ -24,7 +23,6 @@ import 'package:bluebubbles/services/services.dart';
 import 'package:bluebubbles/utils/crypto_utils.dart';
 import 'package:bluebubbles/utils/logger/logger.dart';
 import 'package:crypto/crypto.dart';
-import 'package:file_picker/file_picker.dart' as picker;
 import 'package:dio/dio.dart';
 import 'package:disable_battery_optimization/disable_battery_optimization.dart';
 import 'package:ffi/ffi.dart';
@@ -32,9 +30,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge.dart';
-import 'package:get/get.dart' hide FormData, MultipartFile;
+import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:bluebubbles/src/rust/api/api.dart' as api;
 import 'package:url_launcher/url_launcher.dart';
@@ -71,7 +68,7 @@ class SetupViewController extends StatefulController {
   DateTime tokenExpiry = DateTime.fromMillisecondsSinceEpoch(0);
 
   String? currentWaitlist;
-  RxString noCapErrorMsg = "Currently full. If you got an invite, enter your code from your email. Otherwise, join the waitlist!".obs;
+  RxString noCapErrorMsg = "If you got an invite, enter your code from your email. Otherwise, join the waitlist!".obs;
 
   bool hasValidToken() {
     return !tokenExpiry.isBefore(DateTime.now());
@@ -768,138 +765,6 @@ class _ErrorTextState extends CustomState<ErrorText, String, SetupViewController
                       .copyWith(height: 2)),
             ),
           ),
-        if (controller.error.isNotEmpty && !controller.error.contains("Enter the correct password") && !controller.error.contains("Your account information was entered incorrectly") && (!controller.error.contains("Relay device offline") || !ss.settings.deviceIsHosted.value))
-        TextButton(
-          onPressed: () async {
-            final TextEditingController participantController = TextEditingController();
-            final TextEditingController details = TextEditingController();
-            Uint8List? attachment;
-            showDialog(
-              context: context,
-              builder: (_) {
-                return AlertDialog(
-                  actions: [
-                    TextButton(
-                      child: Text("Cancel", style: context.theme.textTheme.bodyLarge!.copyWith(color: context.theme.colorScheme.primary)),
-                      onPressed: () => Get.back(),
-                    ),
-                    TextButton(
-                      child: Text("Screenshot", style: context.theme.textTheme.bodyLarge!.copyWith(color: context.theme.colorScheme.primary)),
-                      onPressed: () async {
-                        final res = await picker.FilePicker.platform.pickFiles(withData: true, type: picker.FileType.custom, allowedExtensions: ['png', 'jpg', 'jpeg']);
-                        if (res == null || res.count == 0) return;
-                        attachment = await File(res.files[0].path!).readAsBytes();
-                        showSnackbar("Notice", "Screenshot added");
-                      },
-                    ),
-                    TextButton(
-                      child: Text("OK", style: context.theme.textTheme.bodyLarge!.copyWith(color: context.theme.colorScheme.primary)),
-                      onPressed: () async {
-                        if (participantController.text.isEmpty) return;
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              backgroundColor: context.theme.colorScheme.properSurface,
-                              title: Text(
-                                "Uploading log...",
-                                style: context.theme.textTheme.titleLarge,
-                              ),
-                              content: Container(
-                                height: 70,
-                                child: Center(
-                                  child: CircularProgressIndicator(
-                                    backgroundColor: context.theme.colorScheme.properSurface,
-                                    valueColor: AlwaysStoppedAnimation<Color>(context.theme.colorScheme.primary),
-                                  ),
-                                ),
-                              ),
-                            );
-                          }
-                        );
-                        
-                        // 
-                        var file = Directory(Platform.isAndroid ? "${fs.appDocDir.path}/../files/logs" : "${fs.appDocDir.path}/logs");
-                        final List<FileSystemEntity> entities = await file.list().toList();
-                        var current = entities.indexWhere((element) => element.path.endsWith("CURRENT.log"));
-                        var item = entities.removeAt(current);
-                        var end = await File(item.path).readAsBytes();
-                        var b = BytesBuilder();
-                        if (entities.isNotEmpty) {
-                          var next = await File(entities.first.path).readAsBytes();
-                          b.add(next);
-                        }
-                        b.add(end);
-                        var total = b.toBytes();
-
-
-                        // stop stupid automatic cralwers from spamming the webhook
-                        var url = dotenv.get('REPORT_ISSUE_WEBHOOK');
-
-                        try {
-                          final response = await http.dio.post(
-                              url,
-                              data: FormData.fromMap({
-                                "content": "Desc: ${details.text}\nEmail: ${participantController.text}\nError: ${controller.error}\nHosted: ${ss.settings.deviceIsHosted.value}",
-                                "username": "Onboarding",
-                                "files[0]": MultipartFile.fromBytes(total, filename: "rustpush-logs.log"),
-                                if (attachment != null)
-                                "files[1]": MultipartFile.fromBytes(attachment!, filename: "screenshot.png")
-                              }),
-                          );
-
-                          if (response.statusCode == 200) {
-                            Get.back();
-                            Get.back();
-                            showSnackbar("Notice", "Logs sent! Thank you!");
-                          } else {
-                            Get.back();
-                            Logger.error(response.toString());
-                            showSnackbar("Error", "There was an issue sending logs");
-                          }
-                        } catch(e, s) {
-                          Get.back();
-                          Logger.error("failed", error: e, trace: s);
-                          showSnackbar("Error", "There was an issue sending logs $e");
-                        }
-                      },
-                    ),
-                  ],
-                  content: Column(children: [
-                    const Text("Logs will be sent to developer for review. Logs may contain personal identifiers and 48 hours of message and chat history. Do not submit logs containing sensitive chats or messages. Your logs will be shared with Discord for storage subject to their Privacy Policy."),
-                    const SizedBox(height: 16,),
-                    TextField(
-                      controller: participantController,
-                      decoration: const InputDecoration(
-                        labelText: "Your email",
-                        border: OutlineInputBorder(),
-                      ),
-                      keyboardType: TextInputType.multiline,
-                      maxLines: null,
-                    ),
-                    const SizedBox(height: 16,),
-                    TextField(
-                      controller: details,
-                      decoration: const InputDecoration(
-                        labelText: "Optional details",
-                        border: OutlineInputBorder(),
-                      ),
-                      keyboardType: TextInputType.multiline,
-                      maxLines: null,
-                    )
-                  ],
-                  mainAxisSize: MainAxisSize.min,),
-                  title: Text("Report issue", style: context.theme.textTheme.titleLarge),
-                  backgroundColor: context.theme.colorScheme.properSurface,
-                );
-              }
-            );
-          },
-          child: Text(
-            "Report Error",
-            style: context.theme.textTheme.bodyMedium!.apply(color:context.theme.colorScheme.error, decoration: TextDecoration.underline)
-          )
-        ),
         if (controller.error.isNotEmpty) const SizedBox(height: 20),
       ],
     );

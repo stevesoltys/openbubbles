@@ -7,7 +7,6 @@ import 'package:bluebubbles/helpers/helpers.dart';
 import 'package:bluebubbles/app/layouts/settings/widgets/settings_widgets.dart';
 import 'package:bluebubbles/app/layouts/settings/pages/theming/avatar/avatar_crop.dart';
 import 'package:bluebubbles/database/models.dart';
-import 'package:bluebubbles/services/rustpush/rustpush_service.dart';
 import 'package:bluebubbles/services/services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -269,18 +268,6 @@ class _ChatOptionsState extends OptimizedState<ChatOptions> {
                     },
                   ),
                 if (chat.isGroup) const SettingsDivider(),
-                if (!kIsWeb && !chat.isGroup && ss.settings.enablePrivateAPI.value && ss.settings.enableShareZen.value && chat.participants.firstOrNull?.contact?.isShared == false)
-                  SettingsSwitch(
-                    title: "Share Status",
-                    initialVal: chat.shareZenMode ?? ss.settings.enableShareZen.value,
-                    onChanged: (value) async {
-                      chat.shareZenMode = value;
-                      chat.save(updateShareZenMode: true);
-                      setState(() {});
-                      chat.fixZenModeShared();
-                    },
-                    backgroundColor: tileColor,
-                  ),
                 if (!kIsWeb)
                   SettingsSwitch(
                     title: "Pin Conversation",
@@ -308,63 +295,6 @@ class _ChatOptionsState extends OptimizedState<ChatOptions> {
                     onChanged: (value) {
                       chat.toggleArchived(value);
                       setState(() {});
-                    },
-                    backgroundColor: tileColor,
-                  ),
-                if (!kIsWeb && !chat.isGroup && chat.participants.length == 1)
-                  SettingsSwitch(
-                    title: "Block Sender",
-                    initialVal: chat.participants.first.isBlocked(),
-                    onChanged: (value) {
-                      if (value) {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                                backgroundColor: context.theme.colorScheme.properSurface,
-                                title: Text("Are you sure you want to block?", style: context.theme.textTheme.titleLarge),
-                                content: Text(
-                                  'You will not receive notifications or calls from this user, and their messages will not be marked as delivered.',
-                                  style: context.theme.textTheme.bodyLarge,
-                                ),
-                                actions: <Widget>[
-                                  TextButton(
-                                    child: Text("Cancel",
-                                        style: context.theme.textTheme.bodyLarge!
-                                            .copyWith(color: context.theme.colorScheme.primary)),
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                  ),
-                                  TextButton(
-                                    child: Text("Block",
-                                        style: context.theme.textTheme.bodyLarge!
-                                            .copyWith(color: context.theme.colorScheme.primary)),
-                                    onPressed: () async {
-                                      Navigator.of(context).pop();
-                                      chat.participants.first.setBlocked(true);
-                                      setState(() {});
-                                    },
-                                  ),
-                                  TextButton(
-                                    child: Text("Block and archive",
-                                        style: context.theme.textTheme.bodyLarge!
-                                            .copyWith(color: context.theme.colorScheme.primary)),
-                                    onPressed: () async {
-                                      Navigator.of(context).pop();
-                                      chat.participants.first.setBlocked(true);
-                                      chat.toggleArchived(true);
-                                      setState(() {});
-                                    },
-                                  ),
-                                ]);
-                          },
-                        );
-                      } else {
-                        chat.participants.first.setBlocked(false);
-                        chat.toggleArchived(false);
-                        setState(() {});
-                      }
                     },
                     backgroundColor: tileColor,
                   ),

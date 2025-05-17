@@ -432,12 +432,10 @@ class MentionTextEditingController extends SpellCheckTextEditingController {
     super.text,
     super.focusNode,
     this.mentionables = const <Mentionable>[],
-    this.supportsFormatting = true,
   });
 
   TextSelection oldTextFieldSelection = const TextSelection.collapsed(offset: 0);
   String lastText = "";
-  bool supportsFormatting;
 
   @override
   void notifyListeners() {
@@ -850,9 +848,7 @@ class MentionTextEditingController extends SpellCheckTextEditingController {
               label: "Custom Mention",
             ),
           ],
-        )..buttonItems?.addAllIf(
-          supportsFormatting,
-          [
+        )..buttonItems?.addAll([
           ContextMenuButtonItem(
             onPressed: () {
               var already = annotations!.every((a) => a.bold == true);

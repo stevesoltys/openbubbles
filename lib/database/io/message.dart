@@ -22,8 +22,6 @@ import 'package:objectbox/objectbox.dart';
 import 'package:supercharged/supercharged.dart';
 import 'package:telephony_plus/telephony_plus.dart';
 import 'package:telephony_plus/src/models/attachment.dart' as TelephonyAttachment;
-import 'package:bluebubbles/src/rust/api/api.dart' as api;
-import 'package:tuple/tuple.dart';
 
 /// Async method to fetch attachments
 class GetMessageAttachments extends AsyncTask<List<dynamic>, Map<String, List<Attachment?>>> {
@@ -291,7 +289,7 @@ class Message {
   String? sendingServiceId;
 
   String? amkSessionId; // for sessioned messages
-  bool hasBeenForwarded; // local SMS forwarding, used to keep track of this message needs to be sent locally via SMS
+  bool hasBeenForwarded; // local SMS forwarding, used to keep track of this message needs to be sent
   String? stagingGuid;
 
   final RxInt _error = RxInt(0);
@@ -339,61 +337,51 @@ class Message {
 
   DateTime? get chatViewDate => dateScheduled ?? dateCreated;
 
-  // prevents saving, used for SMS forwarding
-  @Transient()
-  bool temp = false;
-
 
   Future<void> forwardIfNessesary(Chat chat, {bool markFailed = false}) async {
-    if (hasBeenForwarded || !chat.isTextForwarding || !(isFromMe ?? true)) return;
-    if (!await chat.shouldRoute()) return;
-
-
+    if (hasBeenForwarded || !ss.settings.isSmsRouter.value || !chat.isTextForwarding || !(isFromMe ?? true)) return;
     hasBeenForwarded = true;
     save(chat: chat);
-
-    pushService.disableOutgoingSms = true;
-
-    try {
-      // if we are forwarding, we do not persist to disk. Therefore we don't care about temp guids
-      var attachments = fetchAttachments()!;
-      bool useMMS = chat.participants.length > 1 || attachments.isNotEmpty;
-      int status;
-      if (useMMS) {
-        status = await TelephonyPlus().sendMMS(
-          addresses: chat.participants.map((e) => e.address).filter((e) => e.isPhoneNumber).toList(),
-          message: text?.trim() == "" ? null : text,
-          threadId: chat.telephonyId,
-          attachments: await Future.wait(attachments.map((e) => e!.toTelephony()).toList())
-        );
-      } else {
-        status = await TelephonyPlus().sendSMS(
-          address: chat.participants.first.address,
-          threadId: chat.telephonyId,
-          message: text!,
-        );
-      }
-      if (status != -1) {
-        await (backend as RustPushBackend).confirmSmsSent(this, chat, false);
-        hasBeenForwarded = false;
-        save(chat: chat);
-        if (markFailed) {
-
-          if (!ls.isAlive || !(cm.getChatController(chat.guid)?.isAlive ?? false)) {
-            await notif.createFailedToSend(chat);
-          }
-          return;
-        } else {
-          throw Exception("failed to send sms with status $status!");
-        }
-      }
-      await (backend as RustPushBackend).confirmSmsSent(this, chat, true);
-    } finally {
-      (() async {
-        await Future.delayed(const Duration(seconds: 5));
-        pushService.disableOutgoingSms = false;
-      })();
+    var attachments = fetchAttachments()!;
+    bool useMMS = chat.participants.length > 1 || attachments.isNotEmpty;
+    int status;
+    if (useMMS) {
+      status = await TelephonyPlus().sendMMS(
+        addresses: chat.participants.map((e) => e.address).filter((e) => e.isPhoneNumber).toList(),
+        message: text?.trim() == "" ? null : text,
+        threadId: chat.telephonyId,
+        attachments: await Future.wait(attachments.map((e) => e!.toTelephony()).toList())
+      );
+    } else {
+      status = await TelephonyPlus().sendSMS(
+        address: chat.participants.first.address,
+        threadId: chat.telephonyId,
+        message: text!,
+      );
     }
+    if (status != -1) {
+      await (backend as RustPushBackend).confirmSmsSent(this, chat, false);
+      hasBeenForwarded = false;
+      save(chat: chat);
+      if (markFailed) {
+        final tempGuid = guid;
+        var newMsg = handleSendError(Exception("failed to send sms with status $status!"), this);
+
+        if (!ls.isAlive || !(cm.getChatController(chat.guid)?.isAlive ?? false)) {
+          await notif.createFailedToSend(chat);
+        }
+        await Message.replaceMessage(tempGuid, newMsg);
+        return;
+      } else {
+        throw Exception("failed to send sms with status $status!");
+      }
+    }
+    if (stagingGuid == null) return; // we weren't forwarded successfully
+    var tempGuid = guid;
+    guid = stagingGuid;
+    stagingGuid = null;
+    await Message.replaceMessage(tempGuid, this);
+    await (backend as RustPushBackend).confirmSmsSent(this, chat, true);
   }
 
   Message({
@@ -445,7 +433,6 @@ class Message {
     this.sendingServiceId,
     this.associatedMessageEmoji,
     this.dateScheduled,
-    this.temp = false,
   }) {
       if (handle != null && handleId == null) handleId = handle!.originalROWID;
       if (error != null) _error.value = error;
@@ -548,46 +535,6 @@ class Message {
       associatedMessageEmoji: json['associatedMessageEmoji'],
       dateScheduled: parseDate(json['dateScheduled']),
     );
-  }
-
-  List<Tuple2<RegExp, String>> inferReactionMap = [
-    Tuple2(RegExp(r'^\s*Liked “(.*)”\s*$'), ReactionTypes.LIKE),
-    Tuple2(RegExp(r'^\s*Removed a like from “(.*)”\s*$'), "-${ReactionTypes.LIKE}"),
-    Tuple2(RegExp(r'^\s*Loved “(.*)”\s*$'), ReactionTypes.LOVE),
-    Tuple2(RegExp(r'^\s*Removed a heart from “(.*)”\s*$'), "-${ReactionTypes.LOVE}"),
-    Tuple2(RegExp(r'^\s*Disliked “(.*)”\s*$'), ReactionTypes.DISLIKE),
-    Tuple2(RegExp(r'^\s*Removed a dislike from “(.*)”\s*$'), "-${ReactionTypes.DISLIKE}"),
-    Tuple2(RegExp(r'^\s*Laughed at “(.*)”\s*$'), ReactionTypes.LAUGH),
-    Tuple2(RegExp(r'^\s*Removed a laugh from “(.*)”\s*$'), "-${ReactionTypes.LAUGH}"),
-    Tuple2(RegExp(r'^\s*Emphasized “(.*)”\s*$'), ReactionTypes.EMPHASIZE),
-    Tuple2(RegExp(r'^\s*Removed an exclamation from “(.*)”\s*$'), "-${ReactionTypes.EMPHASIZE}"),
-    Tuple2(RegExp(r'^\s*Questioned “(.*)”\s*$'), ReactionTypes.QUESTION),
-    Tuple2(RegExp(r'^\s*Removed a question mark from “(.*)”\s*$'), "-${ReactionTypes.QUESTION}"),
-    Tuple2(RegExp(r'^\s*Reacted ([^\s]+) to “(.*)”\s*$'), ReactionTypes.EMOJI),
-    Tuple2(RegExp(r'^\s*Removed ([^\s]+) from “(.*)”\s*$'), "-${ReactionTypes.EMOJI}"),
-  ];
-
-  void inferReaction(Chat chat) {
-    if (associatedMessageGuid != null) return; // already associated
-    for (var reaction in inferReactionMap) {
-      var match = reaction.item1.firstMatch(text!);
-      if (match == null) continue;
-      var query = (Database.messages.query(Message_.text.equals(match[match.groupCount > 1 ? 2 : 1]!).and(Message_.chat.equals(chat.id!)))
-        ..order(Message_.dateCreated, flags: Order.descending))
-        .build();
-      query.limit = 1;
-      var msg = query.findFirst();
-      query.close();
-    
-      if (msg == null) return;
-      associatedMessageGuid = msg.guid!;
-      associatedMessagePart = 0;
-      associatedMessageType = reaction.item2;
-      if (match.groupCount > 1) {
-        associatedMessageEmoji = match[1]!;
-      }
-      return;
-    }
   }
 
   List<MessagePart> attributedBodyToMessagePart(AttributedBody body) {
@@ -708,7 +655,7 @@ class Message {
   /// Save a single message - prefer [bulkSave] for multiple messages rather
   /// than iterating through them
   Message save({Chat? chat, bool updateIsBookmarked = false, bool updateSendingServiceId = false}) {
-    if (kIsWeb || temp) return this;
+    if (kIsWeb) return this;
     Database.runInTransaction(TxMode.write, () {
       Message? existing = Message.findOne(guid: guid);
       if (existing != null) {
@@ -824,7 +771,6 @@ class Message {
 
   /// Replace a temp message with the message from the server
   static Future<Message> replaceMessage(String? oldGuid, Message newMessage) async {
-    if (newMessage.temp) throw Exception("Attempting to persist temp message!");
     Message? existing = Message.findOne(guid: oldGuid);
     if (existing == null) {
       throw Exception("Cannot replace on a null existing message!!");

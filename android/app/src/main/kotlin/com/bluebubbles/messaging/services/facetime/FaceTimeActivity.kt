@@ -9,7 +9,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.database.ContentObserver
-import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.Rect
 import android.graphics.drawable.Icon
@@ -21,20 +20,14 @@ import android.os.Looper
 import android.util.Log
 import android.util.Rational
 import android.view.View
-import android.view.ViewGroup.MarginLayoutParams
-import android.view.WindowInsets
 import android.view.WindowManager
 import android.webkit.PermissionRequest
 import android.webkit.WebView
 import androidx.core.view.ViewCompat
-import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.marginTop
-import androidx.core.view.updateLayoutParams
 import com.bluebubbles.messaging.Constants
 import com.bluebubbles.messaging.R
 import com.bluebubbles.messaging.databinding.ActivityFaceTimeBinding
-import com.bluebubbles.messaging.services.notifications.CreateIncomingFaceTimeNotification
 import com.bluebubbles.messaging.services.notifications.DeleteNotificationHandler
 import com.bluebubbles.messaging.services.rustpush.APNClient
 import com.bluebubbles.messaging.services.rustpush.APNService
@@ -89,7 +82,7 @@ class FaceTimeActivity : Activity() {
             DeleteNotificationHandler().deleteNotification(this, notificationId, Constants.newFaceTimeNotificationTag)
         }
         callUuid?.let { callUuid ->
-            val client = APNClient(applicationContext)
+            val client = APNClient(this)
             client.bind { service: APNService ->
                 try {
                     service.pushState.declineFacetime(callUuid)
@@ -172,20 +165,11 @@ class FaceTimeActivity : Activity() {
         }
 
         if (mirrorReady) {
-            binding.mainFrame.visibility = View.VISIBLE
             binding.splashLayout.visibility = View.GONE
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                window.setBackgroundBlurRadius(0)
-            }
             webView.loadUrl("javascript:document.getElementById(\"callcontrols-join-button-session-banner\").click()")
         } else {
             connecting()
         }
-    }
-
-    override fun onNewIntent(intent: Intent?) {
-        super.onNewIntent(intent)
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -194,10 +178,7 @@ class FaceTimeActivity : Activity() {
 
         activeFaceTimeActivity = this
 
-        window.statusBarColor = Color.TRANSPARENT
-        window.navigationBarColor = Color.TRANSPARENT
-
-        WindowCompat.setDecorFitsSystemWindows(window, false)
+        window.statusBarColor = Color.BLACK
 
 
         // show when locked
@@ -265,6 +246,12 @@ class FaceTimeActivity : Activity() {
 
         val view = binding.root
         setContentView(view)
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
     }
 
     var serviceStarted: Boolean = false
@@ -341,11 +328,7 @@ class FaceTimeActivity : Activity() {
         binding.acceptButtons.visibility = View.GONE
         binding.loadingBanner.text = "Connecting..."
         Handler(Looper.getMainLooper()).postDelayed({
-            binding.mainFrame.visibility = View.VISIBLE
             binding.splashLayout.visibility = View.GONE
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                window.setBackgroundBlurRadius(0)
-            }
         }, 15000)
     }
 
@@ -369,11 +352,7 @@ class FaceTimeActivity : Activity() {
         cached.mirrorReadyCall = {
             mirrorReady = true
             if (answered) {
-                binding.mainFrame.visibility = View.VISIBLE
                 binding.splashLayout.visibility = View.GONE
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                    window.setBackgroundBlurRadius(0)
-                }
                 webView.loadUrl("javascript:document.getElementById(\"callcontrols-join-button-session-banner\").click()")
             }
         }
@@ -384,25 +363,6 @@ class FaceTimeActivity : Activity() {
         notificationId = extras.getString("notificationId")?.toInt() ?: 0
         callUuid = extras.getString("callUuid")
 
-        if (CreateIncomingFaceTimeNotification.avatarCache.containsKey(callUuid)) {
-            val bitmap = CreateIncomingFaceTimeNotification.avatarCache.remove(callUuid)!!
-            binding.avatarView.setImageBitmap(bitmap)
-        }
-
-        Log.i("FaceTime", "started activity for call $callUuid")
-
-        val poster = extras.getString("poster")
-        if (poster != null) {
-            binding.posterView.setImageBitmap(BitmapFactory.decodeFile(poster))
-            binding.callDescription.visibility = View.GONE
-            // no background blur because we are occluded
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                window.setBackgroundBlurRadius(0)
-            }
-        } else {
-            binding.posterView.visibility = View.GONE
-        }
-
         if (isAnsweringCall) {
             isCall = true
             binding.callTitle.text = desc
@@ -412,10 +372,6 @@ class FaceTimeActivity : Activity() {
             }
         } else {
             binding.splashLayout.visibility = View.GONE
-            binding.mainFrame.visibility = View.VISIBLE
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                window.setBackgroundBlurRadius(0)
-            }
             handlePermissionRequests()
         }
     }

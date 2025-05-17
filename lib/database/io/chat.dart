@@ -171,25 +171,6 @@ class GetMessages extends AsyncTask<List<dynamic>, List<Message>> {
   }
 }
 
-Future<String> getZenKey(String key) async {
-  return await mcs.invokeMethod("zen-mode-uuid", { "key": key });
-}
-
-Future<api.StatusKitPersonalConfig> configForMask(int mask) async {
-  bool isStarredContact = ((mask >> 0) & 1) == 1;
-  bool isPriority = ((mask >> 1) & 1) == 1;
-  
-
-  return api.StatusKitPersonalConfig(allowedModes: [
-    if (isStarredContact)
-    await getZenKey("starred"),
-    if (isPriority)
-    await getZenKey("priority"),
-    if (isStarredContact || isPriority)
-    await getZenKey("starred_priority"),
-  ]);
-}
-
 /// Async method to add messages to objectbox
 class AddMessages extends AsyncTask<List<dynamic>, List<Message>> {
   final List<dynamic> stuff;
@@ -272,7 +253,7 @@ class GetChats extends AsyncTask<List<dynamic>, List<Chat>> {
       if (stuff.length >= 3 && stuff[2] != null && stuff[2] is List) {
         queryBuilder = Database.chats.query(Chat_.id.oneOf(stuff[2] as List<int>));
       } else {
-        queryBuilder = Database.chats.query(Chat_.dateDeleted.isNull().and(Chat_.isRoutingStub.equals(false).or(Chat_.isRoutingStub.isNull())));
+        queryBuilder = Database.chats.query(Chat_.dateDeleted.isNull());
       }
 
       // Build the query, applying some sorting so we get data in the correct order.
@@ -394,13 +375,6 @@ class Chat {
   String? usingHandle;
   bool isRpSms;
   int? telephonyId;
-  bool? shareZenMode;
-  bool notifsSilenced = false;
-  int? zenModeIsShared;
-  DateTime? dateNotifiedAnyways;
-  bool? senderIsKnown;
-  // true means this is a routing stub; we only hold SMS bridging information, not messages
-  bool isRoutingStub = false;
 
   @Backlink('chat')
   final messages = ToMany<Message>();
@@ -432,12 +406,6 @@ class Chat {
     this.usingHandle,
     this.isRpSms = false,
     this.telephonyId,
-    this.shareZenMode,
-    this.notifsSilenced = false,
-    this.dateNotifiedAnyways,
-    this.zenModeIsShared,
-    this.senderIsKnown = true,
-    this.isRoutingStub = false,
     List<String>? guidRefs,
   }) : guidRefs = guidRefs ?? [guid] {
     customAvatarPath = customAvatar;
@@ -473,35 +441,16 @@ class Chat {
       usingHandle: json["usingHandle"],
       isRpSms: json["isRpSms"] ?? false,
       guidRefs: json["guidRefs"]?.cast<String>() ?? [],
-      telephonyId: json["telephonyId"],
-      shareZenMode: json["shareZenMode"],
-      notifsSilenced: json["notifsSilenced"] ?? false,
-      zenModeIsShared: json["zenModeIsShared"],
-      dateNotifiedAnyways: parseDate(json["dateNotifiedAnyways"]),
-      isRoutingStub: json["isRoutingStub"] ?? false,
+      telephonyId: json["telephonyId"]
     );
   }
 
   Future<String> ensureHandle() async {
     if (usingHandle == null) {
-      if (isRpSms) {
-        if (isRoutingStub) {
-          usingHandle = (await api.getMyPhoneHandles(state: pushService.state))[0];
-        } else {
-          usingHandle = ss.settings.smsForwardingTargets.keys.firstOrNull;
-        }
-      } else {
-        usingHandle = await (backend as RustPushBackend).getDefaultHandle();
-        save(updateUsingHandle: true);
-      }
+      usingHandle = await (backend as RustPushBackend).getDefaultHandle();
+      save(updateUsingHandle: true);
     }
     return usingHandle!;
-  }
-
-  // return true if we should route this conversation as a router
-  Future<bool> shouldRoute() async {
-    var handles = await api.getMyPhoneHandles(state: pushService.state);
-    return handles.contains(await ensureHandle());
   }
 
   void removeProfilePhoto() {
@@ -537,11 +486,6 @@ class Chat {
     bool updateAPNTitle = false,
     bool updateGuidRefs = false,
     bool updateTelephonyId = false,
-    bool updateNotifsSilenced = false,
-    bool updateZenModeIsShared = false,
-    bool updateShareZenMode = false,
-    bool updateDateNotifiedAnyways = false,
-    bool updateSenderIsKnown = false,
   }) {
     if (kIsWeb) return this;
     Database.runInTransaction(TxMode.write, () {
@@ -617,21 +561,6 @@ class Chat {
       if (!updateTelephonyId) {
         telephonyId = existing?.telephonyId ?? telephonyId;
       }
-      if (!updateNotifsSilenced) {
-        notifsSilenced = existing?.notifsSilenced ?? notifsSilenced;
-      }
-      if (!updateZenModeIsShared) {
-        zenModeIsShared = existing?.zenModeIsShared ?? zenModeIsShared;
-      }
-      if (!updateShareZenMode) {
-        shareZenMode = existing?.shareZenMode ?? shareZenMode;
-      }
-      if (!updateDateNotifiedAnyways) {
-        dateNotifiedAnyways = existing?.dateNotifiedAnyways ?? dateNotifiedAnyways;
-      }
-      if (!updateSenderIsKnown) {
-        senderIsKnown = existing?.senderIsKnown ?? senderIsKnown;
-      }
 
       /// Save the chat and add the participants
       for (int i = 0; i < participants.length; i++) {
@@ -655,78 +584,13 @@ class Chat {
     return this;
   }
 
-  Future<int> getPersonalConfig() async {
-    if (participants.length > 1 || participants.isEmpty || !Platform.isAndroid) return 0;
-
-    bool isStarredContact = await mcs.invokeMethod("is-conversation-exempt", {
-      "mode": "star",
-      "contactId": participants.first.contact!.id.toInt(),
-    });
-
-    bool isPriority = await mcs.invokeMethod("is-conversation-exempt", {
-      "mode": "priority",
-      "guid": guid
-    });
-
-    int configMask = 
-      ((isStarredContact ? 1 : 0) << 0) |
-      ((isPriority ? 1 : 0) << 1);
-
-    return configMask;
-  }
-
-  void fixZenModeShared() async {
-    if (!ss.settings.enableShareZen.value) return;
-    bool wantsZenMode = (shareZenMode ?? true) && participants.firstOrNull?.contact?.isShared == false;
-    var config = wantsZenMode ? await getPersonalConfig() : null;
-    if (config == zenModeIsShared) return;
-
-    if (wantsZenMode) {
-      await api.inviteToChannel(state: pushService.state, handle: await ensureHandle(), to: {
-        getRustHandlesExcludingMine()[0]: await configForMask(config!)
-      });
-      zenModeIsShared = config;
-      save(updateZenModeIsShared: true);
-    } else {
-      // okay, sooo
-      // get everyone who *is* allowed to have my status updates
-      final query = Database.chats.query(Chat_.zenModeIsShared.notNull().and(Chat_.dbOnlyLatestMessageDate.greaterThanDate(DateTime.now().subtract(const Duration(days: 7))))).build();
-      final results = query.find();
-      query.close();
-      
-      Map<String, Map<String, api.StatusKitPersonalConfig>> sendMap = {};
-      for (var result in results) {
-        if (result.guid == guid) continue; // no longer share us
-        var handle = await result.ensureHandle();
-        sendMap.putIfAbsent(handle, () => {});
-        sendMap[handle]![result.getRustHandlesExcludingMine()[0]] = await configForMask(result.zenModeIsShared!);
-      }
-      
-      await api.resetChannelKeys(state: pushService.state);
-      for (var handle in sendMap.entries) {
-        await api.inviteToChannel(state: pushService.state, handle: handle.key, to: handle.value);
-      }
-      zenModeIsShared = null;
-      save(updateZenModeIsShared: true);
-
-      // these people sadly fall off
-      final o = Database.chats.query(Chat_.zenModeIsShared.notNull().and(Chat_.dbOnlyLatestMessageDate.lessThanDate(DateTime.now().subtract(const Duration(days: 7))))).build();
-      final older = o.find();
-      o.close();
-      for (var item in older) {
-        item.zenModeIsShared = null;
-      }
-      Database.chats.putMany(older);
-    }
-  }
-
   static Future<Chat> getChatForTel(int tid, List<String> participants) async {
-    final query3 = Database.chats.query(Chat_.telephonyId.equals(tid).and(Chat_.dateDeleted.isNull()).and(Chat_.isRoutingStub.equals(true))).build();
+    final query3 = Database.chats.query(Chat_.telephonyId.equals(tid).and(Chat_.dateDeleted.isNull())).build();
     final result4 = query3.findFirst();
     query3.close();
     if (result4 != null) return result4;
 
-    final query = (Database.chats.query(Chat_.dateDeleted.isNull().and(Chat_.isRpSms.equals(true)).and(Chat_.isRoutingStub.equals(true)))
+    final query = (Database.chats.query(Chat_.dateDeleted.isNull().and(Chat_.isRpSms.equals(true)))
           ..linkMany(Chat_.handles, Handle_.address.oneOf(participants)))
             .build();
     final results = query.find();
@@ -745,7 +609,6 @@ class Chat {
     });
     if (result == null) {
       result = await backend.createChat(participants, null, "SMS");
-      result.isRoutingStub = true;
       chats.updateChat(result);
     }
     result.telephonyId = tid;
@@ -753,18 +616,11 @@ class Chat {
     return result;
   }
 
-  Future<void> deliverSMS(String sender, bool fromMe, List<Map<String, dynamic>> parts) async {
+  Future<void> deliverSMS(String sender, List<Map<String, dynamic>> parts) async {
     if (!ss.settings.isSmsRouter.value) {
       return; // don't deliver if not enabled :)
     }
     if (sender.isEmail) return; // no one uses this feature anyway, and can't debug it due to TMO's MXRT AUP
-
-    if (fromMe && "tel:$sender" != usingHandle) {
-      Logger.info("Chat delivering sms, handle $usingHandle not sms handle $sender");
-      usingHandle = "tel:$sender";
-      save(updateUsingHandle: true);
-    }
-
     var handle = Handle.findOne(addressAndService: Tuple2(sender, "iMessage"));
     if (handle == null) {
       handle = Handle(
@@ -778,8 +634,6 @@ class Chat {
     }
     for (var part in parts) {
       var partContent = part["body"] is Uint8List ? part["body"] as Uint8List : Uint8List.fromList(part["body"].cast<int>().toList());
-      // smil is for unnessesary
-      if (part["contentType"] == "application/smil") continue;
       if (part["contentType"] == "text/plain") {
         var bodyString = utf8.decode(partContent);
         if (bodyString.trim() == "") continue;
@@ -788,23 +642,34 @@ class Chat {
           threadOriginatorPart: "0:0:0",
           dateCreated: DateTime.now(),
           hasAttachments: false,
-          isFromMe: fromMe,
+          isFromMe: false,
           guid: part["id"] as String,
           handleId: 0,
           handle: handle,
           hasDdResults: true,
-          hasBeenForwarded: true,
           attributedBody: [AttributedBody(string: bodyString, runs: [Run(
             range: [0, bodyString.length],
             attributes: Attributes(
               messagePart: 0,
             )
           )])],
-          temp: true,
         );
-        await backend.sendMessage(this, _message);
-        if (fromMe) {
-          await (backend as RustPushBackend).confirmSmsSent(_message, this, true);
+        try {
+          inq.queue(IncomingItem(
+            chat: this,
+            message: await backend.sendMessage(this, _message),
+            type: QueueType.newMessage
+          ));
+        } catch (e) {
+          Logger.debug("Failed to forward sms! $e");
+          inq.queue(IncomingItem(
+            chat: this,
+            message: _message,
+            type: QueueType.newMessage
+          ));
+        }
+        if (!ls.isAlive) {
+          await MessageHelper.handleNotification(_message, this, findExisting: false);
         }
       } else {
         var myUuid = "${part["id"]}_0";
@@ -817,12 +682,11 @@ class Chat {
           threadOriginatorPart: "0:0:0",
           dateCreated: DateTime.now(),
           hasAttachments: true,
-          isFromMe: fromMe,
+          isFromMe: false,
           guid: part["id"] as String,
           handleId: 0,
           handle: handle,
           hasDdResults: true,
-          hasBeenForwarded: true,
           attributedBody: [AttributedBody(string: " ", runs: [Run(
             range: [0, 1],
             attributes: Attributes(
@@ -840,31 +704,42 @@ class Chat {
               totalBytes: partContent.length,
               transferName: "${part["id"]}.${extensionFromMime(part["contentType"] as String) ?? "bin"}"
             )
-          ],
-          temp: true,
+          ]
         );
         await _message.attachments.first!.writeToDisk();
-        await (backend as RustPushBackend).forwardMMSAttachment(this, _message, _message.attachments.first!);
-        File(_message.attachments.first!.path).deleteSync();
-        if (fromMe) {
-          await (backend as RustPushBackend).confirmSmsSent(_message, this, true);
+        try {
+          var forwarded = await (backend as RustPushBackend).forwardMMSAttachment(this, _message, _message.attachments.first!);
+          inq.queue(IncomingItem(
+            chat: this,
+            message: forwarded,
+            type: QueueType.newMessage
+          ));
+        } catch (e) {
+          // TODO resend later
+          Logger.debug("Failed to forward mms! $e");
+          inq.queue(IncomingItem(
+            chat: this,
+            message: _message,
+            type: QueueType.newMessage
+          ));
         }
+
+        if (!ls.isAlive) {
+          await MessageHelper.handleNotification(_message, this, findExisting: false);
+        }
+        
       }
     }
   }
-
-  List<String> getRustHandlesExcludingMine() {
-    return participants.map((e) {
+  
+  Future<api.ConversationData> getConversationData() async {
+    var handles = participants.map((e) {
       if (e.address.isEmail) {
         return "mailto:${e.address}";
       } else {
         return "tel:${e.address}";
       }
     }).toList();
-  }
-  
-  Future<api.ConversationData> getConversationData() async {
-    var handles = getRustHandlesExcludingMine();
     handles.add(await ensureHandle());
     return api.ConversationData(participants: handles, cvName: apnTitle, senderGuid: guid, afterGuid: sendLastMessage.stagingGuid ?? sendLastMessage.guid);
   }
@@ -1020,8 +895,7 @@ class Chat {
     if (kIsWeb) return;
     Database.runInTransaction(TxMode.write, () {
       chat.dateDeleted = null;
-      chat.senderIsKnown = chat.handles.any((handle) => !(handle.contact?.isShared ?? true));
-      chat.save(updateDateDeleted: true, updateSenderIsKnown: true);
+      chat.save(updateDateDeleted: true);
     });
   }
 
@@ -1110,12 +984,6 @@ class Chat {
           toggleArchived(false);
         }
       }
-    }
-
-    if (!(senderIsKnown ?? true) && message.isFromMe!) {
-      senderIsKnown = true;
-      cvc(this).reportJunkAvailable.value = !(senderIsKnown ?? true);
-      save(updateSenderIsKnown: true);
     }
 
     // Save the chat.
@@ -1298,7 +1166,7 @@ class Chat {
 
   // if soft is false, return is never null
   // only null if soft is true and no matching chat is found
-  static Future<Chat?> findByRust(api.ConversationData data, String service, {bool soft = false, bool routingStub = false}) async {
+  static Future<Chat?> findByRust(api.ConversationData data, String service, {bool soft = false}) async {
     if (data.participants.isEmpty) {
       throw Exception("empty participants!??");
     }
@@ -1322,10 +1190,7 @@ class Chat {
 
     final name = data.cvName;
 
-    var cond = Chat_.isRoutingStub.equals(routingStub);
-    if (name != null) {
-      cond = cond.and(Chat_.apnTitle.equals(name));
-    }
+    var cond = name != null ? Chat_.apnTitle.equals(name) : null;
     final query = (Database.chats.query(cond)
           ..linkMany(Chat_.handles, Handle_.address.oneOf(dartParticipants.map((e) => e.address).toList())))
             .build();
@@ -1346,7 +1211,6 @@ class Chat {
     if (result == null && !soft) {
       result = await backend.createChat(dartParticipants.map((e) => e.address).toList(), null, service, existingGuid: data.senderGuid);
       result.displayName = data.cvName;
-      result.isRoutingStub = routingStub;
       result.apnTitle = data.cvName;
       if (mine.isNotEmpty) result.usingHandle = mine[0];
       result = result.save();
@@ -1535,10 +1399,5 @@ class Chat {
     // intentionally not [from] for debugging,
     "textFieldText": textFieldText,
     "textFieldAnnotations": textFieldAnnotations,
-    "notifsSilenced": notifsSilenced,
-    "zenModeIsShared": zenModeIsShared,
-    "shareZenMode": shareZenMode,
-    "dateNotifiedAnyways": dateNotifiedAnyways?.millisecondsSinceEpoch,
-    "isRoutingStub": isRoutingStub,
   };
 }

@@ -1,0 +1,6 @@
+[submodule "openbubbles-build-modules"]
+	path = openbubbles-build-modules
+	url = https://github.com/stevesoltys/openbubbles-build-modules.git
+[submodule "rustpush"]
+	path = rustpush
+	url = https://github.com/stevesoltys/rustpush.git

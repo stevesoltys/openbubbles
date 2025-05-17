@@ -73,7 +73,6 @@ class AttachmentPickerState extends OptimizedState<AttachmentPicker> {
           await Share.location(cm.activeChat!.chat);
         }
       },
-      if(controller.chat.isIMessage)
       {
         "icon": iOS ? CupertinoIcons.clock_solid : Icons.lock_clock,
         "text": "Send Later",
@@ -178,7 +177,6 @@ class AttachmentPickerState extends OptimizedState<AttachmentPicker> {
       },
     ];
 
-    if(!controller.chat.isIMessage) return;
     for (var app in es.cachedStatus) {
       if (app.available == null) return;
       iconsList.add({
