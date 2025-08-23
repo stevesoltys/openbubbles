@@ -4,7 +4,7 @@ use std::{borrow::{Borrow, BorrowMut}, collections::HashSet, fs::{self, File}, f
 
 use anyhow::anyhow;
 use flutter_rust_bridge::{frb, IntoDart, JoinHandle};
-use icloud_auth::{default_provider, ArcAnisetteClient, LoginClientInfo};
+use omnisette::{default_provider, ArcAnisetteClient, LoginClientInfo};
 use log::{debug, error, info, warn};
 use plist::{Data, Dictionary};
 pub use plist::Value;
@@ -18,7 +18,7 @@ use rustpush::{authenticate_apple, authenticate_phone, cloudkit::{CloudKitClient
 use rustpush::AnisetteProvider;
 pub use rustpush::findmy::{FindMyFriendsClient, FindMyPhoneClient};
 pub use rustpush::sharedstreams::{SharedAlbum, SyncStatus};
-pub use icloud_auth::DefaultAnisetteProvider;
+pub use omnisette::DefaultAnisetteProvider;
 use uniffi::HandleAlloc;
 use rand::Rng;
 use uuid::Uuid;
@@ -380,7 +380,7 @@ async fn restore(curr_state: &PushState) {
     if let Ok(mut lock) = inner.cancel_poll_recv.try_lock() {
         let _ = lock.try_recv();
     }
-    
+
     if needs_rereg {
         // mark rereg
         let _ = inner.client.as_ref().unwrap().identity.refresh_now().await;
@@ -392,7 +392,7 @@ async fn restore(curr_state: &PushState) {
     if let Ok(mut state) = plist::from_file::<_, GSAConfig>(inner.conf_dir.join("gsa.plist")) {
         let mut apple_account =
             AppleAccount::new_with_anisette(get_login_config(&*inner).await, inner.anisette.clone().unwrap()).expect("aacbf?");
-        
+
         apple_account.username = Some(state.username.clone());
         apple_account.hashed_password = Some(state.password.clone().into());
 
@@ -1682,7 +1682,7 @@ struct GSAConfig {
 
 async fn do_login(conf_dir: &Path, account: &mut AppleAccount<DefaultAnisetteProvider>, cookie: Option<&str>, anisette: &ArcAnisetteClient<DefaultAnisetteProvider>, os_config: &dyn OSConfig) -> anyhow::Result<IDSUser> {
     account.update_postdata("Apple Device", None, &["icloud", "imessage", "facetime"]).await?;
-    
+
     let Some(pet) = account.get_pet() else { return Err(anyhow!("No pet!")) };
     let Some(spd) = &account.spd else { return Err(anyhow!("No spd!")) };
 
@@ -1704,7 +1704,7 @@ async fn do_login(conf_dir: &Path, account: &mut AppleAccount<DefaultAnisettePro
         my_key: None,
         ..plist::from_file(&path).unwrap_or_default()
     }).unwrap()).unwrap();
-    
+
     let mobileme = delegates.mobileme.unwrap();
     let findmy = FindMyState::new(dsid.clone(), acname, &mobileme);
 
@@ -1718,7 +1718,7 @@ async fn do_login(conf_dir: &Path, account: &mut AppleAccount<DefaultAnisettePro
     let shared_streams = SharedStreamsState::new(dsid.clone(), &mobileme);
     if let Some(shared_streams) = shared_streams {
         let id_path = conf_dir.join("sharedstreams.plist");
-        std::fs::write(id_path, plist_to_string(&shared_streams).unwrap()).unwrap(); 
+        std::fs::write(id_path, plist_to_string(&shared_streams).unwrap()).unwrap();
     } else {
         warn!("missing shared streams tokens!");
     }
@@ -1741,7 +1741,7 @@ pub async fn try_auth(state: &Arc<PushState>, username: String, password: String
     let mut inner = state.0.write().await;
     let mut apple_account =
         AppleAccount::new_with_anisette(get_login_config(&*inner).await, inner.anisette.clone().unwrap())?;
-    
+
     let mut password_hasher = sha2::Sha256::new();
     password_hasher.update(&password.as_bytes());
     let hashed_password = password_hasher.finalize();

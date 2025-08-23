@@ -40,6 +40,10 @@ pubspeck.lock
 **/android/.settings
 **/releases
 
+# Android
+android/app/.cxx
+android/local.properties
+
 #objectbox
 .dart_tool/*
 !.dart_tool/build
@@ -58,3 +62,7 @@ native-lib/target/**
 
 /rust/src/api/hw_testing.plist
 /rust/src/api/id_testing.plist
+
+# Android
+android/app/local.properties
+android/app/.gradle/**
